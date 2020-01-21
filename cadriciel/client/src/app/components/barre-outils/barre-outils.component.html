@@ -1,5 +1,5 @@
-<ul>
-    <li *ngFor='let outil of outils'>
-        <button>{{outil.nom}}</button>
-    </li>
-</ul>
+<div class="sidenav">
+    <a *ngFor='let outil of outils' href="javascript:void()">
+        {{outil.nom}}
+    </a>
+</div>
