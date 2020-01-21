@@ -2,4 +2,7 @@
     <a *ngFor='let outil of outils' href="javascript:void()">
         {{outil.nom}}
     </a>
+    <a [routerLink]="['/guide']">
+        Guide d'utilisation
+    </a>
 </div>
