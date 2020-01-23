@@ -3,6 +3,7 @@
         <app-guide-sujet [noeud]="sujet" (notification)="onNotify($event)"></app-guide-sujet>
     </div>
 </div>
+
 <div class="contenu">
     <div *ngIf="sujetActif" [innerHTML]="sujetActif.description">
 </div>

@@ -4,8 +4,8 @@ export class GuideSujet
 {
   public nom: string;
   public description: string;
-  public suivant: boolean;
   public precedant: boolean;
+  public suivant: boolean;
   public imagePaths?: string[];
   public sousSujets?: GuideSujet[];
   public categorieOuverte?: boolean = false;
@@ -47,72 +47,55 @@ export class GuideSujetComponent implements OnInit {
 
 //TODO: meilleure manière de construire des catégories (avec des ressources lue peut-être ?)
 export const ContenuGuide: GuideSujet[] = [
-  {
-    nom: "ceci est une fraude",
-    description: "<b>bonjour</b> c'est ici que je met mon argent pour éviter les <b>taxes</b>",
-    suivant: true,
-    precedant: false
-  },
-  {
-    nom: "catégorie",
-    description: "",
-    suivant:false,
-    precedant: false,
-    sousSujets: [
-        {
-          nom: "sous-sujet1",
-          description: "bidon",
-          suivant: true,
-          precedant: true,
-        },
-        {
-          nom: "sous-sujet2",
-          description: "++bidon",
-          suivant: false,
-          precedant: true,
-          sousSujets: [
+      //Sujet 1
+      {
+        nom: "Bienvenue",
+        description: "<h1>Bienvenue à PolyDessin! </h1> ceci est une description En tant qu'utilisateur, je dois pouvoir consulter un guide d'utilisation de l'application.",
+        precedant: false,
+        suivant: true
+    },
+    //Sujet 2
+    {
+        nom: "Outils",
+        description: "",
+        precedant: false,
+        suivant:false,
+        sousSujets: [
+            //Outil 1
             {
-              nom: "sous-sujet1",
-              description: "bidon",
-              suivant: true,
-              precedant: true,
+                nom: "Crayon",
+                description: "<h1> Crayon </h1> Description du crayon",
+                precedant: true,
+                suivant: true
             },
+            //Outil 2
             {
-              nom: "sous-sujet2",
-              description: "++bidon",
-              suivant: false,
-              precedant: true,
-              sousSujets: [
-                {
-                  nom: "sous-sujet1",
-                  description: "bidon",
-                  suivant: true,
-                  precedant: true,
-                },
-                {
-                  nom: "sous-sujet2",
-                  description: "++bidon",
-                  suivant: false,
-                  precedant: true,
-                  sousSujets: [
-                    {
-                      nom: "sous-sujet1",
-                      description: "bidon",
-                      suivant: true,
-                      precedant: true,
-                    },
-                    {
-                      nom: "sous-sujet2",
-                      description: "++bidon",
-                      suivant: false,
-                      precedant: true,
-                    }
-                ]
-                }
-            ]
+                nom: "Pinceau",
+                description: "<h1> Pinceau </h1> Description du pinceau",
+                precedant: true,
+                suivant: true
+            },
+            //Outil 3
+            {
+                nom: "Rectangle",
+                description: "<h1> Rectangle </h1> Description du rectangle",
+                precedant: true,
+                suivant: true
+            },
+            //Outil 4
+            {
+                nom: "Ligne",
+                description: "<h1> Ligne </h1> Description du ligne",
+                precedant: true,
+                suivant: true
+            },
+            //Outil 5
+            {
+                nom: "Couleur",
+                description: "<h1> Couleur </h1> Description du couleur",
+                precedant: true,
+                suivant: true
             }
         ]
-        }
-    ]
-  }
+    }
 ];
