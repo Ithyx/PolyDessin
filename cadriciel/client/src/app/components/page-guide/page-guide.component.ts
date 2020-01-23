@@ -9,7 +9,12 @@ import { GuideSujet, ContenuGuide } from './guide-sujet';
 
 export class PageGuideComponent implements OnInit {
   sujets: GuideSujet[] = ContenuGuide;
+  sujetSelectionne: GuideSujet;
 
+  onClick(sujet: GuideSujet) {
+    this.sujetSelectionne = sujet;
+  }
+  
   constructor() { }
 
   ngOnInit() {

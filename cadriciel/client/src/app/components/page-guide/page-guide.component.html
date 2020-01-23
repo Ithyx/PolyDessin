@@ -1,7 +1,17 @@
 <div class="sidenav">
     <div *ngFor = 'let sujet of sujets'>
-        <a class="sujet" href="javascript:void(0);" [style.font-weight]="sujet.sousSujets ? 'bold' : 'normal'"> {{sujet.nom}} </a>
+
+        <a class="sujet" href="javascript:void(0);" 
+        [style.font-weight]="sujet.sousSujets ? 'bold' : 'normal'"
+        (click) = "onClick(sujet);">{{sujet.nom}}</a>
+        
         <a *ngFor = "let sousSujet of sujet.sousSujets"
-        class="sujet" href="javascript:void(0);" [style.font-weight]="sousSujet.sousSujets ? 'bold' : 'normal'">&emsp;{{sousSujet.nom}}</a>
+        class="sujet" href="javascript:void(0);" 
+        [style.font-weight]="sousSujet.sousSujets ? 'bold' : 'normal'"
+        (click) = "onClick(sousSujet);">&emsp;{{sousSujet.nom}}</a>
+
     </div>
+</div>
+<div class="contenu">
+    <div *ngIf="sujetSelectionne" [innerHTML]="sujetSelectionne.description">
 </div>

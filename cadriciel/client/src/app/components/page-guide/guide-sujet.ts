@@ -10,7 +10,7 @@ export class GuideSujet {
 export const ContenuGuide: GuideSujet[] = [
     {
         nom: "ceci est une fraude",
-        description: "bonjour c'ets ici que je met mon argent pour éviter les taxes",
+        description: "<b>bonjour</b> c'est ici que je met mon argent pour éviter les <b>taxes</b>",
         suivant: true,
         precedant: false
     },
