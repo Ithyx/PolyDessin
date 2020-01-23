@@ -10,26 +10,6 @@
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 20px;
 }
-  
-  /* The navigation menu links */
-.sidenav a {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 25px;
-    color: black;
-    display: block;
-}
-  
-  /* When you mouse over the navigation links, change their color */
-.sidenav a:hover {
-    color: red;
-    background-color: darkgray;
-}
-
-.sujet {
-    border-top: 1px solid darkgray;
-    border-bottom: 1px solid darkgray;
-}
 
 .contenu {
     margin-left: 15%;

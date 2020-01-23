@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GuideSujet, ContenuGuide } from './guide-sujet';
+import { GuideSujet, ContenuGuide } from '../guide-sujet/guide-sujet.component';
 
 @Component({
   selector: 'app-page-guide',
@@ -9,11 +9,6 @@ import { GuideSujet, ContenuGuide } from './guide-sujet';
 
 export class PageGuideComponent implements OnInit {
   sujets: GuideSujet[] = ContenuGuide;
-  sujetSelectionne: GuideSujet;
-
-  onClick(sujet: GuideSujet) {
-    this.sujetSelectionne = sujet;
-  }
   
   constructor() { }
 

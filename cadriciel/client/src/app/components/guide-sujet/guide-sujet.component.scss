@@ -1,0 +1,23 @@
+.sujet {
+    border-top: 1px solid darkgray;
+    border-bottom: 1px solid darkgray;
+}
+
+  /* The navigation menu links */
+a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: black;
+    display: block;
+}
+  
+  /* When you mouse over the navigation links, change their color */
+a:hover {
+    color: red;
+    background-color: darkgray;
+}
+
+pre {
+    display: inline;
+}
