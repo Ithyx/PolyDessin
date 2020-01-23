@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 export class GuideSujet
 {
@@ -21,6 +21,8 @@ export class GuideSujetComponent implements OnInit {
   @Input() public noeud: GuideSujet;
   @Input() public profondeur: number = 0;
 
+  @Output() notification = new EventEmitter<GuideSujet>();
+
   getRange = (number: number) => Array(number);
   
   onClick() {
@@ -30,8 +32,12 @@ export class GuideSujetComponent implements OnInit {
     }
     else {
       /* c'est un sujet, on ouvre son contenu */
-      //TODO: notifier la page guide qu'un sujet à été ouvert
+      this.notification.emit(this.noeud);
     }
+  }
+
+  onNotify(sujet: GuideSujet) {
+    this.notification.emit(sujet);
   }
   
   ngOnInit() {

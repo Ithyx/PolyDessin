@@ -3,6 +3,6 @@
 </a>
 <div *ngIf="noeud.sousSujets && noeud.categorieOuverte" class="enfants">
     <div *ngFor="let sousSujet of noeud.sousSujets">
-        <app-guide-sujet [noeud]="sousSujet" [profondeur]="profondeur+1"></app-guide-sujet>
+        <app-guide-sujet [noeud]="sousSujet" [profondeur]="profondeur+1" (notification)="onNotify($event)"></app-guide-sujet>
     </div>
 </div>

@@ -3,7 +3,6 @@
     border-bottom: 1px solid darkgray;
 }
 
-  /* The navigation menu links */
 a {
     padding: 6px 8px 6px 16px;
     text-decoration: none;
@@ -11,13 +10,13 @@ a {
     color: black;
     display: block;
 }
-  
-  /* When you mouse over the navigation links, change their color */
+
 a:hover {
     color: red;
     background-color: darkgray;
 }
 
+/*nécessaire pour l'espacement des noms de catégories*/
 pre {
     display: inline;
 }
