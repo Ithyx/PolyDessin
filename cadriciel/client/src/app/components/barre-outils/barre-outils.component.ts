@@ -1,25 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
-const outils = [
-  {
-    nom: 'Crayon'
-  },
-  {
-    nom: 'Pinceau'
-  },
-  {
-    nom: 'Rectangle'
-  },
-  {
-    nom: 'Ligne'
-  },
-  {
-    nom: 'Couleur primaire'
-  },
-  {
-    nom: 'Couleur secondaire'
-  }
-];
+import { OutilDessin, outils } from './outil-dessin';
 
 @Component({
   selector: 'app-barre-outils',
@@ -27,7 +7,7 @@ const outils = [
   styleUrls: ['./barre-outils.component.scss']
 })
 export class BarreOutilsComponent implements OnInit {
-  outils = outils;
+  outils:OutilDessin[] = outils;
   constructor() { }
 
   ngOnInit() {
