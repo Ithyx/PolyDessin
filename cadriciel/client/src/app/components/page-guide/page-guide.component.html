@@ -1,5 +1,5 @@
-<div class="partieGauche">
-    <a *ngFor = 'let onglet of onglets' href="javascript:void()">
-        <button class="button"> {{onglet.nom}} </button>
-    </a>
+<div class="sidenav">
+    <div *ngFor = 'let sujet of sujets'>
+        <a class="sujet" href="javascript:void(0);" [style.font-weight]="sujet.sousSujets ? 'bold' : 'normal'"> {{sujet.nom}} </a>
+    </div>
 </div>

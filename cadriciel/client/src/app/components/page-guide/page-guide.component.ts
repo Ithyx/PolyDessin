@@ -1,25 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
-const onglets = [
-  {
-    nom: 'Bienvenue',
-    description: 'Bienvenue dans PolyDessin...',
-    suivant: ''
-  },
-  {
-    nom: 'Dessins',
-    sousOnglets: '',
-    description: '',
-    precedant: '',
-    suivant: ''
-  },
-  {
-    nom: 'Outils',
-    sousOnglets: '',
-    description: '',
-    precedant: ''
-  }
-];
+import { GuideSujet, ContenuGuide } from './guide-sujet';
 
 @Component({
   selector: 'app-page-guide',
@@ -28,7 +8,8 @@ const onglets = [
 })
 
 export class PageGuideComponent implements OnInit {
-  onglets = onglets;
+  sujets: GuideSujet[] = ContenuGuide;
+
   constructor() { }
 
   ngOnInit() {

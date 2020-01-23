@@ -1,36 +1,32 @@
-.partieGauche {
-    height: 100%;
-    width: 200px;
-    position: fixed;
-    z-index: 1;
-    top: 0;
+/* The sidebar menu */
+.sidenav {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 160px; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
     left: 0;
-    background-color: #999;
-    overflow-x: hidden;
+    background-color: lightgray; /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 20px;
 }
-
-.partieGauche a {
-    color: #111;
-    text-align: center;
-    display: block;
-    padding: 4px;
-}
-
-.button {
-    background-color: white;
-    font-size: 24px;
-    border-radius: 8px;
+  
+  /* The navigation menu links */
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
     color: black;
-    border: 2px solid black;
-    width: 100%
-
-    -webkit-transition-duration;
-    transition-duration: 0.4s;
-
+    display: block;
+}
+  
+  /* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+    color: red;
+    background-color: darkgray;
 }
 
-.button:hover{
-    background-color: green;
-    color: white;
+.sujet {
+    border-top: 1px solid darkgray;
+    border-bottom: 1px solid darkgray;
 }
