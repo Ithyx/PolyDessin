@@ -5,5 +5,10 @@
 </div>
 
 <div class="contenu">
-    <div *ngIf="sujetActif" [innerHTML]="sujetActif.description">
+    <div *ngIf="sujetActif" [innerHTML]="sujetActif.description"></div>
+    <br>
+    <div *ngIf="sujetActif" class="buttonDiv">
+        <a *ngIf="sujetActif.precedant" id="boutonPrecedant" class="button" href="javascript:void(0);">précédent</a>
+        <a *ngIf="sujetActif.suivant" id="boutonSuivant" class="button" href="javascript:void(0);">suivant</a>
+    </div>
 </div>

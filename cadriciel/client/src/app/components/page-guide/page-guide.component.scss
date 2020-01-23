@@ -1,4 +1,4 @@
-/* The sidebar menu */
+/* CSS pour la sidebar pris de https://www.w3schools.com/howto/howto_css_fixed_sidebar.asp */
 .sidenav {
     height: 100%; /* Full-height: remove this if you want "auto" height */
     width: 15%; /* Set the width of the sidebar */
@@ -12,5 +12,35 @@
 }
 
 .contenu {
-    margin-left: 15%;
+    margin-left: 25%;
+    margin-right: 15%;
+}
+
+.buttonDiv {
+    width: 100%;
+}
+
+#boutonSuivant {
+    float: right;
+}
+
+/*style du couton pris de: https://fdossena.com/?p=html5cool/buttons/i.frag*/
+.button {
+    display:inline-block;
+    padding:0.35em 1.2em;
+    border:0.1em solid #000;
+    margin:0 0.3em 0.3em 0;
+    border-radius:0.12em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-family:'Roboto',sans-serif;
+    font-weight:300;
+    color:#000;
+    text-align:center;
+    transition: all 0.2s;
+}
+
+.button:hover {
+    color:#FFF;
+    background-color:#000;
 }

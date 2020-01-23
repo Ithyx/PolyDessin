@@ -50,7 +50,7 @@ export const ContenuGuide: GuideSujet[] = [
       //Sujet 1
       {
         nom: "Bienvenue",
-        description: "<h1>Bienvenue à PolyDessin! </h1> ceci est une description En tant qu'utilisateur, je dois pouvoir consulter un guide d'utilisation de l'application.",
+        description: "<h1>Bienvenue à PolyDessin! </h1> ceci est une description. En tant qu'utilisateur, je dois pouvoir consulter un guide d'utilisation de l'application.",
         precedant: false,
         suivant: true
     },
