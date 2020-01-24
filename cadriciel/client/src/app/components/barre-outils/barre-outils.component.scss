@@ -1,14 +1,17 @@
 /* exemple de navbar fourni par W3C: https://www.w3schools.com/howto/howto_css_fixed_sidebar.asp */
-.sidenav {
+.sidenav, .panneau-attributs {
     height: 100%; /* Full-height: remove this if you want "auto" height */
-    width: 160px; /* Set the width of the sidebar */
     position: fixed; /* Fixed Sidebar (stay in place on scroll) */
     z-index: 1; /* Stay on top */
     top: 0; /* Stay at the top */
-    left: 0;
-    background-color: #111; /* Black */
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 20px;
+}
+
+.sidenav {
+    width: 160px; /* Set the width of the sidebar */
+    left: 0;
+    background-color: black;
 }
 
 .sidenav a {
@@ -17,4 +20,14 @@
     font-size: 25px;
     color: #818181;
     display: block;
+}
+
+.panneau-attributs {
+    text-align: center;
+    font-size: 25px;
+    color: lightcyan;
+    display: block;
+    width: 250px;
+    background-color: rgb(25, 25, 40);
+    left: 160px;
 }
