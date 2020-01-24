@@ -6,6 +6,7 @@ export class GuideSujet
   public description: string;
   public precedant: boolean;
   public suivant: boolean;
+  public id?: number;
   public imagePaths?: string[];
   public sousSujets?: GuideSujet[];
   public categorieOuverte?: boolean = false;
@@ -47,12 +48,21 @@ export class GuideSujetComponent implements OnInit {
 
 //TODO: meilleure manière de construire des catégories (avec des ressources lue peut-être ?)
 export const ContenuGuide: GuideSujet[] = [
-      //Sujet 1
-      {
-        nom: "Bienvenue",
-        description: "<h1>Bienvenue à PolyDessin! </h1> ceci est une description. En tant qu'utilisateur, je dois pouvoir consulter un guide d'utilisation de l'application.",
-        precedant: false,
-        suivant: true
+    //Sujet 1
+    {
+      nom: "Bienvenue",
+      id: 1,
+      description: "<h1>Bienvenue à PolyDessin! </h1> ceci est une description. En tant qu'utilisateur, je dois pouvoir consulter un guide d'utilisation de l'application.",
+      precedant: false,
+      suivant: true
+    },
+    //Sujet 1
+    {
+      nom: "Bienvenue2",
+      id: 2,
+      description: "<h1> TEST BIENVENUE 2 </h1>",
+      precedant: true,
+      suivant: true
     },
     //Sujet 2
     {
@@ -66,36 +76,69 @@ export const ContenuGuide: GuideSujet[] = [
                 nom: "Crayon",
                 description: "<h1> Crayon </h1> Description du crayon",
                 precedant: true,
-                suivant: true
+                suivant: true,
+                id: 3
             },
             //Outil 2
             {
                 nom: "Pinceau",
                 description: "<h1> Pinceau </h1> Description du pinceau",
                 precedant: true,
-                suivant: true
+                suivant: true,
+                id: 4
             },
             //Outil 3
             {
                 nom: "Rectangle",
                 description: "<h1> Rectangle </h1> Description du rectangle",
                 precedant: true,
-                suivant: true
+                suivant: true,
+                id: 5
             },
             //Outil 4
             {
                 nom: "Ligne",
                 description: "<h1> Ligne </h1> Description du ligne",
                 precedant: true,
-                suivant: true
+                suivant: true,
+                id: 6
             },
             //Outil 5
             {
                 nom: "Couleur",
                 description: "<h1> Couleur </h1> Description du couleur",
                 precedant: true,
-                suivant: true
+                suivant: true,
+                id: 7
             }
         ]
-    }
+    },
+    {
+      nom: "Test 8",
+      id: 8,
+      description: "<h1> TEST 8 </h1>",
+      precedant: true,
+      suivant: true
+    },
+    {
+      nom: "Test 9",
+      id: 9,
+      description: "<h1> TEST 9 </h1>",
+      precedant: true,
+      suivant: true
+    },
+    {
+      nom: "Test 10",
+      id: 10,
+      description: "<h1> TEST 10 </h1>",
+      precedant: true,
+      suivant: true
+    },
+    {
+      nom: "Test 11",
+      id: 11,
+      description: "<h1> TEST 11 </h1>",
+      precedant: true,
+      suivant: false
+    },
 ];
