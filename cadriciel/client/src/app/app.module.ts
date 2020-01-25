@@ -7,11 +7,12 @@ import { PageDessinComponent } from './components/page-dessin/page-dessin.compon
 import { RouterModule } from '@angular/router';
 import { PageGuideComponent } from './components/page-guide/page-guide.component';
 import { BarreOutilsComponent } from "./components/barre-outils/barre-outils.component";
+import { OutilDessinComponent } from './components/outil-dessin/outil-dessin.component';
 
 
 
 @NgModule({
-    declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent, BarreOutilsComponent],
+    declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent, BarreOutilsComponent, OutilDessinComponent],
     imports: [BrowserModule, HttpClientModule, RouterModule.forRoot([
         {path: '', component: AccueilComponent},
         {path: 'dessin', component: PageDessinComponent},

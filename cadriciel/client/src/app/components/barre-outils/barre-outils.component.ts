@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { OutilDessin, outils } from './outil-dessin';
+import { OutilDessin, outils } from '../outil-dessin/outil-dessin.component';
 
 @Component({
   selector: 'app-barre-outils',
@@ -7,10 +7,14 @@ import { OutilDessin, outils } from './outil-dessin';
   styleUrls: ['./barre-outils.component.scss']
 })
 export class BarreOutilsComponent implements OnInit {
-  outils:OutilDessin[] = outils;
+  outils: OutilDessin[] = outils;
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onNotify(outil: OutilDessin) {
+    //TODO: Changer l'outil actif, actualiser le tableau d'attributs.
   }
 
 }
