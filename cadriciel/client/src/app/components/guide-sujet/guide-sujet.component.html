@@ -1,6 +1,7 @@
 <a class="sujet" href="javascript:void(0);" [style.font-weight]="noeud.sousSujets ? 'bold' : 'normal'" (click)="onClick();">
     <pre class="spacing" *ngFor="let index of getRange(profondeur)">&emsp;</pre>{{noeud.nom}}
 </a>
+
 <div *ngIf="noeud.sousSujets && noeud.categorieOuverte" class="enfants">
     <div *ngFor="let sousSujet of noeud.sousSujets">
         <app-guide-sujet [noeud]="sousSujet" [profondeur]="profondeur+1" (notification)="onNotify($event)"></app-guide-sujet>

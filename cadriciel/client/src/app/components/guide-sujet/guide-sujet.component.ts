@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+//import { PageGuideComponent  } from "../page-guide/page-guide.component";
 
 export class GuideSujet
 {
@@ -27,6 +28,7 @@ export class GuideSujetComponent implements OnInit {
   getRange = (number: number) => Array(number);
   
   onClick() {
+
     if (this.noeud.sousSujets) {
       /* c'est une catégorie: un click n'affiche pas la description, mais ouvre ou ferme la catégorie */
       this.noeud.categorieOuverte = !this.noeud.categorieOuverte;
@@ -52,19 +54,13 @@ export const ContenuGuide: GuideSujet[] = [
     {
       nom: "Bienvenue",
       id: 1,
-      description: "<h1>Bienvenue à PolyDessin! </h1> ceci est une description. En tant qu'utilisateur, je dois pouvoir consulter un guide d'utilisation de l'application.",
+      description: `<h1>Bienvenue à PolyDessin! </h1> 
+                    <hr> 
+                    <p> PolyDessin est un projet de 2ème année du génie logiciel à Polytechnique Montréal et consiste en une application web de dessin vectoriel. </p> 
+                    <p> Vous vous trouvez présentement dans le guide d'utilisation. Celui-ci décrit et explique les différents outils implémentés.</p>`,
       precedant: false,
       suivant: true
     },
-    //Sujet 1
-    {
-      nom: "Bienvenue2",
-      id: 2,
-      description: "<h1> TEST BIENVENUE 2 </h1>",
-      precedant: true,
-      suivant: true
-    },
-    //Sujet 2
     {
         nom: "Outils",
         description: "",
@@ -74,71 +70,95 @@ export const ContenuGuide: GuideSujet[] = [
             //Outil 1
             {
                 nom: "Crayon",
-                description: "<h1> Crayon </h1> Description du crayon",
+                description: `<h1> Crayon </h1> 
+                              <hr> 
+                              <p> Le crayon est l'outil de traçage de base permettant de dessiner de simple trait avec une pointe roude.</p>
+                              <p color="red"> insérer gif utilisation crayon ici </p>  
+                              <p> Les paramètres personalisable sont: <li> Épaisseur du trait (en px) </li> </p>`,
                 precedant: true,
                 suivant: true,
-                id: 3
+                id: 2,
+                categorieOuverte: true
             },
             //Outil 2
             {
                 nom: "Pinceau",
-                description: "<h1> Pinceau </h1> Description du pinceau",
+                description: `<h1> Pinceau </h1> 
+                              <hr> 
+                              <p> Le pinceau est très similaire au crayon mais offre une texture supplémentaire.</p> 
+                              <p> Les paramètres personalisable sont: <li> Épaisseur du trait (en px) </li> <li> Texture du trait </li> </p>`,
                 precedant: true,
                 suivant: true,
-                id: 4
+                id: 3,
+                categorieOuverte: true
             },
             //Outil 3
             {
                 nom: "Rectangle",
-                description: "<h1> Rectangle </h1> Description du rectangle",
+                description: `<h1> Rectangle </h1> 
+                              Description du rectangle`,
                 precedant: true,
                 suivant: true,
-                id: 5
+                id: 4,
+                categorieOuverte: true
             },
             //Outil 4
             {
                 nom: "Ligne",
-                description: "<h1> Ligne </h1> Description du ligne",
+                description: `<h1> Ligne </h1> 
+                              Description de la ligne`,
                 precedant: true,
                 suivant: true,
-                id: 6
+                id: 5,
+                categorieOuverte: true
             },
             //Outil 5
             {
                 nom: "Couleur",
-                description: "<h1> Couleur </h1> Description du couleur",
+                description: `<h1> Couleur </h1> 
+                              Description du couleur`,
                 precedant: true,
                 suivant: true,
-                id: 7
+                id: 6,
+                categorieOuverte: true
+            },
+            {
+              nom: "Test",
+              description: "",
+              precedant: false,
+              suivant: false,
+              sousSujets: [
+                {
+                  nom: "Test 8",
+                  id: 7,
+                  description: "<h1> TEST 8 </h1>",
+                  precedant: true,
+                  suivant: true
+                },
+                {
+                  nom: "Test 9",
+                  id: 8,
+                  description: "<h1> TEST 9 </h1>",
+                  precedant: true,
+                  suivant: true
+                },
+                {
+                  nom: "Test 10",
+                  id: 9,
+                  description: "<h1> TEST 10 </h1>",
+                  precedant: true,
+                  suivant: true
+                },
+                {
+                  nom: "Test 11",
+                  id: 10,
+                  description: "<h1> TEST 11 </h1>",
+                  precedant: true,
+                  suivant: false
+                },
+              ]
             }
         ]
     },
-    {
-      nom: "Test 8",
-      id: 8,
-      description: "<h1> TEST 8 </h1>",
-      precedant: true,
-      suivant: true
-    },
-    {
-      nom: "Test 9",
-      id: 9,
-      description: "<h1> TEST 9 </h1>",
-      precedant: true,
-      suivant: true
-    },
-    {
-      nom: "Test 10",
-      id: 10,
-      description: "<h1> TEST 10 </h1>",
-      precedant: true,
-      suivant: true
-    },
-    {
-      nom: "Test 11",
-      id: 11,
-      description: "<h1> TEST 11 </h1>",
-      precedant: true,
-      suivant: false
-    },
+    
 ];
