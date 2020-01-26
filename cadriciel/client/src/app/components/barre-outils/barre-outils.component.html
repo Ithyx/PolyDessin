@@ -1,6 +1,6 @@
 <div class="sidenav">
     <div *ngFor='let outil of outils'>
-        <app-outil-dessin [outil]="outil"></app-outil-dessin>
+        <app-outil-dessin [outil]="outil" (notification)="onNotify($event)"></app-outil-dessin>
     </div>
     <a [routerLink]="['/guide']">
         Guide d'utilisation
@@ -10,3 +10,5 @@
 <div class="panneau-attributs">
     Paramètres de l'outil
 </div>
+
+<h1>{{idOutilActif}}</h1>

@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 export class OutilDessin {
   public nom: string;
+  public estActif: boolean;
+  public idOutil: number;
 }
 
 @Component({
@@ -21,6 +23,7 @@ export class OutilDessinComponent implements OnInit {
 
   onClick() {
     // Devient l'outil actif.
+    this.outil.estActif = true;
     this.notification.emit(this.outil);
   }
 
@@ -28,21 +31,33 @@ export class OutilDessinComponent implements OnInit {
 
 export const outils: OutilDessin[] = [
   {
-    nom: 'Crayon'
+    nom: 'Crayon',
+    estActif: true,
+    idOutil: 0
   },
   {
-    nom: 'Pinceau'
+    nom: 'Pinceau',
+    estActif: false,
+    idOutil: 1
   },
   {
-    nom: 'Rectangle'
+    nom: 'Rectangle',
+    estActif: false,
+    idOutil: 2
   },
   {
-    nom: 'Ligne'
+    nom: 'Ligne',
+    estActif: false,
+    idOutil: 3
   },
   {
-    nom: 'Couleur primaire'
+    nom: 'Couleur primaire',
+    estActif: false,
+    idOutil: 4
   },
   {
-    nom: 'Couleur secondaire'
+    nom: 'Couleur secondaire',
+    estActif: false,
+    idOutil: 5
   }
 ];

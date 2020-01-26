@@ -2,6 +2,14 @@ a {
     padding: 6px 8px 6px 16px;
     text-decoration: none;
     font-size: 25px;
-    color: #818181;
     display: block;
+}
+
+.actif {
+    color: white;
+    font-weight: bold;
+}
+
+.inactif {
+    color: #818181;
 }
