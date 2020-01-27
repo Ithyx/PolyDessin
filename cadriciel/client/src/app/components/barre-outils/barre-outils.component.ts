@@ -8,7 +8,9 @@ import { OutilDessin, outils } from '../outil-dessin/outil-dessin.component';
 })
 export class BarreOutilsComponent implements OnInit {
   outils: OutilDessin[] = outils;
+  outilActif: OutilDessin = outils[0];
   idOutilActif: number = 0;
+
   constructor() { }
 
   ngOnInit() {
@@ -20,10 +22,10 @@ export class BarreOutilsComponent implements OnInit {
       // Changer l'outil actif et en garder une référence.
       this.outils[this.idOutilActif].estActif = false;
       this.idOutilActif = outil.idOutil;
+      this.outilActif = outil;
       //TODO: faire en sorte que si on change de page (ex. guide d'utilisation) et revient,
       //l'outil actif se déselectionne en cliquant sur un autre outil.
     }
-    //TODO: actualiser le panneau d'attributs.
   }
 
 }

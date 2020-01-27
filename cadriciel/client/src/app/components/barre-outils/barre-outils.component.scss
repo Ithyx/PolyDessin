@@ -24,10 +24,19 @@
 
 .panneau-attributs {
     text-align: center;
-    font-size: 25px;
+    font-size: 35px;
     color: lightcyan;
     display: block;
-    width: 250px;
+    width: 350px;
     background-color: rgb(25, 25, 40);
     left: 160px;
+    padding-bottom: 50px;
+}
+
+.panneau-attributs label {
+    text-align: left;
+    font-size: 25px;
+    color: white;
+    padding-right: 25px;
+    padding-bottom: 25px;
 }

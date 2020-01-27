@@ -1,3 +1,4 @@
+<!-- Barre d'outils -->
 <div class="sidenav">
     <div *ngFor='let outil of outils'>
         <app-outil-dessin [outil]="outil" (notification)="onNotify($event)"></app-outil-dessin>
@@ -7,8 +8,25 @@
     </a>
 </div>
 
+<!-- Panneau d'attributs -->
 <div class="panneau-attributs">
     Paramètres de l'outil
-</div>
+    <form method="POST" action="javascript:void(0);">
+        <div *ngFor="let parametre of outilActif.parametres">
 
-<h1>{{idOutilActif}}</h1>
+            <!-- Le paramètre est un 'select' avec plusieurs options -->
+            <div *ngIf="parametre.type == 'select'; else elseBlock">
+                <label [for]="parametre.nom">{{parametre.nom}}</label>
+                <select [name]="parametre.nom">
+                    <option *ngFor="let option of parametre.options" [value]="option">{{option}}</option>
+                </select>
+            </div>
+
+            <!-- Le paramètre est un champ à entrer -->
+            <ng-template #elseBlock>
+                <label [for]="parametre.nom">{{parametre.nom}}</label>
+                <input [type]="parametre.type" [name]="parametre.nom" min="0" max="100" value="5" />
+            </ng-template>
+        </div>
+    </form>
+</div>
