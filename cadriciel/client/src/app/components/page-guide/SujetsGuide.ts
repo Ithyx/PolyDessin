@@ -1,4 +1,4 @@
-import { GuideSujet } from '../guide-sujet/guide-sujet.component';
+import { GuideSujet } from '../guide-sujet/guide-sujet';
 
 export const ContenuGuide: GuideSujet[] = [
     // Sujet 1

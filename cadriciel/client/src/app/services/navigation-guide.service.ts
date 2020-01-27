@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GuideSujet } from '../components/guide-sujet/guide-sujet.component';
+import { GuideSujet } from '../components/guide-sujet/guide-sujet';
 
 @Injectable({
   providedIn: 'root'

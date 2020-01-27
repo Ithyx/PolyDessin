@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavigationGuideService } from '../../services/navigation-guide.service';
-import { GuideSujet } from '../guide-sujet/guide-sujet.component';
+import { GuideSujet } from '../guide-sujet/guide-sujet';
 import { ContenuGuide } from './SujetsGuide';
 
 @Component({
