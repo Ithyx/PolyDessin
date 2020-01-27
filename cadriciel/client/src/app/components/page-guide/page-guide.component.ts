@@ -1,7 +1,7 @@
 import { Component, OnInit} from '@angular/core';
+import { NavigationGuideService } from '../../services/navigation-guide.service';
 import { GuideSujet } from '../guide-sujet/guide-sujet.component';
-import { ContenuGuide } from "./SujetsGuide";
-import { NavigationGuideService } from "../../services/navigation-guide.service";
+import { ContenuGuide } from './SujetsGuide';
 
 @Component({
   selector: 'app-page-guide',
@@ -14,18 +14,15 @@ export class PageGuideComponent implements OnInit {
   sujetActif: GuideSujet;
 
   navigateurSujet: NavigationGuideService;
-  
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   onClick(sensParcousID: number) {
     this.navigateurSujet.ouvrirCategories(this.sujets);
-    
-    //L'ID est optionnel, on vérifie que le sujet actif en a bien un
-    if (this.sujetActif.id) {
-  
+
+    // L'ID est optionnel, on vérifie que le sujet actif en a bien un
+    if (this.sujetActif.id) { 
       //Si on a cliqué sur "précédant", sensParcoursID = -1
       //Si on a cliqué sur "suivant", sensParcousID = 1
       let nouvelID: number = this.sujetActif.id + sensParcousID;
