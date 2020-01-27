@@ -12,9 +12,9 @@ import { ContenuGuide } from './SujetsGuide';
 export class PageGuideComponent implements OnInit {
   sujets: GuideSujet[] = ContenuGuide;
   sujetActif: GuideSujet;
-
-  navigateurSujet: NavigationGuideService;
-  constructor() { }
+  constructor(
+    private navigateurSujet: NavigationGuideService
+    ) { }
 
   ngOnInit() {}
 
