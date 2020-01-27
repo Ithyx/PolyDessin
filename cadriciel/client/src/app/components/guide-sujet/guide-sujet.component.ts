@@ -8,7 +8,6 @@ export class GuideSujet
   public precedant: boolean;
   public suivant: boolean;
   public id?: number;
-  public imagePaths?: string[];
   public sousSujets?: GuideSujet[];
   public categorieOuverte?: boolean = false;
 }
@@ -57,7 +56,8 @@ export const ContenuGuide: GuideSujet[] = [
       description: `<h1>Bienvenue à PolyDessin! </h1> 
                     <hr> 
                     <p> PolyDessin est un projet de 2ème année du génie logiciel à Polytechnique Montréal et consiste en une application web de dessin vectoriel. </p> 
-                    <p> Vous vous trouvez présentement dans le guide d'utilisation. Celui-ci décrit et explique les différents outils implémentés.</p>`,
+                    <p> Vous vous trouvez présentement dans le guide d'utilisation. Celui-ci décrit et explique les différents outils implémentés.</p>
+                    <img src="assets/poly.png">`,
       precedant: false,
       suivant: true
     },

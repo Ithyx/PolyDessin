@@ -10,7 +10,6 @@ import { GuideSujet, ContenuGuide } from '../guide-sujet/guide-sujet.component';
 export class PageGuideComponent implements OnInit {
   sujets: GuideSujet[] = ContenuGuide;
   sujetActif: GuideSujet;
-  sujetTampon: GuideSujet;
 
   constructor() { }
 
@@ -27,12 +26,9 @@ export class PageGuideComponent implements OnInit {
 
       //Si sujets[i] possède des sousSujets, on veut les vérifiés aussi
       if (sujets[i].sousSujets) {
-        this.sujetTampon = sujets[i];   
-        if (this.sujetTampon.sousSujets) {  //TODO: Corriger la répétition de la même condition
-          let tampon: GuideSujet = this.parcourirSujets(idRecherche, this.sujetTampon.sousSujets);
-          if (tampon != sujetVide) {
-            return tampon;
-          }
+        let tampon: GuideSujet = this.parcourirSujets(idRecherche, sujets[i].sousSujets!);
+        if (tampon != sujetVide) {
+          return tampon;
         }
       }
     }
@@ -43,8 +39,8 @@ export class PageGuideComponent implements OnInit {
     //L'ID est optionnel, on vérifie que le sujet actif en a bien un
     if (this.sujetActif.id) {
   
-      //Si on a cliqué sur "précédant", number = -1
-      //Si on a cliqué sur "suivant", number = 1
+      //Si on a cliqué sur "précédant", sensParcoursID = -1
+      //Si on a cliqué sur "suivant", sensParcousID = 1
       let nouvelID: number = this.sujetActif.id + sensParcousID;
 
       //On cherche dans notre liste pour voir si on trouve un sujet avec le nouvel ID
