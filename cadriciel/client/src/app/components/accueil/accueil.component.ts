@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FenetreNewDessinComponent } from './components/fenetre-new-dessin/fenetre-new-dessin.component';
 
 @Component({
   selector: 'app-accueil',
@@ -8,6 +9,8 @@ import { Component, OnInit } from '@angular/core';
 export class AccueilComponent implements OnInit {
 
   constructor() { }
+
+  
 
   ngOnInit() {
   }
