@@ -22,4 +22,9 @@ describe('OutilDessinComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it("#onClick devrait rendre l'outil courant actif après un clic de souris", () => {
+    component.onClick();
+    expect(component.outil.estActif).toBe(true);
+  });
 });

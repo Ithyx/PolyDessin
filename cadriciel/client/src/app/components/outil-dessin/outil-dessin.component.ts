@@ -21,7 +21,7 @@ export class OutilDessin {
 })
 export class OutilDessinComponent implements OnInit {
 
-  @Input() public outil: OutilDessin;
+  @Input() public outil: OutilDessin = new OutilDessin();
   @Output() public notification = new EventEmitter<OutilDessin>();
 
   constructor() { }
