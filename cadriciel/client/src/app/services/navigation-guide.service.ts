@@ -35,7 +35,7 @@ export class NavigationGuideService {
   };
 }
 
-const sujetVide: GuideSujet = {
+export const sujetVide: GuideSujet = {
   nom: '',
   description: '',
   precedant: false,

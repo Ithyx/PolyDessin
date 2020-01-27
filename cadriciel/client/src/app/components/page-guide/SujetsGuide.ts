@@ -20,6 +20,7 @@ export const ContenuGuide: GuideSujet[] = [
         description: '',
         precedant: false,
         suivant: false,
+        categorieOuverte: false,
         sousSujets: [
             // Outil 1
             {
@@ -31,8 +32,7 @@ export const ContenuGuide: GuideSujet[] = [
                               <p> Les paramètres personalisable sont: <li> Épaisseur du trait (en px) </li> </p>`,
                 precedant: true,
                 suivant: true,
-                id: 2,
-                categorieOuverte: true
+                id: 2
             },
             // Outil 2
             {
@@ -44,8 +44,7 @@ export const ContenuGuide: GuideSujet[] = [
                               <li> Épaisseur du trait (en px) </li> <li> Texture du trait </li> </p>`,
                 precedant: true,
                 suivant: true,
-                id: 3,
-                categorieOuverte: true
+                id: 3
             },
             // Outil 3
             {
@@ -54,8 +53,7 @@ export const ContenuGuide: GuideSujet[] = [
                               Description du rectangle`,
                 precedant: true,
                 suivant: true,
-                id: 4,
-                categorieOuverte: true
+                id: 4
             },
             // Outil 4
             {
@@ -64,8 +62,7 @@ export const ContenuGuide: GuideSujet[] = [
                               Description de la ligne`,
                 precedant: true,
                 suivant: true,
-                id: 5,
-                categorieOuverte: true
+                id: 5
             },
             // Outil 5
             {
@@ -74,14 +71,14 @@ export const ContenuGuide: GuideSujet[] = [
                               Description du couleur`,
                 precedant: true,
                 suivant: true,
-                id: 6,
-                categorieOuverte: true
+                id: 6
             },
             {
               nom: 'Test',
               description: '',
               precedant: false,
               suivant: false,
+              categorieOuverte: false,
               sousSujets: [
                 {
                   nom: 'Test 8',
