@@ -6,14 +6,14 @@ import { AccueilComponent } from './components/accueil/accueil.component';
 import { PageDessinComponent } from './components/page-dessin/page-dessin.component';
 import {RouterModule} from '@angular/router';
 import { PageGuideComponent } from './components/page-guide/page-guide.component';
-import { FenetreNewDessinComponent } from './components/fenetre-new-dessin/fenetre-new-dessin.component'
+import { FenetreNewDessinComponent } from './components/fenetre-new-dessin/fenetre-new-dessin.component';
 
 
 
 
 @NgModule({
     declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent, FenetreNewDessinComponent],
-    imports: [BrowserModule, HttpClientModule, RouterModule.forRoot([
+    imports: [BrowserModule,HttpClientModule, RouterModule.forRoot([
         {path: '', component: AccueilComponent},
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
