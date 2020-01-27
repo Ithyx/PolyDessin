@@ -12,6 +12,9 @@ import { BarreOutilsComponent } from "./components/barre-outils/barre-outils.com
 import { OutilDessinComponent } from './components/outil-dessin/outil-dessin.component';
 import { FenetreNewDessinComponent } from './components/fenetre-new-dessin/fenetre-new-dessin.component';
 
+//Service
+import { NavigationGuideService } from "./services/navigation-guide.service";
+
 
 @NgModule({
     declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent,
@@ -21,7 +24,7 @@ import { FenetreNewDessinComponent } from './components/fenetre-new-dessin/fenet
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ])],
-    providers: [],
+    providers: [NavigationGuideService],
     bootstrap: [AppComponent],
 })
 export class AppModule {}
