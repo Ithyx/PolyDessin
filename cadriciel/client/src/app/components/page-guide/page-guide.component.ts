@@ -1,5 +1,6 @@
 import { Component, OnInit} from '@angular/core';
-import { GuideSujet, ContenuGuide } from '../guide-sujet/guide-sujet.component';
+import { GuideSujet } from '../guide-sujet/guide-sujet.component';
+import { ContenuGuide } from "./SujetsGuide";
 
 @Component({
   selector: 'app-page-guide',
@@ -35,7 +36,18 @@ export class PageGuideComponent implements OnInit {
     return sujetVide;
   }
 
+  ouvrirCategories(categorie: GuideSujet[]) {
+    categorie.forEach(element => {
+      if (element.sousSujets) {
+        element.categorieOuverte = true;
+        this.ouvrirCategories(element.sousSujets!);
+      }
+    });
+  };
+
   onClick(sensParcousID: number) {
+    this.ouvrirCategories(this.sujets);
+    
     //L'ID est optionnel, on vérifie que le sujet actif en a bien un
     if (this.sujetActif.id) {
   
