@@ -10,18 +10,17 @@ import { PageGuideComponent } from './components/page-guide/page-guide.component
 import { GuideSujetComponent } from "./components/guide-sujet/guide-sujet.component";
 import { BarreOutilsComponent } from "./components/barre-outils/barre-outils.component";
 import { OutilDessinComponent } from './components/outil-dessin/outil-dessin.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-
+import { FenetreNewDessinComponent } from './components/fenetre-new-dessin/fenetre-new-dessin.component';
 
 
 @NgModule({
-    declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent],
-    imports: [BrowserModule, HttpClientModule, MatButtonModule ,RouterModule.forRoot([
+    declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent,
+        FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent],
+    imports: [BrowserModule, HttpClientModule, MatButtonModule, RouterModule.forRoot([
         {path: '', component: AccueilComponent},
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
-    ]), BrowserAnimationsModule],
+    ])],
     providers: [],
     bootstrap: [AppComponent],
 })
