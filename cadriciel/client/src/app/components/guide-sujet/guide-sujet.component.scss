@@ -1,0 +1,22 @@
+.sujet {
+    border-top: 1px solid darkgray;
+    border-bottom: 1px solid darkgray;
+}
+
+a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: black;
+    display: block;
+}
+
+a:hover {
+    color: red;
+    background-color: darkgray;
+}
+
+/*nécessaire pour l'espacement des noms de catégories*/
+pre {
+    display: inline;
+}
