@@ -11,11 +11,12 @@ import { GuideSujetComponent } from "./components/guide-sujet/guide-sujet.compon
 import { BarreOutilsComponent } from "./components/barre-outils/barre-outils.component";
 import { OutilDessinComponent } from './components/outil-dessin/outil-dessin.component';
 import { FenetreNewDessinComponent } from './components/fenetre-new-dessin/fenetre-new-dessin.component';
+import { SurfaceDessinComponent } from './components/surface-dessin/surface-dessin.component';
 
 
 @NgModule({
     declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent,
-        FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent],
+        FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, RouterModule.forRoot([
         {path: '', component: AccueilComponent},
         {path: 'dessin', component: PageDessinComponent},
