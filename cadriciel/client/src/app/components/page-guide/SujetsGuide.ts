@@ -29,7 +29,8 @@ export const ContenuGuide: GuideSujet[] = [
                               <hr>
                               <p> Le crayon est l'outil de traçage de base permettant de dessiner de simple trait avec une pointe roude.</p>
                               <p color="red"> insérer gif utilisation crayon ici </p>
-                              <p> Les paramètres personalisable sont: <li> Épaisseur du trait (en px) </li> </p>`,
+                              <p> Les paramètres personalisable sont:
+                              <li> Épaisseur du trait (en px) </li> </p>`,
                 precedant: true,
                 suivant: true,
                 id: 2
@@ -40,6 +41,7 @@ export const ContenuGuide: GuideSujet[] = [
                 description: `<h1> Pinceau </h1>
                               <hr>
                               <p> Le pinceau est très similaire au crayon mais offre une texture supplémentaire.</p>
+                              <p color="red"> insérer gif utilisation pinceau ici </p>
                               <p> Les paramètres personalisable sont:
                               <li> Épaisseur du trait (en px) </li> <li> Texture du trait </li> </p>`,
                 precedant: true,
@@ -50,7 +52,15 @@ export const ContenuGuide: GuideSujet[] = [
             {
                 nom: 'Rectangle',
                 description: `<h1> Rectangle </h1>
-                              Description du rectangle`,
+                              <hr>
+                              <p> Après avoir sélectionné l'outil, il suffit à l'utilisateur de "glisser-déposer" vers la zone de dessin
+                              pour créer un rectangle. En maintenant le clic gauche enfoncé, on peut choisir la forme de notre rectangle
+                              en navigant avec la souris. </p>
+                              <p color="red"> insérer gif utilisation rectangle ici </p>
+                              <p> L'enfoncement de la touche SHIFT transforme le rectangle en cours de création au carré le plus proche et
+                              vice-versa. </p>
+                              <p> Les paramètres personalisable sont:
+                              <li> Épaisseur du trait de coutour (en px) </li> <li> Type de tracé </li> </p>`,
                 precedant: true,
                 suivant: true,
                 id: 4
@@ -59,7 +69,8 @@ export const ContenuGuide: GuideSujet[] = [
             {
                 nom: 'Ligne',
                 description: `<h1> Ligne </h1>
-                              Description de la ligne`,
+                              <hr>
+                              <p> Description de la ligne </p>`,
                 precedant: true,
                 suivant: true,
                 id: 5
@@ -68,48 +79,13 @@ export const ContenuGuide: GuideSujet[] = [
             {
                 nom: 'Couleur',
                 description: `<h1> Couleur </h1>
-                              Description du couleur`,
+                              <hr>
+                              <p> L'outil couleur est un paramètre partagé entre tous les outils. Celui-ci offre deux couleurs configurable
+                              la couleur "principale" et la couleur "secondaire" interversible. </p>`,
                 precedant: true,
                 suivant: true,
                 id: 6
             },
-            {
-              nom: 'Test',
-              description: '',
-              precedant: false,
-              suivant: false,
-              categorieOuverte: false,
-              sousSujets: [
-                {
-                  nom: 'Test 8',
-                  id: 7,
-                  description: '<h1> TEST 8 </h1>',
-                  precedant: true,
-                  suivant: true
-                },
-                {
-                  nom: 'Test 9',
-                  id: 8,
-                  description: '<h1> TEST 9 </h1>',
-                  precedant: true,
-                  suivant: true
-                },
-                {
-                  nom: 'Test 10',
-                  id: 9,
-                  description: '<h1> TEST 10 </h1>',
-                  precedant: true,
-                  suivant: true
-                },
-                {
-                  nom: 'Test 11',
-                  id: 10,
-                  description: '<h1> TEST 11 </h1>',
-                  precedant: true,
-                  suivant: false
-                },
-              ]
-            }
         ]
     },
 ];
