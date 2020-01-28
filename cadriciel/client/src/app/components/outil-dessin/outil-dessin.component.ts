@@ -21,7 +21,7 @@ export interface OutilDessin {
 })
 export class OutilDessinComponent {
 
-  @Input() outil: OutilDessin;
+  @Input() outil: OutilDessin = {nom: 'defaut', estActif: false, idOutil: -1, parametres: []};
   @Output() notification = new EventEmitter<OutilDessin>();
 
   onClick() {

@@ -19,6 +19,17 @@ describe('OutilDessinComponent', () => {
     fixture.detectChanges();
   });
 
+  beforeEach(() => {
+    component.outil = {
+      nom: 'default',
+      estActif: true,
+      idOutil: 0,
+      parametres: [
+        {type: 'number', nom: 'default'}
+      ]
+    };
+  })
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
