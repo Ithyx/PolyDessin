@@ -1,3 +1,4 @@
 <svg class="vue-dessin" [attr.width.px]="longueur" [attr.height.px]="hauteur" version="1.1" xlmns="http://www.w3.org/2000/svg">
     <rect x="0" y="0" [attr.width.px]="longueur" [attr.height.px]="hauteur" [attr.fill]="couleurFond" />
+    <g *ngFor="let SVG of stockage.getSVGComplets() | keyvalue;" [innerHTML]="SVG.value"></g>
 </svg>

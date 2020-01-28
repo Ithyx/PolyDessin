@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { StockageSvgService } from 'src/app/services/stockage-svg.service';
 
 @Component({
   selector: 'app-surface-dessin',
@@ -9,4 +10,12 @@ export class SurfaceDessinComponent {
   longueur = 1000;
   hauteur = 1000;
   couleurFond = 'white';
+  bidon: number;
+
+  constructor(private stockage: StockageSvgService) { }
+
+  onClick() {
+    this.bidon = this.stockage.taille;
+  }
+
 }
