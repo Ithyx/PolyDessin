@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FenetreNewDessinComponent } from './components/fenetre-new-dessin/fenetre-new-dessin.component';
+
 
 @Component({
   selector: 'app-accueil',
