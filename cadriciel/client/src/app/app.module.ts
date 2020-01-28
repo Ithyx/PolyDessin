@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+
+// Components
 import { AccueilComponent } from './components/accueil/accueil.component';
 import { AppComponent } from './components/app/app.component';
 import { BarreOutilsComponent } from './components/barre-outils/barre-outils.component';

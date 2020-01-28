@@ -1,5 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterModule } from '@angular/router';
 
+import { BarreOutilsComponent } from '../barre-outils/barre-outils.component';
+import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
 import { PageDessinComponent } from './page-dessin.component';
 
 describe('PageDessinComponent', () => {
@@ -8,7 +11,10 @@ describe('PageDessinComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageDessinComponent ]
+      imports: [ RouterModule, RouterModule.forRoot([
+        {path: 'dessin', component: PageDessinComponent}
+      ])],
+      declarations: [ PageDessinComponent, BarreOutilsComponent, OutilDessinComponent ]
     })
     .compileComponents();
   }));
