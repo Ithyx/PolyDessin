@@ -21,6 +21,7 @@ export interface OutilDessin {
 })
 export class OutilDessinComponent {
 
+  // Valeur par défaut pour les unit test
   @Input() outil: OutilDessin = {nom: 'defaut', estActif: false, idOutil: -1, parametres: []};
   @Output() notification = new EventEmitter<OutilDessin>();
 

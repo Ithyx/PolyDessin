@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output} from '@angular/core';
+import { sujetVide } from '../../services/navigation-guide.service';
 import { GuideSujet } from './guide-sujet';
 
 @Component({
@@ -9,7 +10,7 @@ import { GuideSujet } from './guide-sujet';
 
 export class GuideSujetComponent {
 
-  @Input() noeud: GuideSujet;
+  @Input() noeud: GuideSujet = sujetVide;
   @Input() profondeur = 0;
 
   @Output() notification = new EventEmitter<GuideSujet>();
