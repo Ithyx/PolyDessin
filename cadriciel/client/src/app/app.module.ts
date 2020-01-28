@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule} from '@angular/core';
 import { MatButtonModule, MatDialogModule} from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -12,11 +12,9 @@ import { GuideSujetComponent } from './components/guide-sujet/guide-sujet.compon
 import { OutilDessinComponent } from './components/outil-dessin/outil-dessin.component';
 import { PageDessinComponent } from './components/page-dessin/page-dessin.component';
 import { PageGuideComponent } from './components/page-guide/page-guide.component';
-
-
-//Service
-import { NavigationGuideService } from "./services/navigation-guide.service";
-
+// Service
+import { FormulaireNouveauDessinService } from './services/formulaire-nouveau-dessin.service';
+import { NavigationGuideService } from './services/navigation-guide.service';
 
 @NgModule({
     declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent,
@@ -26,8 +24,8 @@ import { NavigationGuideService } from "./services/navigation-guide.service";
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ])],
-    providers: [NavigationGuideService],
-    entryComponents:[FenetreNewDessinComponent],
+    providers: [NavigationGuideService,  FormulaireNouveauDessinService],
+    entryComponents: [FenetreNewDessinComponent],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

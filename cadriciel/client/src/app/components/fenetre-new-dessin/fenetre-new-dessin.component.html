@@ -1,9 +1,14 @@
 <h1>Paramètre pour la création d'un nouveau dessin</h1>
 
 <h2>Dimension canvas</h2>
+<p>Hauteur: (pixels)</p>
+<input [type] = "number" [value] = "hauteur">
+<p>Largeur: (pixels)</p>
+<input [type] = "number" [value] = "largeur">
 
-<h2>Couleur Arrière-Plan</h2>
+<h2>Couleur Arrière-Plan (code RGB en Hexadecimal):</h2>
+<input  [value] = "FFFFFF">
 
-<button mat-stroked-button (click)="fermerFenetre()">Cancel</button>
+<button mat-stroked-button (click)="fermerFenetre()">Annuler</button>
 <button mat-raised-button (click)="creationDessin()">Créer</button>
 
