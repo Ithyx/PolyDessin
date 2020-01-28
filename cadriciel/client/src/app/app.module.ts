@@ -14,6 +14,9 @@ import { PageDessinComponent } from './components/page-dessin/page-dessin.compon
 import { PageGuideComponent } from './components/page-guide/page-guide.component';
 
 
+//Service
+import { NavigationGuideService } from "./services/navigation-guide.service";
+
 
 @NgModule({
     declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent,
@@ -23,8 +26,8 @@ import { PageGuideComponent } from './components/page-guide/page-guide.component
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ])],
+    providers: [NavigationGuideService],
     entryComponents:[FenetreNewDessinComponent],
-    providers: [],
     bootstrap: [AppComponent],
 })
 export class AppModule {}
