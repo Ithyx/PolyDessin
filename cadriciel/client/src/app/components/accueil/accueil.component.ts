@@ -13,10 +13,11 @@ export class AccueilComponent implements OnInit {
   constructor(private dialog: MatDialog
     ) {}
 
-  onCreate(){
+  creationDessin(){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
     this.dialog.open(FenetreNewDessinComponent, dialogConfig)
   }
   
