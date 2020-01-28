@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {MatDialog, MatDialogConfig } from '@angular/material';
+import { FenetreNewDessinComponent } from '../fenetre-new-dessin/fenetre-new-dessin.component';
 
 
 @Component({
@@ -8,8 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccueilComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialog: MatDialog
+    ) {}
 
+  onCreate(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    this.dialog.open(FenetreNewDessinComponent, dialogConfig)
+  }
   
 
   ngOnInit() {
