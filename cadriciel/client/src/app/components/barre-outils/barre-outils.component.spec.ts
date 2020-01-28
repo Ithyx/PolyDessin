@@ -1,5 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterModule } from '@angular/router';
 
+import { GuideSujetComponent } from '../guide-sujet/guide-sujet.component';
+import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
+import { PageGuideComponent } from '../page-guide/page-guide.component';
 import { BarreOutilsComponent } from './barre-outils.component';
 
 describe('BarreOutilsComponent', () => {
@@ -8,7 +12,10 @@ describe('BarreOutilsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BarreOutilsComponent ]
+      declarations: [ PageGuideComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent ],
+      imports: [ RouterModule.forRoot([
+        {path: 'guide', component : PageGuideComponent}
+    ])]
     })
     .compileComponents();
   }));
