@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GuideSujet } from '../components/guide-sujet/guide-sujet.component';
+import { GuideSujet } from '../components/guide-sujet/guide-sujet';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +35,7 @@ export class NavigationGuideService {
   };
 }
 
-const sujetVide: GuideSujet = {
+export const sujetVide: GuideSujet = {
   nom: '',
   description: '',
   precedant: false,

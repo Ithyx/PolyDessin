@@ -1,1 +1,8 @@
-<app-barre-outils></app-barre-outils>
+<app-barre-outils (notifieur)="onNotify($event)"></app-barre-outils>
+
+<div class="zone-travail">
+    <app-surface-dessin (click)="onClick($event)" (mousemove)="onMouseMove($event)" (mouseup)="onMouseRelease($event)"
+                        (mousedown)="onMousePress($event)">
+
+    </app-surface-dessin>
+</div>
