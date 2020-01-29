@@ -18,6 +18,7 @@ import { SurfaceDessinComponent } from './components/surface-dessin/surface-dess
 // Service
 import { NavigationGuideService } from './services/navigation-guide.service';
 import { StockageSvgService } from './services/stockage-svg.service';
+import { DessinCrayonService } from "./services/dessin-crayon.service";
 
 @NgModule({
     declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent,
@@ -27,7 +28,7 @@ import { StockageSvgService } from './services/stockage-svg.service';
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ])],
-    providers: [NavigationGuideService, StockageSvgService],
+    providers: [NavigationGuideService, StockageSvgService, DessinCrayonService],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

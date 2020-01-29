@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DessinCrayonService } from 'src/app/services/dessin-crayon.service';
 import { StockageSvgService } from 'src/app/services/stockage-svg.service';
 import { OutilDessin } from '../outil-dessin/outil-dessin.component';
 
@@ -18,7 +19,7 @@ export class PageDessinComponent {
     ]
   };
 
-  constructor(private stockage: StockageSvgService) { }
+  constructor(public stockage: StockageSvgService, private crayon: DessinCrayonService) { }
 
   onNotify(outil: OutilDessin) {
     console.log('nouvel outil sélectionné: ', outil)
@@ -28,35 +29,41 @@ export class PageDessinComponent {
   onClick(click: MouseEvent) {
     if (this.outilActif.nom === 'Crayon') {
       // Rien à faire ?
+        // this.crayon.onClickCrayon(click);
+        // this.stockage = this.crayon.stockageSVG;
+        // this.stockage = this.crayon.onClickCrayon(click);
     }
   }
 
   onMouseMove(mouse: MouseEvent) {
     if (this.outilActif.nom === 'Crayon' && mouse.buttons === 1) {
-      let crayon: string = this.stockage.getSVGEnCours();
-      if (crayon === '') { return; };
-      crayon += 'L' + mouse.offsetX + ' ' + mouse.offsetY + ' "/>';
-      this.stockage.setSVGEnCours(crayon);
+      // this.crayon.onMouseMoveCrayon(mouse);
+      // this.stockage = this.crayon.stockageSVG;
+      this.stockage = this.crayon.onMouseMoveCrayon(mouse);
     }
   }
 
   onMousePress(mouse: MouseEvent) {
     if (this.outilActif.nom === 'Crayon') {
-      this.stockage.setSVGEnCours('<path fill="transparent" stroke="black" d="M' + mouse.offsetX + ' ' + mouse.offsetY + '"/>');
+      // this.crayon.onMousePressCrayon(mouse);
+      // this.stockage = this.crayon.stockageSVG;
+      this.stockage = this.crayon.onMousePressCrayon(mouse);
     }
   }
 
   onMouseRelease(mouse: MouseEvent) {
     if (this.outilActif.nom === 'Crayon') {
-      this.stockage.ajouterSVG(this.stockage.getSVGEnCours() + '"/>');
-      this.stockage.setSVGEnCours('');
+      // this.crayon.onMouseReleaseCrayon(mouse);
+      // this.stockage = this.crayon.stockageSVG;
+      this.stockage = this.crayon.onMouseReleaseCrayon(mouse);
     }
   }
 
   onMouseLeave(mouse: MouseEvent) {
     if (this.outilActif.nom === 'Crayon') {
-      this.stockage.ajouterSVG(this.stockage.getSVGEnCours() + '"/>');
-      this.stockage.setSVGEnCours('');
+      // this.stockage.ajouterSVG(this.stockage.getSVGEnCours() + '"/>');
+      // this.stockage.setSVGEnCours('');
+      this.stockage = this.crayon.onMouseLeaveCrayon(mouse);
     }
   }
 
