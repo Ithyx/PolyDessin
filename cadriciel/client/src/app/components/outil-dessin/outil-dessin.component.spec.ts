@@ -33,7 +33,7 @@ describe('OutilDessinComponent', () => {
     expect(component.outil).toEqual({nom: 'defaut', estActif: true, idOutil: -1, parametres: []});
   });
 
-  it("#onClick devrait émettre l'outil courant", () => {
+  it("#onClick devrait emettre l'outil courant", () => {
     spyOn(component.notification, 'emit').and.callThrough();
     component.onClick();
     expect(component.notification.emit).toHaveBeenCalledWith(component.outil);
