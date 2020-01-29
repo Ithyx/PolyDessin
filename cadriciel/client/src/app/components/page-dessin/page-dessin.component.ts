@@ -26,9 +26,9 @@ export class PageDessinComponent {
     this.outilActif = outil;
   }
 
-  onClick(click: MouseEvent) {
+  onClick(mouse: MouseEvent) {
     if (this.outilActif.nom === 'Crayon') {
-      // Rien à faire ?
+      this.crayon.onClickCrayon(mouse);
     }
   }
 
