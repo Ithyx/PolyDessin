@@ -19,34 +19,30 @@ export class DessinCrayonService {
     return this.stockageSVG;
   }   utile? */
 
-  onMouseMoveCrayon(mouse: MouseEvent): StockageSvgService {
+  onMouseMoveCrayon(mouse: MouseEvent) {
     let crayon: string = this.stockageSVG.getSVGEnCours();
 
     crayon += 'L' + mouse.offsetX + ' ' + mouse.offsetY + ' "/>';
     this.stockageSVG.setSVGEnCours(crayon);
-
-    return this.stockageSVG;
   }
 
-  onMousePressCrayon(mouse: MouseEvent): StockageSvgService {
+  onMousePressCrayon(mouse: MouseEvent) {
     this.stockageSVG.setSVGEnCours(
       '<path fill="transparent" stroke="black" stroke-width="1" d="M' + mouse.offsetX + ' ' + mouse.offsetY + '"/>');
-
-    return this.stockageSVG;
   }
 
-  onMouseReleaseCrayon(mouse: MouseEvent): StockageSvgService {
-    this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '" />');
-    this.stockageSVG.setSVGEnCours('');
-
-    return this.stockageSVG;
+  onMouseReleaseCrayon(mouse: MouseEvent) {
+    const SVG: string = this.stockageSVG.getSVGEnCours();
+    if (SVG.includes('L')) {
+      /* on ne stocke le path que s'il n'y a au moins une ligne */
+      this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '" />');
+      this.stockageSVG.setSVGEnCours('');
+    }
   }
 
-  onMouseLeaveCrayon(mouse: MouseEvent): StockageSvgService {
+  onMouseLeaveCrayon(mouse: MouseEvent) {
     this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '"/>');
     this.stockageSVG.setSVGEnCours('');
-
-    return this.stockageSVG;
   }
 
 }
