@@ -10,12 +10,6 @@ export class SurfaceDessinComponent {
   longueur = 1000;
   hauteur = 1000;
   couleurFond = 'white';
-  bidon: number;
 
-  constructor(private stockage: StockageSvgService) { }
-
-  onClick() {
-    this.bidon = this.stockage.taille;
-  }
-
+  constructor(public stockage: StockageSvgService) { }
 }

@@ -1,9 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-
-import { NavigationGuideService, sujetVide } from './navigation-guide.service';
-
 import { GuideSujet } from '../components/guide-sujet/guide-sujet';
 import { ContenuGuide } from '../components/page-guide/SujetsGuide';
+import { NavigationGuideService, sujetVide } from './navigation-guide.service';
 
 describe('NavigationGuideService', () => {
   let sujets: GuideSujet[];
@@ -21,7 +19,7 @@ describe('NavigationGuideService', () => {
     expect(service.parcourirSujets(1, sujets).id).toBe(1);
   });
 
-  it('ParcourirSujets should return en ampty subjet when given negative or null ID', () => {
+  it('ParcourirSujets should return an empty subjet when given negative or null ID', () => {
     expect(service.parcourirSujets(-5, sujets)).toBe(sujetVide);
     expect(service.parcourirSujets(0, sujets)).toBe(sujetVide);
   })

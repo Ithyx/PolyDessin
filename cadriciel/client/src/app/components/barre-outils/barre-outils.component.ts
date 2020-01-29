@@ -8,6 +8,7 @@ import { OutilDessin, outils } from '../outil-dessin/outil-dessin.component';
 })
 export class BarreOutilsComponent {
   @Output() notifieur = new EventEmitter<OutilDessin>();
+  @Output() parametre = new EventEmitter<number>();
 
   outils: OutilDessin[] = outils;
   outilActif: OutilDessin = outils[0];
@@ -16,6 +17,7 @@ export class BarreOutilsComponent {
   onNotify(outil: OutilDessin) {
     console.log('emmitting: ', outil);
     this.notifieur.emit(outil);
+
     if (outil.idOutil !== this.idOutilActif) {
         // Changer l'outil actif et en garder une référence.
         this.outils[this.idOutilActif].estActif = false;
