@@ -12,5 +12,4 @@ export class SurfaceDessinComponent {
   couleurFond = 'white';
 
   constructor(public stockage: StockageSvgService) { }
-
 }

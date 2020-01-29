@@ -21,6 +21,10 @@ export class StockageSvgService {
     return this.SVGEnCoursString.slice(0, -3);
   }
 
+  getSVGEnCoursHTML(): SafeHtml {
+    return this.SVGEnCours
+  }
+
   setSVGEnCours(SVG: string) {
     this.SVGEnCoursString = SVG;
     this.SVGEnCours = this.sanitizer.bypassSecurityTrustHtml(SVG);
@@ -30,9 +34,6 @@ export class StockageSvgService {
     return this.SVGComplets;
   }
 
-  getSVGEnCoursHTML(): SafeHtml {
-    return this.SVGEnCours
-  }
 
   constructor(private sanitizer: DomSanitizer) { }
 }
