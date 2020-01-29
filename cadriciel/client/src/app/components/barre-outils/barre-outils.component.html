@@ -3,9 +3,23 @@
     <div *ngFor='let outil of outils'>
         <app-outil-dessin [outil]="outil" (notification)="onNotify($event)"></app-outil-dessin>
     </div>
-    <a [routerLink]="['/guide']">
-        Guide d'utilisation
-    </a>
+    <div class="options">
+        <a href="javascript:void(0);">
+            Nouveau dessin
+        </a>
+        <a href="javascript:void(0);">
+            Ouvrir la galerie
+        </a>
+        <a href="javascript:void(0);">
+            Sauvergarder le dessin
+        </a>
+        <a href="javascript:void(0);">
+            Exporter le dessin
+        </a>
+        <a [routerLink]="['/guide']">
+            Guide d'utilisation
+        </a>
+    </div>
 </div>
 
 <!-- Panneau d'attributs -->
