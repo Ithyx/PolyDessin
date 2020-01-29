@@ -27,8 +27,7 @@ export class PageDessinComponent {
 
   onClick(click: MouseEvent) {
     if (this.outilActif.nom === 'Crayon') {
-      const SVG = '<circle cx="' + click.offsetX + '" cy="' + click.offsetY + '" r="5" fill="red"/>';
-      this.stockage.ajouterSVG(SVG);
+      // Rien à faire ?
     }
   }
 
@@ -48,6 +47,13 @@ export class PageDessinComponent {
   }
 
   onMouseRelease(mouse: MouseEvent) {
+    if (this.outilActif.nom === 'Crayon') {
+      this.stockage.ajouterSVG(this.stockage.getSVGEnCours() + '"/>');
+      this.stockage.setSVGEnCours('');
+    }
+  }
+
+  onMouseLeave(mouse: MouseEvent) {
     if (this.outilActif.nom === 'Crayon') {
       this.stockage.ajouterSVG(this.stockage.getSVGEnCours() + '"/>');
       this.stockage.setSVGEnCours('');
