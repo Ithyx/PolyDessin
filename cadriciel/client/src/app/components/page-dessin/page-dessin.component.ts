@@ -1,13 +1,57 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { StockageSvgService } from 'src/app/services/stockage-svg.service';
+import { OutilDessin } from '../outil-dessin/outil-dessin.component';
 
 @Component({
   selector: 'app-page-dessin',
   templateUrl: './page-dessin.component.html',
   styleUrls: ['./page-dessin.component.scss']
 })
-export class PageDessinComponent implements OnInit {
+export class PageDessinComponent {
 
-  ngOnInit() {
+  outilActif: OutilDessin = {
+    nom: 'Crayon',
+    estActif: true,
+    idOutil: 0,
+    parametres: [
+      {type: 'number', nom: 'Épaisseur'}
+    ]
+  };
+
+  constructor(private stockage: StockageSvgService) { }
+
+  onNotify(outil: OutilDessin) {
+    console.log('nouvel outil sélectionné: ', outil)
+    this.outilActif = outil;
+  }
+
+  onClick(click: MouseEvent) {
+    if (this.outilActif.nom === 'Crayon') {
+      const SVG = '<circle cx="' + click.offsetX + '" cy="' + click.offsetY + '" r="5" fill="red"/>';
+      this.stockage.ajouterSVG(SVG);
+    }
+  }
+
+  onMouseMove(mouse: MouseEvent) {
+    if (this.outilActif.nom === 'Crayon' && mouse.buttons === 1) {
+      let crayon: string = this.stockage.getSVGEnCours();
+      if (crayon === '') { return; };
+      crayon += 'L' + mouse.offsetX + ' ' + mouse.offsetY + ' "/>';
+      this.stockage.setSVGEnCours(crayon);
+    }
+  }
+
+  onMousePress(mouse: MouseEvent) {
+    if (this.outilActif.nom === 'Crayon') {
+      this.stockage.setSVGEnCours('<path fill="transparent" stroke="black" d="M' + mouse.offsetX + ' ' + mouse.offsetY + '"/>');
+    }
+  }
+
+  onMouseRelease(mouse: MouseEvent) {
+    if (this.outilActif.nom === 'Crayon') {
+      this.stockage.ajouterSVG(this.stockage.getSVGEnCours() + '"/>');
+      this.stockage.setSVGEnCours('');
+    }
   }
 
 }
