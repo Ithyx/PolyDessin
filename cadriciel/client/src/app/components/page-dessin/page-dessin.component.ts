@@ -64,8 +64,6 @@ export class PageDessinComponent {
   onMouseLeave(mouse: MouseEvent) {
     if (this.outilActif.nom === 'Crayon') {
       this.crayon.onMouseLeaveCrayon(mouse);
-    } else if (this.outilActif.nom === 'Rectangle') {
-      this.rectangle.onMouseLeaveRectangle(mouse);
     }
   }
 
