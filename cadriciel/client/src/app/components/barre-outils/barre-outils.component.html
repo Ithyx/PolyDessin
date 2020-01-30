@@ -1,7 +1,7 @@
 <!-- Barre d'outils -->
 <div class="sidenav">
-    <div *ngFor='let outil of outils'>
-        <app-outil-dessin [outil]="outil" (notification)="onNotify($event)"></app-outil-dessin>
+    <div *ngFor='let outil of outils.listeOutils'>
+        <app-outil-dessin [outil]="outil" (click)="onClick(outil)"></app-outil-dessin>
     </div>
     <div class="options">
         <a href="javascript:void(0);">
@@ -26,7 +26,7 @@
 <div class="panneau-attributs">
     Paramètres de l'outil
     <form method="POST" action="javascript:void(0);">
-        <div *ngFor="let parametre of outilActif.parametres">
+        <div *ngFor="let parametre of outils.outilActif.parametres">
 
             <!-- Le paramètre est un 'select' avec plusieurs options -->
             <div *ngIf="parametre.type == 'select'; else elseBlock">
