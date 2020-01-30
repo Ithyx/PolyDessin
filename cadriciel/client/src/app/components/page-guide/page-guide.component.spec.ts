@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { sujetVide } from 'src/app/services/navigation-guide.service';
+import { SUJET_VIDE } from 'src/app/services/navigation-guide.service';
 import { GuideSujet } from '../guide-sujet/guide-sujet';
 import { GuideSujetComponent } from '../guide-sujet/guide-sujet.component';
 import { PageGuideComponent } from './page-guide.component';
@@ -35,7 +35,7 @@ describe('PageGuideComponent', () => {
   it('onClick(-1) should return the subject before Bienvenue, SujetVide', () => {
     // Correspond au bouton precedant
     component.onClick(-1);
-    expect(component.sujetActif).toBe(sujetVide);
+    expect(component.sujetActif).toBe(SUJET_VIDE);
   });
 
   it('in case of sujetActif does not have an id, it should not change', () => {

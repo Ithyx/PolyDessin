@@ -17,12 +17,12 @@ export class NavigationGuideService {
       // Si element possède des sousSujets, on veut les vérifiés aussi
       if (element.sousSujets) {
         const tampon: GuideSujet = this.parcourirSujets(idRecherche, element.sousSujets);
-        if (tampon !== sujetVide) {
+        if (tampon !== SUJET_VIDE) {
           return tampon;
         }
       }
     }
-    return sujetVide;
+    return SUJET_VIDE;
   }
 
   ouvrirCategories(categorie: GuideSujet[]) {
@@ -35,7 +35,7 @@ export class NavigationGuideService {
   };
 }
 
-export const sujetVide: GuideSujet = {
+export const SUJET_VIDE: GuideSujet = {
   nom: '',
   description: '',
   precedant: false,
