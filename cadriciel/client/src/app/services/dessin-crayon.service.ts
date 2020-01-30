@@ -12,12 +12,10 @@ export class DessinCrayonService {
 
   constructor(public stockageSVG: StockageSvgService) { }
 
-  /*onClickCrayon(click: MouseEvent): StockageSvgService {
-    const SVG = '<circle cx="' + click.offsetX + '" cy="' + click.offsetY + '" r="5" fill="red"/>';
+  onClickCrayon(click: MouseEvent) {
+    const SVG = '<circle cx="' + click.offsetX + '" cy="' + click.offsetY + '" r="10" fill="black"/>';
     this.stockageSVG.ajouterSVG(SVG);
-
-    return this.stockageSVG;
-  }   utile? */
+  }
 
   onMouseMoveCrayon(mouse: MouseEvent) {
     let crayon: string = this.stockageSVG.getSVGEnCours();
@@ -28,7 +26,8 @@ export class DessinCrayonService {
 
   onMousePressCrayon(mouse: MouseEvent) {
     this.stockageSVG.setSVGEnCours(
-      '<path fill="transparent" stroke="black" stroke-width="1" d="M' + mouse.offsetX + ' ' + mouse.offsetY + '"/>');
+      '<path fill="transparent" stroke="black" stroke-linecap="round" stroke-width="20" d="M'
+      + mouse.offsetX + ' ' + mouse.offsetY + '"/>');
   }
 
   onMouseReleaseCrayon(mouse: MouseEvent) {

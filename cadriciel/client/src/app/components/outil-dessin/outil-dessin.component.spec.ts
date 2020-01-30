@@ -27,4 +27,15 @@ describe('OutilDessinComponent', () => {
     component.onClick();
     expect(component.outil.estActif).toBe(true);
   });
+
+  it("#OnClick ne devrait pas modifier l'outil courant", () => {
+    component.onClick();
+    expect(component.outil).toEqual({nom: 'defaut', estActif: true, idOutil: -1, parametres: []});
+  });
+
+  it("#onClick devrait emettre l'outil courant", () => {
+    spyOn(component.notification, 'emit').and.callThrough();
+    component.onClick();
+    expect(component.notification.emit).toHaveBeenCalledWith(component.outil);
+  });
 });
