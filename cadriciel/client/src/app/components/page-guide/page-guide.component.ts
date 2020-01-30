@@ -11,10 +11,9 @@ import { ContenuGuide } from './SujetsGuide';
 
 export class PageGuideComponent {
   sujets: GuideSujet[] = ContenuGuide;
-  sujetActif: GuideSujet;
-  constructor(
-    private navigateurSujet: NavigationGuideService
-    ) { }
+  sujetActif: GuideSujet = ContenuGuide[0];
+
+  constructor(private navigateurSujet: NavigationGuideService) { }
 
   onClick(sensParcousID: number) {
     this.navigateurSujet.ouvrirCategories(this.sujets);
@@ -24,7 +23,6 @@ export class PageGuideComponent {
       // Si on a cliqué sur "précédant", sensParcoursID = -1
       // Si on a cliqué sur "suivant", sensParcousID = 1
       const nouvelID: number = this.sujetActif.id + sensParcousID;
-
       // On cherche dans notre liste pour voir si on trouve un sujet avec le nouvel ID
       this.sujetActif = this.navigateurSujet.parcourirSujets(nouvelID, this.sujets);
     }

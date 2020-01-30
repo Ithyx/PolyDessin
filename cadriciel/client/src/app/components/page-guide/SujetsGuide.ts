@@ -1,7 +1,7 @@
 import { GuideSujet } from '../guide-sujet/guide-sujet';
 
 export const ContenuGuide: GuideSujet[] = [
-    // Sujet 1
+    // Index 0 - Sujet 1
     {
       nom: 'Bienvenue',
       id: 1,
@@ -15,6 +15,7 @@ export const ContenuGuide: GuideSujet[] = [
       precedant: false,
       suivant: true
     },
+    // Index 1 - Catégorie 1
     {
         nom: 'Outils',
         description: '',
@@ -22,7 +23,7 @@ export const ContenuGuide: GuideSujet[] = [
         suivant: false,
         categorieOuverte: false,
         sousSujets: [
-            // Outil 1
+            // Index 2 - Outil 1
             {
                 nom: 'Crayon',
                 description: `<h1> Crayon </h1>
@@ -35,7 +36,7 @@ export const ContenuGuide: GuideSujet[] = [
                 suivant: true,
                 id: 2
             },
-            // Outil 2
+            // Index 3 - Outil 2
             {
                 nom: 'Pinceau',
                 description: `<h1> Pinceau </h1>
@@ -48,7 +49,7 @@ export const ContenuGuide: GuideSujet[] = [
                 suivant: true,
                 id: 3
             },
-            // Outil 3
+            // Index 4 - Outil 3
             {
                 nom: 'Rectangle',
                 description: `<h1> Rectangle </h1>
@@ -65,7 +66,7 @@ export const ContenuGuide: GuideSujet[] = [
                 suivant: true,
                 id: 4
             },
-            // Outil 4
+            // Index 5 - Outil 4
             {
                 nom: 'Ligne',
                 description: `<h1> Ligne </h1>
@@ -75,7 +76,7 @@ export const ContenuGuide: GuideSujet[] = [
                 suivant: true,
                 id: 5
             },
-            // Outil 5
+            // Index 6 - Outil 5
             {
                 nom: 'Couleur',
                 description: `<h1> Couleur </h1>
@@ -83,7 +84,7 @@ export const ContenuGuide: GuideSujet[] = [
                               <p> L'outil couleur est un paramètre partagé entre tous les outils. Celui-ci offre deux couleurs configurable
                               la couleur "principale" et la couleur "secondaire" interversible. </p>`,
                 precedant: true,
-                suivant: true,
+                suivant: false,
                 id: 6
             },
         ]
