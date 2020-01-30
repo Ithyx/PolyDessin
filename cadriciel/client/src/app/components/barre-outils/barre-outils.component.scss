@@ -9,13 +9,13 @@
 }
 
 .sidenav {
-    width: 160px; /* Set the width of the sidebar */
+    width: 210px; /* Set the width of the sidebar */
     left: 0;
     background-color: black;
 }
 
 .sidenav a {
-    padding: 6px 8px 6px 16px;
+    padding: 6px 6px 6px 16px;
     text-decoration: none;
     font-size: 25px;
     color: #818181;
@@ -24,12 +24,12 @@
 
 .panneau-attributs {
     text-align: center;
-    font-size: 35px;
+    font-size: 30px;
     color: lightcyan;
     display: block;
-    width: 350px;
+    width: 300px;
     background-color: rgb(25, 25, 40);
-    left: 160px;
+    left: 210px;
     padding-bottom: 50px;
 }
 
@@ -39,4 +39,10 @@
     color: white;
     padding-right: 25px;
     padding-bottom: 25px;
+}
+
+.options {
+    position: absolute;
+    bottom: 0;
+    padding-bottom: 20px;
 }

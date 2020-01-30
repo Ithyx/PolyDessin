@@ -6,6 +6,7 @@ import { GuideSujetComponent } from '../guide-sujet/guide-sujet.component';
 import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
 import { PageDessinComponent } from '../page-dessin/page-dessin.component';
 import { PageGuideComponent } from '../page-guide/page-guide.component';
+import { SurfaceDessinComponent } from '../surface-dessin/surface-dessin.component';
 import { AccueilComponent } from './accueil.component';
 
 describe('AccueilComponent', () => {
@@ -15,7 +16,7 @@ describe('AccueilComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ PageDessinComponent, PageGuideComponent, AccueilComponent, BarreOutilsComponent, GuideSujetComponent,
-        OutilDessinComponent ],
+        OutilDessinComponent, SurfaceDessinComponent ],
       imports: [ RouterModule.forRoot([
         {path: '', component: AccueilComponent},
         {path: 'dessin', component: PageDessinComponent},

@@ -13,19 +13,22 @@ import { GuideSujetComponent } from './components/guide-sujet/guide-sujet.compon
 import { OutilDessinComponent } from './components/outil-dessin/outil-dessin.component';
 import { PageDessinComponent } from './components/page-dessin/page-dessin.component';
 import { PageGuideComponent } from './components/page-guide/page-guide.component';
+import { SurfaceDessinComponent } from './components/surface-dessin/surface-dessin.component';
 
 // Service
 import { NavigationGuideService } from './services/navigation-guide.service';
+import { StockageSvgService } from './services/stockage-svg.service';
+import { DessinCrayonService } from "./services/dessin-crayon.service";
 
 @NgModule({
     declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent,
-        FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent],
+        FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, RouterModule.forRoot([
         {path: '', component: AccueilComponent},
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ])],
-    providers: [NavigationGuideService],
+    providers: [NavigationGuideService, StockageSvgService, DessinCrayonService],
     bootstrap: [AppComponent],
 })
 export class AppModule {}
