@@ -3,7 +3,7 @@ import { SUJET_VIDE } from 'src/app/services/navigation-guide.service';
 import { GuideSujet } from '../guide-sujet/guide-sujet';
 import { GuideSujetComponent } from '../guide-sujet/guide-sujet.component';
 import { PageGuideComponent } from './page-guide.component';
-import { ContenuGuide } from './SujetsGuide';
+import { CONTENU_GUIDE } from './SujetsGuide';
 
 describe('PageGuideComponent', () => {
   let component: PageGuideComponent;
@@ -39,13 +39,13 @@ describe('PageGuideComponent', () => {
   });
 
   it('in case of sujetActif does not have an id, it should not change', () => {
-    component.sujetActif = ContenuGuide[1];
+    component.sujetActif = CONTENU_GUIDE[1];
     component.onClick(1);
-    expect(component.sujetActif).toBe(ContenuGuide[1]);
+    expect(component.sujetActif).toBe(CONTENU_GUIDE[1]);
   });
 
   it('sujetActif should become the sujet receive in onNotify()', () => {
-    const sujet: GuideSujet = ContenuGuide[3];
+    const sujet: GuideSujet = CONTENU_GUIDE[3];
     component.onNotify(sujet);
     expect(component.sujetActif).toBe(sujet);
   })

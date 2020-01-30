@@ -1,8 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { GuideSujetComponent } from './guide-sujet.component';
+import { CONTENU_GUIDE} from '../page-guide/SujetsGuide';
 import { GuideSujet } from './guide-sujet';
-import { ContenuGuide } from '../page-guide/SujetsGuide';
-
+import { GuideSujetComponent } from './guide-sujet.component';
 
 describe('GuideSujetComponent', () => {
   let component: GuideSujetComponent;
@@ -26,7 +25,7 @@ describe('GuideSujetComponent', () => {
   });
 
   it('onNotify()', () => {
-    const sujet: GuideSujet = ContenuGuide[5];
+    const sujet: GuideSujet = CONTENU_GUIDE[5];
     component.onNotify(sujet);
     expect()
   });

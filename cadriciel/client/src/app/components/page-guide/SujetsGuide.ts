@@ -1,6 +1,6 @@
 import { GuideSujet } from '../guide-sujet/guide-sujet';
 
-export const ContenuGuide: GuideSujet[] = [
+export const CONTENU_GUIDE: GuideSujet[] = [
     // Index 0 - Sujet 1
     {
       nom: 'Bienvenue',
