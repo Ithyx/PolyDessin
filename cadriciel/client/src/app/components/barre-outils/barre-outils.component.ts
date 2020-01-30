@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { OutilDessin, outils } from '../outil-dessin/outil-dessin.component';
+import { Component } from '@angular/core';
+import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
 
 @Component({
   selector: 'app-barre-outils',
@@ -7,24 +7,13 @@ import { OutilDessin, outils } from '../outil-dessin/outil-dessin.component';
   styleUrls: ['./barre-outils.component.scss']
 })
 export class BarreOutilsComponent {
-  @Output() notifieur = new EventEmitter<OutilDessin>();
-  @Output() parametre = new EventEmitter<number>();
+  constructor(
+    private outils: GestionnaireOutilsService
+  ) {}
 
-  outils: OutilDessin[] = outils;
-  outilActif: OutilDessin = outils[0];
-  idOutilActif = 0;
-
-  onNotify(outil: OutilDessin) {
-    console.log('emmitting: ', outil);
-    this.notifieur.emit(outil);
-
-    if (outil.idOutil !== this.idOutilActif) {
-        // Changer l'outil actif et en garder une référence.
-        this.outils[this.idOutilActif].estActif = false;
-        this.idOutilActif = outil.idOutil;
-        this.outilActif = outil;
-        // TODO: faire en sorte que si on change de page (ex. guide d'utilisation) et revient,
-        // l'outil actif se déselectionne en cliquant sur un autre outil.
-      }
+  onClick(outil: OutilDessin) {
+    this.outils.outilActif.estActif = false;
+    this.outils.outilActif = outil;
+    this.outils.outilActif.estActif = true;
   }
 }

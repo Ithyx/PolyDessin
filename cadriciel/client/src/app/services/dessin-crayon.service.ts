@@ -12,11 +12,9 @@ export class DessinCrayonService {
 
   constructor(public stockageSVG: StockageSvgService) { }
 
-  onClickCrayon(click: MouseEvent): StockageSvgService {
+  onClickCrayon(click: MouseEvent) {
     const SVG = '<circle cx="' + click.offsetX + '" cy="' + click.offsetY + '" r="10" fill="black"/>';
     this.stockageSVG.ajouterSVG(SVG);
-
-    return this.stockageSVG;
   }
 
   onMouseMoveCrayon(mouse: MouseEvent) {
