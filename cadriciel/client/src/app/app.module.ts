@@ -18,12 +18,15 @@ import { SurfaceDessinComponent } from './components/surface-dessin/surface-dess
 // Service
 import { NavigationGuideService } from './services/navigation-guide.service';
 import { StockageSvgService } from './services/stockage-svg.service';
-import { ChoixCouleurComponent } from './choix-couleur/choix-couleur.component';
+
+// Module
+import { ChoixCouleurModule } from './choix-couleur.module';
 
 @NgModule({
     declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent,
-        FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent, ChoixCouleurComponent],
-    imports: [BrowserModule, HttpClientModule, MatButtonModule, RouterModule.forRoot([
+        FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent,
+         ],
+    imports: [BrowserModule, ChoixCouleurModule, HttpClientModule, MatButtonModule, RouterModule.forRoot([
         {path: '', component: AccueilComponent},
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
