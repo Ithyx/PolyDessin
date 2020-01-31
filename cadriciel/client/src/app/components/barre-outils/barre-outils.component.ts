@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
+// import { isNumber } from 'util';
 
 @Component({
   selector: 'app-barre-outils',
@@ -18,6 +19,8 @@ export class BarreOutilsComponent {
   }
 
   onKey(event: any, nomParametre: string) {
-    this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].valeur = event.target.value;
+    if (event.target.value > 0 /*|| isNumber(event)*/) {
+      this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].valeur = event.target.value;
+    }
   }
 }
