@@ -6,6 +6,7 @@ import { ChoixCouleurComponent } from './components/choix-couleur/choix-couleur.
   declarations: [ChoixCouleurComponent],
   imports: [
     CommonModule
-  ]
+  ],
+  exports: [ChoixCouleurComponent],
 })
 export class ChoixCouleurModule { }
