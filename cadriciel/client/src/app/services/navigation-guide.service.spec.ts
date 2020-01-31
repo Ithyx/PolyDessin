@@ -15,26 +15,26 @@ describe('NavigationGuideService', () => {
     expect(testService).toBeTruthy();
   });
 
-  it('ParcourirSujets should return subject with ID 1', () => {
+  it('ParcourirSujets devrait retourner le sujet avec un ID de 1', () => {
     expect(service.parcourirSujets(1, sujets).id).toBe(1);
   });
 
-  it('ParcourirSujets should return an empty subjet when given negative or null ID', () => {
+  it('ParcourirSujets devrait retourner un sujet vide quand on lui demande un ID nul ou négatif', () => {
     expect(service.parcourirSujets(-5, sujets)).toBe(sujetVide);
     expect(service.parcourirSujets(0, sujets)).toBe(sujetVide);
   })
 
-  it('ParcourirSujets should be able to return a subject in a category', () => {
+  it('ParcourirSujets devrait retourner un sujet dans une catégorie', () => {
     expect(service.parcourirSujets(4, sujets).id).toBe(4);
   })
 
-  it('OuvrirCategorie should open all categories', () => {
+  it('OuvrirCategorie devrait ouvrir toutes les catégories', () => {
     service.ouvrirCategories(sujets);
     expect(sujets[1].categorieOuverte).toBe(true);
     /* TODO: Ajouter les catégories qui doivent etre ouvertes. */
   })
 
-  it('OuvrirCategorie should not affect pure subjects', () => {
+  it('OuvrirCategorie ne devrait pas affecter les objets purs', () => {
     const sujetVideCopy: GuideSujet = sujetVide;
     service.ouvrirCategories([sujetVide]);
     expect(sujetVide).toBe(sujetVideCopy);

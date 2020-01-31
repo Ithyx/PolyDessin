@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { GestionnaireOutilsService } from './outils/gestionnaire-outils.service';
 import { StockageSvgService } from './stockage-svg.service';
 
 @Injectable({
@@ -7,14 +8,16 @@ import { StockageSvgService } from './stockage-svg.service';
 
 export class DessinCrayonService {
 
-  epaisseur: number;  // stroke-width="10"
   couleur: number;    // stroke="black"
 
-  constructor(public stockageSVG: StockageSvgService) { }
+  constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
 
   onClickCrayon(click: MouseEvent) {
-    const SVG = '<circle cx="' + click.offsetX + '" cy="' + click.offsetY + '" r="10" fill="black"/>';
-    this.stockageSVG.ajouterSVG(SVG);
+    if (this.outils.outilActif.parametres[0].valeur) {
+      const SVG = '<circle cx="' + click.offsetX + '" cy="' + click.offsetY + '" r="' + this.outils.outilActif.parametres[0].valeur / 2
+      + '" fill="black"/>';
+      this.stockageSVG.ajouterSVG(SVG);
+    }
   }
 
   onMouseMoveCrayon(mouse: MouseEvent) {
@@ -26,8 +29,8 @@ export class DessinCrayonService {
 
   onMousePressCrayon(mouse: MouseEvent) {
     this.stockageSVG.setSVGEnCours(
-      '<path fill="transparent" stroke="black" stroke-linecap="round" stroke-width="20" d="M'
-      + mouse.offsetX + ' ' + mouse.offsetY + '"/>');
+      '<path fill="transparent" stroke="black" stroke-linecap="round" stroke-width="' + this.outils.outilActif.parametres[0].valeur
+      + '" d="M' + mouse.offsetX + ' ' + mouse.offsetY + '"/>');
   }
 
   onMouseReleaseCrayon(mouse: MouseEvent) {

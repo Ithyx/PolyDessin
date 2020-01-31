@@ -39,7 +39,7 @@
             <!-- Le paramètre est un champ à entrer -->
             <ng-template #elseBlock>
                 <label [for]="parametre.nom">{{parametre.nom}}</label>
-                <input [type]="parametre.type" [name]="parametre.nom" min="0" max="100" value="1" />
+                <input [type]="parametre.type" [name]="parametre.nom" min="1" max="100" [value]="parametre.valeur" (keyup)="onKey($event, parametre.nom)" />
             </ng-template>
         </div>
     </form>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
 
 @Component({
@@ -7,16 +7,17 @@ import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/
   styleUrls: ['./barre-outils.component.scss']
 })
 export class BarreOutilsComponent {
-  @Output() notifieur = new EventEmitter<OutilDessin>();
-  @Output() parametre = new EventEmitter<number>();
-
   constructor(
-    private outils: GestionnaireOutilsService
+    public outils: GestionnaireOutilsService
   ) {}
 
   onClick(outil: OutilDessin) {
     this.outils.outilActif.estActif = false;
     this.outils.outilActif = outil;
     this.outils.outilActif.estActif = true;
+  }
+
+  onKey(event: any, nomParametre: string) {
+    this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].valeur = event.target.value;
   }
 }
