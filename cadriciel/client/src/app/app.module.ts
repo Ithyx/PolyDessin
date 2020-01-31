@@ -1,10 +1,10 @@
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material';
+import { NgModule} from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule, MatDialogModule} from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-
-// Components
 import { AccueilComponent } from './components/accueil/accueil.component';
 import { AppComponent } from './components/app/app.component';
 import { BarreOutilsComponent } from './components/barre-outils/barre-outils.component';
@@ -16,6 +16,7 @@ import { PageGuideComponent } from './components/page-guide/page-guide.component
 import { SurfaceDessinComponent } from './components/surface-dessin/surface-dessin.component';
 
 // Service
+import { FormulaireNouveauDessinService } from './services/formulaire-nouveau-dessin.service';
 import { NavigationGuideService } from './services/navigation-guide.service';
 import { StockageSvgService } from './services/stockage-svg.service';
 import { DessinCrayonService } from "./services/dessin-crayon.service";
@@ -23,12 +24,14 @@ import { DessinCrayonService } from "./services/dessin-crayon.service";
 @NgModule({
     declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent,
         FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent],
-    imports: [BrowserModule, HttpClientModule, MatButtonModule, RouterModule.forRoot([
+    imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
+        MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
         {path: '', component: AccueilComponent},
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ])],
-    providers: [NavigationGuideService, StockageSvgService, DessinCrayonService],
+    providers: [NavigationGuideService, StockageSvgService,DessinCrayonService, FormulaireNouveauDessinService],
+    entryComponents: [FenetreNewDessinComponent],
     bootstrap: [AppComponent],
 })
 export class AppModule {}
