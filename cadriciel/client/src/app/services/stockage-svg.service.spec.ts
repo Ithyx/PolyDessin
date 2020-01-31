@@ -20,13 +20,13 @@ describe('StockageSvgService', () => {
     expect(Testservice).toBeTruthy();
   });
 
-  it('ajouterSVG should add a SVG HTML in SVGComplets and have a taille of 1 ', () => {
+  it('ajouterSVG devrait ajouter un tag SVG dans SVGComplets et avoir une taille de 1 ', () => {
     service.ajouterSVG(SVG);
     expect(service.getSVGComplets().get(service.taille)).toEqual(SVGHTML);
     expect(service.taille).toBe(1);
   })
 
-  it('setSVGEnCours should modify SVGEnCours and SVGEnCoursString', () => {
+  it('setSVGEnCours devrait modifier SVGEnCours et SVGEnCoursString', () => {
     service.setSVGEnCours(SVG);
     expect(service.getSVGEnCoursHTML()).toEqual(SVGHTML);
     expect(service.getSVGEnCours()).toEqual(SVG.slice(0, -3));      // Meilleur variable autre que SVG.slice(0,-3) ?
