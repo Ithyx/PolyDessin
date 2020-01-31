@@ -29,7 +29,7 @@ export const CONTENU_GUIDE: GuideSujet[] = [
                 description: `<h1> Crayon </h1>
                               <hr>
                               <p> Le crayon est l'outil de traçage de base permettant de dessiner de simple trait avec une pointe roude.</p>
-                              <p color="red"> insérer gif utilisation crayon ici </p>
+                              <img src="assets/crayon.gif" width="300" height="300">
                               <p> Les paramètres personalisable sont:
                               <li> Épaisseur du trait (en px) </li> </p>`,
                 precedant: true,
@@ -71,7 +71,17 @@ export const CONTENU_GUIDE: GuideSujet[] = [
                 nom: 'Ligne',
                 description: `<h1> Ligne </h1>
                               <hr>
-                              <p> Description de la ligne </p>`,
+                              <p> L'outil ligne permet de tracer une ou plusieurs segments d'une ligne. Il suffit, après avoir
+                              sélectionné l'outil, de choisir le début de la ligne avec un clic quelque part sur la zone de dessin. Ensuite,
+                              chaque nouveau clic fermera le segment en cours pour en débuter un nouveau. Pour terminer la ligne, on
+                              effectue un double-clic. </p>
+                              <p color="red"> insérer gif utilisation couleur ici </p>
+                              <p> En enfonçant la touche SHIFT, le segment en cours s'aligne avec l'axe des X par rapport à un angle de
+                              45 degrés. Il est aussi possible d'annuler la ligne sans son entièreté avec la touche ESPACE. Pour supprimer
+                              uniquement le dernier segment (sauf le premier), appuyez sur BACKSPACE.</p>
+                              <p> Les paramètres personalisable sont:
+                              <li> Épaisseur du trait (en px) </li> <li> Type de jonction </li>
+                              <li> Diamètre des jonctions </li></p>`,
                 precedant: true,
                 suivant: true,
                 id: 5
@@ -81,8 +91,15 @@ export const CONTENU_GUIDE: GuideSujet[] = [
                 nom: 'Couleur',
                 description: `<h1> Couleur </h1>
                               <hr>
-                              <p> L'outil couleur est un paramètre partagé entre tous les outils. Celui-ci offre deux couleurs configurable
-                              la couleur "principale" et la couleur "secondaire" interversible. </p>`,
+                              <p> L'outil couleur est un paramètre partagé entre tous les outils, il est d'ailleurs disponible dans le
+                              panneau paramètre de chacun d'entre eux. Celui-ci offre deux couleurs configurable: la couleur "principale"
+                              et la couleur "secondaire" qui sont interversible. </p>
+                              <p color="red"> insérer gif utilisation couleur ici </p>
+                              <p> Pour choisir une couleur, l'utilisateur peut soit se déplacer sur une palette de couleur ou bien
+                              directement marqué des valeurs RGB en hexadécimal de la couleur qu'il souhaite. </p>
+                              <p> L'outil se rappelle aussi des 10 dernières couleurs choisis par l'utilisateur.</p>
+                              <p> Les paramètres personalisable sont:
+                              <li> Le code RGB </li> <li> L'opacité </li> </p>`,
                 precedant: true,
                 suivant: false,
                 id: 6

@@ -24,9 +24,16 @@ describe('GuideSujetComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('onNotify()', () => {
+  it('onNotify() devrait emettre un sujet', () => {
     const sujet: GuideSujet = CONTENU_GUIDE[5];
+    spyOn(component.notification, 'emit');
+
     component.onNotify(sujet);
-    expect()
+    expect(component.notification.emit).toHaveBeenCalledWith(sujet);
+  });
+
+  it('si onClick() est appelé sur une catégorie celle-ci devrait être ouverte', () => {
+    // const sujet: GuideSujet = CONTENU_GUIDE[1];   // Catégorie des outils
+
   });
 });
