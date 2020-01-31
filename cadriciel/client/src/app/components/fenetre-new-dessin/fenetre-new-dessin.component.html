@@ -1,1 +1,17 @@
-<h1>Paramètres nouveau dessin</h1>
+<h1>Paramètre pour la création d'un nouveau dessin</h1>
+
+<h2>Dimension canvas</h2>
+<form [formGroup]="nouveauDessin" (ngSubmit)="onSubmit()">
+<label>Hauteur: (pixels)
+<input type="number" min = "0" max = "1080" formControlName="hauteurFormulaire">
+</label>
+<label>Largeur: (pixels)
+<input type="number" min = "0" max = "1920" formControlName="largeurFormulaire">
+</label>
+
+<h2>Couleur Arrière-Plan (code RGB en Hexadecimal):</h2>
+<input   type ="color"  value= "#ffffff" formControlName="couleur">
+</form>
+<button mat-stroked-button (click)="fermerFenetre()">Annuler</button>
+<button mat-raised-button [routerLink]= "['/dessin']"  (click)="fermerFenetre()">Créer</button>
+
