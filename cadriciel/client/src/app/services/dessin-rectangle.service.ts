@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { GestionnaireOutilsService } from './outils/gestionnaire-outils.service'
 import { StockageSvgService } from './stockage-svg.service';
 
 @Injectable({
@@ -12,7 +13,7 @@ export class DessinRectangleService {
   xInitial: number;
   yInitial: number;
 
-  constructor(public stockageSVG: StockageSvgService) { }
+  constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
 
   onMouseMoveRectangle(mouse: MouseEvent) {
     if (this.rectangleEnCours) {
@@ -22,7 +23,8 @@ export class DessinRectangleService {
       const baseY = Math.min(this.yInitial, mouse.offsetY);
 
       this.stockageSVG.setSVGEnCours(
-        '<rect fill="transparent" stroke="black" stroke-width="20" x="'
+        '<rect fill="transparent" stroke="black" stroke-width="'
+        + this.outils.outilActif.parametres[0].valeur + '" x="'
         + baseX + '" y="' + baseY + '" width="'
         + largeur + '" height="' + hauteur + '"/>'
       );
