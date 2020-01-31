@@ -8,12 +8,16 @@ import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/
 })
 export class BarreOutilsComponent {
   constructor(
-    private outils: GestionnaireOutilsService
+    public outils: GestionnaireOutilsService
   ) {}
 
   onClick(outil: OutilDessin) {
     this.outils.outilActif.estActif = false;
     this.outils.outilActif = outil;
     this.outils.outilActif.estActif = true;
+  }
+
+  onKey(event: any, nomParametre: string) {
+    this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].valeur = event.target.value;
   }
 }
