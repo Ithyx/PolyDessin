@@ -1,58 +1,73 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
 
+import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
 import { GuideSujetComponent } from '../guide-sujet/guide-sujet.component';
 import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
 import { PageGuideComponent } from '../page-guide/page-guide.component';
 import { BarreOutilsComponent } from './barre-outils.component';
 
+/* Service stub pour réduire les dépendances */
+const outilTestActif: OutilDessin = {
+  nom: 'stubActif',
+  estActif: true,
+  ID: 0,
+  parametres: []
+};
+const outilTestInactif: OutilDessin = {
+  nom: 'stubInactif',
+  estActif: false,
+  ID: 1,
+  parametres: []
+};
+const GestionnaireOutilServiceStub: Partial<GestionnaireOutilsService> = {
+  listeOutils: [
+    outilTestActif,
+    outilTestInactif
+  ],
+  outilActif: outilTestActif
+}
+
 describe('BarreOutilsComponent', () => {
   let component: BarreOutilsComponent;
   let fixture: ComponentFixture<BarreOutilsComponent>;
+  let service: GestionnaireOutilsService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ PageGuideComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent ],
+      providers: [ {provide: GestionnaireOutilsService, useValue: GestionnaireOutilServiceStub} ],
       imports: [ RouterModule.forRoot([
         {path: 'guide', component : PageGuideComponent}
     ])]
     })
     .compileComponents();
   }));
-
   beforeEach(() => {
     fixture = TestBed.createComponent(BarreOutilsComponent);
     component = fixture.componentInstance;
-    component.outils = [
-      {nom: 'defaut', estActif: true, idOutil: -1, parametres: []},
-      {nom: 'test', estActif: false, idOutil: -2, parametres: []}
-    ];
-    component.outilActif = component.outils[0];
+    service = fixture.debugElement.injector.get(GestionnaireOutilsService);
     fixture.detectChanges();
   });
+  beforeEach(() => {
+    service.listeOutils[0].estActif = true;
+    service.listeOutils[1].estActif = false;
+  })
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('test emit', () => {
-    spyOn(component.notifieur, 'emit').and.callThrough();
-    component.onNotify(component.outils[1]);
-    expect(component.notifieur.emit).toHaveBeenCalledWith(component.outils[1]);
+  it('#onClick devrait changer d\'outil', () => {
+    // on lui demande de changer à l'outil 2
+    component.onClick(service.listeOutils[1]);
+    // on vérifie que l'outil actif est bien le deuxième
+    expect(service.outilActif).toBe(service.listeOutils[1]);
   });
-
-  it("#onNotify l'ancien outil selectionne ne devrait plus etre selectionne", () => {
-    component.onNotify(component.outils[1]);
-    expect(component.outils[0].estActif).toBe(false);
-  });
-
-  it("#onNotify devrait actualiser l'outil actif", () => {
-    component.onNotify(component.outils[1]);
-    expect(component.outilActif).toEqual(component.outils[1]);
-  });
-
-  it("#onNotify devrait actualiser le id de l'outil actif", () => {
-    component.onNotify(component.outils[1]);
-    expect(component.idOutilActif).toEqual(-2);
-  });
+  it('#onClick devrait mettre le nouvel outil sélectionné comme actif', () => {
+    // on lui demande de changer à l'outil 2
+    component.onClick(service.listeOutils[1]);
+    // on vérifie que le nouvel outil est bien "actif"
+    expect(service.listeOutils[1].estActif).toBe(true);
+  })
 });

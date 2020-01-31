@@ -21,6 +21,14 @@ export class GestionnaireOutilsService {
   outilActif: OutilDessin = LISTE_OUTILS[0];
   listeOutils: OutilDessin[] = LISTE_OUTILS;
 
+  trouverIndexParametre(nom: string): number {
+    for (let i = 0; i < this.outilActif.parametres.length; i++) {
+      if ( this.outilActif.parametres[i].nom === nom) {
+        return i;
+      }
+    }
+    return 0;
+  }
 }
 
 export const OUTIL_VIDE = {nom: 'defaut', estActif: false, ID: -1, parametres: []};
