@@ -18,9 +18,10 @@ export class BarreOutilsComponent {
     this.outils.outilActif.estActif = true;
   }
 
-  onKey(event: any, nomParametre: string) {
-    if (event.target.value > 0 /*|| isNumber(event)*/) {
-      this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].valeur = event.target.value;
+  onChange(event: Event, nomParametre: string) {
+    const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
+    if (Number(eventCast.value) > 0 && !isNaN(Number(eventCast.value))) {
+      this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].valeur = Number(eventCast.value);
     }
   }
 }
