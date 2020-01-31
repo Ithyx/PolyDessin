@@ -8,7 +8,7 @@ import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/
 })
 export class BarreOutilsComponent {
   constructor(
-    private outils: GestionnaireOutilsService
+    public outils: GestionnaireOutilsService
   ) {}
 
   onClick(outil: OutilDessin) {
@@ -18,7 +18,6 @@ export class BarreOutilsComponent {
   }
 
   onKey(event: any, nomParametre: string) {
-    console.log('épaisseur crayon: ', event.target.value);
     this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].valeur = event.target.value;
   }
 }

@@ -64,10 +64,12 @@ describe('BarreOutilsComponent', () => {
     // on vérifie que l'outil actif est bien le deuxième
     expect(service.outilActif).toBe(service.listeOutils[1]);
   });
+
   it('#onClick devrait mettre le nouvel outil sélectionné comme actif', () => {
     // on lui demande de changer à l'outil 2
     component.onClick(service.listeOutils[1]);
     // on vérifie que le nouvel outil est bien "actif"
     expect(service.listeOutils[1].estActif).toBe(true);
   })
+
 });
