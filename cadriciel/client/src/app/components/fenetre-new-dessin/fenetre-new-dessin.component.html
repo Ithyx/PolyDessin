@@ -13,5 +13,5 @@
 <input   type ="color"  value= "#ffffff" formControlName="couleur">
 </form>
 <button mat-stroked-button (click)="fermerFenetre()">Annuler</button>
-<button mat-raised-button type="submit">Créer</button>
+<button mat-raised-button [routerLink]= "['/dessin']"  (click)="fermerFenetre()">Créer</button>
 
