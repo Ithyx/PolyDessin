@@ -25,27 +25,43 @@ export class DessinRectangleService {
       const baseY = Math.min(this.yInitial, mouse.offsetY);
       const optionChoisie = this.outils.outilActif.parametres[1].optionChoisie;
 
-      this.stockageSVG.setSVGEnCours(
-        '<rect fill="' + ((optionChoisie !== 'Contour') ? this.couleurPrimaire : 'transparent')
-        + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleurSecondaire : 'transparent')
-        + '" stroke-width="' + this.outils.outilActif.parametres[0].valeur
-        + '" x="' + baseX + '" y="' + baseY
-        + '" width="' + this.largeur + '" height="' + this.hauteur + '"/>'
-      );
+      // La forme est une ligne
+      if (this.largeur === 0 || this.hauteur === 0) {
+        this.stockageSVG.setSVGEnCours(
+          '<line stroke="'
+          + ((optionChoisie !== 'Plein') ? this.couleurSecondaire : 'transparent')
+          + '" stroke-width="' + this.outils.outilActif.parametres[0].valeur
+          + '" x1="' + baseX + '" y1="' + baseY
+          + '" x2="' + (baseX + this.largeur) + '" y2="' + (baseY + this.hauteur) + '"/>'
+        );
+      } else {  // La forme est un rectangle
+        this.stockageSVG.setSVGEnCours(
+          '<rect fill="' + ((optionChoisie !== 'Contour') ? this.couleurPrimaire : 'transparent')
+          + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleurSecondaire : 'transparent')
+          + '" stroke-width="' + this.outils.outilActif.parametres[0].valeur
+          + '" x="' + baseX + '" y="' + baseY
+          + '" width="' + this.largeur + '" height="' + this.hauteur + '"/>'
+        );
+      }
     }
   }
 
   onMousePressRectangle(mouse: MouseEvent) {
-    this.rectangleEnCours = true;
-    this.xInitial = mouse.offsetX;
-    this.yInitial = mouse.offsetY;
-    this.largeur = 0;
-    this.hauteur = 0;
+    if (!this.rectangleEnCours) {
+      this.rectangleEnCours = true;
+      this.xInitial = mouse.offsetX;
+      this.yInitial = mouse.offsetY;
+      this.largeur = 0;
+      this.hauteur = 0;
+    }
   }
 
   onMouseReleaseRectangle(mouse: MouseEvent) {
     this.rectangleEnCours = false;
-    this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '"/>');
+    if (this.largeur !== 0 || this.hauteur !== 0) {
+      console.log('SVG: ' + this.stockageSVG.getSVGEnCours() + '"/>');
+      this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '"/>');
+    }
     this.stockageSVG.setSVGEnCours('');
   }
 }
