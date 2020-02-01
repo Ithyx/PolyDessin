@@ -8,7 +8,7 @@ import { Component, ViewChild, ElementRef, AfterViewInit,
 })
 
 export class GlissiereCouleurComponent implements AfterViewInit {
-  @ViewChild('canvas', {static: true})
+  @ViewChild('canvas', {static: false})
   canvas: ElementRef<HTMLCanvasElement>
 
   @Output()
@@ -23,9 +23,9 @@ export class GlissiereCouleurComponent implements AfterViewInit {
   }
 
   draw() {
+
     if (!this.ctx) {
-      this.ctx =
-       (this.canvas.nativeElement as HTMLCanvasElement ). getContext('2d')
+      this.ctx = this.canvas.nativeElement.getContext('2d')
     }
 
     const width = this.canvas.nativeElement.width

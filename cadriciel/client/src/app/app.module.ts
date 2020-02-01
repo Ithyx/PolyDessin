@@ -15,16 +15,19 @@ import { PageDessinComponent } from './components/page-dessin/page-dessin.compon
 import { PageGuideComponent } from './components/page-guide/page-guide.component';
 import { SurfaceDessinComponent } from './components/surface-dessin/surface-dessin.component';
 
+
 // Service
 import { NavigationGuideService } from './services/navigation-guide.service';
 import { StockageSvgService } from './services/stockage-svg.service';
 
 // Module
-import { ChoixCouleurModule } from './choix-couleur.module';
+import { ChoixCouleurModule } from './components/choix-couleur/choix-couleur.module';
+import { CouleurPaletteComponent } from './choix-couleur/couleur-palette/couleur-palette.component'
+
 
 @NgModule({
     declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent,
-        FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent,
+        FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent, CouleurPaletteComponent,
          ],
     imports: [BrowserModule, ChoixCouleurModule, HttpClientModule, MatButtonModule, RouterModule.forRoot([
         {path: '', component: AccueilComponent},
