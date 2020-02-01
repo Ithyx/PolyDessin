@@ -28,8 +28,8 @@ export class DessinRectangleService {
       // La forme est une ligne
       if (this.largeur === 0 || this.hauteur === 0) {
         this.stockageSVG.setSVGEnCours(
-          '<line stroke="'
-          + ((optionChoisie !== 'Plein') ? this.couleurSecondaire : 'transparent')
+          '<line stroke-linecap="square'
+          + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleurSecondaire : 'transparent')
           + '" stroke-width="' + this.outils.outilActif.parametres[0].valeur
           + '" x1="' + baseX + '" y1="' + baseY
           + '" x2="' + (baseX + this.largeur) + '" y2="' + (baseY + this.hauteur) + '"/>'
