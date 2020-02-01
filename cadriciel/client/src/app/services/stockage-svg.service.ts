@@ -34,6 +34,13 @@ export class StockageSvgService {
     return this.SVGComplets;
   }
 
+  viderDessin() {
+    console.log()
+    this.SVGComplets.clear();
+    this.taille = 0;
+    /* Ne devrait pas être nécessaire, mais par mesure de sécurité */
+    this.setSVGEnCours('');
+  }
 
   constructor(private sanitizer: DomSanitizer) { }
 }

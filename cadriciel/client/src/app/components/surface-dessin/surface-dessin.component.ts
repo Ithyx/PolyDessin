@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DessinManagerService } from 'src/app/services/dessin-manager/dessin-manager.service';
 import { StockageSvgService } from 'src/app/services/stockage-svg.service';
 
 @Component({
@@ -7,9 +8,5 @@ import { StockageSvgService } from 'src/app/services/stockage-svg.service';
   styleUrls: ['./surface-dessin.component.scss']
 })
 export class SurfaceDessinComponent {
-  longueur = 1000;
-  hauteur = 1000;
-  couleurFond = 'white';
-
-  constructor(public stockage: StockageSvgService) { }
+  constructor(public stockage: StockageSvgService, public gestionnaireDessin: DessinManagerService) { }
 }

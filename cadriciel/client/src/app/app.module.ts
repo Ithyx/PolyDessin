@@ -17,6 +17,7 @@ import { SurfaceDessinComponent } from './components/surface-dessin/surface-dess
 
 // Service
 import { DessinCrayonService } from './services/dessin-crayon.service';
+import { DessinManagerService } from './services/dessin-manager/dessin-manager.service';
 import { FormulaireNouveauDessinService } from './services/formulaire-nouveau-dessin.service';
 import { NavigationGuideService } from './services/navigation-guide.service';
 import { StockageSvgService } from './services/stockage-svg.service';
@@ -30,7 +31,7 @@ import { StockageSvgService } from './services/stockage-svg.service';
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ])],
-    providers: [NavigationGuideService, StockageSvgService, DessinCrayonService, FormulaireNouveauDessinService],
+    providers: [NavigationGuideService, StockageSvgService, DessinCrayonService, FormulaireNouveauDessinService, DessinManagerService],
     entryComponents: [FenetreNewDessinComponent],
     bootstrap: [AppComponent],
 })
