@@ -2,4 +2,5 @@
     <rect x="0" y="0" [attr.width.px]="gestionnaireDessin.longueur" [attr.height.px]="gestionnaireDessin.hauteur" [attr.width.px]="gestionnaireDessin.largeur" [attr.fill]="gestionnaireDessin.couleur" />
     <g *ngFor="let SVG of stockage.getSVGComplets() | keyvalue;" [innerHTML]="SVG.value"></g>
     <g [innerHTML]="stockage.getSVGEnCoursHTML()"></g>
+    <g [innerHTML]="stockage.getPerimetreEnCoursHTML()"></g>
 </svg>

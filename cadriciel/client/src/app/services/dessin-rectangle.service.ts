@@ -24,24 +24,50 @@ export class DessinRectangleService {
       const baseX = Math.min(this.xInitial, mouse.offsetX);
       const baseY = Math.min(this.yInitial, mouse.offsetY);
       const optionChoisie = this.outils.outilActif.parametres[1].optionChoisie;
+      const epaisseur = (this.outils.outilActif.parametres[0].valeur) ? this.outils.outilActif.parametres[0].valeur : 0;
 
-      // La forme est une ligne
-      if (this.largeur === 0 || this.hauteur === 0) {
+      // La forme est une ligne (seulement dans le cas où le rectangle a un contour)
+      if ((this.largeur === 0 || this.hauteur === 0) && optionChoisie !== 'Plein') {
+        // La ligne à tracer
         this.stockageSVG.setSVGEnCours(
           '<line stroke-linecap="square'
-          + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleurSecondaire : 'transparent')
-          + '" stroke-width="' + this.outils.outilActif.parametres[0].valeur
+          + '" stroke="' + this.couleurSecondaire
+          + '" stroke-width="' + epaisseur
           + '" x1="' + baseX + '" y1="' + baseY
           + '" x2="' + (baseX + this.largeur) + '" y2="' + (baseY + this.hauteur) + '"/>'
         );
-      } else {  // La forme est un rectangle
+        // Le périmètre autour de la ligne
+        this.stockageSVG.setPerimetreEnCours(
+          '<rect stroke="gray" fill="transparent" stroke-width="2'
+          + '" x="' + (baseX - epaisseur / 2) + '" y="' + (baseY - epaisseur / 2)
+          + '" height="' + ((this.hauteur === 0) ? epaisseur : (this.hauteur + epaisseur))
+          + '" width="' + ((this.largeur === 0) ? epaisseur : (this.largeur + epaisseur)) + '"/>'
+        );
+      // La forme est un rectangle
+      } else {
+        // Le rectangle à tracer
         this.stockageSVG.setSVGEnCours(
           '<rect fill="' + ((optionChoisie !== 'Contour') ? this.couleurPrimaire : 'transparent')
           + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleurSecondaire : 'transparent')
-          + '" stroke-width="' + this.outils.outilActif.parametres[0].valeur
+          + '" stroke-width="' + epaisseur
           + '" x="' + baseX + '" y="' + baseY
           + '" width="' + this.largeur + '" height="' + this.hauteur + '"/>'
         );
+        // Le périmètre autour du rectangle (prend en compte l'épaisseur si le rectangle a un contour)
+        if (optionChoisie === 'Plein') {
+          this.stockageSVG.setPerimetreEnCours(
+            '<rect stroke="gray" fill="transparent" stroke-width="2'
+            + '" x="' + baseX + '" y="' + baseY
+            + '" height="' + this.hauteur + '" width="' + this.largeur + '"/>'
+          );
+        } else {
+          this.stockageSVG.setPerimetreEnCours(
+            '<rect stroke="gray" fill="transparent" stroke-width="2'
+            + '" x="' + (baseX - epaisseur / 2) + '" y="' + (baseY - epaisseur / 2)
+            + '" height="' + (this.hauteur + epaisseur)
+            + '" width="' + (this.largeur + epaisseur) + '"/>'
+          );
+        }
       }
     }
   }
@@ -58,10 +84,11 @@ export class DessinRectangleService {
 
   onMouseReleaseRectangle(mouse: MouseEvent) {
     this.rectangleEnCours = false;
+    // On évite de créer des formes vides
     if (this.largeur !== 0 || this.hauteur !== 0) {
-      console.log('SVG: ' + this.stockageSVG.getSVGEnCours() + '"/>');
       this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '"/>');
     }
     this.stockageSVG.setSVGEnCours('');
+    this.stockageSVG.setPerimetreEnCours('');
   }
 }

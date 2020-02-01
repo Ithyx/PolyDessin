@@ -9,6 +9,7 @@ export class StockageSvgService {
 
   private SVGEnCoursString = '';
   private SVGEnCours: SafeHtml;
+  private PerimetreEnCours: SafeHtml;
   private SVGComplets = new Map<number, SafeHtml>();
 
   ajouterSVG(SVG: string) {
@@ -25,9 +26,17 @@ export class StockageSvgService {
     return this.SVGEnCours
   }
 
+  getPerimetreEnCoursHTML(): SafeHtml {
+    return this.PerimetreEnCours
+  }
+
   setSVGEnCours(SVG: string) {
     this.SVGEnCoursString = SVG;
     this.SVGEnCours = this.sanitizer.bypassSecurityTrustHtml(SVG);
+  }
+
+  setPerimetreEnCours(SVG: string) {
+    this.PerimetreEnCours = this.sanitizer.bypassSecurityTrustHtml(SVG);
   }
 
   getSVGComplets(): Map<number, SafeHtml> {
