@@ -32,8 +32,21 @@ describe('GuideSujetComponent', () => {
     expect(component.notification.emit).toHaveBeenCalledWith(sujet);
   });
 
-  it('si onClick() est appelé sur une catégorie celle-ci devrait être ouverte', () => {
-    // const sujet: GuideSujet = CONTENU_GUIDE[1];   // Catégorie des outils
+  it('si onClick() est appelé sur un sujet celui-ci doit être émit via notification', () => {
+    component.noeud = CONTENU_GUIDE[0];   // Sujet de Bienvenue
+    spyOn(component.notification, 'emit');
 
+    component.onClick();
+
+    expect(component.notification.emit).toHaveBeenCalledWith(CONTENU_GUIDE[0]);
+  })
+
+  it('si onClick() est appelé sur une catégorie celle-ci devrait être ouverte', () => {
+      component.noeud = CONTENU_GUIDE[1];   // Catégorie des outils
+      component.noeud.categorieOuverte = false;
+      component.onClick();
+      expect(component.noeud.categorieOuverte).toBe(true);
   });
+
+
 });

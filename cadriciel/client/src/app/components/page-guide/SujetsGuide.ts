@@ -28,9 +28,10 @@ export const CONTENU_GUIDE: GuideSujet[] = [
                 nom: 'Crayon',
                 description: `<h1> Crayon </h1>
                               <hr>
-                              <p> Le crayon est l'outil de traçage de base permettant de dessiner de simple trait avec une pointe roude.</p>
+                              <p> Le crayon est l'outil de traçage de base permettant de dessiner de simples traits
+                              avec une pointe ronde. </p>
                               <img src="assets/crayon.gif" width="300" height="300">
-                              <p> Les paramètres personalisable sont:
+                              <p> Les paramètres personalisables sont:
                               <li> Épaisseur du trait (en px) </li> </p>`,
                 precedant: true,
                 suivant: true,
@@ -41,9 +42,8 @@ export const CONTENU_GUIDE: GuideSujet[] = [
                 nom: 'Pinceau',
                 description: `<h1> Pinceau </h1>
                               <hr>
-                              <p> Le pinceau est très similaire au crayon mais offre une texture supplémentaire.</p>
-                              <p color="red"> insérer gif utilisation pinceau ici </p>
-                              <p> Les paramètres personalisable sont:
+                              <p> Le pinceau est très similaire au crayon, mais offre une texture supplémentaire.</p>
+                              <p> Les paramètres personalisables sont:
                               <li> Épaisseur du trait (en px) </li> <li> Texture du trait </li> </p>`,
                 precedant: true,
                 suivant: true,
@@ -57,10 +57,10 @@ export const CONTENU_GUIDE: GuideSujet[] = [
                               <p> Après avoir sélectionné l'outil, il suffit à l'utilisateur de "glisser-déposer" vers la zone de dessin
                               pour créer un rectangle. En maintenant le clic gauche enfoncé, on peut choisir la forme de notre rectangle
                               en navigant avec la souris. </p>
-                              <p color="red"> insérer gif utilisation rectangle ici </p>
+                              <img src="assets/rectangle.gif" width="300" height="300">
                               <p> L'enfoncement de la touche SHIFT transforme le rectangle en cours de création au carré le plus proche et
                               vice-versa. </p>
-                              <p> Les paramètres personalisable sont:
+                              <p> Les paramètres personalisables sont:
                               <li> Épaisseur du trait de coutour (en px) </li> <li> Type de tracé </li> </p>`,
                 precedant: true,
                 suivant: true,
@@ -79,7 +79,7 @@ export const CONTENU_GUIDE: GuideSujet[] = [
                               <p> En enfonçant la touche SHIFT, le segment en cours s'aligne avec l'axe des X par rapport à un angle de
                               45 degrés. Il est aussi possible d'annuler la ligne sans son entièreté avec la touche ESPACE. Pour supprimer
                               uniquement le dernier segment (sauf le premier), appuyez sur BACKSPACE.</p>
-                              <p> Les paramètres personalisable sont:
+                              <p> Les paramètres personalisables sont:
                               <li> Épaisseur du trait (en px) </li> <li> Type de jonction </li>
                               <li> Diamètre des jonctions </li></p>`,
                 precedant: true,
@@ -96,9 +96,9 @@ export const CONTENU_GUIDE: GuideSujet[] = [
                               et la couleur "secondaire" qui sont interversible. </p>
                               <p color="red"> insérer gif utilisation couleur ici </p>
                               <p> Pour choisir une couleur, l'utilisateur peut soit se déplacer sur une palette de couleur ou bien
-                              directement marqué des valeurs RGB en hexadécimal de la couleur qu'il souhaite. </p>
+                              directement marquer des valeurs RGB en hexadécimal de la couleur qu'il souhaite. </p>
                               <p> L'outil se rappelle aussi des 10 dernières couleurs choisis par l'utilisateur.</p>
-                              <p> Les paramètres personalisable sont:
+                              <p> Les paramètres personalisables sont:
                               <li> Le code RGB </li> <li> L'opacité </li> </p>`,
                 precedant: true,
                 suivant: false,
