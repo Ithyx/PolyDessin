@@ -24,4 +24,11 @@ export class BarreOutilsComponent {
       this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].valeur = Number(eventCast.value);
     }
   }
+
+  onSelect(event: Event, parametreNom: string) {
+    const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
+    if (typeof eventCast.value === 'string') {
+      this.outils.outilActif.parametres[this.outils.trouverIndexParametre(parametreNom)].optionChoisie = eventCast.value;
+    }
+  }
 }

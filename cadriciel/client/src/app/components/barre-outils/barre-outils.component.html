@@ -31,7 +31,7 @@
             <!-- Le paramètre est un 'select' avec plusieurs options -->
             <div *ngIf="parametre.type == 'select'; else elseBlock">
                 <label [for]="parametre.nom">{{parametre.nom}}</label>
-                <select [name]="parametre.nom">
+                <select [name]="parametre.nom" (change)="onSelect($event, parametre.nom)">
                     <option *ngFor="let option of parametre.options" [value]="option">{{option}}</option>
                 </select>
             </div>

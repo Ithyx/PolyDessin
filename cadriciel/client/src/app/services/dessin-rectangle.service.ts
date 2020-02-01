@@ -6,27 +6,31 @@ import { StockageSvgService } from './stockage-svg.service';
   providedIn: 'root'
 })
 export class DessinRectangleService {
-  epaisseur: number;
-  couleur: string;
-  typeTrace: string;
   rectangleEnCours = false;
   xInitial: number;
   yInitial: number;
+  largeur = 0;
+  hauteur = 0;
+  // Valeurs par défaut pour tests
+  couleurPrimaire = 'red';
+  couleurSecondaire = 'black';
 
   constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
 
   onMouseMoveRectangle(mouse: MouseEvent) {
     if (this.rectangleEnCours) {
-      const largeur = Math.abs(this.xInitial - mouse.offsetX);
-      const hauteur = Math.abs(this.yInitial - mouse.offsetY);
+      this.largeur = Math.abs(this.xInitial - mouse.offsetX);
+      this.hauteur = Math.abs(this.yInitial - mouse.offsetY);
       const baseX = Math.min(this.xInitial, mouse.offsetX);
       const baseY = Math.min(this.yInitial, mouse.offsetY);
+      const optionChoisie = this.outils.outilActif.parametres[1].optionChoisie;
 
       this.stockageSVG.setSVGEnCours(
-        '<rect fill="transparent" stroke="black" stroke-width="'
-        + this.outils.outilActif.parametres[0].valeur + '" x="'
-        + baseX + '" y="' + baseY + '" width="'
-        + largeur + '" height="' + hauteur + '"/>'
+        '<rect fill="' + ((optionChoisie !== 'Contour') ? this.couleurPrimaire : 'transparent')
+        + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleurSecondaire : 'transparent')
+        + '" stroke-width="' + this.outils.outilActif.parametres[0].valeur
+        + '" x="' + baseX + '" y="' + baseY
+        + '" width="' + this.largeur + '" height="' + this.hauteur + '"/>'
       );
     }
   }
@@ -35,6 +39,8 @@ export class DessinRectangleService {
     this.rectangleEnCours = true;
     this.xInitial = mouse.offsetX;
     this.yInitial = mouse.offsetY;
+    this.largeur = 0;
+    this.hauteur = 0;
   }
 
   onMouseReleaseRectangle(mouse: MouseEvent) {
