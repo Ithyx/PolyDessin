@@ -5,6 +5,8 @@ import { StockageSvgService } from './stockage-svg.service';
 describe('StockageSvgService', () => {
   let SVG: string ;
   let SVGHTML: SafeHtml;
+  let perimetre: string;
+  let perimetreHTML: SafeHtml;
   let service: StockageSvgService;
   let sanitizer: DomSanitizer;
 
@@ -14,6 +16,8 @@ describe('StockageSvgService', () => {
   beforeEach(() => sanitizer = TestBed.get(DomSanitizer));
   beforeEach(() => SVGHTML = sanitizer.bypassSecurityTrustHtml(
     '<path fill="transparent" stroke="black" stroke-width="1" d="M467 330 L460 300"/>'));
+  beforeEach(() => perimetre = '<rect fill="transparent" stroke="gray" stroke-width="2" x="0" y="0" width="15" height="15"/>');
+  beforeEach(() => perimetreHTML = sanitizer.bypassSecurityTrustHtml(perimetre));
 
   it('should be created', () => {
     const Testservice: StockageSvgService = TestBed.get(StockageSvgService);
@@ -31,5 +35,10 @@ describe('StockageSvgService', () => {
     expect(service.getSVGEnCoursHTML()).toEqual(SVGHTML);
     expect(service.getSVGEnCours()).toEqual(SVG.slice(0, -3));      // Meilleur variable autre que SVG.slice(0,-3) ?
   })
+
+  it('#setPerimetreEnCours devrait modifier le PerimetreEnCours', () => {
+    service.setPerimetreEnCours(perimetre);
+    expect(service.getPerimetreEnCoursHTML()).toEqual(perimetreHTML);
+  });
 
 });
