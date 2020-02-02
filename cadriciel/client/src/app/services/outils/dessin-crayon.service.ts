@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { GestionnaireOutilsService } from './outils/gestionnaire-outils.service';
-import { StockageSvgService } from './stockage-svg.service';
+import { StockageSvgService } from '../stockage-svg.service';
+import { GestionnaireOutilsService } from './gestionnaire-outils.service';
 
 @Injectable({
   providedIn: 'root'

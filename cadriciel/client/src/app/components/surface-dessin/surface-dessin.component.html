@@ -1,4 +1,29 @@
 <svg class="vue-dessin" [attr.width.px]="gestionnaireDessin.longueur" [attr.height.px]="gestionnaireDessin.hauteur" [attr.width.px]="gestionnaireDessin.largeur" version="1.1" xlmns="http://www.w3.org/2000/svg">
+    
+    <defs>
+        <!-- Texture provenant de Developpeur Modzilla-->
+        <filter id="flou">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+        </filter>
+
+        <filter id="feOffset" x="-40" y="-20" width="100" height="200">
+            <feOffset in="SourceGraphic" dx="60" dy="60" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur2" />
+            <feMerge>
+                <feMergeNode in="blur2" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+
+        <filter id="turbulence2">
+                <feTurbulence type="turbulence" baseFrequency="0.05"
+                    numOctaves="2" result="turbulence"/>
+                <feDisplacementMap in2="turbulence" in="SourceGraphic"
+                    scale="50" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+
+    </defs>
+    
     <rect x="0" y="0" [attr.width.px]="gestionnaireDessin.longueur" [attr.height.px]="gestionnaireDessin.hauteur" [attr.width.px]="gestionnaireDessin.largeur" [attr.fill]="gestionnaireDessin.couleur" />
     <g *ngFor="let SVG of stockage.getSVGComplets() | keyvalue;" [innerHTML]="SVG.value"></g>
     <g [innerHTML]="stockage.getSVGEnCoursHTML()"></g>

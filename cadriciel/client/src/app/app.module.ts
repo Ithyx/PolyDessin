@@ -16,7 +16,7 @@ import { PageGuideComponent } from './components/page-guide/page-guide.component
 import { SurfaceDessinComponent } from './components/surface-dessin/surface-dessin.component';
 
 // Service
-import { DessinCrayonService } from './services/dessin-crayon.service';
+import { DessinCrayonService } from './services/outils/dessin-crayon.service';
 import { DessinManagerService } from './services/dessin-manager/dessin-manager.service';
 import { FormulaireNouveauDessinService } from './services/formulaire-nouveau-dessin.service';
 import { GestionnaireRaccourcisService } from './services/gestionnaire-raccourcis.service';
