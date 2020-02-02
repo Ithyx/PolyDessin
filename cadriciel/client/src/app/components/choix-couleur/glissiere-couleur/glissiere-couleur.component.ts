@@ -1,5 +1,5 @@
-import { Component, ViewChild, ElementRef, AfterViewInit,
-   Output, HostListener, EventEmitter } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener,
+   Output, ViewChild } from '@angular/core'
 
 @Component({
   selector: 'app-glissiere-couleur',

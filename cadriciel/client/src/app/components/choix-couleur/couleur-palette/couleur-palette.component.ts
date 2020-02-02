@@ -1,5 +1,5 @@
-import { Component,ViewChild, ElementRef, AfterViewInit, Input,
-Output, SimpleChanges, OnChanges, EventEmitter, HostListener, } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter,  HostListener, Input, OnChanges,
+Output, SimpleChanges, ViewChild, } from '@angular/core';
 
 @Component({
   selector: 'app-couleur-palette',
@@ -34,13 +34,13 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges {
   }
 
   getColorAtPosition(x: number, y: number) {
-    const imageData = this.ctx.getImageData(x, y, 1, 1,).data
+    const imageData = this.ctx.getImageData(x, y, 1, 1).data
     return(
       'rgba(' + imageData[0] + ',' + imageData[1] + ',' + imageData[2] + ',1)')
   }
 
   emitColor(x: number, y: number) {
-    const rgbaColor = this.getColorAtPosition(x,y)
+    const rgbaColor = this.getColorAtPosition(x, y)
     this.color.emit(rgbaColor)
   }
 

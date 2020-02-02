@@ -21,15 +21,15 @@ import { NavigationGuideService } from './services/navigation-guide.service';
 
 // Module
 import { ChoixCouleurModule } from './components/choix-couleur/choix-couleur.module';
-import { GlissiereCouleurComponent } from './components/choix-couleur/glissiere-couleur/glissiere-couleur.component'
+import { ChoixCouleurComponent } from './components/choix-couleur/choix-couleur.component'
 
 
 
 @NgModule({
     declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent,
-        FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, GlissiereCouleurComponent],
+        FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, ChoixCouleurComponent],
     imports: [BrowserModule, ChoixCouleurModule, HttpClientModule, MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
-        {path: '', component: GlissiereCouleurComponent},
+        {path: '', component: ChoixCouleurComponent},
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ])],
