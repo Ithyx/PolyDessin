@@ -1,15 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
 import { DessinRectangleService } from './dessin-rectangle.service';
-import { StockageSvgService } from './stockage-svg.service';
-
-/* Service stub pour réduire les dépendances */
-const sourisRelachee: StockageSvgService = {
-   SVGEnCoursString = '';
-   SVGEnCours: SafeHtml;
-   PerimetreEnCours: SafeHtml;
-   SVGComplets = new Map<number, SafeHtml>();
-};
 
 describe('DessinRectangleService', () => {
   let service: DessinRectangleService;
@@ -82,7 +73,5 @@ describe('DessinRectangleService', () => {
   /*it('#onMouseReleaseRectangle devrait incrementer correctement la fonction ajouterSVG', () =>{
     service.rectangleEnCours = true;
     service.hauteur = 10; service.largeur = 10;
-
   })*/
-  
 });

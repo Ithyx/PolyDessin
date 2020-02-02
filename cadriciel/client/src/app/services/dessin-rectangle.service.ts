@@ -21,11 +21,21 @@ export class DessinRectangleService {
     if (this.rectangleEnCours) {
       this.largeur = Math.abs(this.xInitial - mouse.offsetX);
       this.hauteur = Math.abs(this.yInitial - mouse.offsetY);
-      const baseX = Math.min(this.xInitial, mouse.offsetX);
-      const baseY = Math.min(this.yInitial, mouse.offsetY);
+      let baseX = Math.min(this.xInitial, mouse.offsetX);
+      let baseY = Math.min(this.yInitial, mouse.offsetY);
       const optionChoisie = this.outils.outilActif.parametres[1].optionChoisie;
       const epaisseur = (this.outils.outilActif.parametres[0].valeur) ? this.outils.outilActif.parametres[0].valeur : 0;
 
+      // Lorsque la touche 'shift' est enfoncée, la forme à dessiner est un carré
+      if (mouse.shiftKey) {
+        if (this.largeur < this.hauteur) {
+          baseY = (baseY === this.yInitial) ? baseY : (baseY + (this.hauteur - this.largeur));
+          this.hauteur = this.largeur;
+        } else {
+          baseX = (baseX === this.xInitial) ? baseX : (baseX + (this.largeur - this.hauteur));
+          this.largeur = this.hauteur;
+        }
+      }
       // La forme est une ligne (seulement dans le cas où le rectangle a un contour)
       if ((this.largeur === 0 || this.hauteur === 0) && optionChoisie !== 'Plein') {
         // La ligne à tracer
