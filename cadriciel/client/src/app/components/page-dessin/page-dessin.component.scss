@@ -1,5 +1,8 @@
 .zone-travail {
     background-color: darkgray;
-    margin-left: 510px;
+    min-width: 100%;
+    width: auto;
+    display: inline-block;
+    min-height: 100%;
     height: auto;
 }
