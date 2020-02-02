@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-fenetre-new-dessin',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FenetreNewDessinComponent implements OnInit {
 
-  constructor() { }
+  constructor(public dialogRef: MatDialogRef<FenetreNewDessinComponent>) { }
 
-  ngOnInit() {
+  fermerFenetre() {
+    this.dialogRef.close();
   }
+
+ creationDessin() {
+   this.dialogRef.close();
+ }
+
+  ngOnInit() { }
 
 }

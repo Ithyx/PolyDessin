@@ -1,10 +1,9 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule, MatDialogModule} from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-
-// Components
 import { AccueilComponent } from './components/accueil/accueil.component';
 import { AppComponent } from './components/app/app.component';
 import { BarreOutilsComponent } from './components/barre-outils/barre-outils.component';
@@ -13,12 +12,12 @@ import { GuideSujetComponent } from './components/guide-sujet/guide-sujet.compon
 import { OutilDessinComponent } from './components/outil-dessin/outil-dessin.component';
 import { PageDessinComponent } from './components/page-dessin/page-dessin.component';
 import { PageGuideComponent } from './components/page-guide/page-guide.component';
-import { SurfaceDessinComponent } from './components/surface-dessin/surface-dessin.component';
+
 
 
 // Service
 import { NavigationGuideService } from './services/navigation-guide.service';
-import { StockageSvgService } from './services/stockage-svg.service';
+
 
 // Module
 import { ChoixCouleurModule } from './components/choix-couleur/choix-couleur.module';
@@ -27,14 +26,14 @@ import { ChoixCouleurModule } from './components/choix-couleur/choix-couleur.mod
 
 @NgModule({
     declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent,
-        FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent,
-         ],
-    imports: [BrowserModule, ChoixCouleurModule, HttpClientModule, MatButtonModule, RouterModule.forRoot([
+        FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent],
+    imports: [BrowserModule, ChoixCouleurModule, HttpClientModule, MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
         {path: '', component: AccueilComponent},
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ])],
-    providers: [NavigationGuideService, StockageSvgService],
+    providers: [NavigationGuideService],
+    entryComponents:[FenetreNewDessinComponent],
     bootstrap: [AppComponent],
 })
 export class AppModule {}
