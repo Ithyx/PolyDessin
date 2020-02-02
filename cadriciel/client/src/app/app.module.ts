@@ -22,12 +22,12 @@ import { StockageSvgService } from './services/stockage-svg.service';
 
 // Module
 import { ChoixCouleurModule } from './components/choix-couleur/choix-couleur.module';
-import { CouleurPaletteComponent } from './choix-couleur/couleur-palette/couleur-palette.component'
+
 
 
 @NgModule({
     declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent,
-        FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent, CouleurPaletteComponent,
+        FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent,
          ],
     imports: [BrowserModule, ChoixCouleurModule, HttpClientModule, MatButtonModule, RouterModule.forRoot([
         {path: '', component: AccueilComponent},

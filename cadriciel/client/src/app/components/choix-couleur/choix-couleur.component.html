@@ -1,1 +1,12 @@
-<p>choix-couleur works!</p>
+<div>
+    <app-couleur-palette [hue]="hue" (color)="color = $event">
+    </app-couleur-palette>
+    <app-glissiere-couleur (color)="hue = $event"
+        style = "margin-left:16px"></app-glissiere-couleur>     
+</div>
+
+<div>
+    <span></span>
+    <div [ngStyle]= "{'background-color': color || 'white' }">
+        </div>
+</div>

@@ -4,7 +4,7 @@ import { Component, ViewChild, ElementRef, AfterViewInit,
 @Component({
   selector: 'app-glissiere-couleur',
   templateUrl: './glissiere-couleur.component.html',
-  styleUrls: ['./glissiere-couleur.component.css']
+  styleUrls: ['./glissiere-couleur.component.scss']
 })
 
 export class GlissiereCouleurComponent implements AfterViewInit {
@@ -24,9 +24,9 @@ export class GlissiereCouleurComponent implements AfterViewInit {
 
   draw() {
 
-    if (!this.ctx) {
+   /* if (!this.ctx) {
       this.ctx = this.canvas.nativeElement.getContext('2d')
-    }
+    } */
 
     const width = this.canvas.nativeElement.width
     const height = this.canvas.nativeElement.height
