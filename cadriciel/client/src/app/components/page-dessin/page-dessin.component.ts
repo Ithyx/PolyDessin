@@ -1,6 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { DessinCrayonService } from 'src/app/services/dessin-crayon.service';
 import { DessinRectangleService } from 'src/app/services/dessin-rectangle.service'
+import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { GestionnaireOutilsService } from 'src/app/services/outils/gestionnaire-outils.service';
 import { StockageSvgService } from 'src/app/services/stockage-svg.service';
 
@@ -14,12 +15,13 @@ export class PageDessinComponent {
   constructor(public stockage: StockageSvgService,
               private outils: GestionnaireOutilsService,
               private crayon: DessinCrayonService,
-              private rectangle: DessinRectangleService
+              private rectangle: DessinRectangleService,
+              private raccourcis: GestionnaireRaccourcisService
     ) { }
 
   @HostListener('document:keydown', ['$event'])
   selectCrayon(event: KeyboardEvent) {
-    console.log('crayon sélectionné touche: ', event.key);
+    this.raccourcis.traiterInput(event);
   }
 
   onClick(mouse: MouseEvent) {

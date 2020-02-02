@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
 
+export const INDEX_OUTIL_CRAYON = 0;
+export const INDEX_OUTIL_PINCEAU = 1;
+export const INDEX_OUTIL_RECTANGLE = 2;
+export const INDEX_OUTIL_LIGNE = 3;
+
 export interface ParametreOutil {
   type: string;
   nom: string;
