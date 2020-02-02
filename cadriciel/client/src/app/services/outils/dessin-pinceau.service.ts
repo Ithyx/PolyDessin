@@ -11,7 +11,8 @@ export class DessinPinceauService {
 
   onClickPinceau(click: MouseEvent) {
     if (this.outils.outilActif.parametres[0].valeur) {
-      const SVG = '<circle filter="url(#turbulence2)"  cx="' + click.offsetX + '" cy="' + click.offsetY + '" r="' 
+      const SVG = '<circle filter="url(#' + this.outils.outilActif.parametres[1].optionChoisie
+      + ')"  cx="' + click.offsetX + '" cy="' + click.offsetY + '" r="'
       + this.outils.outilActif.parametres[0].valeur / 2 + '" fill="black"/>';
       this.stockageSVG.ajouterSVG(SVG);
     }
@@ -26,7 +27,8 @@ export class DessinPinceauService {
 
   onMousePressPinceau(mouse: MouseEvent) {
     this.stockageSVG.setSVGEnCours(
-      '<path filter="url(#turbulence2)"  fill="transparent" stroke="black" stroke-linecap="round" stroke-width="' 
+      '<path filter="url(#' + this.outils.outilActif.parametres[1].optionChoisie
+      + ')"  fill="transparent" stroke="black" stroke-linecap="round" stroke-width="'
       + this.outils.outilActif.parametres[0].valeur + '" d="M' + mouse.offsetX + ' ' + mouse.offsetY + '"/>');
   }
 
