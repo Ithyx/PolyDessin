@@ -1,6 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 
 import { DessinRectangleService } from './dessin-rectangle.service';
+import { StockageSvgService } from './stockage-svg.service';
+
+/* Service stub pour réduire les dépendances */
+const sourisRelachee: StockageSvgService = {
+   SVGEnCoursString = '';
+   SVGEnCours: SafeHtml;
+   PerimetreEnCours: SafeHtml;
+   SVGComplets = new Map<number, SafeHtml>();
+};
 
 describe('DessinRectangleService', () => {
   let service: DessinRectangleService;
@@ -20,7 +29,7 @@ describe('DessinRectangleService', () => {
       expect(service.rectangleEnCours).toBe(true);
     })
 
-  it('#onMousePressRectangle devrait mettre rectangleEnCours actif apres un clic', () => {
+  it('#onMousePressRectangle devrait mettre rectangleEnCours vrai apres un clic', () => {
     service.rectangleEnCours = false;
     // on effectue un clic dans cette fonction
     service.onMousePressRectangle(new MouseEvent('onclick'));
@@ -49,5 +58,31 @@ describe('DessinRectangleService', () => {
     expect(service.hauteur).toBe(0);
     expect(service.largeur).toBe(0);
   })
+
+  it('#onMouseReleaseRectangle devrait mettre rectangleEnCours faux apres un clic', () => {
+    service.rectangleEnCours = true;
+    // on effectue un clic dans cette fonction
+    service.onMouseReleaseRectangle(new MouseEvent('onclick'));
+    // on vérifie que la fonction met rectangleEnCours faux
+    expect(service.rectangleEnCours).toBe(false);
+  })
+
+  it("#onMouseReleaseRectangle devrait s'assurer que le curseur n'est pas nul" +
+      'en hauteur et largeur apres un relachement de clic', () => {
+    service.rectangleEnCours = true;
+    service.hauteur = 0; service.largeur = 0;
+    // on effectue un clic dans cette fonction
+    service.onMouseReleaseRectangle(new MouseEvent('onclick'));
+    // on vérifie que la fonction garde hauteur et largeur à 0
+    expect(service.rectangleEnCours).toBe(false);
+    expect(service.hauteur).toBe(0);
+    expect(service.largeur).toBe(0);
+  })
+
+  /*it('#onMouseReleaseRectangle devrait incrementer correctement la fonction ajouterSVG', () =>{
+    service.rectangleEnCours = true;
+    service.hauteur = 10; service.largeur = 10;
+
+  })*/
   
 });
