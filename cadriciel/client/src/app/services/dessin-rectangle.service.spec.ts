@@ -1,15 +1,41 @@
 import { TestBed } from '@angular/core/testing';
 
 import { DessinRectangleService } from './dessin-rectangle.service';
+import { StockageSvgService } from './stockage-svg.service';
 
 describe('DessinRectangleService', () => {
   let service: DessinRectangleService;
+  let stockageService: StockageSvgService;
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(DessinRectangleService));
+  beforeEach(() => stockageService = TestBed.get(StockageSvgService));
+  beforeEach(() => service.xInitial = 0);
+  beforeEach(() => service.yInitial = 0);
+  // Mettre l'outil de rectangle comme l'outil actif
+  beforeEach(() => service.outils.outilActif = service.outils.listeOutils[2]);
 
   it('should be created', () => {
     const testService: DessinRectangleService = TestBed.get(DessinRectangleService);
     expect(testService).toBeTruthy();
+  });
+
+  it('#onMouseMoveRectangle ne devrait rien faire si rectangleEnCours est faux', () => {
+    service.rectangleEnCours = false;
+    stockageService.setSVGEnCours('<svg class="test"/>');
+    // on simule un déplacement de souris quelconque
+    service.onMouseMoveRectangle(new MouseEvent('mousemove'));
+    // on vérifie que le SVG n'a pas été modifié
+    expect(stockageService.getSVGEnCours() + '"/>').toEqual('<svg class="test"/>');
+  });
+
+  it('#onMouseMoveRectangle devrait former un carré si shift est enfoncé', () => {
+    service.rectangleEnCours = true;
+    // on simule un mouvement de 20 en x et de 50 en y
+    const event = new MouseEvent('mousemove', { shiftKey: true, clientX: 20, clientY: 50 });
+    service.onMouseMoveRectangle(event);
+    // on vérifie que la forme tracée est un carré de 20px de côté
+    expect(service.largeur).toBe(20);
+    expect(service.hauteur).toBe(20);
   });
 
   it("#onMousePressRectangle devrait avoir rectangleEnCours vrai apres un clic s'il est deja vrai", () => {
@@ -70,6 +96,7 @@ describe('DessinRectangleService', () => {
     expect(service.largeur).toBe(0);
   })
 
+  // TODO: tests de onMouseRelease liés à l'utilisation du service de stockage SVG
   /*it('#onMouseReleaseRectangle devrait incrementer correctement la fonction ajouterSVG', () =>{
     service.rectangleEnCours = true;
     service.hauteur = 10; service.largeur = 10;
