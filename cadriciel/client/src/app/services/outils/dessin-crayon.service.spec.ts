@@ -23,7 +23,7 @@ describe('DessinCrayonService', () => {
     const testService: DessinCrayonService = TestBed.get(DessinCrayonService);
     expect(testService).toBeTruthy();
   });
-  
+
   // TESTS sourisCliquee
 
   it("#sourisCliquee devrait seulement être appelé si l'outil crayon est sélectionné", () => {
