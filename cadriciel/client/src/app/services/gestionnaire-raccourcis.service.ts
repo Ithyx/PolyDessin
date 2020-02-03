@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DessinRectangleService } from './dessin-rectangle.service';
+import { DessinRectangleService } from './outils/dessin-rectangle.service';
 import { GestionnaireOutilsService, INDEX_OUTIL_CRAYON,
          INDEX_OUTIL_LIGNE, INDEX_OUTIL_PINCEAU , INDEX_OUTIL_RECTANGLE } from './outils/gestionnaire-outils.service';
 

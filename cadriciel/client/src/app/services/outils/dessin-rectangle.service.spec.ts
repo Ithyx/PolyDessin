@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
+import { StockageSvgService } from '../stockage-svg.service';
 import { DessinRectangleService } from './dessin-rectangle.service';
-import { StockageSvgService } from './stockage-svg.service';
 
 describe('DessinRectangleService', () => {
   const referenceSVG = '<rect fill="transparent" stroke="black" stroke-width="5" x="0" y="0" width="20" height="50"/>';
