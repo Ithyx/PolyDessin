@@ -137,6 +137,14 @@ describe('DessinRectangleService', () => {
     service.onShiftPressedRectangle();
     expect(service.baseY).toBe(55);
   });
+  it('#onShiftPressedRectangle ne devrait pas corriger la base en Y si elle est égale '
+    + 'au Y initial et que la largeur est supérieure à la hauteur', () => {
+    service.baseYCalculee = 0;
+    service.largeurCalculee = 5;
+    service.hauteurCalculee = 10;
+    service.onShiftPressedRectangle();
+    expect(service.baseY).toBe(0);
+  });
   it('#onShiftPressedRectangle devrait corriger la base en X si elle diffère '
     + 'du X initial et que la hauteur est supérieure à la largeur', () => {
     service.baseXCalculee = 50;
@@ -144,6 +152,14 @@ describe('DessinRectangleService', () => {
     service.hauteurCalculee = 5;
     service.onShiftPressedRectangle();
     expect(service.baseX).toBe(55);
+  });
+  it('#onShiftPressedRectangle ne devrait pas corriger la base en X si elle est égale '
+    + 'au X initial et que la hauteur est supérieure à la largeur', () => {
+    service.baseXCalculee = 0;
+    service.largeurCalculee = 10;
+    service.hauteurCalculee = 5;
+    service.onShiftPressedRectangle();
+    expect(service.baseX).toBe(0);
   });
 
   // TESTS SUR LA CRÉATION DE RECTANGLES
@@ -183,6 +199,20 @@ describe('DessinRectangleService', () => {
     service.onMouseMoveRectangle(evenement);
     // on vérifie le SVG qui a été tracé
     expect(stockageService.getSVGEnCours() + '"/>').toEqual(referenceSVG);
+  });
+  it("#actualiserSVG devrait tracer un rectangle sans contour si l'épaisseur"
+    + 'est invalide', () => {
+    service.outils.outilActif = {
+      nom: 'outilActifTest',
+      estActif: true,
+      ID: 0,
+      parametres: [
+        {type: 'select', nom: 'testEpaisseurInvalide', optionChoisie: '1', options: ['1', '2']},
+        {type: 'select', nom: 'testTypeTrace', optionChoisie: '1', options: ['1', '2']}
+      ]
+    };
+    service.actualiserSVG();
+    expect(stockageService.getSVGEnCours()).toContain('stroke-width="0"');
   });
 
   // TESTS SUR LA CRÉATION DE LIGNES

@@ -10,7 +10,7 @@ export interface ParametreOutil {
   nom: string;
   options?: string[];
   optionChoisie?: string;
-  valeur ?: number;
+  valeur?: number;
 }
 
 export interface OutilDessin {
