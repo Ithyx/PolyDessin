@@ -298,7 +298,7 @@ describe('DessinRectangleService', () => {
     // vérifier que la fonction ajouterSVG n'a pas été appelée
     expect(stockageService.ajouterSVG).not.toHaveBeenCalled();
   });
-  it('#onMouseReleaseRectangle devrait appeler correctement la fonction ajouterSVG', () =>{
+  it('#onMouseReleaseRectangle devrait appeler correctement la fonction ajouterSVG', () => {
     stockageService.setSVGEnCours(referenceSVG);
     // la hauteur et la largeur sont non nulles
     service.hauteur = 10;
