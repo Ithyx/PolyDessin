@@ -13,6 +13,8 @@ import { StockageSvgService } from 'src/app/services/stockage-svg.service';
 })
 export class PageDessinComponent {
 
+  hauteurPage: number;
+  largeurPage: number;
   constructor(public stockage: StockageSvgService,
               private outils: GestionnaireOutilsService,
               private crayon: DessinCrayonService,
