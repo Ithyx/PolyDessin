@@ -24,6 +24,11 @@ export class PageDessinComponent {
     this.raccourcis.traiterInput(event);
   }
 
+  @HostListener('document:keyup', ['$event'])
+  toucheRelachee(event: KeyboardEvent) {
+    this.raccourcis.traiterToucheRelachee(event);
+  }
+
   onClick(mouse: MouseEvent) {
     if (this.outils.outilActif.nom === 'Crayon') {
       this.crayon.onClickCrayon(mouse);

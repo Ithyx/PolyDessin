@@ -29,6 +29,8 @@ describe('DessinRectangleService', () => {
     expect(testService).toBeTruthy();
   });
 
+  // TODO: Corriger les tests de onMouseMoveRectangle avec la fonction actualiserSVG
+
   it('#onMouseMoveRectangle ne devrait rien faire si rectangleEnCours est faux', () => {
     service.rectangleEnCours = false;
     stockageService.setSVGEnCours('<rect class="test"/>');
