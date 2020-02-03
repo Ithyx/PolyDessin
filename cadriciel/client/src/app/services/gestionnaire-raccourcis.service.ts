@@ -42,7 +42,7 @@ export class GestionnaireRaccourcisService {
 
       case 'Shift':
         if (this.outils.outilActif.ID === INDEX_OUTIL_RECTANGLE) {
-          this.dessinRectangle.onShiftPressedRectangle();
+          this.dessinRectangle.shiftEnfonce();
         }
         break;
 
@@ -56,7 +56,7 @@ export class GestionnaireRaccourcisService {
     switch (clavier.key) {
       case 'Shift':
         if (this.outils.outilActif.ID === INDEX_OUTIL_RECTANGLE) {
-          this.dessinRectangle.onShiftReleasedRectangle();
+          this.dessinRectangle.shiftRelache();
         }
         break;
 
