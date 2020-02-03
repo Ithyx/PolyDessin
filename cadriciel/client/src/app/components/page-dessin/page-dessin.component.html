@@ -2,12 +2,12 @@
 
 <div class="zone-travail">
     <app-surface-dessin (click)="sourisCliquee($event)"
+                        (dblclick)="sourisDoubleClic($event)"
                         (mousemove)="sourisDeplacee($event)"
                         (mouseup)="sourisRelachee($event)"
                         (mousedown)="sourisEnfoncee($event)"
                         (mouseleave)="sourisSortie($event)"
-                        (mouseenter)="sourisEntree"
-                        (dblclick)="sourisDoubleClic($event)">
+                        (mouseenter)="sourisEntree($event)">
 
     </app-surface-dessin>
 </div>

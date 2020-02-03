@@ -13,6 +13,8 @@ export interface Point {
 })
 export class DessinLigneService implements InterfaceOutils {
   points: Point[] = [];
+  private estClicSimple = true;
+
   constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
   sourisDeplacee(souris: MouseEvent) {
     let SVG = '<polyline fill="none" stroke="black" stroke-width="'
@@ -32,17 +34,13 @@ export class DessinLigneService implements InterfaceOutils {
     /**/
   }
   sourisCliquee(souris: MouseEvent) {
-    console.log('click');
-    this.points.push({x: souris.offsetX, y: souris.offsetY});
-    let SVG = '<polyline fill="none" stroke="black" stroke-width="'
-            + this.outils.outilActif.parametres[0].valeur + '" points="';
-
-    for (const point of this.points) {
-      SVG += ' ' + point.x + ' ' + point.y;
-    }
-
-    SVG += '"/>';
-    this.stockageSVG.setSVGEnCours(SVG);
+    this.estClicSimple = true;
+    const x = souris.offsetX;
+    const y = souris.offsetY;
+    this.points.push({x, y});
+    window.setTimeout(() => {
+      if (this.estClicSimple) {this.detectionSimpleClic(x, y)}
+    }, 250)
   }
   sourisSortie(souris: MouseEvent) {
     /**/
@@ -50,7 +48,27 @@ export class DessinLigneService implements InterfaceOutils {
   sourisEntree(souris: MouseEvent) {
     /**/
   }
+  detectionSimpleClic(x: number, y: number) {
+    this.points.push({x, y});
+    let SVG = '<polyline fill="none" stroke="black" stroke-width="'
+            + this.outils.outilActif.parametres[0].valeur + '" points="';
+
+    for (const point of this.points) {
+      SVG += ' ' + point.x + ' ' + point.y;
+    }
+
+    SVG += '" />';
+    this.stockageSVG.setSVGEnCours(SVG);
+  }
   sourisDoubleClic(souris: MouseEvent) {
-    console.log('double click');
+    this.estClicSimple = false;
+    this.detectionDoubleClic(souris);
+  }
+  detectionDoubleClic(souris: MouseEvent) {
+    if (this.points.length !== 0) {
+      this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '" />');
+      this.stockageSVG.setSVGEnCours('');
+      this.points = [];
+    }
   }
 }
