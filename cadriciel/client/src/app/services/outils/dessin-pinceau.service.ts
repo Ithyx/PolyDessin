@@ -46,12 +46,4 @@ export class DessinPinceauService implements InterfaceOutils {
     this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '"/>');
     this.stockageSVG.setSVGEnCours('');
   }
-
-  sourisEntree(souris: MouseEvent) {
-    /* Rien à faire ici */
-  };
-
-  sourisDoubleClic(souris: MouseEvent) {
-    /* Rien à faire ici */
-  }
 }
