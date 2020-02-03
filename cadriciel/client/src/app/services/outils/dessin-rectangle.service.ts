@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { StockageSvgService } from '../stockage-svg.service';
 import { GestionnaireOutilsService } from './gestionnaire-outils.service'
+import { InterfaceOutils } from './interface-outils'
 
 @Injectable({
   providedIn: 'root'
 })
-export class DessinRectangleService {
+export class DessinRectangleService implements InterfaceOutils {
   rectangleEnCours = false;
   // Coordonnées du clic initial de souris
   xInitial: number;
@@ -74,33 +75,33 @@ export class DessinRectangleService {
     }
   }
 
-  onMouseMoveRectangle(mouse: MouseEvent) {
+  sourisDeplacee(souris: MouseEvent) {
     if (this.rectangleEnCours) {
       // Calcule des valeurs pour former un rectangle
-      this.largeurCalculee = Math.abs(this.xInitial - mouse.offsetX);
-      this.hauteurCalculee = Math.abs(this.yInitial - mouse.offsetY);
-      this.baseXCalculee = Math.min(this.xInitial, mouse.offsetX);
-      this.baseYCalculee = Math.min(this.yInitial, mouse.offsetY);
+      this.largeurCalculee = Math.abs(this.xInitial - souris.offsetX);
+      this.hauteurCalculee = Math.abs(this.yInitial - souris.offsetY);
+      this.baseXCalculee = Math.min(this.xInitial, souris.offsetX);
+      this.baseYCalculee = Math.min(this.yInitial, souris.offsetY);
       // Si shift est enfoncé, les valeurs calculées sont ajustées pour former un carré
-      if (mouse.shiftKey) {
-        this.onShiftPressedRectangle();
+      if (souris.shiftKey) {
+        this.shiftEnfonce();
       } else {
-        this.onShiftReleasedRectangle();
+        this.shiftRelache();
       }
     }
   }
 
-  onMousePressRectangle(mouse: MouseEvent) {
+  sourisEnfoncee(souris: MouseEvent) {
     if (!this.rectangleEnCours) {
       this.rectangleEnCours = true;
-      this.xInitial = mouse.offsetX;
-      this.yInitial = mouse.offsetY;
+      this.xInitial = souris.offsetX;
+      this.yInitial = souris.offsetY;
       this.largeur = 0;
       this.hauteur = 0;
     }
   }
 
-  onMouseReleaseRectangle(mouse: MouseEvent) {
+  sourisRelachee(souris: MouseEvent) {
     this.rectangleEnCours = false;
     // On évite de créer des formes vides
     if (this.largeur !== 0 || this.hauteur !== 0) {
@@ -110,7 +111,7 @@ export class DessinRectangleService {
     this.stockageSVG.setPerimetreEnCours('');
   }
 
-  onShiftPressedRectangle() {
+  shiftEnfonce() {
     if (this.rectangleEnCours) {
       // Lorsque la touche 'shift' est enfoncée, la forme à dessiner est un carré
       if (this.largeurCalculee < this.hauteurCalculee) {
@@ -130,7 +131,7 @@ export class DessinRectangleService {
     }
   }
 
-  onShiftReleasedRectangle() {
+  shiftRelache() {
     if (this.rectangleEnCours) {
       // Lorsque la touche 'shift' est relâchée, la forme à dessiner est un rectangle
       this.baseX = this.baseXCalculee;
@@ -139,5 +140,17 @@ export class DessinRectangleService {
       this.largeur = this.largeurCalculee;
       this.actualiserSVG();
     }
+  }
+
+  sourisCliquee(souris: MouseEvent) {
+    /* Rien à faire ici */
+  }
+
+  sourisEntree(souris: MouseEvent) {
+    /* Rien à faire ici */
+  }
+
+  sourisSortie(souris: MouseEvent) {
+    /* Rien à faire ici */
   }
 }
