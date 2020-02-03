@@ -43,49 +43,49 @@ export class PageDessinComponent {
 
   sourisCliquee(souris: MouseEvent) {
     const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
-    if (outil) {
+    if (outil && outil.sourisCliquee) {
       outil.sourisCliquee(souris);
     }
   }
 
   sourisDeplacee(souris: MouseEvent) {
     const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
-    if (outil) {
+    if (outil && outil.sourisDeplacee) {
       outil.sourisDeplacee(souris);
     }
   }
 
   sourisEnfoncee(souris: MouseEvent) {
     const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
-    if (outil) {
+    if (outil && outil.sourisEnfoncee) {
       outil.sourisEnfoncee(souris);
     }
   }
 
   sourisRelachee(souris: MouseEvent) {
     const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
-    if (outil) {
+    if (outil && outil.sourisRelachee) {
       outil.sourisRelachee(souris);
     }
   }
 
   sourisSortie(souris: MouseEvent) {
     const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
-    if (outil) {
+    if (outil && outil.sourisSortie) {
       outil.sourisSortie(souris);
     }
   }
 
   sourisEntree(souris: MouseEvent) {
     const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
-    if (outil) {
+    if (outil && outil.sourisEntree) {
       outil.sourisEntree(souris);
     }
   }
 
   sourisDoubleClic(souris: MouseEvent) {
     const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
-    if (outil) {
+    if (outil && outil.sourisDoubleClic) {
       outil.sourisDoubleClic(souris);
     }
   }

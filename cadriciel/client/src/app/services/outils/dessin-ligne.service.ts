@@ -23,7 +23,6 @@ export class DessinLigneService implements InterfaceOutils {
     }
 
     SVG += souris.offsetX + ' ' + souris.offsetY + '"/>';
-    console.log(SVG);
     this.stockageSVG.setSVGEnCours(SVG);
   }
   sourisEnfoncee(souris: MouseEvent) {
@@ -33,6 +32,7 @@ export class DessinLigneService implements InterfaceOutils {
     /**/
   }
   sourisCliquee(souris: MouseEvent) {
+    console.log('click');
     this.points.push({x: souris.offsetX, y: souris.offsetY});
     let SVG = '<polyline fill="none" stroke="black" stroke-width="'
             + this.outils.outilActif.parametres[0].valeur + '" points="';
@@ -42,7 +42,6 @@ export class DessinLigneService implements InterfaceOutils {
     }
 
     SVG += '"/>';
-    console.log(SVG);
     this.stockageSVG.setSVGEnCours(SVG);
   }
   sourisSortie(souris: MouseEvent) {
@@ -52,6 +51,6 @@ export class DessinLigneService implements InterfaceOutils {
     /**/
   }
   sourisDoubleClic(souris: MouseEvent) {
-    /**/
+    console.log('double click');
   }
 }
