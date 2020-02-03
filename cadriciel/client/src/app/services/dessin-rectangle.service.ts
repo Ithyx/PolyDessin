@@ -127,7 +127,6 @@ export class DessinRectangleService {
         this.largeur = this.hauteurCalculee;
         this.hauteur = this.hauteurCalculee;
       }
-      this.actualiserSVG();
     }
   }
 
@@ -138,7 +137,6 @@ export class DessinRectangleService {
       this.baseY = this.baseYCalculee;
       this.hauteur = this.hauteurCalculee;
       this.largeur = this.largeurCalculee;
-      this.actualiserSVG();
     }
   }
 }

@@ -41,8 +41,8 @@ describe('DessinRectangleService', () => {
   });
   it('#onMouseMoveRectangle devrait calculer la largeur et la hauteur', () => {
     // on simule un mouvement de 50 en x et en y
-    const event = new MouseEvent('mousemove', { clientX: 50, clientY: 50 });
-    service.onMouseMoveRectangle(event);
+    const evenement = new MouseEvent('mousemove', { clientX: 50, clientY: 50 });
+    service.onMouseMoveRectangle(evenement);
     // on vérifie que la largeur et la hauteur ont les bonnes valeurs
     expect(service.largeur).toBe(50);
     expect(service.hauteur).toBe(50);
@@ -50,16 +50,16 @@ describe('DessinRectangleService', () => {
   it('#onMouseMoveRectangle devrait calculer correctement la largeur et la hauteur '
     + 'pour un déplacement avec des valeurs négatives', () => {
     // on simule un mouvement de -50 en x et en y
-    const event = new MouseEvent('mousemove', { clientX: -50, clientY: -50 });
-    service.onMouseMoveRectangle(event);
+    const evenement = new MouseEvent('mousemove', { clientX: -50, clientY: -50 });
+    service.onMouseMoveRectangle(evenement);
     // on vérifie que la largeur et la hauteur ont les bonnes valeurs
     expect(service.largeur).toBe(50);
     expect(service.hauteur).toBe(50);
   });
   it('#onMouseMoveRectangle devrait calculer la base en X et en Y', () => {
     // on simule un mouvement de 50 en x et en y
-    const event = new MouseEvent('mousemove', { clientX: 50, clientY: 50 });
-    service.onMouseMoveRectangle(event);
+    const evenement = new MouseEvent('mousemove', { clientX: 50, clientY: 50 });
+    service.onMouseMoveRectangle(evenement);
     // on vérifie que les coordonnées de la base ont les bonnes valeurs
     expect(service.baseX).toBe(0);
     expect(service.baseY).toBe(0);
@@ -67,8 +67,8 @@ describe('DessinRectangleService', () => {
   it('#onMouseMoveRectangle devrait calculer correctement la base en X et en Y '
     + 'pour un déplacement avec des valeurs négatives', () => {
     // on simule un mouvement de -50 en x et en y
-    const event = new MouseEvent('mousemove', { clientX: -50, clientY: -50 });
-    service.onMouseMoveRectangle(event);
+    const evenement = new MouseEvent('mousemove', { clientX: -50, clientY: -50 });
+    service.onMouseMoveRectangle(evenement);
     // on vérifie que les coordonnées de la base ont ont les bonnes valeurs
     expect(service.baseX).toBe(-50);
     expect(service.baseY).toBe(-50);
@@ -151,8 +151,8 @@ describe('DessinRectangleService', () => {
   it("#actualiserSVG devrait tracer un rectangle lors d'un mouvement "
     + 'vers le coin inférieur droit', () => {
     // on simule un mouvement de 20 en x et de 50 en y
-    const event = new MouseEvent('mousemove', { clientX: 20, clientY: 50 });
-    service.onMouseMoveRectangle(event);
+    const evenement = new MouseEvent('mousemove', { clientX: 20, clientY: 50 });
+    service.onMouseMoveRectangle(evenement);
     // on vérifie le SVG qui a été tracé
     expect(stockageService.getSVGEnCours() + '"/>').toEqual(referenceSVG);
   });
@@ -160,8 +160,8 @@ describe('DessinRectangleService', () => {
     + 'vers le coin supérieur droit', () => {
     // on simule un mouvement de 20 en x et de -50 en y
     service.yInitial = 50;
-    const event = new MouseEvent('mousemove', { clientX: 20, clientY: 0 });
-    service.onMouseMoveRectangle(event);
+    const evenement = new MouseEvent('mousemove', { clientX: 20, clientY: 0 });
+    service.onMouseMoveRectangle(evenement);
     // on vérifie le SVG qui a été tracé
     expect(stockageService.getSVGEnCours() + '"/>').toEqual(referenceSVG);
   });
@@ -169,8 +169,8 @@ describe('DessinRectangleService', () => {
     + 'vers le coin inférieur gauche', () => {
     // on simule un mouvement de -20 en x et de 50 en y
     service.xInitial = 20;
-    const event = new MouseEvent('mousemove', { clientX: 0, clientY: 50 });
-    service.onMouseMoveRectangle(event);
+    const evenement = new MouseEvent('mousemove', { clientX: 0, clientY: 50 });
+    service.onMouseMoveRectangle(evenement);
     // on vérifie le SVG qui a été tracé
     expect(stockageService.getSVGEnCours() + '"/>').toEqual(referenceSVG);
   });
@@ -179,8 +179,8 @@ describe('DessinRectangleService', () => {
     // on simule un mouvement de -20 en x et de -50 en y
     service.xInitial = 20;
     service.yInitial = 50;
-    const event = new MouseEvent('mousemove', { clientX: 0, clientY: 0 });
-    service.onMouseMoveRectangle(event);
+    const evenement = new MouseEvent('mousemove', { clientX: 0, clientY: 0 });
+    service.onMouseMoveRectangle(evenement);
     // on vérifie le SVG qui a été tracé
     expect(stockageService.getSVGEnCours() + '"/>').toEqual(referenceSVG);
   });
@@ -189,23 +189,23 @@ describe('DessinRectangleService', () => {
 
   it('#actualiserSVG devrait tracer une ligne si la hauteur est nulle', () => {
     // on simule un mouvement de 20 en x et de 0 en y
-    const event = new MouseEvent('mousemove', { clientX: 20, clientY: 0 });
-    service.onMouseMoveRectangle(event);
+    const evenement = new MouseEvent('mousemove', { clientX: 20, clientY: 0 });
+    service.onMouseMoveRectangle(evenement);
     // on vérifie le SVG qui a été tracé
     expect(stockageService.getSVGEnCours()).toContain('<line');
   });
   it('#actualiserSVG devrait tracer une ligne si la largeur est nulle', () => {
     // on simule un mouvement de 0 en x et de 20 en y
-    const event = new MouseEvent('mousemove', { clientX: 0, clientY: 20 });
-    service.onMouseMoveRectangle(event);
+    const evenement = new MouseEvent('mousemove', { clientX: 0, clientY: 20 });
+    service.onMouseMoveRectangle(evenement);
     // on vérifie le SVG qui a été tracé
     expect(stockageService.getSVGEnCours()).toContain('<line');
   });
   it('#actualiserSVG ne devrait pas tracer de ligne si le tracé est plein sans contour', () => {
     // on simule un mouvement de 0 en x et de 20 en y
     service.outils.outilActif.parametres[1].optionChoisie = 'Plein';
-    const event = new MouseEvent('mousemove', { clientX: 0, clientY: 20 });
-    service.onMouseMoveRectangle(event);
+    const evenement = new MouseEvent('mousemove', { clientX: 0, clientY: 20 });
+    service.onMouseMoveRectangle(evenement);
     // on vérifie le SVG qui a été tracé
     expect(stockageService.getSVGEnCours()).toContain('<rect');
   });
@@ -215,8 +215,8 @@ describe('DessinRectangleService', () => {
   it("#actualiserSVG devrait tracer un périmètre en prenant en compte l'épaisseur "
     + "s'il y a un contour", () => {
     // on simule un mouvement de 20 en x et de 50 en y
-    const event = new MouseEvent('mousemove', { clientX: 20, clientY: 50 });
-    service.onMouseMoveRectangle(event);
+    const evenement = new MouseEvent('mousemove', { clientX: 20, clientY: 50 });
+    service.onMouseMoveRectangle(evenement);
     // on vérifie le périmètre qui a été tracé
     expect(String(stockageService.getPerimetreEnCoursHTML())).toContain(
       'x="-2.5" y="-2.5" height="55" width="25"'
@@ -226,8 +226,8 @@ describe('DessinRectangleService', () => {
     + "s'il n'y a pas de contour", () => {
     // on simule un mouvement de 20 en x et de 50 en y
     service.outils.outilActif.parametres[1].optionChoisie = 'Plein';
-    const event = new MouseEvent('mousemove', { clientX: 20, clientY: 50 });
-    service.onMouseMoveRectangle(event);
+    const evenement = new MouseEvent('mousemove', { clientX: 20, clientY: 50 });
+    service.onMouseMoveRectangle(evenement);
     // on vérifie le périmètre qui a été tracé
     expect(String(stockageService.getPerimetreEnCoursHTML())).toContain(
       'x="0" y="0" height="50" width="20"'
@@ -236,8 +236,8 @@ describe('DessinRectangleService', () => {
   it("#actualiserSVG devrait tracer un périmètre autour d'une ligne "
     + 'dans le cas où une ligne est tracée', () => {
     // on simule un mouvement de 0 en x et de 20 en y
-    const event = new MouseEvent('mousemove', { clientX: 0, clientY: 20 });
-    service.onMouseMoveRectangle(event);
+    const evenement = new MouseEvent('mousemove', { clientX: 0, clientY: 20 });
+    service.onMouseMoveRectangle(evenement);
     // on vérifie le périmètre qui a été tracé
     expect(String(stockageService.getPerimetreEnCoursHTML())).toContain(
       'x="-2.5" y="-2.5" height="25" width="5"'
