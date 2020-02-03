@@ -1,9 +1,11 @@
 import { Component, HostListener } from '@angular/core';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { DessinCrayonService } from 'src/app/services/outils/dessin-crayon.service';
+import { DessinLigneService } from 'src/app/services/outils/dessin-ligne.service';
 import { DessinPinceauService } from 'src/app/services/outils/dessin-pinceau.service';
 import { DessinRectangleService } from 'src/app/services/outils/dessin-rectangle.service'
 import { GestionnaireOutilsService } from 'src/app/services/outils/gestionnaire-outils.service';
+import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
 import { StockageSvgService } from 'src/app/services/stockage-svg.service';
 
 @Component({
@@ -13,13 +15,21 @@ import { StockageSvgService } from 'src/app/services/stockage-svg.service';
 })
 export class PageDessinComponent {
 
+  lexiqueOutils: Map<string, InterfaceOutils> = new Map<string, InterfaceOutils>();
+
   constructor(public stockage: StockageSvgService,
-              private outils: GestionnaireOutilsService,
-              private crayon: DessinCrayonService,
-              private rectangle: DessinRectangleService,
-              private pinceau: DessinPinceauService,
-              private raccourcis: GestionnaireRaccourcisService
-    ) { }
+              public outils: GestionnaireOutilsService,
+              public crayon: DessinCrayonService,
+              public rectangle: DessinRectangleService,
+              public pinceau: DessinPinceauService,
+              public ligne: DessinLigneService,
+              public raccourcis: GestionnaireRaccourcisService
+  ) {
+    this.lexiqueOutils.set('Crayon', crayon)
+                      .set('Rectangle', rectangle)
+                      .set('Ligne', ligne)
+                      .set('Pinceau', pinceau);
+  }
 
   @HostListener('document:keydown', ['$event'])
   toucheEnfoncee(event: KeyboardEvent) {
@@ -31,50 +41,52 @@ export class PageDessinComponent {
     this.raccourcis.traiterToucheRelachee(event);
   }
 
-  onClick(mouse: MouseEvent) {
-    if (this.outils.outilActif.nom === 'Crayon') {
-      this.crayon.onClickCrayon(mouse);
-    }
-    if (this.outils.outilActif.nom === 'Pinceau') {
-      this.pinceau.sourisCliquee(mouse);
+  sourisCliquee(souris: MouseEvent) {
+    const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
+    if (outil) {
+      outil.sourisCliquee(souris);
     }
   }
 
-  onMouseMove(mouse: MouseEvent) {
-    if (this.outils.outilActif.nom === 'Crayon' && mouse.buttons === 1) {
-      this.crayon.onMouseMoveCrayon(mouse);
-    } else if (this.outils.outilActif.nom === 'Rectangle') {
-      this.rectangle.onMouseMoveRectangle(mouse);
-    } else if (this.outils.outilActif.nom === 'Pinceau') {
-      this.pinceau.sourisDeplacee(mouse);
+  sourisDeplacee(souris: MouseEvent) {
+    const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
+    if (outil) {
+      outil.sourisDeplacee(souris);
     }
   }
 
-  onMousePress(mouse: MouseEvent) {
-    if (this.outils.outilActif.nom === 'Crayon') {
-      this.crayon.onMousePressCrayon(mouse);
-    } else if (this.outils.outilActif.nom === 'Rectangle') {
-      this.rectangle.onMousePressRectangle(mouse);
-    } else if (this.outils.outilActif.nom === 'Pinceau') {
-      this.pinceau.sourisEnfoncee(mouse);
+  sourisEnfoncee(souris: MouseEvent) {
+    const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
+    if (outil) {
+      outil.sourisEnfoncee(souris);
     }
   }
 
-  onMouseRelease(mouse: MouseEvent) {
-    if (this.outils.outilActif.nom === 'Crayon') {
-      this.crayon.onMouseReleaseCrayon(mouse);
-    } else if (this.outils.outilActif.nom === 'Rectangle') {
-      this.rectangle.onMouseReleaseRectangle(mouse);
-    } else if (this.outils.outilActif.nom === 'Pinceau') {
-      this.pinceau.sourisRelachee(mouse);
+  sourisRelachee(souris: MouseEvent) {
+    const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
+    if (outil) {
+      outil.sourisRelachee(souris);
     }
   }
 
-  onMouseLeave(mouse: MouseEvent) {
-    if (this.outils.outilActif.nom === 'Crayon') {
-      this.crayon.onMouseLeaveCrayon(mouse);
-    } else if (this.outils.outilActif.nom === 'Pinceau') {
-      this.pinceau.sourisSortie(mouse);
+  sourisSortie(souris: MouseEvent) {
+    const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
+    if (outil) {
+      outil.sourisSortie(souris);
+    }
+  }
+
+  sourisEntree(souris: MouseEvent) {
+    const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
+    if (outil) {
+      outil.sourisEntree(souris);
+    }
+  }
+
+  sourisDoubleClic(souris: MouseEvent) {
+    const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
+    if (outil) {
+      outil.sourisDoubleClic(souris);
     }
   }
 
