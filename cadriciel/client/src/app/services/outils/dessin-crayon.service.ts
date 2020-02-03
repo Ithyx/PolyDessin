@@ -50,4 +50,8 @@ export class DessinCrayonService implements InterfaceOutils {
     // Non utilisé pour le crayon
   }
 
+  sourisDoubleClic(souris: MouseEvent) {
+    // Non utilisé pour le crayon
+  }
+
 }

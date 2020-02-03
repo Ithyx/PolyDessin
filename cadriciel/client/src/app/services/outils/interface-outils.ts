@@ -5,4 +5,5 @@ export interface InterfaceOutils {
     sourisCliquee(evenement: MouseEvent): void;
     sourisSortie(evenement: MouseEvent): void;
     sourisEntree(evenement: MouseEvent): void;
+    sourisDoubleClic(evenement: MouseEvent): void;
 }

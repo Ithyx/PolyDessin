@@ -50,4 +50,8 @@ export class DessinPinceauService implements InterfaceOutils {
   sourisEntree(souris: MouseEvent) {
     /* Rien à faire ici */
   };
+
+  sourisDoubleClic(souris: MouseEvent) {
+    /* Rien à faire ici */
+  }
 }

@@ -153,4 +153,8 @@ export class DessinRectangleService implements InterfaceOutils {
   sourisSortie(souris: MouseEvent) {
     /* Rien à faire ici */
   }
+
+  sourisDoubleClic(souris: MouseEvent) {
+    /* Rien à faire ici */
+  }
 }
