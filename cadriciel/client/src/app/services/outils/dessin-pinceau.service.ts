@@ -1,39 +1,38 @@
 import { Injectable } from '@angular/core';
-import { GestionnaireOutilsService } from './outils/gestionnaire-outils.service';
-import { StockageSvgService } from './stockage-svg.service';
+import { StockageSvgService } from '../stockage-svg.service';
+import { GestionnaireOutilsService } from './gestionnaire-outils.service';
 
 @Injectable({
   providedIn: 'root'
 })
-
-export class DessinCrayonService {
-
-  couleur: number;    // stroke="black"
+export class DessinPinceauService {
 
   constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
 
-  onClickCrayon(click: MouseEvent) {
+  onClickPinceau(click: MouseEvent) {
     if (this.outils.outilActif.parametres[0].valeur) {
-      const SVG = '<circle cx="' + click.offsetX + '" cy="' + click.offsetY + '" r="' + this.outils.outilActif.parametres[0].valeur / 2
-      + '" fill="black"/>';
+      const SVG = '<circle filter="url(#' + this.outils.outilActif.parametres[1].optionChoisie
+      + ')"  cx="' + click.offsetX + '" cy="' + click.offsetY + '" r="'
+      + this.outils.outilActif.parametres[0].valeur / 2 + '" fill="black"/>';
       this.stockageSVG.ajouterSVG(SVG);
     }
   }
 
-  onMouseMoveCrayon(mouse: MouseEvent) {
+  onMouseMovePinceau(mouse: MouseEvent) {
     let crayon: string = this.stockageSVG.getSVGEnCours();
 
     crayon += 'L' + mouse.offsetX + ' ' + mouse.offsetY + ' "/>';
     this.stockageSVG.setSVGEnCours(crayon);
   }
 
-  onMousePressCrayon(mouse: MouseEvent) {
+  onMousePressPinceau(mouse: MouseEvent) {
     this.stockageSVG.setSVGEnCours(
-      '<path fill="transparent" stroke="black" stroke-linecap="round" stroke-width="' + this.outils.outilActif.parametres[0].valeur
-      + '" d="M' + mouse.offsetX + ' ' + mouse.offsetY + '"/>');
+      '<path filter="url(#' + this.outils.outilActif.parametres[1].optionChoisie
+      + ')"  fill="transparent" stroke="black" stroke-linecap="round" stroke-width="'
+      + this.outils.outilActif.parametres[0].valeur + '" d="M' + mouse.offsetX + ' ' + mouse.offsetY + '"/>');
   }
 
-  onMouseReleaseCrayon(mouse: MouseEvent) {
+  onMouseReleasePinceau(mouse: MouseEvent) {
     const SVG: string = this.stockageSVG.getSVGEnCours();
     if (SVG.includes('L')) {
       /* on ne stocke le path que s'il n'y a au moins une ligne */
@@ -42,9 +41,8 @@ export class DessinCrayonService {
     }
   }
 
-  onMouseLeaveCrayon(mouse: MouseEvent) {
+  onMouseLeavePinceau(mouse: MouseEvent) {
     this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '"/>');
     this.stockageSVG.setSVGEnCours('');
   }
-
 }

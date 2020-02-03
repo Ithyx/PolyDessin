@@ -1,7 +1,8 @@
 import { Component, HostListener } from '@angular/core';
-import { DessinCrayonService } from 'src/app/services/dessin-crayon.service';
 import { DessinRectangleService } from 'src/app/services/dessin-rectangle.service'
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
+import { DessinCrayonService } from 'src/app/services/outils/dessin-crayon.service';
+import { DessinPinceauService } from 'src/app/services/outils/dessin-pinceau.service';
 import { GestionnaireOutilsService } from 'src/app/services/outils/gestionnaire-outils.service';
 import { StockageSvgService } from 'src/app/services/stockage-svg.service';
 
@@ -16,6 +17,7 @@ export class PageDessinComponent {
               private outils: GestionnaireOutilsService,
               private crayon: DessinCrayonService,
               private rectangle: DessinRectangleService,
+              private pinceau: DessinPinceauService,
               private raccourcis: GestionnaireRaccourcisService
     ) { }
 
@@ -33,6 +35,9 @@ export class PageDessinComponent {
     if (this.outils.outilActif.nom === 'Crayon') {
       this.crayon.onClickCrayon(mouse);
     }
+    if (this.outils.outilActif.nom === 'Pinceau') {
+      this.pinceau.onClickPinceau(mouse);
+    }
   }
 
   onMouseMove(mouse: MouseEvent) {
@@ -40,6 +45,8 @@ export class PageDessinComponent {
       this.crayon.onMouseMoveCrayon(mouse);
     } else if (this.outils.outilActif.nom === 'Rectangle') {
       this.rectangle.onMouseMoveRectangle(mouse);
+    } else if (this.outils.outilActif.nom === 'Pinceau') {
+      this.pinceau.onMouseMovePinceau(mouse);
     }
   }
 
@@ -48,6 +55,8 @@ export class PageDessinComponent {
       this.crayon.onMousePressCrayon(mouse);
     } else if (this.outils.outilActif.nom === 'Rectangle') {
       this.rectangle.onMousePressRectangle(mouse);
+    } else if (this.outils.outilActif.nom === 'Pinceau') {
+      this.pinceau.onMousePressPinceau(mouse);
     }
   }
 
@@ -56,12 +65,16 @@ export class PageDessinComponent {
       this.crayon.onMouseReleaseCrayon(mouse);
     } else if (this.outils.outilActif.nom === 'Rectangle') {
       this.rectangle.onMouseReleaseRectangle(mouse);
+    } else if (this.outils.outilActif.nom === 'Pinceau') {
+      this.pinceau.onMouseReleasePinceau(mouse);
     }
   }
 
   onMouseLeave(mouse: MouseEvent) {
     if (this.outils.outilActif.nom === 'Crayon') {
       this.crayon.onMouseLeaveCrayon(mouse);
+    } else if (this.outils.outilActif.nom === 'Pinceau') {
+      this.pinceau.onMouseLeavePinceau(mouse);
     }
   }
 

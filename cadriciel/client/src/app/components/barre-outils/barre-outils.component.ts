@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
-// import { isNumber } from 'util';
 
 @Component({
   selector: 'app-barre-outils',

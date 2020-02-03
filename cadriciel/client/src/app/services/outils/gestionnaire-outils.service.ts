@@ -54,7 +54,7 @@ export const LISTE_OUTILS: OutilDessin[] = [
     ID: 1,
     parametres: [
       {type: 'number', nom: 'Épaisseur', valeur: 5},
-      {type: 'select', nom: 'Texture', optionChoisie: 'Texture1', options: ['Texture1', 'Texture2', 'Texture3', 'Texture4', 'Texture5']}
+      {type: 'select', nom: 'Texture', optionChoisie: 'Flou', options: ['Flou', 'Offset', 'Turbulence', 'Turbulence2', 'Ombre']}
     ]
   },
   {
@@ -77,15 +77,10 @@ export const LISTE_OUTILS: OutilDessin[] = [
     ]
   },
   {
-    nom: 'Couleur primaire',
+    nom: 'Couleur',
     estActif: false,
     ID: 4,
     parametres: []
   },
-  {
-    nom: 'Couleur secondaire',
-    estActif: false,
-    ID: 5,
-    parametres: []
-  }
+
 ];
