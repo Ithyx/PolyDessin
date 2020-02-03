@@ -19,8 +19,8 @@ export class BarreOutilsComponent {
 
   onChange(event: Event, nomParametre: string) {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
-    if (Number(eventCast.value) > 0 && !isNaN(Number(eventCast.value))) {
-      this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].valeur = Number(eventCast.value);
+    if (!isNaN(Number(eventCast.value))) {
+      this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].valeur = Math.max(Number(eventCast.value), 1);
     }
   }
 
