@@ -12,24 +12,43 @@ export interface Point {
   providedIn: 'root'
 })
 export class DessinLigneService implements InterfaceOutils {
-  points: Point[];
+  points: Point[] = [];
   constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
-  sourisDeplacee(evenement: MouseEvent) {
+  sourisDeplacee(souris: MouseEvent) {
+    let SVG = '<polyline fill="none" stroke="black" stroke-width="'
+            + this.outils.outilActif.parametres[0].valeur + '" points="';
+
+    for (const point of this.points) {
+      SVG += point.x + ' ' + point.y + ' ';
+    }
+
+    SVG += souris.offsetX + ' ' + souris.offsetY + '"/>';
+    console.log(SVG);
+    this.stockageSVG.setSVGEnCours(SVG);
+  }
+  sourisEnfoncee(souris: MouseEvent) {
     /**/
   }
-  sourisEnfoncee(evenement: MouseEvent) {
+  sourisRelachee(souris: MouseEvent) {
     /**/
   }
-  sourisRelachee(evenement: MouseEvent) {
+  sourisCliquee(souris: MouseEvent) {
+    this.points.push({x: souris.offsetX, y: souris.offsetY});
+    let SVG = '<polyline fill="none" stroke="black" stroke-width="'
+            + this.outils.outilActif.parametres[0].valeur + '" points="';
+
+    for (const point of this.points) {
+      SVG += ' ' + point.x + ' ' + point.y;
+    }
+
+    SVG += '"/>';
+    console.log(SVG);
+    this.stockageSVG.setSVGEnCours(SVG);
+  }
+  sourisSortie(souris: MouseEvent) {
     /**/
   }
-  sourisCliquee(evenement: MouseEvent) {
-    /**/
-  }
-  sourisSortie(evenement: MouseEvent) {
-    /**/
-  }
-  sourisEntree(evenement: MouseEvent) {
+  sourisEntree(souris: MouseEvent) {
     /**/
   }
   sourisDoubleClic(souris: MouseEvent) {
