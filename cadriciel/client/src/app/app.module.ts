@@ -13,22 +13,19 @@ import { OutilDessinComponent } from './components/outil-dessin/outil-dessin.com
 import { PageDessinComponent } from './components/page-dessin/page-dessin.component';
 import { PageGuideComponent } from './components/page-guide/page-guide.component';
 
-
+import { ChoixCouleurComponent } from './components/choix-couleur/choix-couleur.component'
+import { CouleurPaletteComponent } from './components/choix-couleur/couleur-palette/couleur-palette.component'
+import { GlissiereCouleurComponent } from './components/choix-couleur/glissiere-couleur/glissiere-couleur.component'
 
 // Service
 import { NavigationGuideService } from './services/navigation-guide.service';
 
-
-// Module
-import { ChoixCouleurModule } from './components/choix-couleur/choix-couleur.module';
-import { ChoixCouleurComponent } from './components/choix-couleur/choix-couleur.component'
-
-
-
 @NgModule({
     declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent,
-        FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, ChoixCouleurComponent],
-    imports: [BrowserModule, ChoixCouleurModule, HttpClientModule, MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
+        FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, ChoixCouleurComponent,
+            CouleurPaletteComponent, GlissiereCouleurComponent],
+    imports: [BrowserModule, HttpClientModule, MatButtonModule, MatDialogModule,
+            BrowserAnimationsModule, RouterModule.forRoot([
         {path: '', component: ChoixCouleurComponent},
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
