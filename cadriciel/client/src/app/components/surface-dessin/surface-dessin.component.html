@@ -20,14 +20,14 @@
 
         <!-- https://developer.mozilla.org/fr/docs/Web/SVG/Element/feTurbulence -->
         <filter id="Turbulence">
-            <feTurbulence type="turbulence" baseFrequency="0.6"
-                numOctaves="10" result="turbulence"/>
+            <feTurbulence type="turbulence" baseFrequency="0.2"
+                numOctaves="5" result="turbulence"/>
             <feDisplacementMap in2="turbulence" in="SourceGraphic"
                 scale="50" xChannelSelector="R" yChannelSelector="G"/>
         </filter>
 
         <filter id="Turbulence2">
-                <feTurbulence type="turbulence" baseFrequency="0.05"
+                <feTurbulence type="turbulence" baseFrequency="9"
                     numOctaves="2" result="turbulence"/>
                 <feDisplacementMap in2="turbulence" in="SourceGraphic"
                     scale="50" xChannelSelector="R" yChannelSelector="G"/>
@@ -37,6 +37,7 @@
         <!-- https://developer.mozilla.org/fr/docs/Web/SVG/Element/feDropShadow -->
         <filter id="Ombre">
             <feDropShadow dx="4" dy="8" stdDeviation="4"/>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="1" />
           </filter>
 
     </defs>
