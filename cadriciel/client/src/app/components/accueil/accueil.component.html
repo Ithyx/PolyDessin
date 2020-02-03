@@ -1,6 +1,6 @@
 <h1>Bienvenue dans PolyDessin !</h1>
 
-<button mat-stroked-button (click) = "creationDessin()" >Nouveau dessin</button>
+<button mat-stroked-button (click)="creationDessin()" >Nouveau dessin</button>
 <button mat-stroked-button>Ouvrir la gallerie</button>
-<button [routerLink] = "['/guide']" mat-stroked-button>Afficher le guide d'utilisation</button>
-<button mat-stroked-button>Continuer un dessin</button>
+<button [routerLink]="['/guide']" mat-stroked-button>Afficher le guide d'utilisation</button>
+<button *ngIf="dessinManager.hauteur !== undefined" mat-stroked-button [routerLink]="['/dessin']">Continuer un dessin</button>

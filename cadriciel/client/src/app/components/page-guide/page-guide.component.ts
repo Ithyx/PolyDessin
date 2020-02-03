@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavigationGuideService } from '../../services/navigation-guide.service';
 import { GuideSujet } from '../guide-sujet/guide-sujet';
-import { ContenuGuide } from './SujetsGuide';
+import { CONTENU_GUIDE } from './SujetsGuide';
 
 @Component({
   selector: 'app-page-guide',
@@ -10,11 +10,10 @@ import { ContenuGuide } from './SujetsGuide';
 })
 
 export class PageGuideComponent {
-  sujets: GuideSujet[] = ContenuGuide;
-  sujetActif: GuideSujet;
-  constructor(
-    private navigateurSujet: NavigationGuideService
-    ) { }
+  sujets: GuideSujet[] = CONTENU_GUIDE;
+  sujetActif: GuideSujet = CONTENU_GUIDE[0];
+
+  constructor(private navigateurSujet: NavigationGuideService) { }
 
   onClick(sensParcousID: number) {
     this.navigateurSujet.ouvrirCategories(this.sujets);
@@ -24,7 +23,6 @@ export class PageGuideComponent {
       // Si on a cliqué sur "précédant", sensParcoursID = -1
       // Si on a cliqué sur "suivant", sensParcousID = 1
       const nouvelID: number = this.sujetActif.id + sensParcousID;
-
       // On cherche dans notre liste pour voir si on trouve un sujet avec le nouvel ID
       this.sujetActif = this.navigateurSujet.parcourirSujets(nouvelID, this.sujets);
     }

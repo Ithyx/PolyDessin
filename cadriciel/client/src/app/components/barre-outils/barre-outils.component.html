@@ -1,23 +1,37 @@
 <!-- Barre d'outils -->
 <div class="sidenav">
-    <div *ngFor='let outil of outils'>
-        <app-outil-dessin [outil]="outil" (notification)="onNotify($event)"></app-outil-dessin>
+    <div *ngFor='let outil of outils.listeOutils'>
+        <app-outil-dessin [outil]="outil" (click)="onClick(outil)"></app-outil-dessin>
     </div>
-    <a [routerLink]="['/guide']">
-        Guide d'utilisation
-    </a>
+    <div class="options">
+        <a href="javascript:void(0);">
+            Nouveau dessin
+        </a>
+        <a href="javascript:void(0);">
+            Ouvrir la galerie
+        </a>
+        <a href="javascript:void(0);">
+            Sauvergarder le dessin
+        </a>
+        <a href="javascript:void(0);">
+            Exporter le dessin
+        </a>
+        <a [routerLink]="['/guide']">
+            Guide d'utilisation
+        </a>
+    </div>
 </div>
 
 <!-- Panneau d'attributs -->
 <div class="panneau-attributs">
     Paramètres de l'outil
     <form method="POST" action="javascript:void(0);">
-        <div *ngFor="let parametre of outilActif.parametres">
+        <div *ngFor="let parametre of outils.outilActif.parametres">
 
             <!-- Le paramètre est un 'select' avec plusieurs options -->
             <div *ngIf="parametre.type == 'select'; else elseBlock">
                 <label [for]="parametre.nom">{{parametre.nom}}</label>
-                <select [name]="parametre.nom">
+                <select [name]="parametre.nom" (change)="onSelect($event, parametre.nom)">
                     <option *ngFor="let option of parametre.options" [value]="option">{{option}}</option>
                 </select>
             </div>
@@ -25,7 +39,7 @@
             <!-- Le paramètre est un champ à entrer -->
             <ng-template #elseBlock>
                 <label [for]="parametre.nom">{{parametre.nom}}</label>
-                <input [type]="parametre.type" [name]="parametre.nom" min="0" max="100" value="5" />
+                <input [type]="parametre.type" [name]="parametre.nom" min="1" max="100" [value]="parametre.valeur" (change)="onChange($event, parametre.nom)" />
             </ng-template>
         </div>
     </form>

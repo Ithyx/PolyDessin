@@ -1,7 +1,7 @@
 import { GuideSujet } from '../guide-sujet/guide-sujet';
 
-export const ContenuGuide: GuideSujet[] = [
-    // Sujet 1
+export const CONTENU_GUIDE: GuideSujet[] = [
+    // Index 0 - Sujet 1
     {
       nom: 'Bienvenue',
       id: 1,
@@ -15,6 +15,7 @@ export const ContenuGuide: GuideSujet[] = [
       precedant: false,
       suivant: true
     },
+    // Index 1 - Catégorie 1
     {
         nom: 'Outils',
         description: '',
@@ -22,94 +23,87 @@ export const ContenuGuide: GuideSujet[] = [
         suivant: false,
         categorieOuverte: false,
         sousSujets: [
-            // Outil 1
+            // Index 2 - Outil 1
             {
                 nom: 'Crayon',
                 description: `<h1> Crayon </h1>
                               <hr>
-                              <p> Le crayon est l'outil de traçage de base permettant de dessiner de simple trait avec une pointe roude.</p>
-                              <p color="red"> insérer gif utilisation crayon ici </p>
-                              <p> Les paramètres personalisable sont: <li> Épaisseur du trait (en px) </li> </p>`,
+                              <p> Le crayon est l'outil de traçage de base permettant de dessiner de simples traits
+                              avec une pointe ronde. </p>
+                              <img src="assets/crayon.gif" width="300" height="300">
+                              <p> Les paramètres personalisables sont:
+                              <li> Épaisseur du trait (en px) </li> </p>`,
                 precedant: true,
                 suivant: true,
                 id: 2
             },
-            // Outil 2
+            // Index 3 - Outil 2
             {
                 nom: 'Pinceau',
                 description: `<h1> Pinceau </h1>
                               <hr>
-                              <p> Le pinceau est très similaire au crayon mais offre une texture supplémentaire.</p>
-                              <p> Les paramètres personalisable sont:
+                              <p> Le pinceau est très similaire au crayon, mais offre une texture supplémentaire.</p>
+                              <p> Les paramètres personalisables sont:
                               <li> Épaisseur du trait (en px) </li> <li> Texture du trait </li> </p>`,
                 precedant: true,
                 suivant: true,
                 id: 3
             },
-            // Outil 3
+            // Index 4 - Outil 3
             {
                 nom: 'Rectangle',
                 description: `<h1> Rectangle </h1>
-                              Description du rectangle`,
+                              <hr>
+                              <p> Après avoir sélectionné l'outil, il suffit à l'utilisateur de "glisser-déposer" vers la zone de dessin
+                              pour créer un rectangle. En maintenant le clic gauche enfoncé, on peut choisir la forme de notre rectangle
+                              en navigant avec la souris. </p>
+                              <img src="assets/rectangle.gif" width="300" height="300">
+                              <p> L'enfoncement de la touche SHIFT transforme le rectangle en cours de création au carré le plus proche et
+                              vice-versa. </p>
+                              <p> Les paramètres personalisables sont:
+                              <li> Épaisseur du trait de coutour (en px) </li> <li> Type de tracé </li> </p>`,
                 precedant: true,
                 suivant: true,
                 id: 4
             },
-            // Outil 4
+            // Index 5 - Outil 4
             {
                 nom: 'Ligne',
                 description: `<h1> Ligne </h1>
-                              Description de la ligne`,
+                              <hr>
+                              <p> L'outil ligne permet de tracer une ou plusieurs segments d'une ligne. Il suffit, après avoir
+                              sélectionné l'outil, de choisir le début de la ligne avec un clic quelque part sur la zone de dessin. Ensuite,
+                              chaque nouveau clic fermera le segment en cours pour en débuter un nouveau. Pour terminer la ligne, on
+                              effectue un double-clic. </p>
+                              <p color="red"> insérer gif utilisation couleur ici </p>
+                              <p> En enfonçant la touche SHIFT, le segment en cours s'aligne avec l'axe des X par rapport à un angle de
+                              45 degrés. Il est aussi possible d'annuler la ligne sans son entièreté avec la touche ESPACE. Pour supprimer
+                              uniquement le dernier segment (sauf le premier), appuyez sur BACKSPACE.</p>
+                              <p> Les paramètres personalisables sont:
+                              <li> Épaisseur du trait (en px) </li> <li> Type de jonction </li>
+                              <li> Diamètre des jonctions </li></p>`,
                 precedant: true,
                 suivant: true,
                 id: 5
             },
-            // Outil 5
+            // Index 6 - Outil 5
             {
                 nom: 'Couleur',
                 description: `<h1> Couleur </h1>
-                              Description du couleur`,
+                              <hr>
+                              <p> L'outil couleur est un paramètre partagé entre tous les outils, il est d'ailleurs disponible dans le
+                              panneau paramètre de chacun d'entre eux. Celui-ci offre deux couleurs configurable: la couleur "principale"
+                              et la couleur "secondaire" qui sont interversible. </p>
+                              <p color="red"> insérer gif utilisation couleur ici </p>
+                              <p> Pour choisir une couleur, l'utilisateur peut soit se déplacer sur une palette de couleur ou bien
+                              directement marquer des valeurs RGB en hexadécimal de la couleur qu'il souhaite. </p>
+                              <p> L'outil se rappelle aussi des 10 dernières couleurs choisis par l'utilisateur.</p>
+                              <p> Les paramètres personalisables sont:
+                              <li> Le code RGB </li> <li> L'opacité </li> </p>`,
                 precedant: true,
-                suivant: true,
+                suivant: false,
                 id: 6
             },
-            {
-              nom: 'Test',
-              description: '',
-              precedant: false,
-              suivant: false,
-              categorieOuverte: false,
-              sousSujets: [
-                {
-                  nom: 'Test 8',
-                  id: 7,
-                  description: '<h1> TEST 8 </h1>',
-                  precedant: true,
-                  suivant: true
-                },
-                {
-                  nom: 'Test 9',
-                  id: 8,
-                  description: '<h1> TEST 9 </h1>',
-                  precedant: true,
-                  suivant: true
-                },
-                {
-                  nom: 'Test 10',
-                  id: 9,
-                  description: '<h1> TEST 10 </h1>',
-                  precedant: true,
-                  suivant: true
-                },
-                {
-                  nom: 'Test 11',
-                  id: 10,
-                  description: '<h1> TEST 11 </h1>',
-                  precedant: true,
-                  suivant: false
-                },
-              ]
-            }
         ]
     },
 ];
