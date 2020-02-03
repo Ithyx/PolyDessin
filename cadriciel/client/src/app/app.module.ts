@@ -21,11 +21,11 @@ import { SurfaceDessinComponent } from './components/surface-dessin/surface-dess
 
 // Service
 import { DessinManagerService } from './services/dessin-manager/dessin-manager.service';
-import { DessinRectangleService } from './services/dessin-rectangle.service';
 import { FormulaireNouveauDessinService } from './services/formulaire-nouveau-dessin.service';
 import { GestionnaireRaccourcisService } from './services/gestionnaire-raccourcis.service';
 import { NavigationGuideService } from './services/navigation-guide.service';
 import { DessinCrayonService } from './services/outils/dessin-crayon.service';
+import { DessinRectangleService } from './services/outils/dessin-rectangle.service';
 import { StockageSvgService } from './services/stockage-svg.service';
 
 @NgModule({

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
 
 @Component({
@@ -8,7 +9,8 @@ import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/
 })
 export class BarreOutilsComponent {
   constructor(
-    public outils: GestionnaireOutilsService
+    public outils: GestionnaireOutilsService,
+    public raccourcis: GestionnaireRaccourcisService
   ) {}
 
   onClick(outil: OutilDessin) {
@@ -19,8 +21,8 @@ export class BarreOutilsComponent {
 
   onChange(event: Event, nomParametre: string) {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
-    if (Number(eventCast.value) > 0 && !isNaN(Number(eventCast.value))) {
-      this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].valeur = Number(eventCast.value);
+    if (!isNaN(Number(eventCast.value))) {
+      this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].valeur = Math.max(Number(eventCast.value), 1);
     }
   }
 
@@ -29,5 +31,13 @@ export class BarreOutilsComponent {
     if (typeof eventCast.value === 'string') {
       this.outils.outilActif.parametres[this.outils.trouverIndexParametre(parametreNom)].optionChoisie = eventCast.value;
     }
+  }
+
+  onChampFocus() {
+    this.raccourcis.champDeTexteEstFocus = true;
+  }
+
+  onChampBlur() {
+    this.raccourcis.champDeTexteEstFocus = false;
   }
 }

@@ -1,8 +1,8 @@
 import { Component, HostListener } from '@angular/core';
-import { DessinRectangleService } from 'src/app/services/dessin-rectangle.service'
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { DessinCrayonService } from 'src/app/services/outils/dessin-crayon.service';
 import { DessinPinceauService } from 'src/app/services/outils/dessin-pinceau.service';
+import { DessinRectangleService } from 'src/app/services/outils/dessin-rectangle.service'
 import { GestionnaireOutilsService } from 'src/app/services/outils/gestionnaire-outils.service';
 import { StockageSvgService } from 'src/app/services/stockage-svg.service';
 
@@ -22,7 +22,7 @@ export class PageDessinComponent {
     ) { }
 
   @HostListener('document:keydown', ['$event'])
-  selectCrayon(event: KeyboardEvent) {
+  toucheEnfoncee(event: KeyboardEvent) {
     this.raccourcis.traiterInput(event);
   }
 
