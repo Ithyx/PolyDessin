@@ -13,13 +13,13 @@ export class DessinRectangleService {
   // Coordonnées du point inférieur gauche
   baseX: number;
   baseY: number;
-  private baseXCalculee: number;
-  private baseYCalculee: number;
+  baseXCalculee: number;
+  baseYCalculee: number;
   // Dimensions du rectangle
   largeur = 0;
   hauteur = 0;
-  private largeurCalculee = 0;
-  private hauteurCalculee = 0;
+  largeurCalculee = 0;
+  hauteurCalculee = 0;
   // Valeurs par défaut pour tests
   couleurPrimaire = 'red';
   couleurSecondaire = 'black';
