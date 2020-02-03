@@ -22,7 +22,7 @@ export class PageDessinComponent {
     ) { }
 
   @HostListener('document:keydown', ['$event'])
-  selectCrayon(event: KeyboardEvent) {
+  toucheEnfoncee(event: KeyboardEvent) {
     this.raccourcis.traiterInput(event);
   }
 
