@@ -7,12 +7,13 @@ import { GestionnaireOutilsService, INDEX_OUTIL_CRAYON,
   providedIn: 'root'
 })
 export class GestionnaireRaccourcisService {
+  champDeTexteEstFocus = false;
 
   constructor(public outils: GestionnaireOutilsService, public dessinRectangle: DessinRectangleService) { }
 
   traiterInput(clavier: KeyboardEvent) {
+    if (this.champDeTexteEstFocus) { return; };
     // ? peut-être mettre tout en minuscule ?
-    console.log('event reçu, touche enfoncée :', clavier.key);
     switch (clavier.key) {
 
       case '1':
