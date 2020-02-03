@@ -10,30 +10,30 @@ export class DessinPinceauService implements InterfaceOutils {
 
   constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
 
-  sourisCliquee(click: MouseEvent) {
+  sourisCliquee(souris: MouseEvent) {
     if (this.outils.outilActif.parametres[0].valeur) {
       const SVG = '<circle filter="url(#' + this.outils.outilActif.parametres[1].optionChoisie
-      + ')"  cx="' + click.offsetX + '" cy="' + click.offsetY + '" r="'
+      + ')"  cx="' + souris.offsetX + '" cy="' + souris.offsetY + '" r="'
       + this.outils.outilActif.parametres[0].valeur / 2 + '" fill="black"/>';
       this.stockageSVG.ajouterSVG(SVG);
     }
   }
 
-  sourisDeplacee(mouse: MouseEvent) {
+  sourisDeplacee(souris: MouseEvent) {
     let crayon: string = this.stockageSVG.getSVGEnCours();
 
-    crayon += 'L' + mouse.offsetX + ' ' + mouse.offsetY + ' "/>';
+    crayon += 'L' + souris.offsetX + ' ' + souris.offsetY + ' "/>';
     this.stockageSVG.setSVGEnCours(crayon);
   }
 
-  sourisEnfoncee(mouse: MouseEvent) {
+  sourisEnfoncee(souris: MouseEvent) {
     this.stockageSVG.setSVGEnCours(
       '<path filter="url(#' + this.outils.outilActif.parametres[1].optionChoisie
       + ')"  fill="transparent" stroke="black" stroke-linecap="round" stroke-width="'
-      + this.outils.outilActif.parametres[0].valeur + '" d="M' + mouse.offsetX + ' ' + mouse.offsetY + '"/>');
+      + this.outils.outilActif.parametres[0].valeur + '" d="M' + souris.offsetX + ' ' + souris.offsetY + '"/>');
   }
 
-  sourisRelachee(mouse: MouseEvent) {
+  sourisRelachee(souris: MouseEvent) {
     const SVG: string = this.stockageSVG.getSVGEnCours();
     if (SVG.includes('L')) {
       /* on ne stocke le path que s'il n'y a au moins une ligne */
@@ -42,12 +42,12 @@ export class DessinPinceauService implements InterfaceOutils {
     }
   }
 
-  sourisSortie(mouse: MouseEvent) {
+  sourisSortie(souris: MouseEvent) {
     this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '"/>');
     this.stockageSVG.setSVGEnCours('');
   }
 
-  sourisEntree(mouse: MouseEvent) {
+  sourisEntree(souris: MouseEvent) {
     /* Rien à faire ici */
   };
 }
