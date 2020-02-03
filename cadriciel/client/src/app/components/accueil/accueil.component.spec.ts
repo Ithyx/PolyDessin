@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialog, MatDialogModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
 import { BarreOutilsComponent } from '../barre-outils/barre-outils.component';
@@ -17,11 +18,12 @@ describe('AccueilComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ PageDessinComponent, PageGuideComponent, AccueilComponent, BarreOutilsComponent, GuideSujetComponent,
         OutilDessinComponent, SurfaceDessinComponent ],
-      imports: [ RouterModule.forRoot([
+      imports: [ MatDialogModule, RouterModule.forRoot([
         {path: '', component: AccueilComponent},
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
-    ]) ]
+    ]) ],
+    providers: [ MatDialog ]
     })
     .compileComponents();
   }));
