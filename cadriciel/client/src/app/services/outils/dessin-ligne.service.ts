@@ -11,6 +11,6 @@ export interface Point {
   providedIn: 'root'
 })
 export class DessinLigneService {
-
+  points: Point[];
   constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
 }

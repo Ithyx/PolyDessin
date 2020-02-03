@@ -8,8 +8,6 @@ import { GestionnaireOutilsService } from './gestionnaire-outils.service';
 
 export class DessinCrayonService {
 
-  couleur: number;    // stroke="black"
-
   constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
 
   onClickCrayon(click: MouseEvent) {
