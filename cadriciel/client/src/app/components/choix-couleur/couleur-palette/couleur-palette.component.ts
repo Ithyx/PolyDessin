@@ -70,9 +70,7 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges {
 
   draw() {
 
-    /*if (!this.ctx) {
-      this.ctx = this.canvas.nativeElement.getContext('2d')
-    } */
+    this.ctx = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D
 
     const width = this.canvas.nativeElement.width
     const height = this.canvas.nativeElement.height
@@ -88,8 +86,8 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges {
     this.ctx.fillRect(0, 0, width, height)
 
     const blackGrad = this.ctx.createLinearGradient(0, 0, 0, height)
-    blackGrad.addColorStop(0, 'rgba(255,255,255,1)')
-    blackGrad.addColorStop(1, 'rgba(255,255,255,0)')
+    blackGrad.addColorStop(0, 'rgba(0,0,0,0)')
+    blackGrad.addColorStop(1, 'rgba(0,0,0,1)')
 
     this.ctx.fillStyle = blackGrad
     this.ctx.fillRect(0, 0, width, height)

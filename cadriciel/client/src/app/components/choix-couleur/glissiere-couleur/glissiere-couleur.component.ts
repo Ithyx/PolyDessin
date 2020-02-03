@@ -24,12 +24,11 @@ export class GlissiereCouleurComponent implements AfterViewInit {
 
   draw() {
 
-   /* if (!this.ctx) {
-      this.ctx = this.canvas.nativeElement.getContext('2d')
-    } */
+    this.ctx = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D
 
     const width = this.canvas.nativeElement.width
     const height = this.canvas.nativeElement.height
+
     this.ctx.clearRect(0, 0, width, height)
 
     const gradient = this.ctx.createLinearGradient(0, 0, 0, height)
@@ -43,6 +42,7 @@ export class GlissiereCouleurComponent implements AfterViewInit {
 
     this.ctx.beginPath()
     this.ctx.rect(0, 0, width, height)
+
     this.ctx.fillStyle = gradient
     this.ctx.fill()
     this.ctx.closePath()
