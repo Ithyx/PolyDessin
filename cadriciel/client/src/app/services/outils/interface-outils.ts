@@ -1,8 +1,8 @@
 export interface InterfaceOutils {
-    sourisDeplacee(evenement: MouseEvent);
-    sourisEnfoncee(evenement: MouseEvent);
-    sourisRelachee(evenement: MouseEvent);
-    sourisCliquee(evenement: MouseEvent);
-    sourisSortie(evenement: MouseEvent);
-    sourisEntree(evenement: MouseEvent);
+    sourisDeplacee(evenement: MouseEvent): void;
+    sourisEnfoncee(evenement: MouseEvent): void;
+    sourisRelachee(evenement: MouseEvent): void;
+    sourisCliquee(evenement: MouseEvent): void;
+    sourisSortie(evenement: MouseEvent): void;
+    sourisEntree(evenement: MouseEvent): void;
 }

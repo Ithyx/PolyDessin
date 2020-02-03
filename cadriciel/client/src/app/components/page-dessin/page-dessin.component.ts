@@ -36,7 +36,7 @@ export class PageDessinComponent {
       this.crayon.onClickCrayon(mouse);
     }
     if (this.outils.outilActif.nom === 'Pinceau') {
-      this.pinceau.onClickPinceau(mouse);
+      this.pinceau.sourisCliquee(mouse);
     }
   }
 
@@ -46,7 +46,7 @@ export class PageDessinComponent {
     } else if (this.outils.outilActif.nom === 'Rectangle') {
       this.rectangle.onMouseMoveRectangle(mouse);
     } else if (this.outils.outilActif.nom === 'Pinceau') {
-      this.pinceau.onMouseMovePinceau(mouse);
+      this.pinceau.sourisDeplacee(mouse);
     }
   }
 
@@ -56,7 +56,7 @@ export class PageDessinComponent {
     } else if (this.outils.outilActif.nom === 'Rectangle') {
       this.rectangle.onMousePressRectangle(mouse);
     } else if (this.outils.outilActif.nom === 'Pinceau') {
-      this.pinceau.onMousePressPinceau(mouse);
+      this.pinceau.sourisEnfoncee(mouse);
     }
   }
 
@@ -66,7 +66,7 @@ export class PageDessinComponent {
     } else if (this.outils.outilActif.nom === 'Rectangle') {
       this.rectangle.onMouseReleaseRectangle(mouse);
     } else if (this.outils.outilActif.nom === 'Pinceau') {
-      this.pinceau.onMouseReleasePinceau(mouse);
+      this.pinceau.sourisRelachee(mouse);
     }
   }
 
@@ -74,7 +74,7 @@ export class PageDessinComponent {
     if (this.outils.outilActif.nom === 'Crayon') {
       this.crayon.onMouseLeaveCrayon(mouse);
     } else if (this.outils.outilActif.nom === 'Pinceau') {
-      this.pinceau.onMouseLeavePinceau(mouse);
+      this.pinceau.sourisSortie(mouse);
     }
   }
 
