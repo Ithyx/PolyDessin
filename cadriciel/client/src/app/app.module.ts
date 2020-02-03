@@ -33,7 +33,7 @@ import { StockageSvgService } from './services/stockage-svg.service';
             ChoixCouleurComponent, GlissiereCouleurComponent, CouleurPaletteComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
         MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
-        {path: '', component: ChoixCouleurComponent},
+        {path: '', component: AccueilComponent},
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ])],
