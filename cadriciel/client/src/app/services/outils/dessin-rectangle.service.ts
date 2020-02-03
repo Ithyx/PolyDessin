@@ -141,20 +141,4 @@ export class DessinRectangleService implements InterfaceOutils {
       this.actualiserSVG();
     }
   }
-
-  sourisCliquee(souris: MouseEvent) {
-    /* Rien à faire ici */
-  }
-
-  sourisEntree(souris: MouseEvent) {
-    /* Rien à faire ici */
-  }
-
-  sourisSortie(souris: MouseEvent) {
-    /* Rien à faire ici */
-  }
-
-  sourisDoubleClic(souris: MouseEvent) {
-    /* Rien à faire ici */
-  }
 }
