@@ -25,6 +25,11 @@ export class DessinLigneService implements InterfaceOutils {
     }
 
     SVG += souris.offsetX + ' ' + souris.offsetY + '"/>';
+
+    if (this.outils.outilActif.parametres[1].optionChoisie === 'Avec points' ) {
+      SVG += this.avecPoint(SVG);
+    }
+
     this.stockageSVG.setSVGEnCours(SVG);
   }
   sourisEnfoncee(souris: MouseEvent) {
@@ -58,8 +63,14 @@ export class DessinLigneService implements InterfaceOutils {
     }
 
     SVG += '" />';
+
+    if (this.outils.outilActif.parametres[1].optionChoisie === 'Avec points' ) {
+      SVG += this.avecPoint(SVG);
+    }
+
     this.stockageSVG.setSVGEnCours(SVG);
   }
+
   sourisDoubleClic(souris: MouseEvent) {
     this.estClicSimple = false;
     this.detectionDoubleClic(souris);
@@ -70,5 +81,14 @@ export class DessinLigneService implements InterfaceOutils {
       this.stockageSVG.setSVGEnCours('');
       this.points = [];
     }
+  }
+
+  avecPoint(SVG: string): string {
+    for (const point of this.points) {
+      SVG += ' <circle cx="' + point.x + '" cy="' + point.y + '" r="'
+      + this.outils.outilActif.parametres[2].valeur  + '" fill="black"/>';
+    }
+
+    return SVG;
   }
 }
