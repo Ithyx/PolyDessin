@@ -114,4 +114,9 @@ export class DessinLigneService implements InterfaceOutils {
       this.stockageSVG.setSVGEnCours(SVG);
     }
   }
+
+  annulerLigne() {
+    this.stockageSVG.setSVGEnCours('');
+    this.points = [];
+  }
 }

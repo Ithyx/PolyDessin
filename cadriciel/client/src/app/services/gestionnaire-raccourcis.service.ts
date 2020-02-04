@@ -53,6 +53,13 @@ export class GestionnaireRaccourcisService {
         if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
           this.dessinLigne.retirerPoint();
         }
+        break;
+
+      case 'Escape':
+      if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
+        this.dessinLigne.annulerLigne();
+      }
+      break;
 
       default:
         break;
