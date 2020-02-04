@@ -31,7 +31,7 @@ export class DessinLigneService implements InterfaceOutils {
     this.dernierY = souris.offsetY;
 
     if (this.outils.outilActif.parametres[1].optionChoisie === 'Avec points' ) {
-      SVG += this.avecPoint(SVG);
+      SVG += this.avecPoints(SVG);
     }
 
     this.stockageSVG.setSVGEnCours(SVG);
@@ -68,7 +68,7 @@ export class DessinLigneService implements InterfaceOutils {
     SVG += '" />';
 
     if (this.outils.outilActif.parametres[1].optionChoisie === 'Avec points' ) {
-      SVG += this.avecPoint(SVG);
+      SVG += this.avecPoints(SVG);
     }
 
     this.stockageSVG.setSVGEnCours(SVG);
@@ -80,13 +80,16 @@ export class DessinLigneService implements InterfaceOutils {
   }
   detectionDoubleClic(souris: MouseEvent) {
     if (this.points.length !== 0) {
-      this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '" />');
+      let SVG = this.stockageSVG.getSVGEnCours() + '" />';
+      SVG += ' <circle cx="' + souris.offsetX + '" cy="' + souris.offsetY + '" r="'
+      + this.outils.outilActif.parametres[2].valeur  + '" fill="black"/>';
+      this.stockageSVG.ajouterSVG(SVG);
       this.stockageSVG.setSVGEnCours('');
       this.points = [];
     }
   }
 
-  avecPoint(SVG: string): string {
+  avecPoints(SVG: string): string {
     for (const point of this.points) {
       SVG += ' <circle cx="' + point.x + '" cy="' + point.y + '" r="'
       + this.outils.outilActif.parametres[2].valeur  + '" fill="black"/>';
@@ -108,7 +111,7 @@ export class DessinLigneService implements InterfaceOutils {
       SVG += this.dernierX + ' ' + this.dernierY + '" />';
 
       if (this.outils.outilActif.parametres[1].optionChoisie === 'Avec points' ) {
-        SVG += this.avecPoint(SVG);
+        SVG += this.avecPoints(SVG);
       }
 
       this.stockageSVG.setSVGEnCours(SVG);
