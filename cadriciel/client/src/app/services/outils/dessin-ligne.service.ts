@@ -14,6 +14,8 @@ export interface Point {
 export class DessinLigneService implements InterfaceOutils {
   points: Point[] = [];
   private estClicSimple = true;
+  dernierX: number;
+  dernierY: number;
 
   constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
   sourisDeplacee(souris: MouseEvent) {
@@ -25,6 +27,8 @@ export class DessinLigneService implements InterfaceOutils {
     }
 
     SVG += souris.offsetX + ' ' + souris.offsetY + '"/>';
+    this.dernierX = souris.offsetX;
+    this.dernierY = souris.offsetY;
 
     if (this.outils.outilActif.parametres[1].optionChoisie === 'Avec points' ) {
       SVG += this.avecPoint(SVG);
@@ -44,7 +48,7 @@ export class DessinLigneService implements InterfaceOutils {
     const y = souris.offsetY;
     this.points.push({x, y});
     window.setTimeout(() => {
-      if (this.estClicSimple) {this.detectionSimpleClic(x, y)}
+      if (this.estClicSimple) {this.detectionSimpleClic()}
     }, 250)
   }
   sourisSortie(souris: MouseEvent) {
@@ -53,8 +57,7 @@ export class DessinLigneService implements InterfaceOutils {
   sourisEntree(souris: MouseEvent) {
     /**/
   }
-  detectionSimpleClic(x: number, y: number) {
-    this.points.push({x, y});
+  detectionSimpleClic() {
     let SVG = '<polyline fill="none" stroke="black" stroke-width="'
             + this.outils.outilActif.parametres[0].valeur + '" points="';
 
@@ -90,5 +93,25 @@ export class DessinLigneService implements InterfaceOutils {
     }
 
     return SVG;
+  }
+
+  retirerPoint() {
+    if (this.points.length > 1) {
+      this.points.pop();
+      let SVG = '<polyline fill="none" stroke="black" stroke-width="'
+            + this.outils.outilActif.parametres[0].valeur + '" points="';
+
+      for (const point of this.points) {
+        SVG += point.x + ' ' + point.y + ' ';
+      }
+
+      SVG += this.dernierX + ' ' + this.dernierY + '" />';
+
+      if (this.outils.outilActif.parametres[1].optionChoisie === 'Avec points' ) {
+        SVG += this.avecPoint(SVG);
+      }
+
+      this.stockageSVG.setSVGEnCours(SVG);
+    }
   }
 }
