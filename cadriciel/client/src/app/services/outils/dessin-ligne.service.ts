@@ -80,6 +80,19 @@ export class DessinLigneService implements InterfaceOutils {
   }
   detectionDoubleClic(souris: MouseEvent) {
     if (this.points.length !== 0) {
+      if (Math.abs(souris.offsetX - this.points[0].x) <= 3
+          && Math.abs(souris.offsetY - this.points[0].y) <= 3) {
+        let SVG = '<polygon fill="none" stroke="black" stroke-width="'
+            + this.outils.outilActif.parametres[0].valeur + '" points="';
+        for (const point of this.points) {
+          SVG += point.x + ' ' + point.y + ' ';
+        }
+        SVG += '" />';
+        if (this.outils.outilActif.parametres[1].optionChoisie === 'Avec points' ) {
+          SVG += this.avecPoint(SVG);
+        }
+        this.stockageSVG.setSVGEnCours(SVG);
+      }
       this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '" />');
       this.stockageSVG.setSVGEnCours('');
       this.points = [];
