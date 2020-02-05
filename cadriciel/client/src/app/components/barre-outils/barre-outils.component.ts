@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
 
@@ -8,6 +9,10 @@ import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/
   styleUrls: ['./barre-outils.component.scss']
 })
 export class BarreOutilsComponent {
+
+  porteePrincipale = Portee.Principale;
+  porteeSecondaire = Portee.Secondaire;
+
   constructor(
     public outils: GestionnaireOutilsService,
     public raccourcis: GestionnaireRaccourcisService

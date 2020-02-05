@@ -76,11 +76,4 @@ export const LISTE_OUTILS: OutilDessin[] = [
       {type: 'number', nom: 'Diamètre des jonctions', valeur: 5}
     ]
   },
-  {
-    nom: 'Couleur',
-    estActif: false,
-    ID: 4,
-    parametres: []
-  },
-
 ];

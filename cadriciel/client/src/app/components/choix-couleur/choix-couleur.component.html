@@ -1,6 +1,6 @@
 <div class = "color-wrapper">
-    <app-couleur-palette [hue]="hue" (color)="color = $event"></app-couleur-palette>
-    <app-glissiere-couleur (color)="hue = $event" style = "margin-left:16px"></app-glissiere-couleur>     
+    <app-couleur-palette [hue]="hue" (color)="nouvelleCouleur( $event)"></app-couleur-palette>
+    <app-glissiere-couleur (color)="nouvelleHue($event)" style = "margin-left:16px"></app-glissiere-couleur>     
 </div>
 <div class="input-wrapper">
     <span class="text">{{color}}</span>
@@ -8,4 +8,3 @@
         [ngStyle]= "{'background-color': color || 'white'}">
         </div>
 </div>
-
