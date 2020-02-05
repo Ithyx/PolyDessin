@@ -1,6 +1,6 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import {  FormControl, FormGroup } from '@angular/forms';
-import { MatDialogRef} from '@angular/material';
+import { Component, HostListener } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { DessinManagerService } from 'src/app/services/dessin-manager/dessin-manager.service';
 import { StockageSvgService } from 'src/app/services/stockage-svg.service';
@@ -16,7 +16,7 @@ const LARGEUR_BARRE_OUTILS = 410;
   styleUrls: ['./fenetre-new-dessin.component.scss']
 })
 
-export class FenetreNewDessinComponent implements OnInit {
+export class FenetreNewDessinComponent {
   hauteurFenetre = window.innerHeight;
   largeurFenetre = window.innerWidth - LARGEUR_BARRE_OUTILS;
   dimChangeeManuellement = false;
@@ -36,8 +36,6 @@ export class FenetreNewDessinComponent implements OnInit {
   fermerFenetre() {
     this.dialogRef.close();
   }
-
-  ngOnInit(){}
 
   dimmensionChangeeManuellement() {
     this.dimChangeeManuellement = true;
