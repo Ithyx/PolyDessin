@@ -13,7 +13,7 @@ export class BarreOutilsComponent {
   constructor(
     public dialog: MatDialog,
     public outils: GestionnaireOutilsService,
-    public raccourcis: GestionnaireRaccourcisService
+    public raccourcis: GestionnaireRaccourcisService,
   ) {}
 
   onClick(outil: OutilDessin) {
@@ -43,7 +43,12 @@ export class BarreOutilsComponent {
   onChampBlur() {
     this.raccourcis.champDeTexteEstFocus = false;
   }
-  
+
+  raccourciNouveauDessin() {
+    if (this.raccourcis.ctrlOAppuye) {
+      this.avertissementNouveauDessin();
+    }
+  }
 
   avertissementNouveauDessin(){
     this.onChampFocus();
