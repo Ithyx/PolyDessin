@@ -11,12 +11,14 @@ export class DessinPinceauService implements InterfaceOutils {
   constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
 
   sourisCliquee(souris: MouseEvent) {
+    console.log('POINT PINCEAU');
     if (this.outils.outilActif.parametres[0].valeur) {
       const SVG = '<circle filter="url(#' + this.outils.outilActif.parametres[1].optionChoisie
       + ')"  cx="' + souris.offsetX + '" cy="' + souris.offsetY + '" r="'
       + this.outils.outilActif.parametres[0].valeur / 2 + '" fill="black"/>';
       this.stockageSVG.ajouterSVG(SVG);
     }
+    this.stockageSVG.setSVGEnCours('');
   }
 
   sourisDeplacee(souris: MouseEvent) {
@@ -40,6 +42,7 @@ export class DessinPinceauService implements InterfaceOutils {
       this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '" />');
       this.stockageSVG.setSVGEnCours('');
     }
+    this.stockageSVG.setSVGEnCours('');
   }
 
   sourisSortie(souris: MouseEvent) {

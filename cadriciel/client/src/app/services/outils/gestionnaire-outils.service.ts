@@ -54,7 +54,7 @@ export const LISTE_OUTILS: OutilDessin[] = [
     ID: 1,
     parametres: [
       {type: 'number', nom: 'Épaisseur', valeur: 5},
-      {type: 'select', nom: 'Texture', optionChoisie: 'Flou', options: ['Flou', 'Offset', 'Turbulence', 'Turbulence2', 'Ombre']}
+      {type: 'select', nom: 'Texture', optionChoisie: 'Flou', options: ['Flou', 'Offset', 'Tremblant', 'Turbulence2', 'Ombre']}
     ]
   },
   {
