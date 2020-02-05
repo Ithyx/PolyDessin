@@ -44,11 +44,6 @@ export class BarreOutilsComponent {
     this.raccourcis.champDeTexteEstFocus = false;
   }
 
-  raccourciNouveauDessin() {
-    if (this.raccourcis.ctrlOAppuye) {
-      this.avertissementNouveauDessin();
-    }
-  }
 
   avertissementNouveauDessin(){
     this.onChampFocus();
