@@ -31,6 +31,7 @@ export class DessinCrayonService implements InterfaceOutils {
       this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '" />');
       this.stockageSVG.setSVGEnCours('');
     }
+    this.stockageSVG.setSVGEnCours('');
   }
 
   sourisCliquee(souris: MouseEvent) {
@@ -39,6 +40,7 @@ export class DessinCrayonService implements InterfaceOutils {
       + this.outils.outilActif.parametres[0].valeur / 2 + '" fill="black"/>';
       this.stockageSVG.ajouterSVG(SVG);
     }
+    this.stockageSVG.setSVGEnCours('');
   }
 
   sourisSortie(souris: MouseEvent) {

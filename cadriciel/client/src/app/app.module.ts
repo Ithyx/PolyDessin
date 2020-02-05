@@ -22,6 +22,7 @@ import { SurfaceDessinComponent } from './components/surface-dessin/surface-dess
 // Service
 import { DessinManagerService } from './services/dessin-manager/dessin-manager.service';
 import { GestionnaireRaccourcisService } from './services/gestionnaire-raccourcis.service';
+import { GestionnaireRoutingService } from './services/gestionnaire-routing.service';
 import { NavigationGuideService } from './services/navigation-guide.service';
 import { DessinCrayonService } from './services/outils/dessin-crayon.service';
 import { DessinRectangleService } from './services/outils/dessin-rectangle.service';
@@ -38,7 +39,7 @@ import { StockageSvgService } from './services/stockage-svg.service';
         {path: 'guide', component : PageGuideComponent}
     ])],
     providers: [NavigationGuideService, StockageSvgService, DessinCrayonService, DessinManagerService,
-                GestionnaireRaccourcisService, DessinRectangleService],
+                GestionnaireRaccourcisService, DessinRectangleService, GestionnaireRoutingService],
     entryComponents: [FenetreNewDessinComponent],
     bootstrap: [AppComponent],
 })
