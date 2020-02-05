@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { DessinManagerService } from 'src/app/services/dessin-manager/dessin-manager.service';
+import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { StockageSvgService } from 'src/app/services/stockage-svg.service';
 
 const KEY_FORM_HAUTEUR = 'hauteurFormulaire';
@@ -27,6 +28,7 @@ export class FenetreNewDessinComponent {
   });
 
   constructor(public dialogRef: MatDialogRef<FenetreNewDessinComponent>,
+              private raccourcis: GestionnaireRaccourcisService,
               private serviceNouveauDessin: DessinManagerService,
               private router: Router,
               private stockageSVG: StockageSvgService) {
@@ -34,6 +36,7 @@ export class FenetreNewDessinComponent {
               }
 
   fermerFenetre() {
+    this.raccourcis.champDeTexteEstFocus = false;
     this.dialogRef.close();
   }
 
@@ -55,6 +58,7 @@ export class FenetreNewDessinComponent {
     this.serviceNouveauDessin.hauteur = this.nouveauDessin.value[KEY_FORM_HAUTEUR];
     this.serviceNouveauDessin.largeur = this.nouveauDessin.value[KEY_FORM_LARGEUR];
     this.serviceNouveauDessin.couleur = this.nouveauDessin.value[KEY_FORM_COULEUR];
+    this.raccourcis.champDeTexteEstFocus = false;
     this.dialogRef.close();
     this.router.navigate(['dessin']);
   }

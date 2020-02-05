@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef, MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { FenetreNewDessinComponent } from '../fenetre-new-dessin/fenetre-new-dessin.component';
 
@@ -10,17 +10,17 @@ import { FenetreNewDessinComponent } from '../fenetre-new-dessin/fenetre-new-des
 })
 export class AvertissementNouveauDessinComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<AvertissementNouveauDessinComponent>,
-              private dialog: MatDialog,
-              public raccourcis: GestionnaireRaccourcisService ) {
+  constructor(private dialog: MatDialog,
+              public raccourcis: GestionnaireRaccourcisService,
+              public dialogRef: MatDialogRef<FenetreNewDessinComponent> ) {
    }
 
   ngOnInit() {
   }
 
   annuler() {
-    this.dialogRef.close();
     this.raccourcis.champDeTexteEstFocus = false;
+    this.dialogRef.close();
   }
 
   ouvrirParametres(){

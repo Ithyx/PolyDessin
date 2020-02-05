@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { MatDialog, MatDialogConfig} from '@angular/material';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
+import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
 
 @Component({
   selector: 'app-barre-outils',
@@ -9,6 +11,7 @@ import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/
 })
 export class BarreOutilsComponent {
   constructor(
+    public dialog: MatDialog,
     public outils: GestionnaireOutilsService,
     public raccourcis: GestionnaireRaccourcisService
   ) {}
@@ -39,5 +42,15 @@ export class BarreOutilsComponent {
 
   onChampBlur() {
     this.raccourcis.champDeTexteEstFocus = false;
+  }
+  
+
+  avertissementNouveauDessin(){
+    this.onChampFocus();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    this.dialog.open(AvertissementNouveauDessinComponent, dialogConfig);
   }
 }
