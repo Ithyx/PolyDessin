@@ -1,6 +1,6 @@
 <div class="sidenav">
     <div>
-        <button [routerLink]="[navigation.pagePrecedante]" mat-raised-button [color]="accent">Retour</button>
+        <button [routerLink]="[navigation.pagePrecedante]" mat-raised-button>Retour</button>
     </div>
     <div *ngFor = 'let sujet of sujets'>
         <app-guide-sujet [noeud]="sujet" (notification)="onNotify($event)"></app-guide-sujet>

@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterModule } from '@angular/router';
 import { SUJET_VIDE } from 'src/app/services/navigation-guide.service';
 import { GuideSujet } from '../guide-sujet/guide-sujet';
 import { GuideSujetComponent } from '../guide-sujet/guide-sujet.component';
@@ -11,7 +12,9 @@ describe('PageGuideComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageGuideComponent, GuideSujetComponent ]
+      declarations: [ PageGuideComponent, GuideSujetComponent ],
+      imports: [ RouterModule.forRoot([
+      ]) ]
     })
     .compileComponents();
   }));

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DessinLigneService } from './outils/dessin-ligne.service';
 import { DessinRectangleService } from './outils/dessin-rectangle.service';
 import { GestionnaireOutilsService, INDEX_OUTIL_CRAYON,
          INDEX_OUTIL_LIGNE, INDEX_OUTIL_PINCEAU , INDEX_OUTIL_RECTANGLE } from './outils/gestionnaire-outils.service';
@@ -9,7 +10,9 @@ import { GestionnaireOutilsService, INDEX_OUTIL_CRAYON,
 export class GestionnaireRaccourcisService {
   champDeTexteEstFocus = false;
 
-  constructor(public outils: GestionnaireOutilsService, public dessinRectangle: DessinRectangleService) { }
+  constructor(public outils: GestionnaireOutilsService,
+              public dessinRectangle: DessinRectangleService,
+              public dessinLigne: DessinLigneService) { }
 
   traiterInput(clavier: KeyboardEvent) {
     if (this.champDeTexteEstFocus) { return; };
@@ -43,8 +46,22 @@ export class GestionnaireRaccourcisService {
       case 'Shift':
         if (this.outils.outilActif.ID === INDEX_OUTIL_RECTANGLE) {
           this.dessinRectangle.shiftEnfonce();
+        } else if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
+          this.dessinLigne.stockerCurseur();
         }
         break;
+
+      case 'Backspace':
+        if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
+          this.dessinLigne.retirerPoint();
+        }
+        break;
+
+      case 'Escape':
+      if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
+        this.dessinLigne.annulerLigne();
+      }
+      break;
 
       default:
         break;
@@ -57,6 +74,8 @@ export class GestionnaireRaccourcisService {
       case 'Shift':
         if (this.outils.outilActif.ID === INDEX_OUTIL_RECTANGLE) {
           this.dessinRectangle.shiftRelache();
+        } else if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
+          this.dessinLigne.shiftRelache();
         }
         break;
 
