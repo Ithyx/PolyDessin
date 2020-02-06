@@ -58,6 +58,7 @@ export class DessinLigneService implements InterfaceOutils {
       if (Math.abs(souris.offsetX - this.points[0].x) <= 3
           && Math.abs(souris.offsetY - this.points[0].y) <= 3) {
         this.points.pop();
+        this.points.pop();
         SVG = '<polygon fill="none" stroke="black" stroke-width="'
             + this.outils.outilActif.parametres[0].valeur + '" points="';
         for (const point of this.points) {
@@ -67,7 +68,6 @@ export class DessinLigneService implements InterfaceOutils {
         if (this.outils.outilActif.parametres[1].optionChoisie === 'Avec points' ) {
           SVG += this.avecPoints(SVG);
         }
-        this.stockageSVG.setSVGEnCours(SVG);
       } else {
         SVG = this.stockageSVG.getSVGEnCours() + '" />';
         if (this.outils.outilActif.parametres[1].optionChoisie === 'Avec points') {
@@ -103,29 +103,31 @@ export class DessinLigneService implements InterfaceOutils {
   }
 
   shiftEnfonce() {
-    const dernierPoint = this.points[this.points.length - 1];
-    const angle = Math.atan((this.curseurY - dernierPoint.y) / (this.curseurX - dernierPoint.x));
-    const alignement = Math.abs(Math.round(angle / (Math.PI / 4)));
+    if (this.points.length > 0) {
+      const dernierPoint = this.points[this.points.length - 1];
+      const angle = Math.atan((this.curseurY - dernierPoint.y) / (this.curseurX - dernierPoint.x));
+      const alignement = Math.abs(Math.round(angle / (Math.PI / 4)));
 
-    // alignement = 0 lorsque angle = 0,180­°
-    // alignement = 1 lorsque angle = 45,135,225,315°
-    // alignement = 2 lorsque angle = 90,270°
-    if (alignement === 0) {
-      this.positionX = this.curseurX;
-      this.positionY = dernierPoint.y;
-    } else if (alignement === 1) {
-      if (Math.sign(this.curseurX - dernierPoint.x) === Math.sign(this.curseurY - dernierPoint.y)) {
-        this.positionY = this.curseurX - dernierPoint.x + dernierPoint.y;
-      } else {
-        this.positionY = dernierPoint.x - this.curseurX + dernierPoint.y;
+      // alignement = 0 lorsque angle = 0,180­°
+      // alignement = 1 lorsque angle = 45,135,225,315°
+      // alignement = 2 lorsque angle = 90,270°
+      if (alignement === 0) {
+        this.positionX = this.curseurX;
+        this.positionY = dernierPoint.y;
+      } else if (alignement === 1) {
+        if (Math.sign(this.curseurX - dernierPoint.x) === Math.sign(this.curseurY - dernierPoint.y)) {
+          this.positionY = this.curseurX - dernierPoint.x + dernierPoint.y;
+        } else {
+          this.positionY = dernierPoint.x - this.curseurX + dernierPoint.y;
+        }
+        this.positionX = this.curseurX;
+      } else if (alignement === 2) {
+        this.positionX = dernierPoint.x;
+        this.positionY = this.curseurY;
       }
-      this.positionX = this.curseurX;
-    } else if (alignement === 2) {
-      this.positionX = dernierPoint.x;
-      this.positionY = this.curseurY;
-    }
 
-    this.actualiserSVG();
+      this.actualiserSVG();
+    }
   }
 
   shiftRelache() {
