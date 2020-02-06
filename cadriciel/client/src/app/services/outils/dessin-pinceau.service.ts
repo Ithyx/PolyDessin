@@ -11,7 +11,7 @@ export class DessinPinceauService implements InterfaceOutils {
   constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
 
   traitEnCours = false;
-  click = true;
+  peutCliquer = true;
 
   sourisDeplacee(souris: MouseEvent) {
     if (this.traitEnCours) {
@@ -34,26 +34,24 @@ export class DessinPinceauService implements InterfaceOutils {
     if (this.traitEnCours) {
       const SVG: string = this.stockageSVG.getSVGEnCours();
       if (SVG.includes('L')) {
-        /* on ne stocke le path que s'il n'y a au moins une ligne */
+        // on ne stocke le path que s'il n'y a au moins une ligne
         this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '" />');
         this.stockageSVG.setSVGEnCours('');
       }
       this.traitEnCours = false;
-      this.click = true;
+      this.peutCliquer = true;
     }
   }
 
   sourisCliquee(souris: MouseEvent) {
-    console.log('POINT PINCEAU');
-    if (this.click) {
-      if (this.outils.outilActif.parametres[0].valeur) {
-        const SVG = '<circle filter="url(#' + this.outils.outilActif.parametres[1].optionChoisie
-        + ')"  cx="' + souris.offsetX + '" cy="' + souris.offsetY + '" r="'
-        + this.outils.outilActif.parametres[0].valeur / 2 + '" fill="black"/>';
-        this.stockageSVG.ajouterSVG(SVG);
-      }
+    if (this.peutCliquer && this.outils.outilActif.parametres[0].valeur) {
+      const SVG = '<circle filter="url(#' + this.outils.outilActif.parametres[1].optionChoisie
+      + ')"  cx="' + souris.offsetX + '" cy="' + souris.offsetY + '" r="'
+      + this.outils.outilActif.parametres[0].valeur / 2 + '" fill="black"/>';
+
+      this.stockageSVG.ajouterSVG(SVG);
       this.traitEnCours = false;
-    } else {this.click = true};
+    } else {this.peutCliquer = true};
   }
 
   sourisSortie(souris: MouseEvent) {
@@ -62,6 +60,6 @@ export class DessinPinceauService implements InterfaceOutils {
       this.stockageSVG.setSVGEnCours('');
       this.traitEnCours = false;
     }
-    this.click = false;
+    this.peutCliquer = false;
   }
 }
