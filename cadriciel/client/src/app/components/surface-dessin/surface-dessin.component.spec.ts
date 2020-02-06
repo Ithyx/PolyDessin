@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterModule } from '@angular/router';
 
 import { SurfaceDessinComponent } from './surface-dessin.component';
 
@@ -8,7 +9,8 @@ describe('SurfaceDessinComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SurfaceDessinComponent ]
+      declarations: [ SurfaceDessinComponent ],
+      imports: [ RouterModule.forRoot([]) ]
     })
     .compileComponents();
   }));
