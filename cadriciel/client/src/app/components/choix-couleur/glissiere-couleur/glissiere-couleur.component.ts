@@ -8,7 +8,7 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener,
 })
 
 export class GlissiereCouleurComponent implements AfterViewInit {
-  @ViewChild('canvas', {static: false})
+  @ViewChild('canvas', {static: true})
   canvas: ElementRef<HTMLCanvasElement>
 
   @Output()
@@ -24,8 +24,9 @@ export class GlissiereCouleurComponent implements AfterViewInit {
 
   draw() {
 
-    this.ctx = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D
-
+    if (!this.ctx){
+      this.ctx = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D
+    }
     const width = this.canvas.nativeElement.width
     const height = this.canvas.nativeElement.height
 
@@ -84,8 +85,8 @@ export class GlissiereCouleurComponent implements AfterViewInit {
 
   getColorAtPosition(x: number, y: number) {
     const imageData = this.ctx.getImageData(x, y, 1, 1).data;
-    return ('rgba(' + imageData[0] + ',' + imageData[1] + ',' +
-      imageData[2] + ',1)')
+    return ('RGB(' + imageData[0] + ',' + imageData[1] + ',' +
+      imageData[2] + ')')
   }
 
 }

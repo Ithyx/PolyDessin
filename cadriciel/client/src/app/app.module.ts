@@ -31,14 +31,13 @@ import { DessinCrayonService } from './services/outils/dessin-crayon.service';
 import { DessinRectangleService } from './services/outils/dessin-rectangle.service';
 import { StockageSvgService } from './services/stockage-svg.service';
 
-
 @NgModule({
     declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent,
         FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent,
             ChoixCouleurComponent, GlissiereCouleurComponent, CouleurPaletteComponent, ValeurCouleurComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
         MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
-        {path: '', component: AccueilComponent},
+        {path: '', component: ChoixCouleurComponent},
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ])],
