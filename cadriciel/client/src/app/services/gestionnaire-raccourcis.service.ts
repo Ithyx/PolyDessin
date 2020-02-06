@@ -9,7 +9,7 @@ import { GestionnaireOutilsService, INDEX_OUTIL_CRAYON,
 export class GestionnaireRaccourcisService {
   champDeTexteEstFocus = false;
 
-  constructor(public outils: GestionnaireOutilsService, public dessinRectangle: DessinRectangleService) { }
+  constructor(public outils: GestionnaireOutilsService, public dessinRectangle: DessinRectangleService,) { }
 
   traiterInput(clavier: KeyboardEvent) {
     if (this.champDeTexteEstFocus) { return; };
