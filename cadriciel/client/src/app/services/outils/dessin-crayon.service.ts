@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { GestionnaireCouleursService } from '../couleur/gestionnaire-couleurs.service';
 import { StockageSvgService } from '../stockage-svg.service';
 import { GestionnaireOutilsService } from './gestionnaire-outils.service';
 
@@ -8,14 +9,14 @@ import { GestionnaireOutilsService } from './gestionnaire-outils.service';
 
 export class DessinCrayonService {
 
-  couleur: number;    // stroke="black"
-
-  constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
+  constructor(public stockageSVG: StockageSvgService,
+              public outils: GestionnaireOutilsService,
+              public couleur: GestionnaireCouleursService) { }
 
   onClickCrayon(click: MouseEvent) {
     if (this.outils.outilActif.parametres[0].valeur) {
       const SVG = '<circle cx="' + click.offsetX + '" cy="' + click.offsetY + '" r="' + this.outils.outilActif.parametres[0].valeur / 2
-      + '" fill="black"/>';
+      + `" fill="${this.couleur.getPrincipale()}"/>`;
       this.stockageSVG.ajouterSVG(SVG);
     }
   }
@@ -29,7 +30,8 @@ export class DessinCrayonService {
 
   onMousePressCrayon(mouse: MouseEvent) {
     this.stockageSVG.setSVGEnCours(
-      '<path fill="transparent" stroke="black" stroke-linecap="round" stroke-width="' + this.outils.outilActif.parametres[0].valeur
+      `<path fill="transparent" stroke=${this.couleur.getPrincipale()} stroke-linecap="round" stroke-width="`
+      + this.outils.outilActif.parametres[0].valeur
       + '" d="M' + mouse.offsetX + ' ' + mouse.offsetY + '"/>');
   }
 
