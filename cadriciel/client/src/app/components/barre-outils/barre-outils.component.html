@@ -42,6 +42,11 @@
                 <input [type]="parametre.type" [name]="parametre.nom" min="1" max="100" [value]="parametre.valeur"
                        (change)="onChange($event, parametre.nom)"  (focus)="onChampFocus()" (blur)="onChampBlur()"/>
             </ng-template>
+
+        </div>
+        <div>
+            <app-choix-couleur class="color-picker" [portee]="porteePrincipale"></app-choix-couleur>
+            <app-choix-couleur class="color-picker" [portee]="porteeSecondaire"></app-choix-couleur>
         </div>
     </form>
 </div>

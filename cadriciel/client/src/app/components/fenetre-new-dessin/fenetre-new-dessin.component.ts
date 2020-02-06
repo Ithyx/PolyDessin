@@ -8,6 +8,7 @@ import { StockageSvgService } from 'src/app/services/stockage-svg.service';
 const KEY_FORM_HAUTEUR = 'hauteurFormulaire';
 const KEY_FORM_LARGEUR = 'largeurFormulaire';
 const KEY_FORM_COULEUR = 'couleur';
+const LARGEUR_BARRE_OUTILS = 410;
 
 @Component({
   selector: 'app-fenetre-new-dessin',
@@ -16,32 +17,39 @@ const KEY_FORM_COULEUR = 'couleur';
 })
 
 export class FenetreNewDessinComponent implements OnInit {
-  hauteurFenetre: number;
-  largeurFenetre: number;
+  hauteurFenetre = window.innerHeight;
+  largeurFenetre = window.innerWidth - LARGEUR_BARRE_OUTILS;
+  dimChangeeManuellement = false;
   nouveauDessin = new FormGroup({
-    hauteurFormulaire: new FormControl(''),
-    largeurFormulaire: new FormControl(''),
+    hauteurFormulaire: new FormControl(this.hauteurFenetre),
+    largeurFormulaire: new FormControl(this.largeurFenetre),
     couleur: new FormControl('#ffffff'),
   });
 
   constructor(public dialogRef: MatDialogRef<FenetreNewDessinComponent>,
               private serviceNouveauDessin: DessinManagerService,
               private router: Router,
-              private stockageSVG: StockageSvgService) {}
+              private stockageSVG: StockageSvgService) {
+                this.dimmensionsChangees();
+              }
 
   fermerFenetre() {
     this.dialogRef.close();
   }
 
-  ngOnInit() {
-    this.hauteurFenetre = window.innerHeight;
-    this.largeurFenetre = window.innerWidth;
+  ngOnInit(){}
+
+  dimmensionChangeeManuellement() {
+    this.dimChangeeManuellement = true;
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event: { target: { innerLength: number; innerWidth: number; }; }) {
-    this.hauteurFenetre = event.target.innerLength;
-    this.largeurFenetre = event.target.innerWidth;
+  dimmensionsChangees() {
+    if (!this.dimChangeeManuellement) {
+      this.hauteurFenetre = window.innerHeight;
+      this.largeurFenetre = window.innerWidth - LARGEUR_BARRE_OUTILS;
+      this.nouveauDessin.patchValue({hauteurFormulaire: this.hauteurFenetre, largeurFormulaire: this.largeurFenetre});
+    }
   }
 
   validerNouveauDessin() {
