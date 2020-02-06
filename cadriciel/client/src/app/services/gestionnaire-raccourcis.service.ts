@@ -47,7 +47,7 @@ export class GestionnaireRaccourcisService {
         if (this.outils.outilActif.ID === INDEX_OUTIL_RECTANGLE) {
           this.dessinRectangle.shiftEnfonce();
         } else if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
-          this.dessinLigne.shiftEnfonce();
+          this.dessinLigne.stockerCurseur();
         }
         break;
 

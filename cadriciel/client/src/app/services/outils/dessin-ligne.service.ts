@@ -14,12 +14,14 @@ export interface Point {
 export class DessinLigneService implements InterfaceOutils {
   points: Point[] = [];
   private estClicSimple = true;
+  positionShiftEnfoncee: Point;
   curseurX: number;
   curseurY: number;
   positionX: number;
   positionY: number;
 
   constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
+
   sourisDeplacee(souris: MouseEvent) {
     this.curseurX = souris.offsetX;
     this.curseurY = souris.offsetY;
@@ -29,12 +31,7 @@ export class DessinLigneService implements InterfaceOutils {
       this.shiftRelache();
     }
   }
-  sourisEnfoncee(souris: MouseEvent) {
-    /**/
-  }
-  sourisRelachee(souris: MouseEvent) {
-    /**/
-  }
+
   sourisCliquee(souris: MouseEvent) {
     this.estClicSimple = true;
     const x = this.positionX;
@@ -43,12 +40,6 @@ export class DessinLigneService implements InterfaceOutils {
     window.setTimeout(() => {
       if (this.estClicSimple) {this.actualiserSVG()}
     }, 250)
-  }
-  sourisSortie(souris: MouseEvent) {
-    /**/
-  }
-  sourisEntree(souris: MouseEvent) {
-    /**/
   }
 
   sourisDoubleClic(souris: MouseEvent) {
@@ -102,11 +93,16 @@ export class DessinLigneService implements InterfaceOutils {
     this.points = [];
   }
 
+  stockerCurseur() {
+    this.positionShiftEnfoncee = {x: this.curseurX, y: this.curseurY};
+  }
+
   shiftEnfonce() {
     if (this.points.length > 0) {
       const dernierPoint = this.points[this.points.length - 1];
-      const angle = Math.atan((this.curseurY - dernierPoint.y) / (this.curseurX - dernierPoint.x));
-      const alignement = Math.abs(Math.round(angle / (Math.PI / 4)));
+      const angle = Math.atan((this.positionShiftEnfoncee.y - dernierPoint.y) / (this.positionShiftEnfoncee.x - dernierPoint.x));
+      console.log('angle: ', angle / (Math.PI / 4)  );
+      const alignement = Math.round(angle / (Math.PI / 4));
 
       // alignement = 0 lorsque angle = 0,180­°
       // alignement = 1 lorsque angle = 45,135,225,315°
@@ -115,13 +111,12 @@ export class DessinLigneService implements InterfaceOutils {
         this.positionX = this.curseurX;
         this.positionY = dernierPoint.y;
       } else if (alignement === 1) {
-        if (Math.sign(this.curseurX - dernierPoint.x) === Math.sign(this.curseurY - dernierPoint.y)) {
-          this.positionY = this.curseurX - dernierPoint.x + dernierPoint.y;
-        } else {
-          this.positionY = dernierPoint.x - this.curseurX + dernierPoint.y;
-        }
+        this.positionY = this.curseurX - dernierPoint.x + dernierPoint.y;
         this.positionX = this.curseurX;
-      } else if (alignement === 2) {
+      } else if (alignement === -1) {
+        this.positionY = dernierPoint.x - this.curseurX + dernierPoint.y;
+        this.positionX = this.curseurX;
+      } else if (alignement === 2 || alignement === -2) {
         this.positionX = dernierPoint.x;
         this.positionY = this.curseurY;
       }
