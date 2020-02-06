@@ -46,6 +46,8 @@ export class GestionnaireRaccourcisService {
       case 'Shift':
         if (this.outils.outilActif.ID === INDEX_OUTIL_RECTANGLE) {
           this.dessinRectangle.shiftEnfonce();
+        } else if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
+          this.dessinLigne.shiftEnfonce();
         }
         break;
 
@@ -72,6 +74,8 @@ export class GestionnaireRaccourcisService {
       case 'Shift':
         if (this.outils.outilActif.ID === INDEX_OUTIL_RECTANGLE) {
           this.dessinRectangle.shiftRelache();
+        } else if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
+          this.dessinLigne.shiftRelache();
         }
         break;
 
