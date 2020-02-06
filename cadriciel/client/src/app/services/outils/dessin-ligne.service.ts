@@ -15,9 +15,10 @@ export class DessinLigneService implements InterfaceOutils {
   points: Point[] = [];
   private estClicSimple = true;
   positionShiftEnfoncee: Point;
-  curseurX: number;
+
+  curseurX: number;       // Point curseur?
   curseurY: number;
-  positionX: number;
+  positionX: number;      // Point position?
   positionY: number;
 
   constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
@@ -111,11 +112,11 @@ export class DessinLigneService implements InterfaceOutils {
         this.positionX = this.curseurX;
         this.positionY = dernierPoint.y;
       } else if (alignement === 1) {
+        this.positionX = this.curseurY;
         this.positionY = this.curseurX - dernierPoint.x + dernierPoint.y;
-        this.positionX = this.curseurX;
       } else if (alignement === -1) {
-        this.positionY = dernierPoint.x - this.curseurX + dernierPoint.y;
         this.positionX = this.curseurX;
+        this.positionY = dernierPoint.x - this.curseurX + dernierPoint.y;
       } else if (alignement === 2 || alignement === -2) {
         this.positionX = dernierPoint.x;
         this.positionY = this.curseurY;

@@ -20,27 +20,19 @@ export class GestionnaireRaccourcisService {
     switch (clavier.key) {
 
       case '1':
-        this.outils.outilActif.estActif = false;
-        this.outils.outilActif = this.outils.listeOutils[INDEX_OUTIL_RECTANGLE];
-        this.outils.outilActif.estActif = true;
+        this.outils.changerOutilActif(INDEX_OUTIL_RECTANGLE);
         break;
 
       case 'c':
-        this.outils.outilActif.estActif = false;
-        this.outils.outilActif = this.outils.listeOutils[INDEX_OUTIL_CRAYON];
-        this.outils.outilActif.estActif = true;
+        this.outils.changerOutilActif(INDEX_OUTIL_CRAYON);
         break;
 
       case 'l':
-        this.outils.outilActif.estActif = false;
-        this.outils.outilActif = this.outils.listeOutils[INDEX_OUTIL_LIGNE];
-        this.outils.outilActif.estActif = true;
+        this.outils.changerOutilActif(INDEX_OUTIL_LIGNE);
         break;
 
       case 'w':
-        this.outils.outilActif.estActif = false;
-        this.outils.outilActif = this.outils.listeOutils[INDEX_OUTIL_PINCEAU];
-        this.outils.outilActif.estActif = true;
+        this.outils.changerOutilActif(INDEX_OUTIL_PINCEAU);
         break;
 
       case 'Shift':
