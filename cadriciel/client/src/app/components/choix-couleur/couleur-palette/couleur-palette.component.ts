@@ -36,7 +36,7 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges {
   getColorAtPosition(x: number, y: number) {
     const imageData = this.ctx.getImageData(x, y, 1, 1).data
     return(
-      'rgba(' + imageData[0] + ',' + imageData[1] + ',' + imageData[2] + ',1)')
+      'RGB(' + imageData[0] + ',' + imageData[1] + ',' + imageData[2] + ')' )
   }
 
   emitColor(x: number, y: number) {

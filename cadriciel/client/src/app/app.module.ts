@@ -18,6 +18,8 @@ import { ChoixCouleurComponent } from './components/choix-couleur/choix-couleur.
 import { CouleurPaletteComponent } from './components/choix-couleur/couleur-palette/couleur-palette.component'
 import { GlissiereCouleurComponent } from './components/choix-couleur/glissiere-couleur/glissiere-couleur.component'
 import { SurfaceDessinComponent } from './components/surface-dessin/surface-dessin.component';
+import { ValeurCouleurComponent } from './components/choix-couleur/valeur-couleur/valeur-couleur.component';
+
 
 // Service
 import { DessinManagerService } from './services/dessin-manager/dessin-manager.service';
@@ -28,10 +30,11 @@ import { DessinCrayonService } from './services/outils/dessin-crayon.service';
 import { DessinRectangleService } from './services/outils/dessin-rectangle.service';
 import { StockageSvgService } from './services/stockage-svg.service';
 
+
 @NgModule({
     declarations: [AppComponent, AccueilComponent, PageDessinComponent, PageGuideComponent,
         FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent,
-            ChoixCouleurComponent, GlissiereCouleurComponent, CouleurPaletteComponent],
+            ChoixCouleurComponent, GlissiereCouleurComponent, CouleurPaletteComponent, ValeurCouleurComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
         MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
         {path: '', component: ChoixCouleurComponent},
