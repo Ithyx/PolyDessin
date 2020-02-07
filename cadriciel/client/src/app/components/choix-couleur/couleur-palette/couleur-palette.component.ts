@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter,  HostListener, Input, OnChanges,
 Output, SimpleChanges, ViewChild, } from '@angular/core';
 
+
 @Component({
   selector: 'app-couleur-palette',
   templateUrl: './couleur-palette.component.html',
@@ -23,6 +24,10 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges {
 
   selectedPosition: { x: number; y: number}
 
+
+
+
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes[this.hue]) {
       this.draw()
@@ -35,8 +40,9 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges {
 
   getColorAtPosition(x: number, y: number) {
     const imageData = this.ctx.getImageData(x, y, 1, 1).data
-    return(
-      'RGB(' + imageData[0] + ',' + imageData[1] + ',' + imageData[2] + ')' )
+    return (
+      'RGB(' + imageData[0] + ',' + imageData[1] + ',' + imageData[2] + ')'
+    )
   }
 
   emitColor(x: number, y: number) {
