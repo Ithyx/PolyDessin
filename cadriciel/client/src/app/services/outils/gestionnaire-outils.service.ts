@@ -35,6 +35,12 @@ export class GestionnaireOutilsService {
     }
     return 0;
   }
+
+  changerOutilActif(index: number) {
+    this.outilActif.estActif = false;
+    this.outilActif = this.listeOutils[index];
+    this.outilActif.estActif = true;
+  }
 }
 
 export const OUTIL_VIDE = {nom: 'defaut', estActif: false, ID: -1, parametres: []};
@@ -54,7 +60,7 @@ export const LISTE_OUTILS: OutilDessin[] = [
     ID: 1,
     parametres: [
       {type: 'number', nom: 'Épaisseur', valeur: 5},
-      {type: 'select', nom: 'Texture', optionChoisie: 'Flou', options: ['Flou', 'Offset', 'Turbulence', 'Turbulence2', 'Ombre']}
+      {type: 'select', nom: 'Texture', optionChoisie: 'Flou', options: ['Flou', 'Ombre', 'Surbrillance', 'Tache', 'Tremblant']}
     ]
   },
   {
