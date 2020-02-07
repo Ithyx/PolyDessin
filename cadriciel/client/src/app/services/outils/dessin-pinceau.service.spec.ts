@@ -5,7 +5,7 @@ import { DessinPinceauService } from './dessin-pinceau.service';
 
 describe('DessinPinceauService', () => {
   const SVGCircle = '<circle filter="url(#Flou)"  cx="100" cy="100" r="2.5" fill="black"/>';
-  const SVGPath = '<path filter="url(#Flou)"  fill="transparent" stroke="black" stroke-linecap="round" stroke-width="5" d="M100 100"/>';
+  const SVGPath = '<path filter="url(#Flou)" fill="transparent" stroke="black" stroke-linecap="round" stroke-width="5" d="M100 100"/>';
   let service: DessinPinceauService;
   let stockageService: StockageSvgService;
   beforeEach(() => TestBed.configureTestingModule({}));
@@ -14,6 +14,8 @@ describe('DessinPinceauService', () => {
 
   // Mettre l'outil crayon comme l'outil actif
   beforeEach(() => {
+    service.traitEnCours = true;
+    service.traitEnCours = true;
     service.outils.outilActif = service.outils.listeOutils[1];
     service.outils.outilActif.parametres[0].valeur = 5;
     stockageService.setSVGEnCours('<svg />');
@@ -50,6 +52,13 @@ describe('DessinPinceauService', () => {
 
   // TESTS sourisDeplacee
 
+  it('#sourisDeplacee ne devrait pas appeler setSVGEnCours si traitEnCours est faux', () => {
+    service.traitEnCours = false;
+    spyOn(stockageService, 'setSVGEnCours');
+    service.sourisDeplacee(new MouseEvent('release'));
+    expect(stockageService.setSVGEnCours).not.toHaveBeenCalled();
+  });
+
   it('#sourisDeplacee devrait appeler setSVGEnCours après le mouvement de la souris', () => {
     spyOn(stockageService, 'setSVGEnCours');
     service.sourisDeplacee(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
@@ -57,6 +66,12 @@ describe('DessinPinceauService', () => {
   });
 
   // TESTS sourisEnfoncee
+
+  it('#sourisEnfoncee ne devrait pas appeler setSVGEnCours si traitEnCours est faux', () => {
+    service.traitEnCours = false;
+    service.sourisEnfoncee(new MouseEvent('release'));
+    expect(service.traitEnCours).toBe(true);
+  });
 
   it('#sourisEnfoncee devrait appeler setSVGEnCours avec le path SVG après avoir cliqué', () => {
     const clic = new MouseEvent('click', { clientX: 100, clientY: 100 });
@@ -66,6 +81,13 @@ describe('DessinPinceauService', () => {
   });
 
   // TESTS sourisRelachee
+
+  it('#sourisRelachee ne devrait pas appeler setSVGEnCours si traitEnCours est faux', () => {
+    service.traitEnCours = false;
+    spyOn(stockageService, 'setSVGEnCours');
+    service.sourisRelachee(new MouseEvent('release'));
+    expect(stockageService.setSVGEnCours).not.toHaveBeenCalled();
+  });
 
   it("#sourisRelachee ne devrait pas ajouter le SVG s'il ne contient pas 'L'", () => {
     spyOn(stockageService, 'ajouterSVG');
@@ -89,6 +111,13 @@ describe('DessinPinceauService', () => {
 
   // TESTS sourisSortie
 
+  it('#sourisSortie ne devrait pas appeler setSVGEnCours si traitEnCours est faux', () => {
+    service.traitEnCours = false;
+    spyOn(stockageService, 'ajouterSVG');
+    service.sourisSortie(new MouseEvent('release'));
+    expect(stockageService.ajouterSVG).not.toHaveBeenCalled();
+  });
+
   it('#sourisSortie devrait appeler ajouterSVG', () => {
     spyOn(stockageService, 'ajouterSVG');
     service.sourisSortie(new MouseEvent('release'));
@@ -99,5 +128,16 @@ describe('DessinPinceauService', () => {
     spyOn(stockageService, 'setSVGEnCours');
     service.sourisSortie(new MouseEvent('release'));
     expect(stockageService.setSVGEnCours).toHaveBeenCalled();
+  });
+
+  it('#sourisSortie devrait mettre traitEnCours faux si traitEnCours est vrai', () => {
+    service.sourisSortie(new MouseEvent('release'));
+    expect(service.traitEnCours).toBe(false);
+  });
+
+  it('#sourisSortie devrait mettre peutCliquer faux si traitEnCours est faux', () => {
+    service.traitEnCours = false;
+    service.sourisSortie(new MouseEvent('release'));
+    expect(service.peutCliquer).toBe(false);
   });
 });

@@ -12,7 +12,7 @@ export class DessinCrayonService implements InterfaceOutils {
   constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
 
   traitEnCours = false;
-  click = true;
+  peutCliquer = true;
 
   sourisDeplacee(souris: MouseEvent) {
     if (this.traitEnCours) {
@@ -43,14 +43,14 @@ export class DessinCrayonService implements InterfaceOutils {
   }
 
   sourisCliquee(souris: MouseEvent) {
-    if (this.click) {
+    if (this.peutCliquer) {
       if (this.outils.outilActif.parametres[0].valeur) {
         const SVG = '<circle cx="' + souris.offsetX + '" cy="' + souris.offsetY + '" r="'
         + this.outils.outilActif.parametres[0].valeur / 2 + '" fill="black"/>';
         this.stockageSVG.ajouterSVG(SVG);
       }
       this.traitEnCours = false;
-    } else {this.click = true};
+    } else {this.peutCliquer = true};
   }
 
   sourisSortie(souris: MouseEvent) {
@@ -60,6 +60,6 @@ export class DessinCrayonService implements InterfaceOutils {
       this.stockageSVG.setSVGEnCours('');
       this.traitEnCours = false;
     }
-    this.click = false;
+    this.peutCliquer = false;
   }
 }

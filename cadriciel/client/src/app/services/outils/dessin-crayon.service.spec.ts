@@ -14,6 +14,8 @@ describe('DessinCrayonService', () => {
 
   // Mettre l'outil crayon comme l'outil actif
   beforeEach(() => {
+    service.traitEnCours = true;
+    service.peutCliquer = true;
     service.outils.outilActif = service.outils.listeOutils[0];
     service.outils.outilActif.parametres[0].valeur = 5;
     stockageService.setSVGEnCours('<svg />');
@@ -50,6 +52,13 @@ describe('DessinCrayonService', () => {
 
   // TESTS sourisDeplacee
 
+  it('#sourisDeplacee ne devrait pas appeler setSVGEnCours si traitEnCours est faux', () => {
+    service.traitEnCours = false;
+    spyOn(stockageService, 'setSVGEnCours');
+    service.sourisDeplacee(new MouseEvent('release'));
+    expect(stockageService.setSVGEnCours).not.toHaveBeenCalled();
+  });
+
   it('#sourisDeplacee devrait appeler setSVGEnCours après le mouvement de la souris', () => {
     spyOn(stockageService, 'setSVGEnCours');
     service.sourisDeplacee(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
@@ -66,6 +75,13 @@ describe('DessinCrayonService', () => {
   });
 
   // TESTS sourisRelachee
+
+  it('#sourisRelachee ne devrait pas appeler setSVGEnCours si traitEnCours est faux', () => {
+    service.traitEnCours = false;
+    spyOn(stockageService, 'setSVGEnCours');
+    service.sourisRelachee(new MouseEvent('release'));
+    expect(stockageService.setSVGEnCours).not.toHaveBeenCalled();
+  });
 
   it("#sourisRelachee ne devrait pas ajouter le SVG s'il ne contient pas 'L'", () => {
     spyOn(stockageService, 'ajouterSVG');
@@ -89,6 +105,13 @@ describe('DessinCrayonService', () => {
 
   // TESTS sourisSortie
 
+  it('#sourisSortie ne devrait pas appeler setSVGEnCours si traitEnCours est faux', () => {
+    service.traitEnCours = false;
+    spyOn(stockageService, 'ajouterSVG');
+    service.sourisSortie(new MouseEvent('release'));
+    expect(stockageService.ajouterSVG).not.toHaveBeenCalled();
+  });
+
   it('#sourisSortie devrait appeler ajouterSVG', () => {
     spyOn(stockageService, 'ajouterSVG');
     service.sourisSortie(new MouseEvent('release'));
@@ -99,5 +122,16 @@ describe('DessinCrayonService', () => {
     spyOn(stockageService, 'setSVGEnCours');
     service.sourisSortie(new MouseEvent('release'));
     expect(stockageService.setSVGEnCours).toHaveBeenCalled();
+  });
+
+  it('#sourisSortie devrait mettre traitEnCours faux si traitEnCours est vrai', () => {
+    service.sourisSortie(new MouseEvent('release'));
+    expect(service.traitEnCours).toBe(false);
+  });
+
+  it('#sourisSortie devrait mettre peutCliquer faux si traitEnCours est faux', () => {
+    service.traitEnCours = false;
+    service.sourisSortie(new MouseEvent('release'));
+    expect(service.peutCliquer).toBe(false);
   });
 });
