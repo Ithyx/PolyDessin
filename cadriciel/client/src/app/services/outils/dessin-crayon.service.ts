@@ -39,6 +39,7 @@ export class DessinCrayonService implements InterfaceOutils {
         this.stockageSVG.setSVGEnCours('');
       }
       this.traitEnCours = false;
+      this.peutCliquer = true;
     }
   }
 

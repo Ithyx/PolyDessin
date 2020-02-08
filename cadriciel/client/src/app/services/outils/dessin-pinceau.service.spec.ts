@@ -28,6 +28,13 @@ describe('DessinPinceauService', () => {
 
   // TESTS sourisCliquee
 
+  it('#sourisCliquee ne devrait pas appeler ajouterSVG si peutCliquer est faux', () => {
+    service.peutCliquer = false;
+    spyOn(stockageService, 'ajouterSVG');
+    service.sourisCliquee(new MouseEvent('onclick'));
+    expect(stockageService.ajouterSVG).not.toHaveBeenCalled();
+  });
+
   it("#sourisCliquee devrait seulement être appelé si l'outil crayon est sélectionné", () => {
     service.outils.outilActif = {
       nom : 'outilActifTest' ,
@@ -50,6 +57,17 @@ describe('DessinPinceauService', () => {
     expect(stockageService.ajouterSVG).toHaveBeenCalledWith(SVGCircle);
   });
 
+  it('#sourisCliquee devrait mettre traitEnCours faux', () => {
+    service.sourisCliquee(new MouseEvent('onclick'));
+    expect(service.traitEnCours).toBe(false);
+  });
+
+  it('#sourisCliquee devrait mettre peutCliquer vrai si peutCliquer est faux au debut de la fonction', () => {
+    service.peutCliquer = false;
+    service.sourisCliquee(new MouseEvent('onclick'));
+    expect(service.peutCliquer).toBe(true);
+  });
+
   // TESTS sourisDeplacee
 
   it('#sourisDeplacee ne devrait pas appeler setSVGEnCours si traitEnCours est faux', () => {
@@ -67,9 +85,9 @@ describe('DessinPinceauService', () => {
 
   // TESTS sourisEnfoncee
 
-  it('#sourisEnfoncee ne devrait pas appeler setSVGEnCours si traitEnCours est faux', () => {
+  it('#sourisEnfoncee devrait mettre traitEnCours vrai si traitEnCours est faux au debut de la fonction', () => {
     service.traitEnCours = false;
-    service.sourisEnfoncee(new MouseEvent('release'));
+    service.sourisEnfoncee(new MouseEvent('onclick'));
     expect(service.traitEnCours).toBe(true);
   });
 
@@ -107,6 +125,16 @@ describe('DessinPinceauService', () => {
     spyOn(stockageService, 'setSVGEnCours');
     service.sourisRelachee(new MouseEvent('release'));
     expect(stockageService.setSVGEnCours).toHaveBeenCalled();
+  });
+
+  it('#sourisRelachee devrait mettre traitEnCours faux si traitEnCours est vrai au debut de la fonction', () => {
+    service.sourisRelachee(new MouseEvent('onclick'));
+    expect(service.traitEnCours).toBe(false);
+  });
+
+  it('#sourisRelachee devrait mettre peutCliquer vrai si traitEnCours est vrai au debut de la fonction', () => {
+    service.sourisRelachee(new MouseEvent('onclick'));
+    expect(service.peutCliquer).toBe(true);
   });
 
   // TESTS sourisSortie
