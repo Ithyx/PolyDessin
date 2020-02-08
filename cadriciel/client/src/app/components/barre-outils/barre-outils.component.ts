@@ -29,10 +29,10 @@ export class BarreOutilsComponent {
     }
   }
 
-  onSelect(event: Event, parametreNom: string) {
+  onSelect(event: Event, nomParametre: string) {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     if (typeof eventCast.value === 'string') {
-      this.outils.outilActif.parametres[this.outils.trouverIndexParametre(parametreNom)].optionChoisie = eventCast.value;
+      this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].optionChoisie = eventCast.value;
     }
   }
 

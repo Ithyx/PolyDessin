@@ -33,13 +33,17 @@ export class GestionnaireOutilsService {
         return i;
       }
     }
+    // Autrement on renvoie le premier parametre de l'outil
     return 0;
   }
 
   changerOutilActif(index: number) {
-    this.outilActif.estActif = false;
-    this.outilActif = this.listeOutils[index];
-    this.outilActif.estActif = true;
+    // On vérifie qu'on essaye d'accéder à un index valide
+    if (index <= this.listeOutils.length) {
+      this.outilActif.estActif = false;
+      this.outilActif = this.listeOutils[index];
+      this.outilActif.estActif = true;
+    }
   }
 }
 
