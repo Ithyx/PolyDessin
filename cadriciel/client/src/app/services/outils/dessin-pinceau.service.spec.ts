@@ -12,7 +12,7 @@ describe('DessinPinceauService', () => {
   beforeEach(() => service = TestBed.get(DessinPinceauService));
   beforeEach(() => stockageService = TestBed.get(StockageSvgService));
 
-  // Mettre l'outil crayon comme l'outil actif
+  // Mettre l'outil pinceau comme l'outil actif
   beforeEach(() => {
     service.traitEnCours = true;
     service.traitEnCours = true;
