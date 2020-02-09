@@ -45,12 +45,13 @@ export class BarreOutilsComponent {
   }
 
   raccourciNouveauDessin() {
-    if (this.raccourcis.ctrlOAppuye) {
+    if (this.raccourcis.oAppuye) {
       this.avertissementNouveauDessin();
     }
   }
 
-  avertissementNouveauDessin(){
+  avertissementNouveauDessin() {
+    this.raccourcis.oAppuye = false;
     this.onChampFocus();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;

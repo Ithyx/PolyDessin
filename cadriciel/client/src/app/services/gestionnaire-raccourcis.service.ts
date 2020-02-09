@@ -8,8 +8,9 @@ import { GestionnaireOutilsService, INDEX_OUTIL_CRAYON,
 })
 export class GestionnaireRaccourcisService {
   champDeTexteEstFocus = false;
-
-  constructor(public outils: GestionnaireOutilsService, public dessinRectangle: DessinRectangleService,) { }
+  oAppuye = false;
+  constructor(public outils: GestionnaireOutilsService,
+              public dessinRectangle: DessinRectangleService) { }
 
   traiterInput(clavier: KeyboardEvent) {
     if (this.champDeTexteEstFocus) { return; };
@@ -43,6 +44,12 @@ export class GestionnaireRaccourcisService {
       case 'Shift':
         if (this.outils.outilActif.ID === INDEX_OUTIL_RECTANGLE) {
           this.dessinRectangle.shiftEnfonce();
+        }
+        break;
+
+      case 'o':
+        if (true) {
+            this.oAppuye = true;
         }
         break;
 
