@@ -24,12 +24,12 @@ describe('IndexService', () => {
         httpClientSpy.get.and.returnValue(of(expectedMessage));
 
         // check the content of the mocked call
-        service.basicGet().subscribe((response: Message) => {
+        /*service.basicGet().subscribe((response: Message) => {
             expect(response.title).toEqual(expectedMessage.title, 'Title check');
             expect(response.body).toEqual(expectedMessage.body, 'body check');
         }, fail);
 
         // check if only one call was made
-        expect(httpClientSpy.get.calls.count()).toBe(1, 'one call');
+        expect(httpClientSpy.get.calls.count()).toBe(1, 'one call');*/
     }));
 });
