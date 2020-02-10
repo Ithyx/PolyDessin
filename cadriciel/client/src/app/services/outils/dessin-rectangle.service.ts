@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { GestionnaireCouleursService, Portee } from '../couleur/gestionnaire-couleurs.service';
+import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
 import { StockageSvgService } from '../stockage-svg.service';
+<<<<<<< HEAD
 import { Point } from './dessin-ligne.service';
+=======
+>>>>>>> parent of cd32fa3... corrections de portee
 import { GestionnaireOutilsService } from './gestionnaire-outils.service'
 import { InterfaceOutils } from './interface-outils'
 
@@ -24,7 +27,7 @@ export class DessinRectangleService implements InterfaceOutils {
 
   constructor(public stockageSVG: StockageSvgService,
               public outils: GestionnaireOutilsService,
-              public couleur: GestionnaireCouleursService) { }
+              public couleur: ParametresCouleurService) { }
 
   actualiserSVG() {
     const optionChoisie = this.outils.outilActif.parametres[1].optionChoisie;
@@ -34,7 +37,7 @@ export class DessinRectangleService implements InterfaceOutils {
       // La ligne à tracer
       this.stockageSVG.setSVGEnCours(
         '<line stroke-linecap="square'
-        + '" stroke="' + this.couleur.couleurs[Portee.Principale]
+        + '" stroke="' + this.couleur.couleurSecondaire
         + '" stroke-width="' + epaisseur
         + '" x1="' + this.base.x + '" y1="' + this.base.y
         + '" x2="' + (this.base.x + this.largeur) + '" y2="' + (this.base.y + this.hauteur) + '"/>'
@@ -50,8 +53,8 @@ export class DessinRectangleService implements InterfaceOutils {
     } else {
       // Le rectangle à tracer
       this.stockageSVG.setSVGEnCours(
-        '<rect fill="' + ((optionChoisie !== 'Contour') ? this.couleur.couleurs[Portee.Principale] : 'transparent')
-        + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleur.couleurs[Portee.Secondaire] : 'transparent')
+        '<rect fill="' + ((optionChoisie !== 'Contour') ? this.couleur.couleurPrincipale : 'transparent')
+        + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleur.couleurSecondaire : 'transparent')
         + '" stroke-width="' + epaisseur
         + '" x="' + this.base.x + '" y="' + this.base.y
         + '" width="' + this.largeur + '" height="' + this.hauteur + '"/>'

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatDialogRef } from '@angular/material'
-import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
+import { GestionnaireCouleursService, Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 
 @Component({
   selector: 'app-choix-couleur',
@@ -9,6 +9,9 @@ import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnai
   providers: [GestionnaireCouleursService]
 })
 export class ChoixCouleurComponent  {
+
+  @Input() portee: Portee = Portee.Principale;
+
   constructor(public gestionnaireCouleur: GestionnaireCouleursService,
               public dialogRef: MatDialogRef<ChoixCouleurComponent>) {}
 
@@ -17,7 +20,7 @@ export class ChoixCouleurComponent  {
   }
 
   appliquerCouleur() {
-    this.gestionnaireCouleur.appliquerCouleur();
+    this.gestionnaireCouleur.appliquerCouleur(this.portee);
     this.dialogRef.close();
   }
 
