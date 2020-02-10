@@ -42,6 +42,16 @@
                 <input [type]="parametre.type" [name]="parametre.nom" min="1" max="100" [value]="parametre.valeur"
                        (change)="onChange($event, parametre.nom)"  (focus)="onChampFocus()" (blur)="onChampBlur()"/>
             </ng-template>
+
+        </div>
+        <div class="boutons-couleur">
+            Couleur primaire
+            <button [ngStyle]= "{'background-color': couleur.couleurPrincipale || 'white'}" 
+                    (click)="selectionCouleur()"></button>
+            <br />
+            Couleur secondaire
+            <button [ngStyle]= "{'background-color': couleur.couleurSecondaire || 'white'}"
+                    (click)="selectionCouleur()"></button>
         </div>
     </form>
 </div>

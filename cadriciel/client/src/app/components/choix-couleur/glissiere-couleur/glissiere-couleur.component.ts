@@ -1,5 +1,9 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener,
-   Output, ViewChild } from '@angular/core'
+/*Component de couleur inspire de https://malcoded.com/posts/angular-color-picker/*/
+
+import { AfterViewInit, Component, ElementRef, HostListener, Input,
+         ViewChild } from '@angular/core'
+import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
+import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
 
 @Component({
   selector: 'app-glissiere-couleur',
@@ -7,16 +11,14 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener,
   styleUrls: ['./glissiere-couleur.component.scss']
 })
 
-export class GlissiereCouleurComponent implements AfterViewInit {
-  @ViewChild('canvas', {static: false})
+export class GlissiereCouleurComponent implements AfterViewInit, InterfaceOutils {
+  @ViewChild('canvas', {static: true})
   canvas: ElementRef<HTMLCanvasElement>
+  @Input() gestionnaireCouleur: GestionnaireCouleursService;
 
-  @Output()
-  color: EventEmitter<string> = new EventEmitter()
-
-  private ctx: CanvasRenderingContext2D ;
-  private mousedown =  false
-  private selectedHeight: number
+  private context2D: CanvasRenderingContext2D ;
+  private sourisbas =  false
+  private hauteurChoisi: number
 
   ngAfterViewInit() {
     this.draw();
@@ -24,14 +26,15 @@ export class GlissiereCouleurComponent implements AfterViewInit {
 
   draw() {
 
-    this.ctx = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D
-
+    if (!this.context2D) {
+      this.context2D = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D
+    }
     const width = this.canvas.nativeElement.width
     const height = this.canvas.nativeElement.height
 
-    this.ctx.clearRect(0, 0, width, height)
+    this.context2D.clearRect(0, 0, width, height)
 
-    const gradient = this.ctx.createLinearGradient(0, 0, 0, height)
+    const gradient = this.context2D.createLinearGradient(0, 0, 0, height)
     gradient.addColorStop(0, 'rgba(255, 0, 0, 1)')
     gradient.addColorStop(0.17, 'rgba(255, 255, 0, 1)')
     gradient.addColorStop(0.34, 'rgba(0, 255, 0, 1)')
@@ -40,52 +43,53 @@ export class GlissiereCouleurComponent implements AfterViewInit {
     gradient.addColorStop(0.85, 'rgba(255, 0, 255, 1)')
     gradient.addColorStop(1, 'rgba(255, 0, 0, 1)')
 
-    this.ctx.beginPath()
-    this.ctx.rect(0, 0, width, height)
+    this.context2D.beginPath()
+    this.context2D.rect(0, 0, width, height)
 
-    this.ctx.fillStyle = gradient
-    this.ctx.fill()
-    this.ctx.closePath()
+    this.context2D.fillStyle = gradient
+    this.context2D.fill()
+    this.context2D.closePath()
 
-    if (this.selectedHeight) {
-      this.ctx.beginPath()
-      this.ctx.strokeStyle = 'white'
-      this.ctx.lineWidth = 5
-      this.ctx.rect(0, this.selectedHeight - 5, width, 10)
-      this.ctx.stroke()
-      this.ctx.closePath()
+    if (this.hauteurChoisi) {
+      this.context2D.beginPath()
+      this.context2D.strokeStyle = 'white'
+      this.context2D.lineWidth = 5
+      this.context2D.rect(0, this.hauteurChoisi - 5, width, 10)
+      this.context2D.stroke()
+      this.context2D.closePath()
     }
   }
 
   @HostListener('window:mouseup', ['$event'])
-  onMouseUp(evt: MouseEvent) {
-    this.mousedown = false
+  sourisRelachee(evt: MouseEvent) {
+    this.sourisbas = false
   }
 
-  onMouseDown(evt: MouseEvent) {
-    this.mousedown = true
-    this.selectedHeight = evt.offsetY
+  sourisEnfoncee(evt: MouseEvent) {
+    this.sourisbas = true
+    this.hauteurChoisi = evt.offsetY
     this.draw()
-    this.emitColor(evt.offsetX, evt.offsetY)
+    this.couleurEmise(evt.offsetX, evt.offsetY)
   }
 
-  onMouseMove(evt: MouseEvent) {
-    if (this.mousedown) {
-      this.selectedHeight = evt.offsetY
+  sourisDeplacee(evt: MouseEvent) {
+    if (this.sourisbas) {
+      this.hauteurChoisi = evt.offsetY
       this.draw()
-      this.emitColor(evt.offsetX, evt.offsetY)
+      this.couleurEmise(evt.offsetX, evt.offsetY)
     }
   }
 
-  emitColor(x: number, y: number) {
-    const rgbaColor = this.getColorAtPosition(x, y)
-    this.color.emit(rgbaColor)
+  couleurEmise(x: number, y: number) {
+    const rgbaCouleur = this.couleurPosition(x, y)
+    this.gestionnaireCouleur.couleur = rgbaCouleur
+    this.gestionnaireCouleur.teinte = rgbaCouleur
   }
 
-  getColorAtPosition(x: number, y: number) {
-    const imageData = this.ctx.getImageData(x, y, 1, 1).data;
-    return ('rgba(' + imageData[0] + ',' + imageData[1] + ',' +
-      imageData[2] + ',1)')
+  couleurPosition(x: number, y: number) {
+    const imageData = this.context2D.getImageData(x, y, 1, 1).data;
+    return ('RGB(' + imageData[0] + ',' + imageData[1] + ',' +
+      imageData[2] + ')')
   }
 
 }

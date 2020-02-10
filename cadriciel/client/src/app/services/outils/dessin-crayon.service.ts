@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
 import { StockageSvgService } from '../stockage-svg.service';
 import { GestionnaireOutilsService } from './gestionnaire-outils.service';
 import { InterfaceOutils } from './interface-outils';
@@ -9,7 +10,9 @@ import { InterfaceOutils } from './interface-outils';
 
 export class DessinCrayonService implements InterfaceOutils {
 
-  constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
+  constructor(public stockageSVG: StockageSvgService,
+              public outils: GestionnaireOutilsService,
+              public couleur: ParametresCouleurService) { }
 
   traitEnCours = false;
   peutCliquer = true;
@@ -26,7 +29,8 @@ export class DessinCrayonService implements InterfaceOutils {
   sourisEnfoncee(souris: MouseEvent) {
     this.traitEnCours = true;
     this.stockageSVG.setSVGEnCours(
-      '<path fill="transparent" stroke="black" stroke-linecap="round" stroke-width="' + this.outils.outilActif.parametres[0].valeur
+      `<path fill="transparent" stroke="${this.couleur.couleurPrincipale}" stroke-linecap="round" stroke-width="`
+      + this.outils.outilActif.parametres[0].valeur
       + '" d="M' + souris.offsetX + ' ' + souris.offsetY + '"/>');
   }
 
@@ -47,8 +51,9 @@ export class DessinCrayonService implements InterfaceOutils {
     if (this.peutCliquer) {
       if (this.outils.outilActif.parametres[0].valeur) {
         const SVG = '<circle cx="' + souris.offsetX + '" cy="' + souris.offsetY + '" r="'
-        + this.outils.outilActif.parametres[0].valeur / 2 + '" fill="black"/>';
+        + this.outils.outilActif.parametres[0].valeur / 2 + `" fill="${this.couleur.couleurPrincipale}"/>`;
         this.stockageSVG.ajouterSVG(SVG);
+        console.log(this.couleur.couleurPrincipale);
       }
       this.traitEnCours = false;
     } else {this.peutCliquer = true};

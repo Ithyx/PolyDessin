@@ -1,0 +1,9 @@
+<label>R: </label>
+<input type="number" min="0" max="255" (change)="modificationRGB($event, INDEX_ROUGE)"
+    (focus)="onChampFocus()" (blur)="onChampBlur()" />
+<label>G: </label>
+<input type="number" min="0" max="255" (change)="modificationRGB($event, INDEX_VERT)"
+    (focus)="onChampFocus()" (blur)="onChampBlur()" />
+<label>B: </label>
+<input type="number" min="0" max="255" (change)="modificationRGB($event, INDEX_BLEU)"
+    (focus)="onChampFocus()" (blur)="onChampBlur()" />

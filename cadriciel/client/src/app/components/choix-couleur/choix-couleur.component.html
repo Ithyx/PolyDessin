@@ -1,11 +1,12 @@
 <div class = "color-wrapper">
-    <app-couleur-palette [hue]="hue" (color)="color = $event"></app-couleur-palette>
-    <app-glissiere-couleur (color)="hue = $event" style = "margin-left:16px"></app-glissiere-couleur>     
+    <app-couleur-palette [gestionnaireCouleur]="gestionnaireCouleur"></app-couleur-palette>
+    <app-glissiere-couleur [gestionnaireCouleur]="gestionnaireCouleur" style = "margin-left:16px"></app-glissiere-couleur>    
 </div>
 <div class="input-wrapper">
-    <span class="text">{{color}}</span>
+    <app-valeur-couleur [gestionnaireCouleur]="gestionnaireCouleur"></app-valeur-couleur>
     <div class ="color-div" 
-        [ngStyle]= "{'background-color': color || 'white'}">
-        </div>
+        [ngStyle]= "{'background-color': gestionnaireCouleur.couleur || 'white'}">
+    </div>
 </div>
-
+<button mat-stroked-button (click)="fermerFenetre()">Annuler</button>
+<button mat-stroked-button (click)="appliquerCouleur()">Confirmer</button>

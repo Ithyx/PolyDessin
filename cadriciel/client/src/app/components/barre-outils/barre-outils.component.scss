@@ -31,6 +31,7 @@
     background-color: rgb(25, 25, 40);
     left: 190px;
     padding-bottom: 50px;
+    padding-right: 25px;
 }
 
 .panneau-attributs label {
@@ -45,4 +46,17 @@
     position: absolute;
     bottom: 0;
     padding-bottom: 20px;
+}
+
+.fenetre-couleur {
+    background-color: rgb(25, 25, 40);
+}
+
+.boutons-couleur {
+    font-size: 20px;
+}
+
+button {
+    height: 40px;
+    width: 40px;
 }
