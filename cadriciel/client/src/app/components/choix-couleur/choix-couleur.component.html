@@ -1,7 +1,7 @@
 <div class = "color-wrapper">
     <app-couleur-palette [hue]="hue" (couleur)="color = $event"></app-couleur-palette>
     <app-glissiere-couleur (couleur)="hue = $event" style = "margin-left:16px"></app-glissiere-couleur> 
-    <app-valeur-couleur></app-valeur-couleur>    
+    <app-valeur-couleur [portee]="portee"></app-valeur-couleur>    
 </div>
 <div class="input-wrapper">
     <span class="text">{{color}}</span>

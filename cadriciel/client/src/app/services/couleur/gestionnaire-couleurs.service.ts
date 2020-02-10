@@ -12,6 +12,16 @@ export enum Portee {
 export class GestionnaireCouleursService {
   private couleurPrincipale: string
   private couleurSecondaire: string;
+  RGB: number[] = [0, 0, 0];
+  alpha: number = 1;
+
+  modifierRGB(portee: Portee) {
+    const nouvelleCouleur = 'rgba(' + this.RGB[0] + ', '
+                                    + this.RGB[1] + ', '
+                                    + this.RGB[2] + ', '
+                                    + this.alpha + ')';
+    this.setCouleur(portee, nouvelleCouleur);
+  }
 
   setCouleur(portee: Portee, nouvelleCouleur: string) {
     switch (portee) {

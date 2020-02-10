@@ -1,10 +1,10 @@
 <label>R:</label>
-<textarea maxlength="3" ></textarea>
+<input type="number" min="0" max="255" (change)="modificationRGB($event, INDEX_ROUGE)" />
 <br>
 <label>G:</label>
-<textarea maxlength="3" ></textarea>
+<input type="number" min="0" max="255" (change)="modificationRGB($event, INDEX_VERT)" />
 <br>
 <label>B:</label>
-<textarea maxlength="3" ></textarea>
+<input type="number" min="0" max="255" (change)="modificationRGB($event, INDEX_BLEU)" />
 
 
