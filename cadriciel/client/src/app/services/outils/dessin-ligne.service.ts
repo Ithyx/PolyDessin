@@ -16,16 +16,14 @@ export class DessinLigneService implements InterfaceOutils {
   private estClicSimple = true;
   positionShiftEnfoncee: Point;
 
-  curseurX: number;       // Point curseur?
-  curseurY: number;
-  positionX: number;      // Point position?
-  positionY: number;
+  curseur: Point = {x: 0, y: 0};
+  position: Point = {x: 0, y: 0};
 
   constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
 
   sourisDeplacee(souris: MouseEvent) {
-    this.curseurX = souris.offsetX;
-    this.curseurY = souris.offsetY;
+    this.curseur.x = souris.offsetX;
+    this.curseur.y = souris.offsetY;
     if (souris.shiftKey) {
       this.shiftEnfonce();
     } else {
@@ -35,9 +33,7 @@ export class DessinLigneService implements InterfaceOutils {
 
   sourisCliquee(souris: MouseEvent) {
     this.estClicSimple = true;
-    const x = this.positionX;
-    const y = this.positionY;
-    this.points.push({x, y});
+    this.points.push({x: this.position.x, y: this.position.y});
     window.setTimeout(() => {
       if (this.estClicSimple) {this.actualiserSVG()}
     }, 250)
@@ -63,7 +59,7 @@ export class DessinLigneService implements InterfaceOutils {
       } else {
         SVG = this.stockageSVG.getSVGEnCours() + '" />';
         if (this.outils.outilActif.parametres[1].optionChoisie === 'Avec points') {
-          SVG += ' <circle cx="' + this.positionX + '" cy="' + this.positionY + '" r="'
+          SVG += ' <circle cx="' + this.position.x + '" cy="' + this.position.y + '" r="'
               + this.outils.outilActif.parametres[2].valeur  + '" fill="black"/>';
         }
       }
@@ -95,7 +91,7 @@ export class DessinLigneService implements InterfaceOutils {
   }
 
   stockerCurseur() {
-    this.positionShiftEnfoncee = {x: this.curseurX, y: this.curseurY};
+    this.positionShiftEnfoncee = {x: this.curseur.x, y: this.curseur.y};
   }
 
   shiftEnfonce() {
@@ -109,17 +105,17 @@ export class DessinLigneService implements InterfaceOutils {
       // alignement = 1  lorsque angle = 135,225°
       // alignement = 2  lorsque angle = 90,270°
       if (alignement === 0) {
-        this.positionX = this.curseurX;
-        this.positionY = dernierPoint.y;
+        this.position.x = this.curseur.x;
+        this.position.y = dernierPoint.y;
       } else if (alignement === 1) {
-        this.positionX = this.curseurX;
-        this.positionY = this.curseurX - dernierPoint.x + dernierPoint.y;
+        this.position.x = this.curseur.x;
+        this.position.y = this.curseur.x - dernierPoint.x + dernierPoint.y;
       } else if (alignement === -1) {
-        this.positionX = this.curseurX;
-        this.positionY = dernierPoint.x - this.curseurX + dernierPoint.y;
+        this.position.x = this.curseur.x;
+        this.position.y = dernierPoint.x - this.curseur.x + dernierPoint.y;
       } else if (alignement === 2 || alignement === -2) {
-        this.positionX = dernierPoint.x;
-        this.positionY = this.curseurY;
+        this.position.x = dernierPoint.x;
+        this.position.y = this.curseur.y;
       }
 
       this.actualiserSVG();
@@ -127,8 +123,8 @@ export class DessinLigneService implements InterfaceOutils {
   }
 
   shiftRelache() {
-    this.positionX = this.curseurX;
-    this.positionY = this.curseurY;
+    this.position.x = this.curseur.x;
+    this.position.y = this.curseur.y;
     this.actualiserSVG();
   }
 
@@ -140,7 +136,7 @@ export class DessinLigneService implements InterfaceOutils {
       SVG += point.x + ' ' + point.y + ' ';
     }
 
-    SVG += this.positionX + ' ' + this.positionY + '"/>';
+    SVG += this.position.x + ' ' + this.position.y + '"/>';
 
     if (this.outils.outilActif.parametres[1].optionChoisie === 'Avec points' ) {
       SVG += this.avecPoints(SVG);
@@ -152,10 +148,10 @@ export class DessinLigneService implements InterfaceOutils {
   vider() {
     this.points = [];
     this.positionShiftEnfoncee = {x: 0, y: 0};
-    this.curseurX = 0;
-    this.curseurY = 0;
-    this.positionX = 0;
-    this.positionY = 0;
+    this.curseur.x = 0;
+    this.curseur.y = 0;
+    this.position.x = 0;
+    this.position.y = 0;
     this.stockageSVG.setSVGEnCours('');
   }
 }
