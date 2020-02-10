@@ -105,14 +105,15 @@ export class DessinLigneService implements InterfaceOutils {
       console.log('angle: ', angle / (Math.PI / 4)  );
       const alignement = Math.round(angle / (Math.PI / 4));
 
-      // alignement = 0 lorsque angle = 0,180­°
-      // alignement = 1 lorsque angle = 45,135,225,315°
-      // alignement = 2 lorsque angle = 90,270°
+      // alignement = 0  lorsque angle = 0,180­°
+      // alignement = -1 lorsque angle = 45,315°
+      // alignement = 1  lorsque angle = 135,225°
+      // alignement = 2  lorsque angle = 90,270°
       if (alignement === 0) {
         this.positionX = this.curseurX;
         this.positionY = dernierPoint.y;
       } else if (alignement === 1) {
-        this.positionX = this.curseurY;
+        this.positionX = this.curseurX;
         this.positionY = this.curseurX - dernierPoint.x + dernierPoint.y;
       } else if (alignement === -1) {
         this.positionX = this.curseurX;
