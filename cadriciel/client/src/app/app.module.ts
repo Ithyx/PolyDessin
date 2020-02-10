@@ -47,7 +47,7 @@ import { StockageSvgService } from './services/stockage-svg.service';
     providers: [NavigationGuideService, StockageSvgService, DessinCrayonService, DessinManagerService,
                 GestionnaireRaccourcisService, DessinRectangleService, DessinLigneService,
                 GestionnaireRoutingService, ParametresCouleurService],
-    entryComponents: [FenetreNewDessinComponent, AvertissementNouveauDessinComponent],
+    entryComponents: [FenetreNewDessinComponent, AvertissementNouveauDessinComponent, ChoixCouleurComponent],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

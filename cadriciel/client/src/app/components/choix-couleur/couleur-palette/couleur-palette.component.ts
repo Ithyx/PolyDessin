@@ -2,7 +2,7 @@
 
 import { AfterViewInit, Component, ElementRef,  HostListener, Input, OnChanges,
          SimpleChanges, ViewChild, } from '@angular/core';
-import { GestionnaireCouleursService, Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
+import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
 
 @Component({
@@ -12,8 +12,7 @@ import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
 })
 export class CouleurPaletteComponent implements AfterViewInit, OnChanges, InterfaceOutils {
 
-  @Input() portee: Portee = Portee.Principale;
-  @Input() couleur: GestionnaireCouleursService;
+  @Input() gestionnaireCouleur: GestionnaireCouleursService;
 
   @ViewChild('canvas' , {static: false} )
   canvas: ElementRef<HTMLCanvasElement>
@@ -25,11 +24,11 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
   hauteurChoisi: { x: number; y: number}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes[this.couleur.teinte]) {
+    if (changes[this.gestionnaireCouleur.teinte]) {
       this.draw()
       const pos = this.hauteurChoisi
       if (pos) {
-        this.couleur.setCouleur(this.portee, this.couleurPosition(pos.x, pos.y));
+        this.gestionnaireCouleur.couleur = this.couleurPosition(pos.x, pos.y);
       }
     }
   }
@@ -43,7 +42,7 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
 
   couleurEmise(x: number, y: number) {
     const rgbaColor = this.couleurPosition(x, y)
-    this.couleur.setCouleur(this.portee, rgbaColor);
+    this.gestionnaireCouleur.couleur = rgbaColor;
   }
 
   @HostListener ('window:mouseup', ['$event'] )
@@ -55,7 +54,7 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
       this.sourisBas = true
       this.hauteurChoisi = {x: evt.offsetX, y: evt.offsetY}
       this.draw()
-      this.couleur.setCouleur(this.portee, this.couleurPosition(evt.offsetX, evt.offsetY));
+      this.gestionnaireCouleur.couleur = this.couleurPosition(evt.offsetX, evt.offsetY);
     }
 
     sourisDeplacee(evt: MouseEvent) {
@@ -77,7 +76,7 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
     const width = this.canvas.nativeElement.width
     const height = this.canvas.nativeElement.height
 
-    this.context2D.fillStyle = this.couleur.teinte || 'rgba(255,255,255,1)'
+    this.context2D.fillStyle = this.gestionnaireCouleur.teinte || 'rgba(255,255,255,1)'
     this.context2D.fillRect(0, 0, width, height)
 
     const whiteGrad = this.context2D.createLinearGradient(0, 0, width, 0)

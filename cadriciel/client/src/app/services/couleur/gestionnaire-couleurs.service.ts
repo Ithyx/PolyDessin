@@ -11,30 +11,30 @@ export enum Portee {
   providedIn: 'root'
 })
 export class GestionnaireCouleursService {
+  couleur: string;
   teinte: string;
   RGB: number[] = [0, 0, 0];
   alpha = 1;
 
   constructor(public parametresCouleur: ParametresCouleurService) {}
 
-  modifierRGB(portee: Portee) {
+  modifierRGB() {
     const nouvelleCouleur = 'rgba(' + this.RGB[0] + ', '
                                     + this.RGB[1] + ', '
                                     + this.RGB[2] + ', '
                                     + this.alpha + ')';
-    this.setCouleur(portee, nouvelleCouleur);
+    this.couleur = nouvelleCouleur;
   }
 
-  setCouleur(portee: Portee, nouvelleCouleur: string) {
-    console.log('Portée: ', portee);
+  appliquerCouleur(portee: Portee) {
     switch (portee) {
       case Portee.Principale:
-        console.log('nouvelle couleur principale: ', nouvelleCouleur);
-        this.parametresCouleur.couleurPrincipale = nouvelleCouleur;
+        console.log('nouvelle couleur principale: ', this.couleur);
+        this.parametresCouleur.couleurPrincipale = this.couleur;
         break;
       case Portee.Secondaire:
-        console.log('nouvelle couleur secondaire: ', nouvelleCouleur);
-        this.parametresCouleur.couleurSecondaire = nouvelleCouleur;
+        console.log('nouvelle couleur secondaire: ', this.couleur);
+        this.parametresCouleur.couleurSecondaire = this.couleur;
         break;
       default:
         /* Par mesure de sécurité, ne rien faire. */

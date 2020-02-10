@@ -2,7 +2,7 @@
 
 import { AfterViewInit, Component, ElementRef, HostListener, Input,
          ViewChild } from '@angular/core'
-import { GestionnaireCouleursService, Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
+import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
 
 @Component({
@@ -14,8 +14,7 @@ import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
 export class GlissiereCouleurComponent implements AfterViewInit, InterfaceOutils {
   @ViewChild('canvas', {static: true})
   canvas: ElementRef<HTMLCanvasElement>
-  @Input() couleur: GestionnaireCouleursService;
-  @Input() portee: Portee = Portee.Principale;
+  @Input() gestionnaireCouleur: GestionnaireCouleursService;
 
   private context2D: CanvasRenderingContext2D ;
   private sourisbas =  false
@@ -83,8 +82,8 @@ export class GlissiereCouleurComponent implements AfterViewInit, InterfaceOutils
 
   couleurEmise(x: number, y: number) {
     const rgbaCouleur = this.couleurPosition(x, y)
-    this.couleur.setCouleur(this.portee, rgbaCouleur)
-    this.couleur.teinte = rgbaCouleur
+    this.gestionnaireCouleur.couleur = rgbaCouleur
+    this.gestionnaireCouleur.teinte = rgbaCouleur
   }
 
   couleurPosition(x: number, y: number) {
