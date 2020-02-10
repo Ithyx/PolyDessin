@@ -72,6 +72,8 @@ export class GestionnaireCouleursService {
         break;
     }
 
+    teinte = (teinte * 60 + 360) % 360;
+
     return [teinte, saturation, luminosite];
   }
 }
