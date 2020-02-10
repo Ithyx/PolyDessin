@@ -2,9 +2,11 @@ import { Component, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig} from '@angular/material';
 import { Subscription } from 'rxjs';
 import { Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
+import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
 import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
+import { ChoixCouleurComponent } from '../choix-couleur/choix-couleur.component';
 
 @Component({
   selector: 'app-barre-outils',
@@ -22,6 +24,7 @@ export class BarreOutilsComponent implements OnDestroy {
     public dialog: MatDialog,
     public outils: GestionnaireOutilsService,
     public raccourcis: GestionnaireRaccourcisService,
+    public couleur: ParametresCouleurService
   ) {
     this.nouveauDessinSubscription = raccourcis.emitterNouveauDessin.subscribe((estIgnoree: boolean) => {
      if (!estIgnoree) { this.avertissementNouveauDessin(); };
@@ -69,5 +72,15 @@ export class BarreOutilsComponent implements OnDestroy {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
     this.dialog.open(AvertissementNouveauDessinComponent, dialogConfig);
+  }
+
+  selectionCouleur() {
+    this.onChampFocus();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '30%';
+    dialogConfig.panelClass = 'fenetre-couleur';
+    this.dialog.open(ChoixCouleurComponent, dialogConfig);
   }
 }

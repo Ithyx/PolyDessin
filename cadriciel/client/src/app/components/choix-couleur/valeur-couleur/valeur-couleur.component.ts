@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { GestionnaireCouleursService, Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
+import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 
 @Component({
@@ -8,8 +8,7 @@ import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-rac
   styleUrls: ['./valeur-couleur.component.scss']
 })
 export class ValeurCouleurComponent {
-  @Input() portee: Portee = Portee.Principale;
-  @Input() couleur: GestionnaireCouleursService;
+  @Input() gestionnaireCouleur: GestionnaireCouleursService;
 
   readonly INDEX_ROUGE = 0;
   readonly INDEX_VERT = 1;
@@ -20,8 +19,8 @@ export class ValeurCouleurComponent {
   modificationRGB(event: Event, index: number) {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     if (!isNaN(Number(eventCast.value))) {
-      this.couleur.RGB[index] = Math.min(Math.max(Number(eventCast.value), 0), 255);
-      this.couleur.modifierRGB(this.portee);
+      this.gestionnaireCouleur.RGB[index] = Math.min(Math.max(Number(eventCast.value), 0), 255);
+      this.gestionnaireCouleur.modifierRGB();
     }
   }
 

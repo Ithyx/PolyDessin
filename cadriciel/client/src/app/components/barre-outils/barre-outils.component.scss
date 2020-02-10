@@ -27,7 +27,7 @@
     font-size: 30px;
     color: lightcyan;
     display: block;
-    width: 500px;
+    width: 320px;
     background-color: rgb(25, 25, 40);
     left: 190px;
     padding-bottom: 50px;
@@ -48,6 +48,15 @@
     padding-bottom: 20px;
 }
 
-.color-picker {
-    margin-right: 5%;
+.fenetre-couleur {
+    background-color: rgb(25, 25, 40);
+}
+
+.boutons-couleur {
+    font-size: 20px;
+}
+
+button {
+    height: 40px;
+    width: 40px;
 }
