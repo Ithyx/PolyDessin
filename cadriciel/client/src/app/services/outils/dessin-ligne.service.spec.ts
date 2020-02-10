@@ -215,5 +215,53 @@ describe('DessinLigneService', () => {
 
   // TESTS actualiserSVG
 
-  
+  it("#actualiserSVG devrait retourner un SVG de tous les points sans l'option avec Points", () => {
+    service.points.push({x: 1, y: 1});
+    // les 2 derniers '0' sont ceux de la position du curseur
+    SVG = '<polyline fill="none" stroke="black" stroke-width="5" points="0 0 1 1 0 0"/>';
+    spyOn(stockageService, 'setSVGEnCours');
+    service.actualiserSVG();
+    expect(stockageService.setSVGEnCours).toHaveBeenCalledWith(SVG);
+  });
+
+  it("#actualiserSVG devrait retourner un SVG de tous les points sans l'option avec Points", () => {
+    service.outils.outilActif.parametres[1].optionChoisie = 'Avec points';
+    service.points.push({x: 1, y: 1});
+    // les 2 derniers '0' sont ceux de la position du curseur
+    SVG = '<polyline fill="none" stroke="black" stroke-width="5" points="0 0 1 1 0 0"/>';
+    spyOn(service, 'avecPoints');
+    service.actualiserSVG();
+    expect(service.avecPoints).toHaveBeenCalledWith(SVG);
+  });
+
+  // TESTS vider
+
+  it('#vider devrait mettre le conteneur de points vide', () => {
+    service.vider();
+    expect(service.points).toEqual([]);
+  });
+
+  it('#vider devrait mettre positionShiftEnfoncee à (x: 0, y: 0)', () => {
+    service.positionShiftEnfoncee = ({x: 100, y: 100});
+    service.vider();
+    expect(service.positionShiftEnfoncee).toEqual({x: 0, y: 0});
+  });
+
+  it('#vider devrait mettre curseur à (x: 0, y: 0)', () => {
+    service.curseur = ({x: 100, y: 100});
+    service.vider();
+    expect(service.curseur).toEqual({x: 0, y: 0});
+  });
+
+  it('#vider devrait mettre position à (x: 0, y: 0)', () => {
+    service.position = ({x: 100, y: 100});
+    service.vider();
+    expect(service.position).toEqual({x: 0, y: 0});
+  });
+
+  it('#vider devrait appeler setSVGEnCours', () => {
+    spyOn(stockageService, 'setSVGEnCours');
+    service.vider();
+    expect(stockageService.setSVGEnCours).toHaveBeenCalledWith('');
+  });
 });
