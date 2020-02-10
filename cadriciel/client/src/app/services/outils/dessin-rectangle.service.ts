@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
 import { StockageSvgService } from '../stockage-svg.service';
-<<<<<<< HEAD
 import { Point } from './dessin-ligne.service';
-=======
->>>>>>> parent of cd32fa3... corrections de portee
 import { GestionnaireOutilsService } from './gestionnaire-outils.service'
 import { InterfaceOutils } from './interface-outils'
 
