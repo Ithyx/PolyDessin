@@ -1,6 +1,7 @@
+/*Component de couleur inspire de https://malcoded.com/posts/angular-color-picker/*/
+
 import { AfterViewInit, Component, ElementRef, EventEmitter,  HostListener, Input, OnChanges,
 Output, SimpleChanges, ViewChild, } from '@angular/core';
-
 
 @Component({
   selector: 'app-couleur-palette',
@@ -13,60 +14,56 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges {
   hue: string
 
   @Output()
-  color: EventEmitter<string> = new EventEmitter(true)
+  couleur: EventEmitter<string> = new EventEmitter(true)
 
   @ViewChild('canvas' , {static: false} )
   canvas: ElementRef<HTMLCanvasElement>
 
-  private ctx: CanvasRenderingContext2D
+  private context2D: CanvasRenderingContext2D
 
-  private mousedown = false
+  private sourisBas = false
 
-  selectedPosition: { x: number; y: number}
-
-
-
-
+  hauteurChoisi: { x: number; y: number}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes[this.hue]) {
       this.draw()
-      const pos = this.selectedPosition
+      const pos = this.hauteurChoisi
       if (pos) {
-        this.color.emit(this.getColorAtPosition(pos.x, pos.y))
+        this.couleur.emit(this.couleurPosition(pos.x, pos.y))
       }
     }
   }
 
-  getColorAtPosition(x: number, y: number) {
-    const imageData = this.ctx.getImageData(x, y, 1, 1).data
+  couleurPosition(x: number, y: number) {
+    const imageData = this.context2D.getImageData(x, y, 1, 1).data
     return (
       'RGB(' + imageData[0] + ',' + imageData[1] + ',' + imageData[2] + ')'
     )
   }
 
-  emitColor(x: number, y: number) {
-    const rgbaColor = this.getColorAtPosition(x, y)
-    this.color.emit(rgbaColor)
+  couleurEmise(x: number, y: number) {
+    const rgbaColor = this.couleurPosition(x, y)
+    this.couleur.emit(rgbaColor)
   }
 
   @HostListener ('window:mouseup', ['$event'] )
     onmouseup(evt: MouseEvent) {
-      this.mousedown = false
+      this.sourisBas = false
     }
 
-    onMouseDown( evt: MouseEvent) {
-      this.mousedown = true
-      this.selectedPosition = {x: evt.offsetX, y: evt.offsetY}
+    sourisEnBas( evt: MouseEvent) {
+      this.sourisBas = true
+      this.hauteurChoisi = {x: evt.offsetX, y: evt.offsetY}
       this.draw()
-      this.color.emit(this.getColorAtPosition (evt.offsetX, evt.offsetY))
+      this.couleur.emit(this.couleurPosition(evt.offsetX, evt.offsetY))
     }
 
-    onMouseMove(evt: MouseEvent) {
-      if (this.mousedown) {
-        this.selectedPosition = { x: evt.offsetX, y: evt.offsetY}
+    sourisEnMouvement(evt: MouseEvent) {
+      if (this.sourisBas) {
+        this.hauteurChoisi = { x: evt.offsetX, y: evt.offsetY}
         this.draw()
-        this.emitColor(evt.offsetX, evt.offsetY)
+        this.couleurEmise(evt.offsetX, evt.offsetY)
       }
     }
 
@@ -76,41 +73,41 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges {
 
   draw() {
 
-    this.ctx = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D
+    this.context2D = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D
 
     const width = this.canvas.nativeElement.width
     const height = this.canvas.nativeElement.height
 
-    this.ctx.fillStyle = this.hue || 'rgba(255,255,255,1)'
-    this.ctx.fillRect(0, 0, width, height)
+    this.context2D.fillStyle = this.hue || 'rgba(255,255,255,1)'
+    this.context2D.fillRect(0, 0, width, height)
 
-    const whiteGrad = this.ctx.createLinearGradient(0, 0, width, 0)
+    const whiteGrad = this.context2D.createLinearGradient(0, 0, width, 0)
     whiteGrad.addColorStop(0, 'rgba(255,255,255,1)')
     whiteGrad.addColorStop(1, 'rgba(255,255,255,0)')
 
-    this.ctx.fillStyle = whiteGrad
-    this.ctx.fillRect(0, 0, width, height)
+    this.context2D.fillStyle = whiteGrad
+    this.context2D.fillRect(0, 0, width, height)
 
-    const blackGrad = this.ctx.createLinearGradient(0, 0, 0, height)
+    const blackGrad = this.context2D.createLinearGradient(0, 0, 0, height)
     blackGrad.addColorStop(0, 'rgba(0,0,0,0)')
     blackGrad.addColorStop(1, 'rgba(0,0,0,1)')
 
-    this.ctx.fillStyle = blackGrad
-    this.ctx.fillRect(0, 0, width, height)
+    this.context2D.fillStyle = blackGrad
+    this.context2D.fillRect(0, 0, width, height)
 
-    if (this.selectedPosition) {
-      this.ctx.strokeStyle = 'white'
-      this.ctx.fillStyle = 'white'
-      this.ctx.beginPath()
-      this.ctx.arc(
-        this.selectedPosition.x,
-        this.selectedPosition.y,
+    if (this.hauteurChoisi) {
+      this.context2D.strokeStyle = 'white'
+      this.context2D.fillStyle = 'white'
+      this.context2D.beginPath()
+      this.context2D.arc(
+        this.hauteurChoisi.x,
+        this.hauteurChoisi.y,
         10,
         0,
         2 * Math.PI
       )
-      this.ctx.lineWidth = 5
-      this.ctx.stroke()
+      this.context2D.lineWidth = 5
+      this.context2D.stroke()
     }
   }
 }
