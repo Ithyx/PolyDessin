@@ -45,6 +45,8 @@ export class DessinLigneService implements InterfaceOutils {
       let SVG: string;
       if (Math.abs(souris.offsetX - this.points[0].x) <= 3
           && Math.abs(souris.offsetY - this.points[0].y) <= 3) {
+        // On retire le dernier point pour fermer le polygone
+        // (Un double clic ajoute 2 points au conteneur qu'il faut retirer)
         this.points.pop();
         this.points.pop();
         SVG = '<polygon fill="none" stroke="black" stroke-width="'

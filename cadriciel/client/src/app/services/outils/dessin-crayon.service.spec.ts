@@ -4,8 +4,8 @@ import { StockageSvgService } from '../stockage-svg.service';
 import { DessinCrayonService } from './dessin-crayon.service';
 
 describe('DessinCrayonService', () => {
-  const SVGCircle = '<circle cx="100" cy="100" r="2.5" fill="black"/>';
-  const SVGPath = '<path fill="transparent" stroke="black" stroke-linecap="round" stroke-width="5" d="M100 100"/>';
+  const SVGCircle = '<circle cx="100" cy="100" r="2.5" fill="rgba(0, 0, 0, 1)"/>';
+  const SVGPath = '<path fill="transparent" stroke="rgba(0, 0, 0, 1)" stroke-linecap="round" stroke-width="5" d="M100 100"/>';
   let service: DessinCrayonService;
   let stockageService: StockageSvgService;
   beforeEach(() => TestBed.configureTestingModule({}));

@@ -4,7 +4,7 @@ import { StockageSvgService } from '../stockage-svg.service';
 import { DessinRectangleService } from './dessin-rectangle.service';
 
 describe('DessinRectangleService', () => {
-  const referenceSVG = '<rect fill="transparent" stroke="black" stroke-width="5" x="0" y="0" width="20" height="50"/>';
+  const referenceSVG = '<rect fill="transparent" stroke="rgba(0, 0, 0, 1)" stroke-width="5" x="0" y="0" width="20" height="50"/>';
   let service: DessinRectangleService;
   let stockageService: StockageSvgService;
   beforeEach(() => TestBed.configureTestingModule({}));
@@ -13,8 +13,6 @@ describe('DessinRectangleService', () => {
   beforeEach(() => {
     service.initial.x = 0;
     service.initial.y = 0;
-    service.couleurPrimaire = 'blue';
-    service.couleurSecondaire = 'black';
     service.rectangleEnCours = true;
   });
   // Mettre l'outil de rectangle comme l'outil actif
