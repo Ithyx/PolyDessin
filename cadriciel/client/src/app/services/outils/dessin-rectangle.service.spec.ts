@@ -11,8 +11,8 @@ describe('DessinRectangleService', () => {
   beforeEach(() => service = TestBed.get(DessinRectangleService));
   beforeEach(() => stockageService = TestBed.get(StockageSvgService));
   beforeEach(() => {
-    service.xInitial = 0;
-    service.yInitial = 0;
+    service.initial.x = 0;
+    service.initial.y = 0;
     service.couleurPrimaire = 'blue';
     service.couleurSecondaire = 'black';
     service.rectangleEnCours = true;
@@ -61,8 +61,8 @@ describe('DessinRectangleService', () => {
     const evenement = new MouseEvent('mousemove', { clientX: 50, clientY: 50 });
     service.sourisDeplacee(evenement);
     // on vérifie que les coordonnées de la base ont les bonnes valeurs
-    expect(service.baseX).toBe(0);
-    expect(service.baseY).toBe(0);
+    expect(service.base.x).toBe(0);
+    expect(service.base.y).toBe(0);
   });
   it('#sourisDeplacee devrait calculer correctement la base en X et en Y '
     + 'pour un déplacement avec des valeurs négatives', () => {
@@ -70,8 +70,8 @@ describe('DessinRectangleService', () => {
     const evenement = new MouseEvent('mousemove', { clientX: -50, clientY: -50 });
     service.sourisDeplacee(evenement);
     // on vérifie que les coordonnées de la base ont ont les bonnes valeurs
-    expect(service.baseX).toBe(-50);
-    expect(service.baseY).toBe(-50);
+    expect(service.base.x).toBe(-50);
+    expect(service.base.y).toBe(-50);
   });
   it('#sourisDeplacee devrait former un carré si shift est enfoncé', () => {
     // on simule un déplacement de souris avec shift enfoncé
@@ -131,35 +131,35 @@ describe('DessinRectangleService', () => {
   });
   it('#shiftEnfonce devrait corriger la base en Y si elle diffère '
     + 'du Y initial et que la largeur est supérieure à la hauteur', () => {
-    service.baseYCalculee = 50;
+    service.baseCalculee.y = 50;
     service.largeurCalculee = 5;
     service.hauteurCalculee = 10;
     service.shiftEnfonce();
-    expect(service.baseY).toBe(55);
+    expect(service.base.y).toBe(55);
   });
   it('#shiftEnfonce ne devrait pas corriger la base en Y si elle est égale '
     + 'au Y initial et que la largeur est supérieure à la hauteur', () => {
-    service.baseYCalculee = 0;
+    service.baseCalculee.y = 0;
     service.largeurCalculee = 5;
     service.hauteurCalculee = 10;
     service.shiftEnfonce();
-    expect(service.baseY).toBe(0);
+    expect(service.base.y).toBe(0);
   });
   it('#shiftEnfonce devrait corriger la base en X si elle diffère '
     + 'du X initial et que la hauteur est supérieure à la largeur', () => {
-    service.baseXCalculee = 50;
+    service.baseCalculee.x = 50;
     service.largeurCalculee = 10;
     service.hauteurCalculee = 5;
     service.shiftEnfonce();
-    expect(service.baseX).toBe(55);
+    expect(service.base.x).toBe(55);
   });
   it('#shiftEnfonce ne devrait pas corriger la base en X si elle est égale '
     + 'au X initial et que la hauteur est supérieure à la largeur', () => {
-    service.baseXCalculee = 0;
+    service.baseCalculee.x = 0;
     service.largeurCalculee = 10;
     service.hauteurCalculee = 5;
     service.shiftEnfonce();
-    expect(service.baseX).toBe(0);
+    expect(service.base.x).toBe(0);
   });
 
   // TESTS SUR LA CRÉATION DE RECTANGLES
@@ -175,7 +175,7 @@ describe('DessinRectangleService', () => {
   it("#actualiserSVG devrait tracer un rectangle lors d'un mouvement "
     + 'vers le coin supérieur droit', () => {
     // on simule un mouvement de 20 en x et de -50 en y
-    service.yInitial = 50;
+    service.initial.y = 50;
     const evenement = new MouseEvent('mousemove', { clientX: 20, clientY: 0 });
     service.sourisDeplacee(evenement);
     // on vérifie le SVG qui a été tracé
@@ -184,7 +184,7 @@ describe('DessinRectangleService', () => {
   it("#actualiserSVG devrait tracer un rectangle lors d'un mouvement "
     + 'vers le coin inférieur gauche', () => {
     // on simule un mouvement de -20 en x et de 50 en y
-    service.xInitial = 20;
+    service.initial.x = 20;
     const evenement = new MouseEvent('mousemove', { clientX: 0, clientY: 50 });
     service.sourisDeplacee(evenement);
     // on vérifie le SVG qui a été tracé
@@ -193,8 +193,8 @@ describe('DessinRectangleService', () => {
   it("#actualiserSVG devrait tracer un rectangle lors d'un mouvement "
     + 'vers le coin supérieur gauche', () => {
     // on simule un mouvement de -20 en x et de -50 en y
-    service.xInitial = 20;
-    service.yInitial = 50;
+    service.initial.x = 20;
+    service.initial.y = 50;
     const evenement = new MouseEvent('mousemove', { clientX: 0, clientY: 0 });
     service.sourisDeplacee(evenement);
     // on vérifie le SVG qui a été tracé
@@ -291,13 +291,13 @@ describe('DessinRectangleService', () => {
   });
   it('#sourisEnfoncee devrait contenir les coordonnees initiale du clic', () => {
     service.rectangleEnCours = false;
-    service.xInitial = 200; service.yInitial = 200;
+    service.initial.x = 200; service.initial.y = 200;
     // on fait un clic aux coordonnees (100,50)
     const clic = new MouseEvent('click', { clientX: 100, clientY: 50 });
     service.sourisEnfoncee(clic);
     // on vérifie que la fonction contient les coordonnees correctement
-    expect(service.xInitial).toBe(100);
-    expect(service.yInitial).toBe(50);
+    expect(service.initial.x).toBe(100);
+    expect(service.initial.y).toBe(50);
   });
   it('#sourisEnfoncee devrait contenir les coordonnees initiale du clic', () => {
     service.rectangleEnCours = false;

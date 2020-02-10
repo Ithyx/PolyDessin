@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StockageSvgService } from '../stockage-svg.service';
+import { Point } from './dessin-ligne.service';
 import { GestionnaireOutilsService } from './gestionnaire-outils.service'
 import { InterfaceOutils } from './interface-outils'
 
@@ -9,13 +10,10 @@ import { InterfaceOutils } from './interface-outils'
 export class DessinRectangleService implements InterfaceOutils {
   rectangleEnCours = false;
   // Coordonnées du clic initial de souris
-  xInitial: number;
-  yInitial: number;
+  initial: Point = {x: 0, y: 0};
   // Coordonnées du point inférieur gauche
-  baseX: number;
-  baseY: number;
-  baseXCalculee: number;
-  baseYCalculee: number;
+  base: Point = {x: 0, y: 0};
+  baseCalculee: Point = {x: 0, y: 0};
   // Dimensions du rectangle
   largeur = 0;
   hauteur = 0;
@@ -37,13 +35,13 @@ export class DessinRectangleService implements InterfaceOutils {
         '<line stroke-linecap="square'
         + '" stroke="' + this.couleurSecondaire
         + '" stroke-width="' + epaisseur
-        + '" x1="' + this.baseX + '" y1="' + this.baseY
-        + '" x2="' + (this.baseX + this.largeur) + '" y2="' + (this.baseY + this.hauteur) + '"/>'
+        + '" x1="' + this.base.x + '" y1="' + this.base.y
+        + '" x2="' + (this.base.x + this.largeur) + '" y2="' + (this.base.y + this.hauteur) + '"/>'
       );
       // Le périmètre autour de la ligne
       this.stockageSVG.setPerimetreEnCours(
         '<rect stroke="gray" fill="transparent" stroke-width="2'
-        + '" x="' + (this.baseX - epaisseur / 2) + '" y="' + (this.baseY - epaisseur / 2)
+        + '" x="' + (this.base.x - epaisseur / 2) + '" y="' + (this.base.y - epaisseur / 2)
         + '" height="' + ((this.hauteur === 0) ? epaisseur : (this.hauteur + epaisseur))
         + '" width="' + ((this.largeur === 0) ? epaisseur : (this.largeur + epaisseur)) + '"/>'
       );
@@ -54,20 +52,20 @@ export class DessinRectangleService implements InterfaceOutils {
         '<rect fill="' + ((optionChoisie !== 'Contour') ? this.couleurPrimaire : 'transparent')
         + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleurSecondaire : 'transparent')
         + '" stroke-width="' + epaisseur
-        + '" x="' + this.baseX + '" y="' + this.baseY
+        + '" x="' + this.base.x + '" y="' + this.base.y
         + '" width="' + this.largeur + '" height="' + this.hauteur + '"/>'
       );
       // Le périmètre autour du rectangle (prend en compte l'épaisseur si le rectangle a un contour)
       if (optionChoisie === 'Plein') {
         this.stockageSVG.setPerimetreEnCours(
           '<rect stroke="gray" fill="transparent" stroke-width="2'
-          + '" x="' + this.baseX + '" y="' + this.baseY
+          + '" x="' + this.base.x + '" y="' + this.base.y
           + '" height="' + this.hauteur + '" width="' + this.largeur + '"/>'
         );
       } else {
         this.stockageSVG.setPerimetreEnCours(
           '<rect stroke="gray" fill="transparent" stroke-width="2'
-          + '" x="' + (this.baseX - epaisseur / 2) + '" y="' + (this.baseY - epaisseur / 2)
+          + '" x="' + (this.base.x - epaisseur / 2) + '" y="' + (this.base.y - epaisseur / 2)
           + '" height="' + (this.hauteur + epaisseur)
           + '" width="' + (this.largeur + epaisseur) + '"/>'
         );
@@ -78,10 +76,10 @@ export class DessinRectangleService implements InterfaceOutils {
   sourisDeplacee(souris: MouseEvent) {
     if (this.rectangleEnCours) {
       // Calcule des valeurs pour former un rectangle
-      this.largeurCalculee = Math.abs(this.xInitial - souris.offsetX);
-      this.hauteurCalculee = Math.abs(this.yInitial - souris.offsetY);
-      this.baseXCalculee = Math.min(this.xInitial, souris.offsetX);
-      this.baseYCalculee = Math.min(this.yInitial, souris.offsetY);
+      this.largeurCalculee = Math.abs(this.initial.x - souris.offsetX);
+      this.hauteurCalculee = Math.abs(this.initial.y - souris.offsetY);
+      this.baseCalculee.x = Math.min(this.initial.x, souris.offsetX);
+      this.baseCalculee.y = Math.min(this.initial.y, souris.offsetY);
       // Si shift est enfoncé, les valeurs calculées sont ajustées pour former un carré
       if (souris.shiftKey) {
         this.shiftEnfonce();
@@ -94,8 +92,8 @@ export class DessinRectangleService implements InterfaceOutils {
   sourisEnfoncee(souris: MouseEvent) {
     if (!this.rectangleEnCours) {
       this.rectangleEnCours = true;
-      this.xInitial = souris.offsetX;
-      this.yInitial = souris.offsetY;
+      this.initial.x = souris.offsetX;
+      this.initial.y = souris.offsetY;
       this.largeur = 0;
       this.hauteur = 0;
     }
@@ -115,15 +113,15 @@ export class DessinRectangleService implements InterfaceOutils {
     if (this.rectangleEnCours) {
       // Lorsque la touche 'shift' est enfoncée, la forme à dessiner est un carré
       if (this.largeurCalculee < this.hauteurCalculee) {
-        this.baseY = (this.baseYCalculee === this.yInitial) ?
-          this.baseYCalculee : (this.baseYCalculee + (this.hauteurCalculee - this.largeurCalculee));
-        this.baseX = this.baseXCalculee;
+        this.base.y = (this.baseCalculee.y === this.initial.y) ?
+          this.baseCalculee.y : (this.baseCalculee.y + (this.hauteurCalculee - this.largeurCalculee));
+        this.base.x = this.baseCalculee.x;
         this.hauteur = this.largeurCalculee;
         this.largeur = this.largeurCalculee;
       } else {
-        this.baseX = (this.baseXCalculee === this.xInitial) ?
-          this.baseXCalculee : (this.baseXCalculee + (this.largeurCalculee - this.hauteurCalculee));
-        this.baseY = this.baseYCalculee;
+        this.base.x = (this.baseCalculee.x === this.initial.x) ?
+          this.baseCalculee.x : (this.baseCalculee.x + (this.largeurCalculee - this.hauteurCalculee));
+        this.base.y = this.baseCalculee.y;
         this.largeur = this.hauteurCalculee;
         this.hauteur = this.hauteurCalculee;
       }
@@ -134,11 +132,17 @@ export class DessinRectangleService implements InterfaceOutils {
   shiftRelache() {
     if (this.rectangleEnCours) {
       // Lorsque la touche 'shift' est relâchée, la forme à dessiner est un rectangle
-      this.baseX = this.baseXCalculee;
-      this.baseY = this.baseYCalculee;
+      this.base.x = this.baseCalculee.x;
+      this.base.y = this.baseCalculee.y;
       this.hauteur = this.hauteurCalculee;
       this.largeur = this.largeurCalculee;
       this.actualiserSVG();
     }
+  }
+
+  vider() {
+    this.rectangleEnCours = false;
+    this.stockageSVG.setPerimetreEnCours('');
+    this.stockageSVG.setSVGEnCours('');
   }
 }
