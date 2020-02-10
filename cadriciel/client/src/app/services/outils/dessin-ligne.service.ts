@@ -95,31 +95,29 @@ export class DessinLigneService implements InterfaceOutils {
   }
 
   shiftEnfonce() {
-    if (this.points.length > 0) {
-      const dernierPoint = this.points[this.points.length - 1];
-      const angle = Math.atan((this.positionShiftEnfoncee.y - dernierPoint.y) / (this.positionShiftEnfoncee.x - dernierPoint.x));
-      const alignement = Math.round(angle / (Math.PI / 4));
+    const dernierPoint = this.points[this.points.length - 1];
+    const angle = Math.atan((this.curseur.y - dernierPoint.y) / (this.curseur.x - dernierPoint.x));
+    const alignement = Math.abs(Math.round(angle / (Math.PI / 4)));
 
-      // alignement = 0  lorsque angle = 0,180­°
-      // alignement = -1 lorsque angle = 45,315°
-      // alignement = 1  lorsque angle = 135,225°
-      // alignement = 2  lorsque angle = 90,270°
-      if (alignement === 0) {
-        this.position.x = this.curseur.x;
-        this.position.y = dernierPoint.y;
-      } else if (alignement === 1) {
-        this.position.x = this.curseur.x;
+    // alignement = 0 lorsque angle = 0,180­°
+    // alignement = 1 lorsque angle = 45,135,225,315°
+    // alignement = 2 lorsque angle = 90,270°
+    if (alignement === 0) {
+      this.position.x = this.curseur.x;
+      this.position.y = dernierPoint.y;
+    } else if (alignement === 1) {
+      if (Math.sign(this.curseur.x - dernierPoint.x) === Math.sign(this.curseur.y - dernierPoint.y)) {
         this.position.y = this.curseur.x - dernierPoint.x + dernierPoint.y;
-      } else if (alignement === -1) {
-        this.position.x = this.curseur.x;
+      } else {
         this.position.y = dernierPoint.x - this.curseur.x + dernierPoint.y;
-      } else if (alignement === 2 || alignement === -2) {
-        this.position.x = dernierPoint.x;
-        this.position.y = this.curseur.y;
       }
-
-      this.actualiserSVG();
+      this.position.x = this.curseur.x;
+    } else if (alignement === 2) {
+      this.position.x = dernierPoint.x;
+      this.position.y = this.curseur.y;
     }
+
+    this.actualiserSVG();
   }
 
   shiftRelache() {
