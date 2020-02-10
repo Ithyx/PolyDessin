@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { DessinRectangleService } from './outils/dessin-rectangle.service';
 import { GestionnaireOutilsService, INDEX_OUTIL_CRAYON,
          INDEX_OUTIL_LIGNE, INDEX_OUTIL_PINCEAU , INDEX_OUTIL_RECTANGLE } from './outils/gestionnaire-outils.service';
@@ -8,7 +9,7 @@ import { GestionnaireOutilsService, INDEX_OUTIL_CRAYON,
 })
 export class GestionnaireRaccourcisService {
   champDeTexteEstFocus = false;
-  oAppuye = false;
+  emitterNouveauDessin: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   constructor(public outils: GestionnaireOutilsService,
               public dessinRectangle: DessinRectangleService) { }
 
@@ -16,7 +17,6 @@ export class GestionnaireRaccourcisService {
     if (this.champDeTexteEstFocus) { return; };
     // ? peut-être mettre tout en minuscule ?
     switch (clavier.key) {
-
       case '1':
         this.outils.outilActif.estActif = false;
         this.outils.outilActif = this.outils.listeOutils[INDEX_OUTIL_RECTANGLE];
@@ -48,8 +48,10 @@ export class GestionnaireRaccourcisService {
         break;
 
       case 'o':
-        if (true) {
-            this.oAppuye = true;
+        if (clavier.ctrlKey) {
+          console.log('ctrl o');
+          this.emitterNouveauDessin.next(false);
+          clavier.preventDefault();
         }
         break;
 
