@@ -1,9 +1,9 @@
 <div class = "color-wrapper">
-    <app-couleur-palette [gestionnaireCouleur]="gestionnaireCouleur"></app-couleur-palette>
-    <app-glissiere-couleur [gestionnaireCouleur]="gestionnaireCouleur" style = "margin-left:16px"></app-glissiere-couleur>    
+    <app-couleur-palette></app-couleur-palette>
+    <app-glissiere-couleur style = "margin-left:16px"></app-glissiere-couleur>    
 </div>
 <div class="input-wrapper">
-    <app-valeur-couleur [gestionnaireCouleur]="gestionnaireCouleur"></app-valeur-couleur>
+    <app-valeur-couleur></app-valeur-couleur>
     <div class ="color-div" 
         [ngStyle]= "{'background-color': gestionnaireCouleur.couleur || 'white'}">
     </div>

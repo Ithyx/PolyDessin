@@ -1,8 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig} from '@angular/material';
 import { Subscription } from 'rxjs';
-import { Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
-import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
+import { GestionnaireCouleursService, Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
 import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
@@ -24,7 +23,7 @@ export class BarreOutilsComponent implements OnDestroy {
     public dialog: MatDialog,
     public outils: GestionnaireOutilsService,
     public raccourcis: GestionnaireRaccourcisService,
-    public couleur: ParametresCouleurService
+    public gestionnaireCouleur: GestionnaireCouleursService
   ) {
     this.nouveauDessinSubscription = raccourcis.emitterNouveauDessin.subscribe((estIgnoree: boolean) => {
      if (!estIgnoree) { this.avertissementNouveauDessin(); };
@@ -74,7 +73,9 @@ export class BarreOutilsComponent implements OnDestroy {
     this.dialog.open(AvertissementNouveauDessinComponent, dialogConfig);
   }
 
-  selectionCouleur() {
+  selectionCouleur(portee: Portee) {
+    console.log('Couleur: ', this.gestionnaireCouleur.couleurs[portee]);
+    this.gestionnaireCouleur.portee = portee;
     this.onChampFocus();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;

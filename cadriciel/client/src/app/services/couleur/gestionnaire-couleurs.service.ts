@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ParametresCouleurService } from './parametres-couleur.service'
 
 export enum Portee {
-  Principale = 1,
+  Principale = 0,
   Secondaire,
   Defaut,
 }
@@ -11,12 +10,12 @@ export enum Portee {
   providedIn: 'root'
 })
 export class GestionnaireCouleursService {
+  couleurs: string[] = ['rgba(0, 0, 0, 1)', 'rgba(255, 255, 255, 1)'];
+  portee: Portee = Portee.Principale;
   couleur: string;
   teinte: string;
   RGB: number[] = [0, 0, 0];
   alpha = 1;
-
-  constructor(public parametresCouleur: ParametresCouleurService) {}
 
   modifierRGB() {
     const nouvelleCouleur = 'rgba(' + this.RGB[0] + ', '
@@ -26,20 +25,9 @@ export class GestionnaireCouleursService {
     this.couleur = nouvelleCouleur;
   }
 
-  appliquerCouleur(portee: Portee) {
-    switch (portee) {
-      case Portee.Principale:
-        console.log('nouvelle couleur principale: ', this.couleur);
-        this.parametresCouleur.couleurPrincipale = this.couleur;
-        break;
-      case Portee.Secondaire:
-        console.log('nouvelle couleur secondaire: ', this.couleur);
-        this.parametresCouleur.couleurSecondaire = this.couleur;
-        break;
-      default:
-        /* Par mesure de sécurité, ne rien faire. */
-        break;
-    }
+  appliquerCouleur() {
+    console.log('Couleur appliquée: ', this.couleur);
+    this.couleurs[this.portee] = this.couleur;
   }
 
   RBGVersHSL(RGB: [number, number, number]): [number, number, number] {

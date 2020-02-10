@@ -1,6 +1,6 @@
 /*Component de couleur inspire de https://malcoded.com/posts/angular-color-picker/*/
 
-import { AfterViewInit, Component, ElementRef,  HostListener, Input, OnChanges,
+import { AfterViewInit, Component, ElementRef,  HostListener, OnChanges,
          SimpleChanges, ViewChild, } from '@angular/core';
 import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
@@ -12,8 +12,6 @@ import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
 })
 export class CouleurPaletteComponent implements AfterViewInit, OnChanges, InterfaceOutils {
 
-  @Input() gestionnaireCouleur: GestionnaireCouleursService;
-
   @ViewChild('canvas' , {static: false} )
   canvas: ElementRef<HTMLCanvasElement>
 
@@ -22,6 +20,8 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
   private sourisBas = false
 
   hauteurChoisi: { x: number; y: number}
+
+  constructor(public gestionnaireCouleur: GestionnaireCouleursService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes[this.gestionnaireCouleur.teinte]) {

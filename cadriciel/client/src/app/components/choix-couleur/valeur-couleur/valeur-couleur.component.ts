@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 
@@ -8,13 +8,13 @@ import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-rac
   styleUrls: ['./valeur-couleur.component.scss']
 })
 export class ValeurCouleurComponent {
-  @Input() gestionnaireCouleur: GestionnaireCouleursService;
 
   readonly INDEX_ROUGE = 0;
   readonly INDEX_VERT = 1;
   readonly INDEX_BLEU = 2;
 
-  constructor(public raccourcis: GestionnaireRaccourcisService) {}
+  constructor(public raccourcis: GestionnaireRaccourcisService,
+              public gestionnaireCouleur: GestionnaireCouleursService) {}
 
   modificationRGB(event: Event, index: number) {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);

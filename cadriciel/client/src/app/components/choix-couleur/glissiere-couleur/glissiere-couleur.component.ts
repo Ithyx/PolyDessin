@@ -1,6 +1,6 @@
 /*Component de couleur inspire de https://malcoded.com/posts/angular-color-picker/*/
 
-import { AfterViewInit, Component, ElementRef, HostListener, Input,
+import { AfterViewInit, Component, ElementRef, HostListener,
          ViewChild } from '@angular/core'
 import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
@@ -14,11 +14,12 @@ import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
 export class GlissiereCouleurComponent implements AfterViewInit, InterfaceOutils {
   @ViewChild('canvas', {static: true})
   canvas: ElementRef<HTMLCanvasElement>
-  @Input() gestionnaireCouleur: GestionnaireCouleursService;
 
   private context2D: CanvasRenderingContext2D ;
   private sourisbas =  false
   private hauteurChoisi: number
+
+  constructor(public gestionnaireCouleur: GestionnaireCouleursService) {}
 
   ngAfterViewInit() {
     this.draw();

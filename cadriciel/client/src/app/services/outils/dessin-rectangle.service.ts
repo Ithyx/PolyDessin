@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
+import { GestionnaireCouleursService, Portee } from '../couleur/gestionnaire-couleurs.service';
 import { StockageSvgService } from '../stockage-svg.service';
-import { GestionnaireOutilsService } from './gestionnaire-outils.service'
-import { InterfaceOutils } from './interface-outils'
+import { GestionnaireOutilsService } from './gestionnaire-outils.service';
+import { InterfaceOutils } from './interface-outils';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,7 @@ export class DessinRectangleService implements InterfaceOutils {
 
   constructor(public stockageSVG: StockageSvgService,
               public outils: GestionnaireOutilsService,
-              public couleur: ParametresCouleurService) { }
+              public couleur: GestionnaireCouleursService) { }
 
   actualiserSVG() {
     const optionChoisie = this.outils.outilActif.parametres[1].optionChoisie;
@@ -36,7 +36,7 @@ export class DessinRectangleService implements InterfaceOutils {
       // La ligne à tracer
       this.stockageSVG.setSVGEnCours(
         '<line stroke-linecap="square'
-        + '" stroke="' + this.couleur.couleurSecondaire
+        + '" stroke="' + this.couleur.couleurs[Portee.Principale]
         + '" stroke-width="' + epaisseur
         + '" x1="' + this.baseX + '" y1="' + this.baseY
         + '" x2="' + (this.baseX + this.largeur) + '" y2="' + (this.baseY + this.hauteur) + '"/>'
@@ -52,8 +52,8 @@ export class DessinRectangleService implements InterfaceOutils {
     } else {
       // Le rectangle à tracer
       this.stockageSVG.setSVGEnCours(
-        '<rect fill="' + ((optionChoisie !== 'Contour') ? this.couleur.couleurPrincipale : 'transparent')
-        + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleur.couleurSecondaire : 'transparent')
+        '<rect fill="' + ((optionChoisie !== 'Contour') ? this.couleur.couleurs[Portee.Principale] : 'transparent')
+        + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleur.couleurs[Portee.Secondaire] : 'transparent')
         + '" stroke-width="' + epaisseur
         + '" x="' + this.baseX + '" y="' + this.baseY
         + '" width="' + this.largeur + '" height="' + this.hauteur + '"/>'

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
+import { GestionnaireCouleursService, Portee } from '../couleur/gestionnaire-couleurs.service';
 import { StockageSvgService } from '../stockage-svg.service';
 import { GestionnaireOutilsService } from './gestionnaire-outils.service';
 import { InterfaceOutils } from './interface-outils';
@@ -11,7 +11,7 @@ export class DessinPinceauService implements InterfaceOutils {
 
   constructor(public stockageSVG: StockageSvgService,
               public outils: GestionnaireOutilsService,
-              public couleur: ParametresCouleurService) { }
+              public couleur: GestionnaireCouleursService) { }
 
   traitEnCours = false;
   peutCliquer = true;
@@ -29,7 +29,7 @@ export class DessinPinceauService implements InterfaceOutils {
     this.traitEnCours = true;
     this.stockageSVG.setSVGEnCours(
       '<path filter="url(#' + this.outils.outilActif.parametres[1].optionChoisie
-      + `)" fill="transparent" stroke="${this.couleur.couleurPrincipale}" stroke-linecap="round" stroke-width="`
+      + `)" fill="transparent" stroke="${this.couleur.couleurs[Portee.Principale]}" stroke-linecap="round" stroke-width="`
       + this.outils.outilActif.parametres[0].valeur + '" d="M' + souris.offsetX + ' ' + souris.offsetY + '"/>');
   }
 
@@ -50,7 +50,7 @@ export class DessinPinceauService implements InterfaceOutils {
     if (this.peutCliquer && this.outils.outilActif.parametres[0].valeur) {
       const SVG = '<circle filter="url(#' + this.outils.outilActif.parametres[1].optionChoisie
       + ')"  cx="' + souris.offsetX + '" cy="' + souris.offsetY + '" r="'
-      + this.outils.outilActif.parametres[0].valeur / 2 + `fill="${this.couleur.couleurPrincipale}"/>`;
+      + this.outils.outilActif.parametres[0].valeur / 2 + `fill="${this.couleur.couleurs[Portee.Principale]}"/>`;
 
       this.stockageSVG.ajouterSVG(SVG);
       this.traitEnCours = false;
