@@ -4,6 +4,7 @@ import { ParametresCouleurService } from './parametres-couleur.service'
 export enum Portee {
   Principale = 1,
   Secondaire,
+  Fond,
   Defaut,
 }
 
@@ -36,6 +37,9 @@ export class GestionnaireCouleursService {
         console.log('nouvelle couleur secondaire: ', this.couleur);
         this.parametresCouleur.couleurSecondaire = this.couleur;
         break;
+      case Portee.Fond:
+        console.log('nouvelle couleur fond: ', this.couleur);
+        this.parametresCouleur.couleurFond = this.couleur;
       default:
         /* Par mesure de sécurité, ne rien faire. */
         break;
