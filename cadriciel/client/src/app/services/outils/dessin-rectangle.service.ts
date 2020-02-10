@@ -141,4 +141,10 @@ export class DessinRectangleService implements InterfaceOutils {
       this.actualiserSVG();
     }
   }
+
+  vider() {
+    this.rectangleEnCours = false;
+    this.stockageSVG.setPerimetreEnCours('');
+    this.stockageSVG.setSVGEnCours('');
+  }
 }

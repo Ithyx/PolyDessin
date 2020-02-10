@@ -33,6 +33,7 @@ export class BarreOutilsComponent implements OnDestroy {
     this.outils.outilActif.estActif = false;
     this.outils.outilActif = outil;
     this.outils.outilActif.estActif = true;
+    this.raccourcis.viderSVGEnCours();
   }
 
   onChange(event: Event, nomParametre: string) {

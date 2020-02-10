@@ -102,17 +102,17 @@ export class DessinLigneService implements InterfaceOutils {
     if (this.points.length > 0) {
       const dernierPoint = this.points[this.points.length - 1];
       const angle = Math.atan((this.positionShiftEnfoncee.y - dernierPoint.y) / (this.positionShiftEnfoncee.x - dernierPoint.x));
-      console.log('angle: ', angle / (Math.PI / 4)  );
       const alignement = Math.round(angle / (Math.PI / 4));
 
-      // alignement = 0 lorsque angle = 0,180­°
-      // alignement = 1 lorsque angle = 45,135,225,315°
-      // alignement = 2 lorsque angle = 90,270°
+      // alignement = 0  lorsque angle = 0,180­°
+      // alignement = -1 lorsque angle = 45,315°
+      // alignement = 1  lorsque angle = 135,225°
+      // alignement = 2  lorsque angle = 90,270°
       if (alignement === 0) {
         this.positionX = this.curseurX;
         this.positionY = dernierPoint.y;
       } else if (alignement === 1) {
-        this.positionX = this.curseurY;
+        this.positionX = this.curseurX;
         this.positionY = this.curseurX - dernierPoint.x + dernierPoint.y;
       } else if (alignement === -1) {
         this.positionX = this.curseurX;
@@ -147,5 +147,15 @@ export class DessinLigneService implements InterfaceOutils {
     }
 
     this.stockageSVG.setSVGEnCours(SVG);
+  }
+
+  vider() {
+    this.points = [];
+    this.positionShiftEnfoncee = {x: 0, y: 0};
+    this.curseurX = 0;
+    this.curseurY = 0;
+    this.positionX = 0;
+    this.positionY = 0;
+    this.stockageSVG.setSVGEnCours('');
   }
 }

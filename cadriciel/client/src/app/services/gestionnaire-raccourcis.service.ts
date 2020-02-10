@@ -17,24 +17,33 @@ export class GestionnaireRaccourcisService {
               public dessinRectangle: DessinRectangleService,
               public dessinLigne: DessinLigneService) { }
 
+  viderSVGEnCours() {
+    this.dessinRectangle.vider();
+    this.dessinLigne.vider();
+  }
+
   traiterInput(clavier: KeyboardEvent) {
     if (this.champDeTexteEstFocus) { return; };
     // ? peut-être mettre tout en minuscule ?
     switch (clavier.key) {
       case '1':
         this.outils.changerOutilActif(INDEX_OUTIL_RECTANGLE);
+        this.viderSVGEnCours();
         break;
 
       case 'c':
         this.outils.changerOutilActif(INDEX_OUTIL_CRAYON);
+        this.viderSVGEnCours();
         break;
 
       case 'l':
         this.outils.changerOutilActif(INDEX_OUTIL_LIGNE);
+        this.viderSVGEnCours();
         break;
 
       case 'w':
         this.outils.changerOutilActif(INDEX_OUTIL_PINCEAU);
+        this.viderSVGEnCours();
         break;
 
       case 'Shift':
@@ -47,7 +56,6 @@ export class GestionnaireRaccourcisService {
 
       case 'o':
         if (clavier.ctrlKey) {
-          console.log('ctrl o');
           this.emitterNouveauDessin.next(false);
           clavier.preventDefault();
         }
@@ -71,7 +79,6 @@ export class GestionnaireRaccourcisService {
   }
 
   traiterToucheRelachee(clavier: KeyboardEvent) {
-    console.log('event reçu, touche relâchée :', clavier.key);
     switch (clavier.key) {
       case 'Shift':
         if (this.outils.outilActif.ID === INDEX_OUTIL_RECTANGLE) {
