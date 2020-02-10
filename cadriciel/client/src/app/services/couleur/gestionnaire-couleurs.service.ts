@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ParametresCouleurService } from './parametres-couleur.service'
 
 export enum Portee {
   Principale = 1,
@@ -10,10 +11,11 @@ export enum Portee {
   providedIn: 'root'
 })
 export class GestionnaireCouleursService {
-  private couleurPrincipale: string
-  private couleurSecondaire: string;
+  teinte: string;
   RGB: number[] = [0, 0, 0];
-  alpha: number = 1;
+  alpha = 1;
+
+  constructor(public parametresCouleur: ParametresCouleurService) {}
 
   modifierRGB(portee: Portee) {
     const nouvelleCouleur = 'rgba(' + this.RGB[0] + ', '
@@ -24,26 +26,19 @@ export class GestionnaireCouleursService {
   }
 
   setCouleur(portee: Portee, nouvelleCouleur: string) {
+    console.log('Portée: ', portee);
     switch (portee) {
       case Portee.Principale:
         console.log('nouvelle couleur principale: ', nouvelleCouleur);
-        this.couleurPrincipale = nouvelleCouleur;
+        this.parametresCouleur.couleurPrincipale = nouvelleCouleur;
         break;
       case Portee.Secondaire:
         console.log('nouvelle couleur secondaire: ', nouvelleCouleur);
-        this.couleurSecondaire = nouvelleCouleur;
+        this.parametresCouleur.couleurSecondaire = nouvelleCouleur;
         break;
       default:
         /* Par mesure de sécurité, ne rien faire. */
         break;
     }
-  }
-
-  getPrincipale() {
-    return this.couleurPrincipale
-  }
-
-  getSecondaire() {
-    return this.couleurSecondaire;
   }
 }

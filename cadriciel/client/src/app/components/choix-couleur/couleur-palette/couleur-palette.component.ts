@@ -1,20 +1,19 @@
 /*Component de couleur inspire de https://malcoded.com/posts/angular-color-picker/*/
 
-import { AfterViewInit, Component, ElementRef, EventEmitter,  HostListener, Input, OnChanges,
-Output, SimpleChanges, ViewChild, } from '@angular/core';
+import { AfterViewInit, Component, ElementRef,  HostListener, Input, OnChanges,
+         SimpleChanges, ViewChild, } from '@angular/core';
+import { GestionnaireCouleursService, Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
+import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
 
 @Component({
   selector: 'app-couleur-palette',
   templateUrl: './couleur-palette.component.html',
   styleUrls: ['./couleur-palette.component.scss']
 })
-export class CouleurPaletteComponent implements AfterViewInit, OnChanges {
+export class CouleurPaletteComponent implements AfterViewInit, OnChanges, InterfaceOutils {
 
-  @Input()
-  hue: string
-
-  @Output()
-  couleur: EventEmitter<string> = new EventEmitter(true)
+  @Input() portee: Portee = Portee.Principale;
+  @Input() couleur: GestionnaireCouleursService;
 
   @ViewChild('canvas' , {static: false} )
   canvas: ElementRef<HTMLCanvasElement>
@@ -26,11 +25,11 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges {
   hauteurChoisi: { x: number; y: number}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes[this.hue]) {
+    if (changes[this.couleur.teinte]) {
       this.draw()
       const pos = this.hauteurChoisi
       if (pos) {
-        this.couleur.emit(this.couleurPosition(pos.x, pos.y))
+        this.couleur.setCouleur(this.portee, this.couleurPosition(pos.x, pos.y));
       }
     }
   }
@@ -44,22 +43,22 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges {
 
   couleurEmise(x: number, y: number) {
     const rgbaColor = this.couleurPosition(x, y)
-    this.couleur.emit(rgbaColor)
+    this.couleur.setCouleur(this.portee, rgbaColor);
   }
 
   @HostListener ('window:mouseup', ['$event'] )
-    onmouseup(evt: MouseEvent) {
+    sourisRelachee(evt: MouseEvent) {
       this.sourisBas = false
     }
 
-    sourisEnBas( evt: MouseEvent) {
+    sourisEnfoncee( evt: MouseEvent) {
       this.sourisBas = true
       this.hauteurChoisi = {x: evt.offsetX, y: evt.offsetY}
       this.draw()
-      this.couleur.emit(this.couleurPosition(evt.offsetX, evt.offsetY))
+      this.couleur.setCouleur(this.portee, this.couleurPosition(evt.offsetX, evt.offsetY));
     }
 
-    sourisEnMouvement(evt: MouseEvent) {
+    sourisDeplacee(evt: MouseEvent) {
       if (this.sourisBas) {
         this.hauteurChoisi = { x: evt.offsetX, y: evt.offsetY}
         this.draw()
@@ -78,7 +77,7 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges {
     const width = this.canvas.nativeElement.width
     const height = this.canvas.nativeElement.height
 
-    this.context2D.fillStyle = this.hue || 'rgba(255,255,255,1)'
+    this.context2D.fillStyle = this.couleur.teinte || 'rgba(255,255,255,1)'
     this.context2D.fillRect(0, 0, width, height)
 
     const whiteGrad = this.context2D.createLinearGradient(0, 0, width, 0)

@@ -1,7 +1,9 @@
 /*Component de couleur inspire de https://malcoded.com/posts/angular-color-picker/*/
 
-import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener,
-   Output, ViewChild } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, HostListener, Input,
+         ViewChild } from '@angular/core'
+import { GestionnaireCouleursService, Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
+import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
 
 @Component({
   selector: 'app-glissiere-couleur',
@@ -9,12 +11,11 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener,
   styleUrls: ['./glissiere-couleur.component.scss']
 })
 
-export class GlissiereCouleurComponent implements AfterViewInit {
+export class GlissiereCouleurComponent implements AfterViewInit, InterfaceOutils {
   @ViewChild('canvas', {static: true})
   canvas: ElementRef<HTMLCanvasElement>
-
-  @Output()
-  couleur: EventEmitter<string> = new EventEmitter()
+  @Input() couleur: GestionnaireCouleursService;
+  @Input() portee: Portee = Portee.Principale;
 
   private context2D: CanvasRenderingContext2D ;
   private sourisbas =  false
@@ -61,18 +62,18 @@ export class GlissiereCouleurComponent implements AfterViewInit {
   }
 
   @HostListener('window:mouseup', ['$event'])
-  onMouseUp(evt: MouseEvent) {
+  sourisRelachee(evt: MouseEvent) {
     this.sourisbas = false
   }
 
-  sourisEnBas(evt: MouseEvent) {
+  sourisEnfoncee(evt: MouseEvent) {
     this.sourisbas = true
     this.hauteurChoisi = evt.offsetY
     this.draw()
     this.couleurEmise(evt.offsetX, evt.offsetY)
   }
 
-  sourisEnMouvement(evt: MouseEvent) {
+  sourisDeplacee(evt: MouseEvent) {
     if (this.sourisbas) {
       this.hauteurChoisi = evt.offsetY
       this.draw()
@@ -81,8 +82,9 @@ export class GlissiereCouleurComponent implements AfterViewInit {
   }
 
   couleurEmise(x: number, y: number) {
-    const rgbaColor = this.couleurPosition(x, y)
-    this.couleur.emit(rgbaColor)
+    const rgbaCouleur = this.couleurPosition(x, y)
+    this.couleur.setCouleur(this.portee, rgbaCouleur)
+    this.couleur.teinte = rgbaCouleur
   }
 
   couleurPosition(x: number, y: number) {
