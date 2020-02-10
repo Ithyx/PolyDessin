@@ -25,6 +25,7 @@ import { GestionnaireRaccourcisService } from './services/gestionnaire-raccourci
 import { GestionnaireRoutingService } from './services/gestionnaire-routing.service';
 import { NavigationGuideService } from './services/navigation-guide.service';
 import { DessinCrayonService } from './services/outils/dessin-crayon.service';
+import { DessinLigneService } from './services/outils/dessin-ligne.service';
 import { DessinRectangleService } from './services/outils/dessin-rectangle.service';
 import { StockageSvgService } from './services/stockage-svg.service';
 
@@ -39,7 +40,8 @@ import { StockageSvgService } from './services/stockage-svg.service';
         {path: 'guide', component : PageGuideComponent}
     ])],
     providers: [NavigationGuideService, StockageSvgService, DessinCrayonService, DessinManagerService,
-                GestionnaireRaccourcisService, DessinRectangleService, GestionnaireRoutingService],
+                GestionnaireRaccourcisService, DessinRectangleService, DessinLigneService,
+                GestionnaireRoutingService],
     entryComponents: [FenetreNewDessinComponent, AvertissementNouveauDessinComponent],
     bootstrap: [AppComponent],
 })
