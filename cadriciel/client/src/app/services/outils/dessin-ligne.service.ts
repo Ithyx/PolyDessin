@@ -149,4 +149,14 @@ export class DessinLigneService implements InterfaceOutils {
 
     this.stockageSVG.setSVGEnCours(SVG);
   }
+
+  vider() {
+    this.points = [];
+    this.positionShiftEnfoncee = {x: 0, y: 0};
+    this.curseurX = 0;
+    this.curseurY = 0;
+    this.positionX = 0;
+    this.positionY = 0;
+    this.stockageSVG.setSVGEnCours('');
+  }
 }

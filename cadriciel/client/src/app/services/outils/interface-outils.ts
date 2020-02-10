@@ -6,4 +6,5 @@ export interface InterfaceOutils {
     sourisSortie?(evenement: MouseEvent): void;
     sourisEntree?(evenement: MouseEvent): void;
     sourisDoubleClic?(evenement: MouseEvent): void;
+    vider?(): void;
 }
