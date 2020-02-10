@@ -1,14 +1,16 @@
-import { HttpClient } from '@angular/common/http';
+// import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { Message } from '../../../../../common/communication/message';
+// import { Observable, of } from 'rxjs';
+// import { catchError } from 'rxjs/operators';
+// import { Message } from '../../../../../common/communication/message';
 
 @Injectable({
     providedIn: 'root',
 })
 export class IndexService {
-    private readonly BASE_URL: string = 'http://localhost:3000/api/index';
+    // Inutile pour sprint 1
+
+   /* private readonly BASE_URL: string = 'http://localhost:3000/api/index';
 
     constructor(private http: HttpClient) {}
 
@@ -20,5 +22,5 @@ export class IndexService {
         return (error: Error): Observable<T> => {
             return of(result as T);
         };
-    }
+    }*/
 }

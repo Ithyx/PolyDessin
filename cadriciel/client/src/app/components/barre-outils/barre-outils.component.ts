@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig} from '@angular/material';
+import { Subscription } from 'rxjs';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
 import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
@@ -9,17 +10,30 @@ import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-de
   templateUrl: './barre-outils.component.html',
   styleUrls: ['./barre-outils.component.scss']
 })
-export class BarreOutilsComponent {
+export class BarreOutilsComponent implements OnDestroy {
+
+  private nouveauDessinSubscription: Subscription;
+
   constructor(
     public dialog: MatDialog,
     public outils: GestionnaireOutilsService,
     public raccourcis: GestionnaireRaccourcisService,
-  ) {}
+  ) {
+    this.nouveauDessinSubscription = raccourcis.emitterNouveauDessin.subscribe((estIgnoree: boolean) => {
+     if (!estIgnoree) { this.avertissementNouveauDessin(); };
+    });
+  }
+
+  ngOnDestroy() {
+    this.nouveauDessinSubscription.unsubscribe();
+    this.raccourcis.emitterNouveauDessin.next(true);
+  }
 
   onClick(outil: OutilDessin) {
     this.outils.outilActif.estActif = false;
     this.outils.outilActif = outil;
     this.outils.outilActif.estActif = true;
+    this.raccourcis.viderSVGEnCours();
   }
 
   onChange(event: Event, nomParametre: string) {
@@ -44,8 +58,7 @@ export class BarreOutilsComponent {
     this.raccourcis.champDeTexteEstFocus = false;
   }
 
-
-  avertissementNouveauDessin(){
+  avertissementNouveauDessin() {
     this.onChampFocus();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
