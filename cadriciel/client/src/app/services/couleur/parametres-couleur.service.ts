@@ -6,4 +6,10 @@ import { Injectable } from '@angular/core';
 export class ParametresCouleurService {
   couleurPrincipale = 'rgba(0, 0, 0, 1)';
   couleurSecondaire = 'rgba(0, 0, 0, 1)';
+
+  intervertirCouleurs() {
+    const copie = this.couleurPrincipale;
+    this.couleurPrincipale = this.couleurSecondaire;
+    this.couleurSecondaire = copie;
+  }
 }
