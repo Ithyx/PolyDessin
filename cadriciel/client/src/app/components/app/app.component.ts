@@ -25,7 +25,6 @@ export class AppComponent {
         this.routing.events
             .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise())
             .subscribe({next: (evenement) => {
-                console.log('Nouveau précédant: ', evenement[0].url, 'nouveau suivant: ', evenement[1].url)
                 gestionnaireRoutes.pagePrecedante = evenement[0].url;
                 gestionnaireRoutes.pageEnCours = evenement[1].url;
              }});

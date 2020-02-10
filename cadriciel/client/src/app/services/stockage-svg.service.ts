@@ -44,7 +44,6 @@ export class StockageSvgService {
   }
 
   viderDessin() {
-    console.log()
     this.SVGComplets.clear();
     this.taille = 0;
     /* Ne devrait pas être nécessaire, mais par mesure de sécurité */

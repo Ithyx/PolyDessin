@@ -56,7 +56,6 @@ export class GestionnaireRaccourcisService {
 
       case 'o':
         if (clavier.ctrlKey) {
-          console.log('ctrl o');
           this.emitterNouveauDessin.next(false);
           clavier.preventDefault();
         }
@@ -80,7 +79,6 @@ export class GestionnaireRaccourcisService {
   }
 
   traiterToucheRelachee(clavier: KeyboardEvent) {
-    console.log('event reçu, touche relâchée :', clavier.key);
     switch (clavier.key) {
       case 'Shift':
         if (this.outils.outilActif.ID === INDEX_OUTIL_RECTANGLE) {
