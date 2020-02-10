@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
 import { StockageSvgService } from '../stockage-svg.service';
 import { GestionnaireOutilsService } from './gestionnaire-outils.service'
 import { InterfaceOutils } from './interface-outils'
@@ -22,10 +23,10 @@ export class DessinRectangleService implements InterfaceOutils {
   largeurCalculee = 0;
   hauteurCalculee = 0;
   // Valeurs par défaut pour tests
-  couleurPrimaire = 'red';
-  couleurSecondaire = 'black';
 
-  constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
+  constructor(public stockageSVG: StockageSvgService,
+              public outils: GestionnaireOutilsService,
+              public couleur: ParametresCouleurService) { }
 
   actualiserSVG() {
     const optionChoisie = this.outils.outilActif.parametres[1].optionChoisie;
@@ -35,7 +36,7 @@ export class DessinRectangleService implements InterfaceOutils {
       // La ligne à tracer
       this.stockageSVG.setSVGEnCours(
         '<line stroke-linecap="square'
-        + '" stroke="' + this.couleurSecondaire
+        + '" stroke="' + this.couleur.couleurSecondaire
         + '" stroke-width="' + epaisseur
         + '" x1="' + this.baseX + '" y1="' + this.baseY
         + '" x2="' + (this.baseX + this.largeur) + '" y2="' + (this.baseY + this.hauteur) + '"/>'
@@ -51,8 +52,8 @@ export class DessinRectangleService implements InterfaceOutils {
     } else {
       // Le rectangle à tracer
       this.stockageSVG.setSVGEnCours(
-        '<rect fill="' + ((optionChoisie !== 'Contour') ? this.couleurPrimaire : 'transparent')
-        + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleurSecondaire : 'transparent')
+        '<rect fill="' + ((optionChoisie !== 'Contour') ? this.couleur.couleurPrincipale : 'transparent')
+        + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleur.couleurSecondaire : 'transparent')
         + '" stroke-width="' + epaisseur
         + '" x="' + this.baseX + '" y="' + this.baseY
         + '" width="' + this.largeur + '" height="' + this.hauteur + '"/>'
