@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routing.service';
 import { NavigationGuideService } from '../../services/navigation-guide.service';
 import { GuideSujet } from '../guide-sujet/guide-sujet';
 import { CONTENU_GUIDE } from './SujetsGuide';
@@ -13,7 +14,8 @@ export class PageGuideComponent {
   sujets: GuideSujet[] = CONTENU_GUIDE;
   sujetActif: GuideSujet = CONTENU_GUIDE[0];
 
-  constructor(private navigateurSujet: NavigationGuideService) { }
+  constructor(private navigateurSujet: NavigationGuideService,
+              public navigation: GestionnaireRoutingService) { }
 
   onClick(sensParcousID: number) {
     this.navigateurSujet.ouvrirCategories(this.sujets);

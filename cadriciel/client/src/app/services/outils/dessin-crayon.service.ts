@@ -14,14 +14,20 @@ export class DessinCrayonService implements InterfaceOutils {
               public outils: GestionnaireOutilsService,
               public couleur: GestionnaireCouleursService) { }
 
-  sourisDeplacee(souris: MouseEvent) {
-    let crayon: string = this.stockageSVG.getSVGEnCours();
+  traitEnCours = false;
+  peutCliquer = true;
 
-    crayon += 'L' + souris.offsetX + ' ' + souris.offsetY + ' "/>';
-    this.stockageSVG.setSVGEnCours(crayon);
+  sourisDeplacee(souris: MouseEvent) {
+    if (this.traitEnCours) {
+      let crayon: string = this.stockageSVG.getSVGEnCours();
+
+      crayon += 'L' + souris.offsetX + ' ' + souris.offsetY + ' "/>';
+      this.stockageSVG.setSVGEnCours(crayon);
+    }
   }
 
   sourisEnfoncee(souris: MouseEvent) {
+    this.traitEnCours = true;
     this.stockageSVG.setSVGEnCours(
       `<path fill="transparent" stroke="${this.couleur.getPrincipale()}" stroke-linecap="round" stroke-width="`
       + this.outils.outilActif.parametres[0].valeur
@@ -29,25 +35,36 @@ export class DessinCrayonService implements InterfaceOutils {
   }
 
   sourisRelachee(souris: MouseEvent) {
-    const SVG: string = this.stockageSVG.getSVGEnCours();
-    if (SVG.includes('L')) {
-      /* on ne stocke le path que s'il n'y a au moins une ligne */
-      this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '" />');
-      this.stockageSVG.setSVGEnCours('');
+    if (this.traitEnCours) {
+      const SVG: string = this.stockageSVG.getSVGEnCours();
+      if (SVG.includes('L')) {
+          // on ne stocke le path que s'il n'y a au moins une ligne
+        this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '" />');
+        this.stockageSVG.setSVGEnCours('');
+      }
+      this.traitEnCours = false;
+      this.peutCliquer = true;
     }
   }
 
   sourisCliquee(souris: MouseEvent) {
-    if (this.outils.outilActif.parametres[0].valeur) {
-      const SVG = '<circle cx="' + souris.offsetX + '" cy="' + souris.offsetY + '" r="'
-      + this.outils.outilActif.parametres[0].valeur / 2 + `" fill="${this.couleur.getPrincipale()}"/>`;
-      this.stockageSVG.ajouterSVG(SVG);
-    }
+    if (this.peutCliquer) {
+      if (this.outils.outilActif.parametres[0].valeur) {
+        const SVG = '<circle cx="' + souris.offsetX + '" cy="' + souris.offsetY + '" r="'
+        + this.outils.outilActif.parametres[0].valeur / 2 + `" fill="${this.couleur.getPrincipale()}"/>`;
+        this.stockageSVG.ajouterSVG(SVG);
+      }
+      this.traitEnCours = false;
+    } else {this.peutCliquer = true};
   }
 
   sourisSortie(souris: MouseEvent) {
-    this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '"/>');
-    this.stockageSVG.setSVGEnCours('');
+    console.log('La souris quitte la page dessin');
+    if (this.traitEnCours) {
+      this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '"/>');
+      this.stockageSVG.setSVGEnCours('');
+      this.traitEnCours = false;
+    }
+    this.peutCliquer = false;
   }
-
 }

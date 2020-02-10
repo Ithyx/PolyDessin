@@ -1,22 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { MatDialog, MatDialogConfig} from '@angular/material';
+import { Subscription } from 'rxjs';
 import { Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
+import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
 
 @Component({
   selector: 'app-barre-outils',
   templateUrl: './barre-outils.component.html',
   styleUrls: ['./barre-outils.component.scss']
 })
-export class BarreOutilsComponent {
+export class BarreOutilsComponent implements OnDestroy {
 
   porteePrincipale = Portee.Principale;
   porteeSecondaire = Portee.Secondaire;
 
+  private nouveauDessinSubscription: Subscription;
+
   constructor(
+    public dialog: MatDialog,
     public outils: GestionnaireOutilsService,
-    public raccourcis: GestionnaireRaccourcisService
-  ) {}
+    public raccourcis: GestionnaireRaccourcisService,
+  ) {
+    this.nouveauDessinSubscription = raccourcis.emitterNouveauDessin.subscribe((estIgnoree: boolean) => {
+     if (!estIgnoree) { this.avertissementNouveauDessin(); };
+    });
+  }
+
+  ngOnDestroy() {
+    this.nouveauDessinSubscription.unsubscribe();
+    this.raccourcis.emitterNouveauDessin.next(true);
+  }
 
   onClick(outil: OutilDessin) {
     this.outils.outilActif.estActif = false;
@@ -31,10 +46,10 @@ export class BarreOutilsComponent {
     }
   }
 
-  onSelect(event: Event, parametreNom: string) {
+  onSelect(event: Event, nomParametre: string) {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     if (typeof eventCast.value === 'string') {
-      this.outils.outilActif.parametres[this.outils.trouverIndexParametre(parametreNom)].optionChoisie = eventCast.value;
+      this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].optionChoisie = eventCast.value;
     }
   }
 
@@ -44,5 +59,14 @@ export class BarreOutilsComponent {
 
   onChampBlur() {
     this.raccourcis.champDeTexteEstFocus = false;
+  }
+
+  avertissementNouveauDessin() {
+    this.onChampFocus();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    this.dialog.open(AvertissementNouveauDessinComponent, dialogConfig);
   }
 }

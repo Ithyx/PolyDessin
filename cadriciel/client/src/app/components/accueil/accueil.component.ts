@@ -18,7 +18,7 @@ export class AccueilComponent {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
-    this.dialog.open(FenetreNewDessinComponent, dialogConfig)
+    this.dialog.open(FenetreNewDessinComponent, dialogConfig);
   }
 
 }
