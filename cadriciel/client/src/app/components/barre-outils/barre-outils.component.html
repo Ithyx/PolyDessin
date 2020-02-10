@@ -49,6 +49,8 @@
             <button [ngStyle]= "{'background-color': couleur.couleurPrincipale || 'white'}" 
                     (click)="selectionCouleur('principale')"></button>
             <br />
+            <button mat-stroked-button (click)="couleur.intervertirCouleurs()">intervertir</button>
+            <br />
             Couleur secondaire
             <button [ngStyle]= "{'background-color': couleur.couleurSecondaire || 'white'}"
                     (click)="selectionCouleur('secondaire')"></button>
