@@ -47,11 +47,11 @@
         <div class="boutons-couleur">
             Couleur primaire
             <button [ngStyle]= "{'background-color': couleur.couleurPrincipale || 'white'}" 
-                    (click)="selectionCouleur()"></button>
+                    (click)="selectionCouleur('principale')"></button>
             <br />
             Couleur secondaire
             <button [ngStyle]= "{'background-color': couleur.couleurSecondaire || 'white'}"
-                    (click)="selectionCouleur()"></button>
+                    (click)="selectionCouleur('secondaire')"></button>
         </div>
     </form>
 </div>

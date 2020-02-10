@@ -74,13 +74,17 @@ export class BarreOutilsComponent implements OnDestroy {
     this.dialog.open(AvertissementNouveauDessinComponent, dialogConfig);
   }
 
-  selectionCouleur() {
+  selectionCouleur(porteeEntree: string) {
     this.onChampFocus();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '30%';
     dialogConfig.panelClass = 'fenetre-couleur';
-    this.dialog.open(ChoixCouleurComponent, dialogConfig);
+    if (porteeEntree === 'principale') {
+      this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Portee.Principale;
+    } else {
+      this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Portee.Secondaire;
+    }
   }
 }
