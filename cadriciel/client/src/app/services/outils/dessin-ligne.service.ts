@@ -102,7 +102,6 @@ export class DessinLigneService implements InterfaceOutils {
     if (this.points.length > 0) {
       const dernierPoint = this.points[this.points.length - 1];
       const angle = Math.atan((this.positionShiftEnfoncee.y - dernierPoint.y) / (this.positionShiftEnfoncee.x - dernierPoint.x));
-      console.log('angle: ', angle / (Math.PI / 4)  );
       const alignement = Math.round(angle / (Math.PI / 4));
 
       // alignement = 0  lorsque angle = 0,180­°
@@ -148,5 +147,15 @@ export class DessinLigneService implements InterfaceOutils {
     }
 
     this.stockageSVG.setSVGEnCours(SVG);
+  }
+
+  vider() {
+    this.points = [];
+    this.positionShiftEnfoncee = {x: 0, y: 0};
+    this.curseurX = 0;
+    this.curseurY = 0;
+    this.positionX = 0;
+    this.positionY = 0;
+    this.stockageSVG.setSVGEnCours('');
   }
 }

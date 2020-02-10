@@ -60,7 +60,6 @@ export class DessinCrayonService implements InterfaceOutils {
   }
 
   sourisSortie(souris: MouseEvent) {
-    console.log('La souris quitte la page dessin');
     if (this.traitEnCours) {
       this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '"/>');
       this.stockageSVG.setSVGEnCours('');
