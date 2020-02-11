@@ -51,7 +51,7 @@ export class DessinCrayonService implements InterfaceOutils {
     if (this.peutCliquer) {
       if (this.outils.outilActif.parametres[0].valeur) {
         const SVG = '<circle cx="' + souris.offsetX + '" cy="' + souris.offsetY + '" r="'
-        + this.outils.outilActif.parametres[0].valeur / 2 + `" fill="${this.couleur.couleurPrincipale}"/>`;
+        + this.outils.outilActif.parametres[0].valeur / 2 + '" fill="' + this.couleur.couleurPrincipale + '"/>';
         this.stockageSVG.ajouterSVG(SVG);
         console.log(this.couleur.couleurPrincipale);
       }

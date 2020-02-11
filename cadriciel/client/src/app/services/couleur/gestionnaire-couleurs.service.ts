@@ -12,7 +12,7 @@ export enum Portee {
   providedIn: 'root'
 })
 export class GestionnaireCouleursService {
-  couleur: string;
+  couleur = 'rgba(0, 0, 0, 1)';
   teinte: string;
   RGB: number[] = [0, 0, 0];
   alpha = 1;
