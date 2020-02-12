@@ -64,7 +64,15 @@ describe('DessinLigneService', () => {
     expect(window.setTimeout).toHaveBeenCalled();
   });
 
-  it('#sourisCliquee devrait appeler actualiserSVG si setTimeout est appelé', () => {
+  it("#sourisCliquee ne devrait pas appeler actualiserSVG si c'est un double clic", () => {
+    spyOn(service, 'actualiserSVG');
+    const clic = new MouseEvent('click', { clientX: 100, clientY: 100 });
+    service.sourisCliquee(clic);
+    service.sourisDoubleClic(new MouseEvent('dblclick'));
+    expect(service.actualiserSVG).not.toHaveBeenCalled();
+  });
+
+  it("#sourisCliquee devrait appeler actualiserSVG si c'est un simple clic", () => {
     spyOn(service, 'actualiserSVG');
     const clic = new MouseEvent('click', { clientX: 100, clientY: 100 });
     service.sourisCliquee(clic);
@@ -204,6 +212,38 @@ describe('DessinLigneService', () => {
   });
 
   // TESTS shiftEnfonce
+
+  it("#shiftEnfonce devrait changer la position X et Y si l'alignement est 0", () => {
+    service.points.push({x: 100, y: 100});
+    service.curseur.x = 150;
+    service.curseur.y = 100; // La souris se met à la même hauteur verticale que le dernier point
+    service.shiftEnfonce();
+    expect(service.position).toEqual({x: 150, y: 100});
+  });
+
+  it("#shiftEnfonce devrait changer la position X et Y si l'alignement est 1 et la position en X égale à celle en Y", () => {
+    service.points.push({x: 100, y: 100});
+    service.curseur.x = 150;
+    service.curseur.y = 150; // La souris se met à 135 degrés du dernier point (en haut à droite)
+    service.shiftEnfonce();
+    expect(service.position).toEqual({x: 150, y: 150});
+  });
+
+  it("#shiftEnfonce devrait changer la position X et Y si l'alignement est 1 et la position X et Y sont égales et de signe inverse", () => {
+    service.points.push({x: 100, y: 100});
+    service.curseur.x = 50;
+    service.curseur.y = 150; // La souris se met à 45 degrés du dernier point (en haut à gauche)
+    service.shiftEnfonce();
+    expect(service.position).toEqual({x: 50, y: 150});
+  });
+
+  it("#shiftEnfonce devrait changer la position X et Y si l'alignement n'est pas 1 ou 0", () => {
+    service.points.push({x: 100, y: 100});
+    service.curseur.x = 100;
+    service.curseur.y = 150; // La souris se met sur le même axe verticale que le dernier point
+    service.shiftEnfonce();
+    expect(service.position).toEqual({x: 100, y: 150});
+  });
 
   // TESTS shiftRelache
 

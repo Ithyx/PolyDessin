@@ -114,7 +114,7 @@ export class DessinLigneService implements InterfaceOutils {
         this.position.y = dernierPoint.x - this.curseur.x + dernierPoint.y;
       }
       this.position.x = this.curseur.x;
-    } else if (alignement === 2) {
+    } else {
       this.position.x = dernierPoint.x;
       this.position.y = this.curseur.y;
     }
