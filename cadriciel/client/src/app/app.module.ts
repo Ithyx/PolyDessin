@@ -22,7 +22,6 @@ import { PageDessinComponent } from './components/page-dessin/page-dessin.compon
 import { PageGuideComponent } from './components/page-guide/page-guide.component';
 import { SurfaceDessinComponent } from './components/surface-dessin/surface-dessin.component';
 
-
 // Service
 import { ParametresCouleurService } from './services/couleur/parametres-couleur.service';
 import { DessinManagerService } from './services/dessin-manager/dessin-manager.service';

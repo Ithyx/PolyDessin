@@ -14,14 +14,26 @@ export class ValeurCouleurComponent {
   readonly INDEX_VERT = 1;
   readonly INDEX_BLEU = 2;
 
+  readonly LETTRES_ACCEPTEE = new Set(['a', 'b', 'c', 'd', 'e', 'f']);
+
   constructor(public raccourcis: GestionnaireRaccourcisService) {}
 
   modificationRGB(event: Event, index: number) {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
-    if (!isNaN(Number(eventCast.value))) {
-      this.gestionnaireCouleur.RGB[index] = Math.min(Math.max(Number(eventCast.value), 0), 255);
-      this.gestionnaireCouleur.modifierRGB();
+    let value = parseInt(eventCast.value, 16);
+    console.log(value);
+
+    if (isNaN(value)) {
+      value = 0;
     }
+
+    this.gestionnaireCouleur.RGB[index] = Math.min(value, 255);
+    this.gestionnaireCouleur.modifierRGB();
+  }
+
+  verifierEntree(clavier: KeyboardEvent): boolean {
+    const resultat = clavier.key.toLowerCase();
+    return ((resultat >= '0' && resultat <= '9') || (this.LETTRES_ACCEPTEE.has(resultat)) || (resultat === 'backspace'));
   }
 
   onChampFocus() {

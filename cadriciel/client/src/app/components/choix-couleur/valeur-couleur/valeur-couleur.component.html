@@ -1,9 +1,9 @@
 <label>R: </label>
-<input type="number" min="0" max="255" (change)="modificationRGB($event, INDEX_ROUGE)"
-    (focus)="onChampFocus()" (blur)="onChampBlur()" />
+<input type="text" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" (change)="modificationRGB($event, INDEX_ROUGE)"
+    (focus)="onChampFocus()" (blur)="onChampBlur()" (keydown)="verifierEntree($event)" maxlength="2" class="hex"/>
 <label>G: </label>
-<input type="number" min="0" max="255" (change)="modificationRGB($event, INDEX_VERT)"
-    (focus)="onChampFocus()" (blur)="onChampBlur()" />
+<input type="text" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" (change)="modificationRGB($event, INDEX_VERT)"
+    (focus)="onChampFocus()" (blur)="onChampBlur()" (keydown)="verifierEntree($event)" maxlength="2" class="hex"/>
 <label>B: </label>
-<input type="number" min="0" max="255" (change)="modificationRGB($event, INDEX_BLEU)"
-    (focus)="onChampFocus()" (blur)="onChampBlur()" />
+<input type="text" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" (change)="modificationRGB($event, INDEX_BLEU)"
+    (focus)="onChampFocus()" (blur)="onChampBlur()" (keydown)="verifierEntree($event)" maxlength="2" class="hex"/>
