@@ -24,7 +24,6 @@ export class GestionnaireRaccourcisService {
 
   traiterInput(clavier: KeyboardEvent) {
     if (this.champDeTexteEstFocus) { return; };
-    // ? peut-être mettre tout en minuscule ?
     switch (clavier.key) {
       case '1':
         this.outils.changerOutilActif(INDEX_OUTIL_RECTANGLE);
@@ -49,7 +48,8 @@ export class GestionnaireRaccourcisService {
       case 'Shift':
         if (this.outils.outilActif.ID === INDEX_OUTIL_RECTANGLE) {
           this.dessinRectangle.shiftEnfonce();
-        } else if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
+        }
+        if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
           this.dessinLigne.stockerCurseur();
         }
         break;
@@ -68,10 +68,10 @@ export class GestionnaireRaccourcisService {
         break;
 
       case 'Escape':
-      if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
-        this.dessinLigne.annulerLigne();
-      }
-      break;
+        if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
+          this.dessinLigne.annulerLigne();
+        }
+        break;
 
       default:
         break;
@@ -83,7 +83,8 @@ export class GestionnaireRaccourcisService {
       case 'Shift':
         if (this.outils.outilActif.ID === INDEX_OUTIL_RECTANGLE) {
           this.dessinRectangle.shiftRelache();
-        } else if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
+        }
+        if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
           this.dessinLigne.shiftRelache();
         }
         break;
