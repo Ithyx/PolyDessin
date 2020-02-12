@@ -24,7 +24,6 @@ export class GestionnaireRaccourcisService {
 
   traiterInput(clavier: KeyboardEvent) {
     if (this.champDeTexteEstFocus) { return; };
-    // ? peut-être mettre tout en minuscule ?
     switch (clavier.key) {
       case '1':
         this.outils.changerOutilActif(INDEX_OUTIL_RECTANGLE);
