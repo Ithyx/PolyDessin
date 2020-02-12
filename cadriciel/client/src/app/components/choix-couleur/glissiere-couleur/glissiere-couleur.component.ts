@@ -81,15 +81,17 @@ export class GlissiereCouleurComponent implements AfterViewInit, InterfaceOutils
   }
 
   couleurEmise(x: number, y: number) {
-    const rgbaCouleur = this.couleurPosition(x, y)
-    this.gestionnaireCouleur.couleur = rgbaCouleur
-    this.gestionnaireCouleur.teinte = rgbaCouleur
+    this.couleurPosition(x, y)
   }
 
   couleurPosition(x: number, y: number) {
     const imageData = this.context2D.getImageData(x, y, 1, 1).data;
-    return ('RGB(' + imageData[0] + ',' + imageData[1] + ',' +
-      imageData[2] + ')')
+    const rgbaCouleur = 'rgba(' + imageData[0] + ',' + imageData[1] + ',' +
+      imageData[2] + ',';
+
+    this.gestionnaireCouleur.couleur = rgbaCouleur;
+    this.gestionnaireCouleur.teinte = rgbaCouleur;
+    this.gestionnaireCouleur.RGB = [imageData[0], imageData[1], imageData[2]];
   }
 
 }

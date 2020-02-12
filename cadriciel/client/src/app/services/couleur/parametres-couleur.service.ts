@@ -4,12 +4,27 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ParametresCouleurService {
-  couleurPrincipale = 'rgba(0, 0, 0, 1)';
-  couleurSecondaire = 'rgba(0, 0, 0, 1)';
+  dernieresCouleurs: string[] = [];
+
+  couleurPrincipale = 'rgba(0, 0, 0, ';
+  couleurSecondaire = 'rgba(0, 0, 0, ';
+
+  opacitePrincipale = 1;
+  opaciteSecondaire = 1;
+
+  couleurFond = 'rgba(255, 255, 255, 1)'
 
   intervertirCouleurs() {
     const copie = this.couleurPrincipale;
     this.couleurPrincipale = this.couleurSecondaire;
     this.couleurSecondaire = copie;
+  }
+
+  getCouleurPrincipale() {
+    return this.couleurPrincipale + this.opacitePrincipale + ')';
+  }
+
+  getCouleurSecondaire() {
+    return this.couleurSecondaire + this.opaciteSecondaire + ')';
   }
 }

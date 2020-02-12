@@ -44,16 +44,39 @@
             </ng-template>
 
         </div>
+        <br />
         <div class="boutons-couleur">
             Couleur primaire
-            <button [ngStyle]= "{'background-color': couleur.couleurPrincipale || 'white'}" 
+            <button [ngStyle]= "{'background-color': couleur.getCouleurPrincipale() || 'white'}" 
                     (click)="selectionCouleur('principale')"></button>
             <br />
+            <div class="selection-opacite">
+                <label for="opacite">Opacité: </label>
+                <input type="range" name="opacite" min="0" max="1" value="1" step="0.01"
+                       (input)="appliquerOpacitePrincipale($event)" />
+                {{opaciteAffichee}}%
+            </div>
             <button mat-stroked-button (click)="couleur.intervertirCouleurs()">intervertir</button>
             <br />
             Couleur secondaire
-            <button [ngStyle]= "{'background-color': couleur.couleurSecondaire || 'white'}"
+            <button [ngStyle]= "{'background-color': couleur.getCouleurSecondaire() || 'white'}"
                     (click)="selectionCouleur('secondaire')"></button>
+            <div class="selection-opacite">
+                <label for="opacite">Opacité: </label>
+                <input type="range" name="opacite" min="0" max="1" value="1" step="0.01"
+                       (input)="appliquerOpaciteSecondaire($event)" />
+                {{opaciteAffichee}}%
+            </div>
+            <br />
+            <div *ngIf="couleur.dernieresCouleurs.length > 0" class="dernieres-couleurs">
+                Dernieres couleurs utilisées
+                <br />
+                <button *ngFor="let derniereCouleur of couleur.dernieresCouleurs"
+                        [ngStyle]= "{'background-color': derniereCouleur + '1)' || 'white'}" 
+                        (click)="selectionDerniereCouleurPrimaire(derniereCouleur)"
+                        (contextmenu)="selectionDerniereCouleurSecondaire(derniereCouleur, $event)">
+                </button>
+            </div>
         </div>
     </form>
 </div>

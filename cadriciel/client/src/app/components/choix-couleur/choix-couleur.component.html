@@ -5,7 +5,7 @@
 <div class="input-wrapper">
     <app-valeur-couleur [gestionnaireCouleur]="gestionnaireCouleur"></app-valeur-couleur>
     <div class ="color-div" 
-        [ngStyle]= "{'background-color': gestionnaireCouleur.couleur || 'white'}">
+        [ngStyle]= "{'background-color': gestionnaireCouleur.getCouleur() || 'white'}">
     </div>
 </div>
 <button mat-stroked-button (click)="fermerFenetre()">Annuler</button>

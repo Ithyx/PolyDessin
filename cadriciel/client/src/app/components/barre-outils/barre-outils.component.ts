@@ -17,6 +17,8 @@ export class BarreOutilsComponent implements OnDestroy {
 
   porteePrincipale = Portee.Principale;
   porteeSecondaire = Portee.Secondaire;
+  opacitePrincipaleAffichee = 100;
+  opaciteSecondaireAffichee = 100;
 
   private nouveauDessinSubscription: Subscription;
 
@@ -85,6 +87,31 @@ export class BarreOutilsComponent implements OnDestroy {
       this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Portee.Principale;
     } else {
       this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Portee.Secondaire;
+    }
+  }
+
+  selectionDerniereCouleurPrimaire(couleurChoisie: string) {
+    this.couleur.couleurPrincipale = couleurChoisie;
+  }
+
+  selectionDerniereCouleurSecondaire(couleurChoisie: string, evenement: MouseEvent) {
+    this.couleur.couleurSecondaire = couleurChoisie;
+    evenement.preventDefault();
+  }
+
+  appliquerOpacitePrincipale(evenement: Event) {
+    const evenementCast: HTMLInputElement = (evenement.target as HTMLInputElement);
+    if (!isNaN(Number(evenementCast.value))) {
+      this.couleur.opacitePrincipale = Number(evenementCast.value);
+      this.opacitePrincipaleAffichee = Math.round(100 * Number(evenementCast.value));
+    }
+  }
+
+  appliquerOpaciteSecondaire(evenement: Event) {
+    const evenementCast: HTMLInputElement = (evenement.target as HTMLInputElement);
+    if (!isNaN(Number(evenementCast.value))) {
+      this.couleur.opaciteSecondaire = Number(evenementCast.value);
+      this.opaciteSecondaireAffichee = Math.round(100 * Number(evenementCast.value));
     }
   }
 }

@@ -28,21 +28,20 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
       this.draw()
       const pos = this.hauteurChoisi
       if (pos) {
-        this.gestionnaireCouleur.couleur = this.couleurPosition(pos.x, pos.y);
+        this.couleurPosition(pos.x, pos.y);
       }
     }
   }
 
   couleurPosition(x: number, y: number) {
-    const imageData = this.context2D.getImageData(x, y, 1, 1).data
-    return (
-      'RGB(' + imageData[0] + ',' + imageData[1] + ',' + imageData[2] + ')'
-    )
+    const imageData = this.context2D.getImageData(x, y, 1, 1).data;
+    this.gestionnaireCouleur.couleur = 'rgba(' + imageData[0] + ',' + imageData[1] + ','
+      + imageData[2] + ',';
+    this.gestionnaireCouleur.RGB = [imageData[0], imageData[1], imageData[2]];
   }
 
   couleurEmise(x: number, y: number) {
-    const rgbaColor = this.couleurPosition(x, y)
-    this.gestionnaireCouleur.couleur = rgbaColor;
+    this.couleurPosition(x, y)
   }
 
   @HostListener ('window:mouseup', ['$event'] )
@@ -54,7 +53,7 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
       this.sourisBas = true
       this.hauteurChoisi = {x: evt.offsetX, y: evt.offsetY}
       this.draw()
-      this.gestionnaireCouleur.couleur = this.couleurPosition(evt.offsetX, evt.offsetY);
+      this.couleurPosition(evt.offsetX, evt.offsetY);
     }
 
     sourisDeplacee(evt: MouseEvent) {
@@ -76,7 +75,7 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
     const width = this.canvas.nativeElement.width
     const height = this.canvas.nativeElement.height
 
-    this.context2D.fillStyle = this.gestionnaireCouleur.teinte || 'rgba(255,255,255,1)'
+    this.context2D.fillStyle = this.gestionnaireCouleur.teinte + '1)' || 'rgba(255,255,255,1)'
     this.context2D.fillRect(0, 0, width, height)
 
     const whiteGrad = this.context2D.createLinearGradient(0, 0, width, 0)
