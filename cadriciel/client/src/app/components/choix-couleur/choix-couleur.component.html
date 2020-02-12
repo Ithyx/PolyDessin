@@ -5,13 +5,8 @@
 <div class="input-wrapper">
     <app-valeur-couleur [gestionnaireCouleur]="gestionnaireCouleur"></app-valeur-couleur>
     <div class ="color-div" 
-        [ngStyle]= "{'background-color': gestionnaireCouleur.couleur || 'white'}">
+        [ngStyle]= "{'background-color': gestionnaireCouleur.getCouleur() || 'white'}">
     </div>
-</div>
-<div class="selection-opacite">
-    <label for="opacite">Opacité: </label>
-    <input type="range" name="opacite" min="0" max="1" value="1" step="0.01" (input)="appliquerOpacite($event)" />
-    {{opaciteAffichee}}%
 </div>
 <button mat-stroked-button (click)="fermerFenetre()">Annuler</button>
 <button mat-stroked-button (click)="appliquerCouleur()">Confirmer</button>

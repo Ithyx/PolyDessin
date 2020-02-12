@@ -14,36 +14,38 @@ export const MAX_COULEURS = 10;
   providedIn: 'root'
 })
 export class GestionnaireCouleursService {
-  couleur = 'rgba(0, 0, 0, 1)';
+  couleur = 'rgba(0, 0, 0,';
   teinte: string;
   RGB: number[] = [0, 0, 0];
-  alpha = 1;
 
   constructor(public parametresCouleur: ParametresCouleurService) {}
+
+  getCouleur() {
+    return this.couleur + '1)';
+  }
 
   modifierRGB() {
     const nouvelleCouleur = 'rgba(' + this.RGB[0] + ', '
                                     + this.RGB[1] + ', '
-                                    + this.RGB[2] + ', '
-                                    + this.alpha + ')';
+                                    + this.RGB[2] + ', ';
     this.couleur = nouvelleCouleur;
   }
 
   appliquerCouleur(portee: Portee) {
     switch (portee) {
       case Portee.Principale:
-        console.log('nouvelle couleur principale: ', this.couleur);
+        console.log('nouvelle couleur principale: ', this.couleur + this.parametresCouleur.opacitePrincipale + ')');
         this.parametresCouleur.couleurPrincipale = this.couleur;
         this.ajouterDerniereCouleur();
         break;
       case Portee.Secondaire:
-        console.log('nouvelle couleur secondaire: ', this.couleur);
+        console.log('nouvelle couleur secondaire: ', this.couleur + this.parametresCouleur.opaciteSecondaire + ')');
         this.parametresCouleur.couleurSecondaire = this.couleur;
         this.ajouterDerniereCouleur();
         break;
       case Portee.Fond:
-        console.log('nouvelle couleur fond: ', this.couleur);
-        this.parametresCouleur.couleurFond = this.couleur;
+        console.log('nouvelle couleur fond: ', this.couleur + '1)');
+        this.parametresCouleur.couleurFond = this.couleur + '1)';
       default:
         /* Par mesure de sécurité, ne rien faire. */
         break;

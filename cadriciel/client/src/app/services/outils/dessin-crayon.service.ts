@@ -29,7 +29,7 @@ export class DessinCrayonService implements InterfaceOutils {
   sourisEnfoncee(souris: MouseEvent) {
     this.traitEnCours = true;
     this.stockageSVG.setSVGEnCours(
-      `<path fill="transparent" stroke="${this.couleur.couleurPrincipale}" stroke-linecap="round" stroke-width="`
+      `<path fill="transparent" stroke="${this.couleur.getCouleurPrincipale()}" stroke-linecap="round" stroke-width="`
       + this.outils.outilActif.parametres[0].valeur
       + '" d="M' + souris.offsetX + ' ' + souris.offsetY + '"/>');
   }
@@ -51,7 +51,8 @@ export class DessinCrayonService implements InterfaceOutils {
     if (this.peutCliquer) {
       if (this.outils.outilActif.parametres[0].valeur) {
         const SVG = '<circle cx="' + souris.offsetX + '" cy="' + souris.offsetY + '" r="'
-        + this.outils.outilActif.parametres[0].valeur / 2 + '" fill="' + this.couleur.couleurPrincipale + '"/>';
+        + this.outils.outilActif.parametres[0].valeur / 2
+        + '" fill="' + this.couleur.getCouleurPrincipale() + '"/>';
         this.stockageSVG.ajouterSVG(SVG);
         console.log(this.couleur.couleurPrincipale);
       }

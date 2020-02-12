@@ -34,7 +34,7 @@ export class DessinRectangleService implements InterfaceOutils {
       // La ligne à tracer
       this.stockageSVG.setSVGEnCours(
         '<line stroke-linecap="square'
-        + '" stroke="' + this.couleur.couleurSecondaire
+        + '" stroke="' + this.couleur.getCouleurSecondaire()
         + '" stroke-width="' + epaisseur
         + '" x1="' + this.base.x + '" y1="' + this.base.y
         + '" x2="' + (this.base.x + this.largeur) + '" y2="' + (this.base.y + this.hauteur) + '"/>'
@@ -50,8 +50,8 @@ export class DessinRectangleService implements InterfaceOutils {
     } else {
       // Le rectangle à tracer
       this.stockageSVG.setSVGEnCours(
-        '<rect fill="' + ((optionChoisie !== 'Contour') ? this.couleur.couleurPrincipale : 'transparent')
-        + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleur.couleurSecondaire : 'transparent')
+        '<rect fill="' + ((optionChoisie !== 'Contour') ? this.couleur.getCouleurPrincipale() : 'transparent')
+        + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleur.getCouleurSecondaire() : 'transparent')
         + '" stroke-width="' + epaisseur
         + '" x="' + this.base.x + '" y="' + this.base.y
         + '" width="' + this.largeur + '" height="' + this.hauteur + '"/>'

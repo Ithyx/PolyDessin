@@ -11,7 +11,6 @@ import { GestionnaireCouleursService, Portee } from 'src/app/services/couleur/ge
 export class ChoixCouleurComponent  {
 
   portee: Portee = Portee.Principale;
-  opaciteAffichee = 100;
 
   constructor(public gestionnaireCouleur: GestionnaireCouleursService,
               public dialogRef: MatDialogRef<ChoixCouleurComponent>) {}
@@ -23,15 +22,6 @@ export class ChoixCouleurComponent  {
   appliquerCouleur() {
     this.gestionnaireCouleur.appliquerCouleur(this.portee);
     this.dialogRef.close();
-  }
-
-  appliquerOpacite(evenement: Event) {
-    const evenementCast: HTMLInputElement = (evenement.target as HTMLInputElement);
-    if (!isNaN(Number(evenementCast.value))) {
-      this.gestionnaireCouleur.alpha = Number(evenementCast.value);
-      this.gestionnaireCouleur.modifierRGB();
-      this.opaciteAffichee = Math.round(100 * Number(evenementCast.value));
-    }
   }
 
 }

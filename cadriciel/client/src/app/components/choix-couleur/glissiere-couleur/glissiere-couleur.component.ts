@@ -87,7 +87,7 @@ export class GlissiereCouleurComponent implements AfterViewInit, InterfaceOutils
   couleurPosition(x: number, y: number) {
     const imageData = this.context2D.getImageData(x, y, 1, 1).data;
     const rgbaCouleur = 'rgba(' + imageData[0] + ',' + imageData[1] + ',' +
-      imageData[2] + ',' + this.gestionnaireCouleur.alpha + ')';
+      imageData[2] + ',';
 
     this.gestionnaireCouleur.couleur = rgbaCouleur;
     this.gestionnaireCouleur.teinte = rgbaCouleur;
