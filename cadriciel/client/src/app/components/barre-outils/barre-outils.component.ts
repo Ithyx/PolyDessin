@@ -87,4 +87,13 @@ export class BarreOutilsComponent implements OnDestroy {
       this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Portee.Secondaire;
     }
   }
+
+  selectionDerniereCouleurPrimaire(couleurChoisie: string) {
+    this.couleur.couleurPrincipale = couleurChoisie;
+  }
+
+  selectionDerniereCouleurSecondaire(couleurChoisie: string, evenement: MouseEvent) {
+    this.couleur.couleurSecondaire = couleurChoisie;
+    evenement.preventDefault();
+  }
 }

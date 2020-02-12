@@ -54,6 +54,16 @@
             Couleur secondaire
             <button [ngStyle]= "{'background-color': couleur.couleurSecondaire || 'white'}"
                     (click)="selectionCouleur('secondaire')"></button>
+            <br />
+            <div *ngIf="couleur.dernieresCouleurs.length > 0" class="dernieres-couleurs">
+                Dernieres couleurs utilisées
+                <br />
+                <button *ngFor="let derniereCouleur of couleur.dernieresCouleurs"
+                        [ngStyle]= "{'background-color': derniereCouleur || 'white'}" 
+                        (click)="selectionDerniereCouleurPrimaire(derniereCouleur)"
+                        (contextmenu)="selectionDerniereCouleurSecondaire(derniereCouleur, $event)">
+                </button>
+            </div>
         </div>
     </form>
 </div>

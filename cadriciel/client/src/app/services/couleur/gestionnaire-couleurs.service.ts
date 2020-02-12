@@ -8,6 +8,8 @@ export enum Portee {
   Defaut,
 }
 
+export const MAX_COULEURS = 10;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -32,10 +34,12 @@ export class GestionnaireCouleursService {
       case Portee.Principale:
         console.log('nouvelle couleur principale: ', this.couleur);
         this.parametresCouleur.couleurPrincipale = this.couleur;
+        this.ajouterDerniereCouleur();
         break;
       case Portee.Secondaire:
         console.log('nouvelle couleur secondaire: ', this.couleur);
         this.parametresCouleur.couleurSecondaire = this.couleur;
+        this.ajouterDerniereCouleur();
         break;
       case Portee.Fond:
         console.log('nouvelle couleur fond: ', this.couleur);
@@ -44,6 +48,13 @@ export class GestionnaireCouleursService {
         /* Par mesure de sécurité, ne rien faire. */
         break;
     }
+  }
+
+  ajouterDerniereCouleur() {
+    while (this.parametresCouleur.dernieresCouleurs.length >= MAX_COULEURS) {
+      this.parametresCouleur.dernieresCouleurs.shift();
+    }
+    this.parametresCouleur.dernieresCouleurs.push(this.couleur);
   }
 
   RBGVersHSL(RGB: [number, number, number]): [number, number, number] {
