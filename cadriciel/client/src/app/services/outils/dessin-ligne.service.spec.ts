@@ -57,13 +57,6 @@ describe('DessinLigneService', () => {
     expect(service.points).not.toBeNull();
   });
 
-  it('#sourisCliquee devrait appeler setTimeout de window', () => {
-    spyOn(window, 'setTimeout');
-    const clic = new MouseEvent('click', { clientX: 100, clientY: 100 }); //////////////////////////
-    service.sourisCliquee(clic);
-    expect(window.setTimeout).toHaveBeenCalled();
-  });
-
   it("#sourisCliquee ne devrait pas appeler actualiserSVG si c'est un double clic", () => {
     spyOn(service, 'actualiserSVG');
     const clic = new MouseEvent('click', { clientX: 100, clientY: 100 });
@@ -72,11 +65,12 @@ describe('DessinLigneService', () => {
     expect(service.actualiserSVG).not.toHaveBeenCalled();
   });
 
-  it("#sourisCliquee devrait appeler actualiserSVG si c'est un simple clic", () => {
+  it('#sourisCliquee devrait appeler setTimeout', () => {
+    spyOn(window, 'setTimeout');
     spyOn(service, 'actualiserSVG');
     const clic = new MouseEvent('click', { clientX: 100, clientY: 100 });
     service.sourisCliquee(clic);
-    expect(service.actualiserSVG).toHaveBeenCalled();
+    expect(window.setTimeout).toHaveBeenCalled();
   });
 
   // TESTS sourisDoubleClic

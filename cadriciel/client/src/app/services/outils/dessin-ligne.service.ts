@@ -36,7 +36,7 @@ export class DessinLigneService implements InterfaceOutils {
     this.points.push({x: this.position.x, y: this.position.y});
     window.setTimeout(() => {
       if (this.estClicSimple) {this.actualiserSVG()}
-    }, 250)
+    }, 250);
   }
 
   sourisDoubleClic(souris: MouseEvent) {
