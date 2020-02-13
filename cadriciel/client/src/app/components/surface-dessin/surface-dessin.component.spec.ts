@@ -47,8 +47,7 @@ describe('SurfaceDessinComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('SurfaceDessinComponent devrait naviguer vers la page précédente ' +
-     'si couleurFond est undefined', () => {
+  it('SurfaceDessinComponent devrait naviguer vers la page précédente si couleurFond est undefined', () => {
     spyOn(routing, 'navigate');
     component = new SurfaceDessinComponent(stockage, gestionnaireDessin, navigation, routing, parametresCouleur);
     expect(routing.navigate).toHaveBeenCalledWith([navigation.pagePrecedante]);

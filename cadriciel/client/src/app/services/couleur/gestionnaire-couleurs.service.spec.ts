@@ -76,16 +76,30 @@ describe('GestionnaireCouleursService', () => {
 
   // TESTS ajouterDerniereCouleur
 
-  it('#ajouterDerniereCouleur devrait ajouter la couleur au début du tableau dernierCouleur ', () => {
+  it('#ajouterDerniereCouleur devrait ajouter la couleur au début du tableau derniereCouleur ', () => {
     service.ajouterDerniereCouleur();
     expect(service.parametresCouleur.dernieresCouleurs[0]).toBe(service.couleur);
   });
 
-  /*
-  // TESTS RGBversHSL
+  /* it('#ajouterDerniereCouleur devrait retirer des couleurs du tableau derniereCouleur si celui-ci en contient plus de 10', () => {
+    service.parametresCouleur.dernieresCouleurs = [
+      'rgba(0, 0, 0, ',
+      'rgba(0, 0, 1, ',
+      'rgba(0, 0, 2, ',
+      'rgba(0, 0, 3, ',
+      'rgba(0, 0, 4, ',
+      'rgba(0, 0, 5, ',
+      'rgba(0, 0, 6, ',
+      'rgba(0, 0, 7, ',
+      'rgba(0, 0, 8, ',
+      'rgba(0, 0, 9, ',
+      'rgba(0, 0, 10, ',
+      'rgba(0, 0, 11, ',
+      'rgba(0, 0, 12, ',
+    ]; // taille de 13
+    spyOn(service.parametresCouleur.dernieresCouleurs, 'shift');
+    service.ajouterDerniereCouleur();
+    expect();
+  }); */
 
-  it('#RGBversHSL devrait convertir convenablement [R:67, G:80, B:130]', () => {
-    expect(service.RGBVersHSL([67, 80, 130])).toEqual([227.6190476190476, 0.31979695431472077, 0.38627450980392153]);
-  });
-  */
 });

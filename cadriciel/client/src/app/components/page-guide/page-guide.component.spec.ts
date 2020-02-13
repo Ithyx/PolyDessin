@@ -29,25 +29,27 @@ describe('PageGuideComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('onClick(1) should return the subject after Bienvenue, Crayon', () => {
+  // TESTS onClick
+
+  it('#onClick(1) devrait le sujet après Bienvenue, le Crayon', () => {
     // Correspond au bouton suivant
     component.onClick(1);
-    expect(component.sujetActif.nom).toBe('Crayon');    // Pourquoi on ne peut pas passer un GuideSujet?
+    expect(component.sujetActif.nom).toBe('Crayon');
   });
 
-  it('onClick(-1) should return the subject before Bienvenue, SujetVide', () => {
+  it('#onClick(-1) devrait retourner le sujet avant Bienvenue, soit un SujetVide', () => {
     // Correspond au bouton precedant
     component.onClick(-1);
     expect(component.sujetActif).toBe(SUJET_VIDE);
   });
 
-  it('in case of sujetActif does not have an id, it should not change', () => {
+  it('#onClick ne devrait rein faire si le sujet Actif n\' a pas d\'ID ', () => {
     component.sujetActif = CONTENU_GUIDE[1];
     component.onClick(1);
     expect(component.sujetActif).toBe(CONTENU_GUIDE[1]);
   });
 
-  it('sujetActif should become the sujet receive in onNotify()', () => {
+  it('#onNotify(), le sujetActif devrait être celui émis', () => {
     const sujet: GuideSujet = CONTENU_GUIDE[3];
     component.onNotify(sujet);
     expect(component.sujetActif).toBe(sujet);
