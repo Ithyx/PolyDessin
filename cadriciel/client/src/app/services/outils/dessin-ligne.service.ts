@@ -36,7 +36,7 @@ export class DessinLigneService implements InterfaceOutils {
     this.points.push({x: this.position.x, y: this.position.y});
     window.setTimeout(() => {
       if (this.estClicSimple) {this.actualiserSVG()}
-    }, 250)
+    }, 250);
   }
 
   sourisDoubleClic(souris: MouseEvent) {
@@ -114,7 +114,7 @@ export class DessinLigneService implements InterfaceOutils {
         this.position.y = dernierPoint.x - this.curseur.x + dernierPoint.y;
       }
       this.position.x = this.curseur.x;
-    } else if (alignement === 2) {
+    } else {
       this.position.x = dernierPoint.x;
       this.position.y = this.curseur.y;
     }

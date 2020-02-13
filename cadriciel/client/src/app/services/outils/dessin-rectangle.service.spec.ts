@@ -342,4 +342,23 @@ describe('DessinRectangleService', () => {
     // vérifier que le SVG est vide
     expect(stockageService.getSVGEnCours()).toEqual('');
   });
+
+  // TESTS vider
+
+  it('#vider devrait mettre rectangleEnCours faux', () => {
+    service.vider();
+    expect(service.rectangleEnCours).toBe(false);
+  });
+
+  it('#vider devrait appeler setPerimetreEnCours', () => {
+    spyOn(stockageService, 'setPerimetreEnCours')
+    service.vider();
+    expect(stockageService.setPerimetreEnCours).toHaveBeenCalledWith('');
+  });
+
+  it('#vider devrait appeler setSVGEnCours', () => {
+    spyOn(stockageService, 'setSVGEnCours')
+    service.vider();
+    expect(stockageService.setSVGEnCours).toHaveBeenCalledWith('');
+  });
 });
