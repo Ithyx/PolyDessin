@@ -59,7 +59,8 @@ export class GestionnaireCouleursService {
     this.parametresCouleur.dernieresCouleurs.push(this.couleur);
   }
 
-  RBGVersHSL(RGB: [number, number, number]): [number, number, number] {
+  /*
+  RGBVersHSL(RGB: [number, number, number]): [number, number, number] {
     const RGBNormalise = RGB.map((element: number) => element / 255);
     const max = Math.max(...RGBNormalise);
     const min = Math.min(...RGBNormalise);
@@ -93,4 +94,5 @@ export class GestionnaireCouleursService {
 
     return [teinte, saturation, luminosite];
   }
+  */
 }

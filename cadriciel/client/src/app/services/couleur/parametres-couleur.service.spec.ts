@@ -26,7 +26,13 @@ describe('ParametresCouleurService', () => {
   });
 
   // TEST getCouleurPrincipale
+  it('#getCouleurPrincipale devrait retourner la couleur principale avec une opacité de 1', () => {
+    expect(service.getCouleurPrincipale()).toBe('rgba(0, 0, 0, 1)')
+  });
 
   // TEST getCouleurSecondaire
+  it('#getCouleurSecondaire devrait retourner la couleur secondaire avec une opacité de 1', () => {
+    expect(service.getCouleurSecondaire()).toBe('rgba(0, 0, 0, 1)')
+  });
 
 });
