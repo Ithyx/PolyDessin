@@ -11,6 +11,8 @@ export class ParametresCouleurService {
 
   opacitePrincipale = 1;
   opaciteSecondaire = 1;
+  opacitePrincipaleAffichee = 100;
+  opaciteSecondaireAffichee = 100;
 
   couleurFond = 'rgba(255, 255, 255, 1)'
 

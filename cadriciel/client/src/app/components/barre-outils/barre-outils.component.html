@@ -52,9 +52,10 @@
             <br />
             <div class="selection-opacite">
                 <label for="opacite">Opacité: </label>
-                <input type="range" name="opacite" min="0" max="1" value="1" step="0.01"
+                <input type="range" name="opacite" min="0" max="1" step="0.01"
+                       [value]="couleur.opacitePrincipale"
                        (input)="appliquerOpacitePrincipale($event)" />
-                {{opacitePrincipaleAffichee}}%
+                {{couleur.opacitePrincipaleAffichee}}%
             </div>
             <button mat-stroked-button (click)="couleur.intervertirCouleurs()">intervertir</button>
             <br />
@@ -63,13 +64,14 @@
                     (click)="selectionCouleur('secondaire')"></button>
             <div class="selection-opacite">
                 <label for="opacite">Opacité: </label>
-                <input type="range" name="opacite" min="0" max="1" value="1" step="0.01"
+                <input type="range" name="opacite" min="0" max="1" step="0.01"
+                       [value]="couleur.opaciteSecondaire"
                        (input)="appliquerOpaciteSecondaire($event)" />
-                {{opaciteSecondaireAffichee}}%
+                {{couleur.opaciteSecondaireAffichee}}%
             </div>
             <br />
             <div *ngIf="couleur.dernieresCouleurs.length > 0" class="dernieres-couleurs">
-                Dernieres couleurs utilisées
+                Dernières couleurs utilisées
                 <br />
                 <button *ngFor="let derniereCouleur of couleur.dernieresCouleurs"
                         [ngStyle]= "{'background-color': derniereCouleur + '1)' || 'white'}" 
