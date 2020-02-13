@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule, MatDialogRef } from '@angular/material';
 
 import { AvertissementNouveauDessinComponent } from './avertissement-nouveau-dessin.component';
 
@@ -8,7 +9,9 @@ describe('AvertissementNouveauDessinComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AvertissementNouveauDessinComponent ]
+      imports: [ MatDialogModule ],
+      declarations: [ AvertissementNouveauDessinComponent ],
+      providers: [ {provide: MatDialogRef, useValue: {}} ]
     })
     .compileComponents();
   }));
