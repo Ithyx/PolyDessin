@@ -1,15 +1,29 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
+import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
+import { DessinManagerService } from 'src/app/services/dessin-manager/dessin-manager.service';
+import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routing.service';
+import { StockageSvgService } from 'src/app/services/stockage-svg.service';
 import { SurfaceDessinComponent } from './surface-dessin.component';
+
+const parametresCouleurStub: Partial<ParametresCouleurService> = {
+  couleurFond: undefined
+}
 
 describe('SurfaceDessinComponent', () => {
   let component: SurfaceDessinComponent;
   let fixture: ComponentFixture<SurfaceDessinComponent>;
+  let stockage: StockageSvgService;
+  let gestionnaireDessin: DessinManagerService;
+  let navigation: GestionnaireRoutingService;
+  let routing: Router;
+  let parametresCouleur: ParametresCouleurService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SurfaceDessinComponent ],
+      providers: [ {provide: ParametresCouleurService, useValue: parametresCouleurStub} ],
       imports: [ RouterModule.forRoot([]) ]
     })
     .compileComponents();
@@ -21,7 +35,22 @@ describe('SurfaceDessinComponent', () => {
     fixture.detectChanges();
   });
 
+  beforeEach(() => {
+    stockage = TestBed.get(StockageSvgService);
+    gestionnaireDessin = TestBed.get(DessinManagerService);
+    navigation = TestBed.get(GestionnaireRoutingService);
+    routing = TestBed.get(Router);
+    parametresCouleur = TestBed.get(ParametresCouleurService);
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('SurfaceDessinComponent devrait naviguer vers la page précédente ' +
+     'si couleurFond est undefined', () => {
+    spyOn(routing, 'navigate');
+    component = new SurfaceDessinComponent(stockage, gestionnaireDessin, navigation, routing, parametresCouleur);
+    expect(routing.navigate).toHaveBeenCalledWith([navigation.pagePrecedante]);
   });
 });
