@@ -73,7 +73,7 @@ export class FenetreNewDessinComponent {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '30%';
+    dialogConfig.width = '25%';
     dialogConfig.panelClass = 'fenetre-couleur';
     this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Portee.Fond;
   }
