@@ -25,8 +25,7 @@ describe('ValeurCouleurComponent', () => {
 
   // TESTS modificationRGB
   it('#modificationRGB ne devrait rien faire si on tente d\'accder à un index non reconnue', () => {
-    const indexTest = component.gestionnaireCouleur.RGB.length + 1;
-
+    /* Contenu supprimé temporairement */
   });
 
   // TESTS verifierEntree

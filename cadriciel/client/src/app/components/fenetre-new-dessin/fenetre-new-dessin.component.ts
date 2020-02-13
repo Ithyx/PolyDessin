@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, NgZone } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
@@ -9,9 +9,9 @@ import { DessinManagerService } from 'src/app/services/dessin-manager/dessin-man
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { StockageSvgService } from 'src/app/services/stockage-svg.service';
 
-const KEY_FORM_HAUTEUR = 'hauteurFormulaire';
-const KEY_FORM_LARGEUR = 'largeurFormulaire';
-const LARGEUR_BARRE_OUTILS = 410;
+export const LARGEUR_BARRE_OUTILS = 410;
+export const KEY_FORM_HAUTEUR = 'hauteurFormulaire';
+export const KEY_FORM_LARGEUR = 'largeurFormulaire';
 
 @Component({
   selector: 'app-fenetre-new-dessin',
@@ -30,12 +30,13 @@ export class FenetreNewDessinComponent {
 
   constructor(public dialogRef: MatDialogRef<FenetreNewDessinComponent>,
               public raccourcis: GestionnaireRaccourcisService,
-              private serviceNouveauDessin: DessinManagerService,
-              private router: Router,
-              private stockageSVG: StockageSvgService,
+              public serviceNouveauDessin: DessinManagerService,
+              public router: Router,
+              public stockageSVG: StockageSvgService,
               public gestionnaireCouleur: GestionnaireCouleursService,
               public dialog: MatDialog,
-              public parametresCouleur: ParametresCouleurService ) {
+              public parametresCouleur: ParametresCouleurService,
+              private ngZone: NgZone ) {
                 this.dimmensionsChangees();
               }
 
@@ -63,8 +64,7 @@ export class FenetreNewDessinComponent {
     this.serviceNouveauDessin.largeur = this.nouveauDessin.value[KEY_FORM_LARGEUR];
     this.raccourcis.champDeTexteEstFocus = false;
     this.dialogRef.close();
-    this.router.navigate(['dessin']);
-
+    this.ngZone.run(() => this.router.navigate(['dessin']));
   }
 
   selectionCouleur() {
