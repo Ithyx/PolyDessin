@@ -79,6 +79,11 @@
                         (contextmenu)="selectionDerniereCouleurSecondaire(derniereCouleur, $event)">
                 </button>
             </div>
+            <div class="couleur-fond"> 
+                Couleur de fond
+                <button [ngStyle]= "{'background-color': couleur.couleurFond || 'white'}" 
+                        (click)="selectionCouleur('fond')"></button>
+            </div>
         </div>
     </form>
 </div>

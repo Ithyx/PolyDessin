@@ -4,6 +4,6 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class DessinManagerService {
-  hauteur: number;
-  largeur: number;
+  hauteur = 500;
+  largeur = 500;
 }
