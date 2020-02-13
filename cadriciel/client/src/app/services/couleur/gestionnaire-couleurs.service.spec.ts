@@ -81,7 +81,7 @@ describe('GestionnaireCouleursService', () => {
     expect(service.parametresCouleur.dernieresCouleurs[0]).toBe(service.couleur);
   });
 
-  /* it('#ajouterDerniereCouleur devrait retirer des couleurs du tableau derniereCouleur si celui-ci en contient plus de 10', () => {
+  it('#ajouterDerniereCouleur devrait retirer des couleurs du tableau derniereCouleur si celui-ci en contient plus de 10', () => {
     service.parametresCouleur.dernieresCouleurs = [
       'rgba(0, 0, 0, ',
       'rgba(0, 0, 1, ',
@@ -97,9 +97,8 @@ describe('GestionnaireCouleursService', () => {
       'rgba(0, 0, 11, ',
       'rgba(0, 0, 12, ',
     ]; // taille de 13
-    spyOn(service.parametresCouleur.dernieresCouleurs, 'shift');
     service.ajouterDerniereCouleur();
-    expect();
-  }); */
+    expect(service.parametresCouleur.dernieresCouleurs.length).toBe(10);
+  });
 
 });
