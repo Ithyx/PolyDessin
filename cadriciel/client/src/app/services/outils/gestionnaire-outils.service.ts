@@ -48,7 +48,7 @@ export class GestionnaireOutilsService {
   }
 }
 
-export const OUTIL_VIDE = {nom: 'defaut', estActif: false, ID: -1, parametres: []};
+export const OUTIL_VIDE = {nom: 'defaut', estActif: false, ID: -1, parametres: [], iconName: ''};
 
 export const LISTE_OUTILS: OutilDessin[] = [
   {
@@ -84,7 +84,7 @@ export const LISTE_OUTILS: OutilDessin[] = [
     nom: 'Ligne',
     estActif: false,
     ID: 3,
-    iconName: 'fas fa-draw-polygon',
+    iconName: 'fas fa-vector-square',
     parametres: [
       {type: 'number', nom: 'Épaisseur', valeur: 5},
       {type: 'select', nom: 'Type de jonction', optionChoisie: 'Avec points', options: ['Avec points', 'Sans points']},
