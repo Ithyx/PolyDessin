@@ -48,5 +48,4 @@ describe('GuideSujetComponent', () => {
       expect(component.noeud.categorieOuverte).toBe(true);
   });
 
-
 });

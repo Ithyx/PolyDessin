@@ -67,13 +67,6 @@ describe('BarreOutilsComponent', () => {
     service.listeOutils[0].estActif = true; // outil crayon
     service.listeOutils[1].estActif = false; // outil pinceau
     service.listeOutils[2].estActif = false; // outil rectangle
-
-    /*raccourcis.outils = {outilActif: service.listeOutils[0], trouverIndexParametre: service.trouverIndexParametre,
-      listeOutils: service.listeOutils, changerOutilActif: service.changerOutilActif};
-    raccourcis.dessinRectangle = {rectangleEnCours: raccourcis.dessinRectangle.rectangleEnCours,
-      initial: ({x: 0, y: 0}), base: ({x: 0, y: 0}), baseCalculee: ({x: 0, y: 0}), largeur: 0, hauteur: 0, largeurCalculee: 0,
-    hauteurCalculee: 0, stockageSVG: 0, }
-    raccourcis.dessinLigne*/
   })
 
   it('should create', () => {
