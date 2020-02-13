@@ -1,9 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
 
-// import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { MatDialogModule } from '@angular/material';
-import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
 import { GuideSujetComponent } from '../guide-sujet/guide-sujet.component';
 import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
@@ -42,7 +40,6 @@ const GestionnaireOutilServiceStub: Partial<GestionnaireOutilsService> = {
 }
 
 describe('BarreOutilsComponent', () => {
-  let raccourcis: GestionnaireRaccourcisService;
   let component: BarreOutilsComponent;
   let fixture: ComponentFixture<BarreOutilsComponent>;
   let service: GestionnaireOutilsService;
@@ -93,8 +90,8 @@ describe('BarreOutilsComponent', () => {
   });
 
   it('#onClick devrait appeler la fonction viderSVGEnCours', () => {
-    spyOn(raccourcis, 'viderSVGEnCours');
+    spyOn(component.raccourcis, 'viderSVGEnCours');
     component.onClick(service.listeOutils[2]); // on sélectionne l'outil 2
-    expect(raccourcis.viderSVGEnCours).toHaveBeenCalled();
+    expect(component.raccourcis.viderSVGEnCours).toHaveBeenCalled();
   });
 });
