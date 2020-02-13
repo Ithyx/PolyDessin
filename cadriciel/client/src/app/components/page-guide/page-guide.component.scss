@@ -11,7 +11,9 @@
     padding-top: 20px;
 }
 
+
 .contenu {
+    
     margin-left: 25%;
     margin-right: 15%;
 }
@@ -24,7 +26,17 @@
     float: right;
 }
 
-/*style du couton pris de: https://fdossena.com/?p=html5cool/buttons/i.frag*/
+button.retour{
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+}
+
+button.retour:hover{
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+/*style du bouton pris de: https://fdossena.com/?p=html5cool/buttons/i.frag*/
 .button {
     display:inline-block;
     padding:0.35em 1.2em;

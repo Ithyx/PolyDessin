@@ -18,6 +18,7 @@ export interface OutilDessin {
   estActif: boolean;
   ID: number;
   parametres: ParametreOutil[];
+  iconName: string;
 }
 
 @Injectable({
@@ -54,6 +55,7 @@ export const LISTE_OUTILS: OutilDessin[] = [
     nom: 'Crayon',
     estActif: true,
     ID: 0,
+    iconName: 'fas fa-pencil-alt',
     parametres: [
       {type: 'number', nom: 'Épaisseur', valeur: 5}
     ]
@@ -62,6 +64,7 @@ export const LISTE_OUTILS: OutilDessin[] = [
     nom: 'Pinceau',
     estActif: false,
     ID: 1,
+    iconName: 'fas fa-paint-brush',
     parametres: [
       {type: 'number', nom: 'Épaisseur', valeur: 5},
       {type: 'select', nom: 'Texture', optionChoisie: 'Flou', options: ['Flou', 'Ombre', 'Surbrillance', 'Tache', 'Tremblant']}
@@ -71,6 +74,7 @@ export const LISTE_OUTILS: OutilDessin[] = [
     nom: 'Rectangle',
     estActif: false,
     ID: 2,
+    iconName: 'far fa-square',
     parametres: [
       {type: 'number', nom: 'Épaisseur du contour', valeur: 5},
       {type: 'select', nom: 'Type de tracé', optionChoisie: 'Contour', options: ['Contour', 'Plein', 'Plein avec contour']}
@@ -80,6 +84,7 @@ export const LISTE_OUTILS: OutilDessin[] = [
     nom: 'Ligne',
     estActif: false,
     ID: 3,
+    iconName: 'fas fa-draw-polygon',
     parametres: [
       {type: 'number', nom: 'Épaisseur', valeur: 5},
       {type: 'select', nom: 'Type de jonction', optionChoisie: 'Avec points', options: ['Avec points', 'Sans points']},
