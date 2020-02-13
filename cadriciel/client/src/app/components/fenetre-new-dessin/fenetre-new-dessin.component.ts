@@ -26,7 +26,6 @@ export class FenetreNewDessinComponent {
   nouveauDessin = new FormGroup({
     hauteurFormulaire: new FormControl(this.hauteurFenetre),
     largeurFormulaire: new FormControl(this.largeurFenetre),
-    // couleur: new FormControl('#ffffff'),
   });
 
   constructor(public dialogRef: MatDialogRef<FenetreNewDessinComponent>,
