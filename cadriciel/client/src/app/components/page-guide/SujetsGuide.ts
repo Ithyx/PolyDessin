@@ -43,6 +43,7 @@ export const CONTENU_GUIDE: GuideSujet[] = [
                 description: `<h1> Pinceau </h1>
                               <hr>
                               <p> Le pinceau est très similaire au crayon, mais offre une texture supplémentaire.</p>
+                              <img src="assets/pinceau.gif" width="300" height="300">
                               <p> Les paramètres personalisables sont:
                               <li> Épaisseur du trait (en px) </li> <li> Texture du trait </li> </p>`,
                 precedant: true,
@@ -75,7 +76,7 @@ export const CONTENU_GUIDE: GuideSujet[] = [
                               sélectionné l'outil, de choisir le début de la ligne avec un clic quelque part sur la zone de dessin. Ensuite,
                               chaque nouveau clic fermera le segment en cours pour en débuter un nouveau. Pour terminer la ligne, on
                               effectue un double-clic. </p>
-                              <p color="red"> insérer gif utilisation couleur ici </p>
+                              <img src="assets/ligne.gif" width="300" height="300">
                               <p> En enfonçant la touche SHIFT, le segment en cours s'aligne avec l'axe des X par rapport à un angle de
                               45 degrés. Il est aussi possible d'annuler la ligne sans son entièreté avec la touche ESPACE. Pour supprimer
                               uniquement le dernier segment (sauf le premier), appuyez sur BACKSPACE.</p>
@@ -94,10 +95,10 @@ export const CONTENU_GUIDE: GuideSujet[] = [
                               <p> L'outil couleur est un paramètre partagé entre tous les outils, il est d'ailleurs disponible dans le
                               panneau paramètre de chacun d'entre eux. Celui-ci offre deux couleurs configurable: la couleur "principale"
                               et la couleur "secondaire" qui sont interversible. </p>
-                              <p color="red"> insérer gif utilisation couleur ici </p>
                               <p> Pour choisir une couleur, l'utilisateur peut soit se déplacer sur une palette de couleur ou bien
                               directement marquer des valeurs RGB en hexadécimal de la couleur qu'il souhaite. </p>
-                              <p> L'outil se rappelle aussi des 10 dernières couleurs choisis par l'utilisateur.</p>
+                              <p> L'outil se rappelle aussi des 10 dernières couleurs choisis par l'utilisateur. En effectuant un clic droit
+                              , l'utilisateur peut changer sa couleur principale et avec un clic gauche, sa couleur secondaire.</p>
                               <p> Les paramètres personalisables sont:
                               <li> Le code RGB </li> <li> L'opacité </li> </p>`,
                 precedant: true,

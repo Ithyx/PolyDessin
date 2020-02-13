@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { FenetreNewDessinComponent } from '../fenetre-new-dessin/fenetre-new-dessin.component';
@@ -8,22 +8,19 @@ import { FenetreNewDessinComponent } from '../fenetre-new-dessin/fenetre-new-des
   templateUrl: './avertissement-nouveau-dessin.component.html',
   styleUrls: ['./avertissement-nouveau-dessin.component.scss']
 })
-export class AvertissementNouveauDessinComponent implements OnInit {
+export class AvertissementNouveauDessinComponent {
 
   constructor(private dialog: MatDialog,
               public raccourcis: GestionnaireRaccourcisService,
               public dialogRef: MatDialogRef<FenetreNewDessinComponent> ) {
    }
 
-  ngOnInit() {
-  }
-
   annuler() {
     this.raccourcis.champDeTexteEstFocus = false;
     this.dialogRef.close();
   }
 
-  ouvrirParametres(){
+  ouvrirParametres() {
     this.dialogRef.close();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
