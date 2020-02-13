@@ -28,6 +28,8 @@ describe('StockageSvgService', () => {
     expect(Testservice).toBeTruthy();
   });
 
+  // TESTS ajouterSVG
+
   it('#ajouterSVG devrait ajouter un tag SVG dans SVGComplets', () => {
     service.ajouterSVG(SVG);
     expect(service.getSVGComplets().get(service.taille)).toEqual(SVGHTML);
@@ -39,16 +41,26 @@ describe('StockageSvgService', () => {
     expect(service.taille).toBe(2);
   });
 
-  it('#setSVGEnCours devrait modifier SVGEnCours et SVGEnCoursString', () => {
+  // TESTS setSVGEncours
+
+  it('#setSVGEnCours devrait modifier SVGEnCours', () => {
     service.setSVGEnCours(SVG);
     expect(service.getSVGEnCoursHTML()).toEqual(SVGHTML);
-    expect(service.getSVGEnCours()).toEqual(SVG.slice(0, -3));      // Meilleur variable autre que SVG.slice(0,-3) ?
   })
+
+  it('#setSVGEnCours devrait modifier SVGEnCoursString et retirer ses 3 derniers characteres', () => {
+    service.setSVGEnCours(SVG);
+    expect(service.getSVGEnCours()).toEqual(SVG.slice(0, -3));
+  })
+
+  // TEST setPeremitreEnCours
 
   it('#setPerimetreEnCours devrait modifier le PerimetreEnCours', () => {
     service.setPerimetreEnCours(perimetre);
     expect(service.getPerimetreEnCoursHTML()).toEqual(perimetreHTML);
   });
+
+  // TEST getSVGComplets
 
   it('#getSVGComplets devrait retourner les SVG ajoutés convertis en HTML', () => {
     service.ajouterSVG(SVG);
@@ -56,6 +68,8 @@ describe('StockageSvgService', () => {
     const SVGCompletsObtenus = service.getSVGComplets();
     expect(SVGCompletsObtenus).toEqual(SVGCompletsReference);
   });
+
+  // TESTS viderDessin
 
   it('#viderDessin devrait vider SVGComplets', () => {
     service.ajouterSVG(SVG);

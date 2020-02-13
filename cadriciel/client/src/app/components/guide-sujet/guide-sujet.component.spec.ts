@@ -24,7 +24,9 @@ describe('GuideSujetComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('onNotify() devrait emettre un sujet', () => {
+  // TEST onNotify
+
+  it('#onNotify() devrait emettre un sujet', () => {
     const sujet: GuideSujet = CONTENU_GUIDE[5];
     spyOn(component.notification, 'emit');
 
@@ -32,7 +34,9 @@ describe('GuideSujetComponent', () => {
     expect(component.notification.emit).toHaveBeenCalledWith(sujet);
   });
 
-  it('si onClick() est appelé sur un sujet celui-ci doit être émit via notification', () => {
+  // TESTS onClick
+
+  it('#onClick() est appelé sur un sujet alors celui-ci doit être émit via notification', () => {
     component.noeud = CONTENU_GUIDE[0];   // Sujet de Bienvenue
     spyOn(component.notification, 'emit');
 
@@ -41,7 +45,7 @@ describe('GuideSujetComponent', () => {
     expect(component.notification.emit).toHaveBeenCalledWith(CONTENU_GUIDE[0]);
   })
 
-  it('si onClick() est appelé sur une catégorie celle-ci devrait être ouverte', () => {
+  it('#onClick() est appelé sur une catégorie alors celle-ci devrait être ouverte', () => {
       component.noeud = CONTENU_GUIDE[1];   // Catégorie des outils
       component.noeud.categorieOuverte = false;
       component.onClick();
