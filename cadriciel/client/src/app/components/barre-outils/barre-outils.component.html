@@ -19,14 +19,14 @@
             Exporter le dessin
         </a>
         <a [routerLink]="['/guide']">
-            <i class="fas fa-book"></i> Guide d'utilisation
+            <i class="fas fa-question"></i> Guide d'utilisation
         </a>
     </div>
 </div>
 
 <!-- Panneau d'attributs -->
 <div class="panneau-attributs">
-    <i class="fas fa-sliders-h"></i> Paramètres 
+    <i class="fas fa-sliders-h"></i> 
     <form method="POST" action="javascript:void(0);">
         <div *ngFor="let parametre of outils.outilActif.parametres">
 

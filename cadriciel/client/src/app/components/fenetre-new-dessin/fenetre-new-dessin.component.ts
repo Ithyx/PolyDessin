@@ -11,7 +11,8 @@ import { StockageSvgService } from 'src/app/services/stockage-svg.service';
 
 const KEY_FORM_HAUTEUR = 'hauteurFormulaire';
 const KEY_FORM_LARGEUR = 'largeurFormulaire';
-const LARGEUR_BARRE_OUTILS = 410;
+const TAMPON_LARGEUR = 510;
+const TAMPON_HAUTEUR = 15;
 
 @Component({
   selector: 'app-fenetre-new-dessin',
@@ -20,8 +21,8 @@ const LARGEUR_BARRE_OUTILS = 410;
 })
 
 export class FenetreNewDessinComponent {
-  hauteurFenetre = window.innerHeight;
-  largeurFenetre = window.innerWidth - LARGEUR_BARRE_OUTILS;
+  hauteurFenetre = window.innerHeight - TAMPON_HAUTEUR;
+  largeurFenetre = window.innerWidth - TAMPON_LARGEUR;
   dimChangeeManuellement = false;
   nouveauDessin = new FormGroup({
     hauteurFormulaire: new FormControl(this.hauteurFenetre),
@@ -52,8 +53,8 @@ export class FenetreNewDessinComponent {
   @HostListener('window:resize', ['$event'])
   dimmensionsChangees() {
     if (!this.dimChangeeManuellement) {
-      this.hauteurFenetre = window.innerHeight;
-      this.largeurFenetre = window.innerWidth - LARGEUR_BARRE_OUTILS;
+      this.hauteurFenetre = window.innerHeight - TAMPON_HAUTEUR;
+      this.largeurFenetre = window.innerWidth - TAMPON_LARGEUR;
       this.nouveauDessin.patchValue({hauteurFormulaire: this.hauteurFenetre, largeurFormulaire: this.largeurFenetre});
     }
   }
