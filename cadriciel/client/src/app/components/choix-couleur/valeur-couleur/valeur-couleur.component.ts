@@ -18,22 +18,28 @@ export class ValeurCouleurComponent {
 
   constructor(public raccourcis: GestionnaireRaccourcisService) {}
 
-  modificationRGB(event: Event, index: number) {
-    const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
+  modificationRGB(evenement: Event, index: number) {
+    const eventCast: HTMLInputElement = (evenement.target as HTMLInputElement);
     let value = parseInt(eventCast.value, 16);
-    console.log(value);
 
     if (isNaN(value)) {
       value = 0;
     }
 
-    this.gestionnaireCouleur.RGB[index] = Math.min(value, 255);
-    this.gestionnaireCouleur.modifierRGB();
+    // Vérification qu'on essaie d'accéder à un index possible
+    if (index <= this.gestionnaireCouleur.RGB.length) {
+      this.gestionnaireCouleur.RGB[index] = Math.min(value, 255);
+      this.gestionnaireCouleur.modifierRGB();
+    }
   }
 
   verifierEntree(clavier: KeyboardEvent): boolean {
     const resultat = clavier.key.toLowerCase();
-    return ((resultat >= '0' && resultat <= '9') || (this.LETTRES_ACCEPTEE.has(resultat)) || (resultat === 'backspace'));
+
+    const estUnNombreAcceptee = resultat >= '0' && resultat <= '9';
+    const estUneLettreAcceptee = this.LETTRES_ACCEPTEE.has(resultat);
+
+    return (estUnNombreAcceptee || estUneLettreAcceptee || (resultat === 'backspace'));
   }
 
   onChampFocus() {

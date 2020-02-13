@@ -22,4 +22,49 @@ describe('ValeurCouleurComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  // TESTS modificationRGB
+  it('#modificationRGB ne devrait rien faire si on tente d\'accder à un index non reconnue', () => {
+    const indexTest = component.gestionnaireCouleur.RGB.length + 1;
+
+  });
+
+  // TESTS verifierEntree
+  it('#verifierEntree devrait renvoyer vrai, si on appuie sur une touche avec une lettre acceptee', () => {
+    const clavier = new KeyboardEvent('keypress', { key: 'a'});
+    expect(component.verifierEntree(clavier)).toBe(true);
+  });
+
+  it('#verifierEntree devrait renvoyer vrai, si on appuie sur backspace', () => {
+    const clavier = new KeyboardEvent('keypress', { key: 'Backspace'});
+    expect(component.verifierEntree(clavier)).toBe(true);
+  });
+
+  it('#verifierEntree devrait renvoyer vrai, si on appuie sur une touche avec un nombre acceptee', () => {
+    const clavier = new KeyboardEvent('keypress', { key: '7'});
+    expect(component.verifierEntree(clavier)).toBe(true);
+  });
+
+  it('#verifierEntree devrait renvoyer faux, si on appuie sur une touche avec une lettre non-acceptee', () => {
+    const clavier = new KeyboardEvent('keypress', { key: 'v'});
+    expect(component.verifierEntree(clavier)).toBe(false);
+  });
+
+  it('#verifierEntree devrait renvoyer faux, si on appuie sur une touche non reconnue', () => {
+    const clavier = new KeyboardEvent('keypress', { key: '#'});
+    expect(component.verifierEntree(clavier)).toBe(false);
+  });
+
+  // TEST onChampFocus
+  it('#onChampBlur devrait activer le focus sur le champ d\'entree', () => {
+    component.onChampFocus();
+    expect(component.raccourcis.champDeTexteEstFocus).toBe(true);
+  });
+
+  // TEST onChampBlur
+  it('#onChampBlur devrait desactiver le focus sur le champ d\'entree', () => {
+    component.onChampBlur();
+    expect(component.raccourcis.champDeTexteEstFocus).toBe(false);
+  });
+
 });
