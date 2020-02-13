@@ -29,7 +29,7 @@ export class FenetreNewDessinComponent {
   });
 
   constructor(public dialogRef: MatDialogRef<FenetreNewDessinComponent>,
-              private raccourcis: GestionnaireRaccourcisService,
+              public raccourcis: GestionnaireRaccourcisService,
               private serviceNouveauDessin: DessinManagerService,
               private router: Router,
               private stockageSVG: StockageSvgService,
