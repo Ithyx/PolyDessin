@@ -25,7 +25,7 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes[this.gestionnaireCouleur.teinte]) {
-      this.draw();
+      this.dessin();
       const pos = this.hauteurChoisie;
       if (pos) {
         this.couleurPosition(pos.x, pos.y);
@@ -52,23 +52,23 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
     sourisEnfoncee( evt: MouseEvent) {
       this.sourisBas = true;
       this.hauteurChoisie = {x: evt.offsetX, y: evt.offsetY};
-      this.draw();
+      this.dessin();
       this.couleurPosition(evt.offsetX, evt.offsetY);
     }
 
     sourisDeplacee(evt: MouseEvent) {
       if (this.sourisBas) {
         this.hauteurChoisie = { x: evt.offsetX, y: evt.offsetY};
-        this.draw();
+        this.dessin();
         this.couleurEmise(evt.offsetX, evt.offsetY);
       }
     }
 
   ngAfterViewInit() {
-    this.draw();
+    this.dessin();
   }
 
-  draw() {
+  dessin() {
 
     this.context2D = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
 

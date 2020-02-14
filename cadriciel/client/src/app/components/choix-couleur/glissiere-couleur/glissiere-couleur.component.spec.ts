@@ -4,7 +4,6 @@ import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnai
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
 import { GlissiereCouleurComponent } from './glissiere-couleur.component';
 
-
 describe('GlissiereCouleurComponent', () => {
   let component: GlissiereCouleurComponent;
   let fixture: ComponentFixture<GlissiereCouleurComponent>;
@@ -29,9 +28,9 @@ describe('GlissiereCouleurComponent', () => {
 
   // Test ngAfterViewInit
   it('#ngAferViewInit devrait valider le dessin', () => {
-      spyOn(component, 'draw');
+      spyOn(component, 'dessin');
       component.ngAfterViewInit();
-      expect(component.draw).toHaveBeenCalled();
+      expect(component.dessin).toHaveBeenCalled();
   });
 
   // Test couleurEmise
@@ -45,9 +44,9 @@ describe('GlissiereCouleurComponent', () => {
 
   it('#sourisRelache devrait mettre a jour la variable sourisbas a faux', () => {
     component.sourisRelachee(new MouseEvent('mousedown'));
-    spyOn(component, 'draw');
+    spyOn(component, 'dessin');
     component.sourisDeplacee(new MouseEvent('mousemove'));
-    expect(component.draw).not.toHaveBeenCalled();
+    expect(component.dessin).not.toHaveBeenCalled();
   });
 
   // Test sourisEnfoncee
@@ -55,21 +54,20 @@ describe('GlissiereCouleurComponent', () => {
   it('#sourisEnfoncee devrait mettre a jour la variable souris bas a vrai', () => {
 
     component.sourisEnfoncee(new MouseEvent ('mousedown'));
-    spyOn(component, 'draw');
+    spyOn(component, 'dessin');
     component.sourisDeplacee(new MouseEvent ('mousemove'));
-    expect(component.draw).toHaveBeenCalled();
-  }); 
-  
+    expect(component.dessin).toHaveBeenCalled();
+  });
 
   it('#sourisEnfoncee devrait changer la hauteur choisie', () => {
     component.sourisEnfoncee(new MouseEvent('mousedown', {clientY: 35}));
-    expect(component.hauteurChoisi).toHaveBeenCalledWith(35);
+    expect(component.hauteurChoisi).toBe(35);
   }); 
 
   it('#sourisEnfoncee devrait valider le dessin', () => {
-    spyOn(component, 'draw');
+    spyOn(component, 'dessin');
     component.ngAfterViewInit();
-    expect(component.draw).toHaveBeenCalled();
+    expect(component.dessin).toHaveBeenCalled();
   });
 
   it('#sourisEnfoncee devrait appeler couleurPosition sur les coordonnées donner', () => {
@@ -82,13 +80,13 @@ describe('GlissiereCouleurComponent', () => {
 
   it('#sourisDeplacee devrait changer la hauteur choisie', () => {
     component.sourisEnfoncee(new MouseEvent('mousedown', {clientY: 35}));
-    expect(component.hauteurChoisi).toHaveBeenCalledWith(35);
-  }); 
+    expect(component.hauteurChoisi).toBe(35);
+  });
 
   it('#sourisDeplacee devrait valider le dessin', () => {
-    spyOn(component, 'draw');
+    spyOn(component, 'dessin');
     component.ngAfterViewInit();
-    expect(component.draw).toHaveBeenCalled();
+    expect(component.dessin).toHaveBeenCalled();
   });
 
   it('#sourisDeplacee devrait appeler couleurPosition sur les coordonnées donner', () => {
@@ -101,17 +99,16 @@ describe('GlissiereCouleurComponent', () => {
 
   it('#couleurPosition devrait actualiser la couleur du service gestionnaireCouleur', () => {
     component.gestionnaireCouleur.teinte = 'rgba(50, 50, 50,';
-    component.draw();
-    component.couleurPosition(249, 0);
-    expect(component.gestionnaireCouleur.couleur).toBe('rgba(49,49,49,');
+    component.dessin();
+    component.couleurPosition(0, 0);
+    expect(component.gestionnaireCouleur.couleur).toBe('rgba(255,3,0,');
   });
 
   it('#couleurPosition devrait actualiser le RGB du service gestionnaireCouleur', () => {
     component.gestionnaireCouleur.teinte = 'rgba(50, 50, 50,';
-    component.draw();
-    component.couleurPosition(249, 0);
-    expect(component.gestionnaireCouleur.RGB).toEqual([49, 49, 49]);
+    component.dessin();
+    component.couleurPosition(0, 0);
+    expect(component.gestionnaireCouleur.RGB).toEqual([255, 3, 0]);
   });
-
 
 });

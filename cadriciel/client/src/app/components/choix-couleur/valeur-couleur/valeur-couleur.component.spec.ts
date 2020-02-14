@@ -91,15 +91,15 @@ describe('ValeurCouleurComponent', () => {
     expect(component.verifierEntree(clavier)).toBe(false);
   });
 
-  // TEST onChampFocus
-  it('#onChampBlur devrait activer le focus sur le champ d\'entree', () => {
-    component.onChampFocus();
+  // TEST entreeChamp
+  it('#sortieChamp devrait activer le focus sur le champ d\'entree', () => {
+    component.entreeChamp();
     expect(component.raccourcis.champDeTexteEstFocus).toBe(true);
   });
 
-  // TEST onChampBlur
-  it('#onChampBlur devrait desactiver le focus sur le champ d\'entree', () => {
-    component.onChampBlur();
+  // TEST sortieChamp
+  it('#sortieChamp devrait desactiver le focus sur le champ d\'entree', () => {
+    component.sortieChamp();
     expect(component.raccourcis.champDeTexteEstFocus).toBe(false);
   });
 

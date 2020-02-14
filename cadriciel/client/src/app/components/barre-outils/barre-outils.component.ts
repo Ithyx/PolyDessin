@@ -53,17 +53,17 @@ export class BarreOutilsComponent implements OnDestroy {
     this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].optionChoisie = eventCast.value;
   }
 
-  onChampFocus() {
+  entreeChamp() {
     this.raccourcis.champDeTexteEstFocus = true;
   }
 
-  onChampBlur() {
+  sortieChamp() {
     this.raccourcis.champDeTexteEstFocus = false;
   }
 
   avertissementNouveauDessin() {
 
-    this.onChampFocus();
+    this.entreeChamp();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -72,7 +72,7 @@ export class BarreOutilsComponent implements OnDestroy {
   }
 
   selectionCouleur(porteeEntree: string) {
-    this.onChampFocus();
+    this.entreeChamp();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -80,8 +80,10 @@ export class BarreOutilsComponent implements OnDestroy {
     dialogConfig.panelClass = 'fenetre-couleur';
     if (porteeEntree === 'principale') {
       this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Portee.Principale;
-    } else {
+    } else if (porteeEntree === 'secondaire') {
       this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Portee.Secondaire;
+    } else if (porteeEntree === 'fond') {
+      this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Portee.Fond;
     }
   }
 

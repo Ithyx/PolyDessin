@@ -42,11 +42,11 @@ export class ValeurCouleurComponent {
     return (estUnNombreAcceptee || estUneLettreAcceptee || (resultat === 'backspace'));
   }
 
-  onChampFocus() {
+  entreeChamp() {
     this.raccourcis.champDeTexteEstFocus = true;
   }
 
-  onChampBlur() {
+  sortieChamp() {
     this.raccourcis.champDeTexteEstFocus = false;
   }
 }
