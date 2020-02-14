@@ -3,7 +3,7 @@
         <button class="retour" [routerLink]="[navigation.pagePrecedante]" mat-raised-button>Retour</button>
     </div>
     <div *ngFor = 'let sujet of sujets'>
-        <app-guide-sujet [noeud]="sujet" (notification)="onNotify($event)"></app-guide-sujet>
+        <app-guide-sujet [noeud]="sujet" (notification)="notificationRecu($event)"></app-guide-sujet>
     </div>
 </div>
 
