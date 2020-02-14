@@ -3,18 +3,18 @@ import { MatDialogConfig, MatDialogModule } from '@angular/material';
 import { By } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
 import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
 import { ChoixCouleurComponent } from '../choix-couleur/choix-couleur.component';
+import { CouleurPaletteComponent } from '../choix-couleur/couleur-palette/couleur-palette.component';
+import { GlissiereCouleurComponent } from '../choix-couleur/glissiere-couleur/glissiere-couleur.component';
+import { ValeurCouleurComponent } from '../choix-couleur/valeur-couleur/valeur-couleur.component';
 import { GuideSujetComponent } from '../guide-sujet/guide-sujet.component';
 import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
 import { PageGuideComponent } from '../page-guide/page-guide.component';
 import { BarreOutilsComponent } from './barre-outils.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { CouleurPaletteComponent } from '../choix-couleur/couleur-palette/couleur-palette.component';
-import { GlissiereCouleurComponent } from '../choix-couleur/glissiere-couleur/glissiere-couleur.component';
-import { ValeurCouleurComponent } from '../choix-couleur/valeur-couleur/valeur-couleur.component';
 
 /* Service stub pour réduire les dépendances */
 const outilTestActif: OutilDessin = {
