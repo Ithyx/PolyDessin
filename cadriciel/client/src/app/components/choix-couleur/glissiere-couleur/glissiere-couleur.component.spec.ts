@@ -3,8 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
 import { GlissiereCouleurComponent } from './glissiere-couleur.component';
-/*import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
-import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service'; */
+
 
 describe('GlissiereCouleurComponent', () => {
   let component: GlissiereCouleurComponent;
@@ -21,11 +20,7 @@ describe('GlissiereCouleurComponent', () => {
     fixture = TestBed.createComponent(GlissiereCouleurComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-<<<<<<< Updated upstream
     component.gestionnaireCouleur = new GestionnaireCouleursService(new ParametresCouleurService())
-=======
-   component.gestionnaireCouleur = new GestionnaireCouleurService(new ParametreCouleurService()); 
->>>>>>> Stashed changes
   });
 
   it('should create', () => {
