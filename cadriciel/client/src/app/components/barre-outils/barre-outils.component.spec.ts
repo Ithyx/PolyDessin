@@ -3,8 +3,14 @@ import { MatDialogConfig, MatDialogModule } from '@angular/material';
 import { By } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
 import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
+import { ChoixCouleurComponent } from '../choix-couleur/choix-couleur.component';
+import { CouleurPaletteComponent } from '../choix-couleur/couleur-palette/couleur-palette.component';
+import { GlissiereCouleurComponent } from '../choix-couleur/glissiere-couleur/glissiere-couleur.component';
+import { ValeurCouleurComponent } from '../choix-couleur/valeur-couleur/valeur-couleur.component';
 import { GuideSujetComponent } from '../guide-sujet/guide-sujet.component';
 import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
 import { PageGuideComponent } from '../page-guide/page-guide.component';
@@ -55,12 +61,14 @@ describe('BarreOutilsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageGuideComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent ],
+      declarations: [ PageGuideComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, ChoixCouleurComponent,
+                      CouleurPaletteComponent, GlissiereCouleurComponent, ValeurCouleurComponent ],
       providers: [ {provide: GestionnaireOutilsService, useValue: GestionnaireOutilServiceStub} ],
       imports: [ RouterModule.forRoot([
         {path: 'guide', component : PageGuideComponent}
-    ]), MatDialogModule]
+    ]), MatDialogModule, BrowserAnimationsModule]
     })
+    .overrideModule(BrowserDynamicTestingModule, {set: { entryComponents: [ ChoixCouleurComponent ] }})
     .compileComponents();
   }));
   beforeEach(() => {
@@ -190,6 +198,33 @@ describe('BarreOutilsComponent', () => {
   });
 
   // TESTS selectionCouleur
+
+  it('#selectionCouleur devrait appeler onChampFocus', () => {
+    spyOn(component.dialog, 'open');
+    spyOn(component, 'onChampFocus');
+    component.selectionCouleur('principale');
+    expect(component.onChampFocus).toHaveBeenCalled();
+  });
+
+  it('#selectionCouleur devrait assignee portee à Portee.Principale si le paramètre de la fonction contient principale', () => {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '30%';
+    dialogConfig.panelClass = 'fenetre-couleur';
+    component.selectionCouleur('principale');
+    expect(component.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee).toEqual(component.porteePrincipale);
+  });
+
+  it('#selectionCouleur devrait assignee portee à Portee.Secondaire si le paramètre de la fonction ne contient pas principale', () => {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '30%';
+    dialogConfig.panelClass = 'fenetre-couleur';
+    component.selectionCouleur('secondaire');
+    expect(component.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee).toEqual(component.porteeSecondaire);
+  });
 
   // TESTS selectionDerniereCouleurPrimaire
 
