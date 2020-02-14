@@ -115,24 +115,21 @@ describe('BarreOutilsComponent', () => {
 
   // TESTS onChange
 
-  it("#onChange ne devrait pas changer la valeur de l'épaisseur si l'évènement "
-    + "qui lui est donné n'est pas un chiffre", () => {
+  it("#onChange ne devrait pas changer la valeur de l'épaisseur si l'évènement qui lui est donné n'est pas un chiffre", () => {
     const element = fixture.debugElement.query(By.css('input[name="Épaisseur"]')).nativeElement;
     element.value = 'c';
     element.dispatchEvent(new Event('input')); // onChange appelée implicitement
     expect(component.outils.outilActif.parametres[0].valeur).toBe(5);
   });
 
-  it("#onChange devrait changer la valeur de l'épaisseur si l'évènement "
-    + 'qui lui est donné est un chiffre', () => {
+  it('#onChange devrait changer la valeur de l\'épaisseur si l\'évènement qui lui est donné est un chiffre', () => {
     const element = fixture.debugElement.query(By.css('input[name="Épaisseur"]')).nativeElement;
     element.value = '1';
     element.dispatchEvent(new Event('change')); // onChange appelée implicitement
     expect(component.outils.outilActif.parametres[0].valeur).toBe(1);
   });
 
-  it("#onChange devrait changer la valeur de l'épaisseur à 1 si l'évènement "
-    + 'qui lui est donné est inférieur à 1', () => {
+  it('#onChange devrait changer la valeur de l\'épaisseur à 1 si l\'évènement qui lui est donné est inférieur à 1', () => {
     const element = fixture.debugElement.query(By.css('input[name="Épaisseur"]')).nativeElement;
     element.value = '0';
     element.dispatchEvent(new Event('change')); // onChange appelée implicitement
@@ -141,15 +138,13 @@ describe('BarreOutilsComponent', () => {
 
   // TESTS onSelect
 
-  it("#onSelect ne devrait pas changer la valeur du paramètre si l'évènement "
-    + 'qui lui est donné n\'est pas un string', () => {
+  it('#onSelect ne devrait pas changer la valeur du paramètre si l\'évènement qui lui est donné n\'est pas un string', () => {
     const element = fixture.debugElement.query(By.css('select[name="Type"]')).nativeElement;
     element.dispatchEvent(new Event('change')); // onSelect appelée implicitement
     expect(component.outils.outilActif.parametres[1].optionChoisie).toBe('A');
   });
 
-  it("#onSelect devrait changer la valeur du paramètre si l'évènement "
-    + 'qui lui est donné est un string', () => {
+  it('#onSelect devrait changer la valeur du paramètre si l\'évènement qui lui est donné est un string', () => {
     const element = fixture.debugElement.query(By.css('select[name="Type"]')).nativeElement;
     element.value = 'B';
     element.dispatchEvent(new Event('change')); // onSelect appelée implicitement

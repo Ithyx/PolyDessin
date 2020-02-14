@@ -10,7 +10,7 @@ import { FenetreNewDessinComponent } from '../fenetre-new-dessin/fenetre-new-des
 })
 export class AvertissementNouveauDessinComponent {
 
-  constructor(private dialog: MatDialog,
+  constructor(public dialog: MatDialog,
               public raccourcis: GestionnaireRaccourcisService,
               public dialogRef: MatDialogRef<FenetreNewDessinComponent> ) {
    }

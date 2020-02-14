@@ -1,17 +1,27 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule, MatDialogRef } from '@angular/material';
+import { MatDialogConfig, MatDialogModule, MatDialogRef, } from '@angular/material';
 
+import { Injector } from '@angular/core';
+import { FenetreNewDessinComponent } from '../fenetre-new-dessin/fenetre-new-dessin.component';
 import { AvertissementNouveauDessinComponent } from './avertissement-nouveau-dessin.component';
 
 describe('AvertissementNouveauDessinComponent', () => {
   let component: AvertissementNouveauDessinComponent;
   let fixture: ComponentFixture<AvertissementNouveauDessinComponent>;
 
+  const injecteur = Injector.create(
+    {providers: [{provide: MatDialogRef, useValue: {componentInstance: AvertissementNouveauDessinComponent}}]
+  })
+
+  const MatDialogRefStub: Partial<MatDialogRef<AvertissementNouveauDessinComponent>> = {
+    close() { /* NE RIEN FAIRE */ }
+  }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ MatDialogModule ],
       declarations: [ AvertissementNouveauDessinComponent ],
-      providers: [ {provide: MatDialogRef, useValue: {}} ]
+      providers: [ {provide: MatDialogRef, useValue: MatDialogRefStub} ]
     })
     .compileComponents();
   }));
@@ -25,4 +35,39 @@ describe('AvertissementNouveauDessinComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  // TESTS annuler
+
+  it('#annuler devrait désactiver le focus sur un champ de texte', () => {
+    component.raccourcis.champDeTexteEstFocus = true;
+    component.annuler();
+    expect(component.raccourcis.champDeTexteEstFocus).toBe(false);
+  });
+
+  it('#annuler devrait fermer dialogRef', () => {
+    spyOn(component.dialogRef, 'close');
+    component.annuler();
+    expect(component.dialogRef.close).toHaveBeenCalled();
+  });
+
+  // TESTS ouvrirParametre
+
+  it('#ouvrirParametre devrait fermer dialogRef', () => {
+    spyOn(component.dialogRef, 'close');
+    component.ouvrirParametres();
+    expect(component.dialogRef.close).toHaveBeenCalled();
+  });
+
+  it('#ouvrirParametre devrait appeler dialog.open avec les bons paramètres', () => {
+    spyOn(component.dialog, 'open').and.returnValue(injecteur.get(MatDialogRef));
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    component.ouvrirParametres();
+
+    expect(component.dialog.open).toHaveBeenCalledWith(FenetreNewDessinComponent, dialogConfig);
+  });
+
 });

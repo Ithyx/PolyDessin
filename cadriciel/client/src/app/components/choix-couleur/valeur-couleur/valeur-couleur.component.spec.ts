@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
+import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
 import { ValeurCouleurComponent } from './valeur-couleur.component';
 
 describe('ValeurCouleurComponent', () => {
@@ -25,7 +27,16 @@ describe('ValeurCouleurComponent', () => {
 
   // TESTS modificationRGB
   it('#modificationRGB ne devrait rien faire si on tente d\'accder à un index non reconnue', () => {
-    /* Contenu supprimé temporairement */
+    component.gestionnaireCouleur = new GestionnaireCouleursService(new ParametresCouleurService())
+    const indexTest = component.gestionnaireCouleur.RGB.length + 1;
+    const clavier = new Event('change', { });
+
+    spyOn(component.gestionnaireCouleur, 'modifierRGB');
+
+    component.modificationRGB(clavier, indexTest)
+
+    expect(component.gestionnaireCouleur.modifierRGB).not.toHaveBeenCalled();
+
   });
 
   // TESTS verifierEntree
