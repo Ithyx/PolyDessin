@@ -3,27 +3,19 @@ import { Injector } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
 import { RouterStateSnapshot, RoutesRecognized } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { IndexService } from '../../services/index/index.service';
 import { AppComponent } from './app.component';
-import SpyObj = jasmine.SpyObj;
 
 const injecteur = Injector.create(
     { providers: [{provide: RouterStateSnapshot, useValue: {}}, {provide: RoutesRecognized, deps: [RouterStateSnapshot]}] }
 )
 
 describe('AppComponent', () => {
-    let indexServiceSpy: SpyObj<IndexService>;
     let app: AppComponent
-
-    beforeEach(() => {
-        indexServiceSpy = jasmine.createSpyObj('IndexService', ['basicGet']);
-    });
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [RouterTestingModule, HttpClientModule],
             declarations: [AppComponent],
-            providers: [{ provide: IndexService, useValue: indexServiceSpy }],
         });
         const fixture = TestBed.createComponent(AppComponent);
         app = fixture.componentInstance;
