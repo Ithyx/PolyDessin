@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
-import { FenetreNewDessinComponent } from '../fenetre-new-dessin/fenetre-new-dessin.component';
+import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 
 @Component({
   selector: 'app-avertissement-nouveau-dessin',
@@ -12,7 +12,7 @@ export class AvertissementNouveauDessinComponent {
 
   constructor(public dialog: MatDialog,
               public raccourcis: GestionnaireRaccourcisService,
-              public dialogRef: MatDialogRef<FenetreNewDessinComponent> ) {
+              public dialogRef: MatDialogRef<FenetreNouveauDessinComponent> ) {
    }
 
   annuler() {
@@ -26,6 +26,6 @@ export class AvertissementNouveauDessinComponent {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
-    this.dialog.open(FenetreNewDessinComponent, dialogConfig)
+    this.dialog.open(FenetreNouveauDessinComponent, dialogConfig)
   }
 }

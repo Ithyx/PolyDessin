@@ -3,7 +3,7 @@ import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
 import { BarreOutilsComponent } from '../barre-outils/barre-outils.component';
-import { FenetreNewDessinComponent } from '../fenetre-new-dessin/fenetre-new-dessin.component';
+import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 import { GuideSujetComponent } from '../guide-sujet/guide-sujet.component';
 import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
 import { PageDessinComponent } from '../page-dessin/page-dessin.component';
@@ -42,6 +42,6 @@ describe('AccueilComponent', () => {
   it('#creationDessin devrait appeler dialog.open() avec les bons parametres ',() =>{
     spyOn(component.dialog, 'open');
     component.creationDessin();
-    expect(component.dialog.open).toHaveBeenCalledWith(FenetreNewDessinComponent, component.dialogConfig);
+    expect(component.dialog.open).toHaveBeenCalledWith(FenetreNouveauDessinComponent, component.dialogConfig);
   })
 });
