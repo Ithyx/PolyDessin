@@ -48,7 +48,7 @@ export class GestionnaireOutilsService {
   }
 }
 
-export const OUTIL_VIDE = {nom: 'defaut', estActif: false, ID: -1, parametres: [], nomIcone: ''};
+export const OUTIL_VIDE: OutilDessin = {nom: 'defaut', estActif: false, ID: -1, parametres: [], nomIcone: ''};
 
 export const LISTE_OUTILS: OutilDessin[] = [
   {
