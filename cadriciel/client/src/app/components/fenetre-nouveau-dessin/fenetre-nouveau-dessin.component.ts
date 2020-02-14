@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ChoixCouleurComponent } from 'src/app/components/choix-couleur/choix-couleur.component'
 import { GestionnaireCouleursService, Portee} from 'src/app/services/couleur/gestionnaire-couleurs.service'
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
-import { DessinManagerService } from 'src/app/services/dessin-manager/dessin-manager.service';
+import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/gestionnaire-dessin.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { StockageSvgService } from 'src/app/services/stockage-svg.service';
 
@@ -31,7 +31,7 @@ export class FenetreNouveauDessinComponent {
 
   constructor(public dialogRef: MatDialogRef<FenetreNouveauDessinComponent>,
               public raccourcis: GestionnaireRaccourcisService,
-              public serviceNouveauDessin: DessinManagerService,
+              public serviceNouveauDessin: GestionnaireDessinService,
               public router: Router,
               public stockageSVG: StockageSvgService,
               public gestionnaireCouleur: GestionnaireCouleursService,
