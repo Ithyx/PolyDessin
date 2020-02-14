@@ -1,9 +1,9 @@
 <label>R: </label>
 <input type="text" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" (change)="modificationRGB($event, INDEX_ROUGE)"
-    (focus)="onChampFocus()" (blur)="onChampBlur()" (keydown)="verifierEntree($event)" maxlength="2" class="hexRouge"/>
+    (focus)="entreeChamp()" (blur)="sortieChamp()" (keydown)="verifierEntree($event)" maxlength="2" class="hexRouge"/>
 <label>G: </label>
 <input type="text" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" (change)="modificationRGB($event, INDEX_VERT)"
-    (focus)="onChampFocus()" (blur)="onChampBlur()" (keydown)="verifierEntree($event)" maxlength="2" class="hexVert"/>
+    (focus)="entreeChamp()" (blur)="sortieChamp()" (keydown)="verifierEntree($event)" maxlength="2" class="hexVert"/>
 <label>B: </label>
 <input type="text" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" (change)="modificationRGB($event, INDEX_BLEU)"
-    (focus)="onChampFocus()" (blur)="onChampBlur()" (keydown)="verifierEntree($event)" maxlength="2" class="hexBleu"/>
+    (focus)="entreeChamp()" (blur)="sortieChamp()" (keydown)="verifierEntree($event)" maxlength="2" class="hexBleu"/>

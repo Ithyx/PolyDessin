@@ -162,29 +162,29 @@ describe('BarreOutilsComponent', () => {
     expect(component.outils.outilActif.parametres[1].optionChoisie).toBe('B');
   });
 
-  // TESTS onChampFocus
+  // TESTS entreeChamp
 
-  it('#onChampFocus devrait assigner vrai à champDeTexteEstFocus', () => {
+  it('#entreeChamp devrait assigner vrai à champDeTexteEstFocus', () => {
     component.raccourcis.champDeTexteEstFocus = false;
-    component.onChampFocus();
+    component.entreeChamp();
     expect(component.raccourcis.champDeTexteEstFocus).toBe(true);
   });
 
-  // TESTS onChampBlur
+  // TESTS sortieChamp
 
-  it('#onChampBlur devrait assigner faux à champDeTexteEstFocus', () => {
+  it('#sortieChamp devrait assigner faux à champDeTexteEstFocus', () => {
     component.raccourcis.champDeTexteEstFocus = true;
-    component.onChampBlur();
+    component.sortieChamp();
     expect(component.raccourcis.champDeTexteEstFocus).toBe(false);
   });
 
   // TESTS avertissementNouveauDessin
 
-  it('#avertissementNouveauDessin devrait appeler onChampFocus', () => {
+  it('#avertissementNouveauDessin devrait appeler entreeChamp', () => {
     spyOn(component.dialog, 'open');
-    spyOn(component, 'onChampFocus');
+    spyOn(component, 'entreeChamp');
     component.avertissementNouveauDessin();
-    expect(component.onChampFocus).toHaveBeenCalled();
+    expect(component.entreeChamp).toHaveBeenCalled();
   });
 
   it('#avertissementNouveauDessin devrait appeler open avec AvertissementNouveauDessinComponent et dialogConfig comme paramètres', () => {
@@ -199,11 +199,11 @@ describe('BarreOutilsComponent', () => {
 
   // TESTS selectionCouleur
 
-  it('#selectionCouleur devrait appeler onChampFocus', () => {
+  it('#selectionCouleur devrait appeler entreeChamp', () => {
     spyOn(component.dialog, 'open');
-    spyOn(component, 'onChampFocus');
+    spyOn(component, 'entreeChamp');
     component.selectionCouleur('principale');
-    expect(component.onChampFocus).toHaveBeenCalled();
+    expect(component.entreeChamp).toHaveBeenCalled();
   });
 
   it('#selectionCouleur devrait assignee portee à Portee.Principale si le paramètre de la fonction contient principale', () => {

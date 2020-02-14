@@ -57,17 +57,17 @@ export class BarreOutilsComponent implements OnDestroy {
     }
   }
 
-  onChampFocus() {
+  entreeChamp() {
     this.raccourcis.champDeTexteEstFocus = true;
   }
 
-  onChampBlur() {
+  sortieChamp() {
     this.raccourcis.champDeTexteEstFocus = false;
   }
 
   avertissementNouveauDessin() {
 
-    this.onChampFocus();
+    this.entreeChamp();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -76,7 +76,7 @@ export class BarreOutilsComponent implements OnDestroy {
   }
 
   selectionCouleur(porteeEntree: string) {
-    this.onChampFocus();
+    this.entreeChamp();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
