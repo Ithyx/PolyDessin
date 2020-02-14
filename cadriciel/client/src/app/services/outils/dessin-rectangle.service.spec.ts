@@ -312,7 +312,7 @@ describe('DessinRectangleService', () => {
 
   it('#sourisRelachee devrait mettre rectangleEnCours faux apres un clic', () => {
     // on effectue un clic dans cette fonction
-    service.sourisRelachee(new MouseEvent('release'));
+    service.sourisRelachee();
     // on vérifie que la fonction met rectangleEnCours faux
     expect(service.rectangleEnCours).toBe(false);
   });
@@ -322,7 +322,7 @@ describe('DessinRectangleService', () => {
     service.hauteur = 0;
     service.largeur = 0;
     spyOn(stockageService, 'ajouterSVG');
-    service.sourisRelachee(new MouseEvent('release'));
+    service.sourisRelachee();
     // vérifier que la fonction ajouterSVG n'a pas été appelée
     expect(stockageService.ajouterSVG).not.toHaveBeenCalled();
   });
@@ -332,13 +332,13 @@ describe('DessinRectangleService', () => {
     service.hauteur = 10;
     service.largeur = 10;
     spyOn(stockageService, 'ajouterSVG');
-    service.sourisRelachee(new MouseEvent('release'));
+    service.sourisRelachee();
     // vérifier que la fonction ajouterSVG a été correctement appelée
     expect(stockageService.ajouterSVG).toHaveBeenCalledWith(referenceSVG);
   });
   it('#sourisRelachee devrait vider le périmètre et le SVG en cours', () => {
     stockageService.setSVGEnCours(referenceSVG);
-    service.sourisRelachee(new MouseEvent('release'));
+    service.sourisRelachee();
     // vérifier que le SVG est vide
     expect(stockageService.getSVGEnCours()).toEqual('');
   });

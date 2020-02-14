@@ -100,7 +100,7 @@ export class DessinRectangleService implements InterfaceOutils {
     }
   }
 
-  sourisRelachee(souris: MouseEvent) {
+  sourisRelachee() {
     this.rectangleEnCours = false;
     // On évite de créer des formes vides
     if (this.largeur !== 0 || this.hauteur !== 0) {

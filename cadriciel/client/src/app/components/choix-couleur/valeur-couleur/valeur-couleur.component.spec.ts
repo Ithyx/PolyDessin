@@ -30,14 +30,39 @@ describe('ValeurCouleurComponent', () => {
 
   // TESTS modificationRGB
   it('#modificationRGB devrait modifier le RGB si on entre une valeur hexadécimal', () => {
-    const element = fixture.debugElement.query(By.css('input[class="hex"]')).nativeElement;
-    element.value = 0xae;
+    const element = fixture.debugElement.query(By.css('input[class="hexRouge"]')).nativeElement;
+    element.value = 0xff;
 
     spyOn(component.gestionnaireCouleur, 'modifierRGB');
 
     element.dispatchEvent(new Event('change'));
 
     expect(component.gestionnaireCouleur.modifierRGB).toHaveBeenCalled();
+    expect(component.gestionnaireCouleur.RGB[component.INDEX_ROUGE]).toBe(255);
+  });
+
+  it('#modificationRGB devrait modifier le RGB si on entre un string non reconnu', () => {
+    const element = fixture.debugElement.query(By.css('input[class="hexBleu"]')).nativeElement;
+    element.value = 'test';
+
+    spyOn(component.gestionnaireCouleur, 'modifierRGB');
+
+    element.dispatchEvent(new Event('change'));
+
+    expect(component.gestionnaireCouleur.modifierRGB).toHaveBeenCalled();
+    expect(component.gestionnaireCouleur.RGB[component.INDEX_BLEU]).toBe(0);
+  });
+
+  it('#modificationRGB ne devrait pas modifier le RGB si l\'index est non recconu', () => {
+    component.INDEX_BLEU = 5;
+    const element = fixture.debugElement.query(By.css('input[class="hexBleu"]')).nativeElement;
+    element.value = 0xff;
+
+    spyOn(component.gestionnaireCouleur, 'modifierRGB');
+
+    element.dispatchEvent(new Event('change'));
+
+    expect(component.gestionnaireCouleur.modifierRGB).not.toHaveBeenCalled();
   });
 
   // TESTS verifierEntree

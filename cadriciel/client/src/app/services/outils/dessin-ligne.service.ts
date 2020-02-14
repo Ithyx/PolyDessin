@@ -31,7 +31,7 @@ export class DessinLigneService implements InterfaceOutils {
     }
   }
 
-  sourisCliquee(souris: MouseEvent) {
+  sourisCliquee() {
     this.estClicSimple = true;
     this.points.push({x: this.position.x, y: this.position.y});
     window.setTimeout(() => {

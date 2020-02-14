@@ -1,7 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogConfig, MatDialogModule, MatDialogRef, } from '@angular/material';
-
 import { Injector } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogConfig, MatDialogModule, MatDialogRef, } from '@angular/material';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
+
 import { FenetreNewDessinComponent } from '../fenetre-new-dessin/fenetre-new-dessin.component';
 import { AvertissementNouveauDessinComponent } from './avertissement-nouveau-dessin.component';
 
@@ -19,10 +23,12 @@ describe('AvertissementNouveauDessinComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ MatDialogModule ],
-      declarations: [ AvertissementNouveauDessinComponent ],
+      imports: [ MatDialogModule, BrowserAnimationsModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule,
+                 RouterModule.forRoot([]) ],
+      declarations: [ AvertissementNouveauDessinComponent, FenetreNewDessinComponent ],
       providers: [ {provide: MatDialogRef, useValue: MatDialogRefStub} ]
     })
+    .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [ FenetreNewDessinComponent ] } })
     .compileComponents();
   }));
 

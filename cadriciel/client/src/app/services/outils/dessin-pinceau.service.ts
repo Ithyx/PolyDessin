@@ -33,7 +33,7 @@ export class DessinPinceauService implements InterfaceOutils {
       + this.outils.outilActif.parametres[0].valeur + '" d="M' + souris.offsetX + ' ' + souris.offsetY + '"/>');
   }
 
-  sourisRelachee(souris: MouseEvent) {
+  sourisRelachee() {
     if (this.traitEnCours) {
       const SVG: string = this.stockageSVG.getSVGEnCours();
       if (SVG.includes('L')) {
@@ -57,7 +57,7 @@ export class DessinPinceauService implements InterfaceOutils {
     } else {this.peutCliquer = true};
   }
 
-  sourisSortie(souris: MouseEvent) {
+  sourisSortie() {
     if (this.traitEnCours) {
       this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '"/>');
       this.stockageSVG.setSVGEnCours('');
