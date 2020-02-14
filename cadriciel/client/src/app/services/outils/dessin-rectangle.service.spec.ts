@@ -208,7 +208,7 @@ describe('DessinRectangleService', () => {
         {type: 'select', nom: 'testEpaisseurInvalide', optionChoisie: '1', options: ['1', '2']},
         {type: 'select', nom: 'testTypeTrace', optionChoisie: '1', options: ['1', '2']}
       ],
-      iconName: ''
+      nomIcone: ''
     };
     service.actualiserSVG();
     expect(stockageService.getSVGEnCours()).toContain('stroke-width="0"');

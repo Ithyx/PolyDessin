@@ -23,7 +23,7 @@ const outilTestActif: OutilDessin = {
   ID: 0,
   parametres: [{type: 'number', nom: 'Épaisseur', valeur: 5},
                {type: 'select', nom: 'Type', options: ['A', 'B'], optionChoisie: 'A'}],
-  iconName: ''
+  nomIcone: ''
 };
 
 const outilTestInactif: OutilDessin = {
@@ -31,7 +31,7 @@ const outilTestInactif: OutilDessin = {
   estActif: false,
   ID: 1,
   parametres: [],
-  iconName: ''
+  nomIcone: ''
 };
 
 const rectangle: OutilDessin = {
@@ -39,7 +39,7 @@ const rectangle: OutilDessin = {
   estActif: false,
   ID: 2,
   parametres: [],
-  iconName: ''
+  nomIcone: ''
 };
 
 const GestionnaireOutilServiceStub: Partial<GestionnaireOutilsService> = {
