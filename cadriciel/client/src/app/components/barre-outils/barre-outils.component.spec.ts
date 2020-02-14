@@ -3,6 +3,7 @@ import { MatDialogConfig, MatDialogModule } from '@angular/material';
 import { By } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
+import { Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
@@ -225,7 +226,7 @@ describe('BarreOutilsComponent', () => {
     expect(component.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee).toEqual(component.porteePrincipale);
   });
 
-  it('#selectionCouleur devrait assignee portee à Portee.Secondaire si le paramètre de la fonction ne contient pas principale', () => {
+  it('#selectionCouleur devrait assignee portee à Portee.Secondaire si le paramètre de la fonction contient secondaire', () => {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -234,6 +235,17 @@ describe('BarreOutilsComponent', () => {
     component.selectionCouleur('secondaire');
     expect(component.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee).toEqual(component.porteeSecondaire);
   });
+
+  it('#selectionCouleur devrait assignee portee à Portee.fond si le paramètre de la fonction contient fond', () => {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '30%';
+    dialogConfig.panelClass = 'fenetre-couleur';
+    component.selectionCouleur('fond');
+    expect(component.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee).toEqual(Portee.Fond);
+  });
+
 
   // TESTS selectionDerniereCouleurPrimaire
 
