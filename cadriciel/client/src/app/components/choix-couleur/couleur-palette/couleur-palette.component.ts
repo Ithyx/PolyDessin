@@ -21,12 +21,12 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
 
   private sourisBas = false;
 
-  hauteurChoisi: { x: number; y: number};
+  hauteurChoisie: { x: number; y: number};
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes[this.gestionnaireCouleur.teinte]) {
       this.draw();
-      const pos = this.hauteurChoisi;
+      const pos = this.hauteurChoisie;
       if (pos) {
         this.couleurPosition(pos.x, pos.y);
       }
@@ -51,14 +51,14 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
 
     sourisEnfoncee( evt: MouseEvent) {
       this.sourisBas = true;
-      this.hauteurChoisi = {x: evt.offsetX, y: evt.offsetY};
+      this.hauteurChoisie = {x: evt.offsetX, y: evt.offsetY};
       this.draw();
       this.couleurPosition(evt.offsetX, evt.offsetY);
     }
 
     sourisDeplacee(evt: MouseEvent) {
       if (this.sourisBas) {
-        this.hauteurChoisi = { x: evt.offsetX, y: evt.offsetY};
+        this.hauteurChoisie = { x: evt.offsetX, y: evt.offsetY};
         this.draw();
         this.couleurEmise(evt.offsetX, evt.offsetY);
       }
@@ -92,13 +92,13 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
     this.context2D.fillStyle = blackGrad;
     this.context2D.fillRect(0, 0, width, height);
 
-    if (this.hauteurChoisi) {
+    if (this.hauteurChoisie) {
       this.context2D.strokeStyle = 'white';
       this.context2D.fillStyle = 'white';
       this.context2D.beginPath();
       this.context2D.arc(
-        this.hauteurChoisi.x,
-        this.hauteurChoisi.y,
+        this.hauteurChoisie.x,
+        this.hauteurChoisie.y,
         10,
         0,
         2 * Math.PI
