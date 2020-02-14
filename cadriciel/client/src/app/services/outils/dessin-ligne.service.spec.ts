@@ -52,15 +52,13 @@ describe('DessinLigneService', () => {
 
   it('#sourisCliquee devrait rajouter x et y au conteneur Point', () => {
     service.points = [];
-    const clic = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    service.sourisCliquee(clic);
+    service.sourisCliquee();
     expect(service.points).not.toBeNull();
   });
 
   it("#sourisCliquee ne devrait pas appeler actualiserSVG si c'est un double clic", () => {
     spyOn(service, 'actualiserSVG');
-    const clic = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    service.sourisCliquee(clic);
+    service.sourisCliquee();
     service.sourisDoubleClic(new MouseEvent('dblclick'));
     expect(service.actualiserSVG).not.toHaveBeenCalled();
   });
@@ -68,8 +66,7 @@ describe('DessinLigneService', () => {
   it('#sourisCliquee devrait appeler setTimeout', () => {
     spyOn(window, 'setTimeout');
     spyOn(service, 'actualiserSVG');
-    const clic = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    service.sourisCliquee(clic);
+    service.sourisCliquee();
     expect(window.setTimeout).toHaveBeenCalled();
   });
 
