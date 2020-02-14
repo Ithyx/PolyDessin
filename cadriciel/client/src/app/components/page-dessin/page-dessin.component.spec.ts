@@ -16,19 +16,22 @@ const outilTestActif: OutilDessin = {
   nom: 'stubComplet',
   estActif: true,
   ID: 0,
-  parametres: []
+  parametres: [],
+  iconName: ''
 };
 const outilTestInactif: OutilDessin = {
   nom: 'stubVide',
   estActif: false,
   ID: 1,
-  parametres: []
+  parametres: [],
+  iconName: ''
 };
 const outilTestInexistant: OutilDessin = {
   nom: 'stubInexistant',
   estActif: false,
   ID: 2,
-  parametres: []
+  parametres: [],
+  iconName: ''
 };
 const GestionnaireOutilServiceStub: Partial<GestionnaireOutilsService> = {
   listeOutils: [

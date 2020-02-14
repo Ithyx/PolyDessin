@@ -16,21 +16,24 @@ const outilTestActif: OutilDessin = {
   estActif: true,
   ID: 0,
   parametres: [{type: 'number', nom: 'Épaisseur', valeur: 5},
-               {type: 'select', nom: 'Type', options: ['A', 'B'], optionChoisie: 'A'}]
+               {type: 'select', nom: 'Type', options: ['A', 'B'], optionChoisie: 'A'}],
+  iconName: ''
 };
 
 const outilTestInactif: OutilDessin = {
   nom: 'stubInactif',
   estActif: false,
   ID: 1,
-  parametres: []
+  parametres: [],
+  iconName: ''
 };
 
 const rectangle: OutilDessin = {
   nom: 'stubRectangle',
   estActif: false,
   ID: 2,
-  parametres: []
+  parametres: [],
+  iconName: ''
 };
 
 const GestionnaireOutilServiceStub: Partial<GestionnaireOutilsService> = {

@@ -9,10 +9,10 @@ import { DessinManagerService } from 'src/app/services/dessin-manager/dessin-man
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { StockageSvgService } from 'src/app/services/stockage-svg.service';
 
-const KEY_FORM_HAUTEUR = 'hauteurFormulaire';
-const KEY_FORM_LARGEUR = 'largeurFormulaire';
-const TAMPON_LARGEUR = 510;
-const TAMPON_HAUTEUR = 15;
+export const KEY_FORM_HAUTEUR = 'hauteurFormulaire';
+export const KEY_FORM_LARGEUR = 'largeurFormulaire';
+export const TAMPON_LARGEUR = 510;
+export const TAMPON_HAUTEUR = 15;
 
 @Component({
   selector: 'app-fenetre-new-dessin',
