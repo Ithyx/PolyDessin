@@ -1,9 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogConfig, MatDialogModule } from '@angular/material';
 import { By } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
+import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
 import { GuideSujetComponent } from '../guide-sujet/guide-sujet.component';
 import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
 import { PageGuideComponent } from '../page-guide/page-guide.component';
@@ -138,8 +139,43 @@ describe('BarreOutilsComponent', () => {
   // TESTS avertissementNouveauDessin
 
   it('#avertissementNouveauDessin devrait appeler onChampFocus', () => {
-    spyOn(component, 'onChampFocus');
+    spyOn(component, 'onChampFocus')
     component.avertissementNouveauDessin();
     expect(component.onChampFocus).toHaveBeenCalled();
+  });
+
+  it('#avertissementNouveauDessin devrait appeler open avec AvertissementNouveauDessinComponent et dialogConfig comme paramètres', () => {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    spyOn(component.dialog, 'open')
+    component.avertissementNouveauDessin();
+    expect(component.dialog.open).toHaveBeenCalledWith(AvertissementNouveauDessinComponent, dialogConfig);
+  });
+
+  // TESTS selectionCouleur
+
+  // TESTS selectionDerniereCouleurPrimaire
+
+  it('#selectionDerniereCouleurPrimaire devrait assigner sa couleur en paramètre à couleurPrincipale', () => {
+    component.couleur.couleurPrincipale = 'rgba(0, 0, 0, ';
+    component.selectionDerniereCouleurPrimaire('rgba(1, 1, 1, ');
+    expect(component.couleur.couleurPrincipale).toEqual('rgba(1, 1, 1, ');
+  });
+
+  // TESTS selectionDerniereCouleurSecondaire
+
+  it('#selectionDerniereCouleurSecondaire devrait assigner sa couleur en paramètre à couleurSecondaire', () => {
+    component.couleur.couleurSecondaire = 'rgba(0, 0, 0, ';
+    component.selectionDerniereCouleurSecondaire('rgba(1, 1, 1, ', new MouseEvent ('click'));
+    expect(component.couleur.couleurSecondaire).toEqual('rgba(1, 1, 1, ');
+  });
+
+  it("#selectionDerniereCouleurSecondaire devrait s'assurer que preventDefault est appelé", () => {
+    const evenement = new MouseEvent ('click');
+    spyOn(evenement, 'preventDefault')
+    component.selectionDerniereCouleurSecondaire('rgba(1, 1, 1, ', evenement);
+    expect(evenement.preventDefault).toHaveBeenCalled();
   });
 });
