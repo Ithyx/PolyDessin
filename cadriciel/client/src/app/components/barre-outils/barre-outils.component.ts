@@ -45,16 +45,12 @@ export class BarreOutilsComponent implements OnDestroy {
 
   onChange(event: Event, nomParametre: string) {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
-    if (!isNaN(Number(eventCast.value))) {
-      this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].valeur = Math.max(Number(eventCast.value), 1);
-    }
+    this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].valeur = Math.max(Number(eventCast.value), 1);
   }
 
   onSelect(event: Event, nomParametre: string) {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
-    if (typeof eventCast.value === 'string') {
-      this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].optionChoisie = eventCast.value;
-    }
+    this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].optionChoisie = eventCast.value;
   }
 
   onChampFocus() {
@@ -100,17 +96,13 @@ export class BarreOutilsComponent implements OnDestroy {
 
   appliquerOpacitePrincipale(evenement: Event) {
     const evenementCast: HTMLInputElement = (evenement.target as HTMLInputElement);
-    if (!isNaN(Number(evenementCast.value))) {
-      this.couleur.opacitePrincipale = Math.max(Math.min(Number(evenementCast.value), 1), 0);
-      this.couleur.opacitePrincipaleAffichee = Math.round(100 * this.couleur.opacitePrincipale);
-    }
+    this.couleur.opacitePrincipale = Math.max(Math.min(Number(evenementCast.value), 1), 0);
+    this.couleur.opacitePrincipaleAffichee = Math.round(100 * this.couleur.opacitePrincipale);
   }
 
   appliquerOpaciteSecondaire(evenement: Event) {
     const evenementCast: HTMLInputElement = (evenement.target as HTMLInputElement);
-    if (!isNaN(Number(evenementCast.value))) {
-      this.couleur.opaciteSecondaire = Math.max(Math.min(Number(evenementCast.value), 1), 0);
-      this.couleur.opaciteSecondaireAffichee = Math.round(100 * this.couleur.opaciteSecondaire);
-    }
+    this.couleur.opaciteSecondaire = Math.max(Math.min(Number(evenementCast.value), 1), 0);
+    this.couleur.opaciteSecondaireAffichee = Math.round(100 * this.couleur.opaciteSecondaire);
   }
 }

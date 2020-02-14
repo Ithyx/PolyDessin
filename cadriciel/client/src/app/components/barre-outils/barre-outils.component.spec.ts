@@ -87,6 +87,22 @@ describe('BarreOutilsComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  // TESTS subcribe dans le constructeur
+
+  it('#constructor devrait lier le gestionnaire de raccourcis avec la fonction avertissementNouveauDessin, '
+    + 'qui est appelée si le paramètre estIgnoree est faux', () => {
+    spyOn(component, 'avertissementNouveauDessin');
+    component.raccourcis.emitterNouveauDessin.next(false);
+    expect(component.avertissementNouveauDessin).toHaveBeenCalled();
+  });
+
+  it('#constructor devrait lier le gestionnaire de raccourcis avec la fonction avertissementNouveauDessin, '
+    + 'qui n\'est pas appelée si le paramètre estIgnoree est vrai', () => {
+    spyOn(component, 'avertissementNouveauDessin');
+    component.raccourcis.emitterNouveauDessin.next(true);
+    expect(component.avertissementNouveauDessin).not.toHaveBeenCalled();
+  });
+
   // TESTS ngOnDestroy
 
   it('#ngOnDestroy devrait appeler la fonction unsubscribe', () => {
@@ -125,14 +141,7 @@ describe('BarreOutilsComponent', () => {
   });
 
   // TESTS onChange
-
-  it("#onChange ne devrait pas changer la valeur de l'épaisseur si l'évènement qui lui est donné n'est pas un chiffre", () => {
-    const element = fixture.debugElement.query(By.css('input[name="Épaisseur"]')).nativeElement;
-    element.value = 'c';
-    element.dispatchEvent(new Event('input')); // onChange appelée implicitement
-    expect(component.outils.outilActif.parametres[0].valeur).toBe(5);
-  });
-
+  
   it('#onChange devrait changer la valeur de l\'épaisseur si l\'évènement qui lui est donné est un chiffre', () => {
     const element = fixture.debugElement.query(By.css('input[name="Épaisseur"]')).nativeElement;
     element.value = '1';
