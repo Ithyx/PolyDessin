@@ -1,8 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialog, MatDialogModule } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
 import { BarreOutilsComponent } from '../barre-outils/barre-outils.component';
+import { FenetreNewDessinComponent } from '../fenetre-new-dessin/fenetre-new-dessin.component';
 import { GuideSujetComponent } from '../guide-sujet/guide-sujet.component';
 import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
 import { PageDessinComponent } from '../page-dessin/page-dessin.component';
@@ -23,7 +24,7 @@ describe('AccueilComponent', () => {
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ]) ],
-    providers: [ MatDialog ]
+    providers: [ MatDialog, MatDialogConfig]
     })
     .compileComponents();
   }));
@@ -37,4 +38,10 @@ describe('AccueilComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('#creationDessin devrait appeler dialog.open() avec les bons parametres ',() =>{
+    spyOn(component.dialog, 'open');
+    component.creationDessin();
+    expect(component.dialog.open).toHaveBeenCalledWith(FenetreNewDessinComponent, component.dialogConfig);
+  })
 });
