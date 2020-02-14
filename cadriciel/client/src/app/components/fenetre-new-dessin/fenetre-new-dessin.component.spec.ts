@@ -1,6 +1,7 @@
+import { Injector } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialogConfig, MatDialogModule, MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
 
 import { ChoixCouleurComponent } from '../choix-couleur/choix-couleur.component';
@@ -13,6 +14,10 @@ describe('FenetreNewDessinComponent', () => {
   const MatDialogRefStub: Partial<MatDialogRef<FenetreNewDessinComponent>> = {
     close() { /* NE RIEN FAIRE */ }
   }
+
+  const injecteur = Injector.create(
+    {providers: [{provide: MatDialogRef, useValue: {componentInstance: ChoixCouleurComponent}}]
+  })
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -115,14 +120,15 @@ describe('FenetreNewDessinComponent', () => {
 
   // TESTS #selectionCouleur
   it('#selectionCouleur devrait appeler dialog.open avec les bons paramètres', () => {
-    const espion = spyOn(TestBed.get(MatDialog), 'open');
+    spyOn(component.dialog, 'open').and.returnValue(injecteur.get(MatDialogRef));
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '30%';
     dialogConfig.panelClass = 'fenetre-couleur';
+    component.selectionCouleur();
 
-    expect(espion).toHaveBeenCalledWith(ChoixCouleurComponent, dialogConfig);
+    expect(component.dialog.open).toHaveBeenCalledWith(ChoixCouleurComponent, dialogConfig);
   })
 });
