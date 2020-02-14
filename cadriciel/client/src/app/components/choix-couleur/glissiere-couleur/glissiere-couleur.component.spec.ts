@@ -4,7 +4,6 @@ import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnai
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
 import { GlissiereCouleurComponent } from './glissiere-couleur.component';
 
-
 describe('GlissiereCouleurComponent', () => {
   let component: GlissiereCouleurComponent;
   let fixture: ComponentFixture<GlissiereCouleurComponent>;
@@ -58,12 +57,11 @@ describe('GlissiereCouleurComponent', () => {
     spyOn(component, 'draw');
     component.sourisDeplacee(new MouseEvent ('mousemove'));
     expect(component.draw).toHaveBeenCalled();
-  }); 
-  
+  });
 
   it('#sourisEnfoncee devrait changer la hauteur choisie', () => {
     component.sourisEnfoncee(new MouseEvent('mousedown', {clientY: 35}));
-    expect(component.hauteurChoisi).toHaveBeenCalledWith(35);
+    expect(component.hauteurChoisi).toBe(35);
   }); 
 
   it('#sourisEnfoncee devrait valider le dessin', () => {
@@ -82,8 +80,8 @@ describe('GlissiereCouleurComponent', () => {
 
   it('#sourisDeplacee devrait changer la hauteur choisie', () => {
     component.sourisEnfoncee(new MouseEvent('mousedown', {clientY: 35}));
-    expect(component.hauteurChoisi).toHaveBeenCalledWith(35);
-  }); 
+    expect(component.hauteurChoisi).toBe(35);
+  });
 
   it('#sourisDeplacee devrait valider le dessin', () => {
     spyOn(component, 'draw');
@@ -102,16 +100,15 @@ describe('GlissiereCouleurComponent', () => {
   it('#couleurPosition devrait actualiser la couleur du service gestionnaireCouleur', () => {
     component.gestionnaireCouleur.teinte = 'rgba(50, 50, 50,';
     component.draw();
-    component.couleurPosition(249, 0);
-    expect(component.gestionnaireCouleur.couleur).toBe('rgba(49,49,49,');
+    component.couleurPosition(0, 0);
+    expect(component.gestionnaireCouleur.couleur).toBe('rgba(255,3,0,');
   });
 
   it('#couleurPosition devrait actualiser le RGB du service gestionnaireCouleur', () => {
     component.gestionnaireCouleur.teinte = 'rgba(50, 50, 50,';
     component.draw();
-    component.couleurPosition(249, 0);
-    expect(component.gestionnaireCouleur.RGB).toEqual([49, 49, 49]);
+    component.couleurPosition(0, 0);
+    expect(component.gestionnaireCouleur.RGB).toEqual([255, 3, 0]);
   });
-
 
 });
