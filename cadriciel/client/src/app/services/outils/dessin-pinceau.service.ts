@@ -50,7 +50,7 @@ export class DessinPinceauService implements InterfaceOutils {
     if (this.peutCliquer && this.outils.outilActif.parametres[0].valeur) {
       const SVG = '<circle filter="url(#' + this.outils.outilActif.parametres[1].optionChoisie
       + ')"  cx="' + souris.offsetX + '" cy="' + souris.offsetY + '" r="'
-      + this.outils.outilActif.parametres[0].valeur / 2 + `fill="${this.couleur.getCouleurPrincipale()}"/>`;
+      + this.outils.outilActif.parametres[0].valeur / 2 + `" fill="${this.couleur.getCouleurPrincipale()}"/>`;
 
       this.stockageSVG.ajouterSVG(SVG);
       this.traitEnCours = false;

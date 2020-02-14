@@ -18,7 +18,7 @@ describe('ValeurCouleurComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ValeurCouleurComponent);
     component = fixture.componentInstance;
-    component.gestionnaireCouleur = new GestionnaireCouleursService(new ParametresCouleurService())
+    component.gestionnaireCouleur = new GestionnaireCouleursService(new ParametresCouleurService());
 
     fixture.detectChanges();
     fixture.autoDetectChanges()
