@@ -54,7 +54,6 @@ export class DessinCrayonService implements InterfaceOutils {
         + this.outils.outilActif.parametres[0].valeur / 2
         + '" fill="' + this.couleur.getCouleurPrincipale() + '"/>';
         this.stockageSVG.ajouterSVG(SVG);
-        console.log(this.couleur.couleurPrincipale);
       }
       this.traitEnCours = false;
     } else {this.peutCliquer = true};
