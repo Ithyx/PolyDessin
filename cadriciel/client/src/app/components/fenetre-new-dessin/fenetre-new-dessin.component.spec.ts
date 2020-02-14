@@ -5,7 +5,8 @@ import { MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/materia
 import { RouterModule } from '@angular/router';
 
 import { ChoixCouleurComponent } from '../choix-couleur/choix-couleur.component';
-import { FenetreNewDessinComponent, KEY_FORM_HAUTEUR, KEY_FORM_LARGEUR, LARGEUR_BARRE_OUTILS } from './fenetre-new-dessin.component';
+import { FenetreNewDessinComponent, KEY_FORM_HAUTEUR, KEY_FORM_LARGEUR,
+         TAMPON_HAUTEUR, TAMPON_LARGEUR } from './fenetre-new-dessin.component';
 
 describe('FenetreNewDessinComponent', () => {
   let component: FenetreNewDessinComponent;
@@ -70,16 +71,16 @@ describe('FenetreNewDessinComponent', () => {
   })
 
   it('#dimmensionsChangees devrait changer la hauteur et largeur stockée', () => {
-    spyOnProperty(window, 'innerHeight').and.returnValue(100);
-    spyOnProperty(window, 'innerWidth').and.returnValue(100 + LARGEUR_BARRE_OUTILS);
+    spyOnProperty(window, 'innerHeight').and.returnValue(100 + TAMPON_HAUTEUR);
+    spyOnProperty(window, 'innerWidth').and.returnValue(100 + TAMPON_LARGEUR);
     component.dimmensionsChangees();
     expect(component.hauteurFenetre).toBe(100);
     expect(component.largeurFenetre).toBe(100);
   })
 
   it('#dimmensionsChangees appelle patchValue avec les bonnes valeurs', () => {
-    spyOnProperty(window, 'innerHeight').and.returnValue(100);
-    spyOnProperty(window, 'innerWidth').and.returnValue(100 + LARGEUR_BARRE_OUTILS);
+    spyOnProperty(window, 'innerHeight').and.returnValue(100 + TAMPON_HAUTEUR);
+    spyOnProperty(window, 'innerWidth').and.returnValue(100 + TAMPON_LARGEUR);
     spyOn(component.nouveauDessin, 'patchValue');
     component.dimmensionsChangees();
     expect(component.nouveauDessin.patchValue).toHaveBeenCalledWith({hauteurFormulaire: 100, largeurFormulaire: 100});
@@ -125,7 +126,7 @@ describe('FenetreNewDessinComponent', () => {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '30%';
+    dialogConfig.width = '25%';
     dialogConfig.panelClass = 'fenetre-couleur';
     component.selectionCouleur();
 

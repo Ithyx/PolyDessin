@@ -4,7 +4,7 @@ import { StockageSvgService } from '../stockage-svg.service';
 import { DessinPinceauService } from './dessin-pinceau.service';
 
 describe('DessinPinceauService', () => {
-  const SVGCircle = '<circle filter="url(#Flou)"  cx="100" cy="100" r="2.5fill="rgba(0, 0, 0, 1)"/>';
+  const SVGCircle = '<circle filter="url(#Flou)"  cx="100" cy="100" r="2.5" fill="rgba(0, 0, 0, 1)"/>';
   const SVGPath = '<path filter="url(#Flou)" fill="transparent" ' +
   'stroke="rgba(0, 0, 0, 1)" stroke-linecap="round" stroke-width="5" d="M100 100"/>';
   let service: DessinPinceauService;
@@ -43,7 +43,8 @@ describe('DessinPinceauService', () => {
       ID : 0,
       parametres: [
         {type: 'select', nom: 'testEpaisseurInvalide', optionChoisie: '1', options: ['1', '2']}
-      ]
+      ],
+      iconName: ''
     }
 
     spyOn(stockageService, 'ajouterSVG');

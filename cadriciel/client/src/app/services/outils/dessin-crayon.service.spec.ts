@@ -42,7 +42,8 @@ describe('DessinCrayonService', () => {
       ID : 0,
       parametres: [
         {type: 'select', nom: 'testEpaisseurInvalide', optionChoisie: '1', options: ['1', '2']}
-      ]
+      ],
+      iconName: ''
     }
 
     spyOn(stockageService, 'ajouterSVG');
