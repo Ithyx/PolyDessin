@@ -24,7 +24,7 @@ describe('AccueilComponent', () => {
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ]) ],
-    providers: [ MatDialog, MatDialogConfig]
+    providers: [ MatDialog, MatDialogConfig ]
     })
     .compileComponents();
   }));
