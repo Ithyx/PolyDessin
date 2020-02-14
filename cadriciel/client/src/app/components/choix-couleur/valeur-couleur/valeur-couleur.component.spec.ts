@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { By } from '@angular/platform-browser';
 import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
 import { ValeurCouleurComponent } from './valeur-couleur.component';
@@ -18,7 +18,10 @@ describe('ValeurCouleurComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ValeurCouleurComponent);
     component = fixture.componentInstance;
+    component.gestionnaireCouleur = new GestionnaireCouleursService(new ParametresCouleurService())
+
     fixture.detectChanges();
+    fixture.autoDetectChanges()
   });
 
   it('should create', () => {
@@ -26,17 +29,15 @@ describe('ValeurCouleurComponent', () => {
   });
 
   // TESTS modificationRGB
-  it('#modificationRGB ne devrait rien faire si on tente d\'accder à un index non reconnue', () => {
-    component.gestionnaireCouleur = new GestionnaireCouleursService(new ParametresCouleurService())
-    const indexTest = component.gestionnaireCouleur.RGB.length + 1;
-    const clavier = new Event('change', { });
+  it('#modificationRGB devrait modifier le RGB si on entre une valeur hexadécimal', () => {
+    const element = fixture.debugElement.query(By.css('input[class="hex"]')).nativeElement;
+    element.value = 0xae;
 
     spyOn(component.gestionnaireCouleur, 'modifierRGB');
 
-    component.modificationRGB(clavier, indexTest)
+    element.dispatchEvent(new Event('change'));
 
-    expect(component.gestionnaireCouleur.modifierRGB).not.toHaveBeenCalled();
-
+    expect(component.gestionnaireCouleur.modifierRGB).toHaveBeenCalled();
   });
 
   // TESTS verifierEntree
