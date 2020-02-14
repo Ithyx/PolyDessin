@@ -15,7 +15,7 @@ import { ChoixCouleurComponent } from './components/choix-couleur/choix-couleur.
 import { CouleurPaletteComponent } from './components/choix-couleur/couleur-palette/couleur-palette.component'
 import { GlissiereCouleurComponent } from './components/choix-couleur/glissiere-couleur/glissiere-couleur.component'
 import { ValeurCouleurComponent } from './components/choix-couleur/valeur-couleur/valeur-couleur.component';
-import { FenetreNewDessinComponent } from './components/fenetre-new-dessin/fenetre-new-dessin.component';
+import { FenetreNouveauDessinComponent } from './components/fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 import { GuideSujetComponent } from './components/guide-sujet/guide-sujet.component';
 import { OutilDessinComponent } from './components/outil-dessin/outil-dessin.component';
 import { PageDessinComponent } from './components/page-dessin/page-dessin.component';
@@ -24,7 +24,7 @@ import { SurfaceDessinComponent } from './components/surface-dessin/surface-dess
 
 // Service
 import { ParametresCouleurService } from './services/couleur/parametres-couleur.service';
-import { DessinManagerService } from './services/dessin-manager/dessin-manager.service';
+import { GestionnaireDessinService } from './services/gestionnaire-dessin/gestionnaire-dessin.service';
 import { GestionnaireRaccourcisService } from './services/gestionnaire-raccourcis.service';
 import { GestionnaireRoutingService } from './services/gestionnaire-routing.service';
 import { NavigationGuideService } from './services/navigation-guide.service';
@@ -35,7 +35,7 @@ import { StockageSvgService } from './services/stockage-svg.service';
 
 @NgModule({
     declarations: [AppComponent, AccueilComponent, AvertissementNouveauDessinComponent, PageDessinComponent, PageGuideComponent,
-        FenetreNewDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent,
+        FenetreNouveauDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent,
             ChoixCouleurComponent, GlissiereCouleurComponent, CouleurPaletteComponent, ValeurCouleurComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
         MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
@@ -43,10 +43,10 @@ import { StockageSvgService } from './services/stockage-svg.service';
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ])],
-    providers: [NavigationGuideService, StockageSvgService, DessinCrayonService, DessinManagerService,
+    providers: [NavigationGuideService, StockageSvgService, DessinCrayonService, GestionnaireDessinService,
                 GestionnaireRaccourcisService, DessinRectangleService, DessinLigneService,
                 GestionnaireRoutingService, ParametresCouleurService, MatDialogConfig],
-    entryComponents: [FenetreNewDessinComponent, AvertissementNouveauDessinComponent, ChoixCouleurComponent],
+    entryComponents: [FenetreNouveauDessinComponent, AvertissementNouveauDessinComponent, ChoixCouleurComponent],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -48,7 +48,7 @@ export class BarreOutilsComponent implements OnDestroy {
     this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].valeur = Math.max(Number(eventCast.value), 1);
   }
 
-  onSelect(event: Event, nomParametre: string) {
+  choixSelectionne(event: Event, nomParametre: string) {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].optionChoisie = eventCast.value;
   }

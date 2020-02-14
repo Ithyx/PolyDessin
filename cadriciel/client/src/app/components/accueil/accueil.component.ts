@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {MatDialog, MatDialogConfig } from '@angular/material';
-import { DessinManagerService } from 'src/app/services/dessin-manager/dessin-manager.service';
-import { FenetreNewDessinComponent } from '../fenetre-new-dessin/fenetre-new-dessin.component';
+import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/gestionnaire-dessin.service';
+import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 
 @Component({
   selector: 'app-accueil',
@@ -11,14 +11,14 @@ import { FenetreNewDessinComponent } from '../fenetre-new-dessin/fenetre-new-des
 export class AccueilComponent {
 
   constructor(public dialog: MatDialog,
-              public dessinManager: DessinManagerService,
+              public dessinManager: GestionnaireDessinService,
               public dialogConfig: MatDialogConfig) {
                 dialogConfig.disableClose = true;
                 dialogConfig.autoFocus = true;
                 dialogConfig.width = '60%'; }
 
   creationDessin() {
-    this.dialog.open(FenetreNewDessinComponent, this.dialogConfig);
+    this.dialog.open(FenetreNouveauDessinComponent, this.dialogConfig);
   }
 
 }

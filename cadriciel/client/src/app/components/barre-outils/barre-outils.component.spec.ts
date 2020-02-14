@@ -24,7 +24,7 @@ const outilTestActif: OutilDessin = {
   ID: 0,
   parametres: [{type: 'number', nom: 'Épaisseur', valeur: 5},
                {type: 'select', nom: 'Type', options: ['A', 'B'], optionChoisie: 'A'}],
-  iconName: ''
+  nomIcone: ''
 };
 
 const outilTestInactif: OutilDessin = {
@@ -32,7 +32,7 @@ const outilTestInactif: OutilDessin = {
   estActif: false,
   ID: 1,
   parametres: [],
-  iconName: ''
+  nomIcone: ''
 };
 
 const rectangle: OutilDessin = {
@@ -40,7 +40,7 @@ const rectangle: OutilDessin = {
   estActif: false,
   ID: 2,
   parametres: [],
-  iconName: ''
+  nomIcone: ''
 };
 
 const GestionnaireOutilServiceStub: Partial<GestionnaireOutilsService> = {
@@ -157,18 +157,18 @@ describe('BarreOutilsComponent', () => {
     expect(component.outils.outilActif.parametres[0].valeur).toBe(1);
   });
 
-  // TESTS onSelect
+  // TESTS choixSelectionne
 
-  it('#onSelect ne devrait pas changer la valeur du paramètre si l\'évènement qui lui est donné n\'est pas un string', () => {
+  it('#choixSelectionne ne devrait pas changer la valeur du paramètre si l\'évènement qui lui est donné n\'est pas un string', () => {
     const element = fixture.debugElement.query(By.css('select[name="Type"]')).nativeElement;
-    element.dispatchEvent(new Event('change')); // onSelect appelée implicitement
+    element.dispatchEvent(new Event('change')); // choixSelectionne appelée implicitement
     expect(component.outils.outilActif.parametres[1].optionChoisie).toBe('A');
   });
 
-  it('#onSelect devrait changer la valeur du paramètre si l\'évènement qui lui est donné est un string', () => {
+  it('#choixSelectionne devrait changer la valeur du paramètre si l\'évènement qui lui est donné est un string', () => {
     const element = fixture.debugElement.query(By.css('select[name="Type"]')).nativeElement;
     element.value = 'B';
-    element.dispatchEvent(new Event('change')); // onSelect appelée implicitement
+    element.dispatchEvent(new Event('change')); // choixSelectionne appelée implicitement
     expect(component.outils.outilActif.parametres[1].optionChoisie).toBe('B');
   });
 

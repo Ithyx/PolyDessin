@@ -24,13 +24,13 @@ describe('GuideSujetComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // TEST onNotify
+  // TEST notificationRecu
 
-  it('#onNotify() devrait emettre un sujet', () => {
+  it('#notificationRecu() devrait emettre un sujet', () => {
     const sujet: GuideSujet = CONTENU_GUIDE[5];
     spyOn(component.notification, 'emit');
 
-    component.onNotify(sujet);
+    component.notificationRecu(sujet);
     expect(component.notification.emit).toHaveBeenCalledWith(sujet);
   });
 

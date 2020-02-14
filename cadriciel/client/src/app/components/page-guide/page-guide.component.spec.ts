@@ -49,9 +49,9 @@ describe('PageGuideComponent', () => {
     expect(component.sujetActif).toBe(CONTENU_GUIDE[1]);
   });
 
-  it('#onNotify(), le sujetActif devrait être celui émis', () => {
+  it('#notificationRecu(), le sujetActif devrait être celui émis', () => {
     const sujet: GuideSujet = CONTENU_GUIDE[3];
-    component.onNotify(sujet);
+    component.notificationRecu(sujet);
     expect(component.sujetActif).toBe(sujet);
   })
 });
