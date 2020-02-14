@@ -126,7 +126,7 @@ describe('FenetreNouveauDessinComponent', () => {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '25%';
+    dialogConfig.width = '30%';
     dialogConfig.panelClass = 'fenetre-couleur';
     component.selectionCouleur();
 
