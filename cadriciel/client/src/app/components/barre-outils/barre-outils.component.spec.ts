@@ -209,7 +209,6 @@ describe('BarreOutilsComponent', () => {
   // TESTS selectionCouleur
 
   it('#selectionCouleur devrait appeler desactiverRaccourcis', () => {
-    spyOn(component.dialog, 'open');
     spyOn(component, 'desactiverRaccourcis');
     component.selectionCouleur('principale');
     expect(component.desactiverRaccourcis).toHaveBeenCalled();
