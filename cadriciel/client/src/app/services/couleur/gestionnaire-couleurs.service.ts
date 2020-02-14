@@ -15,7 +15,7 @@ export const MAX_COULEURS = 10;
 })
 export class GestionnaireCouleursService {
   couleur = 'rgba(0, 0, 0,';
-  teinte: string;
+  teinte = 'rgba(255,255,255';
   RGB: number[] = [0, 0, 0];
 
   constructor(public parametresCouleur: ParametresCouleurService) {}
