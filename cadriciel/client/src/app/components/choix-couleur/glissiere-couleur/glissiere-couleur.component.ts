@@ -29,12 +29,12 @@ export class GlissiereCouleurComponent implements AfterViewInit, InterfaceOutils
     if (!this.context2D) {
       this.context2D = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
     }
-    const width = this.canvas.nativeElement.width;
-    const height = this.canvas.nativeElement.height;
+    const largeur = this.canvas.nativeElement.width;
+    const hauteur = this.canvas.nativeElement.height;
 
-    this.context2D.clearRect(0, 0, width, height);
+    this.context2D.clearRect(0, 0, largeur, hauteur);
 
-    const gradient = this.context2D.createLinearGradient(0, 0, 0, height);
+    const gradient = this.context2D.createLinearGradient(0, 0, 0, hauteur);
     gradient.addColorStop(0, 'rgba(255, 0, 0, 1)');
     gradient.addColorStop(0.17, 'rgba(255, 255, 0, 1)');
     gradient.addColorStop(0.34, 'rgba(0, 255, 0, 1)');
@@ -44,7 +44,7 @@ export class GlissiereCouleurComponent implements AfterViewInit, InterfaceOutils
     gradient.addColorStop(1, 'rgba(255, 0, 0, 1)');
 
     this.context2D.beginPath();
-    this.context2D.rect(0, 0, width, height);
+    this.context2D.rect(0, 0, largeur, hauteur);
 
     this.context2D.fillStyle = gradient;
     this.context2D.fill();
@@ -54,7 +54,7 @@ export class GlissiereCouleurComponent implements AfterViewInit, InterfaceOutils
       this.context2D.beginPath();
       this.context2D.strokeStyle = 'white';
       this.context2D.lineWidth = 5;
-      this.context2D.rect(0, this.hauteurChoisi - 5, width, 10);
+      this.context2D.rect(0, this.hauteurChoisi - 5, largeur, 10);
       this.context2D.stroke();
       this.context2D.closePath();
     }

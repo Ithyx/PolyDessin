@@ -20,15 +20,15 @@ export class ValeurCouleurComponent {
 
   modificationRGB(evenement: Event, index: number) {
     const eventCast: HTMLInputElement = (evenement.target as HTMLInputElement);
-    let value = parseInt(eventCast.value, 16);
+    let valeur = parseInt(eventCast.value, 16);
 
-    if (isNaN(value)) {
-      value = 0;
+    if (isNaN(valeur)) {
+      valeur = 0;
     }
 
     // Vérification qu'on essaie d'accéder à un index possible
     if (index <= this.gestionnaireCouleur.RGB.length) {
-      this.gestionnaireCouleur.RGB[index] = Math.min(value, 255);
+      this.gestionnaireCouleur.RGB[index] = Math.min(valeur, 255);
       this.gestionnaireCouleur.modifierRGB();
     }
   }
