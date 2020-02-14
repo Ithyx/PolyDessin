@@ -74,7 +74,7 @@ export class GlissiereCouleurComponent implements AfterViewInit, InterfaceOutils
 
   sourisDeplacee(evt: MouseEvent) {
     if (this.sourisbas) {
-      this.hauteurChoisi =  evt.offsetY;
+      this.hauteurChoisi = evt.offsetY;
       this.draw();
       this.couleurEmise(evt.offsetX, evt.offsetY);
     }

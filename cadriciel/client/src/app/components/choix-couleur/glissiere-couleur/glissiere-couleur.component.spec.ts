@@ -3,6 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
 import { GlissiereCouleurComponent } from './glissiere-couleur.component';
+/*import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
+import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service'; */
 
 describe('GlissiereCouleurComponent', () => {
   let component: GlissiereCouleurComponent;
@@ -10,7 +12,7 @@ describe('GlissiereCouleurComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GlissiereCouleurComponent ]
+      declarations: [ GlissiereCouleurComponent, ],
     })
     .compileComponents();
   }));
@@ -19,7 +21,11 @@ describe('GlissiereCouleurComponent', () => {
     fixture = TestBed.createComponent(GlissiereCouleurComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+<<<<<<< Updated upstream
     component.gestionnaireCouleur = new GestionnaireCouleursService(new ParametresCouleurService())
+=======
+   component.gestionnaireCouleur = new GestionnaireCouleurService(new ParametreCouleurService()); 
+>>>>>>> Stashed changes
   });
 
   it('should create', () => {
@@ -41,25 +47,29 @@ describe('GlissiereCouleurComponent', () => {
   });
 
   // Test sourisRelache
+
   it('#sourisRelache devrait mettre a jour la variable sourisbas a faux', () => {
-    spyOn(component, 'draw');
     component.sourisRelachee(new MouseEvent('mousedown'));
-    component.sourisDeplacee(new MouseEvent('mousemove')); // teste la valeur de sourisBas
+    spyOn(component, 'draw');
+    component.sourisDeplacee(new MouseEvent('mousemove'));
     expect(component.draw).not.toHaveBeenCalled();
   });
 
   // Test sourisEnfoncee
+
   it('#sourisEnfoncee devrait mettre a jour la variable souris bas a vrai', () => {
+
     component.sourisEnfoncee(new MouseEvent ('mousedown'));
     spyOn(component, 'draw');
     component.sourisDeplacee(new MouseEvent ('mousemove'));
     expect(component.draw).toHaveBeenCalled();
-  });
+  }); 
+  
 
   it('#sourisEnfoncee devrait changer la hauteur choisie', () => {
-    component.sourisEnfoncee(new MouseEvent('mousedown', {clientY : 15}));
-    expect(component.hauteurChoisi).toEqual(15);
-  });
+    component.sourisEnfoncee(new MouseEvent('mousedown', {clientY: 35}));
+    expect(component.hauteurChoisi).toHaveBeenCalledWith(35);
+  }); 
 
   it('#sourisEnfoncee devrait valider le dessin', () => {
     spyOn(component, 'draw');
@@ -76,9 +86,9 @@ describe('GlissiereCouleurComponent', () => {
   // Test sourisDeplacee
 
   it('#sourisDeplacee devrait changer la hauteur choisie', () => {
-    component.sourisEnfoncee(new MouseEvent('mousedown', {clientY : 15}));
-    expect(component.hauteurChoisi).toEqual(15);
-  });
+    component.sourisEnfoncee(new MouseEvent('mousedown', {clientY: 35}));
+    expect(component.hauteurChoisi).toHaveBeenCalledWith(35);
+  }); 
 
   it('#sourisDeplacee devrait valider le dessin', () => {
     spyOn(component, 'draw');
@@ -91,5 +101,22 @@ describe('GlissiereCouleurComponent', () => {
     component.sourisEnfoncee(new MouseEvent('mousedown', {clientX: 15, clientY: 15}));
     expect(component.couleurPosition).toHaveBeenCalledWith(15, 15);
   });
+
+  // Test CouleurPosition
+
+  it('#couleurPosition devrait actualiser la couleur du service gestionnaireCouleur', () => {
+    component.gestionnaireCouleur.teinte = 'rgba(50, 50, 50,';
+    component.draw();
+    component.couleurPosition(249, 0);
+    expect(component.gestionnaireCouleur.couleur).toBe('rgba(49,49,49,');
+  });
+
+  it('#couleurPosition devrait actualiser le RGB du service gestionnaireCouleur', () => {
+    component.gestionnaireCouleur.teinte = 'rgba(50, 50, 50,';
+    component.draw();
+    component.couleurPosition(249, 0);
+    expect(component.gestionnaireCouleur.RGB).toEqual([49, 49, 49]);
+  });
+
 
 });
