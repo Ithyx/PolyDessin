@@ -1,7 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material';
+import { By } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
-import { MatDialogModule } from '@angular/material';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
 import { GuideSujetComponent } from '../guide-sujet/guide-sujet.component';
 import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
@@ -13,7 +14,7 @@ const outilTestActif: OutilDessin = {
   nom: 'stubActif',
   estActif: true,
   ID: 0,
-  parametres: []
+  parametres: [{type: 'number', nom: 'Épaisseur', valeur: 5}]
 };
 
 const outilTestInactif: OutilDessin = {
@@ -70,6 +71,25 @@ describe('BarreOutilsComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  // TESTS ngOnDestroy
+
+  it('#ngOnDestroy devrait appeler la fonction unsubscribe', () => {
+    spyOn(component, 'avertissementNouveauDessin');
+    component.ngOnDestroy();  // unsubscribe est appelée ici
+
+    const toucheEnfoncee = new KeyboardEvent('keypress', { key: 'o', ctrlKey: true});
+    component.raccourcis.traiterInput(toucheEnfoncee);
+
+    // on teste que avertissementNouveauDessin n'est plus lié aux raccourcis
+    expect(component.avertissementNouveauDessin).not.toHaveBeenCalled();
+  });
+
+  it('#ngOnDestroy devrait appeler la fonction next avec un booleen true comme paramètre', () => {
+    spyOn(component.raccourcis.emitterNouveauDessin, 'next');
+    component.ngOnDestroy();
+    expect(component.raccourcis.emitterNouveauDessin.next).toHaveBeenCalledWith(true);
+  });
+
   // TESTS onClick
 
   it('#onClick devrait changer d\'outil', () => {
@@ -84,7 +104,42 @@ describe('BarreOutilsComponent', () => {
 
   it('#onClick devrait appeler la fonction viderSVGEnCours', () => {
     spyOn(component.raccourcis, 'viderSVGEnCours');
-    component.onClick(service.listeOutils[2]); // on sélectionne l'outil 2
+    component.onClick(service.listeOutils[2]); // on sélectionne l'outil 2 (rectangle)
     expect(component.raccourcis.viderSVGEnCours).toHaveBeenCalled();
+  });
+
+  // TESTS onChange
+
+  it("#onChange ne devrait pas changer la valeur du paramètre[0](épaisseur) si l'évènement qui lui est donné n'est pas un chiffre", () => {
+    const element = fixture.debugElement.query(By.css('input[name="Épaisseur"]')).nativeElement;
+    element.value = 'c';
+    element.dispatchEvent(new Event('input')); // onChange appelée implicitement
+    expect(component.outils.listeOutils[0].parametres[0].valeur).toBe(5);
+  });
+
+  // TESTS onSelect
+
+  // TESTS onChampFocus
+
+  it('#onChampFocus devrait assigner vrai à champDeTexteEstFocus', () => {
+    component.raccourcis.champDeTexteEstFocus = false;
+    component.onChampFocus();
+    expect(component.raccourcis.champDeTexteEstFocus).toBe(true);
+  });
+
+  // TESTS onChampBlur
+
+  it('#onChampBlur devrait assigner faux à champDeTexteEstFocus', () => {
+    component.raccourcis.champDeTexteEstFocus = true;
+    component.onChampBlur();
+    expect(component.raccourcis.champDeTexteEstFocus).toBe(false);
+  });
+
+  // TESTS avertissementNouveauDessin
+
+  it('#avertissementNouveauDessin devrait appeler onChampFocus', () => {
+    spyOn(component, 'onChampFocus');
+    component.avertissementNouveauDessin();
+    expect(component.onChampFocus).toHaveBeenCalled();
   });
 });
