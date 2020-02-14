@@ -53,17 +53,17 @@ export class BarreOutilsComponent implements OnDestroy {
     this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].optionChoisie = eventCast.value;
   }
 
-  entreeChamp() {
+  desactiverRaccourcis() {
     this.raccourcis.champDeTexteEstFocus = true;
   }
 
-  sortieChamp() {
+  activerRaccourcis() {
     this.raccourcis.champDeTexteEstFocus = false;
   }
 
   avertissementNouveauDessin() {
 
-    this.entreeChamp();
+    this.desactiverRaccourcis();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -72,7 +72,7 @@ export class BarreOutilsComponent implements OnDestroy {
   }
 
   selectionCouleur(porteeEntree: string) {
-    this.entreeChamp();
+    this.desactiverRaccourcis();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;

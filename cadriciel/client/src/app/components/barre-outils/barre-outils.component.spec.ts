@@ -3,9 +3,9 @@ import { MatDialogConfig, MatDialogModule } from '@angular/material';
 import { By } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
-import { Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
 import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
 import { ChoixCouleurComponent } from '../choix-couleur/choix-couleur.component';
@@ -142,7 +142,6 @@ describe('BarreOutilsComponent', () => {
   });
 
   // TESTS onChange
-  
   it('#onChange devrait changer la valeur de l\'épaisseur si l\'évènement qui lui est donné est un chiffre', () => {
     const element = fixture.debugElement.query(By.css('input[name="Épaisseur"]')).nativeElement;
     element.value = '1';
@@ -172,29 +171,29 @@ describe('BarreOutilsComponent', () => {
     expect(component.outils.outilActif.parametres[1].optionChoisie).toBe('B');
   });
 
-  // TESTS entreeChamp
+  // TESTS desactiverRaccourcis
 
-  it('#entreeChamp devrait assigner vrai à champDeTexteEstFocus', () => {
+  it('#desactiverRaccourcis devrait assigner vrai à champDeTexteEstFocus', () => {
     component.raccourcis.champDeTexteEstFocus = false;
-    component.entreeChamp();
+    component.desactiverRaccourcis();
     expect(component.raccourcis.champDeTexteEstFocus).toBe(true);
   });
 
-  // TESTS sortieChamp
+  // TESTS activerRaccourcis
 
-  it('#sortieChamp devrait assigner faux à champDeTexteEstFocus', () => {
+  it('#activerRaccourcis devrait assigner faux à champDeTexteEstFocus', () => {
     component.raccourcis.champDeTexteEstFocus = true;
-    component.sortieChamp();
+    component.activerRaccourcis();
     expect(component.raccourcis.champDeTexteEstFocus).toBe(false);
   });
 
   // TESTS avertissementNouveauDessin
 
-  it('#avertissementNouveauDessin devrait appeler entreeChamp', () => {
+  it('#avertissementNouveauDessin devrait appeler desactiverRaccourcis', () => {
     spyOn(component.dialog, 'open');
-    spyOn(component, 'entreeChamp');
+    spyOn(component, 'desactiverRaccourcis');
     component.avertissementNouveauDessin();
-    expect(component.entreeChamp).toHaveBeenCalled();
+    expect(component.desactiverRaccourcis).toHaveBeenCalled();
   });
 
   it('#avertissementNouveauDessin devrait appeler open avec AvertissementNouveauDessinComponent et dialogConfig comme paramètres', () => {
@@ -209,11 +208,11 @@ describe('BarreOutilsComponent', () => {
 
   // TESTS selectionCouleur
 
-  it('#selectionCouleur devrait appeler entreeChamp', () => {
+  it('#selectionCouleur devrait appeler desactiverRaccourcis', () => {
     spyOn(component.dialog, 'open');
-    spyOn(component, 'entreeChamp');
+    spyOn(component, 'desactiverRaccourcis');
     component.selectionCouleur('principale');
-    expect(component.entreeChamp).toHaveBeenCalled();
+    expect(component.desactiverRaccourcis).toHaveBeenCalled();
   });
 
   it('#selectionCouleur devrait assignee portee à Portee.Principale si le paramètre de la fonction contient principale', () => {
@@ -245,7 +244,6 @@ describe('BarreOutilsComponent', () => {
     component.selectionCouleur('fond');
     expect(component.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee).toEqual(Portee.Fond);
   });
-
 
   // TESTS selectionDerniereCouleurPrimaire
 
