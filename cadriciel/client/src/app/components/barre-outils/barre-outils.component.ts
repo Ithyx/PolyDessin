@@ -84,8 +84,10 @@ export class BarreOutilsComponent implements OnDestroy {
     dialogConfig.panelClass = 'fenetre-couleur';
     if (porteeEntree === 'principale') {
       this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Portee.Principale;
-    } else {
+    } else if (porteeEntree === 'secondaire') {
       this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Portee.Secondaire;
+    } else if (porteeEntree === 'fond') {
+      this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Portee.Fond;
     }
   }
 
