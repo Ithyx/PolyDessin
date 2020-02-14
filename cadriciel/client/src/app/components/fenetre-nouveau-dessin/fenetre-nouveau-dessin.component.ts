@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ChoixCouleurComponent } from 'src/app/components/choix-couleur/choix-couleur.component'
 import { GestionnaireCouleursService, Portee} from 'src/app/services/couleur/gestionnaire-couleurs.service'
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
-import { DessinManagerService } from 'src/app/services/dessin-manager/dessin-manager.service';
+import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/gestionnaire-dessin.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { StockageSvgService } from 'src/app/services/stockage-svg.service';
 
@@ -15,12 +15,12 @@ export const TAMPON_LARGEUR = 510;
 export const TAMPON_HAUTEUR = 15;
 
 @Component({
-  selector: 'app-fenetre-new-dessin',
-  templateUrl: './fenetre-new-dessin.component.html',
-  styleUrls: ['./fenetre-new-dessin.component.scss']
+  selector: 'app-fenetre-nouveau-dessin',
+  templateUrl: './fenetre-nouveau-dessin.component.html',
+  styleUrls: ['./fenetre-nouveau-dessin.component.scss']
 })
 
-export class FenetreNewDessinComponent {
+export class FenetreNouveauDessinComponent {
   hauteurFenetre = window.innerHeight - TAMPON_HAUTEUR;
   largeurFenetre = window.innerWidth - TAMPON_LARGEUR;
   dimChangeeManuellement = false;
@@ -29,9 +29,9 @@ export class FenetreNewDessinComponent {
     largeurFormulaire: new FormControl(this.largeurFenetre),
   });
 
-  constructor(public dialogRef: MatDialogRef<FenetreNewDessinComponent>,
+  constructor(public dialogRef: MatDialogRef<FenetreNouveauDessinComponent>,
               public raccourcis: GestionnaireRaccourcisService,
-              public serviceNouveauDessin: DessinManagerService,
+              public serviceNouveauDessin: GestionnaireDessinService,
               public router: Router,
               public stockageSVG: StockageSvgService,
               public gestionnaireCouleur: GestionnaireCouleursService,
@@ -72,7 +72,7 @@ export class FenetreNewDessinComponent {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '25%';
+    dialogConfig.width = '30%';
     dialogConfig.panelClass = 'fenetre-couleur';
     this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Portee.Fond;
   }

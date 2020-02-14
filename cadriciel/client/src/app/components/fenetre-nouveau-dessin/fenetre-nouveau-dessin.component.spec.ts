@@ -5,14 +5,14 @@ import { MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/materia
 import { RouterModule } from '@angular/router';
 
 import { ChoixCouleurComponent } from '../choix-couleur/choix-couleur.component';
-import { FenetreNewDessinComponent, KEY_FORM_HAUTEUR, KEY_FORM_LARGEUR,
-         TAMPON_HAUTEUR, TAMPON_LARGEUR } from './fenetre-new-dessin.component';
+import { FenetreNouveauDessinComponent, KEY_FORM_HAUTEUR, KEY_FORM_LARGEUR,
+         TAMPON_HAUTEUR, TAMPON_LARGEUR } from './fenetre-nouveau-dessin.component';
 
-describe('FenetreNewDessinComponent', () => {
-  let component: FenetreNewDessinComponent;
-  let fixture: ComponentFixture<FenetreNewDessinComponent>;
+describe('FenetreNouveauDessinComponent', () => {
+  let component: FenetreNouveauDessinComponent;
+  let fixture: ComponentFixture<FenetreNouveauDessinComponent>;
 
-  const MatDialogRefStub: Partial<MatDialogRef<FenetreNewDessinComponent>> = {
+  const MatDialogRefStub: Partial<MatDialogRef<FenetreNouveauDessinComponent>> = {
     close() { /* NE RIEN FAIRE */ }
   }
 
@@ -22,15 +22,15 @@ describe('FenetreNewDessinComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ ReactiveFormsModule, MatDialogModule, RouterModule.forRoot([{path: 'dessin', component: FenetreNewDessinComponent}]) ],
-      declarations: [ FenetreNewDessinComponent ],
+      imports: [ ReactiveFormsModule, MatDialogModule, RouterModule.forRoot([{path: 'dessin', component: FenetreNouveauDessinComponent}]) ],
+      declarations: [ FenetreNouveauDessinComponent ],
       providers: [ {provide: MatDialogRef, useValue: MatDialogRefStub} ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FenetreNewDessinComponent);
+    fixture = TestBed.createComponent(FenetreNouveauDessinComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

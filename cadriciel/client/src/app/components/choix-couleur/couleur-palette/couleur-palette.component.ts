@@ -72,25 +72,25 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
 
     this.context2D = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
 
-    const width = this.canvas.nativeElement.width;
-    const height = this.canvas.nativeElement.height;
+    const largeur = this.canvas.nativeElement.width;
+    const hauteur = this.canvas.nativeElement.height;
 
     this.context2D.fillStyle = this.gestionnaireCouleur.teinte + '1)';
-    this.context2D.fillRect(0, 0, width, height);
+    this.context2D.fillRect(0, 0, largeur, hauteur);
 
-    const whiteGrad = this.context2D.createLinearGradient(0, 0, width, 0);
+    const whiteGrad = this.context2D.createLinearGradient(0, 0, largeur, 0);
     whiteGrad.addColorStop(0, 'rgba(255,255,255,1)');
     whiteGrad.addColorStop(1, 'rgba(255,255,255,0)');
 
     this.context2D.fillStyle = whiteGrad;
-    this.context2D.fillRect(0, 0, width, height);
+    this.context2D.fillRect(0, 0, largeur, hauteur);
 
-    const blackGrad = this.context2D.createLinearGradient(0, 0, 0, height);
+    const blackGrad = this.context2D.createLinearGradient(0, 0, 0, hauteur);
     blackGrad.addColorStop(0, 'rgba(0,0,0,0)');
     blackGrad.addColorStop(1, 'rgba(0,0,0,1)');
 
     this.context2D.fillStyle = blackGrad;
-    this.context2D.fillRect(0, 0, width, height);
+    this.context2D.fillRect(0, 0, largeur, hauteur);
 
     if (this.hauteurChoisie) {
       this.context2D.strokeStyle = 'white';

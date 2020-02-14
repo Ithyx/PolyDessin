@@ -3,6 +3,7 @@ import { MatDialogConfig, MatDialogModule } from '@angular/material';
 import { By } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
+import { Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
@@ -23,7 +24,7 @@ const outilTestActif: OutilDessin = {
   ID: 0,
   parametres: [{type: 'number', nom: 'Épaisseur', valeur: 5},
                {type: 'select', nom: 'Type', options: ['A', 'B'], optionChoisie: 'A'}],
-  iconName: ''
+  nomIcone: ''
 };
 
 const outilTestInactif: OutilDessin = {
@@ -31,7 +32,7 @@ const outilTestInactif: OutilDessin = {
   estActif: false,
   ID: 1,
   parametres: [],
-  iconName: ''
+  nomIcone: ''
 };
 
 const rectangle: OutilDessin = {
@@ -39,7 +40,7 @@ const rectangle: OutilDessin = {
   estActif: false,
   ID: 2,
   parametres: [],
-  iconName: ''
+  nomIcone: ''
 };
 
 const GestionnaireOutilServiceStub: Partial<GestionnaireOutilsService> = {
@@ -156,18 +157,18 @@ describe('BarreOutilsComponent', () => {
     expect(component.outils.outilActif.parametres[0].valeur).toBe(1);
   });
 
-  // TESTS onSelect
+  // TESTS choixSelectionne
 
-  it('#onSelect ne devrait pas changer la valeur du paramètre si l\'évènement qui lui est donné n\'est pas un string', () => {
+  it('#choixSelectionne ne devrait pas changer la valeur du paramètre si l\'évènement qui lui est donné n\'est pas un string', () => {
     const element = fixture.debugElement.query(By.css('select[name="Type"]')).nativeElement;
-    element.dispatchEvent(new Event('change')); // onSelect appelée implicitement
+    element.dispatchEvent(new Event('change')); // choixSelectionne appelée implicitement
     expect(component.outils.outilActif.parametres[1].optionChoisie).toBe('A');
   });
 
-  it('#onSelect devrait changer la valeur du paramètre si l\'évènement qui lui est donné est un string', () => {
+  it('#choixSelectionne devrait changer la valeur du paramètre si l\'évènement qui lui est donné est un string', () => {
     const element = fixture.debugElement.query(By.css('select[name="Type"]')).nativeElement;
     element.value = 'B';
-    element.dispatchEvent(new Event('change')); // onSelect appelée implicitement
+    element.dispatchEvent(new Event('change')); // choixSelectionne appelée implicitement
     expect(component.outils.outilActif.parametres[1].optionChoisie).toBe('B');
   });
 
@@ -225,7 +226,7 @@ describe('BarreOutilsComponent', () => {
     expect(component.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee).toEqual(component.porteePrincipale);
   });
 
-  it('#selectionCouleur devrait assignee portee à Portee.Secondaire si le paramètre de la fonction ne contient pas principale', () => {
+  it('#selectionCouleur devrait assignee portee à Portee.Secondaire si le paramètre de la fonction contient secondaire', () => {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -234,6 +235,17 @@ describe('BarreOutilsComponent', () => {
     component.selectionCouleur('secondaire');
     expect(component.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee).toEqual(component.porteeSecondaire);
   });
+
+  it('#selectionCouleur devrait assignee portee à Portee.fond si le paramètre de la fonction contient fond', () => {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '30%';
+    dialogConfig.panelClass = 'fenetre-couleur';
+    component.selectionCouleur('fond');
+    expect(component.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee).toEqual(Portee.Fond);
+  });
+
 
   // TESTS selectionDerniereCouleurPrimaire
 

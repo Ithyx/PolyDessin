@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, RouterModule } from '@angular/router';
 
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
-import { DessinManagerService } from 'src/app/services/dessin-manager/dessin-manager.service';
+import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/gestionnaire-dessin.service';
 import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routing.service';
 import { StockageSvgService } from 'src/app/services/stockage-svg.service';
 import { SurfaceDessinComponent } from './surface-dessin.component';
@@ -15,7 +15,7 @@ describe('SurfaceDessinComponent', () => {
   let component: SurfaceDessinComponent;
   let fixture: ComponentFixture<SurfaceDessinComponent>;
   let stockage: StockageSvgService;
-  let gestionnaireDessin: DessinManagerService;
+  let gestionnaireDessin: GestionnaireDessinService;
   let navigation: GestionnaireRoutingService;
   let routing: Router;
   let parametresCouleur: ParametresCouleurService;
@@ -37,7 +37,7 @@ describe('SurfaceDessinComponent', () => {
 
   beforeEach(() => {
     stockage = TestBed.get(StockageSvgService);
-    gestionnaireDessin = TestBed.get(DessinManagerService);
+    gestionnaireDessin = TestBed.get(GestionnaireDessinService);
     navigation = TestBed.get(GestionnaireRoutingService);
     routing = TestBed.get(Router);
     parametresCouleur = TestBed.get(ParametresCouleurService);

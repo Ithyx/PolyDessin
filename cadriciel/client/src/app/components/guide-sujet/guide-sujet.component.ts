@@ -27,7 +27,7 @@ export class GuideSujetComponent {
     }
   }
 
-  onNotify(sujet: GuideSujet) {
+  notificationRecu(sujet: GuideSujet) {
     this.notification.emit(sujet);
   }
 

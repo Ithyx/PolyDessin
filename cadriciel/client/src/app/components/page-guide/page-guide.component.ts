@@ -30,7 +30,7 @@ export class PageGuideComponent {
     }
   }
 
-  onNotify(sujet: GuideSujet) {
+  notificationRecu(sujet: GuideSujet) {
     this.sujetActif = sujet;
   }
 }
