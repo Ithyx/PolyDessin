@@ -72,7 +72,7 @@ describe('CouleurPaletteComponent', () => {
   // TEST sourisRelachee
 
   it('#sourisRelachee devrait mettre la variable booléenne sourisBas à false', () => {
-    spyOn(component, 'draw')
+    spyOn(component, 'draw');
     component.sourisRelachee(new MouseEvent('mousedown'));
     component.sourisDeplacee(new MouseEvent('mousemove')); // teste la valeur de sourisBas
     expect(component.draw).not.toHaveBeenCalled();
@@ -82,7 +82,7 @@ describe('CouleurPaletteComponent', () => {
 
   it('#sourisEnfoncee devrait mettre la variable booléenne sourisBas à true', () => {
     component.sourisEnfoncee(new MouseEvent('mousedown'));
-    spyOn(component, 'draw')
+    spyOn(component, 'draw');
     component.sourisDeplacee(new MouseEvent('mousemove')); // teste la valeur de sourisBas
     expect(component.draw).toHaveBeenCalled();
   });

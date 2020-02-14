@@ -18,7 +18,7 @@ export class GlissiereCouleurComponent implements AfterViewInit, InterfaceOutils
 
   private context2D: CanvasRenderingContext2D ;
   private sourisbas =  false
-  private hauteurChoisi: number
+  hauteurChoisi: number;
 
   ngAfterViewInit() {
     this.draw();
@@ -74,7 +74,7 @@ export class GlissiereCouleurComponent implements AfterViewInit, InterfaceOutils
 
   sourisDeplacee(evt: MouseEvent) {
     if (this.sourisbas) {
-      this.hauteurChoisi = evt.offsetY;
+      this.hauteurChoisi =  evt.offsetY;
       this.draw();
       this.couleurEmise(evt.offsetX, evt.offsetY);
     }
