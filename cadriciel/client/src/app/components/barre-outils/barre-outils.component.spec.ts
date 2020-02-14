@@ -139,7 +139,8 @@ describe('BarreOutilsComponent', () => {
   // TESTS avertissementNouveauDessin
 
   it('#avertissementNouveauDessin devrait appeler onChampFocus', () => {
-    spyOn(component, 'onChampFocus')
+    spyOn(component.dialog, 'open');
+    spyOn(component, 'onChampFocus');
     component.avertissementNouveauDessin();
     expect(component.onChampFocus).toHaveBeenCalled();
   });
@@ -149,7 +150,7 @@ describe('BarreOutilsComponent', () => {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
-    spyOn(component.dialog, 'open')
+    spyOn(component.dialog, 'open');
     component.avertissementNouveauDessin();
     expect(component.dialog.open).toHaveBeenCalledWith(AvertissementNouveauDessinComponent, dialogConfig);
   });
