@@ -10,9 +10,9 @@ import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-rac
 export class ValeurCouleurComponent {
   @Input() gestionnaireCouleur: GestionnaireCouleursService;
 
-  readonly INDEX_ROUGE = 0;
-  readonly INDEX_VERT = 1;
-  readonly INDEX_BLEU = 2;
+  INDEX_ROUGE = 0;
+  INDEX_VERT = 1;
+  INDEX_BLEU = 2;
 
   readonly LETTRES_ACCEPTEE = new Set(['a', 'b', 'c', 'd', 'e', 'f']);
 

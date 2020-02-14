@@ -24,7 +24,6 @@ describe('CouleurPaletteComponent', () => {
     component = fixture.componentInstance;
     parametresCouleur = TestBed.get(ParametresCouleurService);
     component.gestionnaireCouleur = new GestionnaireCouleursService(parametresCouleur);
-    component.gestionnaireCouleur.teinte = 'testTeinte';
     fixture.detectChanges();
   });
 
@@ -35,12 +34,14 @@ describe('CouleurPaletteComponent', () => {
   // TESTS ngOnChanges
 
   it('#ngOnChanges devrait dessiner la palette si la teinte est modifiée', () => {
+    component.gestionnaireCouleur.teinte = 'testTeinte';
     spyOn(component, 'draw');
     component.ngOnChanges(changementsTeinte);
     expect(component.draw).toHaveBeenCalled();
   });
 
   it('#ngOnChanges devrait appeler couleurPosition si hauteurChoisie n\'est pas nulle', () => {
+    component.gestionnaireCouleur.teinte = 'testTeinte';
     spyOn(component, 'couleurPosition');
     component.hauteurChoisie = hauteurTest;
     component.ngOnChanges(changementsTeinte);
@@ -54,11 +55,28 @@ describe('CouleurPaletteComponent', () => {
   });
 
   it('#ngOnChanges ne devrait rien faire si la teinte n\'est pas modifiée', () => {
+    component.gestionnaireCouleur.teinte = 'testTeinte';
     spyOn(component, 'draw');
     spyOn(component, 'couleurPosition');
     component.ngOnChanges({});
     expect(component.draw).not.toHaveBeenCalled();
     expect(component.couleurPosition).not.toHaveBeenCalled();
+  });
+  
+  // TESTS couleurPosition / draw
+
+  it('#couleurPosition devrait actualiser la couleur du service gestionnaireCouleur', () => {
+    component.gestionnaireCouleur.teinte = 'rgba(50, 50, 50,';
+    component.draw();
+    component.couleurPosition(249, 0);
+    expect(component.gestionnaireCouleur.couleur).toBe('rgba(49,49,49,');
+  });
+
+  it('#couleurPosition devrait actualiser le RGB du service gestionnaireCouleur', () => {
+    component.gestionnaireCouleur.teinte = 'rgba(50, 50, 50,';
+    component.draw();
+    component.couleurPosition(249, 0);
+    expect(component.gestionnaireCouleur.RGB).toEqual([49, 49, 49]);
   });
 
   // TEST couleurEmise
@@ -124,5 +142,5 @@ describe('CouleurPaletteComponent', () => {
     spyOn(component, 'draw');
     component.ngAfterViewInit();
     expect(component.draw).toHaveBeenCalled();
-  })
+  });
 });
