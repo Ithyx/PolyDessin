@@ -17,7 +17,7 @@ export class PageGuideComponent {
   constructor(private navigateurSujet: NavigationGuideService,
               public navigation: GestionnaireRoutingService) { }
 
-  onClick(sensParcousID: number) {
+  clic(sensParcousID: number) {
     this.navigateurSujet.ouvrirCategories(this.sujets);
 
     // L'ID est optionnel, on vérifie que le sujet actif en a bien un

@@ -1,4 +1,4 @@
-<a class="sujet" href="javascript:void(0);" [style.font-weight]="noeud.sousSujets ? 'bold' : 'normal'" (click)="onClick();">
+<a class="sujet" href="javascript:void(0);" [style.font-weight]="noeud.sousSujets ? 'bold' : 'normal'" (click)="clic();">
     <pre class="spacing" *ngFor="let index of getRange(profondeur)">&emsp;</pre>{{noeud.nom}}
 </a>
 

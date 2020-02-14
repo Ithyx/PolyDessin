@@ -17,7 +17,7 @@ export class GuideSujetComponent {
 
   getRange = (taille: number) => Array(taille);
 
-  onClick() {
+  clic() {
     if (this.noeud.sousSujets) {
       // c'est une catégorie: un click n'affiche pas la description, mais ouvre ou ferme la catégorie
       this.noeud.categorieOuverte = !this.noeud.categorieOuverte;

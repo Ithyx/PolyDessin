@@ -34,21 +34,21 @@ describe('GuideSujetComponent', () => {
     expect(component.notification.emit).toHaveBeenCalledWith(sujet);
   });
 
-  // TESTS onClick
+  // TESTS clic
 
-  it('#onClick() est appelé sur un sujet alors celui-ci doit être émit via notification', () => {
+  it('#clic() est appelé sur un sujet alors celui-ci doit être émit via notification', () => {
     component.noeud = CONTENU_GUIDE[0];   // Sujet de Bienvenue
     spyOn(component.notification, 'emit');
 
-    component.onClick();
+    component.clic();
 
     expect(component.notification.emit).toHaveBeenCalledWith(CONTENU_GUIDE[0]);
   })
 
-  it('#onClick() est appelé sur une catégorie alors celle-ci devrait être ouverte', () => {
+  it('#clic() est appelé sur une catégorie alors celle-ci devrait être ouverte', () => {
       component.noeud = CONTENU_GUIDE[1];   // Catégorie des outils
       component.noeud.categorieOuverte = false;
-      component.onClick();
+      component.clic();
       expect(component.noeud.categorieOuverte).toBe(true);
   });
 

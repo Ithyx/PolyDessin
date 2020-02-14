@@ -123,21 +123,21 @@ describe('BarreOutilsComponent', () => {
     expect(component.raccourcis.emitterNouveauDessin.next).toHaveBeenCalledWith(true);
   });
 
-  // TESTS onClick
+  // TESTS clic
 
-  it('#onClick devrait changer d\'outil', () => {
-    component.onClick(service.listeOutils[1]); // on sélectionne l'outil 2
+  it('#clic devrait changer d\'outil', () => {
+    component.clic(service.listeOutils[1]); // on sélectionne l'outil 2
     expect(service.outilActif).toBe(service.listeOutils[1]); // on vérifie que l'outil actif est bien le deuxième
   });
 
-  it('#onClick devrait mettre le nouvel outil sélectionné comme actif', () => {
-    component.onClick(service.listeOutils[1]); // on sélectionne l'outil 2
+  it('#clic devrait mettre le nouvel outil sélectionné comme actif', () => {
+    component.clic(service.listeOutils[1]); // on sélectionne l'outil 2
     expect(service.listeOutils[1].estActif).toBe(true); // on vérifie que le nouvel outil est bien "actif"
   });
 
-  it('#onClick devrait appeler la fonction viderSVGEnCours', () => {
+  it('#clic devrait appeler la fonction viderSVGEnCours', () => {
     spyOn(component.raccourcis, 'viderSVGEnCours');
-    component.onClick(service.listeOutils[2]); // on sélectionne l'outil 2 (rectangle)
+    component.clic(service.listeOutils[2]); // on sélectionne l'outil 2 (rectangle)
     expect(component.raccourcis.viderSVGEnCours).toHaveBeenCalled();
   });
 

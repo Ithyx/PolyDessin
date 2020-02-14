@@ -29,23 +29,23 @@ describe('PageGuideComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // TESTS onClick
+  // TESTS clic
 
-  it('#onClick(1) devrait le sujet après Bienvenue, le Crayon', () => {
+  it('#clic(1) devrait le sujet après Bienvenue, le Crayon', () => {
     // Correspond au bouton suivant
-    component.onClick(1);
+    component.clic(1);
     expect(component.sujetActif.nom).toBe('Crayon');
   });
 
-  it('#onClick(-1) devrait retourner le sujet avant Bienvenue, soit un SujetVide', () => {
+  it('#clic(-1) devrait retourner le sujet avant Bienvenue, soit un SujetVide', () => {
     // Correspond au bouton precedant
-    component.onClick(-1);
+    component.clic(-1);
     expect(component.sujetActif).toBe(SUJET_VIDE);
   });
 
-  it('#onClick ne devrait rein faire si le sujet Actif n\' a pas d\'ID ', () => {
+  it('#clic ne devrait rein faire si le sujet Actif n\' a pas d\'ID ', () => {
     component.sujetActif = CONTENU_GUIDE[1];
-    component.onClick(1);
+    component.clic(1);
     expect(component.sujetActif).toBe(CONTENU_GUIDE[1]);
   });
 

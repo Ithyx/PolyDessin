@@ -37,7 +37,7 @@ export class BarreOutilsComponent implements OnDestroy {
     this.raccourcis.emitterNouveauDessin.next(true);
   }
 
-  onClick(outil: OutilDessin) {
+  clic(outil: OutilDessin) {
     this.outils.outilActif.estActif = false;
     this.outils.outilActif = outil;
     this.outils.outilActif.estActif = true;
