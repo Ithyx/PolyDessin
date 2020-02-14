@@ -39,7 +39,7 @@ describe('AccueilComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('#creationDessin devrait appeler dialog.open() avec les bons parametres ',() =>{
+  it('#creationDessin devrait appeler dialog.open() avec les bons parametres ', () => {
     spyOn(component.dialog, 'open');
     component.creationDessin();
     expect(component.dialog.open).toHaveBeenCalledWith(FenetreNewDessinComponent, component.dialogConfig);

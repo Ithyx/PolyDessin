@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { Router, RoutesRecognized } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { filter, /*map,*/ pairwise } from 'rxjs/operators';
+import { filter, pairwise } from 'rxjs/operators';
 import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routing.service';
-// import { Message } from '../../../../../common/communication/message';
-// import { IndexService } from '../../services/index/index.service';
 
 @Component({
     selector: 'app-root',
@@ -15,18 +13,21 @@ export class AppComponent {
     readonly title: string = 'LOG2990';
     message = new BehaviorSubject<string>('');
 
-    constructor(// private basicService: IndexService,
+    constructor(
                 private routing: Router,
                 public gestionnaireRoutes: GestionnaireRoutingService) {
-        // this.basicService
-            // .basicGet()
-            // .pipe(map((message: Message) => `${message.title} ${message.body}`))
-            // .subscribe(this.message);
         this.routing.events
-            .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise())
-            .subscribe({next: (evenement) => {
-                gestionnaireRoutes.pagePrecedante = evenement[0].url;
-                gestionnaireRoutes.pageEnCours = evenement[1].url;
-             }});
+            .pipe(filter(this.fonctionFiltre), pairwise())
+            .subscribe({next: this.miseAJourURL});
     }
+
+    fonctionFiltre(evenement: any) {
+        return evenement instanceof RoutesRecognized
+    }
+
+    miseAJourURL(evenement: [any, any]) {
+        this.gestionnaireRoutes.pagePrecedante = evenement[0].url;
+        this.gestionnaireRoutes.pageEnCours = evenement[1].url;
+    };
+
 }
