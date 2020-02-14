@@ -62,7 +62,7 @@ describe('GlissiereCouleurComponent', () => {
   it('#sourisEnfoncee devrait changer la hauteur choisie', () => {
     component.sourisEnfoncee(new MouseEvent('mousedown', {clientY: 35}));
     expect(component.hauteurChoisi).toBe(35);
-  }); 
+  });
 
   it('#sourisEnfoncee devrait valider le dessin', () => {
     spyOn(component, 'dessin');

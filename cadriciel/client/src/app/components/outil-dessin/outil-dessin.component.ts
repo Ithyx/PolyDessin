@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { OUTIL_VIDE, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
+
+import { OutilDessin, OUTIL_VIDE } from 'src/app/services/outils/gestionnaire-outils.service';
 
 @Component({
   selector: 'app-outil-dessin',

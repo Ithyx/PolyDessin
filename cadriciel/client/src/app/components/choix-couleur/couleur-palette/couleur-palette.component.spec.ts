@@ -62,7 +62,7 @@ describe('CouleurPaletteComponent', () => {
     expect(component.dessin).not.toHaveBeenCalled();
     expect(component.couleurPosition).not.toHaveBeenCalled();
   });
-  
+
   // TESTS couleurPosition / dessin
 
   it('#couleurPosition devrait actualiser la couleur du service gestionnaireCouleur', () => {
