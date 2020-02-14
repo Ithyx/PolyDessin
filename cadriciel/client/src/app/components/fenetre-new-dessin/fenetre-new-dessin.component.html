@@ -1,4 +1,5 @@
-<h1>Paramètre pour la création d'un nouveau dessin</h1>
+<div class="nouveauDessin">
+<h1>Paramètres pour la création d'un nouveau dessin</h1>
 
 <h2>Dimension canvas</h2>
 <form [formGroup]="nouveauDessin">
@@ -9,9 +10,12 @@
 <input type="number" min = "0"  (input)="dimmensionChangeeManuellement()"  formControlName="largeurFormulaire">
 </label>
 
-<h2>Couleur Arrière-Plan (code RGB en Hexadecimal):</h2>
+<h2>Couleur d'Arrière-Plan</h2>
 <button [ngStyle]= "{'background-color': parametresCouleur.couleurFond || 'white'}" 
     (click)="selectionCouleur()" class="selection-couleur"></button>
 </form>
-<button mat-stroked-button (click)="fermerFenetre()">Annuler</button>
+
 <button mat-raised-button  (click)="validerNouveauDessin()">Créer</button>
+<button  mat-stroked-button (click)="fermerFenetre()">Annuler</button>
+
+</div>

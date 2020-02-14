@@ -66,6 +66,7 @@ export class BarreOutilsComponent implements OnDestroy {
   }
 
   avertissementNouveauDessin() {
+
     this.onChampFocus();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;

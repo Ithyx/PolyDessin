@@ -9,7 +9,7 @@
 }
 
 .sidenav {
-    width: 190px; /* Set the width of the sidebar */
+    width: 210px; /* Set the width of the sidebar */
     left: 0;
     background-color: black;
 }
@@ -17,9 +17,10 @@
 .sidenav a {
     padding: 6px 6px 6px 16px;
     text-decoration: none;
-    font-size: 25px;
+    font-size: 20px;
     color: #818181;
     display: block;
+    
 }
 
 .panneau-attributs {
@@ -27,9 +28,9 @@
     font-size: 30px;
     color: lightcyan;
     display: block;
-    width: 320px;
+    width: 300px;
     background-color: rgb(25, 25, 40);
-    left: 190px;
+    left: 210px;
     padding-bottom: 50px;
     padding-right: 25px;
 }
@@ -77,4 +78,12 @@ button {
 
 .couleur-fond {
     padding-top: 40px;
+}
+.options a:hover {
+    color: #EFE2BA;
+  }
+
+a.nonDisponible{
+    opacity: 0.4;
+    cursor: not-allowed;
 }
