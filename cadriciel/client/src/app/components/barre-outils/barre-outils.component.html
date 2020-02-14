@@ -51,8 +51,8 @@
                     (click)="selectionCouleur('principale')"></button>
             <br />
             <div class="selection-opacite">
-                <label for="opacite">Opacité: </label>
-                <input type="range" name="opacite" min="0" max="1" step="0.01"
+                <label for="opacite-principale">Opacité: </label>
+                <input type="range" name="opacite-principale" min="0" max="1" step="0.01"
                        [value]="couleur.opacitePrincipale"
                        (input)="appliquerOpacitePrincipale($event)" />
                 {{couleur.opacitePrincipaleAffichee}}%
@@ -63,8 +63,8 @@
             <button [ngStyle]= "{'background-color': couleur.getCouleurSecondaire() || 'white'}"
                     (click)="selectionCouleur('secondaire')"></button>
             <div class="selection-opacite">
-                <label for="opacite">Opacité: </label>
-                <input type="range" name="opacite" min="0" max="1" step="0.01"
+                <label for="opacite-secondaire">Opacité: </label>
+                <input type="range" name="opacite-secondaire" min="0" max="1" step="0.01"
                        [value]="couleur.opaciteSecondaire"
                        (input)="appliquerOpaciteSecondaire($event)" />
                 {{couleur.opaciteSecondaireAffichee}}%

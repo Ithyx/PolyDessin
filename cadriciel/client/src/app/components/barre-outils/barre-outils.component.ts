@@ -17,8 +17,6 @@ export class BarreOutilsComponent implements OnDestroy {
 
   porteePrincipale = Portee.Principale;
   porteeSecondaire = Portee.Secondaire;
-  opacitePrincipaleAffichee = 100;
-  opaciteSecondaireAffichee = 100;
 
   private nouveauDessinSubscription: Subscription;
 
@@ -102,16 +100,16 @@ export class BarreOutilsComponent implements OnDestroy {
   appliquerOpacitePrincipale(evenement: Event) {
     const evenementCast: HTMLInputElement = (evenement.target as HTMLInputElement);
     if (!isNaN(Number(evenementCast.value))) {
-      this.couleur.opacitePrincipale = Number(evenementCast.value);
-      this.opacitePrincipaleAffichee = Math.round(100 * Number(evenementCast.value));
+      this.couleur.opacitePrincipale = Math.max(Math.min(Number(evenementCast.value), 1), 0);
+      this.couleur.opacitePrincipaleAffichee = Math.round(100 * this.couleur.opacitePrincipale);
     }
   }
 
   appliquerOpaciteSecondaire(evenement: Event) {
     const evenementCast: HTMLInputElement = (evenement.target as HTMLInputElement);
     if (!isNaN(Number(evenementCast.value))) {
-      this.couleur.opaciteSecondaire = Number(evenementCast.value);
-      this.opaciteSecondaireAffichee = Math.round(100 * Number(evenementCast.value));
+      this.couleur.opaciteSecondaire = Math.max(Math.min(Number(evenementCast.value), 1), 0);
+      this.couleur.opaciteSecondaireAffichee = Math.round(100 * this.couleur.opaciteSecondaire);
     }
   }
 }

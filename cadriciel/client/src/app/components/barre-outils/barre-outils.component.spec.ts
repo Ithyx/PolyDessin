@@ -15,7 +15,8 @@ const outilTestActif: OutilDessin = {
   nom: 'stubActif',
   estActif: true,
   ID: 0,
-  parametres: [{type: 'number', nom: 'Épaisseur', valeur: 5}]
+  parametres: [{type: 'number', nom: 'Épaisseur', valeur: 5},
+               {type: 'select', nom: 'Type', options: ['A', 'B'], optionChoisie: 'A'}]
 };
 
 const outilTestInactif: OutilDessin = {
@@ -38,7 +39,10 @@ const GestionnaireOutilServiceStub: Partial<GestionnaireOutilsService> = {
     outilTestInactif,
     rectangle
   ],
-  outilActif: outilTestActif
+  outilActif: outilTestActif,
+  trouverIndexParametre(nomParametre) {
+    return (nomParametre === 'Épaisseur') ? 0 : 1;
+  }
 }
 
 describe('BarreOutilsComponent', () => {
@@ -111,14 +115,46 @@ describe('BarreOutilsComponent', () => {
 
   // TESTS onChange
 
-  it("#onChange ne devrait pas changer la valeur du paramètre[0](épaisseur) si l'évènement qui lui est donné n'est pas un chiffre", () => {
+  it("#onChange ne devrait pas changer la valeur de l'épaisseur si l'évènement "
+    + "qui lui est donné n'est pas un chiffre", () => {
     const element = fixture.debugElement.query(By.css('input[name="Épaisseur"]')).nativeElement;
     element.value = 'c';
     element.dispatchEvent(new Event('input')); // onChange appelée implicitement
-    expect(component.outils.listeOutils[0].parametres[0].valeur).toBe(5);
+    expect(component.outils.outilActif.parametres[0].valeur).toBe(5);
+  });
+
+  it("#onChange devrait changer la valeur de l'épaisseur si l'évènement "
+    + 'qui lui est donné est un chiffre', () => {
+    const element = fixture.debugElement.query(By.css('input[name="Épaisseur"]')).nativeElement;
+    element.value = '1';
+    element.dispatchEvent(new Event('change')); // onChange appelée implicitement
+    expect(component.outils.outilActif.parametres[0].valeur).toBe(1);
+  });
+
+  it("#onChange devrait changer la valeur de l'épaisseur à 1 si l'évènement "
+    + 'qui lui est donné est inférieur à 1', () => {
+    const element = fixture.debugElement.query(By.css('input[name="Épaisseur"]')).nativeElement;
+    element.value = '0';
+    element.dispatchEvent(new Event('change')); // onChange appelée implicitement
+    expect(component.outils.outilActif.parametres[0].valeur).toBe(1);
   });
 
   // TESTS onSelect
+
+  it("#onSelect ne devrait pas changer la valeur du paramètre si l'évènement "
+    + 'qui lui est donné n\'est pas un string', () => {
+    const element = fixture.debugElement.query(By.css('select[name="Type"]')).nativeElement;
+    element.dispatchEvent(new Event('change')); // onSelect appelée implicitement
+    expect(component.outils.outilActif.parametres[1].optionChoisie).toBe('A');
+  });
+
+  it("#onSelect devrait changer la valeur du paramètre si l'évènement "
+    + 'qui lui est donné est un string', () => {
+    const element = fixture.debugElement.query(By.css('select[name="Type"]')).nativeElement;
+    element.value = 'B';
+    element.dispatchEvent(new Event('change')); // onSelect appelée implicitement
+    expect(component.outils.outilActif.parametres[1].optionChoisie).toBe('B');
+  });
 
   // TESTS onChampFocus
 
@@ -178,5 +214,89 @@ describe('BarreOutilsComponent', () => {
     spyOn(evenement, 'preventDefault')
     component.selectionDerniereCouleurSecondaire('rgba(1, 1, 1, ', evenement);
     expect(evenement.preventDefault).toHaveBeenCalled();
+  });
+
+  // TESTS appliquerOpacitePrincipale
+
+  it("#appliquerOpacitePrincipale ne devrait pas changer l'opacité si l'évènement "
+    + 'qui lui est donné n\'est pas un nombre', () => {
+    const element = fixture.debugElement.query(By.css('input[name="opacite-principale"]')).nativeElement;
+    element.value = 'test';
+    element.dispatchEvent(new Event('input')); // appliquerOpacitePrincipale appelée implicitement
+    expect(component.couleur.opacitePrincipale).toBe(0.5);
+  });
+
+  it("#appliquerOpacitePrincipale devrait changer l'opacité si l'évènement "
+    + 'qui lui est donné est un nombre', () => {
+    const element = fixture.debugElement.query(By.css('input[name="opacite-principale"]')).nativeElement;
+    element.value = '0.1';
+    element.dispatchEvent(new Event('input')); // appliquerOpacitePrincipale appelée implicitement
+    expect(component.couleur.opacitePrincipale).toBe(0.1);
+  });
+
+  it("#appliquerOpacitePrincipale devrait changer l'opacité à 0 si la valeur "
+    + 'qui lui est donnée est négative', () => {
+    const element = fixture.debugElement.query(By.css('input[name="opacite-principale"]')).nativeElement;
+    element.value = '-0.1';
+    element.dispatchEvent(new Event('input')); // appliquerOpacitePrincipale appelée implicitement
+    expect(component.couleur.opacitePrincipale).toBe(0);
+  });
+
+  it("#appliquerOpacitePrincipale devrait changer l'opacité à 1 si la valeur "
+    + 'qui lui est donnée est supérieure à 1', () => {
+    const element = fixture.debugElement.query(By.css('input[name="opacite-principale"]')).nativeElement;
+    element.value = '1.1';
+    element.dispatchEvent(new Event('input')); // appliquerOpacitePrincipale appelée implicitement
+    expect(component.couleur.opacitePrincipale).toBe(1);
+  });
+
+  it('#appliquerOpacitePrincipale devrait changer l\'opacité d\'affichage '
+  + 'si la valeur entree est conforme', () => {
+    const element = fixture.debugElement.query(By.css('input[name="opacite-principale"]')).nativeElement;
+    element.value = '0.75';
+    element.dispatchEvent(new Event('input')); // appliquerOpacitePrincipale appelée implicitement
+    expect(component.couleur.opacitePrincipaleAffichee).toBe(75);
+  });
+
+  // TESTS appliquerOpaciteSecondaire
+
+  it("#appliquerOpaciteSecondaire ne devrait pas changer l'opacité si l'évènement "
+    + 'qui lui est donné n\'est pas un nombre', () => {
+    const element = fixture.debugElement.query(By.css('input[name="opacite-secondaire"]')).nativeElement;
+    element.value = 'test';
+    element.dispatchEvent(new Event('input')); // appliquerOpaciteSecondaire appelée implicitement
+    expect(component.couleur.opaciteSecondaire).toBe(0.5);
+  });
+
+  it("#appliquerOpaciteSecondaire devrait changer l'opacité si l'évènement "
+    + 'qui lui est donné est un nombre', () => {
+    const element = fixture.debugElement.query(By.css('input[name="opacite-secondaire"]')).nativeElement;
+    element.value = '0.1';
+    element.dispatchEvent(new Event('input')); // appliquerOpaciteSecondaire appelée implicitement
+    expect(component.couleur.opaciteSecondaire).toBe(0.1);
+  });
+
+  it("#appliquerOpaciteSecondaire devrait changer l'opacité à 0 si la valeur "
+    + 'qui lui est donnée est négative', () => {
+    const element = fixture.debugElement.query(By.css('input[name="opacite-secondaire"]')).nativeElement;
+    element.value = '-0.1';
+    element.dispatchEvent(new Event('input')); // appliquerOpaciteSecondaire appelée implicitement
+    expect(component.couleur.opaciteSecondaire).toBe(0);
+  });
+
+  it("#appliquerOpaciteSecondaire devrait changer l'opacité à 1 si la valeur "
+    + 'qui lui est donnée est supérieure à 1', () => {
+    const element = fixture.debugElement.query(By.css('input[name="opacite-secondaire"]')).nativeElement;
+    element.value = '1.1';
+    element.dispatchEvent(new Event('input')); // appliquerOpaciteSecondaire appelée implicitement
+    expect(component.couleur.opaciteSecondaire).toBe(1);
+  });
+
+  it('#appliquerOpaciteSecondaire devrait changer l\'opacité d\'affichage '
+  + 'si la valeur entree est conforme', () => {
+    const element = fixture.debugElement.query(By.css('input[name="opacite-secondaire"]')).nativeElement;
+    element.value = '0.75';
+    element.dispatchEvent(new Event('input')); // appliquerOpaciteSecondaire appelée implicitement
+    expect(component.couleur.opaciteSecondaireAffichee).toBe(75);
   });
 });
