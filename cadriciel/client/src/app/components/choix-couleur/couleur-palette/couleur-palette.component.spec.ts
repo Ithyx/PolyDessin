@@ -35,9 +35,9 @@ describe('CouleurPaletteComponent', () => {
 
   it('#ngOnChanges devrait dessiner la palette si la teinte est modifiée', () => {
     component.gestionnaireCouleur.teinte = 'testTeinte';
-    spyOn(component, 'draw');
+    spyOn(component, 'dessin');
     component.ngOnChanges(changementsTeinte);
-    expect(component.draw).toHaveBeenCalled();
+    expect(component.dessin).toHaveBeenCalled();
   });
 
   it('#ngOnChanges devrait appeler couleurPosition si hauteurChoisie n\'est pas nulle', () => {
@@ -56,25 +56,25 @@ describe('CouleurPaletteComponent', () => {
 
   it('#ngOnChanges ne devrait rien faire si la teinte n\'est pas modifiée', () => {
     component.gestionnaireCouleur.teinte = 'testTeinte';
-    spyOn(component, 'draw');
+    spyOn(component, 'dessin');
     spyOn(component, 'couleurPosition');
     component.ngOnChanges({});
-    expect(component.draw).not.toHaveBeenCalled();
+    expect(component.dessin).not.toHaveBeenCalled();
     expect(component.couleurPosition).not.toHaveBeenCalled();
   });
   
-  // TESTS couleurPosition / draw
+  // TESTS couleurPosition / dessin
 
   it('#couleurPosition devrait actualiser la couleur du service gestionnaireCouleur', () => {
     component.gestionnaireCouleur.teinte = 'rgba(50, 50, 50,';
-    component.draw();
+    component.dessin();
     component.couleurPosition(249, 0);
     expect(component.gestionnaireCouleur.couleur).toBe('rgba(49,49,49,');
   });
 
   it('#couleurPosition devrait actualiser le RGB du service gestionnaireCouleur', () => {
     component.gestionnaireCouleur.teinte = 'rgba(50, 50, 50,';
-    component.draw();
+    component.dessin();
     component.couleurPosition(249, 0);
     expect(component.gestionnaireCouleur.RGB).toEqual([49, 49, 49]);
   });
@@ -90,19 +90,19 @@ describe('CouleurPaletteComponent', () => {
   // TEST sourisRelachee
 
   it('#sourisRelachee devrait mettre la variable booléenne sourisBas à false', () => {
-    spyOn(component, 'draw');
+    spyOn(component, 'dessin');
     component.sourisRelachee(new MouseEvent('mousedown'));
     component.sourisDeplacee(new MouseEvent('mousemove')); // teste la valeur de sourisBas
-    expect(component.draw).not.toHaveBeenCalled();
+    expect(component.dessin).not.toHaveBeenCalled();
   });
 
   // TESTS sourisEnfoncee
 
   it('#sourisEnfoncee devrait mettre la variable booléenne sourisBas à true', () => {
     component.sourisEnfoncee(new MouseEvent('mousedown'));
-    spyOn(component, 'draw');
+    spyOn(component, 'dessin');
     component.sourisDeplacee(new MouseEvent('mousemove')); // teste la valeur de sourisBas
-    expect(component.draw).toHaveBeenCalled();
+    expect(component.dessin).toHaveBeenCalled();
   });
 
   it('#sourisEnfoncee devrait changer la hauteur choisie', () => {
@@ -111,9 +111,9 @@ describe('CouleurPaletteComponent', () => {
   });
 
   it('#sourisEnfoncee devrait dessiner la palette de couleur', () => {
-    spyOn(component, 'draw')
+    spyOn(component, 'dessin')
     component.sourisEnfoncee(new MouseEvent('mousedown'));
-    expect(component.draw).toHaveBeenCalled();
+    expect(component.dessin).toHaveBeenCalled();
   });
 
   it('#sourisEnfoncee devrait appeler couleurPosition sur les coordonnées du clic', () => {
@@ -139,8 +139,8 @@ describe('CouleurPaletteComponent', () => {
 
   // TEST ngAfterViewInit
   it('#ngAfterViewInit devrait dessiner la palette de couleurs', () => {
-    spyOn(component, 'draw');
+    spyOn(component, 'dessin');
     component.ngAfterViewInit();
-    expect(component.draw).toHaveBeenCalled();
+    expect(component.dessin).toHaveBeenCalled();
   });
 });
