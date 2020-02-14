@@ -1,7 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatDialogModule} from '@angular/material';
+import { MatButtonModule, MatDialogConfig, MatDialogModule} from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -45,7 +45,7 @@ import { StockageSvgService } from './services/stockage-svg.service';
     ])],
     providers: [NavigationGuideService, StockageSvgService, DessinCrayonService, DessinManagerService,
                 GestionnaireRaccourcisService, DessinRectangleService, DessinLigneService,
-                GestionnaireRoutingService, ParametresCouleurService],
+                GestionnaireRoutingService, ParametresCouleurService, MatDialogConfig],
     entryComponents: [FenetreNewDessinComponent, AvertissementNouveauDessinComponent, ChoixCouleurComponent],
     bootstrap: [AppComponent],
 })
