@@ -10,15 +10,15 @@ import { FenetreNewDessinComponent } from '../fenetre-new-dessin/fenetre-new-des
 })
 export class AccueilComponent {
 
-  constructor(private dialog: MatDialog,
-              public dessinManager: DessinManagerService) {}
+  constructor(public dialog: MatDialog,
+              public dessinManager: DessinManagerService,
+              public dialogConfig: MatDialogConfig) {
+                dialogConfig.disableClose = true;
+                dialogConfig.autoFocus = true;
+                dialogConfig.width = '60%'; }
 
   creationDessin() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '60%';
-    this.dialog.open(FenetreNewDessinComponent, dialogConfig);
+    this.dialog.open(FenetreNewDessinComponent, this.dialogConfig);
   }
 
 }
