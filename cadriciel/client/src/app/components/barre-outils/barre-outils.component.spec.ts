@@ -215,33 +215,18 @@ describe('BarreOutilsComponent', () => {
   });
 
   it('#selectionCouleur devrait assignee portee à Portee.Principale si le paramètre de la fonction contient principale', () => {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '30%';
-    dialogConfig.panelClass = 'fenetre-couleur';
     component.selectionCouleur('principale');
-    expect(component.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee).toEqual(component.porteePrincipale);
+    expect(component.fenetreDessin.portee).toEqual(component.porteePrincipale);
   });
 
   it('#selectionCouleur devrait assignee portee à Portee.Secondaire si le paramètre de la fonction contient secondaire', () => {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '30%';
-    dialogConfig.panelClass = 'fenetre-couleur';
     component.selectionCouleur('secondaire');
-    expect(component.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee).toEqual(component.porteeSecondaire);
+    expect(component.fenetreDessin.portee).toEqual(component.porteeSecondaire);
   });
 
   it('#selectionCouleur devrait assignee portee à Portee.fond si le paramètre de la fonction contient fond', () => {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '30%';
-    dialogConfig.panelClass = 'fenetre-couleur';
     component.selectionCouleur('fond');
-    expect(component.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee).toEqual(Portee.Fond);
+    expect(component.fenetreDessin.portee).toEqual(Portee.Fond);
   });
 
   // TESTS selectionDerniereCouleurPrimaire

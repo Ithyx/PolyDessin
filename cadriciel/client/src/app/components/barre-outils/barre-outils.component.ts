@@ -17,6 +17,7 @@ export class BarreOutilsComponent implements OnDestroy {
 
   porteePrincipale = Portee.Principale;
   porteeSecondaire = Portee.Secondaire;
+  fenetreDessin: ChoixCouleurComponent;
 
   private nouveauDessinSubscription: Subscription;
 
@@ -78,12 +79,15 @@ export class BarreOutilsComponent implements OnDestroy {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '30%';
     dialogConfig.panelClass = 'fenetre-couleur';
+    this.fenetreDessin = this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance;
     if (porteeEntree === 'principale') {
-      this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Portee.Principale;
-    } else if (porteeEntree === 'secondaire') {
-      this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Portee.Secondaire;
-    } else if (porteeEntree === 'fond') {
-      this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Portee.Fond;
+      this.fenetreDessin.portee = Portee.Principale;
+    }
+    if (porteeEntree === 'secondaire') {
+      this.fenetreDessin.portee = Portee.Secondaire;
+    }
+    if (porteeEntree === 'fond') {
+      this.fenetreDessin.portee = Portee.Fond;
     }
   }
 
