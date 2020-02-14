@@ -75,8 +75,6 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
     const width = this.canvas.nativeElement.width;
     const height = this.canvas.nativeElement.height;
 
-    console.log('Teinte: ', this.gestionnaireCouleur.teinte);
-
     this.context2D.fillStyle = this.gestionnaireCouleur.teinte + '1)';
     this.context2D.fillRect(0, 0, width, height);
 
