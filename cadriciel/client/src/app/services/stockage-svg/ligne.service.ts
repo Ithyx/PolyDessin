@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Point } from '../outils/dessin-ligne.service';
-import { OutilDessin } from '../outils/gestionnaire-outils.service';
+import { OUTIL_VIDE, OutilDessin } from '../outils/gestionnaire-outils.service';
 import { ElementDessin } from './element-dessin';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class LigneService implements ElementDessin {
   points: Point[] = [];
   estPolygone = false;
   positionSouris = {x: 0, y: 0};
-  outil: OutilDessin;
+  outil: OutilDessin = OUTIL_VIDE;
 
   dessiner() {
     this.SVG = (this.estPolygone) ? '<polygon ' : '<polyline ';
