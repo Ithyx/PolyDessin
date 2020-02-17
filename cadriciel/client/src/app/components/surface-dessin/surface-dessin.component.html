@@ -1,4 +1,5 @@
-<svg class="vue-dessin" [attr.width.px]="gestionnaireDessin.longueur" [attr.height.px]="gestionnaireDessin.hauteur" [attr.width.px]="gestionnaireDessin.largeur" version="1.1" xlmns="http://www.w3.org/2000/svg">
+<svg class="vue-dessin" [attr.width.px]="gestionnaireDessin.longueur" [attr.height.px]="gestionnaireDessin.hauteur" [attr.width.px]="gestionnaireDessin.largeur" version="1.1" xlmns="http://www.w3.org/2000/svg"
+    onload="elementSelectionne($event)">
     
     <defs>
         <!-- Texture libre de droit-->
@@ -37,7 +38,7 @@
     </defs>
     
     <rect x="0" y="0" [attr.width.px]="gestionnaireDessin.longueur" [attr.height.px]="gestionnaireDessin.hauteur" [attr.width.px]="gestionnaireDessin.largeur" [attr.fill]="parametresCouleur.couleurFond" />
-    <g *ngFor="let SVG of stockage.getSVGComplets() | keyvalue;" [innerHTML]="SVG.value"></g>
+    <g *ngFor="let SVG of stockage.getSVGComplets() | keyvalue;" (click)="sourisCliquee($event, SVG)" [innerHTML]="SVG.value"></g>
     <g [innerHTML]="stockage.getSVGEnCoursHTML()"></g>
     <g [innerHTML]="stockage.getPerimetreEnCoursHTML()"></g>
 </svg>

@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { DessinLigneService } from './outils/dessin-ligne.service';
 import { DessinRectangleService } from './outils/dessin-rectangle.service';
 import { GestionnaireOutilsService, INDEX_OUTIL_CRAYON,
-         INDEX_OUTIL_LIGNE, INDEX_OUTIL_PINCEAU , INDEX_OUTIL_RECTANGLE } from './outils/gestionnaire-outils.service';
+         INDEX_OUTIL_LIGNE, INDEX_OUTIL_PINCEAU , INDEX_OUTIL_RECTANGLE, INDEX_OUTIL_SELECTION } from './outils/gestionnaire-outils.service';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +42,11 @@ export class GestionnaireRaccourcisService {
 
       case 'w':
         this.outils.changerOutilActif(INDEX_OUTIL_PINCEAU);
+        this.viderSVGEnCours();
+        break;
+
+      case 's':
+        this.outils.changerOutilActif(INDEX_OUTIL_SELECTION);
         this.viderSVGEnCours();
         break;
 
