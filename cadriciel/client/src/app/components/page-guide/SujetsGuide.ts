@@ -1,7 +1,7 @@
 import { GuideSujet } from '../guide-sujet/guide-sujet';
 
 export const CONTENU_GUIDE: GuideSujet[] = [
-    // Index 0 - Sujet 1
+    // Sujet 1
     {
       nom: 'Bienvenue',
       id: 1,
@@ -15,7 +15,7 @@ export const CONTENU_GUIDE: GuideSujet[] = [
       precedant: false,
       suivant: true
     },
-    // Index 1 - Catégorie 1
+    // Catégorie 1 : Outils
     {
         nom: 'Outils',
         description: '',
@@ -23,54 +23,102 @@ export const CONTENU_GUIDE: GuideSujet[] = [
         suivant: false,
         categorieOuverte: false,
         sousSujets: [
-            // Index 2 - Outil 1
+            // Catégorie 2 : Outils de Traçages
             {
-                nom: 'Crayon',
-                description: `<h1> Crayon </h1>
+                nom: 'Traçages',
+                description: '',
+                precedant: false,
+                suivant: false,
+                categorieOuverte: false,
+                sousSujets: [
+                    // Sujet 2
+                    {
+                        nom: 'Crayon',
+                        description: `<h1> Crayon </h1>
                               <hr>
                               <p> Le crayon est l'outil de traçage de base permettant de dessiner de simples traits
                               avec une pointe ronde. </p>
                               <img src="assets/crayon.gif" width="300" height="300">
                               <p> Les paramètres personalisables sont:
                               <li> Épaisseur du trait (en px) </li> </p>`,
-                precedant: true,
-                suivant: true,
-                id: 2
-            },
-            // Index 3 - Outil 2
-            {
-                nom: 'Pinceau',
-                description: `<h1> Pinceau </h1>
+                        precedant: true,
+                        suivant: true,
+                        id: 2
+                    },
+                    // Sujet 3
+                    {
+                        nom: 'Pinceau',
+                        description: `<h1> Pinceau </h1>
                               <hr>
                               <p> Le pinceau est très similaire au crayon, mais offre une texture supplémentaire.</p>
                               <img src="assets/pinceau.gif" width="300" height="300">
                               <p> Les paramètres personalisables sont:
                               <li> Épaisseur du trait (en px) </li> <li> Texture du trait </li> </p>`,
-                precedant: true,
-                suivant: true,
-                id: 3
+                        precedant: true,
+                        suivant: true,
+                        id: 3
+                    },
+                    // Sujet 4
+                    {
+                        nom: 'Aérosol',
+                        description: `<h1> Aérosol </h1>
+                                      <hr>
+                                      <p> <p>`,
+                        precedant: true,
+                        suivant: true,
+                        id: 4
+                    },
+                ]
             },
-            // Index 4 - Outil 3
+            // Catégorie 3 : Outils de Formes
             {
-                nom: 'Rectangle',
-                description: `<h1> Rectangle </h1>
+                nom: 'Formes',
+                description: '',
+                precedant: false,
+                suivant: false,
+                categorieOuverte: false,
+                sousSujets: [
+                    {
+                        // Sujet 5
+                        nom: 'Rectangle',
+                        description: `<h1> Rectangle </h1>
+                                      <hr>
+                                      <p> Après avoir sélectionné l'outil, il suffit à l'utilisateur de "glisser-déposer"
+                                      vers la zone de dessin pour créer un rectangle. En maintenant le clic gauche enfoncé,
+                                      on peut choisir la forme de notre rectangle en navigant avec la souris. </p>
+                                      <img src="assets/rectangle.gif" width="300" height="300">
+                                      <p> L'enfoncement de la touche SHIFT transforme le rectangle en cours de création au 
+                                      carré le plus proche et vice-versa. </p>
+                                      <p> Les paramètres personalisables sont:
+                                      <li> Épaisseur du trait de coutour (en px) </li> <li> Type de tracé </li> </p>`,
+                        precedant: true,
+                        suivant: true,
+                        id: 5
+                    },
+                    // Sujet 6
+                    {
+                        nom: 'Ellipse',
+                        description: `<h1> Ellipse </h1>
                               <hr>
-                              <p> Après avoir sélectionné l'outil, il suffit à l'utilisateur de "glisser-déposer" vers la zone de dessin
-                              pour créer un rectangle. En maintenant le clic gauche enfoncé, on peut choisir la forme de notre rectangle
-                              en navigant avec la souris. </p>
-                              <img src="assets/rectangle.gif" width="300" height="300">
-                              <p> L'enfoncement de la touche SHIFT transforme le rectangle en cours de création au carré le plus proche et
-                              vice-versa. </p>
-                              <p> Les paramètres personalisables sont:
-                              <li> Épaisseur du trait de coutour (en px) </li> <li> Type de tracé </li> </p>`,
-                precedant: true,
-                suivant: true,
-                id: 4
-            },
-            // Index 5 - Outil 4
-            {
-                nom: 'Ligne',
-                description: `<h1> Ligne </h1>
+                              <p> <p>`,
+                        precedant: true,
+                        suivant: true,
+                        id: 6
+                    },
+                    // Sujet 7
+                    {
+                        nom: 'Polygone',
+                        description: `<h1> Polygone </h1>
+                              <hr>
+                              <p> <p>`,
+                        precedant: true,
+                        suivant: true,
+                        id: 7
+                    },
+                    // Sujet 8
+                    {
+                        nom: 'Ligne',
+                        description: `<h1> Ligne </h1>
                               <hr>
                               <p> L'outil ligne permet de tracer une ou plusieurs segments d'une ligne. Il suffit, après avoir
                               sélectionné l'outil, de choisir le début de la ligne avec un clic quelque part sur la zone de dessin. Ensuite,
@@ -83,14 +131,24 @@ export const CONTENU_GUIDE: GuideSujet[] = [
                               <p> Les paramètres personalisables sont:
                               <li> Épaisseur du trait (en px) </li> <li> Type de jonction </li>
                               <li> Diamètre des jonctions </li></p>`,
-                precedant: true,
-                suivant: true,
-                id: 5
+                        precedant: true,
+                        suivant: true,
+                        id: 8
+                    },
+                ]
             },
-            // Index 6 - Outil 5
+            // Catégorie 4 : Outils de Couleurs
             {
-                nom: 'Couleur',
-                description: `<h1> Couleur </h1>
+                nom: 'Couleurs',
+                description: '',
+                precedant: false,
+                suivant: false,
+                categorieOuverte: false,
+                sousSujets: [
+                    // Sujet 9
+                    {
+                        nom: 'Couleur',
+                        description: `<h1> Couleur </h1>
                               <hr>
                               <p> L'outil couleur est un paramètre partagé entre tous les outils, il est d'ailleurs disponible dans le
                               panneau paramètre de chacun d'entre eux. Celui-ci offre deux couleurs configurable: la couleur "principale"
@@ -101,9 +159,51 @@ export const CONTENU_GUIDE: GuideSujet[] = [
                               , l'utilisateur peut changer sa couleur principale et avec un clic gauche, sa couleur secondaire.</p>
                               <p> Les paramètres personalisables sont:
                               <li> Le code RGB </li> <li> L'opacité </li> </p>`,
+                        precedant: true,
+                        suivant: true,
+                        id: 9
+                    },
+                    // Sujet 10
+                    {
+                        nom: 'Pipette',
+                        description: `<h1> Pipette </h1>
+                                      <hr>
+                                      <p> <p>`,
+                        precedant: true,
+                        suivant: true,
+                        id: 10
+                    },
+                    // Sujet 11
+                    {
+                        nom: 'Applicateur de Couleur',
+                        description: `<h1> Applicateur de couleur </h1>
+                                      <hr>
+                                      <p> <p>`,
+                        precedant: true,
+                        suivant: true,
+                        id: 11
+                    },
+                ]
+            },
+            // Sujet 12
+            {
+                nom: 'Selection',
+                description: `<h1> Selection </h1>
+                              <hr>
+                              <p> <p>`,
+                precedant: true,
+                suivant: true,
+                id: 12
+            },
+            // Sujet 13
+            {
+                nom: 'Efface',
+                description: `<h1> Efface </h1>
+                              <hr>
+                              <p> <p>`,
                 precedant: true,
                 suivant: false,
-                id: 6
+                id: 13
             },
         ]
     },
