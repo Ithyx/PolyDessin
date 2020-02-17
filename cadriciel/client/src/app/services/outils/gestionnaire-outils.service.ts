@@ -91,4 +91,15 @@ export const LISTE_OUTILS: OutilDessin[] = [
       {type: 'number', nom: 'Diamètre des jonctions', valeur: 5}
     ]
   },
+  {
+    nom: 'Selection',
+    estActif: false,
+    ID: 4,
+    nomIcone: 'fas fa-vector-square',
+    parametres: [
+      {type: 'number', nom: 'Épaisseur', valeur: 5},
+      {type: 'select', nom: 'Type de jonction', optionChoisie: 'Avec points', options: ['Avec points', 'Sans points']},
+      {type: 'number', nom: 'Diamètre des jonctions', valeur: 5}
+    ]
+  },
 ];
