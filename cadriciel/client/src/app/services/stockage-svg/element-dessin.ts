@@ -1,6 +1,5 @@
-import { SafeHtml } from '@angular/platform-browser';
-
 export interface ElementDessin {
-  SVG: SafeHtml;
+  SVG: string;
+  estSelectionne: boolean;
   dessiner(): void;
 }

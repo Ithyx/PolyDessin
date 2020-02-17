@@ -8,6 +8,7 @@ import { ElementDessin } from './element-dessin';
 })
 export class LigneService implements ElementDessin {
   SVG: string;
+  estSelectionne = false;
 
   points: Point[] = [];
   estPolygone = false;
