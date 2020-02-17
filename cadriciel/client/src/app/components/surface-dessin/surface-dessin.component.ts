@@ -19,7 +19,7 @@ export class SurfaceDessinComponent {
               public parametresCouleur: ParametresCouleurService,
               public selection: SelectionService) {
     if (parametresCouleur.couleurFond === undefined) {
-      routing.navigate([navigation.pagePrecedante]);
+      routing.navigate([navigation.pagePrecedente]);
     }
   }
 
