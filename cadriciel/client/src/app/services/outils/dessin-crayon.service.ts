@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
 import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
+import { TraitCrayonService } from '../stockage-svg/trait-crayon.service';
 import { GestionnaireOutilsService } from './gestionnaire-outils.service';
 import { InterfaceOutils } from './interface-outils';
 
@@ -14,24 +15,20 @@ export class DessinCrayonService implements InterfaceOutils {
               public outils: GestionnaireOutilsService,
               public couleur: ParametresCouleurService) { }
 
+  trait = new TraitCrayonService();
   traitEnCours = false;
   peutCliquer = true;
 
   sourisDeplacee(souris: MouseEvent) {
     if (this.traitEnCours) {
-      let crayon: string = this.stockageSVG.getSVGEnCours();
-
-      crayon += 'L' + souris.offsetX + ' ' + souris.offsetY + ' "/>';
-      this.stockageSVG.setSVGEnCours(crayon);
+      this.trait.points.push({x: souris.offsetX, y: souris.offsetY});
+      this.actualiserSVG();
     }
   }
 
   sourisEnfoncee(souris: MouseEvent) {
     this.traitEnCours = true;
-    this.stockageSVG.setSVGEnCours(
-      `<path fill="transparent" stroke="${this.couleur.getCouleurPrincipale()}" stroke-linecap="round" stroke-width="`
-      + this.outils.outilActif.parametres[0].valeur
-      + '" d="M' + souris.offsetX + ' ' + souris.offsetY + '"/>');
+    this.actualiserSVG();
   }
 
   sourisRelachee() {
@@ -39,9 +36,10 @@ export class DessinCrayonService implements InterfaceOutils {
       const SVG: string = this.stockageSVG.getSVGEnCours();
       if (SVG.includes('L')) {
           // on ne stocke le path que s'il n'y a au moins une ligne
-        this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '" />');
+        this.stockageSVG.ajouterSVG(this.trait.SVG);
         this.stockageSVG.setSVGEnCours('');
       }
+      this.trait = new TraitCrayonService();
       this.traitEnCours = false;
       this.peutCliquer = true;
     }
@@ -50,10 +48,11 @@ export class DessinCrayonService implements InterfaceOutils {
   sourisCliquee(souris: MouseEvent) {
     if (this.peutCliquer) {
       if (this.outils.outilActif.parametres[0].valeur) {
-        const SVG = '<circle cx="' + souris.offsetX + '" cy="' + souris.offsetY + '" r="'
-        + this.outils.outilActif.parametres[0].valeur / 2
-        + '" fill="' + this.couleur.getCouleurPrincipale() + '"/>';
-        this.stockageSVG.ajouterSVG(SVG);
+        this.trait.points.push({x: souris.offsetX, y: souris.offsetY});
+        this.trait.estPoint = true;
+        this.actualiserSVG();
+        this.stockageSVG.ajouterSVG(this.trait.SVG);
+        this.trait = new TraitCrayonService();
       }
       this.traitEnCours = false;
     } else {this.peutCliquer = true};
@@ -61,10 +60,18 @@ export class DessinCrayonService implements InterfaceOutils {
 
   sourisSortie() {
     if (this.traitEnCours) {
-      this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '"/>');
+      this.stockageSVG.ajouterSVG(this.trait.SVG);
+      this.trait = new TraitCrayonService();
       this.stockageSVG.setSVGEnCours('');
       this.traitEnCours = false;
     }
     this.peutCliquer = false;
+  }
+
+  actualiserSVG() {
+    this.trait.couleur = this.couleur.getCouleurPrincipale();
+    this.trait.outil = this.outils.outilActif;
+    this.trait.dessiner();
+    this.stockageSVG.setSVGEnCours(this.trait.SVG);
   }
 }

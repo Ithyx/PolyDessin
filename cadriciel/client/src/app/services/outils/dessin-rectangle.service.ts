@@ -30,6 +30,7 @@ export class DessinRectangleService implements InterfaceOutils {
     this.rectangle.couleurSecondaire = this.couleur.getCouleurSecondaire();
     this.rectangle.dessiner();
     this.stockageSVG.setSVGEnCours(this.rectangle.SVG);
+    this.stockageSVG.setPerimetreEnCours(this.rectangle.perimetre);
   }
 
   sourisDeplacee(souris: MouseEvent) {
@@ -64,6 +65,7 @@ export class DessinRectangleService implements InterfaceOutils {
     if (this.rectangle.largeur !== 0 || this.rectangle.hauteur !== 0) {
       this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '"/>');
     }
+    this.rectangle = new RectangleService();
     this.stockageSVG.setSVGEnCours('');
     this.stockageSVG.setPerimetreEnCours('');
   }

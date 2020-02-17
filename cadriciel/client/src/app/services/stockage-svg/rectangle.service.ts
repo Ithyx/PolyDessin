@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Point } from '../outils/dessin-ligne.service';
-import { OutilDessin } from '../outils/gestionnaire-outils.service';
+import { OUTIL_VIDE, OutilDessin } from '../outils/gestionnaire-outils.service';
 import { ElementDessin } from './element-dessin';
 
 @Injectable({
@@ -14,7 +14,7 @@ export class RectangleService implements ElementDessin {
   couleurPrincipale: string;
   couleurSecondaire: string;
 
-  outil: OutilDessin;
+  outil: OutilDessin = OUTIL_VIDE;
   base: Point = {x: 0, y: 0};
   largeur = 0;
   hauteur = 0;
@@ -55,6 +55,8 @@ export class RectangleService implements ElementDessin {
       this.perimetre += '" x="' + this.base.x + '" y="' + this.base.y
         + '" height="' + this.hauteur + '" width="' + this.largeur + '"/>'
     } else {
+      this.perimetre += '" x="' + (this.base.x - epaisseur / 2)
+        + '" y="' + (this.base.y - epaisseur / 2);
       this.perimetre += '" height="' + ((this.hauteur === 0) ? epaisseur : (this.hauteur + epaisseur))
         + '" width="' + ((this.largeur === 0) ? epaisseur : (this.largeur + epaisseur)) + '"/>'
     }
