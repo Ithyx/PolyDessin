@@ -17,7 +17,7 @@ export class SurfaceDessinComponent {
               public routing: Router,
               public parametresCouleur: ParametresCouleurService) {
     if (parametresCouleur.couleurFond === undefined) {
-      routing.navigate([navigation.pagePrecedante]);
+      routing.navigate([navigation.pagePrecedente]);
     }
   }
 }
