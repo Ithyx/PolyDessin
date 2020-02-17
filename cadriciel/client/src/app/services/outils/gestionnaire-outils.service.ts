@@ -4,6 +4,7 @@ export const INDEX_OUTIL_CRAYON = 0;
 export const INDEX_OUTIL_PINCEAU = 1;
 export const INDEX_OUTIL_RECTANGLE = 2;
 export const INDEX_OUTIL_LIGNE = 3;
+export const INDEX_OUTIL_SELECTION = 4;
 
 export interface ParametreOutil {
   type: string;
@@ -97,9 +98,6 @@ export const LISTE_OUTILS: OutilDessin[] = [
     ID: 4,
     nomIcone: 'fas fa-vector-square',
     parametres: [
-      {type: 'number', nom: 'Épaisseur', valeur: 5},
-      {type: 'select', nom: 'Type de jonction', optionChoisie: 'Avec points', options: ['Avec points', 'Sans points']},
-      {type: 'number', nom: 'Diamètre des jonctions', valeur: 5}
     ]
   },
 ];
