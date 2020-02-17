@@ -148,17 +148,6 @@ describe('DessinLigneService', () => {
     expect(service.points).toEqual([]);
   });
 
-  // TESTS avecPoints
-
-  it('#avecPoints devrait créer un cercle SVG pour chaque point', () => {
-    service.points.push({x: 1, y: 1});
-    SVG = ' <circle cx="0" cy="0" r="5" fill="black"/> <circle cx="1" cy="1" r="5" fill="black"/>';
-    let testSVG: string;
-    testSVG = '';
-    testSVG = service.avecPoints(testSVG);
-    expect(testSVG).toBe(SVG);
-  });
-
   // TESTS retirerPoint
 
   it('#retirerPoint devrait rien faire si le conteneur points contient moins que deux point', () => {
