@@ -12,12 +12,16 @@ export class SelectionService implements InterfaceOutils {
               public outils: GestionnaireOutilsService,
              ) { }
 
+  // Cliquee sélectionne l'objet
   sourisCliquee(evenement: MouseEvent, cle: number) {
     if (this.outils.outilActif.ID === INDEX_OUTIL_SELECTION) {
       console.log('selection', evenement, cle);
 
-      this.stockageSVG.getSVGComplets().get(cle);
     }
   }
+
+  // Garder la souris enfoncee créait un rectangle de sélection
+
+  // Méthode pour la création de la "hitbox"
 
 }
