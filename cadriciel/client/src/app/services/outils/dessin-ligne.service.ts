@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { StockageSvgService } from '../stockage-svg.service';
+import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
 import { GestionnaireOutilsService } from './gestionnaire-outils.service';
 import { InterfaceOutils } from './interface-outils';
 

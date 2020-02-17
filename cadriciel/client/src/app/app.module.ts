@@ -31,7 +31,7 @@ import { NavigationGuideService } from './services/navigation-guide.service';
 import { DessinCrayonService } from './services/outils/dessin-crayon.service';
 import { DessinLigneService } from './services/outils/dessin-ligne.service';
 import { DessinRectangleService } from './services/outils/dessin-rectangle.service';
-import { StockageSvgService } from './services/stockage-svg.service';
+import { StockageSvgService } from './services/stockage-svg/stockage-svg.service';
 
 @NgModule({
     declarations: [AppComponent, AccueilComponent, AvertissementNouveauDessinComponent, PageDessinComponent, PageGuideComponent,

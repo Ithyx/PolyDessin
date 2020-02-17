@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { StockageSvgService } from '../stockage-svg.service';
+import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
 import { DessinLigneService } from './dessin-ligne.service';
 import { INDEX_OUTIL_LIGNE } from './gestionnaire-outils.service';
 
