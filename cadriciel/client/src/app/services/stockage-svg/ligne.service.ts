@@ -22,7 +22,9 @@ export class LigneService implements ElementDessin {
     for (const point of this.points) {
       this.SVG += point.x + ' ' + point.y + ' ';
     }
-    this.SVG += this.positionSouris.x + ' ' + this.positionSouris.y;
+    if (!this.estPolygone) {
+      this.SVG += this.positionSouris.x + ' ' + this.positionSouris.y;
+    }
     this.SVG += '" />';
     if (this.outil.parametres[1].optionChoisie === 'Avec points') {
       this.dessinerPoints();
