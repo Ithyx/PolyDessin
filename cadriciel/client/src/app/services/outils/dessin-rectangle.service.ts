@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { AjoutSvgService } from '../commande/ajout-svg.service';
+import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
 import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
 import { RectangleService } from '../stockage-svg/rectangle.service';
 import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
@@ -22,7 +24,8 @@ export class DessinRectangleService implements InterfaceOutils {
 
   constructor(public stockageSVG: StockageSvgService,
               public outils: GestionnaireOutilsService,
-              public couleur: ParametresCouleurService) { }
+              public couleur: ParametresCouleurService,
+              public commandes: GestionnaireCommandesService) { }
 
   actualiserSVG() {
     this.rectangle.outil = this.outils.outilActif;
@@ -62,7 +65,7 @@ export class DessinRectangleService implements InterfaceOutils {
     this.rectangleEnCours = false;
     // On évite de créer des formes vides
     if (this.rectangle.largeur !== 0 || this.rectangle.hauteur !== 0) {
-      this.stockageSVG.ajouterSVG(this.rectangle);
+      this.commandes.executer(new AjoutSvgService(this.rectangle, this.stockageSVG));
     }
     this.rectangle = new RectangleService();
   }
