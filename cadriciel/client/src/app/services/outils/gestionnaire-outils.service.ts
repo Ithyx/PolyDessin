@@ -98,8 +98,8 @@ export const LISTE_OUTILS: OutilDessin[] = [
     ID: 4,
     nomIcone: 'fas fa-vector-square',
     parametres: [
-      { type: '', nom: 'Épaisseur', valeur: 3 },
-      { type: '', nom: 'Type de tracé', optionChoisie: 'Contour'}
+      { type: 'invisible', nom: 'Épaisseur', valeur: 1 },
+      { type: 'invisible', nom: 'Type de tracé', optionChoisie: 'Contour'}
     ]
   },
 ];

@@ -34,7 +34,7 @@ export class SelectionService implements InterfaceOutils {
   creerBoiteEnglobanteTraitCrayon(trait: TraitCrayonService) {
 
     // on cherche le point avec un x et un y min
-    const pointMin: Point = {x: trait.points[0].x , y: trait.points[0].y};
+    let pointMin: Point = {x: trait.points[0].x , y: trait.points[0].y};
     for (const point of trait.points) {
       if (pointMin.x > point.x) {
         pointMin.x = point.x;
@@ -44,8 +44,10 @@ export class SelectionService implements InterfaceOutils {
       }
     }
 
+    pointMin = {x: pointMin.x - 3, y: pointMin.y - 3};
+
     // on cherche le point avec un x et un y max
-    const pointMax: Point = {x: trait.points[0].x , y: trait.points[0].y};
+    let pointMax: Point = {x: trait.points[0].x , y: trait.points[0].y};
     for (const point of trait.points) {
       if (pointMax.x < point.x) {
         pointMax.x = point.x;
@@ -54,21 +56,16 @@ export class SelectionService implements InterfaceOutils {
         pointMax.y = point.y;
       }
     }
-    // TODO: Créer Rectangle englobant le trait soit du point min vers le point max
 
-    console.log('pointMax', pointMax);
-    console.log('pointMin', pointMin);
+    pointMax = {x: pointMax.x + 3, y: pointMax.y + 3};
 
     const boite = new RectangleService();
 
     boite.outil = this.outils.outilActif;
 
-    boite.perimetre = '1';
-    boite.base.x = pointMin.x;
-    boite.base.y = pointMin.y;
+    boite.base = pointMin;
     boite.largeur = pointMax.x - pointMin.x;
     boite.hauteur = pointMax.y - pointMin.y;
-
     boite.couleurSecondaire =  'rgba(0, 0, 0, 1)';
 
     boite.dessinerRectangle();
