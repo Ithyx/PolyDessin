@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { GestionnaireCommandesService } from './commande/gestionnaire-commandes.service';
 import { DessinLigneService } from './outils/dessin-ligne.service';
 import { DessinRectangleService } from './outils/dessin-rectangle.service';
 import { GestionnaireOutilsService, INDEX_OUTIL_CRAYON,
@@ -15,7 +16,8 @@ export class GestionnaireRaccourcisService {
 
   constructor(public outils: GestionnaireOutilsService,
               public dessinRectangle: DessinRectangleService,
-              public dessinLigne: DessinLigneService) { }
+              public dessinLigne: DessinLigneService,
+              public commandes: GestionnaireCommandesService) { }
 
   viderSVGEnCours() {
     this.dessinRectangle.vider();
@@ -43,6 +45,18 @@ export class GestionnaireRaccourcisService {
       case 'w':
         this.outils.changerOutilActif(INDEX_OUTIL_PINCEAU);
         this.viderSVGEnCours();
+        break;
+
+      case 'z':
+        if (clavier.ctrlKey) {
+          this.commandes.annulerCommande();
+        }
+        break;
+
+      case 'Z':
+        if (clavier.ctrlKey) {
+          this.commandes.refaireCommande();
+        }
         break;
 
       case 'Shift':
