@@ -8,6 +8,11 @@ export class GestionnaireCommandesService {
   commandesEffectuees: Commande[] = [];
   commandesAnnulees: Commande[] = [];
 
+  executer(commande: Commande) {
+    this.commandesEffectuees.push(commande);
+    this.commandesAnnulees = [];
+  }
+
   annulerCommande() {
     const commande = this.commandesEffectuees.pop();
     if (commande) {

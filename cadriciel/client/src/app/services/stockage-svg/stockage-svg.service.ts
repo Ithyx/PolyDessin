@@ -12,12 +12,17 @@ export class StockageSvgService {
   private perimetreEnCours: SafeHtml;
   private elementsComplets = new Map<number, ElementDessin>();
 
-  ajouterSVG(element: ElementDessin) {
+  ajouterSVG(element: ElementDessin, cle?: number) {
     element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
-    this.elementsComplets.set(this.taille + 1, element);
-    ++this.taille;
+    this.elementsComplets.set(cle ? cle : ++this.taille, element);
     this.SVGEnCours = '';
     this.perimetreEnCours = '';
+  }
+
+  retirerSVG(cle: number): ElementDessin | undefined {
+    const element = this.elementsComplets.get(cle);
+    this.elementsComplets.delete(cle);
+    return element;
   }
 
   getSVGEnCoursHTML(): SafeHtml {

@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { AjoutSvgService } from '../commande/ajout-svg.service';
+import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
 import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
 import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
 import { TraitCrayonService } from '../stockage-svg/trait-crayon.service';
@@ -13,7 +15,8 @@ export class DessinCrayonService implements InterfaceOutils {
 
   constructor(public stockageSVG: StockageSvgService,
               public outils: GestionnaireOutilsService,
-              public couleur: ParametresCouleurService) { }
+              public couleur: ParametresCouleurService,
+              public commandes: GestionnaireCommandesService) { }
 
   trait = new TraitCrayonService();
   traitEnCours = false;
@@ -35,7 +38,7 @@ export class DessinCrayonService implements InterfaceOutils {
     if (this.traitEnCours) {
       if (this.trait.SVG.includes('L')) {
         // on ne stocke le path que s'il n'y a au moins une ligne
-        this.stockageSVG.ajouterSVG(this.trait);
+        this.commandes.executer(new AjoutSvgService(this.trait, this.stockageSVG));
       }
       this.trait = new TraitCrayonService();
       this.traitEnCours = false;
@@ -49,7 +52,7 @@ export class DessinCrayonService implements InterfaceOutils {
         this.trait.points.push({x: souris.offsetX, y: souris.offsetY});
         this.trait.estPoint = true;
         this.actualiserSVG();
-        this.stockageSVG.ajouterSVG(this.trait);
+        this.commandes.executer(new AjoutSvgService(this.trait, this.stockageSVG));
         this.trait = new TraitCrayonService();
       }
       this.traitEnCours = false;
@@ -58,7 +61,7 @@ export class DessinCrayonService implements InterfaceOutils {
 
   sourisSortie() {
     if (this.traitEnCours) {
-      this.stockageSVG.ajouterSVG(this.trait);
+      this.commandes.executer(new AjoutSvgService(this.trait, this.stockageSVG));
       this.trait = new TraitCrayonService();
       this.traitEnCours = false;
     }
