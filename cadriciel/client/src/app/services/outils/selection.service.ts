@@ -11,8 +11,6 @@ import { InterfaceOutils } from './interface-outils';
 })
 export class SelectionService implements InterfaceOutils {
 
-  boiteDeSelection: RectangleService;
-
   constructor(public stockageSVG: StockageSvgService,
               public outils: GestionnaireOutilsService,
              ) { }
@@ -58,14 +56,25 @@ export class SelectionService implements InterfaceOutils {
     }
     // TODO: Créer Rectangle englobant le trait soit du point min vers le point max
 
-    this.boiteDeSelection.base = pointMin;
-    this.boiteDeSelection.largeur = pointMax.x - pointMin.x;
-    this.boiteDeSelection.hauteur = pointMax.y - pointMin.y;
+    console.log('pointMax', pointMax);
+    console.log('pointMin', pointMin);
 
-    this.boiteDeSelection.couleurSecondaire =  'rgba(255,255,255,1)';
+    const boite = new RectangleService();
 
-    this.stockageSVG.ajouterSVG(this.boiteDeSelection);
-    console.log('Boite Englobante', this.boiteDeSelection);
+    boite.outil = this.outils.outilActif;
+
+    boite.perimetre = '1';
+    boite.base.x = pointMin.x;
+    boite.base.y = pointMin.y;
+    boite.largeur = pointMax.x - pointMin.x;
+    boite.hauteur = pointMax.y - pointMin.y;
+
+    boite.couleurSecondaire =  'rgba(0, 0, 0, 1)';
+
+    boite.dessinerRectangle();
+
+    this.stockageSVG.ajouterSVG(boite);
+    console.log('Boite Englobante', boite);
 
   };
 
