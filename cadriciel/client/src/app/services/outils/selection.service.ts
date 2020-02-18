@@ -4,7 +4,7 @@ import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
 import { TraitCrayonService } from '../stockage-svg/trait-crayon.service';
 import { GestionnaireOutilsService, INDEX_OUTIL_SELECTION } from './gestionnaire-outils.service';
 import { InterfaceOutils } from './interface-outils';
-import { of } from 'rxjs';
+// import { of } from 'rxjs'; ?
 
 @Injectable({
   providedIn: 'root'
@@ -56,7 +56,6 @@ export class SelectionService implements InterfaceOutils {
     }
 
     // TODO: Créer Rectangle englobant le trait soit du point min vers le point max
-
   };
 
 }
