@@ -7,7 +7,7 @@ import { GestionnaireCouleursService, Portee} from 'src/app/services/couleur/ges
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
 import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/gestionnaire-dessin.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
-import { StockageSvgService } from 'src/app/services/stockage-svg.service';
+import { StockageSvgService } from 'src/app/services/stockage-svg/stockage-svg.service';
 
 export const KEY_FORM_HAUTEUR = 'hauteurFormulaire';
 export const KEY_FORM_LARGEUR = 'largeurFormulaire';

@@ -4,7 +4,7 @@ import { ParametresCouleurService } from 'src/app/services/couleur/parametres-co
 import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/gestionnaire-dessin.service';
 import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routing.service';
 import { SelectionService } from 'src/app/services/outils/selection.service';
-import { StockageSvgService } from 'src/app/services/stockage-svg.service';
+import { StockageSvgService } from 'src/app/services/stockage-svg/stockage-svg.service';
 
 @Component({
   selector: 'app-surface-dessin',

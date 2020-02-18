@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { StockageSvgService } from '../stockage-svg.service';
+import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
 import { DessinLigneService } from './dessin-ligne.service';
 import { INDEX_OUTIL_LIGNE } from './gestionnaire-outils.service';
 
@@ -146,17 +146,6 @@ describe('DessinLigneService', () => {
   it("#sourisDoubleClic devrait mettre le conteneur points vide si le conteneur points n'est pas vide", () => {
     service.sourisDoubleClic(new MouseEvent('dblClick', {clientX: 100, clientY: 100}));
     expect(service.points).toEqual([]);
-  });
-
-  // TESTS avecPoints
-
-  it('#avecPoints devrait créer un cercle SVG pour chaque point', () => {
-    service.points.push({x: 1, y: 1});
-    SVG = ' <circle cx="0" cy="0" r="5" fill="black"/> <circle cx="1" cy="1" r="5" fill="black"/>';
-    let testSVG: string;
-    testSVG = '';
-    testSVG = service.avecPoints(testSVG);
-    expect(testSVG).toBe(SVG);
   });
 
   // TESTS retirerPoint
