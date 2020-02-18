@@ -24,8 +24,9 @@ export class SurfaceDessinComponent {
     }
   }
 
-  sourisCliquee(element: TraitCrayonService) {
-    console.log('CHECK IT OUT', element);
+  traiterClic(element: TraitCrayonService) {
+    // TODO : Vérification de l'outil (Selection, Pipette, Applicateur de Couleur)
+      // TODO : Vérfication du type element reçu ?
     this.selection.traiterClic(element);
   }
 }

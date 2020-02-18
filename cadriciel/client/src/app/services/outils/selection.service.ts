@@ -20,7 +20,8 @@ export class SelectionService implements InterfaceOutils {
   // Cliquee sélectionne l'objet
   traiterClic(element: TraitCrayonService) {
     if (this.outils.outilActif.ID === INDEX_OUTIL_SELECTION) {
-      console.log('selection', element);
+      console.log('selection a reçu', element);
+      console.log('avec les points:', element.points);
 
       this.creerBoiteEnglobanteTraitCrayon(element);
     }
@@ -33,11 +34,6 @@ export class SelectionService implements InterfaceOutils {
 
   // Méthode pour la création de la "hitbox"
   creerBoiteEnglobanteTraitCrayon(trait: TraitCrayonService) {
-
-    console.log('Jai reçu un trait avec:', trait);
-
-    // Vérification si le trait n'est pas juste un point
-    // TODO: Créer Rectangle englobant le point
 
     // on cherche le point avec un x et un y min
     const pointMin: Point = {x: trait.points[0].x , y: trait.points[0].y};
@@ -60,7 +56,7 @@ export class SelectionService implements InterfaceOutils {
         pointMax.y = point.y;
       }
     }
-      // TODO: Créer Rectangle englobant le trait soit du point min vers le point max
+    // TODO: Créer Rectangle englobant le trait soit du point min vers le point max
 
     this.boiteDeSelection.base = pointMin;
     this.boiteDeSelection.largeur = pointMax.x - pointMin.x;

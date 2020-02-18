@@ -38,7 +38,7 @@
     
     <rect x="0" y="0" [attr.width.px]="gestionnaireDessin.longueur" [attr.height.px]="gestionnaireDessin.hauteur" [attr.width.px]="gestionnaireDessin.largeur" [attr.fill]="parametresCouleur.couleurFond" />
 
-    <g *ngFor="let element of stockage.getSVGComplets() | keyvalue;" [innerHTML]="element.value.SVGHtml" (click)="sourisCliquee(element)"></g>
+    <g *ngFor="let element of stockage.getSVGComplets() | keyvalue;" [innerHTML]="element.value.SVGHtml" (click)="traiterClic(element.value)"></g>
     <g [innerHTML]="stockage.getSVGEnCoursHTML()"></g>
     <g [innerHTML]="stockage.getPerimetreEnCoursHTML()"></g>
 </svg>
