@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../outils/dessin-ligne.service';
 import { OUTIL_VIDE, OutilDessin } from '../outils/gestionnaire-outils.service';
 import { ElementDessin } from './element-dessin';
@@ -8,6 +9,7 @@ import { ElementDessin } from './element-dessin';
 })
 export class TraitPinceauService implements ElementDessin {
   SVG: string;
+  SVGHtml: SafeHtml;
   estSelectionne = false;
 
   outil: OutilDessin = OUTIL_VIDE;

@@ -29,8 +29,7 @@ export class DessinRectangleService implements InterfaceOutils {
     this.rectangle.couleurPrincipale = this.couleur.getCouleurPrincipale();
     this.rectangle.couleurSecondaire = this.couleur.getCouleurSecondaire();
     this.rectangle.dessiner();
-    this.stockageSVG.setSVGEnCours(this.rectangle.SVG);
-    this.stockageSVG.setPerimetreEnCours(this.rectangle.perimetre);
+    this.stockageSVG.setSVGEnCours(this.rectangle);
   }
 
   sourisDeplacee(souris: MouseEvent) {
@@ -63,11 +62,9 @@ export class DessinRectangleService implements InterfaceOutils {
     this.rectangleEnCours = false;
     // On évite de créer des formes vides
     if (this.rectangle.largeur !== 0 || this.rectangle.hauteur !== 0) {
-      this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '"/>');
+      this.stockageSVG.ajouterSVG(this.rectangle);
     }
     this.rectangle = new RectangleService();
-    this.stockageSVG.setSVGEnCours('');
-    this.stockageSVG.setPerimetreEnCours('');
   }
 
   shiftEnfonce() {
@@ -103,7 +100,5 @@ export class DessinRectangleService implements InterfaceOutils {
 
   vider() {
     this.rectangleEnCours = false;
-    this.stockageSVG.setPerimetreEnCours('');
-    this.stockageSVG.setSVGEnCours('');
   }
 }

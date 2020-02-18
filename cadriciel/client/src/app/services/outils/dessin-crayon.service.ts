@@ -33,11 +33,9 @@ export class DessinCrayonService implements InterfaceOutils {
 
   sourisRelachee() {
     if (this.traitEnCours) {
-      const SVG: string = this.stockageSVG.getSVGEnCours();
-      if (SVG.includes('L')) {
-          // on ne stocke le path que s'il n'y a au moins une ligne
-        this.stockageSVG.ajouterSVG(this.trait.SVG);
-        this.stockageSVG.setSVGEnCours('');
+      if (this.trait.SVG.includes('L')) {
+        // on ne stocke le path que s'il n'y a au moins une ligne
+        this.stockageSVG.ajouterSVG(this.trait);
       }
       this.trait = new TraitCrayonService();
       this.traitEnCours = false;
@@ -51,7 +49,7 @@ export class DessinCrayonService implements InterfaceOutils {
         this.trait.points.push({x: souris.offsetX, y: souris.offsetY});
         this.trait.estPoint = true;
         this.actualiserSVG();
-        this.stockageSVG.ajouterSVG(this.trait.SVG);
+        this.stockageSVG.ajouterSVG(this.trait);
         this.trait = new TraitCrayonService();
       }
       this.traitEnCours = false;
@@ -60,9 +58,8 @@ export class DessinCrayonService implements InterfaceOutils {
 
   sourisSortie() {
     if (this.traitEnCours) {
-      this.stockageSVG.ajouterSVG(this.trait.SVG);
+      this.stockageSVG.ajouterSVG(this.trait);
       this.trait = new TraitCrayonService();
-      this.stockageSVG.setSVGEnCours('');
       this.traitEnCours = false;
     }
     this.peutCliquer = false;
@@ -72,6 +69,6 @@ export class DessinCrayonService implements InterfaceOutils {
     this.trait.couleur = this.couleur.getCouleurPrincipale();
     this.trait.outil = this.outils.outilActif;
     this.trait.dessiner();
-    this.stockageSVG.setSVGEnCours(this.trait.SVG);
+    this.stockageSVG.setSVGEnCours(this.trait);
   }
 }

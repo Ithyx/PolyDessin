@@ -53,8 +53,7 @@ export class DessinLigneService implements InterfaceOutils {
         }
       }
       this.ligne.dessiner();
-      this.stockageSVG.ajouterSVG(this.ligne.SVG);
-      this.stockageSVG.setSVGEnCours('');
+      this.stockageSVG.ajouterSVG(this.ligne);
       this.ligne = new LigneService();
     }
   }
@@ -67,7 +66,6 @@ export class DessinLigneService implements InterfaceOutils {
   }
 
   annulerLigne() {
-    this.stockageSVG.setSVGEnCours('');
     this.ligne = new LigneService();
   }
 
@@ -110,7 +108,7 @@ export class DessinLigneService implements InterfaceOutils {
   actualiserSVG() {
     this.ligne.outil = this.outils.outilActif;
     this.ligne.dessiner();
-    this.stockageSVG.setSVGEnCours(this.ligne.SVG);
+    this.stockageSVG.setSVGEnCours(this.ligne);
   }
 
   vider() {
@@ -118,6 +116,5 @@ export class DessinLigneService implements InterfaceOutils {
     this.positionShiftEnfoncee = {x: 0, y: 0};
     this.curseur.x = 0;
     this.curseur.y = 0;
-    this.stockageSVG.setSVGEnCours('');
   }
 }
