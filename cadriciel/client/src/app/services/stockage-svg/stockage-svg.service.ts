@@ -35,7 +35,7 @@ export class StockageSvgService {
     }
   }
 
-  getSVGComplets(): Map<number, SafeHtml> {
+  getSVGComplets(): Map<number, ElementDessin> {
     return this.elementsComplets;
   }
 

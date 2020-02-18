@@ -5,6 +5,7 @@ import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/
 import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routing.service';
 import { SelectionService } from 'src/app/services/outils/selection.service';
 import { StockageSvgService } from 'src/app/services/stockage-svg/stockage-svg.service';
+import { TraitCrayonService } from 'src/app/services/stockage-svg/trait-crayon.service';
 
 @Component({
   selector: 'app-surface-dessin',
@@ -23,7 +24,8 @@ export class SurfaceDessinComponent {
     }
   }
 
-  sourisCliquee(evenement: MouseEvent, cle: number) {
-    this.selection.sourisCliquee(evenement, cle);
+  sourisCliquee(element: TraitCrayonService) {
+    console.log('CHECK IT OUT', element);
+    this.selection.traiterClic(element);
   }
 }
