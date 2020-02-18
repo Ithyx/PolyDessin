@@ -18,7 +18,7 @@ export class AppComponent {
                 public gestionnaireRoutes: GestionnaireRoutingService) {
         this.routing.events
             .pipe(filter(this.fonctionFiltre), pairwise())
-            .subscribe({next: this.miseAJourURL});
+            .subscribe({next: this.miseAJourURL.bind(this)});
     }
 
     fonctionFiltre(evenement: any) {
@@ -26,7 +26,8 @@ export class AppComponent {
     }
 
     miseAJourURL(evenement: [any, any]) {
-        this.gestionnaireRoutes.pagePrecedante = evenement[0].url;
+        console.log(evenement[0].url);
+        this.gestionnaireRoutes.pagePrecedente = evenement[0].url;
         this.gestionnaireRoutes.pageEnCours = evenement[1].url;
     };
 
