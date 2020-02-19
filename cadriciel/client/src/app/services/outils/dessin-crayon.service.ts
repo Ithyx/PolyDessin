@@ -26,7 +26,7 @@ export class DessinCrayonService implements InterfaceOutils {
     }
   }
 
-  sourisEnfoncee(souris: MouseEvent) {
+  sourisEnfoncee() {
     this.traitEnCours = true;
     this.actualiserSVG();
   }

@@ -13,6 +13,8 @@ export class RectangleService implements ElementDessin {
   perimetre: string;
   estSelectionne = false;
 
+  points: Point[];
+
   couleurPrincipale: string;
   couleurSecondaire: string;
 

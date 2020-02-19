@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Point } from '../outils/dessin-ligne.service';
+import { ElementDessin } from '../stockage-svg/element-dessin';
 import { RectangleService } from '../stockage-svg/rectangle.service';
 import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
-import { TraitCrayonService } from '../stockage-svg/trait-crayon.service';
-import { GestionnaireOutilsService, INDEX_OUTIL_SELECTION } from './gestionnaire-outils.service';
+import { GestionnaireOutilsService} from './gestionnaire-outils.service';
 import { InterfaceOutils } from './interface-outils';
 
 @Injectable({
@@ -15,27 +15,33 @@ export class SelectionService implements InterfaceOutils {
               public outils: GestionnaireOutilsService,
              ) { }
 
-  // Cliquee sélectionne l'objet
-  traiterClic(element: TraitCrayonService) {
-    if (this.outils.outilActif.ID === INDEX_OUTIL_SELECTION) {
-      console.log('selection a reçu', element);
-      console.log('avec les points:', element.points);
+  traiterClic(element: ElementDessin) {
+    console.log('selection a reçu', element);
 
-      this.creerBoiteEnglobanteTraitCrayon(element);
+    if (!element.estSelectionne) {
+      this.creerBoiteEnglobanteElementDessin(element);
+      element.estSelectionne = true;
     }
   }
 
-  // Garder la souris enfoncee créait un rectangle de sélection
+  // Garder la souris enfoncee doit créer un rectangle de sélection
   sourisEnfoncee(evenement: MouseEvent) {
     // TODO
   }
 
-  // Méthode pour la création de la "hitbox"
-  creerBoiteEnglobanteTraitCrayon(trait: TraitCrayonService) {
+  // Le racourci CTRL+A doit sélectionner tous les objets
+  selectionneTousLesObjets() {
+    // TODO
+  }
 
-    // on cherche le point avec un x et un y min
-    let pointMin: Point = {x: trait.points[0].x , y: trait.points[0].y};
-    for (const point of trait.points) {
+  creerBoiteEnglobanteElementDessin(element: ElementDessin) {
+
+    if (element.estPoint) {
+      // TODO : l'element est un point
+    } else {
+      // on cherche le point avec un x et un y min
+    let pointMin: Point = {x: element.points[0].x , y: element.points[0].y};
+    for (const point of element.points) {
       if (pointMin.x > point.x) {
         pointMin.x = point.x;
       }
@@ -47,8 +53,8 @@ export class SelectionService implements InterfaceOutils {
     pointMin = {x: pointMin.x - 3, y: pointMin.y - 3};
 
     // on cherche le point avec un x et un y max
-    let pointMax: Point = {x: trait.points[0].x , y: trait.points[0].y};
-    for (const point of trait.points) {
+    let pointMax: Point = {x: element.points[0].x , y: element.points[0].y};
+    for (const point of element.points) {
       if (pointMax.x < point.x) {
         pointMax.x = point.x;
       }
@@ -72,6 +78,7 @@ export class SelectionService implements InterfaceOutils {
 
     this.stockageSVG.ajouterSVG(boite);
     console.log('Boite Englobante', boite);
+  }
 
   };
 

@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service'
 import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/gestionnaire-dessin.service';
 import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routing.service';
+import { GestionnaireOutilsService, INDEX_OUTIL_SELECTION } from 'src/app/services/outils/gestionnaire-outils.service';
 import { SelectionService } from 'src/app/services/outils/selection.service';
+import { ElementDessin } from 'src/app/services/stockage-svg/element-dessin';
 import { StockageSvgService } from 'src/app/services/stockage-svg/stockage-svg.service';
-import { TraitCrayonService } from 'src/app/services/stockage-svg/trait-crayon.service';
 
 @Component({
   selector: 'app-surface-dessin',
@@ -13,7 +14,8 @@ import { TraitCrayonService } from 'src/app/services/stockage-svg/trait-crayon.s
   styleUrls: ['./surface-dessin.component.scss']
 })
 export class SurfaceDessinComponent {
-  constructor(public stockage: StockageSvgService,
+  constructor(public stockageSVG: StockageSvgService,
+              public outils: GestionnaireOutilsService,
               public gestionnaireDessin: GestionnaireDessinService,
               public navigation: GestionnaireRoutingService,
               public routing: Router,
@@ -24,9 +26,11 @@ export class SurfaceDessinComponent {
     }
   }
 
-  traiterClic(element: TraitCrayonService) {
+  traiterClic(element: ElementDessin) {
     // TODO : Vérification de l'outil (Selection, Pipette, Applicateur de Couleur)
       // TODO : Vérfication du type element reçu ?
-    this.selection.traiterClic(element);
+    if (this.outils.outilActif.ID === INDEX_OUTIL_SELECTION) {
+      this.selection.traiterClic(element);
+    }
   }
 }
