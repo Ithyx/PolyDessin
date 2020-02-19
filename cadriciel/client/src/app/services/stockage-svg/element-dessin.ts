@@ -6,7 +6,6 @@ export interface ElementDessin {
   SVGHtml: SafeHtml;
   // transformationSVG: string;
   // transformationSVGHtml: SafeHtml;
-  // nature de l'objet ? (Enum ?)
 
   points: Point[];
 

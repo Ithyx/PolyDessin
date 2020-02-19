@@ -67,7 +67,7 @@ export class DessinPinceauService implements InterfaceOutils {
   }
 
   actualiserSVG() {
-    this.trait.couleur = this.couleur.getCouleurPrincipale();
+    this.trait.couleurPrincipale = this.couleur.getCouleurPrincipale();
     this.trait.outil = this.outils.outilActif;
     this.trait.dessiner();
     this.stockageSVG.setSVGEnCours(this.trait);

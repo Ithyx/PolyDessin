@@ -12,14 +12,16 @@ export class LigneService implements ElementDessin {
   SVGHtml: SafeHtml;
   estSelectionne = false;
 
+  couleurPrincipale = 'rgba(0,0,0,1)';
+
+  outil: OutilDessin = OUTIL_VIDE;
   points: Point[] = [];
   estPolygone = false;
   positionSouris = {x: 0, y: 0};
-  outil: OutilDessin = OUTIL_VIDE;
 
   dessiner() {
     this.SVG = (this.estPolygone) ? '<polygon ' : '<polyline ';
-    this.SVG += 'fill="none" stroke="black" stroke-width="' + this.outil.parametres[0].valeur
+    this.SVG += 'fill="none" stroke="' + this.couleurPrincipale + '" stroke-width="' + this.outil.parametres[0].valeur
     this.SVG += '" points="';
     for (const point of this.points) {
       this.SVG += point.x + ' ' + point.y + ' ';
@@ -36,7 +38,7 @@ export class LigneService implements ElementDessin {
   dessinerPoints() {
     for (const point of this.points) {
       this.SVG += ' <circle cx="' + point.x + '" cy="' + point.y + '" r="'
-      + this.outil.parametres[2].valeur  + '" fill="black"/>';
+      + this.outil.parametres[2].valeur  + '" fill="' + this.couleurPrincipale + '"/>';
     }
   }
 
