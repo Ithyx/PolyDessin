@@ -4,10 +4,10 @@ import { Router, RouterModule } from '@angular/router';
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
 import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/gestionnaire-dessin.service';
 import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routing.service';
-import { StockageSvgService } from 'src/app/services/stockage-svg/stockage-svg.service';
-import { SurfaceDessinComponent } from './surface-dessin.component';
 import { GestionnaireOutilsService } from 'src/app/services/outils/gestionnaire-outils.service';
 import { SelectionService } from 'src/app/services/outils/selection.service';
+import { StockageSvgService } from 'src/app/services/stockage-svg/stockage-svg.service';
+import { SurfaceDessinComponent } from './surface-dessin.component';
 
 const parametresCouleurStub: Partial<ParametresCouleurService> = {
   couleurFond: undefined

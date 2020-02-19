@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+/*import { TestBed } from '@angular/core/testing';
 
 import { RectangleService } from '../stockage-svg/rectangle.service';
 import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
@@ -164,7 +164,7 @@ describe('DessinRectangleService', () => {
   // TODO : Déplacer les tests de création de SVG vers RectangleService
 
   // TESTS SUR LA CRÉATION DE RECTANGLES
-  /*it("#actualiserSVG devrait tracer un rectangle lors d'un mouvement "
+  it("#actualiserSVG devrait tracer un rectangle lors d'un mouvement "
     + 'vers le coin inférieur droit', () => {
     // on simule un mouvement de 20 en x et de 50 en y
     const evenement = new MouseEvent('mousemove', { clientX: 20, clientY: 50 });
@@ -273,7 +273,7 @@ describe('DessinRectangleService', () => {
     expect(String(stockageService.getPerimetreEnCoursHTML())).toContain(
       'x="-2.5" y="-2.5" height="25" width="5"'
     );
-  });*/
+  });
 
   // TESTS DE SOURIS ENFONCEE
 
@@ -369,4 +369,4 @@ describe('DessinRectangleService', () => {
     // vérifier que le SVG est vide
     expect(service.rectangle).toEqual(new RectangleService());
   });
-});
+});*/

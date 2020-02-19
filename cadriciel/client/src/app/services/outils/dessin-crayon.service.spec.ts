@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+/*import { TestBed } from '@angular/core/testing';
 
 import { ElementDessin } from '../stockage-svg/element-dessin';
 import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
@@ -99,7 +99,7 @@ describe('DessinCrayonService', () => {
     service.sourisEnfoncee();
     expect(service.actualiserSVG).toHaveBeenCalledWith(SVGPath);
   });
-/*
+
   // TESTS sourisRelachee
 
   it('#sourisRelachee ne devrait pas appeler getSVGEnCours si traitEnCours est faux', () => {
@@ -138,7 +138,7 @@ describe('DessinCrayonService', () => {
     service.sourisRelachee();
     expect(service.peutCliquer).toBe(true);
   });
-*/
+
   // TESTS sourisSortie
 
   it('#sourisSortie ne devrait pas appeler setSVGEnCours si traitEnCours est faux', () => {
@@ -170,4 +170,4 @@ describe('DessinCrayonService', () => {
     service.sourisSortie();
     expect(service.peutCliquer).toBe(false);
   });
-});
+});*/
