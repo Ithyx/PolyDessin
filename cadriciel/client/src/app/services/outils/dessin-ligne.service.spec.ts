@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
+import { ElementDessin } from '../stockage-svg/element-dessin';
 import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
 import { DessinLigneService } from './dessin-ligne.service';
 import { INDEX_OUTIL_LIGNE } from './gestionnaire-outils.service';
@@ -8,6 +9,7 @@ describe('DessinLigneService', () => {
   let SVG = '';
   let service: DessinLigneService;
   let stockageService: StockageSvgService;
+  let element : ElementDessin;
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(DessinLigneService));
   beforeEach(() => stockageService = TestBed.get(StockageSvgService));
@@ -18,7 +20,7 @@ describe('DessinLigneService', () => {
     service.ligne.positionSouris = ({x: 0, y: 0});
     service.ligne.points.push({x: 0, y: 0});
     service.ligne.outil = service.outils.listeOutils[INDEX_OUTIL_LIGNE];
-    stockageService.setSVGEnCours('<svg />');
+    stockageService.setSVGEnCours(element);
     // Mettre l'outil ligne comme l'outil actif
     service.outils.outilActif = service.outils.listeOutils[INDEX_OUTIL_LIGNE];
     service.outils.outilActif.parametres[1].optionChoisie = 'Sans points';

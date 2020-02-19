@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
+import { ElementDessin } from '../stockage-svg/element-dessin';
 import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
 import { DessinCrayonService } from './dessin-crayon.service';
 
@@ -8,17 +9,18 @@ describe('DessinCrayonService', () => {
   const SVGPath = '<path fill="transparent" stroke="rgba(0, 0, 0, 1)" stroke-linecap="round" stroke-width="5" d="M100 100"/>';
   let service: DessinCrayonService;
   let stockageService: StockageSvgService;
+  let element : ElementDessin;
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(DessinCrayonService));
   beforeEach(() => stockageService = TestBed.get(StockageSvgService));
 
   // Mettre l'outil crayon comme l'outil actif
   beforeEach(() => {
-    service.traitEnCours = true;
+    service.commandes.dessinEnCours = true;
     service.peutCliquer = true;
     service.outils.outilActif = service.outils.listeOutils[0];
     service.outils.outilActif.parametres[0].valeur = 5;
-    stockageService.setSVGEnCours('<svg />');
+    stockageService.setSVGEnCours(element);
   });
 
   it('should be created', () => {
@@ -60,7 +62,7 @@ describe('DessinCrayonService', () => {
 
   it('#sourisCliquee devrait mettre traitEnCours faux', () => {
     service.sourisCliquee(new MouseEvent('onclick'));
-    expect(service.traitEnCours).toBe(false);
+    expect(service.commandes.dessinEnCours).toBe(false);
   });
 
   it('#sourisCliquee devrait mettre peutCliquer vrai si peutCliquer est faux au debut de la fonction', () => {
@@ -72,7 +74,7 @@ describe('DessinCrayonService', () => {
   // TESTS sourisDeplacee
 
   it('#sourisDeplacee ne devrait pas appeler setSVGEnCours si traitEnCours est faux', () => {
-    service.traitEnCours = false;
+    service.commandes.dessinEnCours = false;
     spyOn(stockageService, 'setSVGEnCours');
     service.sourisDeplacee(new MouseEvent('release'));
     expect(stockageService.setSVGEnCours).not.toHaveBeenCalled();
@@ -87,22 +89,21 @@ describe('DessinCrayonService', () => {
   // TESTS sourisEnfoncee
 
   it('#sourisEnfoncee devrait mettre traitEnCours vrai si traitEnCours est faux au debut de la fonction', () => {
-    service.traitEnCours = false;
-    service.sourisEnfoncee(new MouseEvent('onclick'));
-    expect(service.traitEnCours).toBe(true);
+    service.commandes.dessinEnCours = false;
+    service.sourisEnfoncee();
+    expect(service.commandes.dessinEnCours).toBe(true);
   });
 
   it('#sourisEnfoncee devrait appeler setSVGEnCours avec le path SVG après avoir cliqué', () => {
-    const clic = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    spyOn(stockageService, 'setSVGEnCours');
-    service.sourisEnfoncee(clic);
-    expect(stockageService.setSVGEnCours).toHaveBeenCalledWith(SVGPath);
+    spyOn(service, 'actualiserSVG');
+    service.sourisEnfoncee();
+    expect(service.actualiserSVG).toHaveBeenCalledWith(SVGPath);
   });
-
+/*
   // TESTS sourisRelachee
 
   it('#sourisRelachee ne devrait pas appeler getSVGEnCours si traitEnCours est faux', () => {
-    service.traitEnCours = false;
+    service.commandes.dessinEnCours = false;
     spyOn(stockageService, 'getSVGEnCours');
     service.sourisRelachee();
     expect(stockageService.getSVGEnCours).not.toHaveBeenCalled();
@@ -115,14 +116,14 @@ describe('DessinCrayonService', () => {
   });
 
   it("#sourisRelachee  devrait appeler ajouterSVG si le SVG contient 'L'", () => {
-    stockageService.setSVGEnCours('<svg L />')
+    stockageService.setSVGEnCours(element)
     spyOn(stockageService, 'ajouterSVG');
     service.sourisRelachee();
     expect(stockageService.ajouterSVG).toHaveBeenCalled();
   });
 
   it("#sourisRelachee  devrait appeler setSVGEnCours si le SVG contient 'L'", () => {
-    stockageService.setSVGEnCours('<svg L />')
+    stockageService.setSVGEnCours(element)
     spyOn(stockageService, 'setSVGEnCours');
     service.sourisRelachee();
     expect(stockageService.setSVGEnCours).toHaveBeenCalled();
@@ -130,18 +131,18 @@ describe('DessinCrayonService', () => {
 
   it('#sourisRelachee devrait mettre traitEnCours faux si traitEnCours est vrai au debut de la fonction', () => {
     service.sourisRelachee();
-    expect(service.traitEnCours).toBe(false);
+    expect(service.commandes.dessinEnCours).toBe(false);
   });
 
   it('#sourisRelachee devrait mettre peutCliquer vrai si traitEnCours est vrai au debut de la fonction', () => {
     service.sourisRelachee();
     expect(service.peutCliquer).toBe(true);
   });
-
+*/
   // TESTS sourisSortie
 
   it('#sourisSortie ne devrait pas appeler setSVGEnCours si traitEnCours est faux', () => {
-    service.traitEnCours = false;
+    service.commandes.dessinEnCours = false;
     spyOn(stockageService, 'ajouterSVG');
     service.sourisSortie();
     expect(stockageService.ajouterSVG).not.toHaveBeenCalled();
@@ -161,11 +162,11 @@ describe('DessinCrayonService', () => {
 
   it('#sourisSortie devrait mettre traitEnCours faux si traitEnCours est vrai', () => {
     service.sourisSortie();
-    expect(service.traitEnCours).toBe(false);
+    expect(service.commandes.dessinEnCours).toBe(false);
   });
 
   it('#sourisSortie devrait mettre peutCliquer faux si traitEnCours est faux', () => {
-    service.traitEnCours = false;
+    service.commandes.dessinEnCours = false;
     service.sourisSortie();
     expect(service.peutCliquer).toBe(false);
   });
