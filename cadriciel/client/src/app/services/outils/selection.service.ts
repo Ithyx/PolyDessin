@@ -34,6 +34,10 @@ export class SelectionService implements InterfaceOutils {
     // TODO
   }
 
+  creerBoiteEnglobantePlusieursElementDessins(elements: ElementDessin[]) {
+    // TODO : Trouvez le point min et le point max parmis tous les éléments
+  };
+
   creerBoiteEnglobanteElementDessin(element: ElementDessin) {
 
     if (element.estPoint) {
@@ -50,7 +54,7 @@ export class SelectionService implements InterfaceOutils {
       }
     }
 
-    pointMin = {x: pointMin.x - 3, y: pointMin.y - 3};
+    pointMin = {x: pointMin.x - 2, y: pointMin.y - 2};
 
     // on cherche le point avec un x et un y max
     let pointMax: Point = {x: element.points[0].x , y: element.points[0].y};
@@ -63,15 +67,16 @@ export class SelectionService implements InterfaceOutils {
       }
     }
 
-    pointMax = {x: pointMax.x + 3, y: pointMax.y + 3};
+    pointMax = {x: pointMax.x + 2, y: pointMax.y + 2};
 
     const boite = new RectangleService();
-
+    boite.estSelectionne = true;
     boite.outil = this.outils.outilActif;
 
-    boite.base = pointMin;
-    boite.largeur = pointMax.x - pointMin.x;
-    boite.hauteur = pointMax.y - pointMin.y;
+    boite.points[0] = pointMin;
+    boite.points[1] = pointMax;
+    // ! boite.largeur = pointMax.x - pointMin.x;
+    // ! boite.hauteur = pointMax.y - pointMin.y;
     boite.couleurSecondaire =  'rgba(0, 0, 0, 1)';
 
     boite.dessinerRectangle();

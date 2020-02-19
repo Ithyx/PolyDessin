@@ -13,19 +13,26 @@ export class RectangleService implements ElementDessin {
   perimetre: string;
   estSelectionne = false;
 
-  points: Point[];    // points[0], coin haut gauche (base)
-                      // points[1], coin bas droite
+  points: Point[] = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
+                     {x: 0, y: 0}];   // points[1], coin bas droite
 
   couleurPrincipale: string;
   couleurSecondaire: string;
 
   outil: OutilDessin = OUTIL_VIDE;
-  base: Point = {x: 0, y: 0};
   largeur = 0;
   hauteur = 0;
 
+  getLargeur(): number {
+    return Math.abs(this.points[1].x - this.points[0].x);
+  };
+
+  getHauteur(): number {
+    return Math.abs(this.points[1].y - this.points[0].y);
+  };
+
   dessiner() {
-    if ((this.largeur === 0 || this.hauteur === 0)
+    if ((this.getLargeur() === 0 || this.getHauteur() === 0)
       && this.outil.parametres[1].optionChoisie !== 'Plein') {
       this.dessinerLigne();
     } else {
@@ -38,9 +45,9 @@ export class RectangleService implements ElementDessin {
     this.SVG = '<line stroke-linecap="square'
       + '" stroke="' + this.couleurSecondaire
       + '" stroke-width="' + this.outil.parametres[0].valeur
-      + '" x1="' + this.base.x + '" y1="' + this.base.y
-      + '" x2="' + (this.base.x + this.largeur)
-      + '" y2="' + (this.base.y + this.hauteur) + '"/>';
+      + '" x1="' + this.points[0].x + '" y1="' + this.points[0].y
+      + '" x2="' + (this.points[0].x + this.getLargeur())
+      + '" y2="' + (this.points[0].y + this.getHauteur()) + '"/>';
   }
 
   dessinerRectangle() {
@@ -49,21 +56,21 @@ export class RectangleService implements ElementDessin {
       + ((optionChoisie !== 'Contour') ? this.couleurPrincipale : 'transparent')
       + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleurSecondaire : 'transparent')
       + '" stroke-width="' + this.outil.parametres[0].valeur
-      + '" x="' + this.base.x + '" y="' + this.base.y
-      + '" width="' + this.largeur + '" height="' + this.hauteur + '"/>'
+      + '" x="' + this.points[0].x + '" y="' + this.points[0].y
+      + '" width="' + this.getLargeur() + '" height="' + this.getHauteur() + '"/>';
   }
 
   dessinerPerimetre() {
     const epaisseur = (this.outil.parametres[0].valeur) ? this.outil.parametres[0].valeur : 0;
     this.perimetre = '<rect stroke="gray" fill="transparent" stroke-width="2';
     if (this.outil.parametres[1].optionChoisie === 'Plein') {
-      this.perimetre += '" x="' + this.base.x + '" y="' + this.base.y
-        + '" height="' + this.hauteur + '" width="' + this.largeur + '"/>'
+      this.perimetre += '" x="' + this.points[0].x + '" y="' + this.points[0].y
+        + '" height="' + this.getHauteur + '" width="' + this.getLargeur + '"/>';
     } else {
-      this.perimetre += '" x="' + (this.base.x - epaisseur / 2)
-        + '" y="' + (this.base.y - epaisseur / 2);
-      this.perimetre += '" height="' + ((this.hauteur === 0) ? epaisseur : (this.hauteur + epaisseur))
-        + '" width="' + ((this.largeur === 0) ? epaisseur : (this.largeur + epaisseur)) + '"/>'
+      this.perimetre += '" x="' + (this.points[0].x - epaisseur / 2)
+        + '" y="' + (this.points[0].y - epaisseur / 2);
+      this.perimetre += '" height="' + ((this.getHauteur() === 0) ? epaisseur : (this.getHauteur() + epaisseur))
+        + '" width="' + ((this.getLargeur() === 0) ? epaisseur : (this.getLargeur() + epaisseur)) + '"/>';
     }
   }
 }
