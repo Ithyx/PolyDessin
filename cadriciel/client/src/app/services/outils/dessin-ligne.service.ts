@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { AjoutSvgService } from '../commande/ajout-svg.service';
+import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
 import { LigneService } from '../stockage-svg/ligne.service';
 import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
 import { GestionnaireOutilsService } from './gestionnaire-outils.service';
@@ -19,7 +21,9 @@ export class DessinLigneService implements InterfaceOutils {
 
   curseur: Point = {x: 0, y: 0};
 
-  constructor(public stockageSVG: StockageSvgService, public outils: GestionnaireOutilsService) { }
+  constructor(public stockageSVG: StockageSvgService,
+              public outils: GestionnaireOutilsService,
+              public commandes: GestionnaireCommandesService) { }
 
   sourisDeplacee(souris: MouseEvent) {
     this.curseur.x = souris.offsetX;
@@ -53,7 +57,9 @@ export class DessinLigneService implements InterfaceOutils {
         }
       }
       this.ligne.dessiner();
-      this.stockageSVG.ajouterSVG(this.ligne);
+      if (!this.ligne.estVide()) {
+        this.commandes.executer(new AjoutSvgService(this.ligne, this.stockageSVG));
+      }
       this.ligne = new LigneService();
     }
   }

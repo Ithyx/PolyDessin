@@ -39,4 +39,9 @@ export class LigneService implements ElementDessin {
       + this.outil.parametres[2].valeur  + '" fill="black"/>';
     }
   }
+
+  estVide() {
+    return this.points.length === 0 ||
+      (this.points.length === 1 && this.outil.parametres[1].optionChoisie === 'Sans points');
+  }
 }
