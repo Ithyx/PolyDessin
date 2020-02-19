@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { ChangementCouleurFondService } from '../commande/changement-couleur-fond.service';
+import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
 import { ParametresCouleurService } from './parametres-couleur.service'
 
 export enum Portee {
@@ -18,7 +20,8 @@ export class GestionnaireCouleursService {
   teinte = 'rgba(255,255,255';
   RGB: number[] = [0, 0, 0];
 
-  constructor(public parametresCouleur: ParametresCouleurService) {}
+  constructor(public parametresCouleur: ParametresCouleurService,
+              public commandes: GestionnaireCommandesService) {}
 
   getCouleur() {
     return this.couleur + '1)';
@@ -42,7 +45,7 @@ export class GestionnaireCouleursService {
         this.ajouterDerniereCouleur();
         break;
       case Portee.Fond:
-        this.parametresCouleur.couleurFond = this.couleur + '1)';
+        this.commandes.executer(new ChangementCouleurFondService(this.parametresCouleur, this.couleur + '1)'));
       default:
         /* Par mesure de sécurité, ne rien faire. */
         break;

@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { AjoutSvgService } from '../commande/ajout-svg.service';
+import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
 import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
 import { RectangleService } from '../stockage-svg/rectangle.service';
 import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
@@ -11,7 +13,6 @@ import { InterfaceOutils } from './interface-outils'
 })
 export class DessinRectangleService implements InterfaceOutils {
   rectangle = new RectangleService();
-  rectangleEnCours = false;
   // Coordonnées du clic initial de souris
   initial: Point = {x: 0, y: 0};
   // Coordonnées du point inférieur gauche
@@ -22,7 +23,8 @@ export class DessinRectangleService implements InterfaceOutils {
 
   constructor(public stockageSVG: StockageSvgService,
               public outils: GestionnaireOutilsService,
-              public couleur: ParametresCouleurService) { }
+              public couleur: ParametresCouleurService,
+              public commandes: GestionnaireCommandesService) { }
 
   actualiserSVG() {
     this.rectangle.outil = this.outils.outilActif;
@@ -33,7 +35,7 @@ export class DessinRectangleService implements InterfaceOutils {
   }
 
   sourisDeplacee(souris: MouseEvent) {
-    if (this.rectangleEnCours) {
+    if (this.commandes.dessinEnCours) {
       // Calcule des valeurs pour former un rectangle
       this.largeurCalculee = Math.abs(this.initial.x - souris.offsetX);
       this.hauteurCalculee = Math.abs(this.initial.y - souris.offsetY);
@@ -49,8 +51,8 @@ export class DessinRectangleService implements InterfaceOutils {
   }
 
   sourisEnfoncee(souris: MouseEvent) {
-    if (!this.rectangleEnCours) {
-      this.rectangleEnCours = true;
+    if (!this.commandes.dessinEnCours) {
+      this.commandes.dessinEnCours = true;
       this.initial.x = souris.offsetX;
       this.initial.y = souris.offsetY;
       this.rectangle.largeur = 0;
@@ -59,16 +61,19 @@ export class DessinRectangleService implements InterfaceOutils {
   }
 
   sourisRelachee() {
-    this.rectangleEnCours = false;
+    this.commandes.dessinEnCours = false;
     // On évite de créer des formes vides
     if (this.rectangle.largeur !== 0 || this.rectangle.hauteur !== 0) {
-      this.stockageSVG.ajouterSVG(this.rectangle);
+      this.commandes.executer(new AjoutSvgService(this.rectangle, this.stockageSVG));
     }
+    this.baseCalculee = {x: 0, y: 0};
+    this.hauteurCalculee = 0;
+    this.largeurCalculee = 0;
     this.rectangle = new RectangleService();
   }
 
   shiftEnfonce() {
-    if (this.rectangleEnCours) {
+    if (this.commandes.dessinEnCours) {
       // Lorsque la touche 'shift' est enfoncée, la forme à dessiner est un carré
       if (this.largeurCalculee < this.hauteurCalculee) {
         this.rectangle.base.y = (this.baseCalculee.y === this.initial.y) ?
@@ -88,7 +93,7 @@ export class DessinRectangleService implements InterfaceOutils {
   }
 
   shiftRelache() {
-    if (this.rectangleEnCours) {
+    if (this.commandes.dessinEnCours) {
       // Lorsque la touche 'shift' est relâchée, la forme à dessiner est un rectangle
       this.rectangle.base.x = this.baseCalculee.x;
       this.rectangle.base.y = this.baseCalculee.y;
@@ -99,6 +104,6 @@ export class DessinRectangleService implements InterfaceOutils {
   }
 
   vider() {
-    this.rectangleEnCours = false;
+    this.commandes.dessinEnCours = false;
   }
 }

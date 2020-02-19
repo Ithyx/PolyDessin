@@ -49,6 +49,19 @@
 
         </div>
         <br />
+        <div class="annuler-refaire">
+            <a *ngIf="commandes.commandesEffectuees.length > 0; else annulerNonDisponible"
+                    mat-stroked-button (click)="commandes.annulerCommande()">Annuler</a>
+            <ng-template #annulerNonDisponible>
+                <a mat-stroked-button class="nonDisponible">Annuler</a>
+            </ng-template>
+            <a *ngIf="commandes.commandesAnnulees.length > 0; else refaireNonDisponible"
+                mat-stroked-button (click)="commandes.refaireCommande()">Refaire</a>
+            <ng-template #refaireNonDisponible>
+                <a mat-stroked-button class="nonDisponible">Refaire</a>
+            </ng-template>
+        </div>
+        <br />
         <div class="boutons-couleur">
             Couleur primaire
             <button [ngStyle]= "{'background-color': couleur.getCouleurPrincipale() || 'white'}" 

@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { ChoixCouleurComponent } from 'src/app/components/choix-couleur/choix-couleur.component'
+import { GestionnaireCommandesService } from 'src/app/services/commande/gestionnaire-commandes.service';
 import { GestionnaireCouleursService, Portee} from 'src/app/services/couleur/gestionnaire-couleurs.service'
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
 import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/gestionnaire-dessin.service';
@@ -37,6 +38,7 @@ export class FenetreNouveauDessinComponent {
               public gestionnaireCouleur: GestionnaireCouleursService,
               public dialog: MatDialog,
               public parametresCouleur: ParametresCouleurService,
+              public commandes: GestionnaireCommandesService,
               private ngZone: NgZone ) {
                 this.dimmensionsChangees();
               }
@@ -61,6 +63,7 @@ export class FenetreNouveauDessinComponent {
 
   validerNouveauDessin() {
     this.stockageSVG.viderDessin();
+    this.commandes.viderCommandes();
     this.serviceNouveauDessin.hauteur = this.nouveauDessin.value[KEY_FORM_HAUTEUR];
     this.serviceNouveauDessin.largeur = this.nouveauDessin.value[KEY_FORM_LARGEUR];
     this.raccourcis.champDeTexteEstFocus = false;
