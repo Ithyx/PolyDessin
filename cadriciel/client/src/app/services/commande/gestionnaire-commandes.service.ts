@@ -29,4 +29,10 @@ export class GestionnaireCommandesService {
       this.commandesEffectuees.push(commande);
     }
   }
+
+  viderCommandes() {
+    this.commandesAnnulees = [];
+    this.commandesEffectuees = [];
+    this.dessinEnCours = false;
+  }
 }
