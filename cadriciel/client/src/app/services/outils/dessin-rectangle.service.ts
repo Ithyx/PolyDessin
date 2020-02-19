@@ -105,5 +105,6 @@ export class DessinRectangleService implements InterfaceOutils {
 
   vider() {
     this.commandes.dessinEnCours = false;
+    this.rectangle = new RectangleService();
   }
 }
