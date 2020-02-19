@@ -5,6 +5,7 @@ import { Commande } from './commande';
   providedIn: 'root'
 })
 export class GestionnaireCommandesService {
+  dessinEnCours = false;  // Annuler-refaire désactivé si un dessin est en cours
   commandesEffectuees: Commande[] = [];
   commandesAnnulees: Commande[] = [];
 

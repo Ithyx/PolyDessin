@@ -48,13 +48,13 @@ export class GestionnaireRaccourcisService {
         break;
 
       case 'z':
-        if (clavier.ctrlKey) {
+        if (clavier.ctrlKey && !this.commandes.dessinEnCours) {
           this.commandes.annulerCommande();
         }
         break;
 
       case 'Z':
-        if (clavier.ctrlKey) {
+        if (clavier.ctrlKey && !this.commandes.dessinEnCours) {
           this.commandes.refaireCommande();
         }
         break;

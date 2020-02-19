@@ -19,29 +19,28 @@ export class DessinCrayonService implements InterfaceOutils {
               public commandes: GestionnaireCommandesService) { }
 
   trait = new TraitCrayonService();
-  traitEnCours = false;
   peutCliquer = true;
 
   sourisDeplacee(souris: MouseEvent) {
-    if (this.traitEnCours) {
+    if (this.commandes.dessinEnCours) {
       this.trait.points.push({x: souris.offsetX, y: souris.offsetY});
       this.actualiserSVG();
     }
   }
 
   sourisEnfoncee(souris: MouseEvent) {
-    this.traitEnCours = true;
+    this.commandes.dessinEnCours = true;
     this.actualiserSVG();
   }
 
   sourisRelachee() {
-    if (this.traitEnCours) {
+    if (this.commandes.dessinEnCours) {
       if (this.trait.SVG.includes('L')) {
         // on ne stocke le path que s'il n'y a au moins une ligne
         this.commandes.executer(new AjoutSvgService(this.trait, this.stockageSVG));
       }
       this.trait = new TraitCrayonService();
-      this.traitEnCours = false;
+      this.commandes.dessinEnCours = false;
       this.peutCliquer = true;
     }
   }
@@ -55,15 +54,15 @@ export class DessinCrayonService implements InterfaceOutils {
         this.commandes.executer(new AjoutSvgService(this.trait, this.stockageSVG));
         this.trait = new TraitCrayonService();
       }
-      this.traitEnCours = false;
+      this.commandes.dessinEnCours = false;
     } else {this.peutCliquer = true};
   }
 
   sourisSortie() {
-    if (this.traitEnCours) {
+    if (this.commandes.dessinEnCours) {
       this.commandes.executer(new AjoutSvgService(this.trait, this.stockageSVG));
       this.trait = new TraitCrayonService();
-      this.traitEnCours = false;
+      this.commandes.dessinEnCours = false;
     }
     this.peutCliquer = false;
   }

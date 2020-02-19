@@ -36,6 +36,7 @@ export class DessinLigneService implements InterfaceOutils {
   }
 
   sourisCliquee() {
+    this.commandes.dessinEnCours = true;
     this.estClicSimple = true;
     this.ligne.points.push({x: this.ligne.positionSouris.x, y: this.ligne.positionSouris.y});
     window.setTimeout(() => {
@@ -44,6 +45,7 @@ export class DessinLigneService implements InterfaceOutils {
   }
 
   sourisDoubleClic(souris: MouseEvent) {
+    this.commandes.dessinEnCours = false;
     this.estClicSimple = false;
     if (this.ligne.points.length !== 0) {
       if (Math.abs(souris.offsetX - this.ligne.points[0].x) <= 3
@@ -80,29 +82,31 @@ export class DessinLigneService implements InterfaceOutils {
   }
 
   shiftEnfonce() {
-    const dernierPoint = this.ligne.points[this.ligne.points.length - 1];
-    const angle = Math.atan((this.curseur.y - dernierPoint.y) / (this.curseur.x - dernierPoint.x));
-    const alignement = Math.abs(Math.round(angle / (Math.PI / 4)));
+    if (this.commandes.dessinEnCours) {
+      const dernierPoint = this.ligne.points[this.ligne.points.length - 1];
+      const angle = Math.atan((this.curseur.y - dernierPoint.y) / (this.curseur.x - dernierPoint.x));
+      const alignement = Math.abs(Math.round(angle / (Math.PI / 4)));
 
-    // alignement = 0 lorsque angle = 0,180­°
-    // alignement = 1 lorsque angle = 45,135,225,315°
-    // alignement = 2 lorsque angle = 90,270°
-    if (alignement === 0) {
-      this.ligne.positionSouris.x = this.curseur.x;
-      this.ligne.positionSouris.y = dernierPoint.y;
-    } else if (alignement === 1) {
-      if (Math.sign(this.curseur.x - dernierPoint.x) === Math.sign(this.curseur.y - dernierPoint.y)) {
-        this.ligne.positionSouris.y = this.curseur.x - dernierPoint.x + dernierPoint.y;
+      // alignement = 0 lorsque angle = 0,180­°
+      // alignement = 1 lorsque angle = 45,135,225,315°
+      // alignement = 2 lorsque angle = 90,270°
+      if (alignement === 0) {
+        this.ligne.positionSouris.x = this.curseur.x;
+        this.ligne.positionSouris.y = dernierPoint.y;
+      } else if (alignement === 1) {
+        if (Math.sign(this.curseur.x - dernierPoint.x) === Math.sign(this.curseur.y - dernierPoint.y)) {
+          this.ligne.positionSouris.y = this.curseur.x - dernierPoint.x + dernierPoint.y;
+        } else {
+          this.ligne.positionSouris.y = dernierPoint.x - this.curseur.x + dernierPoint.y;
+        }
+        this.ligne.positionSouris.x = this.curseur.x;
       } else {
-        this.ligne.positionSouris.y = dernierPoint.x - this.curseur.x + dernierPoint.y;
+        this.ligne.positionSouris.x = dernierPoint.x;
+        this.ligne.positionSouris.y = this.curseur.y;
       }
-      this.ligne.positionSouris.x = this.curseur.x;
-    } else {
-      this.ligne.positionSouris.x = dernierPoint.x;
-      this.ligne.positionSouris.y = this.curseur.y;
-    }
 
-    this.actualiserSVG();
+      this.actualiserSVG();
+    }
   }
 
   shiftRelache() {
