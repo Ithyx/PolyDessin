@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { ElementDessin } from './element-dessin';
 
 @Injectable({
   providedIn: 'root'
@@ -7,47 +8,45 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export class StockageSvgService {
   taille = 0;
 
-  private SVGEnCoursString = '';
   private SVGEnCours: SafeHtml;
-  private PerimetreEnCours: SafeHtml;
-  private SVGComplets = new Map<number, SafeHtml>();
+  private perimetreEnCours: SafeHtml;
+  private elementsComplets = new Map<number, ElementDessin>();
 
-  ajouterSVG(SVG: string) {
-    this.SVGComplets.set(this.taille + 1, this.sanitizer.bypassSecurityTrustHtml(SVG));
-    ++this.taille;
+  ajouterSVG(element: ElementDessin, cle?: number) {
+    element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
+    this.elementsComplets.set(cle ? cle : ++this.taille, element);
+    this.SVGEnCours = '';
+    this.perimetreEnCours = '';
   }
 
-  getSVGEnCours(): string {
-    // Slicé pour enlevé le '"/>' à la fin
-    return this.SVGEnCoursString.slice(0, -3);
+  retirerSVG(cle: number): ElementDessin | undefined {
+    const element = this.elementsComplets.get(cle);
+    this.elementsComplets.delete(cle);
+    return element;
   }
 
   getSVGEnCoursHTML(): SafeHtml {
-    return this.SVGEnCours
+    return this.SVGEnCours;
   }
 
   getPerimetreEnCoursHTML(): SafeHtml {
-    return this.PerimetreEnCours
+    return this.perimetreEnCours;
   }
 
-  setSVGEnCours(SVG: string) {
-    this.SVGEnCoursString = SVG;
-    this.SVGEnCours = this.sanitizer.bypassSecurityTrustHtml(SVG);
+  setSVGEnCours(element: ElementDessin) {
+    this.SVGEnCours = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
+    if (element.perimetre) {
+      this.perimetreEnCours = this.sanitizer.bypassSecurityTrustHtml(element.perimetre);
+    }
   }
 
-  setPerimetreEnCours(SVG: string) {
-    this.PerimetreEnCours = this.sanitizer.bypassSecurityTrustHtml(SVG);
-  }
-
-  getSVGComplets(): Map<number, SafeHtml> {
-    return this.SVGComplets;
+  getSVGComplets(): Map<number, ElementDessin> {
+    return this.elementsComplets;
   }
 
   viderDessin() {
-    this.SVGComplets.clear();
+    this.elementsComplets.clear();
     this.taille = 0;
-    /* Ne devrait pas être nécessaire, mais par mesure de sécurité */
-    this.setSVGEnCours('');
   }
 
   constructor(private sanitizer: DomSanitizer) { }
