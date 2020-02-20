@@ -36,9 +36,9 @@
           </filter>
     </defs>
     
-    <rect x="0" y="0" [attr.width.px]="gestionnaireDessin.longueur" [attr.height.px]="gestionnaireDessin.hauteur" [attr.width.px]="gestionnaireDessin.largeur" [attr.fill]="parametresCouleur.couleurFond" />
+    <rect x="0" y="0" [attr.width.px]="gestionnaireDessin.longueur" [attr.height.px]="gestionnaireDessin.hauteur" [attr.width.px]="gestionnaireDessin.largeur" (click)="traiterClicSurVide()" [attr.fill]="parametresCouleur.couleurFond" />
 
-    <g *ngFor="let element of stockageSVG.getSVGComplets() | keyvalue;" [innerHTML]="element.value.SVGHtml" (click)="traiterClic(element.value)"></g>
+    <g *ngFor="let element of stockageSVG.getSVGComplets() | keyvalue;" [innerHTML]="element.value.SVGHtml" (click)="traiterClicElementDessin(element.value)"></g>
     <g [innerHTML]="stockageSVG.getSVGEnCoursHTML()"></g>
     <g [innerHTML]="stockageSVG.getPerimetreEnCoursHTML()"></g>
 </svg>

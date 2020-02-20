@@ -22,7 +22,13 @@ export class StockageSvgService {
   retirerSVG(cle: number): ElementDessin | undefined {
     const element = this.elementsComplets.get(cle);
     this.elementsComplets.delete(cle);
+    this.taille--;
     return element;
+  }
+
+  retirerDernierSVG() {
+    this.elementsComplets.delete(this.taille);
+    this.taille--;
   }
 
   getSVGEnCoursHTML(): SafeHtml {

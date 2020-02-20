@@ -6,6 +6,7 @@ import { DessinPinceauService } from 'src/app/services/outils/dessin-pinceau.ser
 import { DessinRectangleService } from 'src/app/services/outils/dessin-rectangle.service'
 import { GestionnaireOutilsService } from 'src/app/services/outils/gestionnaire-outils.service';
 import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
+import { SelectionService } from 'src/app/services/outils/selection.service';
 import { StockageSvgService } from 'src/app/services/stockage-svg/stockage-svg.service';
 
 @Component({
@@ -23,7 +24,8 @@ export class PageDessinComponent {
               public rectangle: DessinRectangleService,
               public pinceau: DessinPinceauService,
               public ligne: DessinLigneService,
-              public raccourcis: GestionnaireRaccourcisService
+              public raccourcis: GestionnaireRaccourcisService,
+              public selection: SelectionService
   ) {
     this.lexiqueOutils.set('Crayon', crayon)
                       .set('Rectangle', rectangle)

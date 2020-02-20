@@ -26,7 +26,16 @@ export class SurfaceDessinComponent {
     }
   }
 
-  traiterClic(element: ElementDessin) {
+  traiterClicSurVide() {
+    if (this.outils.outilActif.ID === INDEX_OUTIL_SELECTION && this.selection.selectionEnCours) {
+      console.log('clic dans le vide');
+      this.selection.selectionEnCours = false;
+      delete this.selection.elementSelectionne;
+      this.stockageSVG.retirerDernierSVG();
+    }
+  }
+
+  traiterClicElementDessin(element: ElementDessin) {
     // TODO : Vérification de l'outil (Selection, Pipette, Applicateur de Couleur)
       // TODO : Vérfication du type element reçu ?
     if (this.outils.outilActif.ID === INDEX_OUTIL_SELECTION) {

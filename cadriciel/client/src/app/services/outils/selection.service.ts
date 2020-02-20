@@ -10,17 +10,21 @@ import { InterfaceOutils } from './interface-outils';
   providedIn: 'root'
 })
 export class SelectionService implements InterfaceOutils {
-
+  selectionEnCours = false;
+  elementSelectionne: ElementDessin;
   constructor(public stockageSVG: StockageSvgService,
               public outils: GestionnaireOutilsService,
-             ) { }
+             ) {
+             }
 
   traiterClic(element: ElementDessin) {
     console.log('selection a reçu', element);
 
-    if (!element.estSelectionne) {
-      this.creerBoiteEnglobanteElementDessin(element);
+    if (element !== this.elementSelectionne) {
+      this.elementSelectionne = element;
+      this.creerBoiteEnglobanteElementDessin();
       element.estSelectionne = true;
+      this.selectionEnCours = true;
     }
   }
 
@@ -38,14 +42,17 @@ export class SelectionService implements InterfaceOutils {
     // TODO : Trouvez le point min et le point max parmis tous les éléments
   };
 
-  creerBoiteEnglobanteElementDessin(element: ElementDessin) {
+  creerBoiteEnglobanteElementDessin() {
+    if (this.selectionEnCours) {
+      this.stockageSVG.retirerDernierSVG();
+    }
 
-    if (element.estPoint) {
+    if (this.elementSelectionne.estPoint) {
       // TODO : l'element est un point
     } else {
       // on cherche le point avec un x et un y min
-    let pointMin: Point = {x: element.points[0].x , y: element.points[0].y};
-    for (const point of element.points) {
+    let pointMin: Point = {x: this.elementSelectionne.points[0].x , y: this.elementSelectionne.points[0].y};
+    for (const point of this.elementSelectionne.points) {
       if (pointMin.x > point.x) {
         pointMin.x = point.x;
       }
@@ -57,8 +64,8 @@ export class SelectionService implements InterfaceOutils {
     pointMin = {x: pointMin.x - 2, y: pointMin.y - 2};
 
     // on cherche le point avec un x et un y max
-    let pointMax: Point = {x: element.points[0].x , y: element.points[0].y};
-    for (const point of element.points) {
+    let pointMax: Point = {x: this.elementSelectionne.points[0].x , y: this.elementSelectionne.points[0].y};
+    for (const point of this.elementSelectionne.points) {
       if (pointMax.x < point.x) {
         pointMax.x = point.x;
       }
