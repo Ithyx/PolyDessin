@@ -7,8 +7,6 @@ import { DessinCrayonService } from './dessin-crayon.service';
 import { OUTIL_VIDE } from './gestionnaire-outils.service';
 
 describe('DessinCrayonService', () => {
-  // const SVGCircle = '<circle cx="100" cy="100" r="2.5" fill="rgba(0, 0, 0, 1)"/>';
-  // const SVGPath = '<path fill="transparent" stroke="rgba(0, 0, 0, 1)" stroke-linecap="round" stroke-width="5" d="M100 100"/>';
   let service: DessinCrayonService;
   let stockageService: StockageSvgService;
   let element: TraitCrayonService;

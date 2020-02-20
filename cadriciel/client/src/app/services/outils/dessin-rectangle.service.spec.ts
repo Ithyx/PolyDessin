@@ -1,5 +1,6 @@
-/*import { TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
+import { AjoutSvgService } from '../commande/ajout-svg.service';
 import { RectangleService } from '../stockage-svg/rectangle.service';
 import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
 import { DessinRectangleService } from './dessin-rectangle.service';
@@ -95,7 +96,27 @@ describe('DessinRectangleService', () => {
     service.shiftRelache();
     expect(service.actualiserSVG).not.toHaveBeenCalled();
   });
-  it('#shiftRelache devrait actualise le SVG si commandes.dessinEnCours est faux', () => {
+  it('#shiftRelache devrait actualiser la hauteur du rectangle si commandes.dessinEnCours est vrai', () => {
+    service.hauteurCalculee = 1;
+    service.shiftRelache();
+    expect(service.rectangle.hauteur).toEqual(1);
+  });
+  it('#shiftRelache devrait actualiser la largeur du rectangle si commandes.dessinEnCours est vrai', () => {
+    service.largeurCalculee = 2;
+    service.shiftRelache();
+    expect(service.rectangle.largeur).toEqual(2);
+  });
+  it('#shiftRelache devrait actualiser la base en x du rectangle si commandes.dessinEnCours est vrai', () => {
+    service.baseCalculee.x = 3;
+    service.shiftRelache();
+    expect(service.rectangle.base.x).toEqual(3);
+  });
+  it('#shiftRelache devrait actualiser la base en y du rectangle si commandes.dessinEnCours est vrai', () => {
+    service.baseCalculee.y = 4;
+    service.shiftRelache();
+    expect(service.rectangle.base.y).toEqual(4);
+  });
+  it('#shiftRelache devrait actualise le SVG si commandes.dessinEnCours est vrai', () => {
     spyOn(service, 'actualiserSVG');
     service.shiftRelache();
     expect(service.actualiserSVG).toHaveBeenCalled();
@@ -121,12 +142,26 @@ describe('DessinRectangleService', () => {
     service.shiftEnfonce();
     expect(service.rectangle.largeur).toBe(50);
   });
+  it('#shiftEnfonce ne devrait pas corriger la largeur si elle est plus petite '
+    + 'que la hauteur', () => {
+    service.largeurCalculee = 50;
+    service.hauteurCalculee = 100;
+    service.shiftEnfonce();
+    expect(service.rectangle.largeur).toBe(50);
+  });
   it('#shiftEnfonce devrait corriger la hauteur si elle est plus grande '
     + 'que la largeur', () => {
     service.largeurCalculee = 50;
     service.hauteurCalculee = 100;
     service.shiftEnfonce();
     expect(service.rectangle.hauteur).toBe(50);
+  });
+  it('#shiftEnfonce ne devrait pas corriger la hauteur si elle est plus petite '
+    + 'que la largeur', () => {
+    service.largeurCalculee = 100;
+    service.hauteurCalculee = 50;
+    service.shiftEnfonce();
+    expect(service.rectangle.largeur).toBe(50);
   });
   it('#shiftEnfonce devrait corriger la base en Y si elle diffère '
     + 'du Y initial et que la largeur est supérieure à la hauteur', () => {
@@ -164,6 +199,7 @@ describe('DessinRectangleService', () => {
   // TODO : Déplacer les tests de création de SVG vers RectangleService
 
   // TESTS SUR LA CRÉATION DE RECTANGLES
+  /*
   it("#actualiserSVG devrait tracer un rectangle lors d'un mouvement "
     + 'vers le coin inférieur droit', () => {
     // on simule un mouvement de 20 en x et de 50 en y
@@ -273,7 +309,7 @@ describe('DessinRectangleService', () => {
     expect(String(stockageService.getPerimetreEnCoursHTML())).toContain(
       'x="-2.5" y="-2.5" height="25" width="5"'
     );
-  });
+  });*/
 
   // TESTS DE SOURIS ENFONCEE
 
@@ -290,7 +326,7 @@ describe('DessinRectangleService', () => {
     // on vérifie que la fonction met commandes.dessinEnCours vrai
     expect(service.commandes.dessinEnCours).toBe(true);
   });
-  it('#sourisEnfoncee devrait contenir les coordonnees initiale du clic', () => {
+  it('#sourisEnfoncee devrait contenir les coordonnees initiales du clic', () => {
     service.commandes.dessinEnCours = false;
     service.initial.x = 200; service.initial.y = 200;
     // on fait un clic aux coordonnees (100,50)
@@ -329,7 +365,7 @@ describe('DessinRectangleService', () => {
     // vérifier que la fonction d'AjoutSVG n'a pas été appelée
     expect(service.commandes.executer).not.toHaveBeenCalled();
   });
-  it('#sourisRelachee devrait appeler correctement la fonction ajouterSVG', () => {
+  it('#sourisRelachee devrait appeler correctement la fonction executer avec un AjoutSVG', () => {
     // la hauteur et la largeur sont non nulles
     const rectangle = new RectangleService();
     rectangle.hauteur = 10;
@@ -339,7 +375,9 @@ describe('DessinRectangleService', () => {
     spyOn(service.commandes, 'executer');
     service.sourisRelachee();
     // vérifier que la fonction ajouterSVG a été correctement appelée
-    expect(service.commandes.executer).toHaveBeenCalledWith(rectangle, stockageService);
+    const ajout = new AjoutSvgService(rectangle, stockageService);
+    ajout.cleSVG = 1;
+    expect(service.commandes.executer).toHaveBeenCalledWith(ajout);
   });
   it('#sourisRelachee devrait reinitialiser le rectangle', () => {
     const rectangle = new RectangleService();
@@ -350,6 +388,21 @@ describe('DessinRectangleService', () => {
     service.sourisRelachee();
     // vérifier que le SVG est vide
     expect(service.rectangle).toEqual(new RectangleService());
+  });
+  it('#sourisRelachee devrait reinitialiser la base calculee', () => {
+    service.baseCalculee = {x: 100, y: 100};
+    service.sourisRelachee();
+    expect(service.baseCalculee).toEqual({x: 0, y: 0});
+  });
+  it('#sourisRelachee devrait reinitialiser la hauteur calculee', () => {
+    service.hauteurCalculee = 100;
+    service.sourisRelachee();
+    expect(service.hauteurCalculee).toEqual(0);
+  });
+  it('#sourisRelachee devrait reinitialiser la largeur calculee', () => {
+    service.largeurCalculee = 100;
+    service.sourisRelachee();
+    expect(service.largeurCalculee).toEqual(0);
   });
 
   // TESTS vider
@@ -369,4 +422,4 @@ describe('DessinRectangleService', () => {
     // vérifier que le SVG est vide
     expect(service.rectangle).toEqual(new RectangleService());
   });
-});*/
+});
