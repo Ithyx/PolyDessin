@@ -1,4 +1,4 @@
-/*import { TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { ElementDessin } from '../stockage-svg/element-dessin';
 import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
@@ -6,7 +6,7 @@ import { DessinCrayonService } from './dessin-crayon.service';
 
 describe('DessinCrayonService', () => {
   const SVGCircle = '<circle cx="100" cy="100" r="2.5" fill="rgba(0, 0, 0, 1)"/>';
-  const SVGPath = '<path fill="transparent" stroke="rgba(0, 0, 0, 1)" stroke-linecap="round" stroke-width="5" d="M100 100"/>';
+  // const SVGPath = '<path fill="transparent" stroke="rgba(0, 0, 0, 1)" stroke-linecap="round" stroke-width="5" d="M100 100"/>';
   let service: DessinCrayonService;
   let stockageService: StockageSvgService;
   let element : ElementDessin;
@@ -30,27 +30,34 @@ describe('DessinCrayonService', () => {
 
   // TESTS sourisCliquee
 
-  it('#sourisCliquee ne devrait pas appeler ajouterSVG si peutCliquer est faux', () => {
+  it('#sourisCliquee ne devrait pas mettre dessinEnCours vrai si peutCliquer est faux', () => {
     service.peutCliquer = false;
-    spyOn(stockageService, 'ajouterSVG');
+    service.commandes.dessinEnCours = true;
     service.sourisCliquee(new MouseEvent('onclick'));
-    expect(stockageService.ajouterSVG).not.toHaveBeenCalled();
+    expect(service.commandes.dessinEnCours).toBe(true);
+  });
+
+  it('#sourisCliquee  devrait mettre dessinEnCours faux si peutCliquer est vrai', () => {
+    service.sourisCliquee(new MouseEvent('onclick'));
+    expect(service.commandes.dessinEnCours).toBe(false);
   });
 
   it("#sourisCliquee devrait seulement être appelé si l'outil crayon est sélectionné", () => {
-    service.outils.outilActif = {
+    /*service.outils.outilActif = {
       nom : 'outilActifTest' ,
       estActif : true,
       ID : 0,
       parametres: [
-        {type: 'select', nom: 'testEpaisseurInvalide', optionChoisie: '1', options: ['1', '2']}
+        {type: 'select', nom: 'testEpaisseurInvalide', optionChoisie: '1', options: ['1', '2'], valeur: 0}
       ],
       nomIcone: ''
-    }
-
-    spyOn(stockageService, 'ajouterSVG');
+    }*/
+    service.outils.outilActif.parametres[0].valeur = 0;
+    service.trait.estPoint = false;
+    // spyOn(service, 'actualiserSVG');
     service.sourisCliquee(new MouseEvent('onclick'));
-    expect(stockageService.ajouterSVG).not.toHaveBeenCalled();
+    // expect(service.actualiserSVG).not.toHaveBeenCalled();
+    expect(service.trait.estPoint).toBe(true);
   });
 
   it('#sourisCliquee devrait appeler ajouterSVG créer un point après un clic', () => {
@@ -70,7 +77,7 @@ describe('DessinCrayonService', () => {
     service.sourisCliquee(new MouseEvent('onclick'));
     expect(service.peutCliquer).toBe(true);
   });
-
+/*
   // TESTS sourisDeplacee
 
   it('#sourisDeplacee ne devrait pas appeler setSVGEnCours si traitEnCours est faux', () => {
@@ -169,5 +176,5 @@ describe('DessinCrayonService', () => {
     service.commandes.dessinEnCours = false;
     service.sourisSortie();
     expect(service.peutCliquer).toBe(false);
-  });
-});*/
+  });*/
+});
