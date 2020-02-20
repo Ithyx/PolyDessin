@@ -27,12 +27,8 @@ export class SurfaceDessinComponent {
   }
 
   traiterClicSurVide() {
-    if (this.outils.outilActif.ID === INDEX_OUTIL_SELECTION && this.selection.selectionEnCours) {
-      console.log('clic dans le vide');
-      this.selection.selectionEnCours = false;
-      delete this.selection.elementSelectionne;
-      this.stockageSVG.retirerDernierSVG();
-    }
+    console.log('clic dans le vide');
+    this.selection.supprimerBoiteEnglobante();
   }
 
   traiterClicElementDessin(element: ElementDessin) {
