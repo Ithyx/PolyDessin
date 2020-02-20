@@ -20,6 +20,7 @@ describe('DessinPinceauService', () => {
     service.commandes.dessinEnCours = true;
     service.outils.outilActif = service.outils.listeOutils[1];
     service.outils.outilActif.parametres[0].valeur = 5;
+    element = new TraitPinceauService();
     stockageService.setSVGEnCours(element);
   });
 
