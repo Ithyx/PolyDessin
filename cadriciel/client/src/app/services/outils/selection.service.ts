@@ -39,7 +39,43 @@ export class SelectionService implements InterfaceOutils {
   }
 
   creerBoiteEnglobantePlusieursElementDessins(elements: ElementDessin[]) {
-    // TODO : Trouvez le point min et le point max parmis tous les éléments
+    let pointMin: Point = {x: elements[0].points[0].x , y: elements[0].points[0].y};
+    let pointMax: Point = {x: elements[0].points[0].x , y: elements[0].points[0].y};
+
+    for (const element of elements) {
+      for (const point of element.points) {
+        // Point Min
+        if (pointMin.x > point.x) {
+          pointMin.x = point.x;
+        }
+        if (pointMin.y > point.y) {
+          pointMin.y = point.y;
+        }
+
+        // Point Max
+        if (pointMax.x < point.x) {
+          pointMax.x = point.x;
+        }
+        if (pointMax.y < point.y) {
+          pointMax.y = point.y;
+        }
+      }
+    }
+
+    pointMin = {x: pointMin.x - 2, y: pointMin.y - 2};
+    pointMax = {x: pointMax.x + 2, y: pointMax.y + 2};
+
+    const boite = new RectangleService();
+    boite.estSelectionne = true;
+    boite.outil = this.outils.outilActif;
+
+    boite.points[0] = pointMin;
+    boite.points[1] = pointMax;
+    boite.couleurSecondaire =  'rgba(0, 0, 0, 1)';
+
+    boite.dessinerRectangle();
+
+    this.stockageSVG.ajouterSVG(boite);
   };
 
   creerBoiteEnglobanteElementDessin() {
@@ -50,22 +86,20 @@ export class SelectionService implements InterfaceOutils {
     if (this.elementSelectionne.estPoint) {
       // TODO : l'element est un point
     } else {
-      // on cherche le point avec un x et un y min
+
       let pointMin: Point = {x: this.elementSelectionne.points[0].x , y: this.elementSelectionne.points[0].y};
+      let pointMax: Point = {x: this.elementSelectionne.points[0].x , y: this.elementSelectionne.points[0].y};
+
       for (const point of this.elementSelectionne.points) {
+        // Point Min
         if (pointMin.x > point.x) {
           pointMin.x = point.x;
         }
         if (pointMin.y > point.y) {
           pointMin.y = point.y;
         }
-      }
 
-      pointMin = {x: pointMin.x - 2, y: pointMin.y - 2};
-
-      // on cherche le point avec un x et un y max
-      let pointMax: Point = {x: this.elementSelectionne.points[0].x , y: this.elementSelectionne.points[0].y};
-      for (const point of this.elementSelectionne.points) {
+        // Point Max
         if (pointMax.x < point.x) {
           pointMax.x = point.x;
         }
@@ -74,6 +108,7 @@ export class SelectionService implements InterfaceOutils {
         }
       }
 
+      pointMin = {x: pointMin.x - 2, y: pointMin.y - 2};
       pointMax = {x: pointMax.x + 2, y: pointMax.y + 2};
 
       const boite = new RectangleService();
@@ -96,6 +131,11 @@ export class SelectionService implements InterfaceOutils {
       delete this.elementSelectionne;
       this.stockageSVG.retirerDernierSVG();
     }
+  };
+
+  estDansRectangleSelection(element: ElementDessin, rectangleSelection: RectangleService): boolean {    // Ou prend un point comme attribut ?
+    // TODO: Vérification si l'un des points de l'élément dessinés se trouve dans le rectangle de selection
+    return false;
   };
 
 }
