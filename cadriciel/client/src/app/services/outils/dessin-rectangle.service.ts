@@ -53,8 +53,7 @@ export class DessinRectangleService implements InterfaceOutils {
   sourisEnfoncee(souris: MouseEvent) {
     if (!this.commandes.dessinEnCours) {
       this.commandes.dessinEnCours = true;
-      this.initial.x = souris.offsetX;
-      this.initial.y = souris.offsetY;
+      this.initial = {x: souris.offsetX, y: souris.offsetY};
     }
   }
 

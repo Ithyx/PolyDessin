@@ -30,7 +30,8 @@ export class PageDessinComponent {
     this.lexiqueOutils.set('Crayon', crayon)
                       .set('Rectangle', rectangle)
                       .set('Ligne', ligne)
-                      .set('Pinceau', pinceau);
+                      .set('Pinceau', pinceau)
+                      .set('Selection', selection);
   }
 
   @HostListener('document:keydown', ['$event'])

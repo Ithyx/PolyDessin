@@ -27,13 +27,11 @@ export class SurfaceDessinComponent {
   }
 
   traiterClicSurVide() {
-    console.log('clic dans le vide');
     this.selection.supprimerBoiteEnglobante();
   }
 
   traiterClicElementDessin(element: ElementDessin) {
     // TODO : Vérification de l'outil (Selection, Pipette, Applicateur de Couleur)
-      // TODO : Vérfication du type element reçu ?
     if (this.outils.outilActif.ID === INDEX_OUTIL_SELECTION) {
       this.selection.traiterClic(element);
     }

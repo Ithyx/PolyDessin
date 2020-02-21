@@ -10,8 +10,19 @@ import { InterfaceOutils } from './interface-outils';
   providedIn: 'root'
 })
 export class SelectionService implements InterfaceOutils {
+  boiteElementSelectionne = new RectangleService();
+  rectangleSelection = new RectangleService();
+
+  initial: Point = {x: 0, y: 0};
+  // Coordonnées du point inférieur gauche
+  baseCalculee: Point = {x: 0, y: 0};
+  // Dimensions du rectangle
+  largeurCalculee = 0;
+  hauteurCalculee = 0;
+
   selectionEnCours = false;
   elementSelectionne: ElementDessin;
+
   constructor(public stockageSVG: StockageSvgService,
               public outils: GestionnaireOutilsService,
              ) {
@@ -28,22 +39,31 @@ export class SelectionService implements InterfaceOutils {
     }
   }
 
-  // Garder la souris enfoncee doit créer un rectangle de sélection
-  sourisEnfoncee(evenement: MouseEvent) {
-    // TODO
+  sourisDeplacee(souris: MouseEvent) {
+    // Calcule des valeurs pour former un rectangle
+    this.largeurCalculee = Math.abs(this.initial.x - souris.offsetX);
+    this.hauteurCalculee = Math.abs(this.initial.y - souris.offsetY);
+    this.baseCalculee.x = Math.min(this.initial.x, souris.offsetX);
+    this.baseCalculee.y = Math.min(this.initial.y, souris.offsetY);
   }
 
-  // Le racourci CTRL+A doit sélectionner tous les objets
-  selectionneTousLesObjets() {
-    // TODO
+  sourisEnfoncee(souris: MouseEvent) {
+    this.initial = {x: souris.offsetX, y: souris.offsetY};
   }
 
-  creerBoiteEnglobantePlusieursElementDessins(elements: ElementDessin[]) {
-    let pointMin: Point = {x: elements[0].points[0].x , y: elements[0].points[0].y};
-    let pointMax: Point = {x: elements[0].points[0].x , y: elements[0].points[0].y};
+  sourisRelachee() {
+    this.baseCalculee = {x: 0, y: 0};
+    this.hauteurCalculee = 0;
+    this.largeurCalculee = 0;
+    this.rectangleSelection = new RectangleService();
+  }
+
+  creerBoiteEnglobantePlusieursElementDessins(elements: Map<number, ElementDessin>) {
+    let pointMin: Point = {x: elements.values().next().value.points[0].x, y: elements.values().next().value.points[0].y};
+    let pointMax: Point = {x: elements.values().next().value.points[0].x, y: elements.values().next().value.points[0].y};
 
     for (const element of elements) {
-      for (const point of element.points) {
+      for (const point of element[1].points) {
         // Point Min
         if (pointMin.x > point.x) {
           pointMin.x = point.x;
@@ -65,17 +85,18 @@ export class SelectionService implements InterfaceOutils {
     pointMin = {x: pointMin.x - 2, y: pointMin.y - 2};
     pointMax = {x: pointMax.x + 2, y: pointMax.y + 2};
 
-    const boite = new RectangleService();
-    boite.estSelectionne = true;
-    boite.outil = this.outils.outilActif;
+    this.boiteElementSelectionne.estSelectionne = true;
+    this.boiteElementSelectionne.outil = this.outils.outilActif;
 
-    boite.points[0] = pointMin;
-    boite.points[1] = pointMax;
-    boite.couleurSecondaire =  'rgba(0, 0, 0, 1)';
+    this.boiteElementSelectionne.points[0] = pointMin;
+    this.boiteElementSelectionne.points[1] = pointMax;
+    this.boiteElementSelectionne.couleurSecondaire =  'rgba(0, 0, 0, 1)';
 
-    boite.dessinerRectangle();
+    this.boiteElementSelectionne.dessinerRectangle();
 
-    this.stockageSVG.ajouterSVG(boite);
+    this.stockageSVG.ajouterSVG(this.boiteElementSelectionne);
+
+    this.selectionEnCours = true;
   };
 
   creerBoiteEnglobanteElementDessin() {
@@ -111,17 +132,18 @@ export class SelectionService implements InterfaceOutils {
       pointMin = {x: pointMin.x - 2, y: pointMin.y - 2};
       pointMax = {x: pointMax.x + 2, y: pointMax.y + 2};
 
-      const boite = new RectangleService();
-      boite.estSelectionne = true;
-      boite.outil = this.outils.outilActif;
+      this.boiteElementSelectionne.estSelectionne = true;
+      this.boiteElementSelectionne.outil = this.outils.outilActif;
 
-      boite.points[0] = pointMin;
-      boite.points[1] = pointMax;
-      boite.couleurSecondaire =  'rgba(0, 0, 0, 1)';
+      this.boiteElementSelectionne.points[0] = pointMin;
+      this.boiteElementSelectionne.points[1] = pointMax;
+      this.boiteElementSelectionne.couleurSecondaire =  'rgba(0, 0, 0, 1)';
 
-      boite.dessinerRectangle();
+      this.boiteElementSelectionne.dessinerRectangle();
 
-      this.stockageSVG.ajouterSVG(boite);
+      this.stockageSVG.ajouterSVG(this.boiteElementSelectionne);
+
+      this.selectionEnCours = true;
     }
   };
 
@@ -133,7 +155,7 @@ export class SelectionService implements InterfaceOutils {
     }
   };
 
-  estDansRectangleSelection(element: ElementDessin, rectangleSelection: RectangleService): boolean {    // Ou prend un point comme attribut ?
+  estDansRectangleSelection(element: ElementDessin, rectangleSelection: RectangleService): boolean {
     // TODO: Vérification si l'un des points de l'élément dessinés se trouve dans le rectangle de selection
     return false;
   };

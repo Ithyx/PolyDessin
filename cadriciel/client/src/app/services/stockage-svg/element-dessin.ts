@@ -12,7 +12,8 @@ export interface ElementDessin {
   couleurPrincipale?: string;
   couleurSecondaire?: string;
 
-  // epaisseur?: number;
+  texture?: string;
+  epaisseur?: number;
   perimetre?: string;
   estSelectionne: boolean;
   estPoint?: boolean;

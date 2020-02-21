@@ -38,6 +38,15 @@ export class GestionnaireRaccourcisService {
         this.viderSVGEnCours();
         break;
 
+      case 'a':
+        if (clavier.ctrlKey) {
+          console.log('CTRL+A');
+          this.selection.supprimerBoiteEnglobante();
+          this.outils.changerOutilActif(INDEX_OUTIL_SELECTION);
+          this.selection.creerBoiteEnglobantePlusieursElementDessins(this.stockageSVG.getSVGComplets());
+        }
+        break;
+
       case 'c':
         this.selection.supprimerBoiteEnglobante();
         this.outils.changerOutilActif(INDEX_OUTIL_CRAYON);
