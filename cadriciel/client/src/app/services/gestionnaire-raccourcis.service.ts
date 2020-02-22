@@ -39,10 +39,10 @@ export class GestionnaireRaccourcisService {
         break;
 
       case 'a':
-        if (clavier.ctrlKey) {
+        clavier.preventDefault();
+        if (clavier.ctrlKey && this.outils.outilActif.ID === INDEX_OUTIL_SELECTION) {
           console.log('CTRL+A');
           this.selection.supprimerBoiteEnglobante();
-          this.outils.changerOutilActif(INDEX_OUTIL_SELECTION);
           this.selection.creerBoiteEnglobantePlusieursElementDessins(this.stockageSVG.getSVGComplets());
         }
         break;

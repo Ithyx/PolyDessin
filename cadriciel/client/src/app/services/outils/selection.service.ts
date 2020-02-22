@@ -25,8 +25,7 @@ export class SelectionService implements InterfaceOutils {
 
   constructor(public stockageSVG: StockageSvgService,
               public outils: GestionnaireOutilsService,
-             ) {
-             }
+             ) {}
 
   traiterClic(element: ElementDessin) {
     console.log('selection a reçu', element);
@@ -63,6 +62,7 @@ export class SelectionService implements InterfaceOutils {
     let pointMax: Point = {x: elements.values().next().value.points[0].x, y: elements.values().next().value.points[0].y};
 
     for (const element of elements) {
+      element[1].estSelectionne = true;
       for (const point of element[1].points) {
         // Point Min
         if (pointMin.x > point.x) {
@@ -90,7 +90,7 @@ export class SelectionService implements InterfaceOutils {
 
     this.boiteElementSelectionne.points[0] = pointMin;
     this.boiteElementSelectionne.points[1] = pointMax;
-    this.boiteElementSelectionne.couleurSecondaire =  'rgba(0, 0, 0, 1)';
+    this.boiteElementSelectionne.couleurSecondaire =  'rgba(0, 80, 150, 1)';
 
     this.boiteElementSelectionne.dessinerRectangle();
 
@@ -156,8 +156,19 @@ export class SelectionService implements InterfaceOutils {
   };
 
   estDansRectangleSelection(element: ElementDessin, rectangleSelection: RectangleService): boolean {
-    // TODO: Vérification si l'un des points de l'élément dessinés se trouve dans le rectangle de selection
-    return false;
+    let appartientX = false;
+    let appartientY = false;
+    for (const point of element.points) {
+      if (point.x > rectangleSelection.points[0].x && point.x < rectangleSelection.points[1].x) {
+        appartientX = true;
+      } else {appartientX = false;};
+
+      if (point.y > rectangleSelection.points[0].y && point.y < rectangleSelection.points[1].y) {
+        appartientY = true;
+      } else {appartientY = false}
+    }
+
+    return appartientX && appartientY;
   };
 
 }
