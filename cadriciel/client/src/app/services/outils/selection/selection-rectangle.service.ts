@@ -25,7 +25,7 @@ export class SelectionRectangleService {
                                          ],
                                          nomIcone: ''};
 
-  constructor() { }
+  constructor(){ }
 
   actualiserSVG() {
     this.rectangle.outil = this.rectangleSelectionTool;

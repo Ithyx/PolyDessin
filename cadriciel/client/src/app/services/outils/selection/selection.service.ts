@@ -4,6 +4,7 @@ import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { StockageSvgService } from '../../stockage-svg/stockage-svg.service';
 import { Point } from '../dessin-ligne.service';
 import { InterfaceOutils } from '../interface-outils';
+import { GestionnaireDessinService } from './../../gestionnaire-dessin/gestionnaire-dessin.service'
 import { SelectionBoxService } from './selection-box.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
 
@@ -17,7 +18,8 @@ export class SelectionService implements InterfaceOutils {
 
   constructor(public stockageSVG: StockageSvgService,
               public selectionBox: SelectionBoxService,
-              public selectionRectangle: SelectionRectangleService
+              public selectionRectangle: SelectionRectangleService,
+              public gestionnaireDessin: GestionnaireDessinService
              ) {}
 
   traiterClic(element: ElementDessin) {
@@ -78,32 +80,29 @@ export class SelectionService implements InterfaceOutils {
 
   creerBoiteEnglobanteElementDessin() {
 
-    let pointMin: Point = {x: this.elementSelectionne[0].points[0].x , y: this.elementSelectionne[0].points[0].y};
-    let pointMax: Point = {x: this.elementSelectionne[0].points[0].x , y: this.elementSelectionne[0].points[0].y};
+    const pointMin: Point = {x: this.gestionnaireDessin.largeur , y: this.gestionnaireDessin.hauteur};
+    const pointMax: Point = {x: 0 , y: 0};
 
     for (const element of this.elementSelectionne) {
       for (const point of element.points) {
         // Point Min
         if (pointMin.x > point.x) {
-          pointMin.x = point.x;
+          pointMin.x = element.epaisseur ? point.x - 0.50 * element.epaisseur : point.x;
         }
         if (pointMin.y > point.y) {
-          pointMin.y = point.y;
+          pointMin.y = element.epaisseur ? point.y - 0.50 * element.epaisseur : point.y;
         }
 
         // Point Max
         if (pointMax.x < point.x) {
-          pointMax.x = point.x;
+          pointMax.x = element.epaisseur ? point.x + 0.50 * element.epaisseur : point.x;
         }
         if (pointMax.y < point.y) {
-          pointMax.y = point.y;
+          pointMax.y = element.epaisseur ? point.y + 0.50 * element.epaisseur : point.y;
         }
       }
+
     }
-
-    pointMin = {x: pointMin.x - 2, y: pointMin.y - 2};
-    pointMax = {x: pointMax.x + 2, y: pointMax.y + 2};
-
     this.selectionBox.createSelectionBox(pointMin, pointMax);
   };
 
