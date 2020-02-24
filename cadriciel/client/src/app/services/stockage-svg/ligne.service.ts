@@ -11,6 +11,7 @@ export class LigneService implements ElementDessin {
   SVG: string;
   SVGHtml: SafeHtml;
   estSelectionne = false;
+  epaisseur: number;
 
   couleurPrincipale = 'rgba(0,0,0,1)';
 
@@ -20,6 +21,9 @@ export class LigneService implements ElementDessin {
   positionSouris = {x: 0, y: 0};
 
   dessiner() {
+    if (this.outil.parametres[0].valeur) {
+      this.epaisseur = this.outil.parametres[0].valeur;
+    }
     this.SVG = (this.estPolygone) ? '<polygon ' : '<polyline ';
     this.SVG += 'fill="none" stroke="' + this.couleurPrincipale + '" stroke-width="' + this.outil.parametres[0].valeur
     this.SVG += '" points="';
@@ -36,6 +40,11 @@ export class LigneService implements ElementDessin {
   }
 
   dessinerPoints() {
+    if (this.outil.parametres[2].valeur) {
+      if(2 * this.outil.parametres[2].valeur > this.epaisseur) {
+        this.epaisseur = 2 * this.outil.parametres[2].valeur;
+    }
+  }
     for (const point of this.points) {
       this.SVG += ' <circle cx="' + point.x + '" cy="' + point.y + '" r="'
       + this.outil.parametres[2].valeur  + '" fill="' + this.couleurPrincipale + '"/>';

@@ -12,6 +12,7 @@ export class RectangleService implements ElementDessin {
   SVGHtml: SafeHtml;
   perimetre: string;
   estSelectionne = false;
+  epaisseur: number;
 
   points: Point[] = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
                      {x: 0, y: 0}];   // points[1], coin bas droite
@@ -42,6 +43,9 @@ export class RectangleService implements ElementDessin {
   }
 
   dessinerLigne() {
+    if (this.outil.parametres[0].valeur) {
+      this.epaisseur = this.outil.parametres[0].valeur;
+    }
     this.SVG = '<line stroke-linecap="square'
       + '" stroke="' + this.couleurSecondaire
       + '" stroke-width="' + this.outil.parametres[0].valeur
@@ -61,6 +65,11 @@ export class RectangleService implements ElementDessin {
   }
 
   dessinerPerimetre() {
+    if (this.outil.parametres[1].optionChoisie === 'Plein') {
+      this.epaisseur = 0;
+    } else if (this.outil.parametres[0].valeur) {
+      this.epaisseur = this.outil.parametres[0].valeur;
+    }
     const epaisseur = (this.outil.parametres[0].valeur) ? this.outil.parametres[0].valeur : 0;
     this.perimetre = '<rect stroke="gray" fill="none" stroke-width="2';
     if (this.outil.parametres[1].optionChoisie === 'Plein') {

@@ -15,6 +15,7 @@ export class TraitPinceauService implements ElementDessin {
   outil: OutilDessin = OUTIL_VIDE;
   points: Point[] = [];
   estPoint = false;
+  epaisseur: number;
   couleurPrincipale: string;
 
   dessiner() {
@@ -26,6 +27,9 @@ export class TraitPinceauService implements ElementDessin {
   }
 
   dessinerChemin() {
+    if (this.outil.parametres[0].valeur) {
+      this.epaisseur = this.outil.parametres[0].valeur;
+    }
     this.SVG = `<path fill="transparent" stroke="${this.couleurPrincipale}"`
       + ' filter="url(#' + this.outil.parametres[1].optionChoisie
       + ')" stroke-linecap="round" stroke-width="' + this.outil.parametres[0].valeur + '" d="';
@@ -38,6 +42,7 @@ export class TraitPinceauService implements ElementDessin {
 
   dessinerPoint() {
     if (this.outil.parametres[0].valeur) {
+      this.epaisseur = this.outil.parametres[0].valeur;
       this.SVG = '<circle cx="' + this.points[0].x + '" cy="' + this.points[0].y
         + '" filter="url(#' + this.outil.parametres[1].optionChoisie
         + ')" r="' + this.outil.parametres[0].valeur / 2
