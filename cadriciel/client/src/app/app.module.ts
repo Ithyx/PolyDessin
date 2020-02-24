@@ -23,6 +23,7 @@ import { PageGuideComponent } from './components/page-guide/page-guide.component
 import { SurfaceDessinComponent } from './components/surface-dessin/surface-dessin.component';
 
 // Service
+import { GestionnaireCommandesService } from './services/commande/gestionnaire-commandes.service';
 import { ParametresCouleurService } from './services/couleur/parametres-couleur.service';
 import { GestionnaireDessinService } from './services/gestionnaire-dessin/gestionnaire-dessin.service';
 import { GestionnaireRaccourcisService } from './services/gestionnaire-raccourcis.service';
@@ -31,7 +32,8 @@ import { NavigationGuideService } from './services/navigation-guide.service';
 import { DessinCrayonService } from './services/outils/dessin-crayon.service';
 import { DessinLigneService } from './services/outils/dessin-ligne.service';
 import { DessinRectangleService } from './services/outils/dessin-rectangle.service';
-import { StockageSvgService } from './services/stockage-svg.service';
+import { SelectionService } from './services/outils/selection/selection.service';
+import { StockageSvgService } from './services/stockage-svg/stockage-svg.service';
 
 @NgModule({
     declarations: [AppComponent, AccueilComponent, AvertissementNouveauDessinComponent, PageDessinComponent, PageGuideComponent,
@@ -45,7 +47,8 @@ import { StockageSvgService } from './services/stockage-svg.service';
     ])],
     providers: [NavigationGuideService, StockageSvgService, DessinCrayonService, GestionnaireDessinService,
                 GestionnaireRaccourcisService, DessinRectangleService, DessinLigneService,
-                GestionnaireRoutingService, ParametresCouleurService, MatDialogConfig],
+                GestionnaireRoutingService, ParametresCouleurService, MatDialogConfig, SelectionService, 
+                GestionnaireCommandesService],
     entryComponents: [FenetreNouveauDessinComponent, AvertissementNouveauDessinComponent, ChoixCouleurComponent],
     bootstrap: [AppComponent],
 })

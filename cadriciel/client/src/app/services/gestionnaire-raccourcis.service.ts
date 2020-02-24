@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { GestionnaireCommandesService } from './commande/gestionnaire-commandes.service';
 import { DessinLigneService } from './outils/dessin-ligne.service';
 import { DessinRectangleService } from './outils/dessin-rectangle.service';
 import { GestionnaireOutilsService, INDEX_OUTIL_CRAYON,
-         INDEX_OUTIL_LIGNE, INDEX_OUTIL_PINCEAU , INDEX_OUTIL_RECTANGLE } from './outils/gestionnaire-outils.service';
+        INDEX_OUTIL_LIGNE, INDEX_OUTIL_PINCEAU ,
+        INDEX_OUTIL_RECTANGLE, INDEX_OUTIL_SELECTION } from './outils/gestionnaire-outils.service';
+import { SelectionService } from './outils/selection/selection.service';
+import { StockageSvgService } from './stockage-svg/stockage-svg.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +19,10 @@ export class GestionnaireRaccourcisService {
 
   constructor(public outils: GestionnaireOutilsService,
               public dessinRectangle: DessinRectangleService,
-              public dessinLigne: DessinLigneService) { }
+              public dessinLigne: DessinLigneService,
+              public commandes: GestionnaireCommandesService,
+              public selection: SelectionService,
+              public stockageSVG: StockageSvgService) { }
 
   viderSVGEnCours() {
     this.dessinRectangle.vider();
@@ -26,23 +33,53 @@ export class GestionnaireRaccourcisService {
     if (this.champDeTexteEstFocus) { return; };
     switch (clavier.key) {
       case '1':
+        this.selection.supprimerBoiteEnglobante();
         this.outils.changerOutilActif(INDEX_OUTIL_RECTANGLE);
         this.viderSVGEnCours();
         break;
 
+      case 'a':
+        clavier.preventDefault();
+        if (clavier.ctrlKey && this.outils.outilActif.ID === INDEX_OUTIL_SELECTION) {
+          console.log('CTRL+A');
+          this.selection.supprimerBoiteEnglobante();
+          this.selection.creerBoiteEnglobantePlusieursElementDessins(this.stockageSVG.getSVGComplets());
+        }
+        break;
+
       case 'c':
+        this.selection.supprimerBoiteEnglobante();
         this.outils.changerOutilActif(INDEX_OUTIL_CRAYON);
         this.viderSVGEnCours();
         break;
 
       case 'l':
+        this.selection.supprimerBoiteEnglobante();
         this.outils.changerOutilActif(INDEX_OUTIL_LIGNE);
         this.viderSVGEnCours();
         break;
 
       case 'w':
+        this.selection.supprimerBoiteEnglobante();
         this.outils.changerOutilActif(INDEX_OUTIL_PINCEAU);
         this.viderSVGEnCours();
+        break;
+
+      case 's':
+        this.selection.supprimerBoiteEnglobante();
+        this.outils.changerOutilActif(INDEX_OUTIL_SELECTION);
+        this.viderSVGEnCours();
+
+      case 'z':
+        if (clavier.ctrlKey && !this.commandes.dessinEnCours) {
+          this.commandes.annulerCommande();
+        }
+        break;
+
+      case 'Z':
+        if (clavier.ctrlKey && !this.commandes.dessinEnCours) {
+          this.commandes.refaireCommande();
+        }
         break;
 
       case 'Shift':

@@ -2,19 +2,16 @@ import { injectable } from 'inversify';
 import { Collection, MongoClient, MongoClientOptions, } from 'mongodb';
 import 'reflect-metadata'
 
+import { Drawing } from '../../../common/communication/DrawingInterface';
+
 const DATABASE_URL = 'mongodb+srv://PolyDessin:log2990@polydessin-zhlk9.mongodb.net/test?retryWrites=true&w=majority';
 const DATABASE_NAME = 'polydessinDB';
 const DATABASE_COLLECTION = 'dessin';
 
-export interface Test1 {
-    name: string;
-    id?: number;
-}
-
 @injectable()
 export class DatabaseService {
 
-    collection: Collection<Test1>;
+    collection: Collection<Drawing>;
 
     private options: MongoClientOptions = {
         useNewUrlParser : true,
@@ -35,7 +32,7 @@ export class DatabaseService {
     }
 
     SendData() {
-        this.collection.insertOne({name: 'Tim'});
-        this.collection.insertOne({name: 'Sam', id: 7});
+        this.collection.insertOne({name: 'test1', height: 25, width: 25, backgroundColor: 'blue'});
+        this.collection.insertOne({name: 'mon bo déss1', height: 7254.5, width: 0, backgroundColor: 'rgba(255, 0, 255, 255)'});
     }
 }

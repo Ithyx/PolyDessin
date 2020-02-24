@@ -15,6 +15,7 @@ export class DatabaseController {
         this.router = Router();
         this.router.get('/', (req: Request, res: Response, next: NextFunction) => {
             this.databaseService.SendData();
+            res.sendStatus(200);
         })
     }
 }
