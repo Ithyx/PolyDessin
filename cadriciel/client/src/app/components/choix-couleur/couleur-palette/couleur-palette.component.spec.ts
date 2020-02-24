@@ -1,6 +1,7 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { GestionnaireCommandesService } from 'src/app/services/commande/gestionnaire-commandes.service';
 import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
 import { CouleurPaletteComponent } from './couleur-palette.component';
@@ -9,6 +10,7 @@ describe('CouleurPaletteComponent', () => {
   let component: CouleurPaletteComponent;
   let fixture: ComponentFixture<CouleurPaletteComponent>;
   let parametresCouleur: ParametresCouleurService;
+  let commandes: GestionnaireCommandesService;
   const changementsTeinte: SimpleChanges = {testTeinte: new SimpleChange('avant', 'après', true)};
   const hauteurTest = {x: 500, y: 500};
 
@@ -23,7 +25,8 @@ describe('CouleurPaletteComponent', () => {
     fixture = TestBed.createComponent(CouleurPaletteComponent);
     component = fixture.componentInstance;
     parametresCouleur = TestBed.get(ParametresCouleurService);
-    component.gestionnaireCouleur = new GestionnaireCouleursService(parametresCouleur);
+    commandes = TestBed.get(GestionnaireCommandesService);
+    component.gestionnaireCouleur = new GestionnaireCouleursService(parametresCouleur, commandes);
     fixture.detectChanges();
   });
 

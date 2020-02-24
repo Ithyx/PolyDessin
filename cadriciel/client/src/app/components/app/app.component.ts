@@ -26,7 +26,6 @@ export class AppComponent {
     }
 
     miseAJourURL(evenement: [any, any]) {
-        console.log(evenement[0].url);
         this.gestionnaireRoutes.pagePrecedente = evenement[0].url;
         this.gestionnaireRoutes.pageEnCours = evenement[1].url;
     };

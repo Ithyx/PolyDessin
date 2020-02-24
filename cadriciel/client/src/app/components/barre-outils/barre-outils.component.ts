@@ -1,10 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig} from '@angular/material';
 import { Subscription } from 'rxjs';
+import { GestionnaireCommandesService } from 'src/app/services/commande/gestionnaire-commandes.service';
 import { Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
+import { SelectionService } from 'src/app/services/outils/selection/selection.service';
 import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
 import { ChoixCouleurComponent } from '../choix-couleur/choix-couleur.component';
 
@@ -25,7 +27,9 @@ export class BarreOutilsComponent implements OnDestroy {
     public dialog: MatDialog,
     public outils: GestionnaireOutilsService,
     public raccourcis: GestionnaireRaccourcisService,
-    public couleur: ParametresCouleurService
+    public couleur: ParametresCouleurService,
+    public commandes: GestionnaireCommandesService,
+    public selection: SelectionService
   ) {
     this.nouveauDessinSubscription = raccourcis.emitterNouveauDessin.subscribe((estIgnoree: boolean) => {
      if (!estIgnoree) { this.avertissementNouveauDessin(); };
@@ -38,6 +42,9 @@ export class BarreOutilsComponent implements OnDestroy {
   }
 
   clic(outil: OutilDessin) {
+    if (this.outils.outilActif.nom === 'Selection' && this.selection.selectionBox) {
+      this.selection.supprimerBoiteEnglobante();
+  }
     this.outils.outilActif.estActif = false;
     this.outils.outilActif = outil;
     this.outils.outilActif.estActif = true;

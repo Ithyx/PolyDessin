@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { GestionnaireCommandesService } from 'src/app/services/commande/gestionnaire-commandes.service';
 import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
 import { ValeurCouleurComponent } from './valeur-couleur.component';
@@ -7,6 +8,7 @@ import { ValeurCouleurComponent } from './valeur-couleur.component';
 describe('ValeurCouleurComponent', () => {
   let component: ValeurCouleurComponent;
   let fixture: ComponentFixture<ValeurCouleurComponent>;
+  let commandes: GestionnaireCommandesService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -18,7 +20,8 @@ describe('ValeurCouleurComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ValeurCouleurComponent);
     component = fixture.componentInstance;
-    component.gestionnaireCouleur = new GestionnaireCouleursService(new ParametresCouleurService());
+    commandes = TestBed.get(GestionnaireCommandesService);
+    component.gestionnaireCouleur = new GestionnaireCouleursService(new ParametresCouleurService(), commandes);
 
     fixture.detectChanges();
     fixture.autoDetectChanges()

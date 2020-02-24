@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
+import { AjoutSvgService } from '../commande/ajout-svg.service';
+import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
 import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
-import { StockageSvgService } from '../stockage-svg.service';
+import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
+import { TraitPinceauService } from '../stockage-svg/trait-pinceau.service';
 import { GestionnaireOutilsService } from './gestionnaire-outils.service';
 import { InterfaceOutils } from './interface-outils';
 
@@ -11,58 +14,62 @@ export class DessinPinceauService implements InterfaceOutils {
 
   constructor(public stockageSVG: StockageSvgService,
               public outils: GestionnaireOutilsService,
-              public couleur: ParametresCouleurService) { }
+              public couleur: ParametresCouleurService,
+              public commandes: GestionnaireCommandesService) { }
 
-  traitEnCours = false;
+  trait = new TraitPinceauService();
   peutCliquer = true;
 
   sourisDeplacee(souris: MouseEvent) {
-    if (this.traitEnCours) {
-      let crayon: string = this.stockageSVG.getSVGEnCours();
-
-      crayon += 'L' + souris.offsetX + ' ' + souris.offsetY + ' "/>';
-      this.stockageSVG.setSVGEnCours(crayon);
+    if (this.commandes.dessinEnCours) {
+      this.trait.points.push({x: souris.offsetX, y: souris.offsetY});
+      this.actualiserSVG();
     }
   }
 
   sourisEnfoncee(souris: MouseEvent) {
-    this.traitEnCours = true;
-    this.stockageSVG.setSVGEnCours(
-      '<path filter="url(#' + this.outils.outilActif.parametres[1].optionChoisie
-      + `)" fill="transparent" stroke="${this.couleur.getCouleurPrincipale()}" stroke-linecap="round" stroke-width="`
-      + this.outils.outilActif.parametres[0].valeur + '" d="M' + souris.offsetX + ' ' + souris.offsetY + '"/>');
+    this.commandes.dessinEnCours = true;
+    this.actualiserSVG();
   }
 
   sourisRelachee() {
-    if (this.traitEnCours) {
-      const SVG: string = this.stockageSVG.getSVGEnCours();
-      if (SVG.includes('L')) {
+    if (this.commandes.dessinEnCours) {
+      if (this.trait.SVG.includes('L')) {
         // on ne stocke le path que s'il n'y a au moins une ligne
-        this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '" />');
-        this.stockageSVG.setSVGEnCours('');
+        this.commandes.executer(new AjoutSvgService(this.trait, this.stockageSVG));
       }
-      this.traitEnCours = false;
+      this.trait = new TraitPinceauService();
+      this.commandes.dessinEnCours = false;
       this.peutCliquer = true;
     }
   }
 
   sourisCliquee(souris: MouseEvent) {
-    if (this.peutCliquer && this.outils.outilActif.parametres[0].valeur) {
-      const SVG = '<circle filter="url(#' + this.outils.outilActif.parametres[1].optionChoisie
-      + ')"  cx="' + souris.offsetX + '" cy="' + souris.offsetY + '" r="'
-      + this.outils.outilActif.parametres[0].valeur / 2 + `" fill="${this.couleur.getCouleurPrincipale()}"/>`;
-
-      this.stockageSVG.ajouterSVG(SVG);
-      this.traitEnCours = false;
+    if (this.peutCliquer) {
+      if (this.outils.outilActif.parametres[0].valeur) {
+        this.trait.points.push({x: souris.offsetX, y: souris.offsetY});
+        this.trait.estPoint = true;
+        this.actualiserSVG();
+        this.commandes.executer(new AjoutSvgService(this.trait, this.stockageSVG));
+        this.trait = new TraitPinceauService();
+      }
+      this.commandes.dessinEnCours = false;
     } else {this.peutCliquer = true};
   }
 
   sourisSortie() {
-    if (this.traitEnCours) {
-      this.stockageSVG.ajouterSVG(this.stockageSVG.getSVGEnCours() + '"/>');
-      this.stockageSVG.setSVGEnCours('');
-      this.traitEnCours = false;
+    if (this.commandes.dessinEnCours) {
+      this.commandes.executer(new AjoutSvgService(this.trait, this.stockageSVG));
+      this.trait = new TraitPinceauService();
+      this.commandes.dessinEnCours = false;
     }
     this.peutCliquer = false;
+  }
+
+  actualiserSVG() {
+    this.trait.couleurPrincipale = this.couleur.getCouleurPrincipale();
+    this.trait.outil = this.outils.outilActif;
+    this.trait.dessiner();
+    this.stockageSVG.setSVGEnCours(this.trait);
   }
 }

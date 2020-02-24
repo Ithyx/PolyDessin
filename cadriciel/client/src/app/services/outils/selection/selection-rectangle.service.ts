@@ -1,17 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AjoutSvgService } from '../commande/ajout-svg.service';
-import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
-import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
-import { RectangleService } from '../stockage-svg/rectangle.service';
-import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
-import { Point } from './dessin-ligne.service';
-import { GestionnaireOutilsService } from './gestionnaire-outils.service'
-import { InterfaceOutils } from './interface-outils'
+import { RectangleService } from '../../stockage-svg/rectangle.service';
+import { Point } from '../dessin-ligne.service';
+import { OutilDessin } from '../gestionnaire-outils.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DessinRectangleService implements InterfaceOutils {
+export class SelectionRectangleService {
   rectangle = new RectangleService();
   // Coordonnées du clic initial de souris
   initial: Point = {x: 0, y: 0};
@@ -21,21 +16,24 @@ export class DessinRectangleService implements InterfaceOutils {
   largeurCalculee = 0;
   hauteurCalculee = 0;
 
-  constructor(public stockageSVG: StockageSvgService,
-              public outils: GestionnaireOutilsService,
-              public couleur: ParametresCouleurService,
-              public commandes: GestionnaireCommandesService) { }
+  rectangleSelectionTool: OutilDessin = {nom: '',
+                                         estActif: true,
+                                         ID: -1,
+                                         parametres: [
+                                          {type: 'invisible', nom: 'Épaisseur du contour', valeur: 5},
+                                          {type: 'invisible', nom: 'Type de tracé', optionChoisie: 'Plein'}
+                                         ],
+                                         nomIcone: ''};
+
+  constructor() { }
 
   actualiserSVG() {
-    this.rectangle.outil = this.outils.outilActif;
-    this.rectangle.couleurPrincipale = this.couleur.getCouleurPrincipale();
-    this.rectangle.couleurSecondaire = this.couleur.getCouleurSecondaire();
+    this.rectangle.outil = this.rectangleSelectionTool;
+    this.rectangle.couleurSecondaire = 'rgba(0, 80, 130, 0,5)';
     this.rectangle.dessiner();
-    this.stockageSVG.setSVGEnCours(this.rectangle);
   }
 
   sourisDeplacee(souris: MouseEvent) {
-    if (this.commandes.dessinEnCours) {
       // Calcule des valeurs pour former un rectangle
       this.largeurCalculee = Math.abs(this.initial.x - souris.offsetX);
       this.hauteurCalculee = Math.abs(this.initial.y - souris.offsetY);
@@ -47,22 +45,13 @@ export class DessinRectangleService implements InterfaceOutils {
       } else {
         this.shiftRelache();
       }
-    }
   }
 
   sourisEnfoncee(souris: MouseEvent) {
-    if (!this.commandes.dessinEnCours) {
-      this.commandes.dessinEnCours = true;
-      this.initial = {x: souris.offsetX, y: souris.offsetY};
-    }
+    this.initial = {x: souris.offsetX, y: souris.offsetY};
   }
 
   sourisRelachee() {
-    this.commandes.dessinEnCours = false;
-    // On évite de créer des formes vides
-    if (this.rectangle.getLargeur() !== 0 || this.rectangle.getHauteur() !== 0) {
-      this.commandes.executer(new AjoutSvgService(this.rectangle, this.stockageSVG));
-    }
     this.baseCalculee = {x: 0, y: 0};
     this.hauteurCalculee = 0;
     this.largeurCalculee = 0;
@@ -70,7 +59,6 @@ export class DessinRectangleService implements InterfaceOutils {
   }
 
   shiftEnfonce() {
-    if (this.commandes.dessinEnCours) {
       // Lorsque la touche 'shift' est enfoncée, la forme à dessiner est un carré
       if (this.largeurCalculee < this.hauteurCalculee) {
         this.rectangle.points[0].y = (this.baseCalculee.y === this.initial.y) ?
@@ -85,20 +73,13 @@ export class DessinRectangleService implements InterfaceOutils {
         this.rectangle.points[1] = {x: this.baseCalculee.x + this.hauteurCalculee, y: this.baseCalculee.y + this.hauteurCalculee};
       }
       this.actualiserSVG();
-    }
   }
 
   shiftRelache() {
-    if (this.commandes.dessinEnCours) {
-      // Lorsque la touche 'shift' est relâchée, la forme à dessiner est un rectangle
-      this.rectangle.points[0] = this.baseCalculee;
-      this.rectangle.points[1] = {x: this.baseCalculee.x + this.largeurCalculee, y: this.baseCalculee.y + this.hauteurCalculee};
-      this.actualiserSVG();
-    }
+    // Lorsque la touche 'shift' est relâchée, la forme à dessiner est un rectangle
+    this.rectangle.points[0] = this.baseCalculee;
+    this.rectangle.points[1] = {x: this.baseCalculee.x + this.largeurCalculee, y: this.baseCalculee.y + this.hauteurCalculee};
+    this.actualiserSVG();
   }
 
-  vider() {
-    this.commandes.dessinEnCours = false;
-    this.rectangle = new RectangleService();
-  }
 }

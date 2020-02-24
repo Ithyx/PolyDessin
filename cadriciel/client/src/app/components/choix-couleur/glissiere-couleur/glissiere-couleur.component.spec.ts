@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { GestionnaireCommandesService } from 'src/app/services/commande/gestionnaire-commandes.service';
 import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
 import { GlissiereCouleurComponent } from './glissiere-couleur.component';
@@ -7,6 +8,7 @@ import { GlissiereCouleurComponent } from './glissiere-couleur.component';
 describe('GlissiereCouleurComponent', () => {
   let component: GlissiereCouleurComponent;
   let fixture: ComponentFixture<GlissiereCouleurComponent>;
+  let commandes: GestionnaireCommandesService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -18,8 +20,9 @@ describe('GlissiereCouleurComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GlissiereCouleurComponent);
     component = fixture.componentInstance;
+    commandes = TestBed.get(GestionnaireCommandesService);
     fixture.detectChanges();
-    component.gestionnaireCouleur = new GestionnaireCouleursService(new ParametresCouleurService())
+    component.gestionnaireCouleur = new GestionnaireCouleursService(new ParametresCouleurService(), commandes)
   });
 
   it('should create', () => {

@@ -39,7 +39,7 @@ describe('AppComponent', () => {
     it('#miseAJourURL devrait mettre à jour l\'URL précédante', () => {
         const routes: [any, any] = [{url: 'précédante'}, {url: 'actuelle'}];
         app.miseAJourURL(routes)
-        expect(app.gestionnaireRoutes.pagePrecedante).toBe('précédante')
+        expect(app.gestionnaireRoutes.pagePrecedente).toBe('précédante')
     })
 
     //
