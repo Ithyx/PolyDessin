@@ -27,8 +27,12 @@ export class SurfaceDessinComponent {
   }
 
   traiterClicSurVide() {
-    console.log('clic sur vide');
-    this.selection.supprimerBoiteEnglobante();
+    if (this.outils.outilActif.ID === INDEX_OUTIL_SELECTION) {
+      if (!this.selection.selectionRectangle.rectangle) {
+        console.log('clic sur vide');
+        this.selection.supprimerBoiteEnglobante();
+      }
+    }
   }
 
   traiterClicElementDessin(element: ElementDessin) {

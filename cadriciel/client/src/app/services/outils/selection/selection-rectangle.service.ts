@@ -9,7 +9,7 @@ import { OutilDessin } from '../gestionnaire-outils.service';
 })
 export class SelectionRectangleService {
   selectionEnCours = false;
-  rectangle = new RectangleService();
+  rectangle: RectangleService;
   // Coordonnées du clic initial de souris
   initial: Point = {x: 0, y: 0};
   // Coordonnées du point inférieur gauche
@@ -31,7 +31,7 @@ export class SelectionRectangleService {
 
   actualiserSVG() {
     this.rectangle.outil = this.rectangleSelectionTool;
-    this.rectangle.couleurPrincipale = 'rgba(0, 80, 130, 0.5)';
+    this.rectangle.couleurPrincipale = 'rgba(0, 80, 130, 0.35)';
     this.rectangle.dessiner();
     this.rectangle.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.rectangle.SVG);
   }
@@ -43,6 +43,8 @@ export class SelectionRectangleService {
       this.hauteurCalculee = Math.abs(this.initial.y - souris.offsetY);
       this.baseCalculee.x = Math.min(this.initial.x, souris.offsetX);
       this.baseCalculee.y = Math.min(this.initial.y, souris.offsetY);
+
+      this.actualiserSVG();
       // Si shift est enfoncé, les valeurs calculées sont ajustées pour former un carré
       if (souris.shiftKey) {
         this.shiftEnfonce();
@@ -53,6 +55,7 @@ export class SelectionRectangleService {
   }
 
   sourisEnfoncee(souris: MouseEvent) {
+    this.rectangle = new RectangleService();
     this.initial = {x: souris.offsetX, y: souris.offsetY};
     this.selectionEnCours = true;
   }
@@ -61,7 +64,6 @@ export class SelectionRectangleService {
     this.baseCalculee = {x: 0, y: 0};
     this.hauteurCalculee = 0;
     this.largeurCalculee = 0;
-    this.rectangle = new RectangleService();
     this.selectionEnCours = false;
   }
 

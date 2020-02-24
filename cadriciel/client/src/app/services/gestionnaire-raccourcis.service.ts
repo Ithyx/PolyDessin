@@ -41,7 +41,6 @@ export class GestionnaireRaccourcisService {
       case 'a':
         clavier.preventDefault();
         if (clavier.ctrlKey && this.outils.outilActif.ID === INDEX_OUTIL_SELECTION) {
-          console.log('CTRL+A');
           this.selection.supprimerBoiteEnglobante();
           this.selection.creerBoiteEnglobantePlusieursElementDessins(this.stockageSVG.getSVGComplets());
         }

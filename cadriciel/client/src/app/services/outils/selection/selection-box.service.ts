@@ -27,7 +27,6 @@ export class SelectionBoxService {
 
     this.selectionBox.dessinerRectangle();
     this.selectionBox.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.selectionBox.SVG);
-    console.log('creation d\'une boite selection', this.selectionBox);
   };
 
   deleteSelectionBox() {
