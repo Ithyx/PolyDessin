@@ -3,8 +3,8 @@ import { ElementDessin } from '../../stockage-svg/element-dessin';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { StockageSvgService } from '../../stockage-svg/stockage-svg.service';
 import { Point } from '../dessin-ligne.service';
-import { GestionnaireOutilsService, INDEX_OUTIL_SELECTION} from '../gestionnaire-outils.service';
 import { InterfaceOutils } from '../interface-outils';
+import { SelectionBoxService } from './selection-box.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +12,10 @@ import { InterfaceOutils } from '../interface-outils';
 export class SelectionService implements InterfaceOutils {
   boiteElementSelectionne = new RectangleService();
 
-  selectionEnCours = false;
   elementSelectionne: ElementDessin;
 
   constructor(public stockageSVG: StockageSvgService,
-              public outils: GestionnaireOutilsService,
+              public selectionBox: SelectionBoxService
              ) {}
 
   traiterClic(element: ElementDessin) {
@@ -24,10 +23,10 @@ export class SelectionService implements InterfaceOutils {
 
     if (element !== this.elementSelectionne) {
       this.elementSelectionne = element;
-      this.creerBoiteEnglobanteElementDessin();
       element.estSelectionne = true;
-      this.selectionEnCours = true;
+      this.creerBoiteEnglobanteElementDessin();
     }
+
   }
 
   sourisDeplacee(souris: MouseEvent) {
@@ -70,24 +69,13 @@ export class SelectionService implements InterfaceOutils {
     pointMin = {x: pointMin.x - 2, y: pointMin.y - 2};
     pointMax = {x: pointMax.x + 2, y: pointMax.y + 2};
 
-    this.boiteElementSelectionne.estSelectionne = true;
-    this.boiteElementSelectionne.outil = this.outils.outilActif;
-
-    this.boiteElementSelectionne.points[0] = pointMin;
-    this.boiteElementSelectionne.points[1] = pointMax;
-    this.boiteElementSelectionne.couleurSecondaire =  'rgba(0, 80, 150, 1)';
-
-    this.boiteElementSelectionne.dessinerRectangle();
-
-    this.stockageSVG.ajouterSVG(this.boiteElementSelectionne);
-
-    this.selectionEnCours = true;
+    this.selectionBox.createSelectionBox(pointMin, pointMax);
   };
 
   creerBoiteEnglobanteElementDessin() {
-    if (this.selectionEnCours) {
+    /* if (this.selectionEnCours) {
       this.stockageSVG.retirerDernierSVG();
-    }
+    } */
 
     if (this.elementSelectionne.estPoint) {
       // TODO : l'element est un point
@@ -117,27 +105,22 @@ export class SelectionService implements InterfaceOutils {
       pointMin = {x: pointMin.x - 2, y: pointMin.y - 2};
       pointMax = {x: pointMax.x + 2, y: pointMax.y + 2};
 
-      this.boiteElementSelectionne.estSelectionne = true;
-      this.boiteElementSelectionne.outil = this.outils.outilActif;
-
-      this.boiteElementSelectionne.points[0] = pointMin;
-      this.boiteElementSelectionne.points[1] = pointMax;
-      this.boiteElementSelectionne.couleurSecondaire =  'rgba(0, 0, 0, 1)';
-
-      this.boiteElementSelectionne.dessinerRectangle();
-
-      this.stockageSVG.ajouterSVG(this.boiteElementSelectionne);
-
-      this.selectionEnCours = true;
+      this.selectionBox.createSelectionBox(pointMin, pointMax);
     }
   };
 
   supprimerBoiteEnglobante() {
-    if (this.outils.outilActif.ID === INDEX_OUTIL_SELECTION && this.selectionEnCours) {
+    /* if (this.outils.outilActif.ID === INDEX_OUTIL_SELECTION && this.selectionEnCours) {
       this.selectionEnCours = false;
       delete this.elementSelectionne;
       this.stockageSVG.retirerDernierSVG();
+    } */
+    if (this.elementSelectionne) {
+      this.selectionBox.deleteSelectionBox();
+      this.elementSelectionne.estSelectionne = false;
+      delete this.elementSelectionne;
     }
+
   };
 
   estDansRectangleSelection(element: ElementDessin, rectangleSelection: RectangleService): boolean {
