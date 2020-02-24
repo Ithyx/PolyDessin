@@ -53,8 +53,8 @@ export class RectangleService implements ElementDessin {
   dessinerRectangle() {
     const optionChoisie = this.outil.parametres[1].optionChoisie;
     this.SVG = '<rect fill="'
-      + ((optionChoisie !== 'Contour') ? this.couleurPrincipale : 'transparent')
-      + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleurSecondaire : 'transparent')
+      + ((optionChoisie !== 'Contour') ? this.couleurPrincipale : 'none')
+      + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleurSecondaire : 'none')
       + '" stroke-width="' + this.outil.parametres[0].valeur
       + '" x="' + this.points[0].x + '" y="' + this.points[0].y
       + '" width="' + this.getLargeur() + '" height="' + this.getHauteur() + '"/>';
@@ -62,7 +62,7 @@ export class RectangleService implements ElementDessin {
 
   dessinerPerimetre() {
     const epaisseur = (this.outil.parametres[0].valeur) ? this.outil.parametres[0].valeur : 0;
-    this.perimetre = '<rect stroke="gray" fill="transparent" stroke-width="2';
+    this.perimetre = '<rect stroke="gray" fill="none" stroke-width="2';
     if (this.outil.parametres[1].optionChoisie === 'Plein') {
       this.perimetre += '" x="' + this.points[0].x + '" y="' + this.points[0].y
         + '" height="' + this.getHauteur + '" width="' + this.getLargeur + '"/>';

@@ -76,10 +76,11 @@ export class SelectionService implements InterfaceOutils {
 
   creerBoiteEnglobanteElementDessin() {
 
-      let pointMin: Point = {x: this.elementSelectionne[0].points[0].x , y: this.elementSelectionne[0].points[0].y};
-      let pointMax: Point = {x: this.elementSelectionne[0].points[0].x , y: this.elementSelectionne[0].points[0].y};
+    let pointMin: Point = {x: this.elementSelectionne[0].points[0].x , y: this.elementSelectionne[0].points[0].y};
+    let pointMax: Point = {x: this.elementSelectionne[0].points[0].x , y: this.elementSelectionne[0].points[0].y};
 
-      for (const point of this.elementSelectionne[0].points) {
+    for (const element of this.elementSelectionne) {
+      for (const point of element.points) {
         // Point Min
         if (pointMin.x > point.x) {
           pointMin.x = point.x;
@@ -96,19 +97,15 @@ export class SelectionService implements InterfaceOutils {
           pointMax.y = point.y;
         }
       }
+    }
 
-      pointMin = {x: pointMin.x - 2, y: pointMin.y - 2};
-      pointMax = {x: pointMax.x + 2, y: pointMax.y + 2};
+    pointMin = {x: pointMin.x - 2, y: pointMin.y - 2};
+    pointMax = {x: pointMax.x + 2, y: pointMax.y + 2};
 
-      this.selectionBox.createSelectionBox(pointMin, pointMax);
+    this.selectionBox.createSelectionBox(pointMin, pointMax);
   };
 
   supprimerBoiteEnglobante() {
-    /* if (this.outils.outilActif.ID === INDEX_OUTIL_SELECTION && this.selectionEnCours) {
-      this.selectionEnCours = false;
-      delete this.elementSelectionne;
-      this.stockageSVG.retirerDernierSVG();
-    } */
     if (this.elementSelectionne) {
       this.selectionBox.deleteSelectionBox();
 

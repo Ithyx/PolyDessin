@@ -4,7 +4,7 @@ import { ParametresCouleurService } from 'src/app/services/couleur/parametres-co
 import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/gestionnaire-dessin.service';
 import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routing.service';
 import { GestionnaireOutilsService, INDEX_OUTIL_SELECTION } from 'src/app/services/outils/gestionnaire-outils.service';
-import { SelectionService } from 'src/app/services/outils/selection.service';
+import { SelectionService } from 'src/app/services/outils/selection/selection.service';
 import { ElementDessin } from 'src/app/services/stockage-svg/element-dessin';
 import { StockageSvgService } from 'src/app/services/stockage-svg/stockage-svg.service';
 
@@ -27,6 +27,7 @@ export class SurfaceDessinComponent {
   }
 
   traiterClicSurVide() {
+    console.log('clic sur vide');
     this.selection.supprimerBoiteEnglobante();
   }
 

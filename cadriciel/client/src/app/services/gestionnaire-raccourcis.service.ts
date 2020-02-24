@@ -6,7 +6,7 @@ import { DessinRectangleService } from './outils/dessin-rectangle.service';
 import { GestionnaireOutilsService, INDEX_OUTIL_CRAYON,
         INDEX_OUTIL_LIGNE, INDEX_OUTIL_PINCEAU ,
         INDEX_OUTIL_RECTANGLE, INDEX_OUTIL_SELECTION } from './outils/gestionnaire-outils.service';
-import { SelectionService } from './outils/selection.service';
+import { SelectionService } from './outils/selection/selection.service';
 import { StockageSvgService } from './stockage-svg/stockage-svg.service';
 
 @Injectable({

@@ -6,7 +6,7 @@ import { DessinPinceauService } from 'src/app/services/outils/dessin-pinceau.ser
 import { DessinRectangleService } from 'src/app/services/outils/dessin-rectangle.service'
 import { GestionnaireOutilsService } from 'src/app/services/outils/gestionnaire-outils.service';
 import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
-import { SelectionService } from 'src/app/services/outils/selection.service';
+import { SelectionService } from 'src/app/services/outils/selection/selection.service';
 import { StockageSvgService } from 'src/app/services/stockage-svg/stockage-svg.service';
 
 @Component({

@@ -39,6 +39,7 @@
     <rect x="0" y="0" [attr.width.px]="gestionnaireDessin.longueur" [attr.height.px]="gestionnaireDessin.hauteur" [attr.width.px]="gestionnaireDessin.largeur" (click)="traiterClicSurVide()" [attr.fill]="parametresCouleur.couleurFond" />
 
     <g *ngFor="let element of stockageSVG.getSVGComplets() | keyvalue;" [innerHTML]="element.value.SVGHtml" (click)="traiterClicElementDessin(element.value)"></g>
+    <g *ngIf="this.selection.selectionBox.selectionBox" [innerHTML]="this.selection.selectionBox.selectionBox.SVGHtml" ></g>
     <g [innerHTML]="stockageSVG.getSVGEnCoursHTML()"></g>
     <g [innerHTML]="stockageSVG.getPerimetreEnCoursHTML()"></g>
 </svg>
