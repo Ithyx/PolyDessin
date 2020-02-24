@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { Point } from '../dessin-ligne.service';
 import { OutilDessin } from '../gestionnaire-outils.service';
@@ -7,6 +8,7 @@ import { OutilDessin } from '../gestionnaire-outils.service';
   providedIn: 'root'
 })
 export class SelectionRectangleService {
+  selectionEnCours = false;
   rectangle = new RectangleService();
   // Coordonnées du clic initial de souris
   initial: Point = {x: 0, y: 0};
@@ -25,15 +27,17 @@ export class SelectionRectangleService {
                                          ],
                                          nomIcone: ''};
 
-  constructor(){ }
+  constructor(private sanitizer: DomSanitizer) { }
 
   actualiserSVG() {
     this.rectangle.outil = this.rectangleSelectionTool;
-    this.rectangle.couleurSecondaire = 'rgba(0, 80, 130, 0,5)';
+    this.rectangle.couleurPrincipale = 'rgba(0, 80, 130, 0.5)';
     this.rectangle.dessiner();
+    this.rectangle.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.rectangle.SVG);
   }
 
   sourisDeplacee(souris: MouseEvent) {
+    if (this.selectionEnCours) {
       // Calcule des valeurs pour former un rectangle
       this.largeurCalculee = Math.abs(this.initial.x - souris.offsetX);
       this.hauteurCalculee = Math.abs(this.initial.y - souris.offsetY);
@@ -45,10 +49,12 @@ export class SelectionRectangleService {
       } else {
         this.shiftRelache();
       }
+    }
   }
 
   sourisEnfoncee(souris: MouseEvent) {
     this.initial = {x: souris.offsetX, y: souris.offsetY};
+    this.selectionEnCours = true;
   }
 
   sourisRelachee() {
@@ -56,23 +62,24 @@ export class SelectionRectangleService {
     this.hauteurCalculee = 0;
     this.largeurCalculee = 0;
     this.rectangle = new RectangleService();
+    this.selectionEnCours = false;
   }
 
   shiftEnfonce() {
-      // Lorsque la touche 'shift' est enfoncée, la forme à dessiner est un carré
-      if (this.largeurCalculee < this.hauteurCalculee) {
-        this.rectangle.points[0].y = (this.baseCalculee.y === this.initial.y) ?
-          this.baseCalculee.y : (this.baseCalculee.y + (this.hauteurCalculee - this.largeurCalculee));
-        this.rectangle.points[0].x = this.baseCalculee.x;
-        this.rectangle.points[1] = {x: this.baseCalculee.x + this.largeurCalculee, y: this.baseCalculee.y + this.largeurCalculee};
+    // Lorsque la touche 'shift' est enfoncée, la forme à dessiner est un carré
+    if (this.largeurCalculee < this.hauteurCalculee) {
+      this.rectangle.points[0].y = (this.baseCalculee.y === this.initial.y) ?
+        this.baseCalculee.y : (this.baseCalculee.y + (this.hauteurCalculee - this.largeurCalculee));
+      this.rectangle.points[0].x = this.baseCalculee.x;
+      this.rectangle.points[1] = {x: this.baseCalculee.x + this.largeurCalculee, y: this.baseCalculee.y + this.largeurCalculee};
 
-      } else {
-        this.rectangle.points[0].x = (this.baseCalculee.x === this.initial.x) ?
-          this.baseCalculee.x : (this.baseCalculee.x + (this.largeurCalculee - this.hauteurCalculee));
-        this.rectangle.points[0].y = this.baseCalculee.y;
-        this.rectangle.points[1] = {x: this.baseCalculee.x + this.hauteurCalculee, y: this.baseCalculee.y + this.hauteurCalculee};
-      }
-      this.actualiserSVG();
+    } else {
+      this.rectangle.points[0].x = (this.baseCalculee.x === this.initial.x) ?
+        this.baseCalculee.x : (this.baseCalculee.x + (this.largeurCalculee - this.hauteurCalculee));
+      this.rectangle.points[0].y = this.baseCalculee.y;
+      this.rectangle.points[1] = {x: this.baseCalculee.x + this.hauteurCalculee, y: this.baseCalculee.y + this.hauteurCalculee};
+    }
+    this.actualiserSVG();
   }
 
   shiftRelache() {
