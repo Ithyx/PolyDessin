@@ -30,7 +30,7 @@ export class TraitPinceauService implements ElementDessin {
     if (this.outil.parametres[0].valeur) {
       this.epaisseur = this.outil.parametres[0].valeur;
     }
-    this.SVG = `<path fill="transparent" stroke="${this.couleurPrincipale}"`
+    this.SVG = `<path fill="none" stroke="${this.couleurPrincipale}"`
       + ' filter="url(#' + this.outil.parametres[1].optionChoisie
       + ')" stroke-linecap="round" stroke-width="' + this.outil.parametres[0].valeur + '" d="';
     for (let i = 0; i < this.points.length; ++i) {
