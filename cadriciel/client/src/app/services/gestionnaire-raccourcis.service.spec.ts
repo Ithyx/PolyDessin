@@ -50,7 +50,7 @@ describe('GestionnaireRaccourcisService', () => {
     spyOn(service.outils, 'changerOutilActif');
     spyOn(service.dessinLigne, 'stockerCurseur');
     spyOn(service.dessinLigne, 'retirerPoint');
-    spyOn(service.dessinLigne, 'annulerLigne');
+    spyOn(service.dessinLigne, 'vider');
     spyOn(service.dessinRectangle, 'shiftEnfonce');
     spyOn(clavier, 'preventDefault');
     spyOn(service.emitterNouveauDessin, 'next');
@@ -61,7 +61,7 @@ describe('GestionnaireRaccourcisService', () => {
     expect(service.outils.changerOutilActif).not.toHaveBeenCalled();
     expect(service.dessinLigne.stockerCurseur).not.toHaveBeenCalled();
     expect(service.dessinLigne.retirerPoint).not.toHaveBeenCalled();
-    expect(service.dessinLigne.annulerLigne).not.toHaveBeenCalled();
+    expect(service.dessinLigne.vider).not.toHaveBeenCalled();
     expect(service.dessinRectangle.shiftEnfonce).not.toHaveBeenCalled();
     expect(clavier.preventDefault).not.toHaveBeenCalled();
     expect(service.emitterNouveauDessin.next).not.toHaveBeenCalled();
@@ -130,21 +130,21 @@ describe('GestionnaireRaccourcisService', () => {
   it('#traiterInput devrait annuler la ligne en cours si il reçoit Escape et que ligne est active', () => {
     const clavier = new KeyboardEvent('keypress', { key: 'Escape'});
     service.outils.changerOutilActif(INDEX_OUTIL_LIGNE);
-    spyOn(service.dessinLigne, 'annulerLigne');
+    spyOn(service.dessinLigne, 'vider');
 
     service.traiterInput(clavier);
 
-    expect(service.dessinLigne.annulerLigne).toHaveBeenCalled();
+    expect(service.dessinLigne.vider).toHaveBeenCalled();
   });
 
   it('#traiterInput ne devrait rien faire si il reçoit Escape mais que ligne est inactive', () => {
     const clavier = new KeyboardEvent('keypress', { key: 'Escape'});
     service.outils.changerOutilActif(INDEX_OUTIL_RECTANGLE);
-    spyOn(service.dessinLigne, 'annulerLigne');
+    spyOn(service.dessinLigne, 'vider');
 
     service.traiterInput(clavier);
 
-    expect(service.dessinLigne.annulerLigne).not.toHaveBeenCalled();
+    expect(service.dessinLigne.vider).not.toHaveBeenCalled();
   });
 
   it('#traiterInput devrait emmettre un nouveau dessin si il reçoit o avec ctrl actif', () => {
