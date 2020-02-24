@@ -41,4 +41,9 @@
     <g *ngFor="let element of stockageSVG.getSVGComplets() | keyvalue;" [innerHTML]="element.value.SVGHtml" (click)="traiterClic(element.value)"></g>
     <g [innerHTML]="stockageSVG.getSVGEnCoursHTML()"></g>
     <g [innerHTML]="stockageSVG.getPerimetreEnCoursHTML()"></g>
+    <g *ngFor="let line of grid.getLines()">
+        <line [attr.stroke]="grid.getColor()" stroke-width="1"
+              [attr.x1.px]="line.x1" [attr.x2.px]="line.x2"
+              [attr.y1.px]="line.y1" [attr.y2.px]="line.y2" />
+    </g>
 </svg>
