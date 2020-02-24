@@ -27,7 +27,7 @@ export class DessinPinceauService implements InterfaceOutils {
     }
   }
 
-  sourisEnfoncee(souris: MouseEvent) {
+  sourisEnfoncee() {
     this.commandes.dessinEnCours = true;
     this.actualiserSVG();
   }

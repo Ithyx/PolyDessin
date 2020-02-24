@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 
-// import { AjoutSvgService } from '../commande/ajout-svg.service';
 import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
 import { TraitCrayonService } from '../stockage-svg/trait-crayon.service';
 import { DessinCrayonService } from './dessin-crayon.service';
