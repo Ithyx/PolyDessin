@@ -12,7 +12,7 @@ import { SelectionBoxService } from './selection-box.service';
 export class SelectionService implements InterfaceOutils {
   boiteElementSelectionne = new RectangleService();
 
-  elementSelectionne: ElementDessin;
+  elementSelectionne: ElementDessin[] = [];
 
   constructor(public stockageSVG: StockageSvgService,
               public selectionBox: SelectionBoxService
@@ -21,8 +21,10 @@ export class SelectionService implements InterfaceOutils {
   traiterClic(element: ElementDessin) {
     console.log('selection a reçu', element);
 
-    if (element !== this.elementSelectionne) {
-      this.elementSelectionne = element;
+    this.supprimerBoiteEnglobante();
+
+    if (!this.elementSelectionne.includes(element)) {
+      this.elementSelectionne.push(element);
       element.estSelectionne = true;
       this.creerBoiteEnglobanteElementDessin();
     }
@@ -73,18 +75,11 @@ export class SelectionService implements InterfaceOutils {
   };
 
   creerBoiteEnglobanteElementDessin() {
-    /* if (this.selectionEnCours) {
-      this.stockageSVG.retirerDernierSVG();
-    } */
 
-    if (this.elementSelectionne.estPoint) {
-      // TODO : l'element est un point
-    } else {
+      let pointMin: Point = {x: this.elementSelectionne[0].points[0].x , y: this.elementSelectionne[0].points[0].y};
+      let pointMax: Point = {x: this.elementSelectionne[0].points[0].x , y: this.elementSelectionne[0].points[0].y};
 
-      let pointMin: Point = {x: this.elementSelectionne.points[0].x , y: this.elementSelectionne.points[0].y};
-      let pointMax: Point = {x: this.elementSelectionne.points[0].x , y: this.elementSelectionne.points[0].y};
-
-      for (const point of this.elementSelectionne.points) {
+      for (const point of this.elementSelectionne[0].points) {
         // Point Min
         if (pointMin.x > point.x) {
           pointMin.x = point.x;
@@ -106,7 +101,6 @@ export class SelectionService implements InterfaceOutils {
       pointMax = {x: pointMax.x + 2, y: pointMax.y + 2};
 
       this.selectionBox.createSelectionBox(pointMin, pointMax);
-    }
   };
 
   supprimerBoiteEnglobante() {
@@ -117,8 +111,11 @@ export class SelectionService implements InterfaceOutils {
     } */
     if (this.elementSelectionne) {
       this.selectionBox.deleteSelectionBox();
-      this.elementSelectionne.estSelectionne = false;
-      delete this.elementSelectionne;
+
+      for (const element of this.elementSelectionne) {
+        element.estSelectionne = false;
+        this.elementSelectionne.pop();
+      }
     }
 
   };
