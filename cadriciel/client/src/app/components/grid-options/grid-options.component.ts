@@ -2,14 +2,12 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
-import { GridService } from 'src/app/services/grid/grid.service';
+import { GridService, MAX_CELL_SIZE, MIN_CELL_SIZE } from 'src/app/services/grid/grid.service';
 import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 
 export const KEY_FORM_SHOW_GRID = 'showGridForm';
 export const KEY_FORM_OPACITY = 'opacityForm';
 export const KEY_FORM_CELL_SIZE = 'cellSizeForm';
-export const MAX_CELL_SIZE = 500;
-export const MIN_CELL_SIZE = 2;
 
 @Component({
   selector: 'app-grid-options',

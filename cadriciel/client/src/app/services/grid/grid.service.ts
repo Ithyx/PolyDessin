@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { GestionnaireDessinService } from '../gestionnaire-dessin/gestionnaire-dessin.service';
 
+export const MAX_CELL_SIZE = 500;
+export const MIN_CELL_SIZE = 5;
+
 export interface Line {
   x1: number,
   x2: number,
@@ -21,10 +24,16 @@ export class GridService {
 
   increaseSize() {
     this.cellSize += 5 - (this.cellSize % 5);
+    if (this.cellSize > MAX_CELL_SIZE) {
+      this.cellSize = MAX_CELL_SIZE;
+    }
   }
 
   decreaseSize() {
-    this.cellSize -= this.cellSize % 5;
+    this.cellSize -= (this.cellSize % 5 === 0) ? 5 : this.cellSize % 5;
+    if (this.cellSize < MIN_CELL_SIZE) {
+      this.cellSize = MIN_CELL_SIZE;
+    }
   }
 
   getColor(): string  {
