@@ -5,6 +5,7 @@ import { StockageSvgService } from '../../stockage-svg/stockage-svg.service';
 import { Point } from '../dessin-ligne.service';
 import { InterfaceOutils } from '../interface-outils';
 import { SelectionBoxService } from './selection-box.service';
+import { SelectionRectangleService } from './selection-rectangle.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class SelectionService implements InterfaceOutils {
   elementSelectionne: ElementDessin[] = [];
 
   constructor(public stockageSVG: StockageSvgService,
-              public selectionBox: SelectionBoxService
+              public selectionBox: SelectionBoxService,
+              public selectionRectangle: SelectionRectangleService
              ) {}
 
   traiterClic(element: ElementDessin) {
@@ -32,15 +34,15 @@ export class SelectionService implements InterfaceOutils {
   }
 
   sourisDeplacee(souris: MouseEvent) {
-    //
+    this.selectionRectangle.sourisDeplacee(souris);
   }
 
   sourisEnfoncee(souris: MouseEvent) {
-    //
+    this.selectionRectangle.sourisEnfoncee(souris);
   }
 
   sourisRelachee() {
-    //
+    this.selectionRectangle.sourisRelachee();
   }
 
   creerBoiteEnglobantePlusieursElementDessins(elements: Map<number, ElementDessin>) {

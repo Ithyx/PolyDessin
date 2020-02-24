@@ -34,6 +34,5 @@ export class SelectionBoxService {
     if (this.outils.outilActif.ID === INDEX_OUTIL_SELECTION) {
       delete this.selectionBox;
     }
-    // TODO: Retirer SVG boite
   };
 }
