@@ -1,1 +1,24 @@
-<p>grid-options works!</p>
+<h1>Options de grille</h1>
+<div class="options">
+    <form [formGroup]="options">
+        <label>
+            Afficher la grille 
+            <input type="checkbox" formControlName="showGridForm" />
+        </label>
+        <br />
+        <label>
+            Opacité de la grille 
+            <input type="range" min="0.1" max="1" step="0.01" formControlName="opacityForm"
+                (input)="changeOpacity($event)" />
+            {{opacitySelected}}%
+        </label>
+        <br />
+        <label>
+            Largeur des cellules de la grille 
+            <input type="number" min="2" max="500" [value]="cellSizeValue"
+                formControlName="cellSizeForm" (change)="validateCellSize($event)" />
+        </label>
+    </form>
+    <button mat-stroked-button (click)="confirmOptions()">  Confirmer</button>
+    <button mat-stroked-button (click)="closeWindow()">  Annuler</button>
+</div>
