@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { Point } from '../dessin-ligne.service';
 import { OutilDessin } from '../gestionnaire-outils.service';
@@ -25,12 +26,13 @@ export class SelectionRectangleService {
                                          ],
                                          nomIcone: ''};
 
-  constructor() { }
+  constructor(private sanitizer: DomSanitizer) { }
 
   actualiserSVG() {
     this.rectangle.outil = this.rectangleSelectionTool;
     this.rectangle.couleurSecondaire = 'rgba(0, 80, 130, 0,5)';
     this.rectangle.dessiner();
+    this.rectangle.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.rectangle.SVG);
   }
 
   sourisDeplacee(souris: MouseEvent) {
