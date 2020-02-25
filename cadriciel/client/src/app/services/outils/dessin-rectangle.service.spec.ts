@@ -2,15 +2,15 @@ import { TestBed } from '@angular/core/testing';
 
 import { AjoutSvgService } from '../commande/ajout-svg.service';
 import { RectangleService } from '../stockage-svg/rectangle.service';
-import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
+import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { DessinRectangleService } from './dessin-rectangle.service';
 
 describe('DessinRectangleService', () => {
   let service: DessinRectangleService;
-  let stockageService: StockageSvgService;
+  let stockageService: SVGStockageService;
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(DessinRectangleService));
-  beforeEach(() => stockageService = TestBed.get(StockageSvgService));
+  beforeEach(() => stockageService = TestBed.get(SVGStockageService));
   beforeEach(() => {
     service.initial.x = 0;
     service.initial.y = 0;

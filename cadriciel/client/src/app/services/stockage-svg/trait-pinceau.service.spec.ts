@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TraitPinceauService } from './trait-pinceau.service';
+import { TraitPinceauService } from './trace-brush.service';
 
 describe('TraitPinceauService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

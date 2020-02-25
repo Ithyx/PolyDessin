@@ -1,18 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ElementDessin } from '../stockage-svg/element-dessin';
-import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
-import { TraitPinceauService } from '../stockage-svg/trait-pinceau.service';
+import { DrawElement } from '../stockage-svg/draw-element';
+import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
+import { TraceBrushService } from '../stockage-svg/trace-brush.service';
 import { DessinPinceauService } from './dessin-pinceau.service';
 import { OUTIL_VIDE } from './gestionnaire-outils.service';
 
 describe('DessinPinceauService', () => {
   let service: DessinPinceauService;
-  let stockageService: StockageSvgService;
-  let element: ElementDessin;
+  let stockageService: SVGStockageService;
+  let element: DrawElement;
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(DessinPinceauService));
-  beforeEach(() => stockageService = TestBed.get(StockageSvgService));
+  beforeEach(() => stockageService = TestBed.get(SVGStockageService));
 
   // Mettre l'outil pinceau comme l'outil actif
   beforeEach(() => {
@@ -21,8 +21,8 @@ describe('DessinPinceauService', () => {
     service.outils.outilActif = service.outils.listeOutils[1];
     service.outils.outilActif.parametres[0].valeur = 5;
 
-    element = new TraitPinceauService();
-    stockageService.setSVGEnCours(element);
+    element = new TraceBrushService();
+    stockageService.setOngoingSVG(element);
     service.trait.SVG = 'L';
   });
 
@@ -52,9 +52,9 @@ describe('DessinPinceauService', () => {
 
   it("#sourisCliquee devrait seulement être appelé si l'outil crayon a une épaisseur", () => {
       service.outils.outilActif.parametres[0].valeur = 0;
-      service.trait.estPoint = false;
+      service.trait.isAPoint = false;
       service.sourisCliquee(new MouseEvent('onclick'));
-      expect(service.trait.estPoint).toBe(false);
+      expect(service.trait.isAPoint).toBe(false);
   });
 
   it('#sourisCliquee devrait appeler actualiserSVG après un clic avec crayon', () => {
@@ -78,7 +78,7 @@ describe('DessinPinceauService', () => {
 
   it('#sourisCliquee devrait mettre réinitialiser trait à ses paramètres par défaut si peutCliquer est vrai', () => {
       service.sourisCliquee(new MouseEvent('onclick'));
-      expect(service.trait).toEqual(new TraitPinceauService());
+      expect(service.trait).toEqual(new TraceBrushService());
   });
 
   // TESTS sourisDeplacee
@@ -140,7 +140,7 @@ describe('DessinPinceauService', () => {
 
   it('#sourisRelachee devrait réinitialiser trait à ses paramètres par défaut si dessinEnCours est vrai', () => {
     service.sourisRelachee();
-    expect(service.trait).toEqual(new TraitPinceauService());
+    expect(service.trait).toEqual(new TraceBrushService());
   });
 
   it('#sourisRelachee devrait mettre dessinEnCours faux si dessinEnCours est vrai au debut de la fonction', () => {
@@ -170,7 +170,7 @@ describe('DessinPinceauService', () => {
 
   it('#sourisSortie devrait reinitialiser le trait en cours si dessinEnCours est vrai', () => {
     service.sourisSortie();
-    expect(service.trait).toEqual(new TraitPinceauService());
+    expect(service.trait).toEqual(new TraceBrushService());
   });
 
   it('#sourisSortie devrait mettre dessinEnCours faux si dessinEnCours est vrai', () => {
@@ -187,26 +187,26 @@ describe('DessinPinceauService', () => {
   // TESTS actualiserSVG
 
   it('#actualiserSVG devrait changer la couleur du trait', () => {
-    service.trait.couleur = 'test';
+    service.trait.primaryColor = 'test';
     service.actualiserSVG();
-    expect(service.trait.couleur).toEqual(service.couleur.getCouleurPrincipale());
+    expect(service.trait.primaryColor).toEqual(service.couleur.getCouleurPrincipale());
   });
 
   it('#actualiserSVG devrait changer l\'outil du trait', () => {
-    service.trait.outil = OUTIL_VIDE;
+    service.trait.tool = OUTIL_VIDE;
     service.actualiserSVG();
-    expect(service.trait.outil).toEqual(service.outils.outilActif);
+    expect(service.trait.tool).toEqual(service.outils.outilActif);
   });
 
   it('#actualiserSVG devrait appeler dessiner du trait', () => {
-    spyOn(service.trait, 'dessiner');
+    spyOn(service.trait, 'draw');
     service.actualiserSVG();
-    expect(service.trait.dessiner).toHaveBeenCalled();
+    expect(service.trait.draw).toHaveBeenCalled();
   });
 
   it('#actualiserSVG devrait appeler setSVGEnCours avec le trait', () => {
-    spyOn(stockageService, 'setSVGEnCours');
+    spyOn(stockageService, 'setOngoingSVG');
     service.actualiserSVG();
-    expect(stockageService.setSVGEnCours).toHaveBeenCalledWith(service.trait);
+    expect(stockageService.setOngoingSVG).toHaveBeenCalledWith(service.trait);
   });
 });

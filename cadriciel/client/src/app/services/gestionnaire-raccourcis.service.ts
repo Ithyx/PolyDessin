@@ -8,7 +8,7 @@ import { GestionnaireOutilsService, INDEX_OUTIL_CRAYON,
         INDEX_OUTIL_LIGNE, INDEX_OUTIL_PINCEAU ,
         INDEX_OUTIL_RECTANGLE, INDEX_OUTIL_SELECTION } from './outils/gestionnaire-outils.service';
 import { SelectionService } from './outils/selection/selection.service';
-import { StockageSvgService } from './stockage-svg/stockage-svg.service';
+import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class GestionnaireRaccourcisService {
               public dessinLigne: DessinLigneService,
               public commandes: GestionnaireCommandesService,
               public selection: SelectionService,
-              public stockageSVG: StockageSvgService,
+              public SVGStockage: SVGStockageService,
               public grid: GridService) { }
 
   viderSVGEnCours() {
@@ -44,7 +44,7 @@ export class GestionnaireRaccourcisService {
         clavier.preventDefault();
         if (clavier.ctrlKey && this.outils.outilActif.ID === INDEX_OUTIL_SELECTION) {
           this.selection.supprimerBoiteEnglobante();
-          this.selection.creerBoiteEnglobantePlusieursElementDessins(this.stockageSVG.getSVGComplets());
+          this.selection.creerBoiteEnglobantePlusieursElementDessins(this.SVGStockage.getCompleteSVG());
         }
         break;
 

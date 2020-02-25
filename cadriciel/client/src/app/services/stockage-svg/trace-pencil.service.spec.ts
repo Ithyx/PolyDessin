@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TraitCrayonService } from './trait-crayon.service';
+import { TracePencilService } from './trace-pencil.service';
 
 describe('TraitCrayonService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: TraitCrayonService = TestBed.get(TraitCrayonService);
+    const service: TracePencilService = TestBed.get(TracePencilService);
     expect(service).toBeTruthy();
   });
 });

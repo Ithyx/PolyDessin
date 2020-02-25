@@ -35,7 +35,7 @@ import { DessinCrayonService } from './services/outils/dessin-crayon.service';
 import { DessinLigneService } from './services/outils/dessin-ligne.service';
 import { DessinRectangleService } from './services/outils/dessin-rectangle.service';
 import { SelectionService } from './services/outils/selection/selection.service';
-import { StockageSvgService } from './services/stockage-svg/stockage-svg.service';
+import { SVGStockageService } from './services/stockage-svg/svg-stockage.service';
 
 @NgModule({
     declarations: [AppComponent, AccueilComponent, AvertissementNouveauDessinComponent, PageDessinComponent, PageGuideComponent,
@@ -47,7 +47,7 @@ import { StockageSvgService } from './services/stockage-svg/stockage-svg.service
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ])],
-    providers: [NavigationGuideService, StockageSvgService, DessinCrayonService, GestionnaireDessinService,
+    providers: [NavigationGuideService, SVGStockageService, DessinCrayonService, GestionnaireDessinService,
                 GestionnaireRaccourcisService, DessinRectangleService, DessinLigneService,
                 GestionnaireRoutingService, ParametresCouleurService, MatDialogConfig, SelectionService,
                 GestionnaireCommandesService, GridService],

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { StockageSvgService } from 'src/app/services/stockage-svg/stockage-svg.service';
-import { ElementDessin } from '../stockage-svg/element-dessin';
+import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
+import { DrawElement } from '../stockage-svg/draw-element';
 import { Commande } from './commande';
 
 @Injectable({
@@ -8,14 +8,14 @@ import { Commande } from './commande';
 })
 export class AjoutSvgService implements Commande {
   cleSVG: number;
-  constructor(public element: ElementDessin,
-              public stockageSVG: StockageSvgService) {
-    this.stockageSVG.ajouterSVG(this.element);
-    this.cleSVG = this.stockageSVG.taille;
+  constructor(public element: DrawElement,
+              public SVGStockage: SVGStockageService) {
+    this.SVGStockage.addSVG(this.element);
+    this.cleSVG = this.SVGStockage.size;
   }
 
   annuler() {
-    const element = this.stockageSVG.retirerSVG(this.cleSVG);
+    const element = this.SVGStockage.removeSVG(this.cleSVG);
     if (element) {
       this.element = element;
     }
@@ -23,7 +23,7 @@ export class AjoutSvgService implements Commande {
 
   refaire() {
     if (this.element) {
-      this.stockageSVG.ajouterSVG(this.element, this.cleSVG);
+      this.SVGStockage.addSVG(this.element, this.cleSVG);
     }
   }
 }

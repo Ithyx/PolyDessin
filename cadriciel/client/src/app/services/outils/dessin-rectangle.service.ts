@@ -3,7 +3,7 @@ import { AjoutSvgService } from '../commande/ajout-svg.service';
 import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
 import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
 import { RectangleService } from '../stockage-svg/rectangle.service';
-import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
+import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { Point } from './dessin-ligne.service';
 import { GestionnaireOutilsService } from './gestionnaire-outils.service'
 import { InterfaceOutils } from './interface-outils'
@@ -21,17 +21,17 @@ export class DessinRectangleService implements InterfaceOutils {
   largeurCalculee = 0;
   hauteurCalculee = 0;
 
-  constructor(public stockageSVG: StockageSvgService,
+  constructor(public stockageSVG: SVGStockageService,
               public outils: GestionnaireOutilsService,
               public couleur: ParametresCouleurService,
               public commandes: GestionnaireCommandesService) { }
 
   actualiserSVG() {
-    this.rectangle.outil = this.outils.outilActif;
-    this.rectangle.couleurPrincipale = this.couleur.getCouleurPrincipale();
-    this.rectangle.couleurSecondaire = this.couleur.getCouleurSecondaire();
-    this.rectangle.dessiner();
-    this.stockageSVG.setSVGEnCours(this.rectangle);
+    this.rectangle.tool = this.outils.outilActif;
+    this.rectangle.primaryColor = this.couleur.getCouleurPrincipale();
+    this.rectangle.secondaryColor = this.couleur.getCouleurSecondaire();
+    this.rectangle.draw();
+    this.stockageSVG.setOngoingSVG(this.rectangle);
   }
 
   sourisDeplacee(souris: MouseEvent) {
@@ -60,7 +60,7 @@ export class DessinRectangleService implements InterfaceOutils {
   sourisRelachee() {
     this.commandes.dessinEnCours = false;
     // On évite de créer des formes vides
-    if (this.rectangle.getLargeur() !== 0 || this.rectangle.getHauteur() !== 0) {
+    if (this.rectangle.getWidth() !== 0 || this.rectangle.getHeight() !== 0) {
       this.commandes.executer(new AjoutSvgService(this.rectangle, this.stockageSVG));
     }
     this.baseCalculee = {x: 0, y: 0};

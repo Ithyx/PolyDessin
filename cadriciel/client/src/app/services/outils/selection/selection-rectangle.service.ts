@@ -30,10 +30,10 @@ export class SelectionRectangleService {
   constructor(private sanitizer: DomSanitizer) { }
 
   actualiserSVG() {
-    this.rectangle.outil = this.rectangleSelectionTool;
-    this.rectangle.couleurPrincipale = 'rgba(0, 80, 130, 0.35)';
-    this.rectangle.couleurSecondaire = 'rgba(80, 80, 80, 0.45)';
-    this.rectangle.dessiner();
+    this.rectangle.tool = this.rectangleSelectionTool;
+    this.rectangle.primaryColor = 'rgba(0, 80, 130, 0.35)';
+    this.rectangle.secondaryColor = 'rgba(80, 80, 80, 0.45)';
+    this.rectangle.draw();
     this.rectangle.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.rectangle.SVG);
   }
 
@@ -57,7 +57,7 @@ export class SelectionRectangleService {
 
   sourisEnfoncee(souris: MouseEvent) {
     this.rectangle = new RectangleService();
-    this.rectangle.estEnPointillé = true;
+    this.rectangle.isDotted = true;
     this.initial = {x: souris.offsetX, y: souris.offsetY};
     this.selectionEnCours = true;
   }

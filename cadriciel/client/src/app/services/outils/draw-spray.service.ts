@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AjoutSvgService } from '../commande/ajout-svg.service';
 import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
 import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
-import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
+import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { TraceSprayService } from '../stockage-svg/trace-spray.service';
 import { Point } from './dessin-ligne.service';
 import { GestionnaireOutilsService } from './gestionnaire-outils.service';
@@ -13,7 +13,7 @@ import { InterfaceOutils } from './interface-outils';
 })
 export class DrawSprayService implements InterfaceOutils {
 
-  constructor(public stockageSVG: StockageSvgService,
+  constructor(public stockageSVG: SVGStockageService,
               public tools: GestionnaireOutilsService,
               public color: ParametresCouleurService,
               public commands: GestionnaireCommandesService) { }
@@ -29,10 +29,10 @@ export class DrawSprayService implements InterfaceOutils {
   }
 
   actualizeSVG() {
-    this.trace.couleur = this.color.getCouleurPrincipale();
-    this.trace.outil = this.tools.outilActif;
-    this.trace.dessiner();
-    this.stockageSVG.setSVGEnCours(this.trace);
+    this.trace.primaryColor = this.color.getCouleurPrincipale();
+    this.trace.tool = this.tools.outilActif;
+    this.trace.draw();
+    this.stockageSVG.setOngoingSVG(this.trace);
     console.log(this.trace.SVG)
   }
 

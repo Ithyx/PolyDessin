@@ -38,11 +38,11 @@
     
     <rect x="0" y="0" [attr.width.px]="gestionnaireDessin.longueur" [attr.height.px]="gestionnaireDessin.hauteur" [attr.width.px]="gestionnaireDessin.largeur" (click)="traiterClicSurVide()" [attr.fill]="parametresCouleur.couleurFond" />
 
-    <g *ngFor="let element of stockageSVG.getSVGComplets() | keyvalue;" [innerHTML]="element.value.SVGHtml" (click)="traiterClicElementDessin(element.value)"></g>
+    <g *ngFor="let element of SVGStockage.getCompleteSVG() | keyvalue;" [innerHTML]="element.value.SVGHtml" (click)="traiterClicElementDessin(element.value)"></g>
     <g *ngIf="this.selection.selectionRectangle.rectangle" [innerHTML]="this.selection.selectionRectangle.rectangle.SVGHtml"></g>
     <g *ngIf="this.selection.selectionBox.selectionBox" [innerHTML]="this.selection.selectionBox.selectionBox.SVGHtml" ></g>
-    <g [innerHTML]="stockageSVG.getSVGEnCoursHTML()"></g>
-    <g [innerHTML]="stockageSVG.getPerimetreEnCoursHTML()"></g>
+    <g [innerHTML]="SVGStockage.getOngoingSVGHTML()"></g>
+    <g [innerHTML]="SVGStockage.getOngoingPerimeterHTML()"></g>
     <g *ngFor="let line of grid.getLines()">
         <line [attr.stroke]="grid.getColor()" stroke-width="1"
               [attr.x1.px]="line.x1" [attr.x2.px]="line.x2"

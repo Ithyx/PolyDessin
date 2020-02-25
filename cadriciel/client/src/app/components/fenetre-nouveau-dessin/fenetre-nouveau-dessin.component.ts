@@ -8,7 +8,7 @@ import { GestionnaireCouleursService, Portee} from 'src/app/services/couleur/ges
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
 import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/gestionnaire-dessin.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
-import { StockageSvgService } from 'src/app/services/stockage-svg/stockage-svg.service';
+import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 
 export const KEY_FORM_HAUTEUR = 'hauteurFormulaire';
 export const KEY_FORM_LARGEUR = 'largeurFormulaire';
@@ -34,7 +34,7 @@ export class FenetreNouveauDessinComponent {
               public raccourcis: GestionnaireRaccourcisService,
               public serviceNouveauDessin: GestionnaireDessinService,
               public router: Router,
-              public stockageSVG: StockageSvgService,
+              public SVGStockage: SVGStockageService,
               public gestionnaireCouleur: GestionnaireCouleursService,
               public dialog: MatDialog,
               public parametresCouleur: ParametresCouleurService,
@@ -62,7 +62,7 @@ export class FenetreNouveauDessinComponent {
   }
 
   validerNouveauDessin() {
-    this.stockageSVG.viderDessin();
+    this.SVGStockage.cleanDrawing();
     this.commandes.viderCommandes();
     this.serviceNouveauDessin.hauteur = this.nouveauDessin.value[KEY_FORM_HAUTEUR];
     this.serviceNouveauDessin.largeur = this.nouveauDessin.value[KEY_FORM_LARGEUR];

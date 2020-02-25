@@ -1,8 +1,8 @@
-import { ElementDessin } from '../stockage-svg/element-dessin';
+import { DrawElement } from '../stockage-svg/draw-element';
 
 export interface Commande {
     cleSVG?: number;  // id du SVG concerné
-    element?: ElementDessin; // élément concerné
+    element?: DrawElement; // élément concerné
     annuler(): void;
     refaire(): void;
 }

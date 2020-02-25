@@ -18,14 +18,14 @@ export class SelectionBoxService {
 
     this.selectionBox = new RectangleService();
 
-    this.selectionBox.estSelectionne = true;
-    this.selectionBox.outil = this.outils.outilActif;
+    this.selectionBox.isSelected = true;
+    this.selectionBox.tool = this.outils.outilActif;
 
     this.selectionBox.points[0] = pointMin;
     this.selectionBox.points[1] = pointMax;
-    this.selectionBox.couleurSecondaire =  'rgba(0, 80, 150, 1)';
+    this.selectionBox.secondaryColor =  'rgba(0, 80, 150, 1)';
 
-    this.selectionBox.dessinerRectangle();
+    this.selectionBox.drawRectangle();
     this.selectionBox.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.selectionBox.SVG);
   };
 

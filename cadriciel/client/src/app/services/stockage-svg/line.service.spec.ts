@@ -1,13 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-
-import { LigneService } from './ligne.service';
+import { LineService } from './line.service';
 
 describe('LigneService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
-  let service: LigneService;
+  let service: LineService;
 
   it('should be created', () => {
-    service = TestBed.get(LigneService);
+    service = TestBed.get(LineService);
     expect(service).toBeTruthy();
   });
 

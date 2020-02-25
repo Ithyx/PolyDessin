@@ -6,7 +6,7 @@ import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/
 import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routing.service';
 import { GestionnaireOutilsService } from 'src/app/services/outils/gestionnaire-outils.service';
 import { SelectionService } from 'src/app/services/outils/selection/selection.service';
-import { StockageSvgService } from 'src/app/services/stockage-svg/stockage-svg.service';
+import { StockageSvgService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { SurfaceDessinComponent } from './surface-dessin.component';
 
 const parametresCouleurStub: Partial<ParametresCouleurService> = {
