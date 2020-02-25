@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
+import { ElementDessin } from '../../../../../common/communication/element-dessin';
 import { Point } from '../outils/dessin-ligne.service';
 import { OUTIL_VIDE, OutilDessin } from '../outils/gestionnaire-outils.service';
-import { ElementDessin } from './element-dessin';
 
 @Injectable({
   providedIn: 'root'
