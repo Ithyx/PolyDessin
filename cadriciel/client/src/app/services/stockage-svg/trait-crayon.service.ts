@@ -13,6 +13,7 @@ export class TraitCrayonService implements ElementDessin {
   estSelectionne = false;
 
   outil: OutilDessin = OUTIL_VIDE;
+  epaisseur: number;
   points: Point[] = [];
   estPoint = false;
   couleurPrincipale: string;
@@ -26,7 +27,10 @@ export class TraitCrayonService implements ElementDessin {
   }
 
   dessinerChemin() {
-    this.SVG = `<path fill="transparent" stroke="${this.couleurPrincipale}"`
+    if (this.outil.parametres[0].valeur) {
+      this.epaisseur = this.outil.parametres[0].valeur;
+    }
+    this.SVG = `<path fill="none" stroke="${this.couleurPrincipale}"`
       + 'stroke-linecap="round" stroke-width="' + this.outil.parametres[0].valeur + '" d="';
     for (let i = 0; i < this.points.length; ++i) {
       this.SVG += (i === 0) ? 'M ' : 'L ';
@@ -37,6 +41,7 @@ export class TraitCrayonService implements ElementDessin {
 
   dessinerPoint() {
     if (this.outil.parametres[0].valeur) {
+      this.epaisseur = this.outil.parametres[0].valeur;
       this.SVG = '<circle cx="' + this.points[0].x + '" cy="' + this.points[0].y
         + '" r="' + this.outil.parametres[0].valeur / 2
         + '" fill="' + this.couleurPrincipale + '"/>';

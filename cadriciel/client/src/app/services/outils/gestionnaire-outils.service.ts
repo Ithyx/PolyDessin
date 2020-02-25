@@ -5,6 +5,7 @@ export const INDEX_OUTIL_PINCEAU = 1;
 export const INDEX_OUTIL_RECTANGLE = 2;
 export const INDEX_OUTIL_LIGNE = 3;
 export const INDEX_OUTIL_SELECTION = 4;
+export const INDEX_OUTIL_SPRAY = 5;
 
 export interface ParametreOutil {
   type: string;
@@ -102,4 +103,14 @@ export const LISTE_OUTILS: OutilDessin[] = [
       { type: 'invisible', nom: 'Type de tracé', optionChoisie: 'Contour'}
     ]
   },
+  {
+    nom: 'Aérosol',
+    estActif: false,
+    ID: 5,
+    nomIcone: 'fas fa-spray-can',
+    parametres: [
+      { type: 'number', nom: 'Diamétre du jet', valeur: 10 },
+      { type: 'number', nom: 'Nombre d\'émissions par seconde', valeur: 10 }
+    ]
+  }
 ];

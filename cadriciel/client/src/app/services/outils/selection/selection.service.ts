@@ -4,6 +4,7 @@ import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { StockageSvgService } from '../../stockage-svg/stockage-svg.service';
 import { Point } from '../dessin-ligne.service';
 import { InterfaceOutils } from '../interface-outils';
+import { GestionnaireDessinService } from './../../gestionnaire-dessin/gestionnaire-dessin.service'
 import { SelectionBoxService } from './selection-box.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
 
@@ -12,17 +13,15 @@ import { SelectionRectangleService } from './selection-rectangle.service';
 })
 export class SelectionService implements InterfaceOutils {
   boiteElementSelectionne = new RectangleService();
-
   elementSelectionne: ElementDessin[] = [];
 
   constructor(public stockageSVG: StockageSvgService,
               public selectionBox: SelectionBoxService,
-              public selectionRectangle: SelectionRectangleService
+              public selectionRectangle: SelectionRectangleService,
+              public gestionnaireDessin: GestionnaireDessinService
              ) {}
 
   traiterClic(element: ElementDessin) {
-    console.log('selection a reçu', element);
-
     this.supprimerBoiteEnglobante();
 
     if (!this.elementSelectionne.includes(element)) {
@@ -35,14 +34,29 @@ export class SelectionService implements InterfaceOutils {
 
   sourisDeplacee(souris: MouseEvent) {
     this.selectionRectangle.sourisDeplacee(souris);
+    if (this.selectionRectangle.selectionEnCours) {
+      this.supprimerBoiteEnglobante();
+      // Éviter de créer une boite de sélection si on effectue un simple clic
+      if (this.selectionRectangle.rectangle.getLargeur() !== 0 || this.selectionRectangle.rectangle.getHauteur() !== 0) {
+        this.estDansRectangleSelection(this.selectionRectangle.rectangle);
+        this.creerBoiteEnglobanteElementDessin();
+      }
+    }
   }
 
   sourisEnfoncee(souris: MouseEvent) {
+    this.supprimerBoiteEnglobante();
     this.selectionRectangle.sourisEnfoncee(souris);
   }
 
   sourisRelachee() {
+    // Éviter de créer une boite de sélection si on effectue un simple clic
+    if (this.selectionRectangle.rectangle.getLargeur() !== 0 || this.selectionRectangle.rectangle.getHauteur() !== 0) {
+      this.estDansRectangleSelection(this.selectionRectangle.rectangle);
+      this.creerBoiteEnglobanteElementDessin();
+    }
     this.selectionRectangle.sourisRelachee();
+    this.selectionRectangle.rectangle = new RectangleService();
   }
 
   creerBoiteEnglobantePlusieursElementDessins(elements: Map<number, ElementDessin>) {
@@ -78,32 +92,36 @@ export class SelectionService implements InterfaceOutils {
 
   creerBoiteEnglobanteElementDessin() {
 
-    let pointMin: Point = {x: this.elementSelectionne[0].points[0].x , y: this.elementSelectionne[0].points[0].y};
-    let pointMax: Point = {x: this.elementSelectionne[0].points[0].x , y: this.elementSelectionne[0].points[0].y};
+    let pointMin: Point = {x: this.gestionnaireDessin.largeur , y: this.gestionnaireDessin.hauteur};
+    let pointMax: Point = {x: 0 , y: 0};
+    const epaisseurMin: Point = {x: 0, y: 0};
+    const epaisseurMax: Point = {x: 0, y: 0};
 
     for (const element of this.elementSelectionne) {
       for (const point of element.points) {
         // Point Min
         if (pointMin.x > point.x) {
           pointMin.x = point.x;
+          epaisseurMin.x = element.epaisseur ? element.epaisseur : 0;
         }
         if (pointMin.y > point.y) {
           pointMin.y = point.y;
+          epaisseurMin.y = element.epaisseur ? element.epaisseur : 0;
         }
 
         // Point Max
         if (pointMax.x < point.x) {
           pointMax.x = point.x;
+          epaisseurMax.x = element.epaisseur ? element.epaisseur : 0;
         }
         if (pointMax.y < point.y) {
           pointMax.y = point.y;
+          epaisseurMax.y = element.epaisseur ? element.epaisseur : 0;
         }
       }
     }
-
-    pointMin = {x: pointMin.x - 2, y: pointMin.y - 2};
-    pointMax = {x: pointMax.x + 2, y: pointMax.y + 2};
-
+    pointMin = {x: pointMin.x - 0.5 * epaisseurMin.x, y: pointMin.y - 0.5 * epaisseurMin.y};
+    pointMax = {x: pointMax.x + 0.5 * epaisseurMax.x, y: pointMax.y + 0.5 * epaisseurMax.y};
     this.selectionBox.createSelectionBox(pointMin, pointMax);
   };
 
@@ -119,20 +137,31 @@ export class SelectionService implements InterfaceOutils {
 
   };
 
-  estDansRectangleSelection(element: ElementDessin, rectangleSelection: RectangleService): boolean {
-    let appartientX = false;
-    let appartientY = false;
-    for (const point of element.points) {
-      if (point.x > rectangleSelection.points[0].x && point.x < rectangleSelection.points[1].x) {
-        appartientX = true;
-      } else {appartientX = false; };
+  estDansRectangleSelection(rectangleSelection: RectangleService) {
+    let belongInX = false;
+    let belongInY = false;
+    let belongToRectangle = false;
 
-      if (point.y > rectangleSelection.points[0].y && point.y < rectangleSelection.points[1].y) {
-        appartientY = true;
-      } else {appartientY = false}
+    for (const element of this.stockageSVG.getSVGComplets()) {
+      for (const point of element[1].points) {
+        if (point.x >= rectangleSelection.points[0].x && point.x <= rectangleSelection.points[1].x) {
+          belongInX = true;
+        } else {belongInX = false; };
+
+        if (point.y >= rectangleSelection.points[0].y && point.y <= rectangleSelection.points[1].y) {
+          belongInY = true;
+        } else {belongInY = false}
+
+        if (belongInX && belongInY) {
+          belongToRectangle = true;
+        }
+      }
+      if (belongToRectangle) {
+        element[1].estSelectionne = true;
+        this.elementSelectionne.push(element[1]);
+        belongToRectangle = false;
+      }
     }
-
-    return appartientX && appartientY;
   };
 
 }
