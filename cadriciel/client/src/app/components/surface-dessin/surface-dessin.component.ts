@@ -7,7 +7,7 @@ import { GridService } from 'src/app/services/grid/grid.service';
 import { GestionnaireOutilsService, INDEX_OUTIL_SELECTION } from 'src/app/services/outils/gestionnaire-outils.service';
 import { SelectionService } from 'src/app/services/outils/selection/selection.service';
 import { StockageSvgService } from 'src/app/services/stockage-svg/stockage-svg.service';
-import { ElementDessin } from '../../../../../common/communication/element-dessin';
+import { ElementDessin } from '../../services/stockage-svg/element-dessin';
 
 @Component({
   selector: 'app-surface-dessin',

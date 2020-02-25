@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ElementDessin } from '../../../../../common/communication/element-dessin';
+import { ElementDessin } from '../stockage-svg/element-dessin';
 import { StockageSvgService } from '../stockage-svg/stockage-svg.service';
 import { TraitPinceauService } from '../stockage-svg/trait-pinceau.service';
 import { DessinPinceauService } from './dessin-pinceau.service';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StockageSvgService } from 'src/app/services/stockage-svg/stockage-svg.service';
-import { ElementDessin } from '../../../../../common/communication/element-dessin';
+import { ElementDessin } from '../stockage-svg/element-dessin';
 import { Commande } from './commande';
 
 @Injectable({

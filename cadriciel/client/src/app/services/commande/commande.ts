@@ -1,4 +1,4 @@
-import { ElementDessin } from '../../../../../common/communication/element-dessin';
+import { ElementDessin } from '../stockage-svg/element-dessin';
 
 export interface Commande {
     cleSVG?: number;  // id du SVG concerné

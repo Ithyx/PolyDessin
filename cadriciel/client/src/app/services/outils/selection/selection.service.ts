@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ElementDessin } from '../../../../../../common/communication/element-dessin';
+import { ElementDessin } from '../../stockage-svg/element-dessin';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { StockageSvgService } from '../../stockage-svg/stockage-svg.service';
 import { Point } from '../dessin-ligne.service';

@@ -1,6 +1,6 @@
 /*import { TestBed } from '@angular/core/testing';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { ElementDessin } from '../../../../../common/communication/element-dessin';
+import { ElementDessin } from './element-dessin';
 import { StockageSvgService } from './stockage-svg.service';
 
 describe('StockageSvgService', () => {
