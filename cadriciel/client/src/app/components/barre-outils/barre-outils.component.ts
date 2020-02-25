@@ -24,14 +24,13 @@ export class BarreOutilsComponent implements OnDestroy {
 
   private nouveauDessinSubscription: Subscription;
 
-  constructor(
-    public dialog: MatDialog,
-    public outils: GestionnaireOutilsService,
-    public raccourcis: GestionnaireRaccourcisService,
-    public couleur: ParametresCouleurService,
-    public commandes: GestionnaireCommandesService,
-    public selection: SelectionService
-  ) {
+  constructor(public dialog: MatDialog,
+              public outils: GestionnaireOutilsService,
+              public raccourcis: GestionnaireRaccourcisService,
+              public couleur: ParametresCouleurService,
+              public commandes: GestionnaireCommandesService,
+              public selection: SelectionService
+             ) {
     this.nouveauDessinSubscription = raccourcis.emitterNouveauDessin.subscribe((estIgnoree: boolean) => {
      if (!estIgnoree) { this.avertissementNouveauDessin(); };
     });
@@ -44,7 +43,7 @@ export class BarreOutilsComponent implements OnDestroy {
 
   clic(outil: OutilDessin) {
     if (this.outils.outilActif.nom === 'Selection' && this.selection.selectionBox) {
-      this.selection.supprimerBoiteEnglobante();
+      this.selection.deleteBoundingBox();
   }
     this.outils.outilActif.estActif = false;
     this.outils.outilActif = outil;

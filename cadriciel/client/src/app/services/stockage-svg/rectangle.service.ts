@@ -59,10 +59,10 @@ export class RectangleService implements DrawElement {
   }
 
   drawRectangle() {
-    const optionChoisie = this.tool.parametres[1].optionChoisie;
+    const choosedOption = this.tool.parametres[1].optionChoisie;
     this.SVG = '<rect fill="'
-      + ((optionChoisie !== 'Contour') ? this.primaryColor : 'none')
-      + '" stroke="' + ((optionChoisie !== 'Plein') ? this.secondaryColor : 'none')
+      + ((choosedOption !== 'Contour') ? this.primaryColor : 'none')
+      + '" stroke="' + ((choosedOption !== 'Plein') ? this.secondaryColor : 'none')
       + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')
       + '" stroke-width="' + this.tool.parametres[0].valeur
       + '" x="' + this.points[0].x + '" y="' + this.points[0].y

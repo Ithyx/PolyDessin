@@ -22,40 +22,40 @@ export class SelectionService implements InterfaceOutils {
              ) {}
 
   traiterClic(element: DrawElement) {
-    this.supprimerBoiteEnglobante();
+    this.deleteBoundingBox();
 
     if (!this.elementSelectionne.includes(element)) {
       this.elementSelectionne.push(element);
       element.isSelected = true;
-      this.creerBoiteEnglobanteElementDessin();
+      this.createBoundingBox();
     }
 
   }
 
-  sourisDeplacee(souris: MouseEvent) {
-    this.selectionRectangle.sourisDeplacee(souris);
-    if (this.selectionRectangle.selectionEnCours) {
-      this.supprimerBoiteEnglobante();
+  sourisDeplacee(mouse: MouseEvent) {
+    this.selectionRectangle.mouseMouve(mouse);
+    if (this.selectionRectangle.onoingSelection) {
+      this.deleteBoundingBox();
       // Éviter de créer une boite de sélection si on effectue un simple clic
       if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
-        this.estDansRectangleSelection(this.selectionRectangle.rectangle);
-        this.creerBoiteEnglobanteElementDessin();
+        this.isInRectangleSelection(this.selectionRectangle.rectangle);
+        this.createBoundingBox();
       }
     }
   }
 
-  sourisEnfoncee(souris: MouseEvent) {
-    this.supprimerBoiteEnglobante();
-    this.selectionRectangle.sourisEnfoncee(souris);
+  sourisEnfoncee(mouse: MouseEvent) {
+    this.deleteBoundingBox();
+    this.selectionRectangle.mouseDown(mouse);
   }
 
   sourisRelachee() {
     // Éviter de créer une boite de sélection si on effectue un simple clic
     if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
-      this.estDansRectangleSelection(this.selectionRectangle.rectangle);
-      this.creerBoiteEnglobanteElementDessin();
+      this.isInRectangleSelection(this.selectionRectangle.rectangle);
+      this.createBoundingBox();
     }
-    this.selectionRectangle.sourisRelachee();
+    this.selectionRectangle.mouseUp();
     this.selectionRectangle.rectangle = new RectangleService();
   }
 
@@ -90,7 +90,7 @@ export class SelectionService implements InterfaceOutils {
     this.selectionBox.createSelectionBox(pointMin, pointMax);
   };
 
-  creerBoiteEnglobanteElementDessin() {
+  createBoundingBox() {
 
     let pointMin: Point = {x: this.gestionnaireDessin.largeur , y: this.gestionnaireDessin.hauteur};
     let pointMax: Point = {x: 0 , y: 0};
@@ -125,7 +125,7 @@ export class SelectionService implements InterfaceOutils {
     this.selectionBox.createSelectionBox(pointMin, pointMax);
   };
 
-  supprimerBoiteEnglobante() {
+  deleteBoundingBox() {
     if (this.elementSelectionne) {
       this.selectionBox.deleteSelectionBox();
 
@@ -134,10 +134,9 @@ export class SelectionService implements InterfaceOutils {
         this.elementSelectionne.pop();
       }
     }
-
   };
 
-  estDansRectangleSelection(rectangleSelection: RectangleService) {
+  isInRectangleSelection(rectangleSelection: RectangleService) {
     let belongInX = false;
     let belongInY = false;
     let belongToRectangle = false;

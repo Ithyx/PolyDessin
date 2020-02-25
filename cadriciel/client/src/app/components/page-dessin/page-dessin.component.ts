@@ -8,7 +8,6 @@ import { DrawSprayService } from 'src/app/services/outils/draw-spray.service';
 import { GestionnaireOutilsService } from 'src/app/services/outils/gestionnaire-outils.service';
 import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
 import { SelectionService } from 'src/app/services/outils/selection/selection.service';
-import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 
 @Component({
   selector: 'app-page-dessin',
@@ -19,7 +18,7 @@ export class PageDessinComponent {
 
   lexiqueOutils: Map<string, InterfaceOutils> = new Map<string, InterfaceOutils>();
 
-  constructor(public SVGStockage: SVGStockageService,       // Jamais utilisé dans la classe, Refactoring?
+  constructor(
               public outils: GestionnaireOutilsService,
               public crayon: DessinCrayonService,
               public rectangle: DessinRectangleService,

@@ -42,7 +42,7 @@ export class LineService implements DrawElement {
 
   drawPoints() {
     if (this.tool.parametres[2].valeur) {
-      if(2 * this.tool.parametres[2].valeur > this.thickness) {
+      if (2 * this.tool.parametres[2].valeur > this.thickness) {
         this.thickness = 2 * this.tool.parametres[2].valeur;
     }
   }

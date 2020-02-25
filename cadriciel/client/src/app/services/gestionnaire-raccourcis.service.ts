@@ -35,7 +35,7 @@ export class GestionnaireRaccourcisService {
     if (this.champDeTexteEstFocus) { return; };
     switch (clavier.key) {
       case '1':
-        this.selection.supprimerBoiteEnglobante();
+        this.selection.deleteBoundingBox();
         this.outils.changerOutilActif(INDEX_OUTIL_RECTANGLE);
         this.viderSVGEnCours();
         break;
@@ -43,31 +43,31 @@ export class GestionnaireRaccourcisService {
       case 'a':
         clavier.preventDefault();
         if (clavier.ctrlKey && this.outils.outilActif.ID === INDEX_OUTIL_SELECTION) {
-          this.selection.supprimerBoiteEnglobante();
+          this.selection.deleteBoundingBox();
           this.selection.creerBoiteEnglobantePlusieursElementDessins(this.SVGStockage.getCompleteSVG());
         }
         break;
 
       case 'c':
-        this.selection.supprimerBoiteEnglobante();
+        this.selection.deleteBoundingBox();
         this.outils.changerOutilActif(INDEX_OUTIL_CRAYON);
         this.viderSVGEnCours();
         break;
 
       case 'l':
-        this.selection.supprimerBoiteEnglobante();
+        this.selection.deleteBoundingBox();
         this.outils.changerOutilActif(INDEX_OUTIL_LIGNE);
         this.viderSVGEnCours();
         break;
 
       case 'w':
-        this.selection.supprimerBoiteEnglobante();
+        this.selection.deleteBoundingBox();
         this.outils.changerOutilActif(INDEX_OUTIL_PINCEAU);
         this.viderSVGEnCours();
         break;
 
       case 's':
-        this.selection.supprimerBoiteEnglobante();
+        this.selection.deleteBoundingBox();
         this.outils.changerOutilActif(INDEX_OUTIL_SELECTION);
         this.viderSVGEnCours();
 

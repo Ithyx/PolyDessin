@@ -32,7 +32,7 @@ export class SurfaceDessinComponent {
     if (this.outils.outilActif.ID === INDEX_OUTIL_SELECTION) {
       if (!this.selection.selectionRectangle.rectangle) {
         console.log('clic sur vide');
-        this.selection.supprimerBoiteEnglobante();
+        this.selection.deleteBoundingBox();
       }
     }
   }
