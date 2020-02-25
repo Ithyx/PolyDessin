@@ -31,8 +31,13 @@ export class DatabaseService {
         });
     }
 
-    SendData() {
-        this.collection.insertOne({name: 'test1', height: 25, width: 25, backgroundColor: 'blue'});
-        this.collection.insertOne({name: 'mon bo déss1', height: 7254.5, width: 0, backgroundColor: 'rgba(255, 0, 255, 255)'});
+    async getDrawings(): Promise<Drawing[]> {
+        if (!this.collection) { return []; };
+        return await this.collection.find().toArray();
+    }
+
+    SendData(drawing: Drawing) {
+        console.log('tried to send: ', drawing);
+        if (!this.collection) { return; };
     }
 }
