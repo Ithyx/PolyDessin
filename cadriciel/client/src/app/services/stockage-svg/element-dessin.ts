@@ -17,6 +17,7 @@ export interface ElementDessin {
   perimetre?: string;
   estSelectionne: boolean;
   estPoint?: boolean;
+  estEnPointillé?: boolean;
 
   dessiner(): void;
 }

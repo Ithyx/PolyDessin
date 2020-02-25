@@ -23,7 +23,7 @@ export class SelectionRectangleService {
                                          ID: -1,
                                          parametres: [
                                           {type: 'invisible', nom: 'Épaisseur du contour', valeur: 5},
-                                          {type: 'invisible', nom: 'Type de tracé', optionChoisie: 'Plein'}
+                                          {type: 'invisible', nom: 'Type de tracé', optionChoisie: 'Plein avec contour'}
                                          ],
                                          nomIcone: ''};
 
@@ -32,6 +32,7 @@ export class SelectionRectangleService {
   actualiserSVG() {
     this.rectangle.outil = this.rectangleSelectionTool;
     this.rectangle.couleurPrincipale = 'rgba(0, 80, 130, 0.35)';
+    this.rectangle.couleurSecondaire = 'rgba(80, 80, 80, 0.45)';
     this.rectangle.dessiner();
     this.rectangle.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.rectangle.SVG);
   }
@@ -56,6 +57,7 @@ export class SelectionRectangleService {
 
   sourisEnfoncee(souris: MouseEvent) {
     this.rectangle = new RectangleService();
+    this.rectangle.estEnPointillé = true;
     this.initial = {x: souris.offsetX, y: souris.offsetY};
     this.selectionEnCours = true;
   }

@@ -20,6 +20,8 @@ export class RectangleService implements ElementDessin {
   couleurPrincipale: string;
   couleurSecondaire: string;
 
+  estEnPointillé: boolean;
+
   outil: OutilDessin = OUTIL_VIDE;
   largeur = 0;
   hauteur = 0;
@@ -46,9 +48,11 @@ export class RectangleService implements ElementDessin {
     if (this.outil.parametres[0].valeur) {
       this.epaisseur = this.outil.parametres[0].valeur;
     }
+
     this.SVG = '<line stroke-linecap="square'
       + '" stroke="' + this.couleurSecondaire
       + '" stroke-width="' + this.outil.parametres[0].valeur
+      + (this.estEnPointillé ? '"stroke-dasharray="4, 4"'  : '')
       + '" x1="' + this.points[0].x + '" y1="' + this.points[0].y
       + '" x2="' + (this.points[0].x + this.getLargeur())
       + '" y2="' + (this.points[0].y + this.getHauteur()) + '"/>';
@@ -59,6 +63,7 @@ export class RectangleService implements ElementDessin {
     this.SVG = '<rect fill="'
       + ((optionChoisie !== 'Contour') ? this.couleurPrincipale : 'none')
       + '" stroke="' + ((optionChoisie !== 'Plein') ? this.couleurSecondaire : 'none')
+      + (this.estEnPointillé ? '"stroke-dasharray="4, 4"'  : '')
       + '" stroke-width="' + this.outil.parametres[0].valeur
       + '" x="' + this.points[0].x + '" y="' + this.points[0].y
       + '" width="' + this.getLargeur() + '" height="' + this.getHauteur() + '"/>';
@@ -71,7 +76,7 @@ export class RectangleService implements ElementDessin {
       this.epaisseur = this.outil.parametres[0].valeur;
     }
     const epaisseur = (this.outil.parametres[0].valeur) ? this.outil.parametres[0].valeur : 0;
-    this.perimetre = '<rect stroke="gray" fill="none" stroke-width="2';
+    this.perimetre = '<rect stroke="gray" fill="none" stroke-width="2' + (this.estEnPointillé ? '"stroke-dasharray="4, 4"'  : '');
     if (this.outil.parametres[1].optionChoisie === 'Plein') {
       this.perimetre += '" x="' + this.points[0].x + '" y="' + this.points[0].y
         + '" height="' + this.getHauteur + '" width="' + this.getLargeur + '"/>';
