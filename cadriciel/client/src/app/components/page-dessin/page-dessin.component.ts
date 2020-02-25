@@ -4,6 +4,7 @@ import { DessinCrayonService } from 'src/app/services/outils/dessin-crayon.servi
 import { DessinLigneService } from 'src/app/services/outils/dessin-ligne.service';
 import { DessinPinceauService } from 'src/app/services/outils/dessin-pinceau.service';
 import { DessinRectangleService } from 'src/app/services/outils/dessin-rectangle.service'
+import { DrawSprayService } from 'src/app/services/outils/draw-spray.service';
 import { GestionnaireOutilsService } from 'src/app/services/outils/gestionnaire-outils.service';
 import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
 import { StockageSvgService } from 'src/app/services/stockage-svg/stockage-svg.service';
@@ -23,12 +24,14 @@ export class PageDessinComponent {
               public rectangle: DessinRectangleService,
               public pinceau: DessinPinceauService,
               public ligne: DessinLigneService,
+              public spray: DrawSprayService,
               public raccourcis: GestionnaireRaccourcisService
   ) {
     this.lexiqueOutils.set('Crayon', crayon)
                       .set('Rectangle', rectangle)
                       .set('Ligne', ligne)
-                      .set('Pinceau', pinceau);
+                      .set('Pinceau', pinceau)
+                      .set('Aérosol', spray);
   }
 
   @HostListener('document:keydown', ['$event'])
