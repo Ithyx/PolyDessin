@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AjoutSvgService } from '../commande/ajout-svg.service';
+import { AjoutSvgService } from '../commande/add-svg.service';
 import { RectangleService } from '../stockage-svg/rectangle.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { DessinRectangleService } from './dessin-rectangle.service';

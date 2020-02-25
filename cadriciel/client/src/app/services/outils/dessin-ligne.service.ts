@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AjoutSvgService } from '../commande/ajout-svg.service';
+import { AddSVGService } from '../commande/add-svg.service';
 import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
 import { LineService } from '../stockage-svg/line.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
@@ -57,7 +57,7 @@ export class DessinLigneService implements InterfaceOutils {
       }
       this.ligne.draw();
       if (!this.ligne.isEmpty()) {
-        this.commandes.executer(new AjoutSvgService(this.ligne, this.SVGStockage));
+        this.commandes.execute(new AddSVGService(this.ligne, this.SVGStockage));
       }
       this.ligne = new LineService();
     }

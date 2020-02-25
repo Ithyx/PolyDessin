@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AjoutSvgService } from '../commande/ajout-svg.service';
+import { AddSVGService } from '../commande/add-svg.service';
 import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
 import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
 import { RectangleService } from '../stockage-svg/rectangle.service';
@@ -61,7 +61,7 @@ export class DessinRectangleService implements InterfaceOutils {
     this.commandes.dessinEnCours = false;
     // On évite de créer des formes vides
     if (this.rectangle.getWidth() !== 0 || this.rectangle.getHeight() !== 0) {
-      this.commandes.executer(new AjoutSvgService(this.rectangle, this.stockageSVG));
+      this.commandes.execute(new AddSVGService(this.rectangle, this.stockageSVG));
     }
     this.baseCalculee = {x: 0, y: 0};
     this.hauteurCalculee = 0;

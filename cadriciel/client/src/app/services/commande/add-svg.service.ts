@@ -6,24 +6,24 @@ import { Commande } from './commande';
 @Injectable({
   providedIn: 'root'
 })
-export class AjoutSvgService implements Commande {
-  cleSVG: number;
+export class AddSVGService implements Commande {
+  SVGKey: number;
   constructor(public element: DrawElement,
               public SVGStockage: SVGStockageService) {
     this.SVGStockage.addSVG(this.element);
-    this.cleSVG = this.SVGStockage.size;
+    this.SVGKey = this.SVGStockage.size;
   }
 
-  annuler() {
-    const element = this.SVGStockage.removeSVG(this.cleSVG);
+  undo() {
+    const element = this.SVGStockage.removeSVG(this.SVGKey);
     if (element) {
       this.element = element;
     }
   }
 
-  refaire() {
+  redo() {
     if (this.element) {
-      this.SVGStockage.addSVG(this.element, this.cleSVG);
+      this.SVGStockage.addSVG(this.element, this.SVGKey);
     }
   }
 }

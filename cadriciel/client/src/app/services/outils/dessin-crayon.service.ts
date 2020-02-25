@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AjoutSvgService } from '../commande/ajout-svg.service';
+import { AddSVGService } from '../commande/add-svg.service';
 import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
 import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
@@ -37,7 +37,7 @@ export class DessinCrayonService implements InterfaceOutils {
     if (this.commandes.dessinEnCours) {
       if (this.trait.SVG.includes('L')) {
         // on ne stocke le path que s'il n'y a au moins une ligne
-        this.commandes.executer(new AjoutSvgService(this.trait, this.SVGStockage));
+        this.commandes.execute(new AddSVGService(this.trait, this.SVGStockage));
       }
       this.trait = new TracePencilService();
       this.commandes.dessinEnCours = false;
@@ -51,7 +51,7 @@ export class DessinCrayonService implements InterfaceOutils {
         this.trait.points.push({x: souris.offsetX, y: souris.offsetY});
         this.trait.isAPoint = true;
         this.actualiserSVG();
-        this.commandes.executer(new AjoutSvgService(this.trait, this.SVGStockage));
+        this.commandes.execute(new AddSVGService(this.trait, this.SVGStockage));
         this.trait = new TracePencilService();
       }
       this.commandes.dessinEnCours = false;
@@ -60,7 +60,7 @@ export class DessinCrayonService implements InterfaceOutils {
 
   sourisSortie() {
     if (this.commandes.dessinEnCours) {
-      this.commandes.executer(new AjoutSvgService(this.trait, this.SVGStockage));
+      this.commandes.execute(new AddSVGService(this.trait, this.SVGStockage));
       this.trait = new TracePencilService();
       this.commandes.dessinEnCours = false;
     }

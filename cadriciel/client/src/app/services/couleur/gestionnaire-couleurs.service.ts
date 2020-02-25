@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ChangementCouleurFondService } from '../commande/changement-couleur-fond.service';
+import { ChangeBackgroundColorService } from '../commande/change-background-color.service';
 import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
 import { ParametresCouleurService } from './parametres-couleur.service'
 
@@ -45,7 +45,7 @@ export class GestionnaireCouleursService {
         this.ajouterDerniereCouleur();
         break;
       case Portee.Fond:
-        this.commandes.executer(new ChangementCouleurFondService(this.parametresCouleur, this.couleur + '1)'));
+        this.commandes.execute(new ChangeBackgroundColorService(this.parametresCouleur, this.couleur + '1)'));
       default:
         /* Par mesure de sécurité, ne rien faire. */
         break;

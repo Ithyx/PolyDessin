@@ -9,7 +9,7 @@ export class GestionnaireCommandesService {
   commandesEffectuees: Commande[] = [];
   commandesAnnulees: Commande[] = [];
 
-  executer(commande: Commande) {
+  execute(commande: Commande) {
     this.commandesEffectuees.push(commande);
     this.commandesAnnulees = [];
   }
@@ -17,7 +17,7 @@ export class GestionnaireCommandesService {
   annulerCommande() {
     const commande = this.commandesEffectuees.pop();
     if (commande) {
-      commande.annuler();
+      commande.undo();
       this.commandesAnnulees.push(commande);
     }
   }
@@ -25,7 +25,7 @@ export class GestionnaireCommandesService {
   refaireCommande() {
     const commande = this.commandesAnnulees.pop();
     if (commande) {
-      commande.refaire();
+      commande.redo();
       this.commandesEffectuees.push(commande);
     }
   }

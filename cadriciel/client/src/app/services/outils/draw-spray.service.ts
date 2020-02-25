@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AjoutSvgService } from '../commande/ajout-svg.service';
+import { AddSVGService } from '../commande/add-svg.service';
 import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
 import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
@@ -60,7 +60,7 @@ export class DrawSprayService implements InterfaceOutils {
   sourisRelachee() {
     if (this.commands.dessinEnCours) {
       if (this.trace.points.length > 0) {
-        this.commands.executer(new AjoutSvgService(this.trace, this.stockageSVG));
+        this.commands.execute(new AddSVGService(this.trace, this.stockageSVG));
       }
     }
     this.trace = new TraceSprayService();
