@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AddSVGService } from '../commande/add-svg.service';
-import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
+import { AddSVGService } from '../command/add-svg.service';
+import { CommandManagerService } from '../command/command-manager.service';
 import { LineService } from '../stockage-svg/line.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { GestionnaireOutilsService } from './gestionnaire-outils.service';
@@ -23,7 +23,7 @@ export class DessinLigneService implements InterfaceOutils {
 
   constructor(public SVGStockage: SVGStockageService,
               public outils: GestionnaireOutilsService,
-              public commandes: GestionnaireCommandesService) { }
+              public commands: CommandManagerService) { }
 
   sourisDeplacee(souris: MouseEvent) {
     this.curseur = {x: souris.offsetX, y: souris.offsetY};
@@ -35,7 +35,7 @@ export class DessinLigneService implements InterfaceOutils {
   }
 
   sourisCliquee() {
-    this.commandes.dessinEnCours = true;
+    this.commands.drawingInProgress = true;
     this.estClicSimple = true;
     this.ligne.points.push({x: this.ligne.mousePosition.x, y: this.ligne.mousePosition.y});
     window.setTimeout(() => {
@@ -44,7 +44,7 @@ export class DessinLigneService implements InterfaceOutils {
   }
 
   sourisDoubleClic(souris: MouseEvent) {
-    this.commandes.dessinEnCours = false;
+    this.commands.drawingInProgress = false;
     this.estClicSimple = false;
     if (this.ligne.points.length !== 0) {
       if (Math.abs(souris.offsetX - this.ligne.points[0].x) <= 3
@@ -57,7 +57,7 @@ export class DessinLigneService implements InterfaceOutils {
       }
       this.ligne.draw();
       if (!this.ligne.isEmpty()) {
-        this.commandes.execute(new AddSVGService(this.ligne, this.SVGStockage));
+        this.commands.execute(new AddSVGService(this.ligne, this.SVGStockage));
       }
       this.ligne = new LineService();
     }
@@ -75,7 +75,7 @@ export class DessinLigneService implements InterfaceOutils {
   }
 
   shiftEnfonce() {
-    if (this.commandes.dessinEnCours) {
+    if (this.commands.drawingInProgress) {
       const dernierPoint = this.ligne.points[this.ligne.points.length - 1];
       const angle = Math.atan((this.curseur.y - dernierPoint.y) / (this.curseur.x - dernierPoint.x));
       const alignement = Math.abs(Math.round(angle / (Math.PI / 4)));

@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
-import { Commande } from './commande';
+import { Command } from './command';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ChangeBackgroundColorService implements Commande {
+export class ChangeBackgroundColorService implements Command {
   oldColor: string;
 
-  constructor(public color: ParametresCouleurService, public newColor: string) {
+  constructor(public color: ParametresCouleurService,
+              public newColor: string) {
     this.oldColor = color.couleurFond;
     color.couleurFond = newColor;
   }

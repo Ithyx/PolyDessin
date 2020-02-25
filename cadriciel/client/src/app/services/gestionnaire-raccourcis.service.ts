@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { GestionnaireCommandesService } from './commande/gestionnaire-commandes.service';
+import { CommandManagerService } from './command/command-manager.service';
 import { GridService } from './grid/grid.service';
 import { DessinLigneService } from './outils/dessin-ligne.service';
 import { DessinRectangleService } from './outils/dessin-rectangle.service';
@@ -21,7 +21,7 @@ export class GestionnaireRaccourcisService {
   constructor(public outils: GestionnaireOutilsService,
               public dessinRectangle: DessinRectangleService,
               public dessinLigne: DessinLigneService,
-              public commandes: GestionnaireCommandesService,
+              public commands: CommandManagerService,
               public selection: SelectionService,
               public SVGStockage: SVGStockageService,
               public grid: GridService) { }
@@ -72,14 +72,14 @@ export class GestionnaireRaccourcisService {
         this.viderSVGEnCours();
 
       case 'z':
-        if (clavier.ctrlKey && !this.commandes.dessinEnCours) {
-          this.commandes.annulerCommande();
+        if (clavier.ctrlKey && !this.commands.drawingInProgress) {
+          this.commands.cancelCommand();
         }
         break;
 
       case 'Z':
-        if (clavier.ctrlKey && !this.commandes.dessinEnCours) {
-          this.commandes.refaireCommande();
+        if (clavier.ctrlKey && !this.commands.drawingInProgress) {
+          this.commands.redoCommand();
         }
         break;
 

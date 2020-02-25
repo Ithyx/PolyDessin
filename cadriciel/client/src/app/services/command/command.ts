@@ -1,6 +1,6 @@
 import { DrawElement } from '../stockage-svg/draw-element';
 
-export interface Commande {
+export interface Command {
     SVGKey?: number;  // id du SVG concerné
     element?: DrawElement; // élément concerné
     undo(): void;

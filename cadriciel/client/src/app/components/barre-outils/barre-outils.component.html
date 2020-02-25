@@ -53,13 +53,13 @@
         </div>
         <br />
         <div class="annuler-refaire">
-            <a *ngIf="commandes.commandesEffectuees.length > 0; else annulerNonDisponible"
-                    mat-stroked-button (click)="commandes.annulerCommande()">Annuler</a>
+            <a *ngIf="commands.executedCommands.length > 0; else annulerNonDisponible"
+                    mat-stroked-button (click)="commands.cancelCommand()">Annuler</a>
             <ng-template #annulerNonDisponible>
                 <a mat-stroked-button class="nonDisponible">Annuler</a>
             </ng-template>
-            <a *ngIf="commandes.commandesAnnulees.length > 0; else refaireNonDisponible"
-                mat-stroked-button (click)="commandes.refaireCommande()">Refaire</a>
+            <a *ngIf="commands.cancelledCommands.length > 0; else refaireNonDisponible"
+                mat-stroked-button (click)="commands.redoCommand()">Refaire</a>
             <ng-template #refaireNonDisponible>
                 <a mat-stroked-button class="nonDisponible">Refaire</a>
             </ng-template>

@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
+import { CommandManagerService } from './command-manager.service';
 
-import { GestionnaireCommandesService } from './gestionnaire-commandes.service';
 
 describe('GestionnaireCommandesService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: GestionnaireCommandesService = TestBed.get(GestionnaireCommandesService);
+    const service: CommandManagerService = TestBed.get(CommandManagerService);
     expect(service).toBeTruthy();
   });
 });

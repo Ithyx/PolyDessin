@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AddSVGService } from '../commande/add-svg.service';
-import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
+import { AddSVGService } from '../command/add-svg.service';
+import { CommandManagerService } from '../command/command-manager.service';
 import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { TracePencilService } from '../stockage-svg/trace-pencil.service';
@@ -16,31 +16,31 @@ export class DessinCrayonService implements InterfaceOutils {
   constructor(public SVGStockage: SVGStockageService,
               public outils: GestionnaireOutilsService,
               public couleur: ParametresCouleurService,
-              public commandes: GestionnaireCommandesService) { }
+              public commands: CommandManagerService) { }
 
   trait = new TracePencilService();
   peutCliquer = true;
 
   sourisDeplacee(souris: MouseEvent) {
-    if (this.commandes.dessinEnCours) {
+    if (this.commands.drawingInProgress) {
       this.trait.points.push({x: souris.offsetX, y: souris.offsetY});
       this.actualiserSVG();
     }
   }
 
   sourisEnfoncee() {
-    this.commandes.dessinEnCours = true;
+    this.commands.drawingInProgress = true;
     this.actualiserSVG();
   }
 
   sourisRelachee() {
-    if (this.commandes.dessinEnCours) {
+    if (this.commands.drawingInProgress) {
       if (this.trait.SVG.includes('L')) {
         // on ne stocke le path que s'il n'y a au moins une ligne
-        this.commandes.execute(new AddSVGService(this.trait, this.SVGStockage));
+        this.commands.execute(new AddSVGService(this.trait, this.SVGStockage));
       }
       this.trait = new TracePencilService();
-      this.commandes.dessinEnCours = false;
+      this.commands.drawingInProgress = false;
       this.peutCliquer = true;
     }
   }
@@ -51,18 +51,18 @@ export class DessinCrayonService implements InterfaceOutils {
         this.trait.points.push({x: souris.offsetX, y: souris.offsetY});
         this.trait.isAPoint = true;
         this.actualiserSVG();
-        this.commandes.execute(new AddSVGService(this.trait, this.SVGStockage));
+        this.commands.execute(new AddSVGService(this.trait, this.SVGStockage));
         this.trait = new TracePencilService();
       }
-      this.commandes.dessinEnCours = false;
+      this.commands.drawingInProgress = false;
     } else {this.peutCliquer = true};
   }
 
   sourisSortie() {
-    if (this.commandes.dessinEnCours) {
-      this.commandes.execute(new AddSVGService(this.trait, this.SVGStockage));
+    if (this.commands.drawingInProgress) {
+      this.commands.execute(new AddSVGService(this.trait, this.SVGStockage));
       this.trait = new TracePencilService();
-      this.commandes.dessinEnCours = false;
+      this.commands.drawingInProgress = false;
     }
     this.peutCliquer = false;
   }

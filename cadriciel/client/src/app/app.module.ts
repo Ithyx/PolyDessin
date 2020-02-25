@@ -24,7 +24,7 @@ import { PageGuideComponent } from './components/page-guide/page-guide.component
 import { SurfaceDessinComponent } from './components/surface-dessin/surface-dessin.component';
 
 // Service
-import { GestionnaireCommandesService } from './services/commande/gestionnaire-commandes.service';
+import { CommandManagerService } from './services/command/command-manager.service';
 import { ParametresCouleurService } from './services/couleur/parametres-couleur.service';
 import { GestionnaireDessinService } from './services/gestionnaire-dessin/gestionnaire-dessin.service';
 import { GestionnaireRaccourcisService } from './services/gestionnaire-raccourcis.service';
@@ -50,7 +50,7 @@ import { SVGStockageService } from './services/stockage-svg/svg-stockage.service
     providers: [NavigationGuideService, SVGStockageService, DessinCrayonService, GestionnaireDessinService,
                 GestionnaireRaccourcisService, DessinRectangleService, DessinLigneService,
                 GestionnaireRoutingService, ParametresCouleurService, MatDialogConfig, SelectionService,
-                GestionnaireCommandesService, GridService],
+                CommandManagerService, GridService],
     entryComponents: [FenetreNouveauDessinComponent, AvertissementNouveauDessinComponent,
                       ChoixCouleurComponent, GridOptionsComponent],
     bootstrap: [AppComponent],

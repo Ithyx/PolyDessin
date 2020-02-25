@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ChangeBackgroundColorService } from '../commande/change-background-color.service';
-import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
+import { ChangeBackgroundColorService } from '../command/change-background-color.service';
+import { CommandManagerService } from '../command/command-manager.service';
 import { ParametresCouleurService } from './parametres-couleur.service'
 
 export enum Portee {
@@ -21,7 +21,7 @@ export class GestionnaireCouleursService {
   RGB: number[] = [0, 0, 0];
 
   constructor(public parametresCouleur: ParametresCouleurService,
-              public commandes: GestionnaireCommandesService) {}
+              public commandes: CommandManagerService) {}
 
   getCouleur() {
     return this.couleur + '1)';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AddSVGService } from '../commande/add-svg.service';
-import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
+import { AddSVGService } from '../command/add-svg.service';
+import { CommandManagerService } from '../command/command-manager.service';
 import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { TraceSprayService } from '../stockage-svg/trace-spray.service';
@@ -16,14 +16,14 @@ export class DrawSprayService implements InterfaceOutils {
   constructor(public stockageSVG: SVGStockageService,
               public tools: GestionnaireOutilsService,
               public color: ParametresCouleurService,
-              public commands: GestionnaireCommandesService) { }
+              public commands: CommandManagerService) { }
 
   trace = new TraceSprayService();
   mousePosition: Point = {x: 0, y: 0};
   intervalMethodID: number;
 
   sourisDeplacee(souris: MouseEvent) {
-    if (this.commands.dessinEnCours) {
+    if (this.commands.drawingInProgress) {
       this.mousePosition = {x: souris.offsetX, y: souris.offsetY};
     }
   }
@@ -38,7 +38,7 @@ export class DrawSprayService implements InterfaceOutils {
 
   sourisEnfoncee(souris: MouseEvent) {
     const frequence = this.tools.outilActif.parametres[1].valeur;
-    this.commands.dessinEnCours = true;
+    this.commands.drawingInProgress = true;
     this.mousePosition = {x: souris.offsetX, y: souris.offsetY};
     window.clearInterval(this.intervalMethodID);
     this.intervalMethodID = window.setInterval(() => {
@@ -58,13 +58,13 @@ export class DrawSprayService implements InterfaceOutils {
   }
 
   sourisRelachee() {
-    if (this.commands.dessinEnCours) {
+    if (this.commands.drawingInProgress) {
       if (this.trace.points.length > 0) {
         this.commands.execute(new AddSVGService(this.trace, this.stockageSVG));
       }
     }
     this.trace = new TraceSprayService();
-    this.commands.dessinEnCours = false;
+    this.commands.drawingInProgress = false;
     window.clearInterval(this.intervalMethodID);
   }
 }

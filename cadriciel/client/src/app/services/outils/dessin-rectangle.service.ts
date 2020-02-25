@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AddSVGService } from '../commande/add-svg.service';
-import { GestionnaireCommandesService } from '../commande/gestionnaire-commandes.service';
+import { AddSVGService } from '../command/add-svg.service';
+import { CommandManagerService } from '../command/command-manager.service';
 import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
 import { RectangleService } from '../stockage-svg/rectangle.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
@@ -24,7 +24,7 @@ export class DessinRectangleService implements InterfaceOutils {
   constructor(public stockageSVG: SVGStockageService,
               public outils: GestionnaireOutilsService,
               public couleur: ParametresCouleurService,
-              public commandes: GestionnaireCommandesService) { }
+              public commands: CommandManagerService) { }
 
   actualiserSVG() {
     this.rectangle.tool = this.outils.outilActif;
@@ -35,7 +35,7 @@ export class DessinRectangleService implements InterfaceOutils {
   }
 
   sourisDeplacee(souris: MouseEvent) {
-    if (this.commandes.dessinEnCours) {
+    if (this.commands.drawingInProgress) {
       // Calcule des valeurs pour former un rectangle
       this.largeurCalculee = Math.abs(this.initial.x - souris.offsetX);
       this.hauteurCalculee = Math.abs(this.initial.y - souris.offsetY);
@@ -51,17 +51,17 @@ export class DessinRectangleService implements InterfaceOutils {
   }
 
   sourisEnfoncee(souris: MouseEvent) {
-    if (!this.commandes.dessinEnCours) {
-      this.commandes.dessinEnCours = true;
+    if (!this.commands.drawingInProgress) {
+      this.commands.drawingInProgress = true;
       this.initial = {x: souris.offsetX, y: souris.offsetY};
     }
   }
 
   sourisRelachee() {
-    this.commandes.dessinEnCours = false;
+    this.commands.drawingInProgress = false;
     // On évite de créer des formes vides
     if (this.rectangle.getWidth() !== 0 || this.rectangle.getHeight() !== 0) {
-      this.commandes.execute(new AddSVGService(this.rectangle, this.stockageSVG));
+      this.commands.execute(new AddSVGService(this.rectangle, this.stockageSVG));
     }
     this.baseCalculee = {x: 0, y: 0};
     this.hauteurCalculee = 0;
@@ -70,7 +70,7 @@ export class DessinRectangleService implements InterfaceOutils {
   }
 
   shiftEnfonce() {
-    if (this.commandes.dessinEnCours) {
+    if (this.commands.drawingInProgress) {
       // Lorsque la touche 'shift' est enfoncée, la forme à dessiner est un carré
       if (this.largeurCalculee < this.hauteurCalculee) {
         this.rectangle.points[0].y = (this.baseCalculee.y === this.initial.y) ?
@@ -89,7 +89,7 @@ export class DessinRectangleService implements InterfaceOutils {
   }
 
   shiftRelache() {
-    if (this.commandes.dessinEnCours) {
+    if (this.commands.drawingInProgress) {
       // Lorsque la touche 'shift' est relâchée, la forme à dessiner est un rectangle
       this.rectangle.points[0] = this.baseCalculee;
       this.rectangle.points[1] = {x: this.baseCalculee.x + this.largeurCalculee, y: this.baseCalculee.y + this.hauteurCalculee};
@@ -98,7 +98,7 @@ export class DessinRectangleService implements InterfaceOutils {
   }
 
   vider() {
-    this.commandes.dessinEnCours = false;
+    this.commands.drawingInProgress = false;
     this.rectangle = new RectangleService();
   }
 }

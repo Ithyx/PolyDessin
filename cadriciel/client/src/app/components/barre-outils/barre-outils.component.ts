@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig} from '@angular/material';
 import { Subscription } from 'rxjs';
-import { GestionnaireCommandesService } from 'src/app/services/commande/gestionnaire-commandes.service';
+import { CommandManagerService } from 'src/app/services/command/command-manager.service';
 import { Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
@@ -28,7 +28,7 @@ export class BarreOutilsComponent implements OnDestroy {
               public outils: GestionnaireOutilsService,
               public raccourcis: GestionnaireRaccourcisService,
               public couleur: ParametresCouleurService,
-              public commandes: GestionnaireCommandesService,
+              public commands: CommandManagerService,
               public selection: SelectionService
              ) {
     this.nouveauDessinSubscription = raccourcis.emitterNouveauDessin.subscribe((estIgnoree: boolean) => {
