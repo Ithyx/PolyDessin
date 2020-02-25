@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { GestionnaireCommandesService } from './commande/gestionnaire-commandes.service';
+import { GridService } from './grid/grid.service';
 import { DessinLigneService } from './outils/dessin-ligne.service';
 import { DessinRectangleService } from './outils/dessin-rectangle.service';
 import { GestionnaireOutilsService, INDEX_OUTIL_CRAYON,
@@ -22,7 +23,8 @@ export class GestionnaireRaccourcisService {
               public dessinLigne: DessinLigneService,
               public commandes: GestionnaireCommandesService,
               public selection: SelectionService,
-              public stockageSVG: StockageSvgService) { }
+              public stockageSVG: StockageSvgService,
+              public grid: GridService) { }
 
   viderSVGEnCours() {
     this.dessinRectangle.vider();
@@ -107,6 +109,18 @@ export class GestionnaireRaccourcisService {
         if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
           this.dessinLigne.vider();
         }
+        break;
+
+      case 'g':
+        this.grid.showGrid = !this.grid.showGrid;
+        break;
+
+      case '+':
+        this.grid.increaseSize();
+        break;
+
+      case '-':
+        this.grid.decreaseSize();
         break;
 
       default:

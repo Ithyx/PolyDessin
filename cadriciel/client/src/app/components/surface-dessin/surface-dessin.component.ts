@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service'
 import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/gestionnaire-dessin.service';
 import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routing.service';
+import { GridService } from 'src/app/services/grid/grid.service';
 import { GestionnaireOutilsService, INDEX_OUTIL_SELECTION } from 'src/app/services/outils/gestionnaire-outils.service';
 import { SelectionService } from 'src/app/services/outils/selection/selection.service';
 import { ElementDessin } from 'src/app/services/stockage-svg/element-dessin';
@@ -20,7 +21,8 @@ export class SurfaceDessinComponent {
               public navigation: GestionnaireRoutingService,
               public routing: Router,
               public parametresCouleur: ParametresCouleurService,
-              public selection: SelectionService) {
+              public selection: SelectionService,
+              public grid: GridService) {
     if (parametresCouleur.couleurFond === undefined) {
       routing.navigate([navigation.pagePrecedente]);
     }

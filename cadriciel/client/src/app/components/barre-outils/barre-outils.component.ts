@@ -9,6 +9,7 @@ import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/
 import { SelectionService } from 'src/app/services/outils/selection/selection.service';
 import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
 import { ChoixCouleurComponent } from '../choix-couleur/choix-couleur.component';
+import { GridOptionsComponent } from '../grid-options/grid-options.component';
 
 @Component({
   selector: 'app-barre-outils',
@@ -96,6 +97,15 @@ export class BarreOutilsComponent implements OnDestroy {
     if (porteeEntree === 'fond') {
       this.fenetreDessin.portee = Portee.Fond;
     }
+  }
+
+  openGridWindow() {
+    this.desactiverRaccourcis();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '50%';
+    this.dialog.open(GridOptionsComponent, dialogConfig);
   }
 
   selectionDerniereCouleurPrimaire(couleurChoisie: string) {
