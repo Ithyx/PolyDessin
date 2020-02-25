@@ -26,8 +26,7 @@ export class DessinLigneService implements InterfaceOutils {
               public commandes: GestionnaireCommandesService) { }
 
   sourisDeplacee(souris: MouseEvent) {
-    this.curseur.x = souris.offsetX;
-    this.curseur.y = souris.offsetY;
+    this.curseur = {x: souris.offsetX, y: souris.offsetY};
     if (souris.shiftKey) {
       this.shiftEnfonce();
     } else {
@@ -53,10 +52,8 @@ export class DessinLigneService implements InterfaceOutils {
         this.ligne.points.pop();
         this.ligne.points.pop();
         this.ligne.estPolygone = true;
-      } else {
-        if (this.outils.outilActif.parametres[1].optionChoisie === 'Avec points') {
-          this.ligne.points.push({x: this.ligne.positionSouris.x, y: this.ligne.positionSouris.y});
-        }
+      } else if (this.outils.outilActif.parametres[1].optionChoisie === 'Avec points') {
+        this.ligne.points.push({x: this.ligne.positionSouris.x, y: this.ligne.positionSouris.y});
       }
       this.ligne.dessiner();
       if (!this.ligne.estVide()) {
@@ -73,10 +70,6 @@ export class DessinLigneService implements InterfaceOutils {
     }
   }
 
-  annulerLigne() {
-    this.ligne = new LigneService();
-  }
-
   stockerCurseur() {
     this.positionShiftEnfoncee = {x: this.curseur.x, y: this.curseur.y};
   }
@@ -91,8 +84,7 @@ export class DessinLigneService implements InterfaceOutils {
       // alignement = 1 lorsque angle = 45,135,225,315°
       // alignement = 2 lorsque angle = 90,270°
       if (alignement === 0) {
-        this.ligne.positionSouris.x = this.curseur.x;
-        this.ligne.positionSouris.y = dernierPoint.y;
+        this.ligne.positionSouris = {x: this.curseur.x, y: dernierPoint.y};
       } else if (alignement === 1) {
         if (Math.sign(this.curseur.x - dernierPoint.x) === Math.sign(this.curseur.y - dernierPoint.y)) {
           this.ligne.positionSouris.y = this.curseur.x - dernierPoint.x + dernierPoint.y;
@@ -101,17 +93,14 @@ export class DessinLigneService implements InterfaceOutils {
         }
         this.ligne.positionSouris.x = this.curseur.x;
       } else {
-        this.ligne.positionSouris.x = dernierPoint.x;
-        this.ligne.positionSouris.y = this.curseur.y;
+        this.ligne.positionSouris = {x: dernierPoint.x, y: this.curseur.y};
       }
-
       this.actualiserSVG();
     }
   }
 
   shiftRelache() {
-    this.ligne.positionSouris.x = this.curseur.x;
-    this.ligne.positionSouris.y = this.curseur.y;
+    this.ligne.positionSouris = this.curseur;
     this.actualiserSVG();
   }
 
@@ -124,7 +113,6 @@ export class DessinLigneService implements InterfaceOutils {
   vider() {
     this.ligne = new LigneService();
     this.positionShiftEnfoncee = {x: 0, y: 0};
-    this.curseur.x = 0;
-    this.curseur.y = 0;
+    this.curseur = {x: 0, y: 0};
   }
 }
