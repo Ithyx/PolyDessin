@@ -13,10 +13,10 @@ import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 @Injectable({
   providedIn: 'root'
 })
-export class GestionnaireRaccourcisService {
-  champDeTexteEstFocus = false;
+export class ShortcutsManagerService {
+  focusOnInput = false;
 
-  emitterNouveauDessin: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  newDrawingEmmiter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   constructor(public tools: ToolManagerService,
               public rectangleTool: RectangleToolService,
@@ -32,7 +32,7 @@ export class GestionnaireRaccourcisService {
   }
 
   treatInput(keybord: KeyboardEvent) {
-    if (this.champDeTexteEstFocus) { return; };
+    if (this.focusOnInput) { return; };
     switch (keybord.key) {
       case '1':
         this.selection.deleteBoundingBox();
@@ -41,12 +41,12 @@ export class GestionnaireRaccourcisService {
         break;
 
       case 'a':
-        keybord.preventDefault();
         this.selection.deleteBoundingBox();
 
         if (keybord.ctrlKey) {
+          keybord.preventDefault();
           this.tools.changeActiveTool(SELECTION_TOOL_INDEX);
-          this.selection.creerBoiteEnglobantePlusieursElementDessins(this.SVGStockage.getCompleteSVG());
+          this.selection.createBoundingBoxAllStockageSVG(this.SVGStockage.getCompleteSVG());
         } else {this.tools.changeActiveTool(SPRAY_TOOL_INDEX); };
         break;
 
@@ -96,7 +96,8 @@ export class GestionnaireRaccourcisService {
 
       case 'o':
         if (keybord.ctrlKey) {
-          this.emitterNouveauDessin.next(false);
+          this.newDrawingEmmiter.next(false);
+          this.selection.deleteBoundingBox();
           keybord.preventDefault();
         }
         break;

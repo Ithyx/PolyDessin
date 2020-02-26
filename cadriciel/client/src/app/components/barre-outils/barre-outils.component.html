@@ -2,7 +2,7 @@
 
 <!-- Barre d'outils -->
 <div class="sidenav">
-    <div *ngFor='let outil of outils.toolList'>
+    <div *ngFor='let outil of tools.toolList'>
         <app-outil-dessin [outil]="outil" (click)="clic(outil)"></app-outil-dessin>
     </div>
     <div class="options">
@@ -31,7 +31,7 @@
 <div class="panneau-attributs">
     <i class="fas fa-sliders-h"></i> 
     <form method="POST" action="javascript:void(0);">
-        <div *ngFor="let parameter of outils.activeTool.parameters">
+        <div *ngFor="let parameter of tools.activeTool.parameters">
 
             <div *ngIf="parameter.type == 'invisible'"></div>
 

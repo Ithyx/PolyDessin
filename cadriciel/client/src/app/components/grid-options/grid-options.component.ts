@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { GestionnaireRaccourcisService } from 'src/app/services/shortcuts-manager.service';
 import { GridService, MAX_CELL_SIZE, MIN_CELL_SIZE } from 'src/app/services/grid/grid.service';
+import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 
 export const KEY_FORM_SHOW_GRID = 'showGridForm';
@@ -25,11 +25,11 @@ export class GridOptionsComponent {
 
   constructor(public dialog: MatDialog,
               public dialogRef: MatDialogRef<FenetreNouveauDessinComponent>,
-              public raccourcis: GestionnaireRaccourcisService,
+              public shortcuts: ShortcutsManagerService,
               public grid: GridService) { }
 
   closeWindow() {
-    this.raccourcis.champDeTexteEstFocus = false;
+    this.shortcuts.focusOnInput = false;
     this.dialogRef.close();
   }
 

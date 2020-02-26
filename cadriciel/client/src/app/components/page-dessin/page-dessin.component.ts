@@ -7,7 +7,7 @@ import { RectangleToolService } from 'src/app/services/outils/rectangle-tool.ser
 import { SelectionService } from 'src/app/services/outils/selection/selection.service';
 import { ToolInterface } from 'src/app/services/outils/tool-interface';
 import { ToolManagerService } from 'src/app/services/outils/tool-manager.service';
-import { GestionnaireRaccourcisService } from 'src/app/services/shortcuts-manager.service';
+import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 
 @Component({
   selector: 'app-page-dessin',
@@ -24,7 +24,7 @@ export class PageDessinComponent {
               public rectangle: RectangleToolService,
               public pinceau: BrushToolService,
               public ligne: LineToolService,
-              public raccourcis: GestionnaireRaccourcisService,
+              public shortcuts: ShortcutsManagerService,
               public selection: SelectionService,
               public spray: DrawSprayService  ) {
     this.lexiqueOutils.set('Crayon', crayon)
@@ -38,12 +38,12 @@ export class PageDessinComponent {
 
   @HostListener('document:keydown', ['$event'])
   toucheEnfoncee(event: KeyboardEvent) {
-    this.raccourcis.treatInput(event);
+    this.shortcuts.treatInput(event);
   }
 
   @HostListener('document:keyup', ['$event'])
   toucheRelachee(event: KeyboardEvent) {
-    this.raccourcis.treatReleaseKey(event);
+    this.shortcuts.treatReleaseKey(event);
   }
 
   sourisCliquee(souris: MouseEvent) {

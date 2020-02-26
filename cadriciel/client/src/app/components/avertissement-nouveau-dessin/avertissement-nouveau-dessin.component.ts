@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
-import { GestionnaireRaccourcisService } from 'src/app/services/shortcuts-manager.service';
+import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 
 @Component({
@@ -11,12 +11,12 @@ import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre
 export class AvertissementNouveauDessinComponent {
 
   constructor(public dialog: MatDialog,
-              public raccourcis: GestionnaireRaccourcisService,
+              public shortcuts: ShortcutsManagerService,
               public dialogRef: MatDialogRef<FenetreNouveauDessinComponent> ) {
    }
 
   annuler() {
-    this.raccourcis.champDeTexteEstFocus = false;
+    this.shortcuts.focusOnInput = false;
     this.dialogRef.close();
   }
 

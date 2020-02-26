@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ColorManagerService } from 'src/app/services/color/color-manager.service';
-import { GestionnaireRaccourcisService } from 'src/app/services/shortcuts-manager.service';
+import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 
 @Component({
   selector: 'app-valeur-couleur',
@@ -16,7 +16,7 @@ export class ValeurCouleurComponent {
 
   readonly LETTRES_ACCEPTEE = new Set(['a', 'b', 'c', 'd', 'e', 'f']);
 
-  constructor(public raccourcis: GestionnaireRaccourcisService) {}
+  constructor(public shortcuts: ShortcutsManagerService) {}
 
   modificationRGB(evenement: Event, index: number) {
     const eventCast: HTMLInputElement = (evenement.target as HTMLInputElement);
@@ -43,10 +43,10 @@ export class ValeurCouleurComponent {
   }
 
   desactiverRaccourcis() {
-    this.raccourcis.champDeTexteEstFocus = true;
+    this.shortcuts.focusOnInput = true;
   }
 
   activerRaccourcis() {
-    this.raccourcis.champDeTexteEstFocus = false;
+    this.shortcuts.focusOnInput = false;
   }
 }

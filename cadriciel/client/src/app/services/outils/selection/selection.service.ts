@@ -59,7 +59,7 @@ export class SelectionService implements ToolInterface {
     this.selectionRectangle.rectangle = new RectangleService();
   }
 
-  creerBoiteEnglobantePlusieursElementDessins(elements: Map<number, DrawElement>) {
+  createBoundingBoxAllStockageSVG(elements: Map<number, DrawElement>) {
     let pointMin: Point = {x: elements.values().next().value.points[0].x, y: elements.values().next().value.points[0].y};
     let pointMax: Point = {x: elements.values().next().value.points[0].x, y: elements.values().next().value.points[0].y};
 

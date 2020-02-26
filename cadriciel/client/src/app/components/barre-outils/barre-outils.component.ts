@@ -6,7 +6,7 @@ import { ColorParameterService } from 'src/app/services/color/color-parameter.se
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
 import { SelectionService } from 'src/app/services/outils/selection/selection.service';
 import { DrawingTool, ToolManagerService } from 'src/app/services/outils/tool-manager.service';
-import { GestionnaireRaccourcisService } from 'src/app/services/shortcuts-manager.service';
+import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
 import { ChoixCouleurComponent } from '../choix-couleur/choix-couleur.component';
 import { GridOptionsComponent } from '../grid-options/grid-options.component';
@@ -25,48 +25,48 @@ export class BarreOutilsComponent implements OnDestroy {
   private nouveauDessinSubscription: Subscription;
 
   constructor(public dialog: MatDialog,
-              public outils: ToolManagerService,
-              public raccourcis: GestionnaireRaccourcisService,
+              public tools: ToolManagerService,
+              public shortcuts: ShortcutsManagerService,
               public colorParameter: ColorParameterService,
               public commands: CommandManagerService,
               public selection: SelectionService
              ) {
-    this.nouveauDessinSubscription = raccourcis.emitterNouveauDessin.subscribe((estIgnoree: boolean) => {
+    this.nouveauDessinSubscription = shortcuts.newDrawingEmmiter.subscribe((estIgnoree: boolean) => {
      if (!estIgnoree) { this.avertissementNouveauDessin(); };
     });
   }
 
   ngOnDestroy() {
     this.nouveauDessinSubscription.unsubscribe();
-    this.raccourcis.emitterNouveauDessin.next(true);
+    this.shortcuts.newDrawingEmmiter.next(true);
   }
 
   clic(outil: DrawingTool) {
-    if (this.outils.activeTool.name === 'Selection' && this.selection.selectionBox) {
+    if (this.tools.activeTool.name === 'Selection' && this.selection.selectionBox) {
       this.selection.deleteBoundingBox();
   }
-    this.outils.activeTool.isActive = false;
-    this.outils.activeTool = outil;
-    this.outils.activeTool.isActive = true;
-    this.raccourcis.clearOngoingSVG();
+    this.tools.activeTool.isActive = false;
+    this.tools.activeTool = outil;
+    this.tools.activeTool.isActive = true;
+    this.shortcuts.clearOngoingSVG();
   }
 
   onChange(event: Event, nomParametre: string) {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
-    this.outils.activeTool.parameters[this.outils.findParameterIndex(nomParametre)].value = Math.max(Number(eventCast.value), 1);
+    this.tools.activeTool.parameters[this.tools.findParameterIndex(nomParametre)].value = Math.max(Number(eventCast.value), 1);
   }
 
   choixSelectionne(event: Event, nomParametre: string) {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
-    this.outils.activeTool.parameters[this.outils.findParameterIndex(nomParametre)].choosenOption = eventCast.value;
+    this.tools.activeTool.parameters[this.tools.findParameterIndex(nomParametre)].choosenOption = eventCast.value;
   }
 
   desactiverRaccourcis() {
-    this.raccourcis.champDeTexteEstFocus = true;
+    this.shortcuts.focusOnInput = true;
   }
 
   activerRaccourcis() {
-    this.raccourcis.champDeTexteEstFocus = false;
+    this.shortcuts.focusOnInput = false;
   }
 
   avertissementNouveauDessin() {
