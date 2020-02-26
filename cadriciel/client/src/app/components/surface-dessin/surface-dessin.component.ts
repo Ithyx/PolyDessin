@@ -4,7 +4,7 @@ import { ColorParameterService } from 'src/app/services/couleur/color-parameter.
 import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/gestionnaire-dessin.service';
 import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routing.service';
 import { GridService } from 'src/app/services/grid/grid.service';
-import { GestionnaireOutilsService, INDEX_OUTIL_SELECTION } from 'src/app/services/outils/gestionnaire-outils.service';
+import { ToolManagerService, SELECTION_TOOL_INDEX } from 'src/app/services/outils/tool-manager.service';
 import { SelectionService } from 'src/app/services/outils/selection/selection.service';
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
@@ -16,7 +16,7 @@ import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.s
 })
 export class SurfaceDessinComponent {
   constructor(public SVGStockage: SVGStockageService,
-              public outils: GestionnaireOutilsService,
+              public outils: ToolManagerService,
               public gestionnaireDessin: GestionnaireDessinService,
               public navigation: GestionnaireRoutingService,
               public routing: Router,
@@ -29,7 +29,7 @@ export class SurfaceDessinComponent {
   }
 
   traiterClicSurVide() {
-    if (this.outils.outilActif.ID === INDEX_OUTIL_SELECTION) {
+    if (this.outils.activeTool.ID === SELECTION_TOOL_INDEX) {
       if (!this.selection.selectionRectangle.rectangle) {
         console.log('clic sur vide');
         this.selection.deleteBoundingBox();
@@ -39,7 +39,7 @@ export class SurfaceDessinComponent {
 
   traiterClicElementDessin(element: DrawElement) {
     // TODO : Vérification de l'outil (Selection, Pipette, Applicateur de Couleur)
-    if (this.outils.outilActif.ID === INDEX_OUTIL_SELECTION) {
+    if (this.outils.activeTool.ID === SELECTION_TOOL_INDEX) {
       this.selection.traiterClic(element);
     }
   }

@@ -1,12 +1,12 @@
 import { Component, HostListener } from '@angular/core';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
-import { DessinCrayonService } from 'src/app/services/outils/dessin-crayon.service';
-import { DessinLigneService } from 'src/app/services/outils/dessin-ligne.service';
-import { DessinPinceauService } from 'src/app/services/outils/dessin-pinceau.service';
-import { DessinRectangleService } from 'src/app/services/outils/dessin-rectangle.service'
+import { DrawingToolService } from 'src/app/services/outils/pencil-tool.service';
+import { LineToolService } from 'src/app/services/outils/line-tool.service';
+import { BrushToolService } from 'src/app/services/outils/brush-tool.service';
+import { RectangleToolService } from 'src/app/services/outils/rectangle-tool.service'
 import { DrawSprayService } from 'src/app/services/outils/draw-spray.service';
-import { GestionnaireOutilsService } from 'src/app/services/outils/gestionnaire-outils.service';
-import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
+import { ToolManagerService } from 'src/app/services/outils/tool-manager.service';
+import { ToolInterface } from 'src/app/services/outils/tool-interface';
 import { SelectionService } from 'src/app/services/outils/selection/selection.service';
 
 @Component({
@@ -16,14 +16,14 @@ import { SelectionService } from 'src/app/services/outils/selection/selection.se
 })
 export class PageDessinComponent {
 
-  lexiqueOutils: Map<string, InterfaceOutils> = new Map<string, InterfaceOutils>();
+  lexiqueOutils: Map<string, ToolInterface> = new Map<string, ToolInterface>();
 
   constructor(
-              public outils: GestionnaireOutilsService,
-              public crayon: DessinCrayonService,
-              public rectangle: DessinRectangleService,
-              public pinceau: DessinPinceauService,
-              public ligne: DessinLigneService,
+              public outils: ToolManagerService,
+              public crayon: DrawingToolService,
+              public rectangle: RectangleToolService,
+              public pinceau: BrushToolService,
+              public ligne: LineToolService,
               public raccourcis: GestionnaireRaccourcisService,
               public selection: SelectionService,
               public spray: DrawSprayService  ) {
@@ -47,51 +47,51 @@ export class PageDessinComponent {
   }
 
   sourisCliquee(souris: MouseEvent) {
-    const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
-    if (outil && outil.sourisCliquee) {
-      outil.sourisCliquee(souris);
+    const outil = this.lexiqueOutils.get(this.outils.activeTool.name);
+    if (outil && outil.onMouseClick) {
+      outil.onMouseClick(souris);
     }
   }
 
   sourisDeplacee(souris: MouseEvent) {
-    const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
-    if (outil && outil.sourisDeplacee) {
-      outil.sourisDeplacee(souris);
+    const outil = this.lexiqueOutils.get(this.outils.activeTool.name);
+    if (outil && outil.onMouseMove) {
+      outil.onMouseMove(souris);
     }
   }
 
   sourisEnfoncee(souris: MouseEvent) {
-    const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
-    if (outil && outil.sourisEnfoncee) {
-      outil.sourisEnfoncee(souris);
+    const outil = this.lexiqueOutils.get(this.outils.activeTool.name);
+    if (outil && outil.onMousePress) {
+      outil.onMousePress(souris);
     }
   }
 
   sourisRelachee(souris: MouseEvent) {
-    const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
-    if (outil && outil.sourisRelachee) {
-      outil.sourisRelachee(souris);
+    const outil = this.lexiqueOutils.get(this.outils.activeTool.name);
+    if (outil && outil.onMouseRelease) {
+      outil.onMouseRelease(souris);
     }
   }
 
   sourisSortie(souris: MouseEvent) {
-    const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
-    if (outil && outil.sourisSortie) {
-      outil.sourisSortie(souris);
+    const outil = this.lexiqueOutils.get(this.outils.activeTool.name);
+    if (outil && outil.onMouseLeave) {
+      outil.onMouseLeave(souris);
     }
   }
 
   sourisEntree(souris: MouseEvent) {
-    const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
-    if (outil && outil.sourisEntree) {
-      outil.sourisEntree(souris);
+    const outil = this.lexiqueOutils.get(this.outils.activeTool.name);
+    if (outil && outil.onMouseEnter) {
+      outil.onMouseEnter(souris);
     }
   }
 
   sourisDoubleClic(souris: MouseEvent) {
-    const outil = this.lexiqueOutils.get(this.outils.outilActif.nom);
-    if (outil && outil.sourisDoubleClic) {
-      outil.sourisDoubleClic(souris);
+    const outil = this.lexiqueOutils.get(this.outils.activeTool.name);
+    if (outil && outil.onDoubleClick) {
+      outil.onDoubleClick(souris);
     }
   }
 

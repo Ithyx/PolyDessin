@@ -46,9 +46,9 @@ describe('GlissiereCouleurComponent', () => {
   // Test sourisRelache
 
   it('#sourisRelache devrait mettre a jour la variable sourisbas a faux', () => {
-    component.sourisRelachee(new MouseEvent('mousedown'));
+    component.onMouseRelease(new MouseEvent('mousedown'));
     spyOn(component, 'dessin');
-    component.sourisDeplacee(new MouseEvent('mousemove'));
+    component.onMouseMove(new MouseEvent('mousemove'));
     expect(component.dessin).not.toHaveBeenCalled();
   });
 
@@ -56,14 +56,14 @@ describe('GlissiereCouleurComponent', () => {
 
   it('#sourisEnfoncee devrait mettre a jour la variable souris bas a vrai', () => {
 
-    component.sourisEnfoncee(new MouseEvent ('mousedown'));
+    component.onMousePress(new MouseEvent ('mousedown'));
     spyOn(component, 'dessin');
-    component.sourisDeplacee(new MouseEvent ('mousemove'));
+    component.onMouseMove(new MouseEvent ('mousemove'));
     expect(component.dessin).toHaveBeenCalled();
   });
 
   it('#sourisEnfoncee devrait changer la hauteur choisie', () => {
-    component.sourisEnfoncee(new MouseEvent('mousedown', {clientY: 35}));
+    component.onMousePress(new MouseEvent('mousedown', {clientY: 35}));
     expect(component.hauteurChoisi).toBe(35);
   });
 
@@ -75,14 +75,14 @@ describe('GlissiereCouleurComponent', () => {
 
   it('#sourisEnfoncee devrait appeler couleurPosition sur les coordonnées donner', () => {
     spyOn(component, 'couleurPosition');
-    component.sourisEnfoncee(new MouseEvent('mousedown', {clientX: 15, clientY: 15}));
+    component.onMousePress(new MouseEvent('mousedown', {clientX: 15, clientY: 15}));
     expect(component.couleurPosition).toHaveBeenCalledWith(15, 15);
   });
 
   // Test sourisDeplacee
 
   it('#sourisDeplacee devrait changer la hauteur choisie', () => {
-    component.sourisEnfoncee(new MouseEvent('mousedown', {clientY: 35}));
+    component.onMousePress(new MouseEvent('mousedown', {clientY: 35}));
     expect(component.hauteurChoisi).toBe(35);
   });
 
@@ -94,7 +94,7 @@ describe('GlissiereCouleurComponent', () => {
 
   it('#sourisDeplacee devrait appeler couleurPosition sur les coordonnées donner', () => {
     spyOn(component, 'couleurPosition');
-    component.sourisEnfoncee(new MouseEvent('mousedown', {clientX: 15, clientY: 15}));
+    component.onMousePress(new MouseEvent('mousedown', {clientX: 15, clientY: 15}));
     expect(component.couleurPosition).toHaveBeenCalledWith(15, 15);
   });
 

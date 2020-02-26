@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
-import { Point } from '../dessin-ligne.service';
-import { OutilDessin } from '../gestionnaire-outils.service';
+import { Point } from '../line-tool.service';
+import { DrawingTool } from '../tool-manager.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,14 +18,14 @@ export class SelectionRectangleService {
   weightCalculated = 0;
   heightCalculated = 0;
 
-  rectangleSelectionTool: OutilDessin = {nom: '',
-                                         estActif: true,
+  rectangleSelectionTool: DrawingTool = {name: '',
+                                         isActive: true,
                                          ID: -1,
-                                         parametres: [
-                                          {type: 'invisible', nom: 'Épaisseur du contour', valeur: 5},
-                                          {type: 'invisible', nom: 'Type de tracé', optionChoisie: 'Plein avec contour'}
+                                         parameters: [
+                                          {type: 'invisible', name: 'Épaisseur du contour', value: 5},
+                                          {type: 'invisible', name: 'Type de tracé', choosenOption: 'Plein avec contour'}
                                          ],
-                                         nomIcone: ''};
+                                         iconName: ''};
 
   constructor(private sanitizer: DomSanitizer) { }
 

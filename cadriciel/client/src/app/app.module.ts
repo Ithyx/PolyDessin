@@ -31,9 +31,9 @@ import { GestionnaireRaccourcisService } from './services/gestionnaire-raccourci
 import { GestionnaireRoutingService } from './services/gestionnaire-routing.service';
 import { GridService } from './services/grid/grid.service';
 import { NavigationGuideService } from './services/navigation-guide.service';
-import { DessinCrayonService } from './services/outils/dessin-crayon.service';
-import { DessinLigneService } from './services/outils/dessin-ligne.service';
-import { DessinRectangleService } from './services/outils/dessin-rectangle.service';
+import { DrawingToolService } from './services/outils/pencil-tool.service';
+import { LineToolService } from './services/outils/line-tool.service';
+import { RectangleToolService } from './services/outils/rectangle-tool.service';
 import { SelectionService } from './services/outils/selection/selection.service';
 import { SVGStockageService } from './services/stockage-svg/svg-stockage.service';
 
@@ -47,8 +47,8 @@ import { SVGStockageService } from './services/stockage-svg/svg-stockage.service
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ])],
-    providers: [NavigationGuideService, SVGStockageService, DessinCrayonService, GestionnaireDessinService,
-                GestionnaireRaccourcisService, DessinRectangleService, DessinLigneService,
+    providers: [NavigationGuideService, SVGStockageService, DrawingToolService, GestionnaireDessinService,
+                GestionnaireRaccourcisService, RectangleToolService, LineToolService,
                 GestionnaireRoutingService, ColorParameterService, MatDialogConfig, SelectionService,
                 CommandManagerService, GridService],
     entryComponents: [FenetreNouveauDessinComponent, AvertissementNouveauDessinComponent,

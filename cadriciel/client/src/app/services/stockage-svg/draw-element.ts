@@ -1,5 +1,5 @@
 import { SafeHtml } from '@angular/platform-browser';
-import { Point } from '../outils/dessin-ligne.service';
+import { Point } from '../outils/line-tool.service';
 
 export interface DrawElement {
   SVG: string;

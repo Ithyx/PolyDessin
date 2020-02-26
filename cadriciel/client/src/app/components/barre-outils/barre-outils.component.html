@@ -2,7 +2,7 @@
 
 <!-- Barre d'outils -->
 <div class="sidenav">
-    <div *ngFor='let outil of outils.listeOutils'>
+    <div *ngFor='let outil of outils.toolList'>
         <app-outil-dessin [outil]="outil" (click)="clic(outil)"></app-outil-dessin>
     </div>
     <div class="options">
@@ -31,23 +31,23 @@
 <div class="panneau-attributs">
     <i class="fas fa-sliders-h"></i> 
     <form method="POST" action="javascript:void(0);">
-        <div *ngFor="let parametre of outils.outilActif.parametres">
+        <div *ngFor="let parameter of outils.activeTool.parameters">
 
-            <div *ngIf="parametre.type == 'invisible'"></div>
+            <div *ngIf="parameter.type == 'invisible'"></div>
 
             <!-- Le paramètre est un 'select' avec plusieurs options -->
-            <div *ngIf="parametre.type == 'select'">
-                <label [for]="parametre.nom">{{parametre.nom}}</label>
-                <select [name]="parametre.nom" (change)="choixSelectionne($event, parametre.nom)">
-                    <option *ngFor="let option of parametre.options" [value]="option">{{option}}</option>
+            <div *ngIf="parameter.type == 'select'">
+                <label [for]="parameter.name">{{parameter.name}}</label>
+                <select [name]="parameter.name" (change)="choixSelectionne($event, parameter.name)">
+                    <option *ngFor="let option of parameter.options" [value]="option">{{option}}</option>
                 </select>
             </div>
 
             <!-- Le paramètre est un champ à entrer -->
-            <div *ngIf="parametre.type == 'number'">
-                <label [for]="parametre.nom">{{parametre.nom}}</label>
-                <input [type]="parametre.type" [name]="parametre.nom" min="1" max="100" [value]="parametre.valeur"
-                       (change)="onChange($event, parametre.nom)"  (focus)="desactiverRaccourcis()" (blur)="activerRaccourcis()"/>
+            <div *ngIf="parameter.type == 'number'">
+                <label [for]="parameter.name">{{parameter.name}}</label>
+                <input [type]="parameter.type" [name]="parameter.name" min="1" max="100" [value]="parameter.value"
+                       (change)="onChange($event, parameter.name)"  (focus)="desactiverRaccourcis()" (blur)="activerRaccourcis()"/>
             </div>
 
         </div>

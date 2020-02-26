@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { OutilGrilleService } from './outil-grille.service';
+import { GridToolService } from './grid-tool.service';
 
 describe('OutilGrilleService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: OutilGrilleService = TestBed.get(OutilGrilleService);
+    const service: GridToolService = TestBed.get(GridToolService);
     expect(service).toBeTruthy();
   });
 });

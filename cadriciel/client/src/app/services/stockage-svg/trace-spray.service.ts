@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
-import { Point } from '../outils/dessin-ligne.service';
-import { OUTIL_VIDE, OutilDessin } from '../outils/gestionnaire-outils.service';
+import { Point } from '../outils/line-tool.service';
+import { EMPTY_TOOL, DrawingTool } from '../outils/tool-manager.service';
 import { DrawElement } from './draw-element';
 
 @Injectable({
@@ -13,7 +13,7 @@ export class TraceSprayService implements DrawElement {
   SVGHtml: SafeHtml;
   isSelected = false;
 
-  tool: OutilDessin = OUTIL_VIDE;
+  tool: DrawingTool = EMPTY_TOOL;
   points: Point[] = [];
 
   primaryColor: string;

@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GestionnaireOutilsService, INDEX_OUTIL_LIGNE, LISTE_OUTILS} from './gestionnaire-outils.service';
+import { ToolManagerService, LINE_TOOL_INDEX, TOOL_LIST} from './tool-manager.service';
 
 describe('GestionnaireOutilsService', () => {
-  let service: GestionnaireOutilsService;
+  let service: ToolManagerService;
 
   beforeEach(() => TestBed.configureTestingModule({}));
-  beforeEach(() => service = TestBed.get(GestionnaireOutilsService));
+  beforeEach(() => service = TestBed.get(ToolManagerService));
 
   it('should be created', () => {
-    const testService: GestionnaireOutilsService = TestBed.get(GestionnaireOutilsService);
+    const testService: ToolManagerService = TestBed.get(ToolManagerService);
     expect(testService).toBeTruthy();
   });
 
@@ -17,30 +17,30 @@ describe('GestionnaireOutilsService', () => {
 
   it('#trouverIndexParametre devrait retourner 0 si le parametre recherché n\'existe pas', () => {
     // L'outil initial du gestionnaire est le crayon
-    expect(service.trouverIndexParametre('parametreTest')).toBe(0);
+    expect(service.findParameterIndex('parametreTest')).toBe(0);
   });
 
   it('#trouverIndexParametre devrait renvoyer l\'index du parametre recherché', () => {
-    service.outilActif = LISTE_OUTILS[INDEX_OUTIL_LIGNE];
-    expect(service.trouverIndexParametre('Type de jonction')).toBe(1);
+    service.activeTool = TOOL_LIST[LINE_TOOL_INDEX];
+    expect(service.findParameterIndex('Type de jonction')).toBe(1);
   });
 
   // TESTS changerOutilActif
 
   it('#changerOutilActif ne devrait pas changer l\' outil actif si l\'index recherché est invalide', () => {
-    service.changerOutilActif(99);
+    service.changeActiveTool(99);
     // L'outil initial du gestionnaire est le crayon
-    expect(service.outilActif.nom).toBe('Crayon');
+    expect(service.activeTool.name).toBe('Crayon');
   });
 
   it('#changerOutilActif devrait changer d\' outil pour celui de l\'index spécifié', () => {
-    service.changerOutilActif(INDEX_OUTIL_LIGNE);
-    expect(service.outilActif.nom).toBe('Ligne');
+    service.changeActiveTool(LINE_TOOL_INDEX);
+    expect(service.activeTool.name).toBe('Ligne');
   });
 
   it('#changerOutilActif devrait rendre actif le nouvel outil', () => {
-    service.changerOutilActif(INDEX_OUTIL_LIGNE);
-    expect(service.outilActif.estActif).toBe(true);
+    service.changeActiveTool(LINE_TOOL_INDEX);
+    expect(service.activeTool.isActive).toBe(true);
   });
 
 });

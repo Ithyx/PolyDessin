@@ -5,8 +5,8 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { RouterModule } from '@angular/router';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Portee } from 'src/app/services/couleur/color-manager.service';
-import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
+import { Scope } from 'src/app/services/couleur/color-manager.service';
+import { ToolManagerService, DrawingTool } from 'src/app/services/outils/tool-manager.service';
 import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
 import { ChoixCouleurComponent } from '../choix-couleur/choix-couleur.component';
 import { CouleurPaletteComponent } from '../choix-couleur/couleur-palette/couleur-palette.component';
@@ -18,39 +18,39 @@ import { PageGuideComponent } from '../page-guide/page-guide.component';
 import { BarreOutilsComponent } from './barre-outils.component';
 
 /* Service stub pour réduire les dépendances */
-const outilTestActif: OutilDessin = {
-  nom: 'stubActif',
-  estActif: true,
+const outilTestActif: DrawingTool = {
+  name: 'stubActif',
+  isActive: true,
   ID: 0,
-  parametres: [{type: 'number', nom: 'Épaisseur', valeur: 5},
-               {type: 'select', nom: 'Type', options: ['A', 'B'], optionChoisie: 'A'}],
-  nomIcone: ''
+  parameters: [{type: 'number', name: 'Épaisseur', value: 5},
+               {type: 'select', name: 'Type', options: ['A', 'B'], choosenOption: 'A'}],
+  iconName: ''
 };
 
-const outilTestInactif: OutilDessin = {
-  nom: 'stubInactif',
-  estActif: false,
+const outilTestInactif: DrawingTool = {
+  name: 'stubInactif',
+  isActive: false,
   ID: 1,
-  parametres: [],
-  nomIcone: ''
+  parameters: [],
+  iconName: ''
 };
 
-const rectangle: OutilDessin = {
-  nom: 'stubRectangle',
-  estActif: false,
+const rectangle: DrawingTool = {
+  name: 'stubRectangle',
+  isActive: false,
   ID: 2,
-  parametres: [],
-  nomIcone: ''
+  parameters: [],
+  iconName: ''
 };
 
-const GestionnaireOutilServiceStub: Partial<GestionnaireOutilsService> = {
-  listeOutils: [
+const GestionnaireOutilServiceStub: Partial<ToolManagerService> = {
+  toolList: [
     outilTestActif,
     outilTestInactif,
     rectangle
   ],
-  outilActif: outilTestActif,
-  trouverIndexParametre(nomParametre) {
+  activeTool: outilTestActif,
+  findParameterIndex(nomParametre) {
     return (nomParametre === 'Épaisseur') ? 0 : 1;
   }
 }
@@ -58,13 +58,13 @@ const GestionnaireOutilServiceStub: Partial<GestionnaireOutilsService> = {
 describe('BarreOutilsComponent', () => {
   let component: BarreOutilsComponent;
   let fixture: ComponentFixture<BarreOutilsComponent>;
-  let service: GestionnaireOutilsService;
+  let service: ToolManagerService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ PageGuideComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, ChoixCouleurComponent,
                       CouleurPaletteComponent, GlissiereCouleurComponent, ValeurCouleurComponent ],
-      providers: [ {provide: GestionnaireOutilsService, useValue: GestionnaireOutilServiceStub} ],
+      providers: [ {provide: ToolManagerService, useValue: GestionnaireOutilServiceStub} ],
       imports: [ RouterModule.forRoot([
         {path: 'guide', component : PageGuideComponent}
     ]), MatDialogModule, BrowserAnimationsModule]
@@ -75,13 +75,13 @@ describe('BarreOutilsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BarreOutilsComponent);
     component = fixture.componentInstance;
-    service = fixture.debugElement.injector.get(GestionnaireOutilsService);
+    service = fixture.debugElement.injector.get(ToolManagerService);
     fixture.detectChanges();
   });
   beforeEach(() => {
-    service.listeOutils[0].estActif = true; // outil crayon
-    service.listeOutils[1].estActif = false; // outil pinceau
-    service.listeOutils[2].estActif = false; // outil rectangle
+    service.toolList[0].isActive = true; // outil crayon
+    service.toolList[1].isActive = false; // outil pinceau
+    service.toolList[2].isActive = false; // outil rectangle
   })
 
   it('should create', () => {
@@ -126,18 +126,18 @@ describe('BarreOutilsComponent', () => {
   // TESTS clic
 
   it('#clic devrait changer d\'outil', () => {
-    component.clic(service.listeOutils[1]); // on sélectionne l'outil 2
-    expect(service.outilActif).toBe(service.listeOutils[1]); // on vérifie que l'outil actif est bien le deuxième
+    component.clic(service.toolList[1]); // on sélectionne l'outil 2
+    expect(service.activeTool).toBe(service.toolList[1]); // on vérifie que l'outil actif est bien le deuxième
   });
 
   it('#clic devrait mettre le nouvel outil sélectionné comme actif', () => {
-    component.clic(service.listeOutils[1]); // on sélectionne l'outil 2
-    expect(service.listeOutils[1].estActif).toBe(true); // on vérifie que le nouvel outil est bien "actif"
+    component.clic(service.toolList[1]); // on sélectionne l'outil 2
+    expect(service.toolList[1].isActive).toBe(true); // on vérifie que le nouvel outil est bien "actif"
   });
 
   it('#clic devrait appeler la fonction viderSVGEnCours', () => {
     spyOn(component.raccourcis, 'viderSVGEnCours');
-    component.clic(service.listeOutils[2]); // on sélectionne l'outil 2 (rectangle)
+    component.clic(service.toolList[2]); // on sélectionne l'outil 2 (rectangle)
     expect(component.raccourcis.viderSVGEnCours).toHaveBeenCalled();
   });
 
@@ -146,14 +146,14 @@ describe('BarreOutilsComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="Épaisseur"]')).nativeElement;
     element.value = '1';
     element.dispatchEvent(new Event('change')); // onChange appelée implicitement
-    expect(component.outils.outilActif.parametres[0].valeur).toBe(1);
+    expect(component.outils.activeTool.parameters[0].value).toBe(1);
   });
 
   it('#onChange devrait changer la valeur de l\'épaisseur à 1 si l\'évènement qui lui est donné est inférieur à 1', () => {
     const element = fixture.debugElement.query(By.css('input[name="Épaisseur"]')).nativeElement;
     element.value = '0';
     element.dispatchEvent(new Event('change')); // onChange appelée implicitement
-    expect(component.outils.outilActif.parametres[0].valeur).toBe(1);
+    expect(component.outils.activeTool.parameters[0].value).toBe(1);
   });
 
   // TESTS choixSelectionne
@@ -161,14 +161,14 @@ describe('BarreOutilsComponent', () => {
   it('#choixSelectionne ne devrait pas changer la valeur du paramètre si l\'évènement qui lui est donné n\'est pas un string', () => {
     const element = fixture.debugElement.query(By.css('select[name="Type"]')).nativeElement;
     element.dispatchEvent(new Event('change')); // choixSelectionne appelée implicitement
-    expect(component.outils.outilActif.parametres[1].optionChoisie).toBe('A');
+    expect(component.outils.activeTool.parameters[1].choosenOption).toBe('A');
   });
 
   it('#choixSelectionne devrait changer la valeur du paramètre si l\'évènement qui lui est donné est un string', () => {
     const element = fixture.debugElement.query(By.css('select[name="Type"]')).nativeElement;
     element.value = 'B';
     element.dispatchEvent(new Event('change')); // choixSelectionne appelée implicitement
-    expect(component.outils.outilActif.parametres[1].optionChoisie).toBe('B');
+    expect(component.outils.activeTool.parameters[1].choosenOption).toBe('B');
   });
 
   // TESTS desactiverRaccourcis
@@ -226,7 +226,7 @@ describe('BarreOutilsComponent', () => {
 
   it('#selectionCouleur devrait assignee portee à Portee.fond si le paramètre de la fonction contient fond', () => {
     component.selectionCouleur('fond');
-    expect(component.fenetreDessin.portee).toEqual(Portee.Fond);
+    expect(component.fenetreDessin.portee).toEqual(Scope.Fond);
   });
 
   // TESTS selectionDerniereCouleurPrimaire

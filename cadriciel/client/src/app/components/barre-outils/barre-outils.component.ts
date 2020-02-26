@@ -5,7 +5,7 @@ import { CommandManagerService } from 'src/app/services/command/command-manager.
 import { Scope} from 'src/app/services/couleur/color-manager.service';
 import { ColorParameterService } from 'src/app/services/couleur/color-parameter.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
-import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
+import { ToolManagerService, DrawingTool } from 'src/app/services/outils/tool-manager.service';
 import { SelectionService } from 'src/app/services/outils/selection/selection.service';
 import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
 import { ChoixCouleurComponent } from '../choix-couleur/choix-couleur.component';
@@ -25,7 +25,7 @@ export class BarreOutilsComponent implements OnDestroy {
   private nouveauDessinSubscription: Subscription;
 
   constructor(public dialog: MatDialog,
-              public outils: GestionnaireOutilsService,
+              public outils: ToolManagerService,
               public raccourcis: GestionnaireRaccourcisService,
               public colorParameter: ColorParameterService,
               public commands: CommandManagerService,
@@ -41,24 +41,24 @@ export class BarreOutilsComponent implements OnDestroy {
     this.raccourcis.emitterNouveauDessin.next(true);
   }
 
-  clic(outil: OutilDessin) {
-    if (this.outils.outilActif.nom === 'Selection' && this.selection.selectionBox) {
+  clic(outil: DrawingTool) {
+    if (this.outils.activeTool.name === 'Selection' && this.selection.selectionBox) {
       this.selection.deleteBoundingBox();
   }
-    this.outils.outilActif.estActif = false;
-    this.outils.outilActif = outil;
-    this.outils.outilActif.estActif = true;
+    this.outils.activeTool.isActive = false;
+    this.outils.activeTool = outil;
+    this.outils.activeTool.isActive = true;
     this.raccourcis.viderSVGEnCours();
   }
 
   onChange(event: Event, nomParametre: string) {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
-    this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].valeur = Math.max(Number(eventCast.value), 1);
+    this.outils.activeTool.parameters[this.outils.findParameterIndex(nomParametre)].value = Math.max(Number(eventCast.value), 1);
   }
 
   choixSelectionne(event: Event, nomParametre: string) {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
-    this.outils.outilActif.parametres[this.outils.trouverIndexParametre(nomParametre)].optionChoisie = eventCast.value;
+    this.outils.activeTool.parameters[this.outils.findParameterIndex(nomParametre)].choosenOption = eventCast.value;
   }
 
   desactiverRaccourcis() {

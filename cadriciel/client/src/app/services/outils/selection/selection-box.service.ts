@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
-import { Point } from '../dessin-ligne.service';
-import { GestionnaireOutilsService, INDEX_OUTIL_SELECTION } from '../gestionnaire-outils.service';
+import { Point } from '../line-tool.service';
+import { ToolManagerService, SELECTION_TOOL_INDEX } from '../tool-manager.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class SelectionBoxService {
 
   selectionBox: RectangleService;
 
-  constructor(public outils: GestionnaireOutilsService,
+  constructor(public outils: ToolManagerService,
               private sanitizer: DomSanitizer) { }
 
   createSelectionBox(pointMin: Point, pointMax: Point) {
@@ -19,7 +19,7 @@ export class SelectionBoxService {
     this.selectionBox = new RectangleService();
 
     this.selectionBox.isSelected = true;
-    this.selectionBox.tool = this.outils.outilActif;
+    this.selectionBox.tool = this.outils.activeTool;
 
     this.selectionBox.points[0] = pointMin;
     this.selectionBox.points[1] = pointMax;
@@ -30,7 +30,7 @@ export class SelectionBoxService {
   };
 
   deleteSelectionBox() {
-    if (this.outils.outilActif.ID === INDEX_OUTIL_SELECTION) {
+    if (this.outils.activeTool.ID === SELECTION_TOOL_INDEX) {
       delete this.selectionBox;
     }
   };

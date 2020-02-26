@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { OUTIL_VIDE, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
+import { EMPTY_TOOL, DrawingTool } from 'src/app/services/outils/tool-manager.service';
 
 @Component({
   selector: 'app-outil-dessin',
@@ -10,6 +10,6 @@ import { OUTIL_VIDE, OutilDessin } from 'src/app/services/outils/gestionnaire-ou
 export class OutilDessinComponent {
 
   // Valeur par défaut pour les unit test
-  @Input() outil: OutilDessin = OUTIL_VIDE;
+  @Input() outil: DrawingTool = EMPTY_TOOL;
 
 }

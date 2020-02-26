@@ -3,14 +3,14 @@
 import { AfterViewInit, Component, ElementRef,  HostListener, Input, OnChanges,
          SimpleChanges, ViewChild, } from '@angular/core';
 import { ColorManagerService } from 'src/app/services/couleur/color-manager.service';
-import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
+import { ToolInterface } from 'src/app/services/outils/tool-interface';
 
 @Component({
   selector: 'app-couleur-palette',
   templateUrl: './couleur-palette.component.html',
   styleUrls: ['./couleur-palette.component.scss']
 })
-export class CouleurPaletteComponent implements AfterViewInit, OnChanges, InterfaceOutils {
+export class CouleurPaletteComponent implements AfterViewInit, OnChanges, ToolInterface {
 
   @Input() gestionnaireCouleur: ColorManagerService;
 
@@ -45,18 +45,18 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
   }
 
   @HostListener ('window:mouseup', ['$event'] )
-    sourisRelachee(evt: MouseEvent) {
+    onMouseRelease(evt: MouseEvent) {
       this.sourisBas = false;
     }
 
-    sourisEnfoncee( evt: MouseEvent) {
+    onMousePress( evt: MouseEvent) {
       this.sourisBas = true;
       this.hauteurChoisie = {x: evt.offsetX, y: evt.offsetY};
       this.dessin();
       this.couleurPosition(evt.offsetX, evt.offsetY);
     }
 
-    sourisDeplacee(evt: MouseEvent) {
+    onMouseMove(evt: MouseEvent) {
       if (this.sourisBas) {
         this.hauteurChoisie = { x: evt.offsetX, y: evt.offsetY};
         this.dessin();

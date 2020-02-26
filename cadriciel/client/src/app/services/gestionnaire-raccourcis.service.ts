@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CommandManagerService } from './command/command-manager.service';
 import { GridService } from './grid/grid.service';
-import { DessinLigneService } from './outils/dessin-ligne.service';
-import { DessinRectangleService } from './outils/dessin-rectangle.service';
-import { GestionnaireOutilsService, INDEX_OUTIL_CRAYON,
-        INDEX_OUTIL_LIGNE, INDEX_OUTIL_PINCEAU ,
-        INDEX_OUTIL_RECTANGLE, INDEX_OUTIL_SELECTION } from './outils/gestionnaire-outils.service';
+import { LineToolService } from './outils/line-tool.service';
+import { RectangleToolService } from './outils/rectangle-tool.service';
+import { ToolManagerService, PENCIL_TOOL_INDEX,
+        LINE_TOOL_INDEX, BRUSH_TOOL_INDEX ,
+        RECTANGLE_TOOL_INDEX, SELECTION_TOOL_INDEX } from './outils/tool-manager.service';
 import { SelectionService } from './outils/selection/selection.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 
@@ -18,17 +18,17 @@ export class GestionnaireRaccourcisService {
 
   emitterNouveauDessin: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
-  constructor(public outils: GestionnaireOutilsService,
-              public dessinRectangle: DessinRectangleService,
-              public dessinLigne: DessinLigneService,
+  constructor(public outils: ToolManagerService,
+              public dessinRectangle: RectangleToolService,
+              public dessinLigne: LineToolService,
               public commands: CommandManagerService,
               public selection: SelectionService,
               public SVGStockage: SVGStockageService,
               public grid: GridService) { }
 
   viderSVGEnCours() {
-    this.dessinRectangle.vider();
-    this.dessinLigne.vider();
+    this.dessinRectangle.clear();
+    this.dessinLigne.clear();
   }
 
   traiterInput(clavier: KeyboardEvent) {
@@ -36,13 +36,13 @@ export class GestionnaireRaccourcisService {
     switch (clavier.key) {
       case '1':
         this.selection.deleteBoundingBox();
-        this.outils.changerOutilActif(INDEX_OUTIL_RECTANGLE);
+        this.outils.changeActiveTool(RECTANGLE_TOOL_INDEX);
         this.viderSVGEnCours();
         break;
 
       case 'a':
         clavier.preventDefault();
-        if (clavier.ctrlKey && this.outils.outilActif.ID === INDEX_OUTIL_SELECTION) {
+        if (clavier.ctrlKey && this.outils.activeTool.ID === SELECTION_TOOL_INDEX) {
           this.selection.deleteBoundingBox();
           this.selection.creerBoiteEnglobantePlusieursElementDessins(this.SVGStockage.getCompleteSVG());
         }
@@ -50,25 +50,25 @@ export class GestionnaireRaccourcisService {
 
       case 'c':
         this.selection.deleteBoundingBox();
-        this.outils.changerOutilActif(INDEX_OUTIL_CRAYON);
+        this.outils.changeActiveTool(PENCIL_TOOL_INDEX);
         this.viderSVGEnCours();
         break;
 
       case 'l':
         this.selection.deleteBoundingBox();
-        this.outils.changerOutilActif(INDEX_OUTIL_LIGNE);
+        this.outils.changeActiveTool(LINE_TOOL_INDEX);
         this.viderSVGEnCours();
         break;
 
       case 'w':
         this.selection.deleteBoundingBox();
-        this.outils.changerOutilActif(INDEX_OUTIL_PINCEAU);
+        this.outils.changeActiveTool(BRUSH_TOOL_INDEX);
         this.viderSVGEnCours();
         break;
 
       case 's':
         this.selection.deleteBoundingBox();
-        this.outils.changerOutilActif(INDEX_OUTIL_SELECTION);
+        this.outils.changeActiveTool(SELECTION_TOOL_INDEX);
         this.viderSVGEnCours();
 
       case 'z':
@@ -84,10 +84,10 @@ export class GestionnaireRaccourcisService {
         break;
 
       case 'Shift':
-        if (this.outils.outilActif.ID === INDEX_OUTIL_RECTANGLE) {
-          this.dessinRectangle.shiftEnfonce();
+        if (this.outils.activeTool.ID === RECTANGLE_TOOL_INDEX) {
+          this.dessinRectangle.shiftPress();
         }
-        if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
+        if (this.outils.activeTool.ID === LINE_TOOL_INDEX) {
           this.dessinLigne.stockerCurseur();
         }
         break;
@@ -100,14 +100,14 @@ export class GestionnaireRaccourcisService {
         break;
 
       case 'Backspace':
-        if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
+        if (this.outils.activeTool.ID === LINE_TOOL_INDEX) {
           this.dessinLigne.retirerPoint();
         }
         break;
 
       case 'Escape':
-        if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
-          this.dessinLigne.vider();
+        if (this.outils.activeTool.ID === LINE_TOOL_INDEX) {
+          this.dessinLigne.clear();
         }
         break;
 
@@ -131,11 +131,11 @@ export class GestionnaireRaccourcisService {
   traiterToucheRelachee(clavier: KeyboardEvent) {
     switch (clavier.key) {
       case 'Shift':
-        if (this.outils.outilActif.ID === INDEX_OUTIL_RECTANGLE) {
-          this.dessinRectangle.shiftRelache();
+        if (this.outils.activeTool.ID === RECTANGLE_TOOL_INDEX) {
+          this.dessinRectangle.shiftRelease();
         }
-        if (this.outils.outilActif.ID === INDEX_OUTIL_LIGNE) {
-          this.dessinLigne.shiftRelache();
+        if (this.outils.activeTool.ID === LINE_TOOL_INDEX) {
+          this.dessinLigne.ShiftRelease();
         }
         break;
 

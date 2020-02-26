@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { DrawElement } from '../../stockage-svg/draw-element';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { SVGStockageService } from '../../stockage-svg/svg-stockage.service';
-import { Point } from '../dessin-ligne.service';
-import { InterfaceOutils } from '../interface-outils';
+import { Point } from '../line-tool.service';
+import { ToolInterface } from '../tool-interface';
 import { GestionnaireDessinService } from './../../gestionnaire-dessin/gestionnaire-dessin.service'
 import { SelectionBoxService } from './selection-box.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
@@ -11,7 +11,7 @@ import { SelectionRectangleService } from './selection-rectangle.service';
 @Injectable({
   providedIn: 'root'
 })
-export class SelectionService implements InterfaceOutils {
+export class SelectionService implements ToolInterface {
   boiteElementSelectionne = new RectangleService();
   elementSelectionne: DrawElement[] = [];
 
@@ -32,7 +32,7 @@ export class SelectionService implements InterfaceOutils {
 
   }
 
-  sourisDeplacee(mouse: MouseEvent) {
+  onMouseMove(mouse: MouseEvent) {
     this.selectionRectangle.mouseMouve(mouse);
     if (this.selectionRectangle.onoingSelection) {
       this.deleteBoundingBox();
@@ -44,12 +44,12 @@ export class SelectionService implements InterfaceOutils {
     }
   }
 
-  sourisEnfoncee(mouse: MouseEvent) {
+  onMousePress(mouse: MouseEvent) {
     this.deleteBoundingBox();
     this.selectionRectangle.mouseDown(mouse);
   }
 
-  sourisRelachee() {
+  onMouseRelease() {
     // Éviter de créer une boite de sélection si on effectue un simple clic
     if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
       this.isInRectangleSelection(this.selectionRectangle.rectangle);

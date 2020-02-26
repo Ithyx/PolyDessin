@@ -3,7 +3,7 @@
 import { AfterViewInit, Component, ElementRef, HostListener, Input,
          ViewChild } from '@angular/core'
 import { ColorManagerService } from 'src/app/services/couleur/color-manager.service';
-import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
+import { ToolInterface } from 'src/app/services/outils/tool-interface';
 
 @Component({
   selector: 'app-glissiere-couleur',
@@ -11,7 +11,7 @@ import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
   styleUrls: ['./glissiere-couleur.component.scss']
 })
 
-export class GlissiereCouleurComponent implements AfterViewInit, InterfaceOutils {
+export class GlissiereCouleurComponent implements AfterViewInit, ToolInterface {
   @ViewChild('canvas', {static: true})
   canvas: ElementRef<HTMLCanvasElement>
   @Input() gestionnaireCouleur: ColorManagerService;
@@ -61,18 +61,18 @@ export class GlissiereCouleurComponent implements AfterViewInit, InterfaceOutils
   }
 
   @HostListener('window:mouseup', ['$event'])
-  sourisRelachee() {
+  onMouseRelease() {
     this.sourisbas = false;
   }
 
-  sourisEnfoncee(evt: MouseEvent) {
+  onMousePress(evt: MouseEvent) {
     this.sourisbas = true;
     this.hauteurChoisi = evt.offsetY;
     this.dessin();
     this.couleurEmise(evt.offsetX, evt.offsetY);
   }
 
-  sourisDeplacee(evt: MouseEvent) {
+  onMouseMove(evt: MouseEvent) {
     if (this.sourisbas) {
       this.hauteurChoisi = evt.offsetY;
       this.dessin();
