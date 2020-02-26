@@ -3,11 +3,12 @@ import { Router, RouterModule } from '@angular/router';
 
 import { ParametresCouleurService } from 'src/app/services/couleur/color-parameter.service';
 import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/drawing-manager.service';
-import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routing.service';
+import { RoutingManagerService } from 'src/app/services/routing-manager.service';
 import { SelectionService } from 'src/app/services/outils/selection/selection.service';
 import { ToolManagerService } from 'src/app/services/outils/tool-manager.service';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { SurfaceDessinComponent } from './surface-dessin.component';
+import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 
 const parametresCouleurStub: Partial<ParametresCouleurService> = {
   couleurFond: undefined
@@ -15,11 +16,11 @@ const parametresCouleurStub: Partial<ParametresCouleurService> = {
 
 describe('SurfaceDessinComponent', () => {
   let component: SurfaceDessinComponent;
-  let outils: ToolManagerService;
+  let tools: ToolManagerService;
   let fixture: ComponentFixture<SurfaceDessinComponent>;
   let stockage: SVGStockageService;
-  let gestionnaireDessin: GestionnaireDessinService;
-  let navigation: GestionnaireRoutingService;
+  let gestionnaireDessin: DrawingManagerService;
+  let routingManager: RoutingManagerService;
   let routing: Router;
   let parametresCouleur: ParametresCouleurService;
   let selection: SelectionService;
@@ -42,7 +43,7 @@ describe('SurfaceDessinComponent', () => {
   beforeEach(() => {
     stockage = TestBed.get(StockageSvgService);
     gestionnaireDessin = TestBed.get(GestionnaireDessinService);
-    navigation = TestBed.get(GestionnaireRoutingService);
+    routingManager = TestBed.get(GestionnaireRoutingService);
     routing = TestBed.get(Router);
     parametresCouleur = TestBed.get(ParametresCouleurService);
   });
@@ -53,7 +54,7 @@ describe('SurfaceDessinComponent', () => {
 
   it('SurfaceDessinComponent devrait naviguer vers la page précédente si couleurFond est undefined', () => {
     spyOn(routing, 'navigate');
-    component = new SurfaceDessinComponent(stockage, outils, gestionnaireDessin, navigation, routing, parametresCouleur, selection);
-    expect(routing.navigate).toHaveBeenCalledWith([navigation.pagePrecedente]);
+    component = new SurfaceDessinComponent(stockage, tools, gestionnaireDessin, routingManager, routing, parametresCouleur, selection);
+    expect(routing.navigate).toHaveBeenCalledWith([routingManager.previousPage]);
   });
 });

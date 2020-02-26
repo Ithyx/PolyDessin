@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routing.service';
+import { RoutingManagerService } from 'src/app/services/routing-manager.service';
 import { NavigationGuideService } from '../../services/navigation-guide.service';
 import { GuideSujet } from '../guide-sujet/guide-sujet';
 import { CONTENU_GUIDE } from './SujetsGuide';
@@ -15,10 +15,10 @@ export class PageGuideComponent {
   sujetActif: GuideSujet = CONTENU_GUIDE[0];
 
   constructor(private navigateurSujet: NavigationGuideService,
-              public navigation: GestionnaireRoutingService) { }
+              public routingManager: RoutingManagerService) { }
 
   clic(sensParcousID: number) {
-    this.navigateurSujet.ouvrirCategories(this.sujets);
+    this.navigateurSujet.openCategories(this.sujets);
 
     // L'ID est optionnel, on vérifie que le sujet actif en a bien un
     if (this.sujetActif.id) {
@@ -26,7 +26,7 @@ export class PageGuideComponent {
       // Si on a cliqué sur "suivant", sensParcousID = 1
       const nouvelID: number = this.sujetActif.id + sensParcousID;
       // On cherche dans notre liste pour voir si on trouve un sujet avec le nouvel ID
-      this.sujetActif = this.navigateurSujet.parcourirSujets(nouvelID, this.sujets);
+      this.sujetActif = this.navigateurSujet.browseSubjects(nouvelID, this.sujets);
     }
   }
 

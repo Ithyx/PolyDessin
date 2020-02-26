@@ -7,35 +7,35 @@ import { GuideSujet } from '../components/guide-sujet/guide-sujet';
 
 export class NavigationGuideService {
 
-  parcourirSujets(idRecherche: number, sujets: GuideSujet[]): GuideSujet {
-    for (const element of sujets) {
+  browseSubjects(subjectID: number, subjects: GuideSujet[]): GuideSujet {
+    for (const element of subjects) {
       // Première vérification
-      if (idRecherche === element.id) {
+      if (subjectID === element.id) {
         return element;
       }
 
       // Si element possède des sousSujets, on veut les vérifiés aussi
       if (element.sousSujets) {
-        const tampon: GuideSujet = this.parcourirSujets(idRecherche, element.sousSujets);
-        if (tampon !== SUJET_VIDE) {
-          return tampon;
+        const buffer: GuideSujet = this.browseSubjects(subjectID, element.sousSujets);
+        if (buffer !== EMPTY_SUBJECT) {
+          return buffer;
         }
       }
     }
-    return SUJET_VIDE;
+    return EMPTY_SUBJECT;
   }
 
-  ouvrirCategories(categorie: GuideSujet[]) {
-    categorie.forEach((element) => {
+  openCategories(category: GuideSujet[]) {
+    category.forEach((element) => {
       if (element.sousSujets) {
         element.categorieOuverte = true;
-        this.ouvrirCategories(element.sousSujets);
+        this.openCategories(element.sousSujets);
       }
     });
   };
 }
 
-export const SUJET_VIDE: GuideSujet = {
+export const EMPTY_SUBJECT: GuideSujet = {
   nom: '',
   description: '',
   precedant: false,

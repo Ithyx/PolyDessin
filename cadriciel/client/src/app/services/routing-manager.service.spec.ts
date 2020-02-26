@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GestionnaireRoutingService } from './gestionnaire-routing.service';
+import { GestionnaireRoutingService } from './routing-manager.service';
 
 describe('GestionnaireRoutingService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router, RoutesRecognized } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { filter, pairwise } from 'rxjs/operators';
-import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routing.service';
+import { RoutingManagerService } from 'src/app/services/routing-manager.service';
 
 @Component({
     selector: 'app-root',
@@ -15,7 +15,7 @@ export class AppComponent {
 
     constructor(
                 private routing: Router,
-                public gestionnaireRoutes: GestionnaireRoutingService) {
+                public routingManager: RoutingManagerService) {
         this.routing.events
             .pipe(filter(this.fonctionFiltre), pairwise())
             .subscribe({next: this.miseAJourURL.bind(this)});
@@ -26,8 +26,8 @@ export class AppComponent {
     }
 
     miseAJourURL(evenement: [any, any]) {
-        this.gestionnaireRoutes.pagePrecedente = evenement[0].url;
-        this.gestionnaireRoutes.pageEnCours = evenement[1].url;
+        this.routingManager.previousPage = evenement[0].url;
+        this.routingManager.currentPage = evenement[1].url;
     };
 
 }

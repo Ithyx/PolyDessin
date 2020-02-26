@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output} from '@angular/core';
-import { SUJET_VIDE} from '../../services/navigation-guide.service';
+import { EMPTY_SUBJECT} from '../../services/navigation-guide.service';
 import { GuideSujet } from './guide-sujet';
 
 @Component({
@@ -10,7 +10,7 @@ import { GuideSujet } from './guide-sujet';
 
 export class GuideSujetComponent {
 
-  @Input() noeud: GuideSujet = SUJET_VIDE;
+  @Input() noeud: GuideSujet = EMPTY_SUBJECT;
   @Input() profondeur = 0;
 
   @Output() notification = new EventEmitter<GuideSujet>();

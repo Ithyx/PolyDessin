@@ -1,6 +1,6 @@
 <div class="sidenav">
     <div>
-        <button class="retour" [routerLink]="[navigation.pagePrecedente]" mat-raised-button>Retour</button>
+        <button class="retour" [routerLink]="[routingManager.previousPage]" mat-raised-button>Retour</button>
     </div>
     <div *ngFor = 'let sujet of sujets'>
         <app-guide-sujet [noeud]="sujet" (notification)="notificationRecu($event)"></app-guide-sujet>

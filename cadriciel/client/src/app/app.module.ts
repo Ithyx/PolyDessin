@@ -27,13 +27,13 @@ import { SurfaceDessinComponent } from './components/surface-dessin/surface-dess
 import { ColorParameterService } from './services/color/color-parameter.service';
 import { CommandManagerService } from './services/command/command-manager.service';
 import { DrawingManagerService } from './services/drawing-manager/drawing-manager.service';
-import { GestionnaireRoutingService } from './services/gestionnaire-routing.service';
 import { GridService } from './services/grid/grid.service';
 import { NavigationGuideService } from './services/navigation-guide.service';
 import { LineToolService } from './services/outils/line-tool.service';
 import { DrawingToolService } from './services/outils/pencil-tool.service';
 import { RectangleToolService } from './services/outils/rectangle-tool.service';
 import { SelectionService } from './services/outils/selection/selection.service';
+import { RoutingManagerService } from './services/routing-manager.service';
 import { ShortcutsManagerService } from './services/shortcuts-manager.service';
 import { SVGStockageService } from './services/stockage-svg/svg-stockage.service';
 
@@ -49,7 +49,7 @@ import { SVGStockageService } from './services/stockage-svg/svg-stockage.service
     ])],
     providers: [NavigationGuideService, SVGStockageService, DrawingToolService, DrawingManagerService,
                 ShortcutsManagerService, RectangleToolService, LineToolService,
-                GestionnaireRoutingService, ColorParameterService, MatDialogConfig, SelectionService,
+                RoutingManagerService, ColorParameterService, MatDialogConfig, SelectionService,
                 CommandManagerService, GridService],
     entryComponents: [FenetreNouveauDessinComponent, AvertissementNouveauDessinComponent,
                       ChoixCouleurComponent, GridOptionsComponent],
