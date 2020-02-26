@@ -1,4 +1,4 @@
-<svg class="vue-dessin" [attr.width.px]="gestionnaireDessin.longueur" [attr.height.px]="gestionnaireDessin.hauteur" [attr.width.px]="gestionnaireDessin.largeur" version="1.1" xlmns="http://www.w3.org/2000/svg">
+<svg class="vue-dessin" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" version="1.1" xlmns="http://www.w3.org/2000/svg">
     
     <defs>
         <!-- Texture libre de droit-->
@@ -36,7 +36,7 @@
           </filter>
     </defs>
     
-    <rect x="0" y="0" [attr.width.px]="gestionnaireDessin.longueur" [attr.height.px]="gestionnaireDessin.hauteur" [attr.width.px]="gestionnaireDessin.largeur" (click)="traiterClicSurVide()" [attr.fill]="colorParameter.backgroundColor" />
+    <rect x="0" y="0" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" (click)="traiterClicSurVide()" [attr.fill]="colorParameter.backgroundColor" />
 
     <g *ngFor="let element of SVGStockage.getCompleteSVG() | keyvalue;" [innerHTML]="element.value.SVGHtml" (click)="traiterClicElementDessin(element.value)"></g>
     <g *ngIf="this.selection.selectionRectangle.rectangle" [innerHTML]="this.selection.selectionRectangle.rectangle.SVGHtml"></g>

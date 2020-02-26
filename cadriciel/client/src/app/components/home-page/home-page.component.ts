@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
-import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/gestionnaire-dessin.service';
+import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 
 @Component({
@@ -11,7 +11,7 @@ import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre
 export class HomePageComponent {
 
   constructor(public dialog: MatDialog,
-              public dessinManager: GestionnaireDessinService,
+              public drawingManager: DrawingManagerService,
               public dialogConfig: MatDialogConfig) {
                 dialogConfig.disableClose = true;
                 dialogConfig.autoFocus = true;

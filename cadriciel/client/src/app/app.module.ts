@@ -26,13 +26,13 @@ import { SurfaceDessinComponent } from './components/surface-dessin/surface-dess
 // Service
 import { CommandManagerService } from './services/command/command-manager.service';
 import { ColorParameterService } from './services/couleur/color-parameter.service';
-import { GestionnaireDessinService } from './services/gestionnaire-dessin/gestionnaire-dessin.service';
+import { DrawingManagerService } from './services/drawing-manager/drawing-manager.service';
 import { GestionnaireRaccourcisService } from './services/gestionnaire-raccourcis.service';
 import { GestionnaireRoutingService } from './services/gestionnaire-routing.service';
 import { GridService } from './services/grid/grid.service';
 import { NavigationGuideService } from './services/navigation-guide.service';
-import { DrawingToolService } from './services/outils/pencil-tool.service';
 import { LineToolService } from './services/outils/line-tool.service';
+import { DrawingToolService } from './services/outils/pencil-tool.service';
 import { RectangleToolService } from './services/outils/rectangle-tool.service';
 import { SelectionService } from './services/outils/selection/selection.service';
 import { SVGStockageService } from './services/stockage-svg/svg-stockage.service';
@@ -47,7 +47,7 @@ import { SVGStockageService } from './services/stockage-svg/svg-stockage.service
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ])],
-    providers: [NavigationGuideService, SVGStockageService, DrawingToolService, GestionnaireDessinService,
+    providers: [NavigationGuideService, SVGStockageService, DrawingToolService, DrawingManagerService,
                 GestionnaireRaccourcisService, RectangleToolService, LineToolService,
                 GestionnaireRoutingService, ColorParameterService, MatDialogConfig, SelectionService,
                 CommandManagerService, GridService],

@@ -2,11 +2,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, RouterModule } from '@angular/router';
 
 import { ParametresCouleurService } from 'src/app/services/couleur/color-parameter.service';
-import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/gestionnaire-dessin.service';
+import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/drawing-manager.service';
 import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routing.service';
-import { ToolManagerService } from 'src/app/services/outils/tool-manager.service';
 import { SelectionService } from 'src/app/services/outils/selection/selection.service';
-import { StockageSvgService } from 'src/app/services/stockage-svg/svg-stockage.service';
+import { ToolManagerService } from 'src/app/services/outils/tool-manager.service';
+import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { SurfaceDessinComponent } from './surface-dessin.component';
 
 const parametresCouleurStub: Partial<ParametresCouleurService> = {
@@ -17,7 +17,7 @@ describe('SurfaceDessinComponent', () => {
   let component: SurfaceDessinComponent;
   let outils: ToolManagerService;
   let fixture: ComponentFixture<SurfaceDessinComponent>;
-  let stockage: StockageSvgService;
+  let stockage: SVGStockageService;
   let gestionnaireDessin: GestionnaireDessinService;
   let navigation: GestionnaireRoutingService;
   let routing: Router;

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GestionnaireDessinService } from '../gestionnaire-dessin/gestionnaire-dessin.service';
+import { DrawingManagerService } from '../drawing-manager/drawing-manager.service';
 
 export const MAX_CELL_SIZE = 500;
 export const MIN_CELL_SIZE = 5;
@@ -16,7 +16,7 @@ export interface Line {
 })
 export class GridService {
 
-  constructor(public dessin: GestionnaireDessinService) {}
+  constructor(public drawing: DrawingManagerService) {}
 
   showGrid = false;
   cellSize = 50;
@@ -43,11 +43,11 @@ export class GridService {
   getLines(): Line[] {
     const lines: Line[] = [];
     if (this.showGrid) {
-      for (let x = this.cellSize; x < this.dessin.largeur; x += this.cellSize) {
-        lines.push({x1: x, x2: x, y1: 0, y2: this.dessin.hauteur});
+      for (let x = this.cellSize; x < this.drawing.width; x += this.cellSize) {
+        lines.push({x1: x, x2: x, y1: 0, y2: this.drawing.height});
       }
-      for (let y = this.cellSize; y < this.dessin.hauteur; y += this.cellSize) {
-        lines.push({x1: 0, x2: this.dessin.largeur, y1: y, y2: y});
+      for (let y = this.cellSize; y < this.drawing.height; y += this.cellSize) {
+        lines.push({x1: 0, x2: this.drawing.width, y1: y, y2: y});
       }
     }
     return lines;

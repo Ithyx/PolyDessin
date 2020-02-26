@@ -6,7 +6,7 @@ import { ChoixCouleurComponent } from 'src/app/components/choix-couleur/choix-co
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
 import { ColorManagerService, Scope } from 'src/app/services/couleur/color-manager.service'
 import { ColorParameterService } from 'src/app/services/couleur/color-parameter.service';
-import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/gestionnaire-dessin.service';
+import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 
@@ -32,7 +32,7 @@ export class FenetreNouveauDessinComponent {
 
   constructor(public dialogRef: MatDialogRef<FenetreNouveauDessinComponent>,
               public raccourcis: GestionnaireRaccourcisService,
-              public serviceNouveauDessin: GestionnaireDessinService,
+              public drawingManager: DrawingManagerService,
               public router: Router,
               public SVGStockage: SVGStockageService,
               public gestionnaireCouleur: ColorManagerService,
@@ -64,8 +64,8 @@ export class FenetreNouveauDessinComponent {
   validerNouveauDessin() {
     this.SVGStockage.cleanDrawing();
     this.commands.clearCommand();
-    this.serviceNouveauDessin.hauteur = this.nouveauDessin.value[KEY_FORM_HAUTEUR];
-    this.serviceNouveauDessin.largeur = this.nouveauDessin.value[KEY_FORM_LARGEUR];
+    this.drawingManager.height = this.nouveauDessin.value[KEY_FORM_HAUTEUR];
+    this.drawingManager.width = this.nouveauDessin.value[KEY_FORM_LARGEUR];
     this.raccourcis.champDeTexteEstFocus = false;
     this.dialogRef.close();
     this.ngZone.run(() => this.router.navigate(['dessin']));

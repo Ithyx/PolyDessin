@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
+import { DrawingManagerService } from '../../drawing-manager/drawing-manager.service';
 import { DrawElement } from '../../stockage-svg/draw-element';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { SVGStockageService } from '../../stockage-svg/svg-stockage.service';
 import { Point } from '../line-tool.service';
 import { ToolInterface } from '../tool-interface';
-import { GestionnaireDessinService } from './../../gestionnaire-dessin/gestionnaire-dessin.service'
 import { SelectionBoxService } from './selection-box.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
 
@@ -18,7 +18,7 @@ export class SelectionService implements ToolInterface {
   constructor(public SVGStockage: SVGStockageService,
               public selectionBox: SelectionBoxService,
               public selectionRectangle: SelectionRectangleService,
-              public gestionnaireDessin: GestionnaireDessinService
+              public drawingManager: DrawingManagerService
              ) {}
 
   traiterClic(element: DrawElement) {
@@ -91,7 +91,7 @@ export class SelectionService implements ToolInterface {
   };
 
   createBoundingBox() {
-    let pointMin: Point = {x: this.gestionnaireDessin.largeur , y: this.gestionnaireDessin.hauteur};
+    let pointMin: Point = {x: this.drawingManager.width , y: this.drawingManager.height};
     let pointMax: Point = {x: 0 , y: 0};
     const epaisseurMin: Point = {x: 0, y: 0};
     const epaisseurMax: Point = {x: 0, y: 0};

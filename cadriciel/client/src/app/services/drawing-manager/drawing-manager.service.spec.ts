@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GestionnaireDessinService } from './gestionnaire-dessin.service';
+import { DrawingManagerService } from './drawing-manager.service';
 
 describe('GestionnaireDessinService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: GestionnaireDessinService = TestBed.get(GestionnaireDessinService);
+    const service: DrawingManagerService = TestBed.get(DrawingManagerService);
     expect(service).toBeTruthy();
   });
 });

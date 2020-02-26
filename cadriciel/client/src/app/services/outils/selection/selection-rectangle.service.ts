@@ -15,7 +15,7 @@ export class SelectionRectangleService {
   // Coordonnées du point inférieur gauche
   basisPoint: Point = {x: 0, y: 0};
   // Dimensions du rectangle
-  weightCalculated = 0;
+  widthCalculated = 0;
   heightCalculated = 0;
 
   rectangleSelectionTool: DrawingTool = {name: '',
@@ -40,13 +40,13 @@ export class SelectionRectangleService {
   mouseMouve(mouse: MouseEvent) {
     if (this.onoingSelection) {
       // Calcule des valeurs pour former un rectangle
-      this.weightCalculated = Math.abs(this.initialPoint.x - mouse.offsetX);
+      this.widthCalculated = Math.abs(this.initialPoint.x - mouse.offsetX);
       this.heightCalculated = Math.abs(this.initialPoint.y - mouse.offsetY);
 
       this.basisPoint = {x: Math.min(this.initialPoint.x, mouse.offsetX), y: Math.min(this.initialPoint.y, mouse.offsetY)};
 
       this.rectangle.points[0] = this.basisPoint;
-      this.rectangle.points[1] = {x: this.basisPoint.x + this.weightCalculated, y: this.basisPoint.y + this.heightCalculated};
+      this.rectangle.points[1] = {x: this.basisPoint.x + this.widthCalculated, y: this.basisPoint.y + this.heightCalculated};
 
       this.refreshSVG();
     }
@@ -62,7 +62,7 @@ export class SelectionRectangleService {
   mouseUp() {
     this.basisPoint = {x: 0, y: 0};
     this.heightCalculated = 0;
-    this.weightCalculated = 0;
+    this.widthCalculated = 0;
     this.onoingSelection = false;
   }
 
