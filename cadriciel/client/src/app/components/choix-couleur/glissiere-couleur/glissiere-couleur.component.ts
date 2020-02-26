@@ -2,7 +2,7 @@
 
 import { AfterViewInit, Component, ElementRef, HostListener, Input,
          ViewChild } from '@angular/core'
-import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
+import { ColorManagerService } from 'src/app/services/couleur/color-manager.service';
 import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
 
 @Component({
@@ -14,7 +14,7 @@ import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
 export class GlissiereCouleurComponent implements AfterViewInit, InterfaceOutils {
   @ViewChild('canvas', {static: true})
   canvas: ElementRef<HTMLCanvasElement>
-  @Input() gestionnaireCouleur: GestionnaireCouleursService;
+  @Input() gestionnaireCouleur: ColorManagerService;
 
   private context2D: CanvasRenderingContext2D ;
   private sourisbas =  false
@@ -61,7 +61,7 @@ export class GlissiereCouleurComponent implements AfterViewInit, InterfaceOutils
   }
 
   @HostListener('window:mouseup', ['$event'])
-  sourisRelachee(evt: MouseEvent) {
+  sourisRelachee() {
     this.sourisbas = false;
   }
 
@@ -89,8 +89,8 @@ export class GlissiereCouleurComponent implements AfterViewInit, InterfaceOutils
     const rgbaCouleur = 'rgba(' + imageData[0] + ',' + imageData[1] + ',' +
       imageData[2] + ',';
 
-    this.gestionnaireCouleur.couleur = rgbaCouleur;
-    this.gestionnaireCouleur.teinte = rgbaCouleur;
+    this.gestionnaireCouleur.color = rgbaCouleur;
+    this.gestionnaireCouleur.hue = rgbaCouleur;
     this.gestionnaireCouleur.RGB = [imageData[0], imageData[1], imageData[2]];
   }
 

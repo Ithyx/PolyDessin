@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
+import { ColorManagerService } from 'src/app/services/couleur/color-manager.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-rac
   styleUrls: ['./valeur-couleur.component.scss']
 })
 export class ValeurCouleurComponent {
-  @Input() gestionnaireCouleur: GestionnaireCouleursService;
+  @Input() gestionnaireCouleur: ColorManagerService;
 
   INDEX_ROUGE = 0;
   INDEX_VERT = 1;
@@ -29,7 +29,7 @@ export class ValeurCouleurComponent {
     // Vérification qu'on essaie d'accéder à un index possible
     if (index <= this.gestionnaireCouleur.RGB.length) {
       this.gestionnaireCouleur.RGB[index] = Math.min(valeur, 255);
-      this.gestionnaireCouleur.modifierRGB();
+      this.gestionnaireCouleur.editRGB();
     }
   }
 

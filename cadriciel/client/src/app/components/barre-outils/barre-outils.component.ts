@@ -2,8 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig} from '@angular/material';
 import { Subscription } from 'rxjs';
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
-import { Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
-import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
+import { Scope} from 'src/app/services/couleur/color-manager.service';
+import { ColorParameterService } from 'src/app/services/couleur/color-parameter.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { GestionnaireOutilsService, OutilDessin } from 'src/app/services/outils/gestionnaire-outils.service';
 import { SelectionService } from 'src/app/services/outils/selection/selection.service';
@@ -18,8 +18,8 @@ import { GridOptionsComponent } from '../grid-options/grid-options.component';
 })
 export class BarreOutilsComponent implements OnDestroy {
 
-  porteePrincipale = Portee.Principale;
-  porteeSecondaire = Portee.Secondaire;
+  porteePrincipale = Scope.Primary;
+  porteeSecondaire = Scope.Secondary;
   fenetreDessin: ChoixCouleurComponent;
 
   private nouveauDessinSubscription: Subscription;
@@ -27,7 +27,7 @@ export class BarreOutilsComponent implements OnDestroy {
   constructor(public dialog: MatDialog,
               public outils: GestionnaireOutilsService,
               public raccourcis: GestionnaireRaccourcisService,
-              public couleur: ParametresCouleurService,
+              public colorParameter: ColorParameterService,
               public commands: CommandManagerService,
               public selection: SelectionService
              ) {
@@ -88,13 +88,13 @@ export class BarreOutilsComponent implements OnDestroy {
     dialogConfig.panelClass = 'fenetre-couleur';
     this.fenetreDessin = this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance;
     if (porteeEntree === 'principale') {
-      this.fenetreDessin.portee = Portee.Principale;
+      this.fenetreDessin.portee = Scope.Primary;
     }
     if (porteeEntree === 'secondaire') {
-      this.fenetreDessin.portee = Portee.Secondaire;
+      this.fenetreDessin.portee = Scope.Secondary;
     }
     if (porteeEntree === 'fond') {
-      this.fenetreDessin.portee = Portee.Fond;
+      this.fenetreDessin.portee = Scope.Background;
     }
   }
 
@@ -108,23 +108,23 @@ export class BarreOutilsComponent implements OnDestroy {
   }
 
   selectionDerniereCouleurPrimaire(couleurChoisie: string) {
-    this.couleur.couleurPrincipale = couleurChoisie;
+    this.colorParameter.primaryColor = couleurChoisie;
   }
 
   selectionDerniereCouleurSecondaire(couleurChoisie: string, evenement: MouseEvent) {
-    this.couleur.couleurSecondaire = couleurChoisie;
+    this.colorParameter.secondaryColor = couleurChoisie;
     evenement.preventDefault();
   }
 
   appliquerOpacitePrincipale(evenement: Event) {
     const evenementCast: HTMLInputElement = (evenement.target as HTMLInputElement);
-    this.couleur.opacitePrincipale = Math.max(Math.min(Number(evenementCast.value), 1), 0);
-    this.couleur.opacitePrincipaleAffichee = Math.round(100 * this.couleur.opacitePrincipale);
+    this.colorParameter.primaryOpacity = Math.max(Math.min(Number(evenementCast.value), 1), 0);
+    this.colorParameter.primaryOpacityDisplayed = Math.round(100 * this.colorParameter.primaryOpacity);
   }
 
   appliquerOpaciteSecondaire(evenement: Event) {
     const evenementCast: HTMLInputElement = (evenement.target as HTMLInputElement);
-    this.couleur.opaciteSecondaire = Math.max(Math.min(Number(evenementCast.value), 1), 0);
-    this.couleur.opaciteSecondaireAffichee = Math.round(100 * this.couleur.opaciteSecondaire);
+    this.colorParameter.secondaryOpacity = Math.max(Math.min(Number(evenementCast.value), 1), 0);
+    this.colorParameter.secondaryOpacityDisplayed = Math.round(100 * this.colorParameter.secondaryOpacity);
   }
 }

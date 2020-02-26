@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AddSVGService } from '../command/add-svg.service';
 import { CommandManagerService } from '../command/command-manager.service';
-import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
+import { ColorParameterService } from '../couleur/color-parameter.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { TracePencilService } from '../stockage-svg/trace-pencil.service';
 import { GestionnaireOutilsService } from './gestionnaire-outils.service';
@@ -15,7 +15,7 @@ export class DessinCrayonService implements InterfaceOutils {
 
   constructor(public SVGStockage: SVGStockageService,
               public outils: GestionnaireOutilsService,
-              public couleur: ParametresCouleurService,
+              public colorParameter: ColorParameterService,
               public commands: CommandManagerService) { }
 
   trait = new TracePencilService();
@@ -68,7 +68,7 @@ export class DessinCrayonService implements InterfaceOutils {
   }
 
   actualiserSVG() {
-    this.trait.primaryColor = this.couleur.getCouleurPrincipale();
+    this.trait.primaryColor = this.colorParameter.getPrimaryColor();
     this.trait.tool = this.outils.outilActif;
     this.trait.draw();
     this.SVGStockage.setOngoingSVG(this.trait);

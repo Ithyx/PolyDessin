@@ -4,8 +4,8 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { ChoixCouleurComponent } from 'src/app/components/choix-couleur/choix-couleur.component'
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
-import { GestionnaireCouleursService, Portee} from 'src/app/services/couleur/gestionnaire-couleurs.service'
-import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
+import { ColorManagerService, Scope } from 'src/app/services/couleur/color-manager.service'
+import { ColorParameterService } from 'src/app/services/couleur/color-parameter.service';
 import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/gestionnaire-dessin.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
@@ -35,9 +35,9 @@ export class FenetreNouveauDessinComponent {
               public serviceNouveauDessin: GestionnaireDessinService,
               public router: Router,
               public SVGStockage: SVGStockageService,
-              public gestionnaireCouleur: GestionnaireCouleursService,
+              public gestionnaireCouleur: ColorManagerService,
               public dialog: MatDialog,
-              public parametresCouleur: ParametresCouleurService,
+              public colorParameter: ColorParameterService,
               public commands: CommandManagerService,
               private ngZone: NgZone ) {
                 this.dimmensionsChangees();
@@ -77,6 +77,6 @@ export class FenetreNouveauDessinComponent {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '30%';
     dialogConfig.panelClass = 'fenetre-couleur';
-    this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Portee.Fond;
+    this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Scope.Background;
   }
 }

@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material';
 
-import { Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
-import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
+import { Portee } from 'src/app/services/couleur/color-manager.service';
+import { ParametresCouleurService } from 'src/app/services/couleur/color-parameter.service';
 import { ChoixCouleurComponent } from './choix-couleur.component';
 import { CouleurPaletteComponent } from './couleur-palette/couleur-palette.component';
 import { GlissiereCouleurComponent } from './glissiere-couleur/glissiere-couleur.component';

@@ -9,18 +9,18 @@ import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
 import { PageDessinComponent } from '../page-dessin/page-dessin.component';
 import { PageGuideComponent } from '../page-guide/page-guide.component';
 import { SurfaceDessinComponent } from '../surface-dessin/surface-dessin.component';
-import { AccueilComponent } from './accueil.component';
+import { HomePageComponent } from './home-page.component';
 
 describe('AccueilComponent', () => {
-  let component: AccueilComponent;
-  let fixture: ComponentFixture<AccueilComponent>;
+  let component: HomePageComponent;
+  let fixture: ComponentFixture<HomePageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageDessinComponent, PageGuideComponent, AccueilComponent, BarreOutilsComponent, GuideSujetComponent,
+      declarations: [ PageDessinComponent, PageGuideComponent, HomePageComponent, BarreOutilsComponent, GuideSujetComponent,
         OutilDessinComponent, SurfaceDessinComponent ],
       imports: [ MatDialogModule, RouterModule.forRoot([
-        {path: '', component: AccueilComponent},
+        {path: '', component: HomePageComponent},
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ]) ],
@@ -30,7 +30,7 @@ describe('AccueilComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccueilComponent);
+    fixture = TestBed.createComponent(HomePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -41,7 +41,7 @@ describe('AccueilComponent', () => {
 
   it('#creationDessin devrait appeler dialog.open() avec les bons parametres ', () => {
     spyOn(component.dialog, 'open');
-    component.creationDessin();
+    component.createDrawing();
     expect(component.dialog.open).toHaveBeenCalledWith(FenetreNouveauDessinComponent, component.dialogConfig);
   })
 });

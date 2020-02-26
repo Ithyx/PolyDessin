@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AddSVGService } from '../command/add-svg.service';
 import { CommandManagerService } from '../command/command-manager.service';
-import { ParametresCouleurService } from '../couleur/parametres-couleur.service';
+import { ColorParameterService } from '../couleur/color-parameter.service';
 import { RectangleService } from '../stockage-svg/rectangle.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { Point } from './dessin-ligne.service';
@@ -23,13 +23,13 @@ export class DessinRectangleService implements InterfaceOutils {
 
   constructor(public stockageSVG: SVGStockageService,
               public outils: GestionnaireOutilsService,
-              public couleur: ParametresCouleurService,
+              public colorParameter: ColorParameterService,
               public commands: CommandManagerService) { }
 
   actualiserSVG() {
     this.rectangle.tool = this.outils.outilActif;
-    this.rectangle.primaryColor = this.couleur.getCouleurPrincipale();
-    this.rectangle.secondaryColor = this.couleur.getCouleurSecondaire();
+    this.rectangle.primaryColor = this.colorParameter.getPrimaryColor();
+    this.rectangle.secondaryColor = this.colorParameter.getSecondaryColor();
     this.rectangle.draw();
     this.stockageSVG.setOngoingSVG(this.rectangle);
   }

@@ -67,33 +67,33 @@
         <br />
         <div class="boutons-couleur">
             Couleur primaire
-            <button [ngStyle]= "{'background-color': couleur.getCouleurPrincipale() || 'white'}" 
+            <button [ngStyle]= "{'background-color': colorParameter.getPrimaryColor() || 'white'}" 
                     (click)="selectionCouleur('principale')"></button>
             <br />
             <div class="selection-opacite">
                 <label for="opacite-principale">Opacité: </label>
                 <input type="range" name="opacite-principale" min="0" max="1" step="0.01"
-                       [value]="couleur.opacitePrincipale"
+                       [value]="colorParameter.primaryOpacity"
                        (input)="appliquerOpacitePrincipale($event)" />
-                {{couleur.opacitePrincipaleAffichee}}%
+                {{colorParameter.primaryOpacityDisplayed}}%
             </div>
-            <button mat-stroked-button (click)="couleur.intervertirCouleurs()">intervertir</button>
+            <button mat-stroked-button (click)="colorParameter.intervertColors()">intervertir</button>
             <br />
             Couleur secondaire
-            <button [ngStyle]= "{'background-color': couleur.getCouleurSecondaire() || 'white'}"
+            <button [ngStyle]= "{'background-color': colorParameter.getSecondaryColor() || 'white'}"
                     (click)="selectionCouleur('secondaire')"></button>
             <div class="selection-opacite">
                 <label for="opacite-secondaire">Opacité: </label>
                 <input type="range" name="opacite-secondaire" min="0" max="1" step="0.01"
-                       [value]="couleur.opaciteSecondaire"
+                       [value]="colorParameter.secondaryOpacity"
                        (input)="appliquerOpaciteSecondaire($event)" />
-                {{couleur.opaciteSecondaireAffichee}}%
+                {{colorParameter.secondaryOpacityDisplayed}}%
             </div>
             <br />
-            <div *ngIf="couleur.dernieresCouleurs.length > 0" class="dernieres-couleurs">
+            <div *ngIf="colorParameter.lastColors.length > 0" class="dernieres-couleurs">
                 Dernières couleurs utilisées
                 <br />
-                <button *ngFor="let derniereCouleur of couleur.dernieresCouleurs"
+                <button *ngFor="let derniereCouleur of colorParameter.lastColors"
                         [ngStyle]= "{'background-color': derniereCouleur + '1)' || 'white'}" 
                         (click)="selectionDerniereCouleurPrimaire(derniereCouleur)"
                         (contextmenu)="selectionDerniereCouleurSecondaire(derniereCouleur, $event)">
@@ -101,7 +101,7 @@
             </div>
             <div class="couleur-fond"> 
                 Couleur de fond
-                <button [ngStyle]= "{'background-color': couleur.couleurFond || 'white'}" 
+                <button [ngStyle]= "{'background-color': colorParameter.backgroundColor || 'white'}" 
                         (click)="selectionCouleur('fond')"></button>
             </div>
         </div>

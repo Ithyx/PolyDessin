@@ -2,8 +2,8 @@ import { SimpleChange, SimpleChanges } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GestionnaireCommandesService } from 'src/app/services/commande/gestionnaire-commandes.service';
-import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
-import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
+import { GestionnaireCouleursService } from 'src/app/services/couleur/color-manager.service';
+import { ParametresCouleurService } from 'src/app/services/couleur/color-parameter.service';
 import { CouleurPaletteComponent } from './couleur-palette.component';
 
 describe('CouleurPaletteComponent', () => {

@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import {MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { GestionnaireDessinService } from 'src/app/services/gestionnaire-dessin/gestionnaire-dessin.service';
 import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 
 @Component({
-  selector: 'app-accueil',
-  templateUrl: './accueil.component.html',
-  styleUrls: ['./accueil.component.scss']
+  selector: 'app-home-page',
+  templateUrl: './home-page.component.html',
+  styleUrls: ['./home-page.component.scss']
 })
-export class AccueilComponent {
+export class HomePageComponent {
 
   constructor(public dialog: MatDialog,
               public dessinManager: GestionnaireDessinService,
@@ -17,7 +17,7 @@ export class AccueilComponent {
                 dialogConfig.autoFocus = true;
                 dialogConfig.width = '60%'; }
 
-  creationDessin() {
+  createDrawing() {
     this.dialog.open(FenetreNouveauDessinComponent, this.dialogConfig);
   }
 

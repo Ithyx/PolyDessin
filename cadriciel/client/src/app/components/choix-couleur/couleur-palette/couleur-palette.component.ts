@@ -2,7 +2,7 @@
 
 import { AfterViewInit, Component, ElementRef,  HostListener, Input, OnChanges,
          SimpleChanges, ViewChild, } from '@angular/core';
-import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
+import { ColorManagerService } from 'src/app/services/couleur/color-manager.service';
 import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
 
 @Component({
@@ -12,7 +12,7 @@ import { InterfaceOutils } from 'src/app/services/outils/interface-outils';
 })
 export class CouleurPaletteComponent implements AfterViewInit, OnChanges, InterfaceOutils {
 
-  @Input() gestionnaireCouleur: GestionnaireCouleursService;
+  @Input() gestionnaireCouleur: ColorManagerService;
 
   @ViewChild('canvas' , {static: false} )
   canvas: ElementRef<HTMLCanvasElement>;
@@ -24,7 +24,7 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
   hauteurChoisie: { x: number; y: number};
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes[this.gestionnaireCouleur.teinte]) {
+    if (changes[this.gestionnaireCouleur.hue]) {
       this.dessin();
       const pos = this.hauteurChoisie;
       if (pos) {
@@ -35,7 +35,7 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
 
   couleurPosition(x: number, y: number) {
     const imageData = this.context2D.getImageData(x, y, 1, 1).data;
-    this.gestionnaireCouleur.couleur = 'rgba(' + imageData[0] + ',' + imageData[1] + ','
+    this.gestionnaireCouleur.color = 'rgba(' + imageData[0] + ',' + imageData[1] + ','
       + imageData[2] + ',';
     this.gestionnaireCouleur.RGB = [imageData[0], imageData[1], imageData[2]];
   }
@@ -75,7 +75,7 @@ export class CouleurPaletteComponent implements AfterViewInit, OnChanges, Interf
     const largeur = this.canvas.nativeElement.width;
     const hauteur = this.canvas.nativeElement.height;
 
-    this.context2D.fillStyle = this.gestionnaireCouleur.teinte + '1)';
+    this.context2D.fillStyle = this.gestionnaireCouleur.hue + '1)';
     this.context2D.fillRect(0, 0, largeur, hauteur);
 
     const whiteGrad = this.context2D.createLinearGradient(0, 0, largeur, 0);

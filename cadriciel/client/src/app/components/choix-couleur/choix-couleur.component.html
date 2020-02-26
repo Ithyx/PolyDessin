@@ -5,7 +5,7 @@
 <div class="input-wrapper">
     <app-valeur-couleur [gestionnaireCouleur]="gestionnaireCouleur"></app-valeur-couleur>
     <div class ="color-div" 
-        [ngStyle]= "{'background-color': gestionnaireCouleur.getCouleur() || 'white'}">
+        [ngStyle]= "{'background-color': gestionnaireCouleur.getColor() || 'white'}">
     </div>
 </div>
 <button mat-stroked-button (click)="appliquerCouleur()">Confirmer</button>

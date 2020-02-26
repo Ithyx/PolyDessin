@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ParametresCouleurService } from './parametres-couleur.service';
+import { ParametresCouleurService } from './color-parameter.service';
 
 describe('ParametresCouleurService', () => {
   let service: ParametresCouleurService;

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GestionnaireCouleursService, Portee } from './gestionnaire-couleurs.service';
+import { GestionnaireCouleursService, Portee } from './color-manager.service';
 
 describe('GestionnaireCouleursService', () => {
   let service: GestionnaireCouleursService;

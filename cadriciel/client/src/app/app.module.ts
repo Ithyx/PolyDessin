@@ -7,7 +7,6 @@ import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 
 // Component
-import { AccueilComponent } from './components/accueil/accueil.component';
 import { AppComponent } from './components/app/app.component';
 import { AvertissementNouveauDessinComponent } from './components/avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
 import { BarreOutilsComponent } from './components/barre-outils/barre-outils.component';
@@ -18,6 +17,7 @@ import { ValeurCouleurComponent } from './components/choix-couleur/valeur-couleu
 import { FenetreNouveauDessinComponent } from './components/fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 import { GridOptionsComponent } from './components/grid-options/grid-options.component';
 import { GuideSujetComponent } from './components/guide-sujet/guide-sujet.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
 import { OutilDessinComponent } from './components/outil-dessin/outil-dessin.component';
 import { PageDessinComponent } from './components/page-dessin/page-dessin.component';
 import { PageGuideComponent } from './components/page-guide/page-guide.component';
@@ -25,7 +25,7 @@ import { SurfaceDessinComponent } from './components/surface-dessin/surface-dess
 
 // Service
 import { CommandManagerService } from './services/command/command-manager.service';
-import { ParametresCouleurService } from './services/couleur/parametres-couleur.service';
+import { ColorParameterService } from './services/couleur/color-parameter.service';
 import { GestionnaireDessinService } from './services/gestionnaire-dessin/gestionnaire-dessin.service';
 import { GestionnaireRaccourcisService } from './services/gestionnaire-raccourcis.service';
 import { GestionnaireRoutingService } from './services/gestionnaire-routing.service';
@@ -38,18 +38,18 @@ import { SelectionService } from './services/outils/selection/selection.service'
 import { SVGStockageService } from './services/stockage-svg/svg-stockage.service';
 
 @NgModule({
-    declarations: [AppComponent, AccueilComponent, AvertissementNouveauDessinComponent, PageDessinComponent, PageGuideComponent,
+    declarations: [AppComponent, HomePageComponent, AvertissementNouveauDessinComponent, PageDessinComponent, PageGuideComponent,
         FenetreNouveauDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent,
             ChoixCouleurComponent, GlissiereCouleurComponent, CouleurPaletteComponent, ValeurCouleurComponent, GridOptionsComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
         MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
-        {path: '', component: AccueilComponent},
+        {path: '', component: HomePageComponent},
         {path: 'dessin', component: PageDessinComponent},
         {path: 'guide', component : PageGuideComponent}
     ])],
     providers: [NavigationGuideService, SVGStockageService, DessinCrayonService, GestionnaireDessinService,
                 GestionnaireRaccourcisService, DessinRectangleService, DessinLigneService,
-                GestionnaireRoutingService, ParametresCouleurService, MatDialogConfig, SelectionService,
+                GestionnaireRoutingService, ColorParameterService, MatDialogConfig, SelectionService,
                 CommandManagerService, GridService],
     entryComponents: [FenetreNouveauDessinComponent, AvertissementNouveauDessinComponent,
                       ChoixCouleurComponent, GridOptionsComponent],

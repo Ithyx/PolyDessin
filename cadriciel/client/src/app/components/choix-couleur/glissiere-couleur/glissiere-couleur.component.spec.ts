@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GestionnaireCommandesService } from 'src/app/services/commande/gestionnaire-commandes.service';
-import { GestionnaireCouleursService } from 'src/app/services/couleur/gestionnaire-couleurs.service';
-import { ParametresCouleurService } from 'src/app/services/couleur/parametres-couleur.service';
+import { GestionnaireCouleursService } from 'src/app/services/couleur/color-manager.service';
+import { ParametresCouleurService } from 'src/app/services/couleur/color-parameter.service';
 import { GlissiereCouleurComponent } from './glissiere-couleur.component';
 
 describe('GlissiereCouleurComponent', () => {

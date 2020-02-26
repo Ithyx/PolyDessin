@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material'
-import { GestionnaireCouleursService, Portee } from 'src/app/services/couleur/gestionnaire-couleurs.service';
+import { ColorManagerService, Scope } from 'src/app/services/couleur/color-manager.service';
 
 @Component({
   selector: 'app-choix-couleur',
   templateUrl: './choix-couleur.component.html',
   styleUrls: ['./choix-couleur.component.scss'],
-  providers: [GestionnaireCouleursService]
+  providers: [ColorManagerService]
 })
 export class ChoixCouleurComponent  {
 
-  portee: Portee = Portee.Principale;
+  portee: Scope = Scope.Primary;
 
-  constructor(public gestionnaireCouleur: GestionnaireCouleursService,
+  constructor(public gestionnaireCouleur: ColorManagerService,
               public dialogRef: MatDialogRef<ChoixCouleurComponent>) {}
 
   fermerFenetre() {
@@ -20,7 +20,7 @@ export class ChoixCouleurComponent  {
   }
 
   appliquerCouleur() {
-    this.gestionnaireCouleur.appliquerCouleur(this.portee);
+    this.gestionnaireCouleur.applyColor(this.portee);
     this.dialogRef.close();
   }
 
