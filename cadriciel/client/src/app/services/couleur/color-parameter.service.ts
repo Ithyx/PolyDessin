@@ -27,6 +27,6 @@ export class ColorParameterService {
   }
 
   getSecondaryColor() {
-    return this.secondaryColor + this.secondaryColor + ')';
+    return this.secondaryColor + this.secondaryOpacity + ')';
   }
 }

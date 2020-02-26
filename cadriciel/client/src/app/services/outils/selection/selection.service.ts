@@ -13,7 +13,7 @@ import { SelectionRectangleService } from './selection-rectangle.service';
 })
 export class SelectionService implements ToolInterface {
   boiteElementSelectionne = new RectangleService();
-  elementSelectionne: DrawElement[] = [];
+  selectedElements: DrawElement[] = [];
 
   constructor(public SVGStockage: SVGStockageService,
               public selectionBox: SelectionBoxService,
@@ -24,8 +24,8 @@ export class SelectionService implements ToolInterface {
   traiterClic(element: DrawElement) {
     this.deleteBoundingBox();
 
-    if (!this.elementSelectionne.includes(element)) {
-      this.elementSelectionne.push(element);
+    if (!this.selectedElements.includes(element)) {
+      this.selectedElements.push(element);
       element.isSelected = true;
       this.createBoundingBox();
     }
@@ -91,13 +91,12 @@ export class SelectionService implements ToolInterface {
   };
 
   createBoundingBox() {
-
     let pointMin: Point = {x: this.gestionnaireDessin.largeur , y: this.gestionnaireDessin.hauteur};
     let pointMax: Point = {x: 0 , y: 0};
     const epaisseurMin: Point = {x: 0, y: 0};
     const epaisseurMax: Point = {x: 0, y: 0};
 
-    for (const element of this.elementSelectionne) {
+    for (const element of this.selectedElements) {
       for (const point of element.points) {
         // Point Min
         if (pointMin.x > point.x) {
@@ -126,12 +125,12 @@ export class SelectionService implements ToolInterface {
   };
 
   deleteBoundingBox() {
-    if (this.elementSelectionne) {
+    if (this.selectedElements) {
       this.selectionBox.deleteSelectionBox();
 
-      for (const element of this.elementSelectionne) {
+      for (const element of this.selectedElements) {
         element.isSelected = false;
-        this.elementSelectionne.pop();
+        this.selectedElements.pop();
       }
     }
   };
@@ -143,13 +142,8 @@ export class SelectionService implements ToolInterface {
 
     for (const element of this.SVGStockage.getCompleteSVG()) {
       for (const point of element[1].points) {
-        if (point.x >= rectangleSelection.points[0].x && point.x <= rectangleSelection.points[1].x) {
-          belongInX = true;
-        } else {belongInX = false; };
-
-        if (point.y >= rectangleSelection.points[0].y && point.y <= rectangleSelection.points[1].y) {
-          belongInY = true;
-        } else {belongInY = false}
+        belongInX = (point.x >= rectangleSelection.points[0].x && point.x <= rectangleSelection.points[1].x);
+        belongInY = (point.y >= rectangleSelection.points[0].y && point.y <= rectangleSelection.points[1].y);
 
         if (belongInX && belongInY) {
           belongToRectangle = true;
@@ -157,7 +151,7 @@ export class SelectionService implements ToolInterface {
       }
       if (belongToRectangle) {
         element[1].isSelected = true;
-        this.elementSelectionne.push(element[1]);
+        this.selectedElements.push(element[1]);
         belongToRectangle = false;
       }
     }

@@ -5,8 +5,8 @@ import { ColorParameterService } from '../couleur/color-parameter.service';
 import { RectangleService } from '../stockage-svg/rectangle.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { Point } from './line-tool.service';
-import { ToolManagerService } from './tool-manager.service'
 import { ToolInterface } from './tool-interface'
+import { ToolManagerService } from './tool-manager.service'
 
 @Injectable({
   providedIn: 'root'
@@ -62,6 +62,7 @@ export class RectangleToolService implements ToolInterface {
     // On évite de créer des formes vides
     if (this.rectangle.getWidth() !== 0 || this.rectangle.getHeight() !== 0) {
       this.commands.execute(new AddSVGService(this.rectangle, this.stockageSVG));
+      console.log('Contour', this.rectangle);
     }
     this.calculatedBase = {x: 0, y: 0};
     this.calculatedHeight = 0;

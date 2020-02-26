@@ -9,7 +9,7 @@
 }
 
 //Image libre de droit trouvée sur: https://pixabay.com/vectors/triangles-polygon-color-pink-1430105/
-.accueil{
+.homePage{
     height: 100%;
     background-color: #EFE2BA;
     background-image: url(../../../assets/triangles-1430105.png);
@@ -17,7 +17,7 @@
     display: block;
 }
 
-.bouttons{
+.buttons{
     padding-top: 20%;
     text-align: center;
     top:50%;
@@ -43,7 +43,7 @@ button:hover {
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
   }
 
-button.nonDisponible{
+button.unavailable{
     opacity: 0.6;
     cursor: not-allowed;
 }

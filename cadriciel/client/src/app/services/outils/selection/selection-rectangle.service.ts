@@ -52,10 +52,10 @@ export class SelectionRectangleService {
     }
   }
 
-  mouseDown(souris: MouseEvent) {
+  mouseDown(mouse: MouseEvent) {
     this.rectangle = new RectangleService();
     this.rectangle.isDotted = true;
-    this.initialPoint = {x: souris.offsetX, y: souris.offsetY};
+    this.initialPoint = {x: mouse.offsetX, y: mouse.offsetY};
     this.onoingSelection = true;
   }
 
