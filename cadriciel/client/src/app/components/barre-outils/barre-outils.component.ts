@@ -4,9 +4,9 @@ import { Subscription } from 'rxjs';
 import { Scope } from 'src/app/services/color/color-manager.service';
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
-import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 import { SelectionService } from 'src/app/services/outils/selection/selection.service';
 import { DrawingTool, ToolManagerService } from 'src/app/services/outils/tool-manager.service';
+import { GestionnaireRaccourcisService } from 'src/app/services/shortcuts-manager.service';
 import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
 import { ChoixCouleurComponent } from '../choix-couleur/choix-couleur.component';
 import { GridOptionsComponent } from '../grid-options/grid-options.component';
@@ -48,7 +48,7 @@ export class BarreOutilsComponent implements OnDestroy {
     this.outils.activeTool.isActive = false;
     this.outils.activeTool = outil;
     this.outils.activeTool.isActive = true;
-    this.raccourcis.viderSVGEnCours();
+    this.raccourcis.clearOngoingSVG();
   }
 
   onChange(event: Event, nomParametre: string) {

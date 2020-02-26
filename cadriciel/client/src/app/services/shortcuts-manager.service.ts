@@ -4,10 +4,10 @@ import { CommandManagerService } from './command/command-manager.service';
 import { GridService } from './grid/grid.service';
 import { LineToolService } from './outils/line-tool.service';
 import { RectangleToolService } from './outils/rectangle-tool.service';
-import { ToolManagerService, PENCIL_TOOL_INDEX,
-        LINE_TOOL_INDEX, BRUSH_TOOL_INDEX ,
-        RECTANGLE_TOOL_INDEX, SELECTION_TOOL_INDEX } from './outils/tool-manager.service';
 import { SelectionService } from './outils/selection/selection.service';
+import { BRUSH_TOOL_INDEX,
+        LINE_TOOL_INDEX, PENCIL_TOOL_INDEX,
+        RECTANGLE_TOOL_INDEX, SELECTION_TOOL_INDEX, SPRAY_TOOL_INDEX, ToolManagerService } from './outils/tool-manager.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 
 @Injectable({
@@ -18,96 +18,98 @@ export class GestionnaireRaccourcisService {
 
   emitterNouveauDessin: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
-  constructor(public outils: ToolManagerService,
-              public dessinRectangle: RectangleToolService,
-              public dessinLigne: LineToolService,
+  constructor(public tools: ToolManagerService,
+              public rectangleTool: RectangleToolService,
+              public lineTool: LineToolService,
               public commands: CommandManagerService,
               public selection: SelectionService,
               public SVGStockage: SVGStockageService,
               public grid: GridService) { }
 
-  viderSVGEnCours() {
-    this.dessinRectangle.clear();
-    this.dessinLigne.clear();
+  clearOngoingSVG() {
+    this.rectangleTool.clear();
+    this.lineTool.clear();
   }
 
-  traiterInput(clavier: KeyboardEvent) {
+  treatInput(keybord: KeyboardEvent) {
     if (this.champDeTexteEstFocus) { return; };
-    switch (clavier.key) {
+    switch (keybord.key) {
       case '1':
         this.selection.deleteBoundingBox();
-        this.outils.changeActiveTool(RECTANGLE_TOOL_INDEX);
-        this.viderSVGEnCours();
+        this.tools.changeActiveTool(RECTANGLE_TOOL_INDEX);
+        this.clearOngoingSVG();
         break;
 
       case 'a':
-        clavier.preventDefault();
-        if (clavier.ctrlKey && this.outils.activeTool.ID === SELECTION_TOOL_INDEX) {
-          this.selection.deleteBoundingBox();
+        keybord.preventDefault();
+        this.selection.deleteBoundingBox();
+
+        if (keybord.ctrlKey) {
+          this.tools.changeActiveTool(SELECTION_TOOL_INDEX);
           this.selection.creerBoiteEnglobantePlusieursElementDessins(this.SVGStockage.getCompleteSVG());
-        }
+        } else {this.tools.changeActiveTool(SPRAY_TOOL_INDEX); };
         break;
 
       case 'c':
         this.selection.deleteBoundingBox();
-        this.outils.changeActiveTool(PENCIL_TOOL_INDEX);
-        this.viderSVGEnCours();
+        this.tools.changeActiveTool(PENCIL_TOOL_INDEX);
+        this.clearOngoingSVG();
         break;
 
       case 'l':
         this.selection.deleteBoundingBox();
-        this.outils.changeActiveTool(LINE_TOOL_INDEX);
-        this.viderSVGEnCours();
+        this.tools.changeActiveTool(LINE_TOOL_INDEX);
+        this.clearOngoingSVG();
         break;
 
       case 'w':
         this.selection.deleteBoundingBox();
-        this.outils.changeActiveTool(BRUSH_TOOL_INDEX);
-        this.viderSVGEnCours();
+        this.tools.changeActiveTool(BRUSH_TOOL_INDEX);
+        this.clearOngoingSVG();
         break;
 
       case 's':
         this.selection.deleteBoundingBox();
-        this.outils.changeActiveTool(SELECTION_TOOL_INDEX);
-        this.viderSVGEnCours();
+        this.tools.changeActiveTool(SELECTION_TOOL_INDEX);
+        this.clearOngoingSVG();
 
       case 'z':
-        if (clavier.ctrlKey && !this.commands.drawingInProgress) {
+        if (keybord.ctrlKey && !this.commands.drawingInProgress) {
           this.commands.cancelCommand();
         }
         break;
 
       case 'Z':
-        if (clavier.ctrlKey && !this.commands.drawingInProgress) {
+        if (keybord.ctrlKey && !this.commands.drawingInProgress) {
           this.commands.redoCommand();
         }
         break;
 
       case 'Shift':
-        if (this.outils.activeTool.ID === RECTANGLE_TOOL_INDEX) {
-          this.dessinRectangle.shiftPress();
+        if (this.tools.activeTool.ID === RECTANGLE_TOOL_INDEX) {
+          this.rectangleTool.shiftPress();
         }
-        if (this.outils.activeTool.ID === LINE_TOOL_INDEX) {
-          this.dessinLigne.stockerCurseur();
+        if (this.tools.activeTool.ID === LINE_TOOL_INDEX) {
+          this.lineTool.stockerCurseur();
         }
         break;
 
       case 'o':
-        if (clavier.ctrlKey) {
+        if (keybord.ctrlKey) {
           this.emitterNouveauDessin.next(false);
-          clavier.preventDefault();
+          keybord.preventDefault();
         }
         break;
 
       case 'Backspace':
-        if (this.outils.activeTool.ID === LINE_TOOL_INDEX) {
-          this.dessinLigne.retirerPoint();
+        if (this.tools.activeTool.ID === LINE_TOOL_INDEX) {
+          this.lineTool.retirerPoint();
         }
         break;
 
       case 'Escape':
-        if (this.outils.activeTool.ID === LINE_TOOL_INDEX) {
-          this.dessinLigne.clear();
+        if (this.tools.activeTool.ID === LINE_TOOL_INDEX) {
+          this.lineTool.clear();
         }
         break;
 
@@ -128,14 +130,14 @@ export class GestionnaireRaccourcisService {
     }
   }
 
-  traiterToucheRelachee(clavier: KeyboardEvent) {
-    switch (clavier.key) {
+  treatReleaseKey(keybord: KeyboardEvent) {
+    switch (keybord.key) {
       case 'Shift':
-        if (this.outils.activeTool.ID === RECTANGLE_TOOL_INDEX) {
-          this.dessinRectangle.shiftRelease();
+        if (this.tools.activeTool.ID === RECTANGLE_TOOL_INDEX) {
+          this.rectangleTool.shiftRelease();
         }
-        if (this.outils.activeTool.ID === LINE_TOOL_INDEX) {
-          this.dessinLigne.ShiftRelease();
+        if (this.tools.activeTool.ID === LINE_TOOL_INDEX) {
+          this.lineTool.ShiftRelease();
         }
         break;
 

@@ -7,7 +7,7 @@ import { ColorManagerService, Scope } from 'src/app/services/color/color-manager
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
-import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
+import { GestionnaireRaccourcisService } from 'src/app/services/shortcuts-manager.service';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 
 export const KEY_FORM_HAUTEUR = 'hauteurFormulaire';

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ColorManagerService } from 'src/app/services/color/color-manager.service';
-import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
+import { GestionnaireRaccourcisService } from 'src/app/services/shortcuts-manager.service';
 
 @Component({
   selector: 'app-valeur-couleur',

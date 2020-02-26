@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
-import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
+import { GestionnaireRaccourcisService } from 'src/app/services/shortcuts-manager.service';
 import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 
 @Component({

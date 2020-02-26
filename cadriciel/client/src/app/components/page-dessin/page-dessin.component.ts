@@ -1,13 +1,13 @@
 import { Component, HostListener } from '@angular/core';
-import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
-import { DrawingToolService } from 'src/app/services/outils/pencil-tool.service';
-import { LineToolService } from 'src/app/services/outils/line-tool.service';
 import { BrushToolService } from 'src/app/services/outils/brush-tool.service';
-import { RectangleToolService } from 'src/app/services/outils/rectangle-tool.service'
 import { DrawSprayService } from 'src/app/services/outils/draw-spray.service';
-import { ToolManagerService } from 'src/app/services/outils/tool-manager.service';
-import { ToolInterface } from 'src/app/services/outils/tool-interface';
+import { LineToolService } from 'src/app/services/outils/line-tool.service';
+import { DrawingToolService } from 'src/app/services/outils/pencil-tool.service';
+import { RectangleToolService } from 'src/app/services/outils/rectangle-tool.service'
 import { SelectionService } from 'src/app/services/outils/selection/selection.service';
+import { ToolInterface } from 'src/app/services/outils/tool-interface';
+import { ToolManagerService } from 'src/app/services/outils/tool-manager.service';
+import { GestionnaireRaccourcisService } from 'src/app/services/shortcuts-manager.service';
 
 @Component({
   selector: 'app-page-dessin',
@@ -38,12 +38,12 @@ export class PageDessinComponent {
 
   @HostListener('document:keydown', ['$event'])
   toucheEnfoncee(event: KeyboardEvent) {
-    this.raccourcis.traiterInput(event);
+    this.raccourcis.treatInput(event);
   }
 
   @HostListener('document:keyup', ['$event'])
   toucheRelachee(event: KeyboardEvent) {
-    this.raccourcis.traiterToucheRelachee(event);
+    this.raccourcis.treatReleaseKey(event);
   }
 
   sourisCliquee(souris: MouseEvent) {

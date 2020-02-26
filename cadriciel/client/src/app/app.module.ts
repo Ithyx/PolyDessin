@@ -27,7 +27,7 @@ import { SurfaceDessinComponent } from './components/surface-dessin/surface-dess
 import { ColorParameterService } from './services/color/color-parameter.service';
 import { CommandManagerService } from './services/command/command-manager.service';
 import { DrawingManagerService } from './services/drawing-manager/drawing-manager.service';
-import { GestionnaireRaccourcisService } from './services/gestionnaire-raccourcis.service';
+import { GestionnaireRaccourcisService } from './services/shortcuts-manager.service';
 import { GestionnaireRoutingService } from './services/gestionnaire-routing.service';
 import { GridService } from './services/grid/grid.service';
 import { NavigationGuideService } from './services/navigation-guide.service';
