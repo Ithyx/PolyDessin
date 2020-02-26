@@ -24,8 +24,8 @@ import { PageGuideComponent } from './components/page-guide/page-guide.component
 import { SurfaceDessinComponent } from './components/surface-dessin/surface-dessin.component';
 
 // Service
+import { ColorParameterService } from './services/color/color-parameter.service';
 import { CommandManagerService } from './services/command/command-manager.service';
-import { ColorParameterService } from './services/couleur/color-parameter.service';
 import { DrawingManagerService } from './services/drawing-manager/drawing-manager.service';
 import { GestionnaireRaccourcisService } from './services/gestionnaire-raccourcis.service';
 import { GestionnaireRoutingService } from './services/gestionnaire-routing.service';

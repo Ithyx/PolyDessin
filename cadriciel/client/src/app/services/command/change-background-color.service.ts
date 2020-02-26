@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ColorParameterService } from '../couleur/color-parameter.service';
+import { ColorParameterService } from '../color/color-parameter.service';
 import { Command } from './command';
 
 @Injectable({

@@ -3,8 +3,8 @@ import { AddSVGService } from '../command/add-svg.service';
 import { CommandManagerService } from '../command/command-manager.service';
 import { LineService } from '../stockage-svg/line.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
-import { ToolManagerService } from './tool-manager.service';
 import { ToolInterface } from './tool-interface';
+import { ToolManagerService } from './tool-manager.service';
 
 export interface Point {
   x: number;

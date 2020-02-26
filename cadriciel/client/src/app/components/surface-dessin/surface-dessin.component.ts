@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ColorParameterService } from 'src/app/services/couleur/color-parameter.service'
+import { ColorParameterService } from 'src/app/services/color/color-parameter.service'
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routing.service';
 import { GridService } from 'src/app/services/grid/grid.service';

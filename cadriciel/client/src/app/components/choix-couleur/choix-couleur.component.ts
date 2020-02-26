@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material'
-import { ColorManagerService, Scope } from 'src/app/services/couleur/color-manager.service';
+import { ColorManagerService, Scope } from 'src/app/services/color/color-manager.service';
 
 @Component({
   selector: 'app-choix-couleur',

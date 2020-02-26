@@ -1,12 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig} from '@angular/material';
 import { Subscription } from 'rxjs';
+import { Scope } from 'src/app/services/color/color-manager.service';
+import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
-import { Scope} from 'src/app/services/couleur/color-manager.service';
-import { ColorParameterService } from 'src/app/services/couleur/color-parameter.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
-import { ToolManagerService, DrawingTool } from 'src/app/services/outils/tool-manager.service';
 import { SelectionService } from 'src/app/services/outils/selection/selection.service';
+import { DrawingTool, ToolManagerService } from 'src/app/services/outils/tool-manager.service';
 import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
 import { ChoixCouleurComponent } from '../choix-couleur/choix-couleur.component';
 import { GridOptionsComponent } from '../grid-options/grid-options.component';

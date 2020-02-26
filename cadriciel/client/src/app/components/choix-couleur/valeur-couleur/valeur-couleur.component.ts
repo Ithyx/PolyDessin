@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ColorManagerService } from 'src/app/services/couleur/color-manager.service';
+import { ColorManagerService } from 'src/app/services/color/color-manager.service';
 import { GestionnaireRaccourcisService } from 'src/app/services/gestionnaire-raccourcis.service';
 
 @Component({

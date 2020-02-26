@@ -2,7 +2,7 @@
 
 import { AfterViewInit, Component, ElementRef, HostListener, Input,
          ViewChild } from '@angular/core'
-import { ColorManagerService } from 'src/app/services/couleur/color-manager.service';
+import { ColorManagerService } from 'src/app/services/color/color-manager.service';
 import { ToolInterface } from 'src/app/services/outils/tool-interface';
 
 @Component({
