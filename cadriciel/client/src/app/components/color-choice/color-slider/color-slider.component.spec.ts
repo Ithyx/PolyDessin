@@ -64,7 +64,7 @@ describe('GlissiereCouleurComponent', () => {
 
   it('#sourisEnfoncee devrait changer la hauteur choisie', () => {
     component.onMousePress(new MouseEvent('mousedown', {clientY: 35}));
-    expect(component.choosenHeight).toBe(35);
+    expect(component.chosenHeight).toBe(35);
   });
 
   it('#sourisEnfoncee devrait valider le draw', () => {
@@ -83,7 +83,7 @@ describe('GlissiereCouleurComponent', () => {
 
   it('#sourisDeplacee devrait changer la hauteur choisie', () => {
     component.onMousePress(new MouseEvent('mousedown', {clientY: 35}));
-    expect(component.choosenHeight).toBe(35);
+    expect(component.chosenHeight).toBe(35);
   });
 
   it('#sourisDeplacee devrait valider le draw', () => {

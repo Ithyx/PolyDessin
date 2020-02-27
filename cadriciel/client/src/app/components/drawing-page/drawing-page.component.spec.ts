@@ -4,11 +4,11 @@ import { RouterModule } from '@angular/router';
 
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
 import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
-import { BarreOutilsComponent } from '../barre-outils/barre-outils.component';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 import { GuidePageComponent } from '../guide-page/guide-page.component';
 import { GuideSubjectComponent } from '../guide-subject/guide-subject.component';
 import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
+import { ToolbarComponent } from '../toolbar/toolbar.component';
 import { DrawingPageComponent } from './drawing-page.component';
 
 /* Service stub pour réduire les dépendances */
@@ -64,7 +64,7 @@ describe('PageDessinComponent', () => {
         {path: 'guide', component : GuidePageComponent}
       ])],
       providers: [ {provide: ToolManagerService, useValue: GestionnaireOutilServiceStub} ],
-      declarations: [ DrawingPageComponent, GuidePageComponent, BarreOutilsComponent,
+      declarations: [ DrawingPageComponent, GuidePageComponent, ToolbarComponent,
         OutilDessinComponent, DrawingSurfaceComponent, GuideSubjectComponent ]
     })
     .compileComponents();

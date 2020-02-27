@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 
 // Component
 import { AppComponent } from './components/app/app.component';
-import { BarreOutilsComponent } from './components/barre-outils/barre-outils.component';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { ColorChoiceComponent } from './components/color-choice/color-choice.component'
 import { ColorInputComponent } from './components/color-choice/color-input/color-input.component';
 import { ColorPickerComponent } from './components/color-choice/color-picker/color-picker.component'
@@ -39,7 +39,7 @@ import { SelectionService } from './services/tools/selection/selection.service';
 
 @NgModule({
     declarations: [AppComponent, HomePageComponent, NewDrawingWarningComponent, DrawingPageComponent, GuidePageComponent,
-        FenetreNouveauDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSubjectComponent, DrawingSurfaceComponent,
+        FenetreNouveauDessinComponent, ToolbarComponent, OutilDessinComponent, GuideSubjectComponent, DrawingSurfaceComponent,
         ColorChoiceComponent, ColorSliderComponent, ColorPickerComponent, ColorInputComponent, GridOptionsComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
         MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AjoutSvgService } from '../commande/add-svg.service';
+import { AddSVGService } from '../command/add-svg.service';
 import { LineService } from '../stockage-svg/line.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { LineToolService } from './line-tool.service';
@@ -22,10 +22,10 @@ describe('DessinLigneService', () => {
     service.line.tool = service.tools.toolList[LINE_TOOL_INDEX];
     element = service.line;
     stockageService.setOngoingSVG(element);
-    service.commandes.dessinEnCours = true;
+    service.commands.drawingInProgress = true;
     // Mettre l'outil ligne comme l'outil actif
     service.tools.activeTool = service.tools.toolList[LINE_TOOL_INDEX];
-    service.tools.activeTool.parameters[1].choosenOption = 'Sans points';
+    service.tools.activeTool.parameters[1].chosenOption = 'Sans points';
   });
 
   it('should be created', () => {
@@ -41,16 +41,16 @@ describe('DessinLigneService', () => {
     expect(service.cursor).toEqual({x: 100, y: 100});
   });
 
-  it('#sourisDeplacee devrait appeler shiftEnfonce si shift est enfoncé', () => {
-    spyOn(service, 'shiftEnfonce');
+  it('#sourisDeplacee devrait appeler shiftPress si shift est enfoncé', () => {
+    spyOn(service, 'shiftPress');
     service.onMouseMove(new MouseEvent('mousemove', { shiftKey: true }));
-    expect(service.ShitPress).toHaveBeenCalled();
+    expect(service.shiftPress).toHaveBeenCalled();
   });
 
   it("#sourisDeplacee devrait appeler shiftRelache si shift n'est pas enfoncé", () => {
     spyOn(service, 'shiftRelache');
     service.onMouseMove(new MouseEvent('mousemove', { shiftKey: false }));
-    expect(service.ShiftRelease).toHaveBeenCalled();
+    expect(service.shiftRelease).toHaveBeenCalled();
   });
 
   // TESTS sourisCliquee
@@ -61,10 +61,10 @@ describe('DessinLigneService', () => {
     expect(service.line.points).not.toBeNull();
   });
 
-  it('#sourisCliquee devrait changer dessinEnCours à true', () => {
-    service.commandes.dessinEnCours = false;
+  it('#sourisCliquee devrait changer drawingInProgress à true', () => {
+    service.commands.drawingInProgress = false;
     service.onMouseClick();
-    expect(service.commandes.dessinEnCours).toBe(true);
+    expect(service.commands.drawingInProgress).toBe(true);
   });
 
   it("#sourisCliquee ne devrait pas appeler actualiserSVG si c'est un double clic", () => {
@@ -83,16 +83,16 @@ describe('DessinLigneService', () => {
 
   // TESTS sourisDoubleClic
 
-  it('#sourisDoubleClic devrait mettre dessinEnCours à faux', () => {
+  it('#sourisDoubleClic devrait mettre drawingInProgress à faux', () => {
     service.onDoubleClick(new MouseEvent('dblClick'));
-    expect(service.commandes.dessinEnCours).toBe(false);
+    expect(service.commands.drawingInProgress).toBe(false);
   });
 
   it('#sourisDoubleClic ne devrait pas appeler executer si le conteneur points est vide', () => {
     service.line.points = [];
-    spyOn(service.commandes, 'executer');
+    spyOn(service.commands, 'executer');
     service.onDoubleClick(new MouseEvent('dblClick', {clientX: 100, clientY: 100}));
-    expect(service.commandes.executer).not.toHaveBeenCalled();
+    expect(service.commands.executer).not.toHaveBeenCalled();
   });
 
   it('#sourisDoubleClic devrait considérer la ligne comme un polygone si la distance est moins de 3 pixels', () => {
@@ -101,15 +101,15 @@ describe('DessinLigneService', () => {
     service.line.points.push({x: 0, y: 0});
     element = service.line;
 
-    spyOn(service.commandes, 'executer');
+    spyOn(service.commands, 'executer');
     service.onDoubleClick(new MouseEvent('dblClick', {clientX: 1, clientY: 1}));
     element.isAPolygon = true;
     element.points.pop();
     element.points.pop();
     element.draw();
-    const ajout = new AjoutSvgService(element, stockageService);
+    const ajout = new AddSVGService(element, stockageService);
     ajout.cleSVG = 1;
-    expect(service.commandes.executer).toHaveBeenCalledWith(ajout);
+    expect(service.commands.executer).toHaveBeenCalledWith(ajout);
   });
 
   it('#sourisDoubleClic ne devrait pas considérer la ligne comme un polygone si la distance est plus de 3 pixels', () => {
@@ -118,53 +118,53 @@ describe('DessinLigneService', () => {
     service.line.points.push({x: 0, y: 0});
     element = service.line;
 
-    spyOn(service.commandes, 'executer');
+    spyOn(service.commands, 'executer');
     service.onDoubleClick(new MouseEvent('dblClick', {clientX: 1, clientY: 1}));
     element.draw();
-    const ajout = new AjoutSvgService(element, stockageService);
+    const ajout = new AddSVGService(element, stockageService);
     ajout.cleSVG = 1;
-    expect(service.commandes.executer).toHaveBeenCalledWith(ajout);
+    expect(service.commands.executer).toHaveBeenCalledWith(ajout);
   });
 
   it('#sourisDoubleClic devrait ajouter le point à la mousePosition si "Avec Points"'
     + ' est choisi', () => {
-    service.tools.activeTool.parameters[1].choosenOption = 'Avec points';
+    service.tools.activeTool.parameters[1].chosenOption = 'Avec points';
     service.line.mousePosition = {x: 25, y: 25};
     element = service.line;
 
-    spyOn(service.commandes, 'executer');
+    spyOn(service.commands, 'executer');
     service.onDoubleClick(new MouseEvent('dblClick', {clientX: 100, clientY: 100}));
     element.points.push({x: 25, y: 25});
     element.draw();
-    const ajout = new AjoutSvgService(element, stockageService);
+    const ajout = new AddSVGService(element, stockageService);
     ajout.cleSVG = 1;
-    expect(service.commandes.executer).toHaveBeenCalledWith(ajout);
+    expect(service.commands.executer).toHaveBeenCalledWith(ajout);
   });
 
   it('#sourisDoubleClic devrait simplement ajouter la ligne au stockageSVG si "Sans Points"'
     + ' est choisi et que la distance du clic est de plus de 3 pixels du point initial', () => {
     service.line.points.push({x: 0, y: 0});
     element = service.line;
-    spyOn(service.commandes, 'executer');
+    spyOn(service.commands, 'executer');
     service.onDoubleClick(new MouseEvent('dblClick', {clientX: 100, clientY: 100}));
     element.draw();
-    const ajout = new AjoutSvgService(element, stockageService);
+    const ajout = new AddSVGService(element, stockageService);
     ajout.cleSVG = 1;
-    expect(service.commandes.executer).toHaveBeenCalledWith(ajout);
+    expect(service.commands.executer).toHaveBeenCalledWith(ajout);
   });
 
   it("#sourisDoubleClic devrait appeler executer si le conteneur points n'est pas vide", () => {
     service.line.points.push({x: 0, y: 0});
-    spyOn(service.commandes, 'executer');
+    spyOn(service.commands, 'executer');
     service.onDoubleClick(new MouseEvent('dblClick', {clientX: 100, clientY: 100}));
-    expect(service.commandes.executer).toHaveBeenCalled();
+    expect(service.commands.executer).toHaveBeenCalled();
   });
 
   it('#sourisDoubleClic ne devrait pas appeler executer s\'il n\'y a qu\'un point '
     + 'et que l\'option choisie est sans points', () => {
-    spyOn(service.commandes, 'executer');
+    spyOn(service.commands, 'executer');
     service.onDoubleClick(new MouseEvent('dblClick', {clientX: 100, clientY: 100}));
-    expect(service.commandes.executer).not.toHaveBeenCalled();
+    expect(service.commands.executer).not.toHaveBeenCalled();
   });
 
   // TESTS retirerPoint
@@ -197,44 +197,44 @@ describe('DessinLigneService', () => {
     expect(service.ShiftPressPosition).toEqual({x: 0, y: 0});
   });
 
-  // TESTS shiftEnfonce
+  // TESTS shiftPress
 
-  it("#shiftEnfonce devrait changer la position X et Y si l'alignement est 0", () => {
+  it("#shiftPress devrait changer la position X et Y si l'alignement est 0", () => {
     service.line.points.push({x: 100, y: 100});
     service.cursor.x = 150;
     service.cursor.y = 100; // La souris se met à la même hauteur verticale que le dernier point
-    service.ShitPress();
+    service.shiftPress();
     expect(service.line.mousePosition).toEqual({x: 150, y: 100});
   });
 
-  it("#shiftEnfonce devrait changer la position X et Y si l'alignement est 1 et la position en X égale à celle en Y", () => {
+  it("#shiftPress devrait changer la position X et Y si l'alignement est 1 et la position en X égale à celle en Y", () => {
     service.line.points.push({x: 100, y: 100});
     service.cursor.x = 150;
     service.cursor.y = 150; // La souris se met à 135 degrés du dernier point (en haut à droite)
-    service.ShitPress();
+    service.shiftPress();
     expect(service.line.mousePosition).toEqual({x: 150, y: 150});
   });
 
-  it("#shiftEnfonce devrait changer la position X et Y si l'alignement est 1 et la position X et Y sont égales et de signe inverse", () => {
+  it("#shiftPress devrait changer la position X et Y si l'alignement est 1 et la position X et Y sont égales et de signe inverse", () => {
     service.line.points.push({x: 100, y: 100});
     service.cursor.x = 50;
     service.cursor.y = 150; // La souris se met à 45 degrés du dernier point (en haut à gauche)
-    service.ShitPress();
+    service.shiftPress();
     expect(service.line.mousePosition).toEqual({x: 50, y: 150});
   });
 
-  it("#shiftEnfonce devrait changer la position X et Y si l'alignement n'est pas 1 ou 0", () => {
+  it("#shiftPress devrait changer la position X et Y si l'alignement n'est pas 1 ou 0", () => {
     service.line.points.push({x: 100, y: 100});
     service.cursor.x = 100;
     service.cursor.y = 150; // La souris se met sur le même axe verticale que le dernier point
-    service.ShitPress();
+    service.shiftPress();
     expect(service.line.mousePosition).toEqual({x: 100, y: 150});
   });
 
-  it('#shiftEnfonce ne devrait rien faire si dessinEnCours est faux', () => {
-    service.commandes.dessinEnCours = false;
+  it('#shiftPress ne devrait rien faire si drawingInProgress est faux', () => {
+    service.commands.drawingInProgress = false;
     spyOn(service, 'actualiserSVG');
-    service.ShitPress();
+    service.shiftPress();
     expect(service.refreshSVG).not.toHaveBeenCalled();
   });
 
@@ -242,13 +242,13 @@ describe('DessinLigneService', () => {
 
   it('#shiftRelache devrait mettre les informations sur le curseur dans Position', () => {
     service.line.mousePosition = ({x: 100, y: 100});
-    service.ShiftRelease();
+    service.shiftRelease();
     expect(service.line.mousePosition).toEqual({x: 0, y: 0});
   });
 
   it('#shiftRelache devrait appeler actualiserSVG', () => {
     spyOn(service, 'actualiserSVG');
-    service.ShiftRelease();
+    service.shiftRelease();
     expect(service.refreshSVG).toHaveBeenCalled();
   });
 
@@ -284,7 +284,7 @@ describe('DessinLigneService', () => {
     expect(service.line.points).toEqual([]);
   });
 
-  it('#vider devrait mettre positionShiftEnfoncee à (x: 0, y: 0)', () => {
+  it('#vider devrait mettre positionshiftPresse à (x: 0, y: 0)', () => {
     service.ShiftPressPosition = ({x: 100, y: 100});
     service.clear();
     expect(service.ShiftPressPosition).toEqual({x: 0, y: 0});

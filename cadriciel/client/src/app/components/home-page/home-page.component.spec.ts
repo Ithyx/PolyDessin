@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
-import { BarreOutilsComponent } from '../barre-outils/barre-outils.component';
+import { ToolbarComponent } from '../toolbar/toolbar.component';
 import { DrawingPageComponent } from '../drawing-page/drawing-page.component';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
@@ -17,7 +17,7 @@ describe('AccueilComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DrawingPageComponent, GuidePageComponent, HomePageComponent, BarreOutilsComponent, GuideSubjectComponent,
+      declarations: [ DrawingPageComponent, GuidePageComponent, HomePageComponent, ToolbarComponent, GuideSubjectComponent,
         OutilDessinComponent, DrawingSurfaceComponent ],
       imports: [ MatDialogModule, RouterModule.forRoot([
         {path: '', component: HomePageComponent},

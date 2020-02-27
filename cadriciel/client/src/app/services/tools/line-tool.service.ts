@@ -28,9 +28,9 @@ export class LineToolService implements ToolInterface {
   onMouseMove(mouse: MouseEvent) {
     this.cursor = {x: mouse.offsetX, y: mouse.offsetY};
     if (mouse.shiftKey) {
-      this.ShitPress();
+      this.shiftPress();
     } else {
-      this.ShiftRelease();
+      this.shiftRelease();
     }
   }
 
@@ -52,7 +52,7 @@ export class LineToolService implements ToolInterface {
         this.line.points.pop();
         this.line.points.pop();
         this.line.isAPolygon = true;
-      } else if (this.tools.activeTool.parameters[1].choosenOption === 'Avec points') {
+      } else if (this.tools.activeTool.parameters[1].chosenOption === 'Avec points') {
         this.line.points.push({x: this.line.mousePosition.x, y: this.line.mousePosition.y});
       }
       this.line.draw();
@@ -74,7 +74,7 @@ export class LineToolService implements ToolInterface {
     this.ShiftPressPosition = {x: this.cursor.x, y: this.cursor.y};
   }
 
-  ShitPress() {
+  shiftPress() {
     if (this.commands.drawingInProgress) {
       const lastPoint = this.line.points[this.line.points.length - 1];
       const angle = Math.atan((this.cursor.y - lastPoint.y) / (this.cursor.x - lastPoint.x));
@@ -99,7 +99,7 @@ export class LineToolService implements ToolInterface {
     }
   }
 
-  ShiftRelease() {
+  shiftRelease() {
     this.line.mousePosition = this.cursor;
     this.refreshSVG();
   }
