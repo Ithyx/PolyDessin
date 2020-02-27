@@ -9,10 +9,10 @@ import { RouterModule } from '@angular/router';
 // Component
 import { AppComponent } from './components/app/app.component';
 import { BarreOutilsComponent } from './components/barre-outils/barre-outils.component';
-import { ChoixCouleurComponent } from './components/choix-couleur/choix-couleur.component'
-import { CouleurPaletteComponent } from './components/choix-couleur/couleur-palette/couleur-palette.component'
-import { GlissiereCouleurComponent } from './components/choix-couleur/glissiere-couleur/glissiere-couleur.component'
-import { ValeurCouleurComponent } from './components/choix-couleur/valeur-couleur/valeur-couleur.component';
+import { ColorChoiceComponent } from './components/color-choice/color-choice.component'
+import { ColorInputComponent } from './components/color-choice/color-input/color-input.component';
+import { ColorPickerComponent } from './components/color-choice/color-picker/color-picker.component'
+import { ColorSliderComponent } from './components/color-choice/color-slider/color-slider.component'
 import { FenetreNouveauDessinComponent } from './components/fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 import { GridOptionsComponent } from './components/grid-options/grid-options.component';
 import { GuidePageComponent } from './components/guide-page/guide-page.component';
@@ -40,7 +40,7 @@ import { SelectionService } from './services/tools/selection/selection.service';
 @NgModule({
     declarations: [AppComponent, HomePageComponent, NewDrawingWarningComponent, PageDessinComponent, GuidePageComponent,
         FenetreNouveauDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSubjectComponent, SurfaceDessinComponent,
-            ChoixCouleurComponent, GlissiereCouleurComponent, CouleurPaletteComponent, ValeurCouleurComponent, GridOptionsComponent],
+        ColorChoiceComponent, ColorSliderComponent, ColorPickerComponent, ColorInputComponent, GridOptionsComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
         MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
         {path: '', component: HomePageComponent},
@@ -51,8 +51,9 @@ import { SelectionService } from './services/tools/selection/selection.service';
                 ShortcutsManagerService, RectangleToolService, LineToolService,
                 RoutingManagerService, ColorParameterService, MatDialogConfig, SelectionService,
                 CommandManagerService, GridService],
+
     entryComponents: [FenetreNouveauDessinComponent, NewDrawingWarningComponent,
-                      ChoixCouleurComponent, GridOptionsComponent],
+                      ColorChoiceComponent, GridOptionsComponent],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

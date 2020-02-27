@@ -6,35 +6,35 @@ import { ColorManagerService } from 'src/app/services/color/color-manager.servic
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
 
 @Component({
-  selector: 'app-glissiere-couleur',
-  templateUrl: './glissiere-couleur.component.html',
-  styleUrls: ['./glissiere-couleur.component.scss']
+  selector: 'app-color-slider',
+  templateUrl: './color-slider.component.html',
+  styleUrls: ['./color-slider.component.scss']
 })
 
-export class GlissiereCouleurComponent implements AfterViewInit, ToolInterface {
+export class ColorSliderComponent implements AfterViewInit, ToolInterface {
   @ViewChild('canvas', {static: true})
   canvas: ElementRef<HTMLCanvasElement>
-  @Input() gestionnaireCouleur: ColorManagerService;
+  @Input() colorManager: ColorManagerService;
 
   private context2D: CanvasRenderingContext2D ;
-  private sourisbas =  false
-  hauteurChoisi: number;
+  private MouseDown =  false
+  choosenHeight: number;
 
   ngAfterViewInit() {
-    this.dessin();
+    this.draw();
   }
 
-  dessin() {
+  draw() {
 
     if (!this.context2D) {
       this.context2D = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
     }
-    const largeur = this.canvas.nativeElement.width;
-    const hauteur = this.canvas.nativeElement.height;
+    const width = this.canvas.nativeElement.width;
+    const height = this.canvas.nativeElement.height;
 
-    this.context2D.clearRect(0, 0, largeur, hauteur);
+    this.context2D.clearRect(0, 0, width, height);
 
-    const gradient = this.context2D.createLinearGradient(0, 0, 0, hauteur);
+    const gradient = this.context2D.createLinearGradient(0, 0, 0, height);
     gradient.addColorStop(0, 'rgba(255, 0, 0, 1)');
     gradient.addColorStop(0.17, 'rgba(255, 255, 0, 1)');
     gradient.addColorStop(0.34, 'rgba(0, 255, 0, 1)');
@@ -44,54 +44,54 @@ export class GlissiereCouleurComponent implements AfterViewInit, ToolInterface {
     gradient.addColorStop(1, 'rgba(255, 0, 0, 1)');
 
     this.context2D.beginPath();
-    this.context2D.rect(0, 0, largeur, hauteur);
+    this.context2D.rect(0, 0, width, height);
 
     this.context2D.fillStyle = gradient;
     this.context2D.fill();
     this.context2D.closePath();
 
-    if (this.hauteurChoisi) {
+    if (this.choosenHeight) {
       this.context2D.beginPath();
       this.context2D.strokeStyle = 'white';
       this.context2D.lineWidth = 5;
-      this.context2D.rect(0, this.hauteurChoisi - 5, largeur, 10);
+      this.context2D.rect(0, this.choosenHeight - 5, width, 10);
       this.context2D.stroke();
       this.context2D.closePath();
     }
   }
 
   @HostListener('window:mouseup', ['$event'])
-  onMouseRelease() {
-    this.sourisbas = false;
+  onMouseRelease(evt: MouseEvent) {
+    this.MouseDown = false;
   }
 
   onMousePress(evt: MouseEvent) {
-    this.sourisbas = true;
-    this.hauteurChoisi = evt.offsetY;
-    this.dessin();
-    this.couleurEmise(evt.offsetX, evt.offsetY);
+    this.MouseDown = true;
+    this.choosenHeight = evt.offsetY;
+    this.draw();
+    this.emittedColor(evt.offsetX, evt.offsetY);
   }
 
   onMouseMove(evt: MouseEvent) {
-    if (this.sourisbas) {
-      this.hauteurChoisi = evt.offsetY;
-      this.dessin();
-      this.couleurEmise(evt.offsetX, evt.offsetY);
+    if (this.MouseDown) {
+      this.choosenHeight = evt.offsetY;
+      this.draw();
+      this.emittedColor(evt.offsetX, evt.offsetY);
     }
   }
 
-  couleurEmise(x: number, y: number) {
-    this.couleurPosition(x, y);
+  emittedColor(x: number, y: number) {
+    this.colorPosition(x, y);
   }
 
-  couleurPosition(x: number, y: number) {
+  colorPosition(x: number, y: number) {
     const imageData = this.context2D.getImageData(x, y, 1, 1).data;
     const rgbaCouleur = 'rgba(' + imageData[0] + ',' + imageData[1] + ',' +
       imageData[2] + ',';
 
-    this.gestionnaireCouleur.color = rgbaCouleur;
-    this.gestionnaireCouleur.hue = rgbaCouleur;
-    this.gestionnaireCouleur.RGB = [imageData[0], imageData[1], imageData[2]];
+    this.colorManager.color = rgbaCouleur;
+    this.colorManager.hue = rgbaCouleur;
+    this.colorManager.RGB = [imageData[0], imageData[1], imageData[2]];
   }
 
 }

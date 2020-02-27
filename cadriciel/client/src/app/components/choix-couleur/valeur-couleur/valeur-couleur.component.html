@@ -1,9 +1,0 @@
-<label>R: </label>
-<input type="text" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" (change)="modificationRGB($event, INDEX_ROUGE)"
-    (focus)="desactiverRaccourcis()" (blur)="activerRaccourcis()" (keydown)="verifierEntree($event)" maxlength="2" class="hexRouge"/>
-<label>G: </label>
-<input type="text" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" (change)="modificationRGB($event, INDEX_VERT)"
-    (focus)="desactiverRaccourcis()" (blur)="activerRaccourcis()" (keydown)="verifierEntree($event)" maxlength="2" class="hexVert"/>
-<label>B: </label>
-<input type="text" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" (change)="modificationRGB($event, INDEX_BLEU)"
-    (focus)="desactiverRaccourcis()" (blur)="activerRaccourcis()" (keydown)="verifierEntree($event)" maxlength="2" class="hexBleu"/>

@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
 
-import { ChoixCouleurComponent } from '../choix-couleur/choix-couleur.component';
+import { ColorChoiceComponent } from '../color-choice/color-choice.component';
 import { FenetreNouveauDessinComponent, KEY_FORM_HAUTEUR, KEY_FORM_LARGEUR,
          TAMPON_HAUTEUR, TAMPON_LARGEUR } from './fenetre-nouveau-dessin.component';
 
@@ -17,7 +17,7 @@ describe('FenetreNouveauDessinComponent', () => {
   }
 
   const injecteur = Injector.create(
-    {providers: [{provide: MatDialogRef, useValue: {componentInstance: ChoixCouleurComponent}}]
+    {providers: [{provide: MatDialogRef, useValue: {componentInstance: ColorChoiceComponent}}]
   })
 
   beforeEach(async(() => {
@@ -41,9 +41,9 @@ describe('FenetreNouveauDessinComponent', () => {
 
   // TESTS #fermerFenetre
   it('#fermerFenetre devrait réactiver les raccourcis avec champDeTexteEstFocus', () => {
-    component.raccourcis.champDeTexteEstFocus = true;
+    component.shortcuts.focusOnInput = true;
     component.fermerFenetre();
-    expect(component.raccourcis.champDeTexteEstFocus).toBe(false);
+    expect(component.shortcuts.focusOnInput).toBe(false);
   })
 
   it('#fermerFenetre devrait appeler la fonction close de dialogRef', () => {
@@ -88,23 +88,23 @@ describe('FenetreNouveauDessinComponent', () => {
 
   // TESTS #validerNouveauDessin
   it('#validerNouveauDessin doit vider le dessin en cours', () => {
-    spyOn(component.stockageSVG, 'viderDessin');
+    spyOn(component.SVGStockage, 'cleanDrawing');
     component.validerNouveauDessin();
-    expect(component.stockageSVG.viderDessin).toHaveBeenCalled();
+    expect(component.SVGStockage.cleanDrawing).toHaveBeenCalled();
   })
 
   it('#validerNouveauDessin doit metter à jour la hauteur de dessin', () => {
     component.nouveauDessin.value[KEY_FORM_HAUTEUR] = 100;
     component.nouveauDessin.value[KEY_FORM_LARGEUR] = 100;
     component.validerNouveauDessin();
-    expect(component.serviceNouveauDessin.hauteur).toBe(100);
-    expect(component.serviceNouveauDessin.largeur).toBe(100);
+    expect(component.drawingManager.height).toBe(100);
+    expect(component.drawingManager.width).toBe(100);
   })
 
   it('#validerNouveauDessin doit mettre réactiver les raccourcis à l\' aide de "champDeTexteEstFocus"', () => {
-    component.raccourcis.champDeTexteEstFocus = true;
+    component.shortcuts.focusOnInput = true;
     component.validerNouveauDessin();
-    expect(component.raccourcis.champDeTexteEstFocus).toBe(false);
+    expect(component.shortcuts.focusOnInput).toBe(false);
   })
 
   it('#validerNouveauDessin devrait fermer la fenêtre de dialogue', () => {
@@ -130,6 +130,6 @@ describe('FenetreNouveauDessinComponent', () => {
     dialogConfig.panelClass = 'fenetre-couleur';
     component.selectionCouleur();
 
-    expect(component.dialog.open).toHaveBeenCalledWith(ChoixCouleurComponent, dialogConfig);
+    expect(component.dialog.open).toHaveBeenCalledWith(ColorChoiceComponent, dialogConfig);
   })
 });
