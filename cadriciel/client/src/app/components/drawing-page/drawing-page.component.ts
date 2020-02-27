@@ -46,52 +46,59 @@ export class DrawingPageComponent {
     this.shortcuts.treatReleaseKey(event);
   }
 
-  onClick(souris: MouseEvent) {
+  onClick(mouse: MouseEvent) {
     const outil = this.toolMap.get(this.tools.activeTool.name);
     if (outil && outil.onMouseClick) {
-      outil.onMouseClick(souris);
+      outil.onMouseClick(mouse);
+      mouse.preventDefault();
     }
   }
 
-  onMouseMove(souris: MouseEvent) {
+  onMouseMove(mouse: MouseEvent) {
     const outil = this.toolMap.get(this.tools.activeTool.name);
     if (outil && outil.onMouseMove) {
-      outil.onMouseMove(souris);
+      outil.onMouseMove(mouse);
+      mouse.preventDefault();
     }
   }
 
-  onMouseDown(souris: MouseEvent) {
+  onMouseDown(mouse: MouseEvent) {
     const outil = this.toolMap.get(this.tools.activeTool.name);
     if (outil && outil.onMousePress) {
-      outil.onMousePress(souris);
+      outil.onMousePress(mouse);
+      mouse.preventDefault();
     }
   }
 
-  onMouseUp(souris: MouseEvent) {
+  onMouseUp(mouse: MouseEvent) {
     const outil = this.toolMap.get(this.tools.activeTool.name);
     if (outil && outil.onMouseRelease) {
-      outil.onMouseRelease(souris);
+      outil.onMouseRelease(mouse);
+      mouse.preventDefault();
     }
   }
 
-  onMouseLeave(souris: MouseEvent) {
+  onMouseLeave(mouse: MouseEvent) {
     const outil = this.toolMap.get(this.tools.activeTool.name);
     if (outil && outil.onMouseLeave) {
-      outil.onMouseLeave(souris);
+      outil.onMouseLeave(mouse);
+      mouse.preventDefault();
     }
   }
 
-  onMouseEnter(souris: MouseEvent) {
+  onMouseEnter(mouse: MouseEvent) {
     const outil = this.toolMap.get(this.tools.activeTool.name);
     if (outil && outil.onMouseEnter) {
-      outil.onMouseEnter(souris);
+      outil.onMouseEnter(mouse);
+      mouse.preventDefault();
     }
   }
 
-  onDblClick(souris: MouseEvent) {
+  onDblClick(mouse: MouseEvent) {
     const outil = this.toolMap.get(this.tools.activeTool.name);
     if (outil && outil.onDoubleClick) {
-      outil.onDoubleClick(souris);
+      outil.onDoubleClick(mouse);
+      mouse.preventDefault();
     }
   }
 

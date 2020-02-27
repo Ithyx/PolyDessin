@@ -14,6 +14,7 @@ import { ColorInputComponent } from './components/color-choice/color-input/color
 import { ColorPickerComponent } from './components/color-choice/color-picker/color-picker.component'
 import { ColorSliderComponent } from './components/color-choice/color-slider/color-slider.component'
 import { DrawingPageComponent } from './components/drawing-page/drawing-page.component';
+import { DrawingSurfaceComponent } from './components/drawing-surface/drawing-surface.component';
 import { FenetreNouveauDessinComponent } from './components/fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 import { GridOptionsComponent } from './components/grid-options/grid-options.component';
 import { GuidePageComponent } from './components/guide-page/guide-page.component';
@@ -21,7 +22,6 @@ import { GuideSubjectComponent } from './components/guide-subject/guide-subject.
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { NewDrawingWarningComponent } from './components/new-drawing-warning/new-drawing-warning.component';
 import { OutilDessinComponent } from './components/outil-dessin/outil-dessin.component';
-import { SurfaceDessinComponent } from './components/surface-dessin/surface-dessin.component';
 
 // Service
 import { ColorParameterService } from './services/color/color-parameter.service';
@@ -39,7 +39,7 @@ import { SelectionService } from './services/tools/selection/selection.service';
 
 @NgModule({
     declarations: [AppComponent, HomePageComponent, NewDrawingWarningComponent, DrawingPageComponent, GuidePageComponent,
-        FenetreNouveauDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSubjectComponent, SurfaceDessinComponent,
+        FenetreNouveauDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSubjectComponent, DrawingSurfaceComponent,
         ColorChoiceComponent, ColorSliderComponent, ColorPickerComponent, ColorInputComponent, GridOptionsComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
         MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([

@@ -4,11 +4,11 @@ import { RouterModule } from '@angular/router';
 
 import { BarreOutilsComponent } from '../barre-outils/barre-outils.component';
 import { DrawingPageComponent } from '../drawing-page/drawing-page.component';
+import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 import { GuidePageComponent } from '../guide-page/guide-page.component';
 import { GuideSubjectComponent } from '../guide-subject/guide-subject.component';
 import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
-import { SurfaceDessinComponent } from '../surface-dessin/surface-dessin.component';
 import { HomePageComponent } from './home-page.component';
 
 describe('AccueilComponent', () => {
@@ -18,7 +18,7 @@ describe('AccueilComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ DrawingPageComponent, GuidePageComponent, HomePageComponent, BarreOutilsComponent, GuideSubjectComponent,
-        OutilDessinComponent, SurfaceDessinComponent ],
+        OutilDessinComponent, DrawingSurfaceComponent ],
       imports: [ MatDialogModule, RouterModule.forRoot([
         {path: '', component: HomePageComponent},
         {path: 'dessin', component: DrawingPageComponent},
