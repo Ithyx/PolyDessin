@@ -16,7 +16,7 @@ import { GlissiereCouleurComponent } from './components/choix-couleur/glissiere-
 import { ValeurCouleurComponent } from './components/choix-couleur/valeur-couleur/valeur-couleur.component';
 import { FenetreNouveauDessinComponent } from './components/fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 import { GridOptionsComponent } from './components/grid-options/grid-options.component';
-import { GuidePageComponent } from './components/guide-page/page-guide.component';
+import { GuidePageComponent } from './components/guide-page/guide-page.component';
 import { GuideSubjectComponent } from './components/guide-subject/guide-subject.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { OutilDessinComponent } from './components/outil-dessin/outil-dessin.component';

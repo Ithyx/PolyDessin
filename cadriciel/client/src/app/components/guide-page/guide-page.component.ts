@@ -5,9 +5,9 @@ import { SubjectGuide } from '../guide-subject/subject-guide';
 import { GUIDE_CONTENTS } from './guide-contents';
 
 @Component({
-  selector: 'app-page-guide',
-  templateUrl: './page-guide.component.html',
-  styleUrls: ['./page-guide.component.scss']
+  selector: 'app-guide-page',
+  templateUrl: './guide-page.component.html',
+  styleUrls: ['./guide-page.component.scss']
 })
 
 export class GuidePageComponent {
