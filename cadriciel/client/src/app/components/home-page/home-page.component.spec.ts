@@ -2,13 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
-import { ToolbarComponent } from '../toolbar/toolbar.component';
 import { DrawingPageComponent } from '../drawing-page/drawing-page.component';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
-import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
+import { DrawingToolComponent } from '../drawing-tool/drawing-tool.component';
 import { GuidePageComponent } from '../guide-page/guide-page.component';
 import { GuideSubjectComponent } from '../guide-subject/guide-subject.component';
-import { OutilDessinComponent } from '../outil-dessin/drawing-tool.component';
+import { NewDrawingWindowComponent } from '../new-drawing-window/new-drawing-window.component';
+import { ToolbarComponent } from '../toolbar/toolbar.component';
 import { HomePageComponent } from './home-page.component';
 
 describe('AccueilComponent', () => {
@@ -18,7 +18,7 @@ describe('AccueilComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ DrawingPageComponent, GuidePageComponent, HomePageComponent, ToolbarComponent, GuideSubjectComponent,
-        OutilDessinComponent, DrawingSurfaceComponent ],
+        DrawingToolComponent, DrawingSurfaceComponent ],
       imports: [ MatDialogModule, RouterModule.forRoot([
         {path: '', component: HomePageComponent},
         {path: 'dessin', component: DrawingPageComponent},
@@ -42,6 +42,6 @@ describe('AccueilComponent', () => {
   it('#creationDessin devrait appeler dialog.open() avec les bons parametres ', () => {
     spyOn(component.dialog, 'open');
     component.createDrawing();
-    expect(component.dialog.open).toHaveBeenCalledWith(FenetreNouveauDessinComponent, component.dialogConfig);
+    expect(component.dialog.open).toHaveBeenCalledWith(NewDrawingWindowComponent, component.dialogConfig);
   })
 });

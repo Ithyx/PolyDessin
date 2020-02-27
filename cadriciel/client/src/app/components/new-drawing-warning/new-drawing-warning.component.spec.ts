@@ -6,7 +6,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 
-import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
+import { NewDrawingWindowComponent } from '../new-drawing-window/new-drawing-window.component';
 import { NewDrawingWarningComponent } from './new-drawing-warning.component';
 
 describe('NewDrawingWarningComponent', () => {
@@ -25,10 +25,10 @@ describe('NewDrawingWarningComponent', () => {
     TestBed.configureTestingModule({
       imports: [ MatDialogModule, BrowserAnimationsModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule,
                  RouterModule.forRoot([]) ],
-      declarations: [ NewDrawingWarningComponent, FenetreNouveauDessinComponent ],
+      declarations: [ NewDrawingWarningComponent, NewDrawingWindowComponent ],
       providers: [ {provide: MatDialogRef, useValue: MatDialogRefStub} ]
     })
-    .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [ FenetreNouveauDessinComponent ] } })
+    .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [ NewDrawingWindowComponent ] } })
     .compileComponents();
   }));
 
@@ -73,7 +73,7 @@ describe('NewDrawingWarningComponent', () => {
     dialogConfig.width = '60%';
     component.openParameter();
 
-    expect(component.dialog.open).toHaveBeenCalledWith(FenetreNouveauDessinComponent, dialogConfig);
+    expect(component.dialog.open).toHaveBeenCalledWith(NewDrawingWindowComponent, dialogConfig);
   });
 
 });
