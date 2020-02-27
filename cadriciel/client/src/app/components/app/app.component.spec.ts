@@ -29,29 +29,31 @@ describe('AppComponent', () => {
         expect(app.title).toEqual('LOG2990');
     });
 
-    //
-    it('#miseAJourURL devrait mettre à jour l\'URL courante', () => {
+    //  Tests updateURL
+
+    it('#updateURL devrait mettre à jour l\'URL courante', () => {
         const routes: [any, any] = [{url: 'précédante'}, {url: 'actuelle'}];
-        app.miseAJourURL(routes)
-        expect(app.gestionnaireRoutes.pageEnCours).toBe('actuelle')
+        app.updateURL(routes)
+        expect(app.routingManager.currentPage).toBe('actuelle')
     })
 
-    it('#miseAJourURL devrait mettre à jour l\'URL précédante', () => {
+    it('#updateURL devrait mettre à jour l\'URL précédante', () => {
         const routes: [any, any] = [{url: 'précédante'}, {url: 'actuelle'}];
-        app.miseAJourURL(routes)
-        expect(app.gestionnaireRoutes.pagePrecedente).toBe('précédante')
+        app.updateURL(routes)
+        expect(app.routingManager.previousPage).toBe('précédante')
     })
 
-    //
-    it('#fonctionFiltre devrait refuser un paramètre qui n\'est pas une RouteRecognized', () => {
-        expect(app.fonctionFiltre(0)).toBe(false);
-        expect(app.fonctionFiltre('test')).toBe(false);
-        expect(app.fonctionFiltre(true)).toBe(false);
-        expect(app.fonctionFiltre([123, 'test'])).toBe(false);
+    //  Tests filterFunction
+
+    it('#filterFunction devrait refuser un paramètre qui n\'est pas une RouteRecognized', () => {
+        expect(app.filterFunction(0)).toBe(false);
+        expect(app.filterFunction('test')).toBe(false);
+        expect(app.filterFunction(true)).toBe(false);
+        expect(app.filterFunction([123, 'test'])).toBe(false);
     })
 
-    it('#fonctionFiltre devrait accepter un paramètre de type RouteRecognized', () => {
+    it('#filterFunction devrait accepter un paramètre de type RouteRecognized', () => {
         const evt: RoutesRecognized = injecteur.get(RoutesRecognized);
-        expect(app.fonctionFiltre(evt)).toBe(true);
+        expect(app.filterFunction(evt)).toBe(true);
     })
 });

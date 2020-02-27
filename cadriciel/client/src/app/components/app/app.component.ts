@@ -17,17 +17,17 @@ export class AppComponent {
                 private routing: Router,
                 public routingManager: RoutingManagerService) {
         this.routing.events
-            .pipe(filter(this.fonctionFiltre), pairwise())
-            .subscribe({next: this.miseAJourURL.bind(this)});
+            .pipe(filter(this.filterFunction), pairwise())
+            .subscribe({next: this.updateURL.bind(this)});
     }
 
-    fonctionFiltre(evenement: any) {
-        return evenement instanceof RoutesRecognized
+    filterFunction(event: any) {
+        return event instanceof RoutesRecognized
     }
 
-    miseAJourURL(evenement: [any, any]) {
-        this.routingManager.previousPage = evenement[0].url;
-        this.routingManager.currentPage = evenement[1].url;
+    updateURL(event: [any, any]) {
+        this.routingManager.previousPage = event[0].url;
+        this.routingManager.currentPage = event[1].url;
     };
 
 }
