@@ -4,23 +4,23 @@ import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.serv
 import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 
 @Component({
-  selector: 'app-avertissement-nouveau-dessin',
-  templateUrl: './avertissement-nouveau-dessin.component.html',
-  styleUrls: ['./avertissement-nouveau-dessin.component.scss']
+  selector: 'app-new-drawing-warning',
+  templateUrl: './new-drawing-warning.component.html',
+  styleUrls: ['./new-drawing-warning.component.scss']
 })
-export class AvertissementNouveauDessinComponent {
+export class NewDrawingWarningComponent {
 
   constructor(public dialog: MatDialog,
               public shortcuts: ShortcutsManagerService,
               public dialogRef: MatDialogRef<FenetreNouveauDessinComponent> ) {
    }
 
-  annuler() {
+  cancel() {
     this.shortcuts.focusOnInput = false;
     this.dialogRef.close();
   }
 
-  ouvrirParametres() {
+  openParameter() {
     this.dialogRef.close();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;

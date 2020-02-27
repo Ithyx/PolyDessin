@@ -7,17 +7,17 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { RouterModule } from '@angular/router';
 
 import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
-import { AvertissementNouveauDessinComponent } from './avertissement-nouveau-dessin.component';
+import { NewDrawingWarningComponent } from './new-drawing-warning.component';
 
-describe('AvertissementNouveauDessinComponent', () => {
-  let component: AvertissementNouveauDessinComponent;
-  let fixture: ComponentFixture<AvertissementNouveauDessinComponent>;
+describe('NewDrawingWarningComponent', () => {
+  let component: NewDrawingWarningComponent;
+  let fixture: ComponentFixture<NewDrawingWarningComponent>;
 
   const injecteur = Injector.create(
-    {providers: [{provide: MatDialogRef, useValue: {componentInstance: AvertissementNouveauDessinComponent}}]
+    {providers: [{provide: MatDialogRef, useValue: {componentInstance: NewDrawingWarningComponent}}]
   })
 
-  const MatDialogRefStub: Partial<MatDialogRef<AvertissementNouveauDessinComponent>> = {
+  const MatDialogRefStub: Partial<MatDialogRef<NewDrawingWarningComponent>> = {
     close() { /* NE RIEN FAIRE */ }
   }
 
@@ -25,7 +25,7 @@ describe('AvertissementNouveauDessinComponent', () => {
     TestBed.configureTestingModule({
       imports: [ MatDialogModule, BrowserAnimationsModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule,
                  RouterModule.forRoot([]) ],
-      declarations: [ AvertissementNouveauDessinComponent, FenetreNouveauDessinComponent ],
+      declarations: [ NewDrawingWarningComponent, FenetreNouveauDessinComponent ],
       providers: [ {provide: MatDialogRef, useValue: MatDialogRefStub} ]
     })
     .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [ FenetreNouveauDessinComponent ] } })
@@ -33,7 +33,7 @@ describe('AvertissementNouveauDessinComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AvertissementNouveauDessinComponent);
+    fixture = TestBed.createComponent(NewDrawingWarningComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -42,17 +42,17 @@ describe('AvertissementNouveauDessinComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // TESTS annuler
+  // TESTS cancel
 
-  it('#annuler devrait désactiver le focus sur un champ de texte', () => {
-    component.raccourcis.champDeTexteEstFocus = true;
-    component.annuler();
-    expect(component.raccourcis.champDeTexteEstFocus).toBe(false);
+  it('#cancel devrait désactiver le focus sur un champ de texte', () => {
+    component.shortcuts.focusOnInput = true;
+    component.cancel();
+    expect(component.shortcuts.focusOnInput).toBe(false);
   });
 
-  it('#annuler devrait fermer dialogRef', () => {
+  it('#cancel devrait fermer dialogRef', () => {
     spyOn(component.dialogRef, 'close');
-    component.annuler();
+    component.cancel();
     expect(component.dialogRef.close).toHaveBeenCalled();
   });
 
@@ -60,7 +60,7 @@ describe('AvertissementNouveauDessinComponent', () => {
 
   it('#ouvrirParametre devrait fermer dialogRef', () => {
     spyOn(component.dialogRef, 'close');
-    component.ouvrirParametres();
+    component.openParameter();
     expect(component.dialogRef.close).toHaveBeenCalled();
   });
 
@@ -71,7 +71,7 @@ describe('AvertissementNouveauDessinComponent', () => {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
-    component.ouvrirParametres();
+    component.openParameter();
 
     expect(component.dialog.open).toHaveBeenCalledWith(FenetreNouveauDessinComponent, dialogConfig);
   });

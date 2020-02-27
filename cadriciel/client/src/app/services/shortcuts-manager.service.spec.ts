@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { LINE_TOOL_INDEX, RECTANGLE_TOOL_INDEX } from './outils/tool-manager.service';
 import { ShortcutsManagerService } from './shortcuts-manager.service';
+import { LINE_TOOL_INDEX, RECTANGLE_TOOL_INDEX } from './tools/tool-manager.service';
 
 describe('GestionnaireRaccourcisService', () => {
   let service: ShortcutsManagerService;

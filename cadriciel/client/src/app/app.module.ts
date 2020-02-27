@@ -8,7 +8,6 @@ import { RouterModule } from '@angular/router';
 
 // Component
 import { AppComponent } from './components/app/app.component';
-import { AvertissementNouveauDessinComponent } from './components/avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
 import { BarreOutilsComponent } from './components/barre-outils/barre-outils.component';
 import { ChoixCouleurComponent } from './components/choix-couleur/choix-couleur.component'
 import { CouleurPaletteComponent } from './components/choix-couleur/couleur-palette/couleur-palette.component'
@@ -19,6 +18,7 @@ import { GridOptionsComponent } from './components/grid-options/grid-options.com
 import { GuidePageComponent } from './components/guide-page/guide-page.component';
 import { GuideSubjectComponent } from './components/guide-subject/guide-subject.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
+import { NewDrawingWarningComponent } from './components/new-drawing-warning/new-drawing-warning.component';
 import { OutilDessinComponent } from './components/outil-dessin/outil-dessin.component';
 import { PageDessinComponent } from './components/page-dessin/page-dessin.component';
 import { SurfaceDessinComponent } from './components/surface-dessin/surface-dessin.component';
@@ -38,7 +38,7 @@ import { RectangleToolService } from './services/tools/rectangle-tool.service';
 import { SelectionService } from './services/tools/selection/selection.service';
 
 @NgModule({
-    declarations: [AppComponent, HomePageComponent, AvertissementNouveauDessinComponent, PageDessinComponent, GuidePageComponent,
+    declarations: [AppComponent, HomePageComponent, NewDrawingWarningComponent, PageDessinComponent, GuidePageComponent,
         FenetreNouveauDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSubjectComponent, SurfaceDessinComponent,
             ChoixCouleurComponent, GlissiereCouleurComponent, CouleurPaletteComponent, ValeurCouleurComponent, GridOptionsComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
@@ -51,7 +51,7 @@ import { SelectionService } from './services/tools/selection/selection.service';
                 ShortcutsManagerService, RectangleToolService, LineToolService,
                 RoutingManagerService, ColorParameterService, MatDialogConfig, SelectionService,
                 CommandManagerService, GridService],
-    entryComponents: [FenetreNouveauDessinComponent, AvertissementNouveauDessinComponent,
+    entryComponents: [FenetreNouveauDessinComponent, NewDrawingWarningComponent,
                       ChoixCouleurComponent, GridOptionsComponent],
     bootstrap: [AppComponent],
 })

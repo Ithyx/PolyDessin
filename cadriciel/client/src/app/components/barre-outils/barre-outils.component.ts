@@ -7,9 +7,9 @@ import { CommandManagerService } from 'src/app/services/command/command-manager.
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
-import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
 import { ChoixCouleurComponent } from '../choix-couleur/choix-couleur.component';
 import { GridOptionsComponent } from '../grid-options/grid-options.component';
+import { NewDrawingWarningComponent } from '../new-drawing-warning/new-drawing-warning.component';
 
 @Component({
   selector: 'app-barre-outils',
@@ -76,7 +76,7 @@ export class BarreOutilsComponent implements OnDestroy {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
-    this.dialog.open(AvertissementNouveauDessinComponent, dialogConfig);
+    this.dialog.open(NewDrawingWarningComponent, dialogConfig);
   }
 
   selectionCouleur(porteeEntree: string) {
