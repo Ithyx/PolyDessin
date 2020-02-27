@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service'
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { GridService } from 'src/app/services/grid/grid.service';
-import { SelectionService } from 'src/app/services/outils/selection/selection.service';
-import { SELECTION_TOOL_INDEX, ToolManagerService } from 'src/app/services/outils/tool-manager.service';
 import { RoutingManagerService } from 'src/app/services/routing-manager.service';
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
+import { SelectionService } from 'src/app/services/tools/selection/selection.service';
+import { SELECTION_TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 
 @Component({
   selector: 'app-surface-dessin',

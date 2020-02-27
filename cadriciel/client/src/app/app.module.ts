@@ -16,11 +16,11 @@ import { ColorPickerComponent } from './components/color-choice/color-picker/col
 import { ColorSliderComponent } from './components/color-choice/color-slider/color-slider.component'
 import { FenetreNouveauDessinComponent } from './components/fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 import { GridOptionsComponent } from './components/grid-options/grid-options.component';
-import { GuideSujetComponent } from './components/guide-sujet/guide-sujet.component';
+import { GuidePageComponent } from './components/guide-page/guide-page.component';
+import { GuideSubjectComponent } from './components/guide-subject/guide-subject.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { OutilDessinComponent } from './components/outil-dessin/outil-dessin.component';
 import { PageDessinComponent } from './components/page-dessin/page-dessin.component';
-import { PageGuideComponent } from './components/page-guide/page-guide.component';
 import { SurfaceDessinComponent } from './components/surface-dessin/surface-dessin.component';
 
 // Service
@@ -29,23 +29,23 @@ import { CommandManagerService } from './services/command/command-manager.servic
 import { DrawingManagerService } from './services/drawing-manager/drawing-manager.service';
 import { GridService } from './services/grid/grid.service';
 import { NavigationGuideService } from './services/navigation-guide.service';
-import { LineToolService } from './services/outils/line-tool.service';
-import { DrawingToolService } from './services/outils/pencil-tool.service';
-import { RectangleToolService } from './services/outils/rectangle-tool.service';
-import { SelectionService } from './services/outils/selection/selection.service';
 import { RoutingManagerService } from './services/routing-manager.service';
 import { ShortcutsManagerService } from './services/shortcuts-manager.service';
 import { SVGStockageService } from './services/stockage-svg/svg-stockage.service';
+import { LineToolService } from './services/tools/line-tool.service';
+import { DrawingToolService } from './services/tools/pencil-tool.service';
+import { RectangleToolService } from './services/tools/rectangle-tool.service';
+import { SelectionService } from './services/tools/selection/selection.service';
 
 @NgModule({
-    declarations: [AppComponent, HomePageComponent, AvertissementNouveauDessinComponent, PageDessinComponent, PageGuideComponent,
-        FenetreNouveauDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent,
-            ColorChoiceComponent, ColorSliderComponent, ColorPickerComponent, ColorInputComponent, GridOptionsComponent],
+    declarations: [AppComponent, HomePageComponent, AvertissementNouveauDessinComponent, PageDessinComponent, GuidePageComponent,
+        FenetreNouveauDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSubjectComponent, SurfaceDessinComponent,
+        ColorChoiceComponent, ColorSliderComponent, ColorPickerComponent, ColorInputComponent, GridOptionsComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
         MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
         {path: '', component: HomePageComponent},
         {path: 'dessin', component: PageDessinComponent},
-        {path: 'guide', component : PageGuideComponent}
+        {path: 'guide', component : GuidePageComponent}
     ])],
     providers: [NavigationGuideService, SVGStockageService, DrawingToolService, DrawingManagerService,
                 ShortcutsManagerService, RectangleToolService, LineToolService,

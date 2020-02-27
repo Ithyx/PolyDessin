@@ -3,12 +3,12 @@ import { EMPTY_SUBJECT} from '../../services/navigation-guide.service';
 import { SubjectGuide } from './subject-guide';
 
 @Component({
-  selector: 'app-guide-sujet',
-  templateUrl: './guide-sujet.component.html',
-  styleUrls: ['./guide-sujet.component.scss']
+  selector: 'app-guide-subject',
+  templateUrl: './guide-subject.component.html',
+  styleUrls: ['./guide-subject.component.scss']
 })
 
-export class GuideSujetComponent {
+export class GuideSubjectComponent {
 
   @Input() node: SubjectGuide = EMPTY_SUBJECT;
   @Input() depth = 0;

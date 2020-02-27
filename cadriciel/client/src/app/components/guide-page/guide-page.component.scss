@@ -12,8 +12,7 @@
 }
 
 
-.contenu {
-    
+.content {
     margin-left: 25%;
     margin-right: 15%;
 }
@@ -22,17 +21,17 @@
     width: 100%;
 }
 
-#boutonSuivant {
+#nextButton {
     float: right;
 }
 
-button.retour{
+button.return{
     position: fixed;
     bottom: 10px;
     left: 10px;
 }
 
-button.retour:hover{
+button.return:hover{
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
