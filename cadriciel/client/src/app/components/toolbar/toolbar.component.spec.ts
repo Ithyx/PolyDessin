@@ -14,7 +14,7 @@ import { ColorSliderComponent } from '../color-choice/color-slider/color-slider.
 import { GuidePageComponent } from '../guide-page/guide-page.component';
 import { GuideSubjectComponent } from '../guide-subject/guide-subject.component';
 import { NewDrawingWarningComponent } from '../new-drawing-warning/new-drawing-warning.component';
-import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
+import { OutilDessinComponent } from '../outil-dessin/drawing-tool.component';
 import { ToolbarComponent } from './toolbar.component';
 
 /* Service stub pour réduire les dépendances */

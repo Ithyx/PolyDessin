@@ -8,7 +8,7 @@ import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.comp
 import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 import { GuidePageComponent } from '../guide-page/guide-page.component';
 import { GuideSubjectComponent } from '../guide-subject/guide-subject.component';
-import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
+import { OutilDessinComponent } from '../outil-dessin/drawing-tool.component';
 import { HomePageComponent } from './home-page.component';
 
 describe('AccueilComponent', () => {

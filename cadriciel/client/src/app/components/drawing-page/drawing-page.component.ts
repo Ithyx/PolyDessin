@@ -47,57 +47,57 @@ export class DrawingPageComponent {
   }
 
   onClick(mouse: MouseEvent) {
-    const outil = this.toolMap.get(this.tools.activeTool.name);
-    if (outil && outil.onMouseClick) {
-      outil.onMouseClick(mouse);
+    const tool = this.toolMap.get(this.tools.activeTool.name);
+    if (tool && tool.onMouseClick) {
+      tool.onMouseClick(mouse);
       mouse.preventDefault();
     }
   }
 
   onMouseMove(mouse: MouseEvent) {
-    const outil = this.toolMap.get(this.tools.activeTool.name);
-    if (outil && outil.onMouseMove) {
-      outil.onMouseMove(mouse);
+    const tool = this.toolMap.get(this.tools.activeTool.name);
+    if (tool && tool.onMouseMove) {
+      tool.onMouseMove(mouse);
       mouse.preventDefault();
     }
   }
 
   onMouseDown(mouse: MouseEvent) {
-    const outil = this.toolMap.get(this.tools.activeTool.name);
-    if (outil && outil.onMousePress) {
-      outil.onMousePress(mouse);
+    const tool = this.toolMap.get(this.tools.activeTool.name);
+    if (tool && tool.onMousePress) {
+      tool.onMousePress(mouse);
       mouse.preventDefault();
     }
   }
 
   onMouseUp(mouse: MouseEvent) {
-    const outil = this.toolMap.get(this.tools.activeTool.name);
-    if (outil && outil.onMouseRelease) {
-      outil.onMouseRelease(mouse);
+    const tool = this.toolMap.get(this.tools.activeTool.name);
+    if (tool && tool.onMouseRelease) {
+      tool.onMouseRelease(mouse);
       mouse.preventDefault();
     }
   }
 
   onMouseLeave(mouse: MouseEvent) {
-    const outil = this.toolMap.get(this.tools.activeTool.name);
-    if (outil && outil.onMouseLeave) {
-      outil.onMouseLeave(mouse);
+    const tool = this.toolMap.get(this.tools.activeTool.name);
+    if (tool && tool.onMouseLeave) {
+      tool.onMouseLeave(mouse);
       mouse.preventDefault();
     }
   }
 
   onMouseEnter(mouse: MouseEvent) {
-    const outil = this.toolMap.get(this.tools.activeTool.name);
-    if (outil && outil.onMouseEnter) {
-      outil.onMouseEnter(mouse);
+    const tool = this.toolMap.get(this.tools.activeTool.name);
+    if (tool && tool.onMouseEnter) {
+      tool.onMouseEnter(mouse);
       mouse.preventDefault();
     }
   }
 
   onDblClick(mouse: MouseEvent) {
-    const outil = this.toolMap.get(this.tools.activeTool.name);
-    if (outil && outil.onDoubleClick) {
-      outil.onDoubleClick(mouse);
+    const tool = this.toolMap.get(this.tools.activeTool.name);
+    if (tool && tool.onDoubleClick) {
+      tool.onDoubleClick(mouse);
       mouse.preventDefault();
     }
   }

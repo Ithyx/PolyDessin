@@ -7,7 +7,7 @@ import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-man
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 import { GuidePageComponent } from '../guide-page/guide-page.component';
 import { GuideSubjectComponent } from '../guide-subject/guide-subject.component';
-import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
+import { OutilDessinComponent } from '../outil-dessin/drawing-tool.component';
 import { ToolbarComponent } from '../toolbar/toolbar.component';
 import { DrawingPageComponent } from './drawing-page.component';
 

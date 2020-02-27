@@ -2,8 +2,8 @@
 
 <!-- Barre d'outils -->
 <div class="sidenav">
-    <div *ngFor='let outil of tools.toolList'>
-        <app-outil-dessin [outil]="outil" (click)="onClick(outil)"></app-outil-dessin>
+    <div *ngFor='let tool of tools.toolList'>
+        <app-drawing-tool [tool]="tool" (click)="onClick(tool)"></app-drawing-tool>
     </div>
     <div class="options">
         <a  href="javascript:void(0);"   (click)="warningNewDrawing()">

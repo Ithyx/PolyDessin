@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { OutilDessinComponent } from './outil-dessin.component';
+import { OutilDessinComponent } from './drawing-tool.component';
 
 describe('OutilDessinComponent', () => {
   let component: OutilDessinComponent;
