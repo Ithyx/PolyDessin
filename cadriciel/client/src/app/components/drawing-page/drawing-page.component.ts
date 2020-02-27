@@ -10,86 +10,86 @@ import { ToolInterface } from 'src/app/services/tools/tool-interface';
 import { ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 
 @Component({
-  selector: 'app-page-dessin',
-  templateUrl: './page-dessin.component.html',
-  styleUrls: ['./page-dessin.component.scss']
+  selector: 'app-drawing-page',
+  templateUrl: './drawing-page.component.html',
+  styleUrls: ['./drawing-page.component.scss']
 })
-export class PageDessinComponent {
+export class DrawingPageComponent {
 
-  lexiqueOutils: Map<string, ToolInterface> = new Map<string, ToolInterface>();
+  toolMap: Map<string, ToolInterface> = new Map<string, ToolInterface>();
 
   constructor(
-              public outils: ToolManagerService,
-              public crayon: DrawingToolService,
+              public tools: ToolManagerService,
+              public pencil: DrawingToolService,
               public rectangle: RectangleToolService,
-              public pinceau: BrushToolService,
-              public ligne: LineToolService,
+              public brush: BrushToolService,
+              public line: LineToolService,
               public shortcuts: ShortcutsManagerService,
               public selection: SelectionService,
               public spray: DrawSprayService  ) {
-    this.lexiqueOutils.set('Crayon', crayon)
+    this.toolMap.set('Crayon', pencil)
                       .set('Rectangle', rectangle)
-                      .set('Ligne', ligne)
-                      .set('Pinceau', pinceau)
+                      .set('Ligne', line)
+                      .set('Pinceau', brush)
                       .set('Selection', selection)
                       .set('Aérosol', spray);
 
   }
 
   @HostListener('document:keydown', ['$event'])
-  toucheEnfoncee(event: KeyboardEvent) {
+  onKeyDown(event: KeyboardEvent) {
     this.shortcuts.treatInput(event);
   }
 
   @HostListener('document:keyup', ['$event'])
-  toucheRelachee(event: KeyboardEvent) {
+  onKeyUp(event: KeyboardEvent) {
     this.shortcuts.treatReleaseKey(event);
   }
 
-  sourisCliquee(souris: MouseEvent) {
-    const outil = this.lexiqueOutils.get(this.outils.activeTool.name);
+  onClick(souris: MouseEvent) {
+    const outil = this.toolMap.get(this.tools.activeTool.name);
     if (outil && outil.onMouseClick) {
       outil.onMouseClick(souris);
     }
   }
 
-  sourisDeplacee(souris: MouseEvent) {
-    const outil = this.lexiqueOutils.get(this.outils.activeTool.name);
+  onMouseMove(souris: MouseEvent) {
+    const outil = this.toolMap.get(this.tools.activeTool.name);
     if (outil && outil.onMouseMove) {
       outil.onMouseMove(souris);
     }
   }
 
-  sourisEnfoncee(souris: MouseEvent) {
-    const outil = this.lexiqueOutils.get(this.outils.activeTool.name);
+  onMouseDown(souris: MouseEvent) {
+    const outil = this.toolMap.get(this.tools.activeTool.name);
     if (outil && outil.onMousePress) {
       outil.onMousePress(souris);
     }
   }
 
-  sourisRelachee(souris: MouseEvent) {
-    const outil = this.lexiqueOutils.get(this.outils.activeTool.name);
+  onMouseUp(souris: MouseEvent) {
+    const outil = this.toolMap.get(this.tools.activeTool.name);
     if (outil && outil.onMouseRelease) {
       outil.onMouseRelease(souris);
     }
   }
 
-  sourisSortie(souris: MouseEvent) {
-    const outil = this.lexiqueOutils.get(this.outils.activeTool.name);
+  onMouseLeave(souris: MouseEvent) {
+    const outil = this.toolMap.get(this.tools.activeTool.name);
     if (outil && outil.onMouseLeave) {
       outil.onMouseLeave(souris);
     }
   }
 
-  sourisEntree(souris: MouseEvent) {
-    const outil = this.lexiqueOutils.get(this.outils.activeTool.name);
+  onMouseEnter(souris: MouseEvent) {
+    const outil = this.toolMap.get(this.tools.activeTool.name);
     if (outil && outil.onMouseEnter) {
       outil.onMouseEnter(souris);
     }
   }
 
-  sourisDoubleClic(souris: MouseEvent) {
-    const outil = this.lexiqueOutils.get(this.outils.activeTool.name);
+  onDblClick(souris: MouseEvent) {
+    const outil = this.toolMap.get(this.tools.activeTool.name);
     if (outil && outil.onDoubleClick) {
       outil.onDoubleClick(souris);
     }

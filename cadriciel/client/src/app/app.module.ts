@@ -13,6 +13,7 @@ import { ColorChoiceComponent } from './components/color-choice/color-choice.com
 import { ColorInputComponent } from './components/color-choice/color-input/color-input.component';
 import { ColorPickerComponent } from './components/color-choice/color-picker/color-picker.component'
 import { ColorSliderComponent } from './components/color-choice/color-slider/color-slider.component'
+import { DrawingPageComponent } from './components/drawing-page/drawing-page.component';
 import { FenetreNouveauDessinComponent } from './components/fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 import { GridOptionsComponent } from './components/grid-options/grid-options.component';
 import { GuidePageComponent } from './components/guide-page/guide-page.component';
@@ -20,7 +21,6 @@ import { GuideSubjectComponent } from './components/guide-subject/guide-subject.
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { NewDrawingWarningComponent } from './components/new-drawing-warning/new-drawing-warning.component';
 import { OutilDessinComponent } from './components/outil-dessin/outil-dessin.component';
-import { PageDessinComponent } from './components/page-dessin/page-dessin.component';
 import { SurfaceDessinComponent } from './components/surface-dessin/surface-dessin.component';
 
 // Service
@@ -38,13 +38,13 @@ import { RectangleToolService } from './services/tools/rectangle-tool.service';
 import { SelectionService } from './services/tools/selection/selection.service';
 
 @NgModule({
-    declarations: [AppComponent, HomePageComponent, NewDrawingWarningComponent, PageDessinComponent, GuidePageComponent,
+    declarations: [AppComponent, HomePageComponent, NewDrawingWarningComponent, DrawingPageComponent, GuidePageComponent,
         FenetreNouveauDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSubjectComponent, SurfaceDessinComponent,
         ColorChoiceComponent, ColorSliderComponent, ColorPickerComponent, ColorInputComponent, GridOptionsComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
         MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
         {path: '', component: HomePageComponent},
-        {path: 'dessin', component: PageDessinComponent},
+        {path: 'dessin', component: DrawingPageComponent},
         {path: 'guide', component : GuidePageComponent}
     ])],
     providers: [NavigationGuideService, SVGStockageService, DrawingToolService, DrawingManagerService,

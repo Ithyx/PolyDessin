@@ -6,15 +6,15 @@ import { RouterModule } from '@angular/router';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Scope } from 'src/app/services/color/color-manager.service';
-import { DrawingTool, ToolManagerService } from 'src/app/services/outils/tool-manager.service';
-import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
+import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { ColorChoiceComponent } from '../color-choice/color-choice.component';
 import { ColorInputComponent } from '../color-choice/color-input/color-input.component';
 import { ColorPickerComponent } from '../color-choice/color-picker/color-picker.component';
 import { ColorSliderComponent } from '../color-choice/color-slider/color-slider.component';
-import { GuideSujetComponent } from '../guide-sujet/guide-sujet.component';
+import { GuidePageComponent } from '../guide-page/guide-page.component';
+import { GuideSubjectComponent } from '../guide-subject/guide-subject.component';
+import { NewDrawingWarningComponent } from '../new-drawing-warning/new-drawing-warning.component';
 import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
-import { PageGuideComponent } from '../page-guide/page-guide.component';
 import { BarreOutilsComponent } from './barre-outils.component';
 
 /* Service stub pour réduire les dépendances */
@@ -62,11 +62,11 @@ describe('BarreOutilsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageGuideComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, ColorChoiceComponent,
+      declarations: [ GuidePageComponent, BarreOutilsComponent, OutilDessinComponent, GuideSubjectComponent, ColorChoiceComponent,
                       ColorPickerComponent, ColorSliderComponent, ColorInputComponent ],
       providers: [ {provide: ToolManagerService, useValue: GestionnaireOutilServiceStub} ],
       imports: [ RouterModule.forRoot([
-        {path: 'guide', component : PageGuideComponent}
+        {path: 'guide', component : GuidePageComponent}
     ]), MatDialogModule, BrowserAnimationsModule]
     })
     .overrideModule(BrowserDynamicTestingModule, {set: { entryComponents: [ ColorChoiceComponent ] }})
@@ -196,14 +196,14 @@ describe('BarreOutilsComponent', () => {
     expect(component.desactiverRaccourcis).toHaveBeenCalled();
   });
 
-  it('#avertissementNouveauDessin devrait appeler open avec AvertissementNouveauDessinComponent et dialogConfig comme paramètres', () => {
+  it('#avertissementNouveauDessin devrait appeler open avec NewDrawingWarningComponent et dialogConfig comme paramètres', () => {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
     spyOn(component.dialog, 'open');
     component.avertissementNouveauDessin();
-    expect(component.dialog.open).toHaveBeenCalledWith(AvertissementNouveauDessinComponent, dialogConfig);
+    expect(component.dialog.open).toHaveBeenCalledWith(NewDrawingWarningComponent, dialogConfig);
   });
 
   // TESTS selectionCouleur
