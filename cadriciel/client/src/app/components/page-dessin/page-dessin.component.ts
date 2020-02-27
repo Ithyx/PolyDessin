@@ -1,13 +1,13 @@
 import { Component, HostListener } from '@angular/core';
-import { BrushToolService } from 'src/app/services/outils/brush-tool.service';
-import { DrawSprayService } from 'src/app/services/outils/draw-spray.service';
-import { LineToolService } from 'src/app/services/outils/line-tool.service';
-import { DrawingToolService } from 'src/app/services/outils/pencil-tool.service';
-import { RectangleToolService } from 'src/app/services/outils/rectangle-tool.service'
-import { SelectionService } from 'src/app/services/outils/selection/selection.service';
-import { ToolInterface } from 'src/app/services/outils/tool-interface';
-import { ToolManagerService } from 'src/app/services/outils/tool-manager.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
+import { BrushToolService } from 'src/app/services/tools/brush-tool.service';
+import { DrawSprayService } from 'src/app/services/tools/draw-spray.service';
+import { LineToolService } from 'src/app/services/tools/line-tool.service';
+import { DrawingToolService } from 'src/app/services/tools/pencil-tool.service';
+import { RectangleToolService } from 'src/app/services/tools/rectangle-tool.service'
+import { SelectionService } from 'src/app/services/tools/selection/selection.service';
+import { ToolInterface } from 'src/app/services/tools/tool-interface';
+import { ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 
 @Component({
   selector: 'app-page-dessin',

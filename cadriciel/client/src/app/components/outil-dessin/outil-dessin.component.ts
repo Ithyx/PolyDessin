@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { EMPTY_TOOL, DrawingTool } from 'src/app/services/outils/tool-manager.service';
+import { DrawingTool, EMPTY_TOOL } from 'src/app/services/tools/tool-manager.service';
 
 @Component({
   selector: 'app-outil-dessin',

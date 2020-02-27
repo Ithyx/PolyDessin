@@ -29,13 +29,13 @@ import { CommandManagerService } from './services/command/command-manager.servic
 import { DrawingManagerService } from './services/drawing-manager/drawing-manager.service';
 import { GridService } from './services/grid/grid.service';
 import { NavigationGuideService } from './services/navigation-guide.service';
-import { LineToolService } from './services/outils/line-tool.service';
-import { DrawingToolService } from './services/outils/pencil-tool.service';
-import { RectangleToolService } from './services/outils/rectangle-tool.service';
-import { SelectionService } from './services/outils/selection/selection.service';
 import { RoutingManagerService } from './services/routing-manager.service';
 import { ShortcutsManagerService } from './services/shortcuts-manager.service';
 import { SVGStockageService } from './services/stockage-svg/svg-stockage.service';
+import { LineToolService } from './services/tools/line-tool.service';
+import { DrawingToolService } from './services/tools/pencil-tool.service';
+import { RectangleToolService } from './services/tools/rectangle-tool.service';
+import { SelectionService } from './services/tools/selection/selection.service';
 
 @NgModule({
     declarations: [AppComponent, HomePageComponent, AvertissementNouveauDessinComponent, PageDessinComponent, PageGuideComponent,

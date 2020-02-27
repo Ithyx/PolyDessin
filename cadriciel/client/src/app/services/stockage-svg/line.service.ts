@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
-import { Point } from '../outils/line-tool.service';
-import { EMPTY_TOOL, DrawingTool } from '../outils/tool-manager.service';
+import { Point } from '../tools/line-tool.service';
+import { DrawingTool, EMPTY_TOOL } from '../tools/tool-manager.service';
 import { DrawElement } from './draw-element';
 
 @Injectable({

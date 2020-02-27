@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CommandManagerService } from './command/command-manager.service';
 import { GridService } from './grid/grid.service';
-import { LineToolService } from './outils/line-tool.service';
-import { RectangleToolService } from './outils/rectangle-tool.service';
-import { SelectionService } from './outils/selection/selection.service';
+import { SVGStockageService } from './stockage-svg/svg-stockage.service';
+import { LineToolService } from './tools/line-tool.service';
+import { RectangleToolService } from './tools/rectangle-tool.service';
+import { SelectionService } from './tools/selection/selection.service';
 import { BRUSH_TOOL_INDEX,
         LINE_TOOL_INDEX, PENCIL_TOOL_INDEX,
-        RECTANGLE_TOOL_INDEX, SELECTION_TOOL_INDEX, SPRAY_TOOL_INDEX, ToolManagerService } from './outils/tool-manager.service';
-import { SVGStockageService } from './stockage-svg/svg-stockage.service';
+        RECTANGLE_TOOL_INDEX, SELECTION_TOOL_INDEX, SPRAY_TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
 
 @Injectable({
   providedIn: 'root'
