@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { RoutingManagerService } from 'src/app/services/routing-manager.service';
 import { NavigationGuideService } from '../../services/navigation-guide.service';
-import { SubjectGuide } from '../guide-sujet/guide-sujet';
-import { CONTENU_GUIDE } from './SujetsGuide';
+import { SubjectGuide } from '../guide-sujet/subject-guide';
+import { GUIDE_CONTENTS } from './guide-contents';
 
 @Component({
   selector: 'app-page-guide',
@@ -11,26 +11,26 @@ import { CONTENU_GUIDE } from './SujetsGuide';
 })
 
 export class PageGuideComponent {
-  sujets: SubjectGuide[] = CONTENU_GUIDE;
-  sujetActif: SubjectGuide = CONTENU_GUIDE[0];
+  subjects: SubjectGuide[] = GUIDE_CONTENTS;
+  activeSubject: SubjectGuide = GUIDE_CONTENTS[0];
 
-  constructor(private navigateurSujet: NavigationGuideService,
+  constructor(private navigationGuide: NavigationGuideService,
               public routingManager: RoutingManagerService) { }
 
-  clic(sensParcousID: number) {
-    this.navigateurSujet.openCategories(this.sujets);
+  onClick(changedID: number) {
+    this.navigationGuide.openCategories(this.subjects);
 
     // L'ID est optionnel, on vérifie que le sujet actif en a bien un
-    if (this.sujetActif.id) {
-      // Si on a cliqué sur "précédant", sensParcoursID = -1
-      // Si on a cliqué sur "suivant", sensParcousID = 1
-      const nouvelID: number = this.sujetActif.id + sensParcousID;
+    if (this.activeSubject.id) {
+      // Si on a cliqué sur "précédant", changedID = -1
+      // Si on a cliqué sur "suivant", changedID = 1
+      const newID: number = this.activeSubject.id + changedID;
       // On cherche dans notre liste pour voir si on trouve un sujet avec le nouvel ID
-      this.sujetActif = this.navigateurSujet.browseSubjects(nouvelID, this.sujets);
+      this.activeSubject = this.navigationGuide.browseSubjects(newID, this.subjects);
     }
   }
 
-  notificationRecu(sujet: SubjectGuide) {
-    this.sujetActif = sujet;
+  notificationReceived(subject: SubjectGuide) {
+    this.activeSubject = subject;
   }
 }

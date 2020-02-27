@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CONTENU_GUIDE} from '../page-guide/SujetsGuide';
-import { GuideSujet } from './guide-sujet';
+import { CONTENU_GUIDE} from '../page-guide/guide-contents';
+import { GuideSujet } from './subject-guide';
 import { GuideSujetComponent } from './guide-sujet.component';
 
 describe('GuideSujetComponent', () => {
@@ -24,20 +24,20 @@ describe('GuideSujetComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // TEST notificationRecu
+  // TEST notificationReceived
 
-  it('#notificationRecu() devrait emettre un sujet', () => {
+  it('#notificationReceived() devrait emettre un sujet', () => {
     const sujet: GuideSujet = CONTENU_GUIDE[5];
     spyOn(component.notification, 'emit');
 
-    component.notificationRecu(sujet);
+    component.notificationReceived(sujet);
     expect(component.notification.emit).toHaveBeenCalledWith(sujet);
   });
 
   // TESTS clic
 
   it('#clic() est appelé sur un sujet alors celui-ci doit être émit via notification', () => {
-    component.noeud = CONTENU_GUIDE[0];   // Sujet de Bienvenue
+    component.node = CONTENU_GUIDE[0];   // Sujet de Bienvenue
     spyOn(component.notification, 'emit');
 
     component.clic();
@@ -46,10 +46,10 @@ describe('GuideSujetComponent', () => {
   })
 
   it('#clic() est appelé sur une catégorie alors celle-ci devrait être ouverte', () => {
-      component.noeud = CONTENU_GUIDE[1];   // Catégorie des outils
-      component.noeud.categorieOuverte = false;
+      component.node = CONTENU_GUIDE[1];   // Catégorie des outils
+      component.node.categorieOuverte = false;
       component.clic();
-      expect(component.noeud.categorieOuverte).toBe(true);
+      expect(component.node.categorieOuverte).toBe(true);
   });
 
 });

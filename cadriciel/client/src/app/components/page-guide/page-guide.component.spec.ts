@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
 import { SUJET_VIDE } from 'src/app/services/navigation-guide.service';
-import { GuideSujet } from '../guide-sujet/guide-sujet';
+import { GuideSujet } from '../guide-sujet/subject-guide';
 import { GuideSujetComponent } from '../guide-sujet/guide-sujet.component';
 import { PageGuideComponent } from './page-guide.component';
-import { CONTENU_GUIDE } from './SujetsGuide';
+import { CONTENU_GUIDE } from './guide-contents';
 
 describe('PageGuideComponent', () => {
   let component: PageGuideComponent;
@@ -34,24 +34,24 @@ describe('PageGuideComponent', () => {
   it('#clic(1) devrait le sujet après Bienvenue, le Crayon', () => {
     // Correspond au bouton suivant
     component.clic(1);
-    expect(component.sujetActif.nom).toBe('Crayon');
+    expect(component.activeSubject.nom).toBe('Crayon');
   });
 
   it('#clic(-1) devrait retourner le sujet avant Bienvenue, soit un SujetVide', () => {
     // Correspond au bouton precedant
     component.clic(-1);
-    expect(component.sujetActif).toBe(SUJET_VIDE);
+    expect(component.activeSubject).toBe(SUJET_VIDE);
   });
 
   it('#clic ne devrait rein faire si le sujet Actif n\' a pas d\'ID ', () => {
-    component.sujetActif = CONTENU_GUIDE[1];
+    component.activeSubject = CONTENU_GUIDE[1];
     component.clic(1);
-    expect(component.sujetActif).toBe(CONTENU_GUIDE[1]);
+    expect(component.activeSubject).toBe(CONTENU_GUIDE[1]);
   });
 
-  it('#notificationRecu(), le sujetActif devrait être celui émis', () => {
+  it('#notificationReceived(), le activeSubject devrait être celui émis', () => {
     const sujet: GuideSujet = CONTENU_GUIDE[3];
-    component.notificationRecu(sujet);
-    expect(component.sujetActif).toBe(sujet);
+    component.notificationReceived(sujet);
+    expect(component.activeSubject).toBe(sujet);
   })
 });

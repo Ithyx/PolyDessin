@@ -1,6 +1,6 @@
-import { SubjectGuide } from '../guide-sujet/guide-sujet';
+import { SubjectGuide } from '../guide-sujet/subject-guide';
 
-export const CONTENU_GUIDE: SubjectGuide[] = [
+export const GUIDE_CONTENTS: SubjectGuide[] = [
     // Sujet 1
     {
       name: 'Bienvenue',
