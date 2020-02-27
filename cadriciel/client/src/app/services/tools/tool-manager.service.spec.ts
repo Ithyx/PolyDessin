@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ToolManagerService, LINE_TOOL_INDEX, TOOL_LIST} from './tool-manager.service';
+import {  LINE_TOOL_INDEX, TOOL_LIST, ToolManagerService } from './tool-manager.service';
 
 describe('GestionnaireOutilsService', () => {
   let service: ToolManagerService;

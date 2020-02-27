@@ -14,7 +14,7 @@ describe('DessinCrayonService', () => {
   beforeEach(() => stockageService = TestBed.get(SVGStockageService));
 
   beforeEach(() => {
-    service.commandes.dessinEnCours = true;
+    service.commands.drawingInProgress = true;
     service.canClick = true;
     service.tools.activeTool = service.tools.toolList[0];
     service.tools.activeTool.parameters[0].value = 5;
@@ -40,15 +40,15 @@ describe('DessinCrayonService', () => {
     expect(service.canClick).toBe(true);
   });
 
-  it('#sourisCliquee  devrait mettre dessinEnCours faux si peutCliquer est vrai', () => {
+  it('#sourisCliquee  devrait mettre drawingInProgress faux si peutCliquer est vrai', () => {
     service.onMouseClick(new MouseEvent('onclick'));
-    expect(service.commandes.dessinEnCours).toBe(false);
+    expect(service.commands.drawingInProgress).toBe(false);
   });
 
-  it("#sourisCliquee devrait mettre dessinEnCours faux si peutCliquer est vrai et que l'outil crayon n'a pas d'épaisseur", () => {
+  it("#sourisCliquee devrait mettre drawingInProgress faux si peutCliquer est vrai et que l'outil crayon n'a pas d'épaisseur", () => {
     service.tools.activeTool.parameters[0].value = 0;
     service.onMouseClick(new MouseEvent('onclick'));
-    expect(service.commandes.dessinEnCours).toBe(false);
+    expect(service.commands.drawingInProgress).toBe(false);
   });
 
   it("#sourisCliquee devrait seulement être appelé si l'outil crayon a une épaisseur", () => {
@@ -58,23 +58,23 @@ describe('DessinCrayonService', () => {
     expect(service.trace.isAPoint).toBe(false);
   });
 
-  it('#sourisCliquee devrait appeler actualiserSVG après un clic avec crayon', () => {
+  it('#sourisCliquee devrait appeler refreshSVG après un clic avec crayon', () => {
     const clic = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    spyOn(service, 'actualiserSVG');
+    spyOn(service, 'refreshSVG');
     service.onMouseClick(clic);
     expect(service.refreshSVG).toHaveBeenCalled();
   });
 
-  it('#sourisCliquee devrait appeler executer de commande après un clic avec crayon', () => {
+  it('#sourisCliquee devrait appeler execute de commande après un clic avec crayon', () => {
     const clic = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    spyOn(service.commandes, 'executer');
+    spyOn(service.commands, 'execute');
     service.onMouseClick(clic);
-    expect(service.commandes.executer).toHaveBeenCalled();
+    expect(service.commands.execute).toHaveBeenCalled();
   });
 
-  it('#sourisCliquee devrait mettre dessinEnCours faux si peutCliquer est vrai', () => {
+  it('#sourisCliquee devrait mettre drawingInProgress faux si peutCliquer est vrai', () => {
     service.onMouseClick(new MouseEvent('onclick'));
-    expect(service.commandes.dessinEnCours).toBe(false);
+    expect(service.commands.drawingInProgress).toBe(false);
   });
 
   it('#sourisCliquee devrait mettre réinitialiser trait à ses paramètres par défaut si peutCliquer est vrai', () => {
@@ -84,44 +84,44 @@ describe('DessinCrayonService', () => {
 
   // TESTS sourisDeplacee
 
-  it('#sourisDeplacee ne devrait rien effectuer si dessinEnCours est faux', () => {
-    service.commandes.dessinEnCours = false;
-    spyOn(service, 'actualiserSVG');
+  it('#sourisDeplacee ne devrait rien effectuer si drawingInProgress est faux', () => {
+    service.commands.drawingInProgress = false;
+    spyOn(service, 'refreshSVG');
     service.onMouseMove(new MouseEvent('release'));
     expect(service.refreshSVG).not.toHaveBeenCalled();
   });
 
   it('#sourisDeplacee devrait ajouter la position de la souris au tableau de points', () => {
     service.trace.points = [];
-    service.commandes.dessinEnCours = true;
+    service.commands.drawingInProgress = true;
     service.onMouseMove(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
     expect(service.trace.points[0]).toEqual({x: 100, y: 100});
   });
 
-  it('#sourisDeplacee devrait appeler actualiserSVG si dessinEnCours est vrai', () => {
-    spyOn(service, 'actualiserSVG');
+  it('#sourisDeplacee devrait appeler refreshSVG si drawingInProgress est vrai', () => {
+    spyOn(service, 'refreshSVG');
     service.onMouseMove(new MouseEvent('release'));
     expect(service.refreshSVG).toHaveBeenCalled();
   });
 
   // TESTS sourisEnfoncee
 
-  it('#sourisEnfoncee devrait mettre dessinEnCours vrai', () => {
-    service.commandes.dessinEnCours = false;
+  it('#sourisEnfoncee devrait mettre drawingInProgress vrai', () => {
+    service.commands.drawingInProgress = false;
     service.onMousePress();
-    expect(service.commandes.dessinEnCours).toBe(true);
+    expect(service.commands.drawingInProgress).toBe(true);
   });
 
-  it('#sourisEnfoncee devrait appeler actualiserSVG', () => {
-    spyOn(service, 'actualiserSVG');
+  it('#sourisEnfoncee devrait appeler refreshSVG', () => {
+    spyOn(service, 'refreshSVG');
     service.onMousePress();
     expect(service.refreshSVG).toHaveBeenCalled();
   });
 
   // TESTS sourisRelachee
 
-  it('#sourisRelachee devrait rien effectuer si dessinEnCours est faux', () => {
-    service.commandes.dessinEnCours = false;
+  it('#sourisRelachee devrait rien effectuer si drawingInProgress est faux', () => {
+    service.commands.drawingInProgress = false;
     service.canClick = false;
     service.onMouseRelease();
     expect(service.canClick).toBe(false);
@@ -133,79 +133,79 @@ describe('DessinCrayonService', () => {
     expect(service.canClick).toBe(true);
   });
 
-  it("#sourisRelachee  devrait appeler executer de commandes si le SVG contient 'L'", () => {
-    spyOn(service.commandes, 'executer');
+  it("#sourisRelachee  devrait appeler execute de commands si le SVG contient 'L'", () => {
+    spyOn(service.commands, 'execute');
     service.onMouseRelease();
-    expect(service.commandes.executer).toHaveBeenCalled();
+    expect(service.commands.execute).toHaveBeenCalled();
   });
 
-  it('#sourisRelachee devrait réinitialiser trait à ses paramètres par défaut si dessinEnCours est vrai', () => {
+  it('#sourisRelachee devrait réinitialiser trait à ses paramètres par défaut si drawingInProgress est vrai', () => {
     service.onMouseRelease();
     expect(service.trace).toEqual(new TracePencilService());
   });
 
-  it('#sourisRelachee devrait mettre dessinEnCours faux si dessinEnCours est vrai au debut de la fonction', () => {
+  it('#sourisRelachee devrait mettre drawingInProgress faux si drawingInProgress est vrai au debut de la fonction', () => {
     service.onMouseRelease();
-    expect(service.commandes.dessinEnCours).toBe(false);
+    expect(service.commands.drawingInProgress).toBe(false);
   });
 
-  it('#sourisRelachee devrait mettre peutCliquer vrai si dessinEnCours est vrai au debut de la fonction', () => {
+  it('#sourisRelachee devrait mettre peutCliquer vrai si drawingInProgress est vrai au debut de la fonction', () => {
     service.onMouseRelease();
     expect(service.canClick).toBe(true);
   });
 
   // TESTS sourisSortie
 
-  it('#sourisSortie ne devrait pas appeler executer si dessinEnCours est faux', () => {
-    service.commandes.dessinEnCours = false;
-    spyOn(service.commandes, 'executer');
+  it('#sourisSortie ne devrait pas appeler execute si drawingInProgress est faux', () => {
+    service.commands.drawingInProgress = false;
+    spyOn(service.commands, 'execute');
     service.onMouseLeave();
-    expect(service.commandes.executer).not.toHaveBeenCalled();
+    expect(service.commands.execute).not.toHaveBeenCalled();
   });
 
-  it('#sourisSortie devrait appeler executer si dessinEnCours est vrai', () => {
-    spyOn(service.commandes, 'executer');
+  it('#sourisSortie devrait appeler execute si drawingInProgress est vrai', () => {
+    spyOn(service.commands, 'execute');
     service.onMouseLeave();
-    expect(service.commandes.executer).toHaveBeenCalled();
+    expect(service.commands.execute).toHaveBeenCalled();
   });
 
-  it('#sourisSortie devrait reinitialiser le trait en cours si dessinEnCours est vrai', () => {
+  it('#sourisSortie devrait reinitialiser le trait en cours si drawingInProgress est vrai', () => {
     service.onMouseLeave();
     expect(service.trace).toEqual(new TracePencilService());
   });
 
-  it('#sourisSortie devrait mettre dessinEnCours faux si dessinEnCours est vrai', () => {
+  it('#sourisSortie devrait mettre drawingInProgress faux si drawingInProgress est vrai', () => {
     service.onMouseLeave();
-    expect(service.commandes.dessinEnCours).toBe(false);
+    expect(service.commands.drawingInProgress).toBe(false);
   });
 
-  it('#sourisSortie devrait mettre peutCliquer faux si dessinEnCours est faux', () => {
-    service.commandes.dessinEnCours = false;
+  it('#sourisSortie devrait mettre peutCliquer faux si drawingInProgress est faux', () => {
+    service.commands.drawingInProgress = false;
     service.onMouseLeave();
     expect(service.canClick).toBe(false);
   });
 
-  // TESTS actualiserSVG
+  // TESTS refreshSVG
 
-  it('#actualiserSVG devrait changer la couleur du trait', () => {
+  it('#refreshSVG devrait changer la couleur du trait', () => {
     service.trace.primaryColor = 'test';
     service.refreshSVG();
     expect(service.trace.primaryColor).toEqual(service.couleur.getCouleurPrincipale());
   });
 
-  it('#actualiserSVG devrait changer l\'outil du trait', () => {
+  it('#refreshSVG devrait changer l\'outil du trait', () => {
     service.trace.tool = EMPTY_TOOL;
     service.refreshSVG();
     expect(service.trace.tool).toEqual(service.tools.activeTool);
   });
 
-  it('#actualiserSVG devrait appeler dessiner du trait', () => {
+  it('#refreshSVG devrait appeler dessiner du trait', () => {
     spyOn(service.trace, 'draw');
     service.refreshSVG();
     expect(service.trace.draw).toHaveBeenCalled();
   });
 
-  it('#actualiserSVG devrait appeler setOngoingSVG avec le trait', () => {
+  it('#refreshSVG devrait appeler setOngoingSVG avec le trait', () => {
     spyOn(stockageService, 'setOngoingSVG');
     service.refreshSVG();
     expect(stockageService.setOngoingSVG).toHaveBeenCalledWith(service.trace);
