@@ -1,4 +1,4 @@
-import { SubjectGuide } from '../guide-sujet/subject-guide';
+import { SubjectGuide } from '../guide-subject/subject-guide';
 
 export const GUIDE_CONTENTS: SubjectGuide[] = [
     // Sujet 1

@@ -1,0 +1,9 @@
+<a class="subject" href="javascript:void(0);" [style.font-weight]="node.subSubjects ? 'bold' : 'normal'" (click)="onClick();">
+    <pre class="spacing" *ngFor="let index of getRange(depth)">&emsp;</pre>{{node.name}}
+</a>
+
+<div *ngIf="node.subSubjects && node.openCategory" class="enfants">
+    <div *ngFor="let subSubject of node.subSubjects">
+        <app-guide-subject [node]="subSubject" [depth]="depth+1" (notification)="notificationReceived($event)"></app-guide-subject>
+    </div>
+</div>

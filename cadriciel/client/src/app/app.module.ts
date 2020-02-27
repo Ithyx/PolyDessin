@@ -16,11 +16,11 @@ import { GlissiereCouleurComponent } from './components/choix-couleur/glissiere-
 import { ValeurCouleurComponent } from './components/choix-couleur/valeur-couleur/valeur-couleur.component';
 import { FenetreNouveauDessinComponent } from './components/fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 import { GridOptionsComponent } from './components/grid-options/grid-options.component';
-import { GuideSujetComponent } from './components/guide-sujet/guide-sujet.component';
+import { GuidePageComponent } from './components/guide-page/page-guide.component';
+import { GuideSubjectComponent } from './components/guide-subject/guide-subject.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { OutilDessinComponent } from './components/outil-dessin/outil-dessin.component';
 import { PageDessinComponent } from './components/page-dessin/page-dessin.component';
-import { PageGuideComponent } from './components/page-guide/page-guide.component';
 import { SurfaceDessinComponent } from './components/surface-dessin/surface-dessin.component';
 
 // Service
@@ -38,14 +38,14 @@ import { RectangleToolService } from './services/tools/rectangle-tool.service';
 import { SelectionService } from './services/tools/selection/selection.service';
 
 @NgModule({
-    declarations: [AppComponent, HomePageComponent, AvertissementNouveauDessinComponent, PageDessinComponent, PageGuideComponent,
-        FenetreNouveauDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent,
+    declarations: [AppComponent, HomePageComponent, AvertissementNouveauDessinComponent, PageDessinComponent, GuidePageComponent,
+        FenetreNouveauDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSubjectComponent, SurfaceDessinComponent,
             ChoixCouleurComponent, GlissiereCouleurComponent, CouleurPaletteComponent, ValeurCouleurComponent, GridOptionsComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
         MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
         {path: '', component: HomePageComponent},
         {path: 'dessin', component: PageDessinComponent},
-        {path: 'guide', component : PageGuideComponent}
+        {path: 'guide', component : GuidePageComponent}
     ])],
     providers: [NavigationGuideService, SVGStockageService, DrawingToolService, DrawingManagerService,
                 ShortcutsManagerService, RectangleToolService, LineToolService,

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RoutingManagerService } from 'src/app/services/routing-manager.service';
 import { NavigationGuideService } from '../../services/navigation-guide.service';
-import { SubjectGuide } from '../guide-sujet/subject-guide';
+import { SubjectGuide } from '../guide-subject/subject-guide';
 import { GUIDE_CONTENTS } from './guide-contents';
 
 @Component({
@@ -10,7 +10,7 @@ import { GUIDE_CONTENTS } from './guide-contents';
   styleUrls: ['./page-guide.component.scss']
 })
 
-export class PageGuideComponent {
+export class GuidePageComponent {
   subjects: SubjectGuide[] = GUIDE_CONTENTS;
   activeSubject: SubjectGuide = GUIDE_CONTENTS[0];
 
