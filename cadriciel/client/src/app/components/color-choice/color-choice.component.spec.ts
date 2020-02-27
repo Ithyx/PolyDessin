@@ -38,9 +38,9 @@ describe('ChoixCouleurComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // TESTS fermerFenetre
+  // TESTS closeWindow
 
-  it('#fermerFenetre devrait fermer le popup', () => {
+  it('#closeWindow devrait fermer le popup', () => {
     spyOn(component.dialogRef, 'close');
     component.closeWindow();
     expect(component.dialogRef.close).toHaveBeenCalled();

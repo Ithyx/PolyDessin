@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
-import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
+import { NewDrawingWindowComponent } from '../new-drawing-window/new-drawing-window.component';
 
 @Component({
   selector: 'app-home-page',
@@ -18,7 +18,7 @@ export class HomePageComponent {
                 dialogConfig.width = '60%'; }
 
   createDrawing() {
-    this.dialog.open(FenetreNouveauDessinComponent, this.dialogConfig);
+    this.dialog.open(NewDrawingWindowComponent, this.dialogConfig);
   }
 
 }

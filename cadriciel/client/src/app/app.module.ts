@@ -13,7 +13,7 @@ import { ColorChoiceComponent } from './components/color-choice/color-choice.com
 import { ColorInputComponent } from './components/color-choice/color-input/color-input.component';
 import { ColorPickerComponent } from './components/color-choice/color-picker/color-picker.component'
 import { ColorSliderComponent } from './components/color-choice/color-slider/color-slider.component'
-import { FenetreNouveauDessinComponent } from './components/fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
+import { NewDrawingWindowComponent } from './components/new-drawing-window/new-drawing-window.component';
 import { GridOptionsComponent } from './components/grid-options/grid-options.component';
 import { GuidePageComponent } from './components/guide-page/guide-page.component';
 import { GuideSubjectComponent } from './components/guide-subject/guide-subject.component';
@@ -39,7 +39,7 @@ import { SelectionService } from './services/tools/selection/selection.service';
 
 @NgModule({
     declarations: [AppComponent, HomePageComponent, NewDrawingWarningComponent, PageDessinComponent, GuidePageComponent,
-        FenetreNouveauDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSubjectComponent, SurfaceDessinComponent,
+        NewDrawingWindowComponent, BarreOutilsComponent, OutilDessinComponent, GuideSubjectComponent, SurfaceDessinComponent,
         ColorChoiceComponent, ColorSliderComponent, ColorPickerComponent, ColorInputComponent, GridOptionsComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
         MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
@@ -52,7 +52,7 @@ import { SelectionService } from './services/tools/selection/selection.service';
                 RoutingManagerService, ColorParameterService, MatDialogConfig, SelectionService,
                 CommandManagerService, GridService],
 
-    entryComponents: [FenetreNouveauDessinComponent, NewDrawingWarningComponent,
+    entryComponents: [NewDrawingWindowComponent, NewDrawingWarningComponent,
                       ColorChoiceComponent, GridOptionsComponent],
     bootstrap: [AppComponent],
 })

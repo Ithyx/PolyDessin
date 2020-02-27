@@ -1,0 +1,21 @@
+<div class="newDrawing">
+<h1>Paramètres pour la création d'un nouveau dessin</h1>
+
+<h2>Dimension canvas</h2>
+<form [formGroup]="newDrawing">
+<label>Hauteur: (pixels)
+<input type="number" min = "0" (input)="changeWindowDimensionManually()" formControlName="formHeight">
+</label>
+<label>Largeur: (pixels)
+<input type="number" min = "0"  (input)="changeWindowDimensionManually()"  formControlName="formWidth">
+</label>
+
+<h2>Couleur d'Arrière-Plan</h2>
+<button [ngStyle]= "{'background-color': colorParameter.backgroundColor || 'white'}" 
+    (click)="selectColor()" class="select-color"></button>
+</form>
+
+<button mat-raised-button  (click)="createNewDrawing()">Créer</button>
+<button  mat-stroked-button (click)="closeWindow()">Annuler</button>
+
+</div>

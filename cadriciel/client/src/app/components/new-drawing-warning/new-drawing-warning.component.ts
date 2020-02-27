@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
-import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
+import { NewDrawingWindowComponent } from '../new-drawing-window/new-drawing-window.component';
 
 @Component({
   selector: 'app-new-drawing-warning',
@@ -12,7 +12,7 @@ export class NewDrawingWarningComponent {
 
   constructor(public dialog: MatDialog,
               public shortcuts: ShortcutsManagerService,
-              public dialogRef: MatDialogRef<FenetreNouveauDessinComponent> ) {
+              public dialogRef: MatDialogRef<NewDrawingWindowComponent> ) {
    }
 
   cancel() {
@@ -26,6 +26,6 @@ export class NewDrawingWarningComponent {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
-    this.dialog.open(FenetreNouveauDessinComponent, dialogConfig)
+    this.dialog.open(NewDrawingWindowComponent, dialogConfig)
   }
 }
