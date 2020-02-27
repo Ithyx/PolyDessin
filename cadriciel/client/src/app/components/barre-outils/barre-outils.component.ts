@@ -8,7 +8,7 @@ import { SelectionService } from 'src/app/services/outils/selection/selection.se
 import { DrawingTool, ToolManagerService } from 'src/app/services/outils/tool-manager.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
-import { ChoixCouleurComponent } from '../choix-couleur/choix-couleur.component';
+import { ColorChoiceComponent } from '../color-choice/color-choice.component';
 import { GridOptionsComponent } from '../grid-options/grid-options.component';
 
 @Component({
@@ -20,7 +20,7 @@ export class BarreOutilsComponent implements OnDestroy {
 
   porteePrincipale = Scope.Primary;
   porteeSecondaire = Scope.Secondary;
-  fenetreDessin: ChoixCouleurComponent;
+  fenetreDessin: ColorChoiceComponent;
 
   private nouveauDessinSubscription: Subscription;
 
@@ -86,7 +86,7 @@ export class BarreOutilsComponent implements OnDestroy {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '30%';
     dialogConfig.panelClass = 'fenetre-couleur';
-    this.fenetreDessin = this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance;
+    this.fenetreDessin = this.dialog.open(ColorChoiceComponent, dialogConfig).componentInstance;
     if (porteeEntree === 'principale') {
       this.fenetreDessin.portee = Scope.Primary;
     }

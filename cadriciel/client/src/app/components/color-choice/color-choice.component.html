@@ -1,0 +1,12 @@
+<div class = "color-wrapper">
+    <app-color-picker [colorManager]="colorManager"></app-color-picker>
+    <app-color-slider [colorManager]="colorManager" style = "margin-left:16px"></app-color-slider>    
+</div>
+<div class="input-wrapper">
+    <app-color-input [colorManager]="colorManager"></app-color-input>
+    <div class ="color-div" 
+        [ngStyle]= "{'background-color': colorManager.getColor() || 'white'}">
+    </div>
+</div>
+<button mat-stroked-button (click)="applyColor()">Confirmer</button>
+<button mat-stroked-button (click)="closeWindow()">Annuler</button>

@@ -1,32 +1,32 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GestionnaireCommandesService } from 'src/app/services/commande/gestionnaire-commandes.service';
-import { GestionnaireCouleursService } from 'src/app/services/couleur/color-manager.service';
-import { ParametresCouleurService } from 'src/app/services/couleur/color-parameter.service';
-import { CouleurPaletteComponent } from './couleur-palette.component';
+import { ColorManagerService } from 'src/app/services/color/color-manager.service';
+import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
+import { CommandManagerService } from 'src/app/services/command/command-manager.service';
+import { ColorPickerComponent } from './color-picker.component';
 
 describe('CouleurPaletteComponent', () => {
-  let component: CouleurPaletteComponent;
-  let fixture: ComponentFixture<CouleurPaletteComponent>;
-  let parametresCouleur: ParametresCouleurService;
-  let commandes: GestionnaireCommandesService;
+  let component: ColorPickerComponent;
+  let fixture: ComponentFixture<ColorPickerComponent>;
+  let parametresCouleur: ColorParameterService;
+  let commandes: CommandManagerService;
   const changementsTeinte: SimpleChanges = {testTeinte: new SimpleChange('avant', 'après', true)};
   const hauteurTest = {x: 500, y: 500};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CouleurPaletteComponent ]
+      declarations: [ ColorPickerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CouleurPaletteComponent);
+    fixture = TestBed.createComponent(ColorPickerComponent);
     component = fixture.componentInstance;
-    parametresCouleur = TestBed.get(ParametresCouleurService);
-    commandes = TestBed.get(GestionnaireCommandesService);
-    component.gestionnaireCouleur = new GestionnaireCouleursService(parametresCouleur, commandes);
+    parametresCouleur = TestBed.get(ColorParameterService);
+    commandes = TestBed.get(CommandManagerService);
+    component.colorManager = new ColorManagerService(parametresCouleur, commandes);
     fixture.detectChanges();
   });
 
@@ -37,57 +37,57 @@ describe('CouleurPaletteComponent', () => {
   // TESTS ngOnChanges
 
   it('#ngOnChanges devrait dessiner la palette si la teinte est modifiée', () => {
-    component.gestionnaireCouleur.teinte = 'testTeinte';
+    component.colorManager.hue = 'testTeinte';
     spyOn(component, 'dessin');
     component.ngOnChanges(changementsTeinte);
     expect(component.dessin).toHaveBeenCalled();
   });
 
-  it('#ngOnChanges devrait appeler couleurPosition si hauteurChoisie n\'est pas nulle', () => {
-    component.gestionnaireCouleur.teinte = 'testTeinte';
-    spyOn(component, 'couleurPosition');
-    component.hauteurChoisie = hauteurTest;
+  it('#ngOnChanges devrait appeler colorPosition si hauteurChoisie n\'est pas nulle', () => {
+    component.colorManager.hue = 'testTeinte';
+    spyOn(component, 'colorPosition');
+    component.choosenHeight = hauteurTest;
     component.ngOnChanges(changementsTeinte);
-    expect(component.couleurPosition).toHaveBeenCalledWith(500, 500);
+    expect(component.colorPosition).toHaveBeenCalledWith(500, 500);
   });
 
-  it('#ngOnChanges ne devrait pas appeler couleurPosition si hauteurChoisie est undefined', () => {
-    spyOn(component, 'couleurPosition');
+  it('#ngOnChanges ne devrait pas appeler colorPosition si hauteurChoisie est undefined', () => {
+    spyOn(component, 'colorPosition');
     component.ngOnChanges(changementsTeinte);
-    expect(component.couleurPosition).not.toHaveBeenCalled();
+    expect(component.colorPosition).not.toHaveBeenCalled();
   });
 
   it('#ngOnChanges ne devrait rien faire si la teinte n\'est pas modifiée', () => {
-    component.gestionnaireCouleur.teinte = 'testTeinte';
+    component.colorManager.hue = 'testTeinte';
     spyOn(component, 'dessin');
-    spyOn(component, 'couleurPosition');
+    spyOn(component, 'colorPosition');
     component.ngOnChanges({});
     expect(component.dessin).not.toHaveBeenCalled();
-    expect(component.couleurPosition).not.toHaveBeenCalled();
+    expect(component.colorPosition).not.toHaveBeenCalled();
   });
 
-  // TESTS couleurPosition / dessin
+  // TESTS colorPosition / dessin
 
-  it('#couleurPosition devrait actualiser la couleur du service gestionnaireCouleur', () => {
-    component.gestionnaireCouleur.teinte = 'rgba(50, 50, 50,';
+  it('#colorPosition devrait actualiser la couleur du service gestionnaireCouleur', () => {
+    component.colorManager.hue = 'rgba(50, 50, 50,';
     component.dessin();
-    component.couleurPosition(249, 0);
-    expect(component.gestionnaireCouleur.couleur).toBe('rgba(49,49,49,');
+    component.colorPosition(249, 0);
+    expect(component.colorManager.color).toBe('rgba(49,49,49,');
   });
 
-  it('#couleurPosition devrait actualiser le RGB du service gestionnaireCouleur', () => {
-    component.gestionnaireCouleur.teinte = 'rgba(50, 50, 50,';
+  it('#colorPosition devrait actualiser le RGB du service gestionnaireCouleur', () => {
+    component.colorManager.hue = 'rgba(50, 50, 50,';
     component.dessin();
-    component.couleurPosition(249, 0);
-    expect(component.gestionnaireCouleur.RGB).toEqual([49, 49, 49]);
+    component.colorPosition(249, 0);
+    expect(component.colorManager.RGB).toEqual([49, 49, 49]);
   });
 
   // TEST couleurEmise
 
-  it('#couleurEmise devrait appeler couleurPosition sur les points donnés en paramètres', () => {
-    spyOn(component, 'couleurPosition');
-    component.couleurEmise(63, 27);
-    expect(component.couleurPosition).toHaveBeenCalledWith(63, 27);
+  it('#couleurEmise devrait appeler colorPosition sur les points donnés en paramètres', () => {
+    spyOn(component, 'colorPosition');
+    component.emittedColor(63, 27);
+    expect(component.colorPosition).toHaveBeenCalledWith(63, 27);
   });
 
   // TEST sourisRelachee
@@ -110,7 +110,7 @@ describe('CouleurPaletteComponent', () => {
 
   it('#sourisEnfoncee devrait changer la hauteur choisie', () => {
     component.onMousePress(new MouseEvent('mousedown', {clientX: 50, clientY: 50}));
-    expect(component.hauteurChoisie).toEqual({x: 50, y: 50});
+    expect(component.choosenHeight).toEqual({x: 50, y: 50});
   });
 
   it('#sourisEnfoncee devrait dessiner la palette de couleur', () => {
@@ -119,25 +119,25 @@ describe('CouleurPaletteComponent', () => {
     expect(component.dessin).toHaveBeenCalled();
   });
 
-  it('#sourisEnfoncee devrait appeler couleurPosition sur les coordonnées du clic', () => {
-    spyOn(component, 'couleurPosition')
+  it('#sourisEnfoncee devrait appeler colorPosition sur les coordonnées du clic', () => {
+    spyOn(component, 'colorPosition')
     component.onMousePress(new MouseEvent('mousedown', {clientX: 35, clientY: 35}));
-    expect(component.couleurPosition).toHaveBeenCalledWith(35, 35);
+    expect(component.colorPosition).toHaveBeenCalledWith(35, 35);
   });
 
   // TESTS sourisDeplacee
   it('#sourisDeplacee devrait changer la hauteurChoisie si sourisBas est vraie', () => {
     component.onMousePress(new MouseEvent('mousedown')); // sourisBas = true;
     component.onMouseMove(new MouseEvent('mousemove', {clientX: 25, clientY: 25}));
-    expect(component.hauteurChoisie).toEqual({x: 25, y: 25});
+    expect(component.choosenHeight).toEqual({x: 25, y: 25});
   });
 
   it('#sourisDeplacee devrait appeler couleurEmise avec les coordonnées de ' +
     'la souris si sourisBas est vraie', () => {
-    spyOn(component, 'couleurEmise');
+    spyOn(component, 'emittedColor');
     component.onMousePress(new MouseEvent('mousedown')); // sourisBas = true;
     component.onMouseMove(new MouseEvent('mousemove', {clientX: 15, clientY: 15}));
-    expect(component.couleurEmise).toHaveBeenCalledWith(15, 15);
+    expect(component.emittedColor).toHaveBeenCalledWith(15, 15);
   });
 
   // TEST ngAfterViewInit

@@ -2,7 +2,7 @@ import { Component, HostListener, NgZone } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
-import { ChoixCouleurComponent } from 'src/app/components/choix-couleur/choix-couleur.component'
+import { ColorChoiceComponent } from 'src/app/components/color-choice/color-choice.component'
 import { ColorManagerService, Scope } from 'src/app/services/color/color-manager.service'
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
@@ -77,6 +77,6 @@ export class FenetreNouveauDessinComponent {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '30%';
     dialogConfig.panelClass = 'fenetre-couleur';
-    this.dialog.open(ChoixCouleurComponent, dialogConfig).componentInstance.portee = Scope.Background;
+    this.dialog.open(ColorChoiceComponent, dialogConfig).componentInstance.portee = Scope.Background;
   }
 }

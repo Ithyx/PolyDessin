@@ -10,10 +10,10 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './components/app/app.component';
 import { AvertissementNouveauDessinComponent } from './components/avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
 import { BarreOutilsComponent } from './components/barre-outils/barre-outils.component';
-import { ChoixCouleurComponent } from './components/choix-couleur/choix-couleur.component'
-import { CouleurPaletteComponent } from './components/choix-couleur/couleur-palette/couleur-palette.component'
-import { GlissiereCouleurComponent } from './components/choix-couleur/glissiere-couleur/glissiere-couleur.component'
-import { ValeurCouleurComponent } from './components/choix-couleur/valeur-couleur/valeur-couleur.component';
+import { ColorChoiceComponent } from './components/color-choice/color-choice.component'
+import { ColorInputComponent } from './components/color-choice/color-input/color-input.component';
+import { ColorPickerComponent } from './components/color-choice/color-picker/color-picker.component'
+import { ColorSliderComponent } from './components/color-choice/color-slider/color-slider.component'
 import { FenetreNouveauDessinComponent } from './components/fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
 import { GridOptionsComponent } from './components/grid-options/grid-options.component';
 import { GuideSujetComponent } from './components/guide-sujet/guide-sujet.component';
@@ -40,7 +40,7 @@ import { SVGStockageService } from './services/stockage-svg/svg-stockage.service
 @NgModule({
     declarations: [AppComponent, HomePageComponent, AvertissementNouveauDessinComponent, PageDessinComponent, PageGuideComponent,
         FenetreNouveauDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent,
-            ChoixCouleurComponent, GlissiereCouleurComponent, CouleurPaletteComponent, ValeurCouleurComponent, GridOptionsComponent],
+            ColorChoiceComponent, ColorSliderComponent, ColorPickerComponent, ColorInputComponent, GridOptionsComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
         MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
         {path: '', component: HomePageComponent},
@@ -52,7 +52,7 @@ import { SVGStockageService } from './services/stockage-svg/svg-stockage.service
                 RoutingManagerService, ColorParameterService, MatDialogConfig, SelectionService,
                 CommandManagerService, GridService],
     entryComponents: [FenetreNouveauDessinComponent, AvertissementNouveauDessinComponent,
-                      ChoixCouleurComponent, GridOptionsComponent],
+                      ColorChoiceComponent, GridOptionsComponent],
     bootstrap: [AppComponent],
 })
 export class AppModule {}
