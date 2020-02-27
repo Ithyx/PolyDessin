@@ -36,7 +36,7 @@ export class RectangleService implements DrawElement {
 
   draw() {
     if ((this.getWidth() === 0 || this.getHeight() === 0)
-      && this.tool.parameters[1].choosenOption !== 'Plein') {
+      && this.tool.parameters[1].chosenOption !== 'Plein') {
       this.drawLine();
     } else {
       this.drawRectangle();
@@ -59,7 +59,7 @@ export class RectangleService implements DrawElement {
   }
 
   drawRectangle() {
-    const choosedOption = this.tool.parameters[1].choosenOption;
+    const choosedOption = this.tool.parameters[1].chosenOption;
     this.SVG = '<rect fill="'
       + ((choosedOption !== 'Contour') ? this.primaryColor : 'none')
       + '" stroke="' + ((choosedOption !== 'Plein') ? this.secondaryColor : 'none')
@@ -70,14 +70,14 @@ export class RectangleService implements DrawElement {
   }
 
   drawPerimeter() {
-    if (this.tool.parameters[1].choosenOption === 'Plein') {
+    if (this.tool.parameters[1].chosenOption === 'Plein') {
       this.thickness = 0;
     } else if (this.tool.parameters[0].value) {
       this.thickness = this.tool.parameters[0].value;
     }
     const thickness = (this.tool.parameters[0].value) ? this.tool.parameters[0].value : 0;
     this.perimeter = '<rect stroke="gray" fill="none" stroke-width="2' + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '');
-    if (this.tool.parameters[1].choosenOption === 'Plein') {
+    if (this.tool.parameters[1].chosenOption === 'Plein') {
       this.perimeter += '" x="' + this.points[0].x + '" y="' + this.points[0].y
         + '" height="' + this.getHeight() + '" width="' + this.getWidth() + '"/>';
     } else {

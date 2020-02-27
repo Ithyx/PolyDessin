@@ -46,7 +46,7 @@ describe('CouleurPaletteComponent', () => {
   it('#ngOnChanges devrait appeler colorPosition si hauteurChoisie n\'est pas nulle', () => {
     component.colorManager.hue = 'testTeinte';
     spyOn(component, 'colorPosition');
-    component.choosenHeight = hauteurTest;
+    component.chosenHeight = hauteurTest;
     component.ngOnChanges(changementsTeinte);
     expect(component.colorPosition).toHaveBeenCalledWith(500, 500);
   });
@@ -110,7 +110,7 @@ describe('CouleurPaletteComponent', () => {
 
   it('#sourisEnfoncee devrait changer la hauteur choisie', () => {
     component.onMousePress(new MouseEvent('mousedown', {clientX: 50, clientY: 50}));
-    expect(component.choosenHeight).toEqual({x: 50, y: 50});
+    expect(component.chosenHeight).toEqual({x: 50, y: 50});
   });
 
   it('#sourisEnfoncee devrait dessiner la palette de couleur', () => {
@@ -129,7 +129,7 @@ describe('CouleurPaletteComponent', () => {
   it('#sourisDeplacee devrait changer la hauteurChoisie si sourisBas est vraie', () => {
     component.onMousePress(new MouseEvent('mousedown')); // sourisBas = true;
     component.onMouseMove(new MouseEvent('mousemove', {clientX: 25, clientY: 25}));
-    expect(component.choosenHeight).toEqual({x: 25, y: 25});
+    expect(component.chosenHeight).toEqual({x: 25, y: 25});
   });
 
   it('#sourisDeplacee devrait appeler couleurEmise avec les coordonnées de ' +

@@ -6,16 +6,16 @@ import { RouterModule } from '@angular/router';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Scope } from 'src/app/services/color/color-manager.service';
-import { DrawingTool, ToolManagerService } from 'src/app/services/outils/tool-manager.service';
-import { AvertissementNouveauDessinComponent } from '../avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
+import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { ColorChoiceComponent } from '../color-choice/color-choice.component';
 import { ColorInputComponent } from '../color-choice/color-input/color-input.component';
 import { ColorPickerComponent } from '../color-choice/color-picker/color-picker.component';
 import { ColorSliderComponent } from '../color-choice/color-slider/color-slider.component';
-import { GuideSujetComponent } from '../guide-sujet/guide-sujet.component';
+import { GuidePageComponent } from '../guide-page/guide-page.component';
+import { GuideSubjectComponent } from '../guide-subject/guide-subject.component';
+import { NewDrawingWarningComponent } from '../new-drawing-warning/new-drawing-warning.component';
 import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
-import { PageGuideComponent } from '../page-guide/page-guide.component';
-import { BarreOutilsComponent } from './barre-outils.component';
+import { ToolbarComponent } from './toolbar.component';
 
 /* Service stub pour réduire les dépendances */
 const outilTestActif: DrawingTool = {
@@ -23,7 +23,7 @@ const outilTestActif: DrawingTool = {
   isActive: true,
   ID: 0,
   parameters: [{type: 'number', name: 'Épaisseur', value: 5},
-               {type: 'select', name: 'Type', options: ['A', 'B'], choosenOption: 'A'}],
+               {type: 'select', name: 'Type', options: ['A', 'B'], chosenOption: 'A'}],
   iconName: ''
 };
 
@@ -56,24 +56,24 @@ const GestionnaireOutilServiceStub: Partial<ToolManagerService> = {
 }
 
 describe('BarreOutilsComponent', () => {
-  let component: BarreOutilsComponent;
-  let fixture: ComponentFixture<BarreOutilsComponent>;
+  let component: ToolbarComponent;
+  let fixture: ComponentFixture<ToolbarComponent>;
   let service: ToolManagerService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageGuideComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, ColorChoiceComponent,
+      declarations: [ GuidePageComponent, ToolbarComponent, OutilDessinComponent, GuideSubjectComponent, ColorChoiceComponent,
                       ColorPickerComponent, ColorSliderComponent, ColorInputComponent ],
       providers: [ {provide: ToolManagerService, useValue: GestionnaireOutilServiceStub} ],
       imports: [ RouterModule.forRoot([
-        {path: 'guide', component : PageGuideComponent}
+        {path: 'guide', component : GuidePageComponent}
     ]), MatDialogModule, BrowserAnimationsModule]
     })
     .overrideModule(BrowserDynamicTestingModule, {set: { entryComponents: [ ColorChoiceComponent ] }})
     .compileComponents();
   }));
   beforeEach(() => {
-    fixture = TestBed.createComponent(BarreOutilsComponent);
+    fixture = TestBed.createComponent(ToolbarComponent);
     component = fixture.componentInstance;
     service = fixture.debugElement.injector.get(ToolManagerService);
     fixture.detectChanges();
@@ -90,31 +90,31 @@ describe('BarreOutilsComponent', () => {
 
   // TESTS subcribe dans le constructeur
 
-  it('#constructor devrait lier le gestionnaire de raccourcis avec la fonction avertissementNouveauDessin, '
+  it('#constructor devrait lier le gestionnaire de raccourcis avec la fonction warningNewDrawing, '
     + 'qui est appelée si le paramètre estIgnoree est faux', () => {
-    spyOn(component, 'avertissementNouveauDessin');
+    spyOn(component, 'warningNewDrawing');
     component.shortcuts.newDrawingEmmiter.next(false);
-    expect(component.avertissementNouveauDessin).toHaveBeenCalled();
+    expect(component.warningNewDrawing).toHaveBeenCalled();
   });
 
-  it('#constructor devrait lier le gestionnaire de raccourcis avec la fonction avertissementNouveauDessin, '
+  it('#constructor devrait lier le gestionnaire de raccourcis avec la fonction warningNewDrawing, '
     + 'qui n\'est pas appelée si le paramètre estIgnoree est vrai', () => {
-    spyOn(component, 'avertissementNouveauDessin');
+    spyOn(component, 'warningNewDrawing');
     component.shortcuts.newDrawingEmmiter.next(true);
-    expect(component.avertissementNouveauDessin).not.toHaveBeenCalled();
+    expect(component.warningNewDrawing).not.toHaveBeenCalled();
   });
 
   // TESTS ngOnDestroy
 
   it('#ngOnDestroy devrait appeler la fonction unsubscribe', () => {
-    spyOn(component, 'avertissementNouveauDessin');
+    spyOn(component, 'warningNewDrawing');
     component.ngOnDestroy();  // unsubscribe est appelée ici
 
     const toucheEnfoncee = new KeyboardEvent('keypress', { key: 'o', ctrlKey: true});
     component.shortcuts.treatInput(toucheEnfoncee);
 
-    // on teste que avertissementNouveauDessin n'est plus lié aux raccourcis
-    expect(component.avertissementNouveauDessin).not.toHaveBeenCalled();
+    // on teste que warningNewDrawing n'est plus lié aux raccourcis
+    expect(component.warningNewDrawing).not.toHaveBeenCalled();
   });
 
   it('#ngOnDestroy devrait appeler la fonction next avec un booleen true comme paramètre', () => {
@@ -126,18 +126,18 @@ describe('BarreOutilsComponent', () => {
   // TESTS clic
 
   it('#clic devrait changer d\'outil', () => {
-    component.clic(service.toolList[1]); // on sélectionne l'outil 2
+    component.onClick(service.toolList[1]); // on sélectionne l'outil 2
     expect(service.activeTool).toBe(service.toolList[1]); // on vérifie que l'outil actif est bien le deuxième
   });
 
   it('#clic devrait mettre le nouvel outil sélectionné comme actif', () => {
-    component.clic(service.toolList[1]); // on sélectionne l'outil 2
+    component.onClick(service.toolList[1]); // on sélectionne l'outil 2
     expect(service.toolList[1].isActive).toBe(true); // on vérifie que le nouvel outil est bien "actif"
   });
 
   it('#clic devrait appeler la fonction viderSVGEnCours', () => {
     spyOn(component.shortcuts, 'clearOngoingSVG');
-    component.clic(service.toolList[2]); // on sélectionne l'outil 2 (rectangle)
+    component.onClick(service.toolList[2]); // on sélectionne l'outil 2 (rectangle)
     expect(component.shortcuts.clearOngoingSVG).toHaveBeenCalled();
   });
 
@@ -161,21 +161,21 @@ describe('BarreOutilsComponent', () => {
   it('#choixSelectionne ne devrait pas changer la valeur du paramètre si l\'évènement qui lui est donné n\'est pas un string', () => {
     const element = fixture.debugElement.query(By.css('select[name="Type"]')).nativeElement;
     element.dispatchEvent(new Event('change')); // choixSelectionne appelée implicitement
-    expect(component.tools.activeTool.parameters[1].choosenOption).toBe('A');
+    expect(component.tools.activeTool.parameters[1].chosenOption).toBe('A');
   });
 
   it('#choixSelectionne devrait changer la valeur du paramètre si l\'évènement qui lui est donné est un string', () => {
     const element = fixture.debugElement.query(By.css('select[name="Type"]')).nativeElement;
     element.value = 'B';
     element.dispatchEvent(new Event('change')); // choixSelectionne appelée implicitement
-    expect(component.tools.activeTool.parameters[1].choosenOption).toBe('B');
+    expect(component.tools.activeTool.parameters[1].chosenOption).toBe('B');
   });
 
-  // TESTS desactiverRaccourcis
+  // TESTS disableShortcuts
 
-  it('#desactiverRaccourcis devrait assigner vrai à focusOnInput', () => {
+  it('#disableShortcuts devrait assigner vrai à focusOnInput', () => {
     component.shortcuts.focusOnInput = false;
-    component.desactiverRaccourcis();
+    component.disableShortcuts();
     expect(component.shortcuts.focusOnInput).toBe(true);
   });
 
@@ -183,57 +183,57 @@ describe('BarreOutilsComponent', () => {
 
   it('#activerRaccourcis devrait assigner faux à focusOnInput', () => {
     component.shortcuts.focusOnInput = true;
-    component.activerRaccourcis();
+    component.enableShortcuts();
     expect(component.shortcuts.focusOnInput).toBe(false);
   });
 
-  // TESTS avertissementNouveauDessin
+  // TESTS warningNewDrawing
 
-  it('#avertissementNouveauDessin devrait appeler desactiverRaccourcis', () => {
+  it('#warningNewDrawing devrait appeler disableShortcuts', () => {
     spyOn(component.dialog, 'open');
-    spyOn(component, 'desactiverRaccourcis');
-    component.avertissementNouveauDessin();
-    expect(component.desactiverRaccourcis).toHaveBeenCalled();
+    spyOn(component, 'disableShortcuts');
+    component.warningNewDrawing();
+    expect(component.disableShortcuts).toHaveBeenCalled();
   });
 
-  it('#avertissementNouveauDessin devrait appeler open avec AvertissementNouveauDessinComponent et dialogConfig comme paramètres', () => {
+  it('#warningNewDrawing devrait appeler open avec NewDrawingWarningComponent et dialogConfig comme paramètres', () => {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
     spyOn(component.dialog, 'open');
-    component.avertissementNouveauDessin();
-    expect(component.dialog.open).toHaveBeenCalledWith(AvertissementNouveauDessinComponent, dialogConfig);
+    component.warningNewDrawing();
+    expect(component.dialog.open).toHaveBeenCalledWith(NewDrawingWarningComponent, dialogConfig);
   });
 
   // TESTS selectionCouleur
 
-  it('#selectionCouleur devrait appeler desactiverRaccourcis', () => {
-    spyOn(component, 'desactiverRaccourcis');
-    component.selectionCouleur('principale');
-    expect(component.desactiverRaccourcis).toHaveBeenCalled();
+  it('#selectionCouleur devrait appeler disableShortcuts', () => {
+    spyOn(component, 'disableShortcuts');
+    component.selectColor('principale');
+    expect(component.disableShortcuts).toHaveBeenCalled();
   });
 
   it('#selectionCouleur devrait assignee portee à Portee.Principale si le paramètre de la fonction contient principale', () => {
-    component.selectionCouleur('principale');
-    expect(component.fenetreDessin.portee).toEqual(component.porteePrincipale);
+    component.selectColor('principale');
+    expect(component.colorPickerPopup.portee).toEqual(component.primaryScope);
   });
 
   it('#selectionCouleur devrait assignee portee à Portee.Secondaire si le paramètre de la fonction contient secondaire', () => {
-    component.selectionCouleur('secondaire');
-    expect(component.fenetreDessin.portee).toEqual(component.porteeSecondaire);
+    component.selectColor('secondaire');
+    expect(component.colorPickerPopup.portee).toEqual(component.secondaryScope);
   });
 
   it('#selectionCouleur devrait assignee portee à Portee.fond si le paramètre de la fonction contient fond', () => {
-    component.selectionCouleur('fond');
-    expect(component.fenetreDessin.portee).toEqual(Scope.Background);
+    component.selectColor('fond');
+    expect(component.colorPickerPopup.portee).toEqual(Scope.Background);
   });
 
   // TESTS selectionDerniereCouleurPrimaire
 
   it('#selectionDerniereCouleurPrimaire devrait assigner sa couleur en paramètre à couleurPrincipale', () => {
     component.colorParameter.primaryColor = 'rgba(0, 0, 0, ';
-    component.selectionDerniereCouleurPrimaire('rgba(1, 1, 1, ');
+    component.selectPreviousPrimaryColor('rgba(1, 1, 1, ');
     expect(component.colorParameter.primaryColor).toEqual('rgba(1, 1, 1, ');
   });
 
@@ -241,14 +241,14 @@ describe('BarreOutilsComponent', () => {
 
   it('#selectionDerniereCouleurSecondaire devrait assigner sa couleur en paramètre à couleurSecondaire', () => {
     component.colorParameter.secondaryColor = 'rgba(0, 0, 0, ';
-    component.selectionDerniereCouleurSecondaire('rgba(1, 1, 1, ', new MouseEvent ('click'));
+    component.selectPreviousSecondaryColor('rgba(1, 1, 1, ', new MouseEvent ('click'));
     expect(component.colorParameter.secondaryColor).toEqual('rgba(1, 1, 1, ');
   });
 
   it("#selectionDerniereCouleurSecondaire devrait s'assurer que preventDefault est appelé", () => {
     const evenement = new MouseEvent ('click');
     spyOn(evenement, 'preventDefault')
-    component.selectionDerniereCouleurSecondaire('rgba(1, 1, 1, ', evenement);
+    component.selectPreviousSecondaryColor('rgba(1, 1, 1, ', evenement);
     expect(evenement.preventDefault).toHaveBeenCalled();
   });
 

@@ -10,13 +10,13 @@ import { SelectionService } from 'src/app/services/tools/selection/selection.ser
 import { SELECTION_TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 
 @Component({
-  selector: 'app-surface-dessin',
-  templateUrl: './surface-dessin.component.html',
-  styleUrls: ['./surface-dessin.component.scss']
+  selector: 'app-drawing-surface',
+  templateUrl: './drawing-surface.component.html',
+  styleUrls: ['./drawing-surface.component.scss']
 })
-export class SurfaceDessinComponent {
+export class DrawingSurfaceComponent {
   constructor(public SVGStockage: SVGStockageService,
-              public outils: ToolManagerService,
+              public tools: ToolManagerService,
               public drawingManager: DrawingManagerService,
               public routingManager: RoutingManagerService,
               public routing: Router,
@@ -28,18 +28,17 @@ export class SurfaceDessinComponent {
     }
   }
 
-  traiterClicSurVide() {
-    if (this.outils.activeTool.ID === SELECTION_TOOL_INDEX) {
+  handleBackgroundClick() {
+    if (this.tools.activeTool.ID === SELECTION_TOOL_INDEX) {
       if (!this.selection.selectionRectangle.rectangle) {
-        console.log('clic sur vide');
         this.selection.deleteBoundingBox();
       }
     }
   }
 
-  traiterClicElementDessin(element: DrawElement) {
+  handleElementClick(element: DrawElement) {
     // TODO : Vérification de l'outil (Selection, Pipette, Applicateur de Couleur)
-    if (this.outils.activeTool.ID === SELECTION_TOOL_INDEX) {
+    if (this.tools.activeTool.ID === SELECTION_TOOL_INDEX) {
       this.selection.traiterClic(element);
     }
   }

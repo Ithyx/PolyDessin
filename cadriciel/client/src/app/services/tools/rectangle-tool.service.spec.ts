@@ -19,7 +19,7 @@ describe('DessinRectangleService', () => {
   // Mettre l'outil de rectangle comme l'outil actif
   beforeEach(() => {
     service.tools.activeTool = service.tools.toolList[2];
-    service.tools.activeTool.parameters[1].choosenOption = 'Contour';
+    service.tools.activeTool.parameters[1].chosenOption = 'Contour';
     service.tools.activeTool.parameters[0].value = 5;
   });
 

@@ -18,7 +18,7 @@ export class ColorSliderComponent implements AfterViewInit, ToolInterface {
 
   private context2D: CanvasRenderingContext2D ;
   private MouseDown =  false
-  choosenHeight: number;
+  chosenHeight: number;
 
   ngAfterViewInit() {
     this.draw();
@@ -50,11 +50,11 @@ export class ColorSliderComponent implements AfterViewInit, ToolInterface {
     this.context2D.fill();
     this.context2D.closePath();
 
-    if (this.choosenHeight) {
+    if (this.chosenHeight) {
       this.context2D.beginPath();
       this.context2D.strokeStyle = 'white';
       this.context2D.lineWidth = 5;
-      this.context2D.rect(0, this.choosenHeight - 5, width, 10);
+      this.context2D.rect(0, this.chosenHeight - 5, width, 10);
       this.context2D.stroke();
       this.context2D.closePath();
     }
@@ -67,14 +67,14 @@ export class ColorSliderComponent implements AfterViewInit, ToolInterface {
 
   onMousePress(evt: MouseEvent) {
     this.MouseDown = true;
-    this.choosenHeight = evt.offsetY;
+    this.chosenHeight = evt.offsetY;
     this.draw();
     this.emittedColor(evt.offsetX, evt.offsetY);
   }
 
   onMouseMove(evt: MouseEvent) {
     if (this.MouseDown) {
-      this.choosenHeight = evt.offsetY;
+      this.chosenHeight = evt.offsetY;
       this.draw();
       this.emittedColor(evt.offsetX, evt.offsetY);
     }

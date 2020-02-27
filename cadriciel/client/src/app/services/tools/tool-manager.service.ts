@@ -11,7 +11,7 @@ export interface ToolParameter {
   type: string;
   name: string;
   options?: string[];
-  choosenOption?: string;
+  chosenOption?: string;
   value?: number;
 }
 
@@ -69,7 +69,7 @@ export const TOOL_LIST: DrawingTool[] = [
     iconName: 'fas fa-paint-brush',
     parameters: [
       {type: 'number', name: 'Épaisseur', value: 5},
-      {type: 'select', name: 'Texture', choosenOption: 'Flou', options: ['Flou', 'Ombre', 'Surbrillance', 'Tache', 'Tremblant']}
+      {type: 'select', name: 'Texture', chosenOption: 'Flou', options: ['Flou', 'Ombre', 'Surbrillance', 'Tache', 'Tremblant']}
     ]
   },
   {
@@ -79,7 +79,7 @@ export const TOOL_LIST: DrawingTool[] = [
     iconName: 'far fa-square',
     parameters: [
       {type: 'number', name: 'Épaisseur du contour', value: 5},
-      {type: 'select', name: 'Type de tracé', choosenOption: 'Contour', options: ['Contour', 'Plein', 'Plein avec contour']}
+      {type: 'select', name: 'Type de tracé', chosenOption: 'Contour', options: ['Contour', 'Plein', 'Plein avec contour']}
     ]
   },
   {
@@ -89,7 +89,7 @@ export const TOOL_LIST: DrawingTool[] = [
     iconName: 'fas fa-vector-square',
     parameters: [
       {type: 'number', name: 'Épaisseur', value: 5},
-      {type: 'select', name: 'Type de jonction', choosenOption: 'Avec points', options: ['Avec points', 'Sans points']},
+      {type: 'select', name: 'Type de jonction', chosenOption: 'Avec points', options: ['Avec points', 'Sans points']},
       {type: 'number', name: 'Diamètre des jonctions', value: 5}
     ]
   },
@@ -100,7 +100,7 @@ export const TOOL_LIST: DrawingTool[] = [
     iconName: 'fas fa-vector-square',
     parameters: [
       { type: 'invisible', name: 'Épaisseur', value: 1 },
-      { type: 'invisible', name: 'Type de tracé', choosenOption: 'Contour'}
+      { type: 'invisible', name: 'Type de tracé', chosenOption: 'Contour'}
     ]
   },
   {

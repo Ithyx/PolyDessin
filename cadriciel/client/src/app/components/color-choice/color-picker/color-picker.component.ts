@@ -21,12 +21,12 @@ export class ColorPickerComponent implements AfterViewInit, OnChanges, ToolInter
 
   private mouseDown = false;
 
-  choosenHeight: { x: number; y: number};
+  chosenHeight: { x: number; y: number};
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes[this.colorManager.hue]) {
       this.dessin();
-      const pos = this.choosenHeight;
+      const pos = this.chosenHeight;
       if (pos) {
         this.colorPosition(pos.x, pos.y);
       }
@@ -51,14 +51,14 @@ export class ColorPickerComponent implements AfterViewInit, OnChanges, ToolInter
 
     onMousePress(evt: MouseEvent) {
       this.mouseDown = true;
-      this.choosenHeight = {x: evt.offsetX, y: evt.offsetY};
+      this.chosenHeight = {x: evt.offsetX, y: evt.offsetY};
       this.dessin();
       this.colorPosition(evt.offsetX, evt.offsetY);
     }
 
     onMouseMove(evt: MouseEvent) {
       if (this.mouseDown) {
-        this.choosenHeight = { x: evt.offsetX, y: evt.offsetY};
+        this.chosenHeight = { x: evt.offsetX, y: evt.offsetY};
         this.dessin();
         this.emittedColor(evt.offsetX, evt.offsetY);
       }
@@ -92,13 +92,13 @@ export class ColorPickerComponent implements AfterViewInit, OnChanges, ToolInter
     this.context2D.fillStyle = blackGrad;
     this.context2D.fillRect(0, 0, width, height);
 
-    if (this.choosenHeight) {
+    if (this.chosenHeight) {
       this.context2D.strokeStyle = 'white';
       this.context2D.fillStyle = 'white';
       this.context2D.beginPath();
       this.context2D.arc(
-        this.choosenHeight.x,
-        this.choosenHeight.y,
+        this.chosenHeight.x,
+        this.chosenHeight.y,
         10,
         0,
         2 * Math.PI

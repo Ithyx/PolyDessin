@@ -1,0 +1,12 @@
+<app-toolbar></app-toolbar>
+
+<div class="zone-travail">
+    <app-drawing-surface (click)="onClick($event)"
+                        (dblclick)="onDblClick($event)"
+                        (mousemove)="onMouseMove($event)"
+                        (mouseup)="onMouseUp($event)"
+                        (mousedown)="onMouseDown($event)"
+                        (mouseleave)="onMouseLeave($event)"
+                        (mouseenter)="onMouseEnter($event)">
+    </app-drawing-surface>
+</div>

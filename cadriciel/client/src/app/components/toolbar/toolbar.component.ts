@@ -12,17 +12,17 @@ import { GridOptionsComponent } from '../grid-options/grid-options.component';
 import { NewDrawingWarningComponent } from '../new-drawing-warning/new-drawing-warning.component';
 
 @Component({
-  selector: 'app-barre-outils',
-  templateUrl: './barre-outils.component.html',
-  styleUrls: ['./barre-outils.component.scss']
+  selector: 'app-toolbar',
+  templateUrl: './toolbar.component.html',
+  styleUrls: ['./toolbar.component.scss']
 })
-export class BarreOutilsComponent implements OnDestroy {
+export class ToolbarComponent implements OnDestroy {
 
-  porteePrincipale = Scope.Primary;
-  porteeSecondaire = Scope.Secondary;
-  fenetreDessin: ColorChoiceComponent;
+  primaryScope = Scope.Primary;
+  secondaryScope = Scope.Secondary;
+  colorPickerPopup: ColorChoiceComponent;
 
-  private nouveauDessinSubscription: Subscription;
+  private newDrawingSubscription: Subscription;
 
   constructor(public dialog: MatDialog,
               public tools: ToolManagerService,
@@ -31,47 +31,46 @@ export class BarreOutilsComponent implements OnDestroy {
               public commands: CommandManagerService,
               public selection: SelectionService
              ) {
-    this.nouveauDessinSubscription = shortcuts.newDrawingEmmiter.subscribe((estIgnoree: boolean) => {
-     if (!estIgnoree) { this.avertissementNouveauDessin(); };
+    this.newDrawingSubscription = shortcuts.newDrawingEmmiter.subscribe((isIgnored: boolean) => {
+     if (!isIgnored) { this.warningNewDrawing(); };
     });
   }
 
   ngOnDestroy() {
-    this.nouveauDessinSubscription.unsubscribe();
+    this.newDrawingSubscription.unsubscribe();
     this.shortcuts.newDrawingEmmiter.next(true);
   }
 
-  clic(outil: DrawingTool) {
+  onClick(tool: DrawingTool) {
     if (this.tools.activeTool.name === 'Selection' && this.selection.selectionBox) {
       this.selection.deleteBoundingBox();
   }
     this.tools.activeTool.isActive = false;
-    this.tools.activeTool = outil;
+    this.tools.activeTool = tool;
     this.tools.activeTool.isActive = true;
     this.shortcuts.clearOngoingSVG();
   }
 
-  onChange(event: Event, nomParametre: string) {
+  onChange(event: Event, parameterName: string) {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
-    this.tools.activeTool.parameters[this.tools.findParameterIndex(nomParametre)].value = Math.max(Number(eventCast.value), 1);
+    this.tools.activeTool.parameters[this.tools.findParameterIndex(parameterName)].value = Math.max(Number(eventCast.value), 1);
   }
 
-  choixSelectionne(event: Event, nomParametre: string) {
+  selectChoice(event: Event, parameterName: string) {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
-    this.tools.activeTool.parameters[this.tools.findParameterIndex(nomParametre)].choosenOption = eventCast.value;
+    this.tools.activeTool.parameters[this.tools.findParameterIndex(parameterName)].chosenOption = eventCast.value;
   }
 
-  desactiverRaccourcis() {
+  disableShortcuts() {
     this.shortcuts.focusOnInput = true;
   }
 
-  activerRaccourcis() {
+  enableShortcuts() {
     this.shortcuts.focusOnInput = false;
   }
 
-  avertissementNouveauDessin() {
-
-    this.desactiverRaccourcis();
+  warningNewDrawing() {
+    this.disableShortcuts();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -79,27 +78,27 @@ export class BarreOutilsComponent implements OnDestroy {
     this.dialog.open(NewDrawingWarningComponent, dialogConfig);
   }
 
-  selectionCouleur(porteeEntree: string) {
-    this.desactiverRaccourcis();
+  selectColor(scope: string) {
+    this.disableShortcuts();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '30%';
     dialogConfig.panelClass = 'fenetre-couleur';
-    this.fenetreDessin = this.dialog.open(ColorChoiceComponent, dialogConfig).componentInstance;
-    if (porteeEntree === 'principale') {
-      this.fenetreDessin.portee = Scope.Primary;
+    this.colorPickerPopup = this.dialog.open(ColorChoiceComponent, dialogConfig).componentInstance;
+    if (scope === 'principale') {
+      this.colorPickerPopup.portee = Scope.Primary;
     }
-    if (porteeEntree === 'secondaire') {
-      this.fenetreDessin.portee = Scope.Secondary;
+    if (scope === 'secondaire') {
+      this.colorPickerPopup.portee = Scope.Secondary;
     }
-    if (porteeEntree === 'fond') {
-      this.fenetreDessin.portee = Scope.Background;
+    if (scope === 'fond') {
+      this.colorPickerPopup.portee = Scope.Background;
     }
   }
 
   openGridWindow() {
-    this.desactiverRaccourcis();
+    this.disableShortcuts();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -107,24 +106,24 @@ export class BarreOutilsComponent implements OnDestroy {
     this.dialog.open(GridOptionsComponent, dialogConfig);
   }
 
-  selectionDerniereCouleurPrimaire(couleurChoisie: string) {
-    this.colorParameter.primaryColor = couleurChoisie;
+  selectPreviousPrimaryColor(chosenColor: string) {
+    this.colorParameter.primaryColor = chosenColor;
   }
 
-  selectionDerniereCouleurSecondaire(couleurChoisie: string, evenement: MouseEvent) {
-    this.colorParameter.secondaryColor = couleurChoisie;
-    evenement.preventDefault();
+  selectPreviousSecondaryColor(chosenColor: string, event: MouseEvent) {
+    this.colorParameter.secondaryColor = chosenColor;
+    event.preventDefault();
   }
 
-  appliquerOpacitePrincipale(evenement: Event) {
-    const evenementCast: HTMLInputElement = (evenement.target as HTMLInputElement);
-    this.colorParameter.primaryOpacity = Math.max(Math.min(Number(evenementCast.value), 1), 0);
+  applyPrimaryOpacity(event: Event) {
+    const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
+    this.colorParameter.primaryOpacity = Math.max(Math.min(Number(eventCast.value), 1), 0);
     this.colorParameter.primaryOpacityDisplayed = Math.round(100 * this.colorParameter.primaryOpacity);
   }
 
-  appliquerOpaciteSecondaire(evenement: Event) {
-    const evenementCast: HTMLInputElement = (evenement.target as HTMLInputElement);
-    this.colorParameter.secondaryOpacity = Math.max(Math.min(Number(evenementCast.value), 1), 0);
+  applySecondaryOpacity(event: Event) {
+    const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
+    this.colorParameter.secondaryOpacity = Math.max(Math.min(Number(eventCast.value), 1), 0);
     this.colorParameter.secondaryOpacityDisplayed = Math.round(100 * this.colorParameter.secondaryOpacity);
   }
 }

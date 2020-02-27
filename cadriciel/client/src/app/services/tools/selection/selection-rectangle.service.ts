@@ -23,7 +23,7 @@ export class SelectionRectangleService {
                                          ID: -1,
                                          parameters: [
                                           {type: 'invisible', name: 'Épaisseur du contour', value: 5},
-                                          {type: 'invisible', name: 'Type de tracé', choosenOption: 'Plein avec contour'}
+                                          {type: 'invisible', name: 'Type de tracé', chosenOption: 'Plein avec contour'}
                                          ],
                                          iconName: ''};
 

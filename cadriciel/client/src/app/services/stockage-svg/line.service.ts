@@ -35,7 +35,7 @@ export class LineService implements DrawElement {
       this.SVG += this.mousePosition.x + ' ' + this.mousePosition.y;
     }
     this.SVG += '" />';
-    if (this.tool.parameters[1].choosenOption === 'Avec points') {
+    if (this.tool.parameters[1].chosenOption === 'Avec points') {
       this.drawPoints();
     }
   }
@@ -54,6 +54,6 @@ export class LineService implements DrawElement {
 
   isEmpty() {
     return this.points.length === 0 ||
-      (this.points.length === 1 && this.tool.parameters[1].choosenOption === 'Sans points');
+      (this.points.length === 1 && this.tool.parameters[1].chosenOption === 'Sans points');
   }
 }

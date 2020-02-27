@@ -138,7 +138,7 @@ export class ShortcutsManagerService {
           this.rectangleTool.shiftRelease();
         }
         if (this.tools.activeTool.ID === LINE_TOOL_INDEX) {
-          this.lineTool.ShiftRelease();
+          this.lineTool.shiftRelease();
         }
         break;
 

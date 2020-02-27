@@ -32,7 +32,7 @@ export class TraceBrushService implements DrawElement {
       this.thickness = this.tool.parameters[0].value;
     }
     this.SVG = `<path fill="none" stroke="${this.primaryColor}"`
-      + ' filter="url(#' + this.tool.parameters[1].choosenOption
+      + ' filter="url(#' + this.tool.parameters[1].chosenOption
       + ')" stroke-linecap="round" stroke-width="' + this.tool.parameters[0].value + '" d="';
     for (let i = 0; i < this.points.length; ++i) {
       this.SVG += (i === 0) ? 'M ' : 'L ';
@@ -45,7 +45,7 @@ export class TraceBrushService implements DrawElement {
     if (this.tool.parameters[0].value) {
       this.thickness = this.tool.parameters[0].value;
       this.SVG = '<circle cx="' + this.points[0].x + '" cy="' + this.points[0].y
-        + '" filter="url(#' + this.tool.parameters[1].choosenOption
+        + '" filter="url(#' + this.tool.parameters[1].chosenOption
         + ')" r="' + this.tool.parameters[0].value / 2
         + '" fill="' + this.primaryColor + '"/>';
     }

@@ -8,20 +8,20 @@ import { RouterModule } from '@angular/router';
 
 // Component
 import { AppComponent } from './components/app/app.component';
-import { BarreOutilsComponent } from './components/barre-outils/barre-outils.component';
 import { ColorChoiceComponent } from './components/color-choice/color-choice.component'
 import { ColorInputComponent } from './components/color-choice/color-input/color-input.component';
 import { ColorPickerComponent } from './components/color-choice/color-picker/color-picker.component'
 import { ColorSliderComponent } from './components/color-choice/color-slider/color-slider.component'
-import { NewDrawingWindowComponent } from './components/new-drawing-window/new-drawing-window.component';
+import { DrawingPageComponent } from './components/drawing-page/drawing-page.component';
+import { DrawingSurfaceComponent } from './components/drawing-surface/drawing-surface.component';
 import { GridOptionsComponent } from './components/grid-options/grid-options.component';
 import { GuidePageComponent } from './components/guide-page/guide-page.component';
 import { GuideSubjectComponent } from './components/guide-subject/guide-subject.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { NewDrawingWarningComponent } from './components/new-drawing-warning/new-drawing-warning.component';
+import { NewDrawingWindowComponent } from './components/new-drawing-window/new-drawing-window.component';
 import { OutilDessinComponent } from './components/outil-dessin/outil-dessin.component';
-import { PageDessinComponent } from './components/page-dessin/page-dessin.component';
-import { SurfaceDessinComponent } from './components/surface-dessin/surface-dessin.component';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
 
 // Service
 import { ColorParameterService } from './services/color/color-parameter.service';
@@ -38,13 +38,14 @@ import { RectangleToolService } from './services/tools/rectangle-tool.service';
 import { SelectionService } from './services/tools/selection/selection.service';
 
 @NgModule({
-    declarations: [AppComponent, HomePageComponent, NewDrawingWarningComponent, PageDessinComponent, GuidePageComponent,
-        NewDrawingWindowComponent, BarreOutilsComponent, OutilDessinComponent, GuideSubjectComponent, SurfaceDessinComponent,
+
+    declarations: [AppComponent, HomePageComponent, NewDrawingWarningComponent, DrawingPageComponent, GuidePageComponent,
+        NewDrawingWindowComponent, ToolbarComponent, OutilDessinComponent, GuideSubjectComponent, DrawingSurfaceComponent,
         ColorChoiceComponent, ColorSliderComponent, ColorPickerComponent, ColorInputComponent, GridOptionsComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
         MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
         {path: '', component: HomePageComponent},
-        {path: 'dessin', component: PageDessinComponent},
+        {path: 'dessin', component: DrawingPageComponent},
         {path: 'guide', component : GuidePageComponent}
     ])],
     providers: [NavigationGuideService, SVGStockageService, DrawingToolService, DrawingManagerService,

@@ -2,13 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
-import { BarreOutilsComponent } from '../barre-outils/barre-outils.component';
+import { ToolbarComponent } from '../toolbar/toolbar.component';
+import { DrawingPageComponent } from '../drawing-page/drawing-page.component';
+import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 import { FenetreNouveauDessinComponent } from '../fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
-import { GuideSujetComponent } from '../guide-sujet/guide-sujet.component';
+import { GuidePageComponent } from '../guide-page/guide-page.component';
+import { GuideSubjectComponent } from '../guide-subject/guide-subject.component';
 import { OutilDessinComponent } from '../outil-dessin/outil-dessin.component';
-import { PageDessinComponent } from '../page-dessin/page-dessin.component';
-import { PageGuideComponent } from '../page-guide/page-guide.component';
-import { SurfaceDessinComponent } from '../surface-dessin/surface-dessin.component';
 import { HomePageComponent } from './home-page.component';
 
 describe('AccueilComponent', () => {
@@ -17,12 +17,12 @@ describe('AccueilComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageDessinComponent, PageGuideComponent, HomePageComponent, BarreOutilsComponent, GuideSujetComponent,
-        OutilDessinComponent, SurfaceDessinComponent ],
+      declarations: [ DrawingPageComponent, GuidePageComponent, HomePageComponent, ToolbarComponent, GuideSubjectComponent,
+        OutilDessinComponent, DrawingSurfaceComponent ],
       imports: [ MatDialogModule, RouterModule.forRoot([
         {path: '', component: HomePageComponent},
-        {path: 'dessin', component: PageDessinComponent},
-        {path: 'guide', component : PageGuideComponent}
+        {path: 'dessin', component: DrawingPageComponent},
+        {path: 'guide', component : GuidePageComponent}
     ]) ],
     providers: [ MatDialog, MatDialogConfig ]
     })

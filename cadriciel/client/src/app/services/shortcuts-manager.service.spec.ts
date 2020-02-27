@@ -210,11 +210,11 @@ describe('GestionnaireRaccourcisService', () => {
   it('#treatReleaseKey devrait appeler shiftRelache de l\'outil ligne si il reçoit Shift', () => {
     const clavier = new KeyboardEvent('keypress', { key: 'Shift'});
     service.tools.changeActiveTool(LINE_TOOL_INDEX);
-    spyOn(service.lineTool, 'ShiftRelease');
+    spyOn(service.lineTool, 'shiftRelease');
 
     service.treatReleaseKey(clavier);
 
-    expect(service.lineTool.ShiftRelease).toHaveBeenCalled();
+    expect(service.lineTool.shiftRelease).toHaveBeenCalled();
   });
 
   it('#treatReleaseKey ne fait rien dans le cas d\'une touche non programmée', () => {
@@ -222,9 +222,9 @@ describe('GestionnaireRaccourcisService', () => {
 
     // Dans le cas de la ligne
     service.tools.changeActiveTool(LINE_TOOL_INDEX);
-    spyOn(service.lineTool, 'ShiftRelease');
+    spyOn(service.lineTool, 'shiftRelease');
     service.treatReleaseKey(clavier);
-    expect(service.lineTool.ShiftRelease).not.toHaveBeenCalled();
+    expect(service.lineTool.shiftRelease).not.toHaveBeenCalled();
 
     // Dans le cas du rectangle
     service.tools.changeActiveTool(RECTANGLE_TOOL_INDEX);
