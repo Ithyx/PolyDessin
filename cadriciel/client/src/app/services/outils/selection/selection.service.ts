@@ -12,7 +12,6 @@ import { SelectionRectangleService } from './selection-rectangle.service';
   providedIn: 'root'
 })
 export class SelectionService implements ToolInterface {
-  boiteElementSelectionne = new RectangleService();
   selectedElements: DrawElement[] = [];
 
   constructor(public SVGStockage: SVGStockageService,
@@ -23,7 +22,6 @@ export class SelectionService implements ToolInterface {
 
   traiterClic(element: DrawElement) {
     this.deleteBoundingBox();
-
     if (!this.selectedElements.includes(element)) {
       this.selectedElements.push(element);
       element.isSelected = true;
@@ -34,7 +32,7 @@ export class SelectionService implements ToolInterface {
 
   onMouseMove(mouse: MouseEvent) {
     this.selectionRectangle.mouseMouve(mouse);
-    if (this.selectionRectangle.onoingSelection) {
+    if (this.selectionRectangle.ongoingSelection) {
       this.deleteBoundingBox();
       // Éviter de créer une boite de sélection si on effectue un simple clic
       if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
@@ -45,8 +43,13 @@ export class SelectionService implements ToolInterface {
   }
 
   onMousePress(mouse: MouseEvent) {
+
+    // if (mouse.button === 2) {         // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
+      // console.log('right click');
+    // } else {
     this.deleteBoundingBox();
     this.selectionRectangle.mouseDown(mouse);
+    // }
   }
 
   onMouseRelease() {
@@ -125,12 +128,12 @@ export class SelectionService implements ToolInterface {
   };
 
   deleteBoundingBox() {
-    if (this.selectedElements) {
-      this.selectionBox.deleteSelectionBox();
+    this.selectionBox.deleteSelectionBox();
+    this.selectedElements = [];
 
-      for (const element of this.selectedElements) {
-        element.isSelected = false;
-        this.selectedElements.pop();
+    for (const element of this.SVGStockage.getCompleteSVG()) {
+      if (element[1].isSelected) {
+        element[1].isSelected = false;
       }
     }
   };

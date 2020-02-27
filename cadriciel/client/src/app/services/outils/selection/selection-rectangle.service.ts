@@ -8,7 +8,7 @@ import { DrawingTool } from '../tool-manager.service';
   providedIn: 'root'
 })
 export class SelectionRectangleService {
-  onoingSelection = false;
+  ongoingSelection = false;
   rectangle: RectangleService;
   // Coordonnées du clic initial de souris
   initialPoint: Point = {x: 0, y: 0};
@@ -38,7 +38,7 @@ export class SelectionRectangleService {
   }
 
   mouseMouve(mouse: MouseEvent) {
-    if (this.onoingSelection) {
+    if (this.ongoingSelection) {
       // Calcule des valeurs pour former un rectangle
       this.widthCalculated = Math.abs(this.initialPoint.x - mouse.offsetX);
       this.heightCalculated = Math.abs(this.initialPoint.y - mouse.offsetY);
@@ -56,14 +56,14 @@ export class SelectionRectangleService {
     this.rectangle = new RectangleService();
     this.rectangle.isDotted = true;
     this.initialPoint = {x: mouse.offsetX, y: mouse.offsetY};
-    this.onoingSelection = true;
+    this.ongoingSelection = true;
   }
 
   mouseUp() {
     this.basisPoint = {x: 0, y: 0};
     this.heightCalculated = 0;
     this.widthCalculated = 0;
-    this.onoingSelection = false;
+    this.ongoingSelection = false;
   }
 
 }

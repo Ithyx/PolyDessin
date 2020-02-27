@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output} from '@angular/core';
 import { EMPTY_SUBJECT} from '../../services/navigation-guide.service';
-import { GuideSujet } from './guide-sujet';
+import { SubjectGuide } from './guide-sujet';
 
 @Component({
   selector: 'app-guide-sujet',
@@ -10,24 +10,24 @@ import { GuideSujet } from './guide-sujet';
 
 export class GuideSujetComponent {
 
-  @Input() noeud: GuideSujet = EMPTY_SUBJECT;
+  @Input() noeud: SubjectGuide = EMPTY_SUBJECT;
   @Input() profondeur = 0;
 
-  @Output() notification = new EventEmitter<GuideSujet>();
+  @Output() notification = new EventEmitter<SubjectGuide>();
 
   getRange = (taille: number) => Array(taille);
 
   clic() {
-    if (this.noeud.sousSujets) {
+    if (this.noeud.subSubjects) {
       // c'est une catégorie: un click n'affiche pas la description, mais ouvre ou ferme la catégorie
-      this.noeud.categorieOuverte = !this.noeud.categorieOuverte;
+      this.noeud.openCategory = !this.noeud.openCategory;
     } else {
       // c'est un sujet, on ouvre son contenu
       this.notification.emit(this.noeud);
     }
   }
 
-  notificationRecu(sujet: GuideSujet) {
+  notificationRecu(sujet: SubjectGuide) {
     this.notification.emit(sujet);
   }
 

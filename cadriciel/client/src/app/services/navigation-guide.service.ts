@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GuideSujet } from '../components/guide-sujet/guide-sujet';
+import { SubjectGuide } from '../components/guide-sujet/guide-sujet';
 
 @Injectable({
   providedIn: 'root'
@@ -7,16 +7,16 @@ import { GuideSujet } from '../components/guide-sujet/guide-sujet';
 
 export class NavigationGuideService {
 
-  browseSubjects(subjectID: number, subjects: GuideSujet[]): GuideSujet {
+  browseSubjects(subjectID: number, subjects: SubjectGuide[]): SubjectGuide {
     for (const element of subjects) {
       // Première vérification
       if (subjectID === element.id) {
         return element;
       }
 
-      // Si element possède des sousSujets, on veut les vérifiés aussi
-      if (element.sousSujets) {
-        const buffer: GuideSujet = this.browseSubjects(subjectID, element.sousSujets);
+      // Si element possède des subSubjects, on veut les vérifiés aussi
+      if (element.subSubjects) {
+        const buffer: SubjectGuide = this.browseSubjects(subjectID, element.subSubjects);
         if (buffer !== EMPTY_SUBJECT) {
           return buffer;
         }
@@ -25,20 +25,20 @@ export class NavigationGuideService {
     return EMPTY_SUBJECT;
   }
 
-  openCategories(category: GuideSujet[]) {
+  openCategories(category: SubjectGuide[]) {
     category.forEach((element) => {
-      if (element.sousSujets) {
-        element.categorieOuverte = true;
-        this.openCategories(element.sousSujets);
+      if (element.subSubjects) {
+        element.openCategory = true;
+        this.openCategories(element.subSubjects);
       }
     });
   };
 }
 
-export const EMPTY_SUBJECT: GuideSujet = {
-  nom: '',
+export const EMPTY_SUBJECT: SubjectGuide = {
+  name: '',
   description: '',
-  precedant: false,
-  suivant: false,
+  previous: false,
+  next: false,
   id: 0
 }

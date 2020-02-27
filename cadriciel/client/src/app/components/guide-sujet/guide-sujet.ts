@@ -1,9 +1,9 @@
-export class GuideSujet {
-   nom: string;
+export class SubjectGuide {
+   name: string;
    description: string;
-   precedant: boolean;
-   suivant: boolean;
+   previous: boolean;
+   next: boolean;
    id?: number;
-   sousSujets?: GuideSujet[];
-   categorieOuverte ? = false;
+   subSubjects?: SubjectGuide[];
+   openCategory ? = false;
 }

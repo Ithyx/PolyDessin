@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RoutingManagerService } from 'src/app/services/routing-manager.service';
 import { NavigationGuideService } from '../../services/navigation-guide.service';
-import { GuideSujet } from '../guide-sujet/guide-sujet';
+import { SubjectGuide } from '../guide-sujet/guide-sujet';
 import { CONTENU_GUIDE } from './SujetsGuide';
 
 @Component({
@@ -11,8 +11,8 @@ import { CONTENU_GUIDE } from './SujetsGuide';
 })
 
 export class PageGuideComponent {
-  sujets: GuideSujet[] = CONTENU_GUIDE;
-  sujetActif: GuideSujet = CONTENU_GUIDE[0];
+  sujets: SubjectGuide[] = CONTENU_GUIDE;
+  sujetActif: SubjectGuide = CONTENU_GUIDE[0];
 
   constructor(private navigateurSujet: NavigationGuideService,
               public routingManager: RoutingManagerService) { }
@@ -30,7 +30,7 @@ export class PageGuideComponent {
     }
   }
 
-  notificationRecu(sujet: GuideSujet) {
+  notificationRecu(sujet: SubjectGuide) {
     this.sujetActif = sujet;
   }
 }

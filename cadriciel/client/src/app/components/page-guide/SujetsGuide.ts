@@ -1,9 +1,9 @@
-import { GuideSujet } from '../guide-sujet/guide-sujet';
+import { SubjectGuide } from '../guide-sujet/guide-sujet';
 
-export const CONTENU_GUIDE: GuideSujet[] = [
+export const CONTENU_GUIDE: SubjectGuide[] = [
     // Sujet 1
     {
-      nom: 'Bienvenue',
+      name: 'Bienvenue',
       id: 1,
       description: `<h1>Bienvenue à PolyDessin! </h1>
                     <hr>
@@ -12,28 +12,28 @@ export const CONTENU_GUIDE: GuideSujet[] = [
                     <p> Vous vous trouvez présentement dans le guide d'utilisation.
                     Celui-ci décrit et explique les différents outils implémentés.</p>
                     <img src="assets/poly.png">`,
-      precedant: false,
-      suivant: true
+      previous: false,
+      next: true
     },
     // Catégorie 1 : Outils
     {
-        nom: 'Outils',
+        name: 'Outils',
         description: '',
-        precedant: false,
-        suivant: false,
-        categorieOuverte: false,
-        sousSujets: [
+        previous: false,
+        next: false,
+        openCategory: false,
+        subSubjects: [
             // Catégorie 2 : Outils de Traçages
             {
-                nom: 'Traçages',
+                name: 'Traçages',
                 description: '',
-                precedant: false,
-                suivant: false,
-                categorieOuverte: false,
-                sousSujets: [
+                previous: false,
+                next: false,
+                openCategory: false,
+                subSubjects: [
                     // Sujet 2
                     {
-                        nom: 'Crayon',
+                        name: 'Crayon',
                         description: `<h1> Crayon </h1>
                               <hr>
                               <p> Le crayon est l'outil de traçage de base permettant de dessiner de simples traits
@@ -41,46 +41,46 @@ export const CONTENU_GUIDE: GuideSujet[] = [
                               <img src="assets/crayon.gif" width="300" height="300">
                               <p> Les paramètres personalisables sont:
                               <li> Épaisseur du trait (en px) </li> </p>`,
-                        precedant: true,
-                        suivant: true,
+                        previous: true,
+                        next: true,
                         id: 2
                     },
                     // Sujet 3
                     {
-                        nom: 'Pinceau',
+                        name: 'Pinceau',
                         description: `<h1> Pinceau </h1>
                               <hr>
                               <p> Le pinceau est très similaire au crayon, mais offre une texture supplémentaire.</p>
                               <img src="assets/pinceau.gif" width="300" height="300">
                               <p> Les paramètres personalisables sont:
                               <li> Épaisseur du trait (en px) </li> <li> Texture du trait </li> </p>`,
-                        precedant: true,
-                        suivant: true,
+                        previous: true,
+                        next: true,
                         id: 3
                     },
                     // Sujet 4
                     {
-                        nom: 'Aérosol',
+                        name: 'Aérosol',
                         description: `<h1> Aérosol </h1>
                                       <hr>
                                       <p> <p>`,
-                        precedant: true,
-                        suivant: true,
+                        previous: true,
+                        next: true,
                         id: 4
                     },
                 ]
             },
             // Catégorie 3 : Outils de Formes
             {
-                nom: 'Formes',
+                name: 'Formes',
                 description: '',
-                precedant: false,
-                suivant: false,
-                categorieOuverte: false,
-                sousSujets: [
+                previous: false,
+                next: false,
+                openCategory: false,
+                subSubjects: [
                     {
                         // Sujet 5
-                        nom: 'Rectangle',
+                        name: 'Rectangle',
                         description: `<h1> Rectangle </h1>
                                       <hr>
                                       <p> Après avoir sélectionné l'outil, il suffit à l'utilisateur de "glisser-déposer"
@@ -91,33 +91,33 @@ export const CONTENU_GUIDE: GuideSujet[] = [
                                       carré le plus proche et vice-versa. </p>
                                       <p> Les paramètres personalisables sont:
                                       <li> Épaisseur du trait de coutour (en px) </li> <li> Type de tracé </li> </p>`,
-                        precedant: true,
-                        suivant: true,
+                        previous: true,
+                        next: true,
                         id: 5
                     },
                     // Sujet 6
                     {
-                        nom: 'Ellipse',
+                        name: 'Ellipse',
                         description: `<h1> Ellipse </h1>
                               <hr>
                               <p> <p>`,
-                        precedant: true,
-                        suivant: true,
+                        previous: true,
+                        next: true,
                         id: 6
                     },
                     // Sujet 7
                     {
-                        nom: 'Polygone',
+                        name: 'Polygone',
                         description: `<h1> Polygone </h1>
                               <hr>
                               <p> <p>`,
-                        precedant: true,
-                        suivant: true,
+                        previous: true,
+                        next: true,
                         id: 7
                     },
                     // Sujet 8
                     {
-                        nom: 'Ligne',
+                        name: 'Ligne',
                         description: `<h1> Ligne </h1>
                               <hr>
                               <p> L'outil ligne permet de tracer une ou plusieurs segments d'une ligne. Il suffit, après avoir
@@ -131,23 +131,23 @@ export const CONTENU_GUIDE: GuideSujet[] = [
                               <p> Les paramètres personalisables sont:
                               <li> Épaisseur du trait (en px) </li> <li> Type de jonction </li>
                               <li> Diamètre des jonctions </li></p>`,
-                        precedant: true,
-                        suivant: true,
+                        previous: true,
+                        next: true,
                         id: 8
                     },
                 ]
             },
             // Catégorie 4 : Outils de Couleurs
             {
-                nom: 'Couleurs',
+                name: 'Couleurs',
                 description: '',
-                precedant: false,
-                suivant: false,
-                categorieOuverte: false,
-                sousSujets: [
+                previous: false,
+                next: false,
+                openCategory: false,
+                subSubjects: [
                     // Sujet 9
                     {
-                        nom: 'Couleur',
+                        name: 'Couleur',
                         description: `<h1> Couleur </h1>
                               <hr>
                               <p> L'outil couleur est un paramètre partagé entre tous les outils, il est d'ailleurs disponible dans le
@@ -159,50 +159,50 @@ export const CONTENU_GUIDE: GuideSujet[] = [
                               , l'utilisateur peut changer sa couleur principale et avec un clic gauche, sa couleur secondaire.</p>
                               <p> Les paramètres personalisables sont:
                               <li> Le code RGB </li> <li> L'opacité </li> </p>`,
-                        precedant: true,
-                        suivant: true,
+                        previous: true,
+                        next: true,
                         id: 9
                     },
                     // Sujet 10
                     {
-                        nom: 'Pipette',
+                        name: 'Pipette',
                         description: `<h1> Pipette </h1>
                                       <hr>
                                       <p> <p>`,
-                        precedant: true,
-                        suivant: true,
+                        previous: true,
+                        next: true,
                         id: 10
                     },
                     // Sujet 11
                     {
-                        nom: 'Applicateur de Couleur',
+                        name: 'Applicateur de Couleur',
                         description: `<h1> Applicateur de couleur </h1>
                                       <hr>
                                       <p> <p>`,
-                        precedant: true,
-                        suivant: true,
+                        previous: true,
+                        next: true,
                         id: 11
                     },
                 ]
             },
             // Sujet 12
             {
-                nom: 'Selection',
+                name: 'Selection',
                 description: `<h1> Selection </h1>
                               <hr>
                               <p> <p>`,
-                precedant: true,
-                suivant: true,
+                previous: true,
+                next: true,
                 id: 12
             },
             // Sujet 13
             {
-                nom: 'Efface',
+                name: 'Efface',
                 description: `<h1> Efface </h1>
                               <hr>
                               <p> <p>`,
-                precedant: true,
-                suivant: false,
+                previous: true,
+                next: false,
                 id: 13
             },
         ]
