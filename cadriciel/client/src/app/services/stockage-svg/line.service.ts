@@ -11,25 +11,34 @@ export class LineService implements DrawElement {
   SVG: string;
   SVGHtml: SafeHtml;
 
-  points: Point[] = [];
-  isSelected = false;
+  points: Point[];
+  isSelected: boolean;
 
-  primaryColor = 'rgba(0,0,0,1)';
+  primaryColor: string;
 
-  tool: DrawingTool = EMPTY_TOOL;
+  tool: DrawingTool;
   thickness: number;
-  isAPolygon = false;
-  mousePosition = {x: 0, y: 0};
+  isAPolygon: boolean;
+  mousePosition: Point;
 
   pointMin: Point;
   pointMax: Point;
 
-  draw() {
+  constructor() {
+    this.points = [];
+    this.isSelected = false;
+    this.primaryColor = 'rgba(0,0,0,1)';
+    this.tool = EMPTY_TOOL;
+    this.isAPolygon = false;
+    this.mousePosition = {x: 0, y: 0};
+  }
+
+  draw(): void {
     if (this.tool.parameters[0].value) {
       this.thickness = this.tool.parameters[0].value;
     }
     this.SVG = (this.isAPolygon) ? '<polygon ' : '<polyline ';
-    this.SVG += 'fill="none" stroke="' + this.primaryColor + '" stroke-width="' + this.tool.parameters[0].value
+    this.SVG += 'fill="none" stroke="' + this.primaryColor + '" stroke-width="' + this.tool.parameters[0].value;
     this.SVG += '" points="';
     for (const point of this.points) {
       this.SVG += point.x + ' ' + point.y + ' ';
@@ -43,7 +52,7 @@ export class LineService implements DrawElement {
     }
   }
 
-  drawPoints() {
+  drawPoints(): void {
     if (this.tool.parameters[2].value) {
       if (2 * this.tool.parameters[2].value > this.thickness) {
         this.thickness = 2 * this.tool.parameters[2].value;
@@ -55,7 +64,7 @@ export class LineService implements DrawElement {
     }
   }
 
-  isEmpty() {
+  isEmpty(): boolean {
     return this.points.length === 0 ||
       (this.points.length === 1 && this.tool.parameters[1].chosenOption === 'Sans points');
   }

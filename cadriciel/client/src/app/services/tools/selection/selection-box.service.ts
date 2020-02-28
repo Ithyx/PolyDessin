@@ -14,7 +14,7 @@ export class SelectionBoxService {
   constructor(public tools: ToolManagerService,
               private sanitizer: DomSanitizer) { }
 
-  createSelectionBox(pointMin: Point, pointMax: Point) {
+  createSelectionBox(pointMin: Point, pointMax: Point): void {
 
     this.selectionBox = new RectangleService();
 
@@ -29,7 +29,7 @@ export class SelectionBoxService {
     this.selectionBox.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.selectionBox.SVG);
   };
 
-  deleteSelectionBox() {
+  deleteSelectionBox(): void {
     if (this.tools.activeTool.ID === SELECTION_TOOL_INDEX) {
       delete this.selectionBox;
     }

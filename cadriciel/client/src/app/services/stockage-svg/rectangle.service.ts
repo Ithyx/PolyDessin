@@ -11,9 +11,8 @@ export class RectangleService implements DrawElement {
   SVG: string;
   SVGHtml: SafeHtml;
 
-  points: Point[] = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
-                     {x: 0, y: 0}];   // points[1], coin bas droite
-  isSelected = false;
+  points: Point[];
+  isSelected: boolean;
 
   primaryColor: string;
   secondaryColor: string;
@@ -23,21 +22,29 @@ export class RectangleService implements DrawElement {
   isDotted: boolean;
 
   tool: DrawingTool = EMPTY_TOOL;
-  width = 0;
-  height = 0;
+  width: number;
+  height: number;
+
+  constructor() {
+    this.points = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
+                   {x: 0, y: 0}];   // points[1], coin bas droite
+    this.isSelected = false;
+    this.width = 0;
+    this.height = 0;
+  }
 
   pointMin: Point;
   pointMax: Point;
 
   getWidth(): number {
     return Math.abs(this.points[1].x - this.points[0].x);
-  };
+  }
 
   getHeight(): number {
     return Math.abs(this.points[1].y - this.points[0].y);
-  };
+  }
 
-  draw() {
+  draw(): void {
     if ((this.getWidth() === 0 || this.getHeight() === 0)
       && this.tool.parameters[1].chosenOption !== 'Plein') {
       this.drawLine();
@@ -47,7 +54,7 @@ export class RectangleService implements DrawElement {
     this.drawPerimeter();
   }
 
-  drawLine() {
+  drawLine(): void {
     if (this.tool.parameters[0].value) {
       this.thickness = this.tool.parameters[0].value;
     }
@@ -61,7 +68,7 @@ export class RectangleService implements DrawElement {
       + '" y2="' + (this.points[0].y + this.getHeight()) + '"/>';
   }
 
-  drawRectangle() {
+  drawRectangle(): void {
     const choosedOption = this.tool.parameters[1].chosenOption;
     this.SVG = '<rect fill="'
       + ((choosedOption !== 'Contour') ? this.primaryColor : 'none')
@@ -72,7 +79,7 @@ export class RectangleService implements DrawElement {
       + '" width="' + this.getWidth() + '" height="' + this.getHeight() + '"/>';
   }
 
-  drawPerimeter() {
+  drawPerimeter(): void {
     if (this.tool.parameters[1].chosenOption === 'Plein') {
       this.thickness = 0;
     } else if (this.tool.parameters[0].value) {

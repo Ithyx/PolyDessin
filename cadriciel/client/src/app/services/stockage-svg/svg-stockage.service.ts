@@ -6,13 +6,18 @@ import { DrawElement } from './draw-element';
   providedIn: 'root'
 })
 export class SVGStockageService {
-  size = 0;
+  size: number;
 
   private ongoingSVG: SafeHtml;
   private ongoingPerimeter: SafeHtml;
-  private completeSVG = new Map<number, DrawElement>();
+  private completeSVG: Map<number, DrawElement>;
 
-  addSVG(element: DrawElement, key?: number) {
+  constructor(private sanitizer: DomSanitizer) {
+    this.size = 0;
+    this.completeSVG = new Map<number, DrawElement>();
+  }
+
+  addSVG(element: DrawElement, key?: number): void {
     element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
     this.completeSVG.set(key ? key : ++this.size, element);
     this.ongoingSVG = '';
@@ -26,7 +31,7 @@ export class SVGStockageService {
     return element;
   }
 
-  removeLastSVG() {
+  removeLastSVG(): void {
     this.completeSVG.delete(this.size);
     this.size--;
   }
@@ -39,7 +44,7 @@ export class SVGStockageService {
     return this.ongoingPerimeter;
   }
 
-  setOngoingSVG(element: DrawElement) {
+  setOngoingSVG(element: DrawElement): void {
     this.ongoingSVG = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
     if (element.perimeter) {
       this.ongoingPerimeter = this.sanitizer.bypassSecurityTrustHtml(element.perimeter);
@@ -50,10 +55,8 @@ export class SVGStockageService {
     return this.completeSVG;
   }
 
-  cleanDrawing() {
+  cleanDrawing(): void {
     this.completeSVG.clear();
     this.size = 0;
   }
-
-  constructor(private sanitizer: DomSanitizer) { }
 }

@@ -8,15 +8,15 @@ import { DrawingTool } from '../tool-manager.service';
   providedIn: 'root'
 })
 export class SelectionRectangleService {
-  ongoingSelection = false;
+  ongoingSelection: boolean;
   rectangle: RectangleService;
-  // Coordonnées du clic initial de souris
-  initialPoint: Point = {x: 0, y: 0};
-  // Coordonnées du point inférieur gauche
-  basisPoint: Point = {x: 0, y: 0};
+
+  initialPoint: Point = {x: 0, y: 0};     // Coordonnées du clic initial de souris
+  basisPoint: Point = {x: 0, y: 0};     // Coordonnées du point inférieur gauche
+
   // Dimensions du rectangle
-  widthCalculated = 0;
-  heightCalculated = 0;
+  widthCalculated: number;
+  heightCalculated: number;
 
   rectangleSelectionTool: DrawingTool = {name: '',
                                          isActive: true,
@@ -27,9 +27,13 @@ export class SelectionRectangleService {
                                          ],
                                          iconName: ''};
 
-  constructor(private sanitizer: DomSanitizer) { }
+  constructor(private sanitizer: DomSanitizer) {
+    this.ongoingSelection = false;
+    this.widthCalculated = 0;
+    this.heightCalculated = 0;
+   }
 
-  refreshSVG() {
+  refreshSVG(): void {
     this.rectangle.tool = this.rectangleSelectionTool;
     this.rectangle.primaryColor = 'rgba(0, 80, 130, 0.35)';
     this.rectangle.secondaryColor = 'rgba(80, 80, 80, 0.45)';
@@ -37,7 +41,7 @@ export class SelectionRectangleService {
     this.rectangle.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.rectangle.SVG);
   }
 
-  mouseMouve(mouse: MouseEvent) {
+  mouseMouve(mouse: MouseEvent): void {
     if (this.ongoingSelection) {
       // Calcule des valeurs pour former un rectangle
       this.widthCalculated = Math.abs(this.initialPoint.x - mouse.offsetX);
@@ -52,14 +56,14 @@ export class SelectionRectangleService {
     }
   }
 
-  mouseDown(mouse: MouseEvent) {
+  mouseDown(mouse: MouseEvent): void {
     this.rectangle = new RectangleService();
     this.rectangle.isDotted = true;
     this.initialPoint = {x: mouse.offsetX, y: mouse.offsetY};
     this.ongoingSelection = true;
   }
 
-  mouseUp() {
+  mouseUp(): void {
     this.basisPoint = {x: 0, y: 0};
     this.heightCalculated = 0;
     this.widthCalculated = 0;

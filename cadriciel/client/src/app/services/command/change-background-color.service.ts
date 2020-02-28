@@ -14,11 +14,11 @@ export class ChangeBackgroundColorService implements Command {
     color.backgroundColor = newColor;
   }
 
-  undo() {
+  undo(): void {
     this.color.backgroundColor = this.oldColor;
   }
 
-  redo() {
+  redo(): void {
     this.color.backgroundColor = this.newColor;
   }
 }

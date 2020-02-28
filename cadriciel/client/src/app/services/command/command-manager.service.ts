@@ -5,17 +5,21 @@ import { Command } from './command';
   providedIn: 'root'
 })
 export class CommandManagerService {
-  drawingInProgress = false;  // Annuler-refaire désactivé si un dessin est en cours
+  drawingInProgress: boolean;  // Annuler-refaire désactivé si un dessin est en cours
+
+  constructor() {
+    this.drawingInProgress = false;
+  }
 
   executedCommands: Command[] = [];
   cancelledCommands: Command[] = [];
 
-  execute(command: Command) {
+  execute(command: Command): void {
     this.executedCommands.push(command);
     this.cancelledCommands = [];
   }
 
-  cancelCommand() {
+  cancelCommand(): void {
     const command = this.executedCommands.pop();
     if (command) {
       command.undo();
@@ -23,7 +27,7 @@ export class CommandManagerService {
     }
   }
 
-  redoCommand() {
+  redoCommand(): void {
     const command = this.cancelledCommands.pop();
     if (command) {
       command.redo();
@@ -31,7 +35,7 @@ export class CommandManagerService {
     }
   }
 
-  clearCommand() {
+  clearCommand(): void {
     this.cancelledCommands = [];
     this.executedCommands = [];
     this.drawingInProgress = false;

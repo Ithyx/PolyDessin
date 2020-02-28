@@ -4,29 +4,40 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ColorParameterService {
-  lastColors: string[] = [];
+  lastColors: string[];
 
-  primaryColor = 'rgba(0, 0, 0, ';
-  secondaryColor = 'rgba(0, 0, 0, ';
+  primaryColor: string;
+  secondaryColor: string;
 
-  primaryOpacity = 1;
-  secondaryOpacity = 1;
-  primaryOpacityDisplayed = 100;
-  secondaryOpacityDisplayed = 100;
+  primaryOpacity: number;
+  secondaryOpacity: number;
+  primaryOpacityDisplayed: number;
+  secondaryOpacityDisplayed: number;
 
-  backgroundColor = 'rgba(255, 255, 255, 1)'
+  backgroundColor: string;
 
-  intervertColors() {
+  constructor() {
+    this.lastColors = [];
+    this.primaryColor = 'rgba(0, 0, 0, ';
+    this.secondaryColor = 'rgba(0, 0, 0, ';
+    this.primaryOpacity = 1;
+    this.secondaryOpacity = 1;
+    this.primaryOpacityDisplayed = 100;
+    this.secondaryOpacityDisplayed = 100;
+    this.backgroundColor = 'rgba(255, 255, 255, 1)';
+  }
+
+  intervertColors(): void {
     const copy = this.primaryColor;
     this.primaryColor = this.secondaryColor;
     this.secondaryColor = copy;
   }
 
-  getPrimaryColor() {
+  getPrimaryColor(): string {
     return this.primaryColor + this.primaryOpacity + ')';
   }
 
-  getSecondaryColor() {
+  getSecondaryColor(): string {
     return this.secondaryColor + this.secondaryOpacity + ')';
   }
 }

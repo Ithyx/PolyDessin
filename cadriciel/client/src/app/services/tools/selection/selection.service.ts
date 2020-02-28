@@ -20,7 +20,7 @@ export class SelectionService implements ToolInterface {
               public drawingManager: DrawingManagerService
              ) {}
 
-  traiterClic(element: DrawElement) {
+  traiterClic(element: DrawElement): void {
     this.deleteBoundingBox();
     if (!this.selectedElements.includes(element)) {
       this.selectedElements.push(element);
@@ -30,7 +30,7 @@ export class SelectionService implements ToolInterface {
 
   }
 
-  onMouseMove(mouse: MouseEvent) {
+  onMouseMove(mouse: MouseEvent): void {
     this.selectionRectangle.mouseMouve(mouse);
     if (this.selectionRectangle.ongoingSelection) {
       this.deleteBoundingBox();
@@ -42,12 +42,12 @@ export class SelectionService implements ToolInterface {
     }
   }
 
-  onMousePress(mouse: MouseEvent) {
+  onMousePress(mouse: MouseEvent): void {
     this.deleteBoundingBox();
     this.selectionRectangle.mouseDown(mouse);
   }
 
-  onMouseRelease() {
+  onMouseRelease(): void {
     // Éviter de créer une boite de sélection si on effectue un simple clic
     if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
       this.isInRectangleSelection(this.selectionRectangle.rectangle);
@@ -57,7 +57,7 @@ export class SelectionService implements ToolInterface {
     this.selectionRectangle.rectangle = new RectangleService();
   }
 
-  createBoundingBoxAllStockageSVG(elements: Map<number, DrawElement>) {
+  createBoundingBoxAllStockageSVG(elements: Map<number, DrawElement>): void {
     let pointMin: Point = {x: elements.values().next().value.points[0].x, y: elements.values().next().value.points[0].y};
     let pointMax: Point = {x: elements.values().next().value.points[0].x, y: elements.values().next().value.points[0].y};
 
@@ -88,7 +88,7 @@ export class SelectionService implements ToolInterface {
     this.selectionBox.createSelectionBox(pointMin, pointMax);
   };
 
-  createBoundingBox() {
+  createBoundingBox(): void {
     let pointMin: Point = {x: this.drawingManager.width , y: this.drawingManager.height};
     let pointMax: Point = {x: 0 , y: 0};
     const epaisseurMin: Point = {x: 0, y: 0};
@@ -121,9 +121,9 @@ export class SelectionService implements ToolInterface {
     pointMin = {x: pointMin.x - 0.5 * epaisseurMin.x, y: pointMin.y - 0.5 * epaisseurMin.y};
     pointMax = {x: pointMax.x + 0.5 * epaisseurMax.x, y: pointMax.y + 0.5 * epaisseurMax.y};
     this.selectionBox.createSelectionBox(pointMin, pointMax);
-  };
+  }
 
-  deleteBoundingBox() {
+  deleteBoundingBox(): void {
     this.selectionBox.deleteSelectionBox();
     this.selectedElements = [];
 
@@ -134,7 +134,7 @@ export class SelectionService implements ToolInterface {
     }
   };
 
-  isInRectangleSelection2(rectangleSelection: RectangleService) {
+  isInRectangleSelection2(rectangleSelection: RectangleService): void {
     let belongToRectangle = false;
 
     for (const element of this.SVGStockage.getCompleteSVG()) {
@@ -154,7 +154,7 @@ export class SelectionService implements ToolInterface {
     }
   };
 
-  isInRectangleSelection(rectangleSelection: RectangleService) {
+  isInRectangleSelection(rectangleSelection: RectangleService): void {
 
     for (const element of this.SVGStockage.getCompleteSVG()) {
       this.findPointMinAndMax(element[1]);
@@ -186,7 +186,7 @@ export class SelectionService implements ToolInterface {
     }
   };
 
-  findPointMinAndMax(element: DrawElement) {
+  findPointMinAndMax(element: DrawElement): void {
     const pointMin: Point = {x: this.drawingManager.width , y: this.drawingManager.height};
     const pointMax: Point = {x: 0 , y: 0};
 
