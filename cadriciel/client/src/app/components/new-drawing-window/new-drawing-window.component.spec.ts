@@ -87,7 +87,7 @@ describe('NewDrawingWindowComponent', () => {
     spyOnProperty(window, 'innerWidth').and.returnValue(100 + BUFFER_WIDTH);
     spyOn(component.newDrawing, 'patchValue');
     component.changeWindowDimension();
-    expect(component.newDrawing.patchValue).toHaveBeenCalledWith({hauteurFormulaire: 100, largeurFormulaire: 100});
+    expect(component.newDrawing.patchValue).toHaveBeenCalledWith({formHeight: 100, formWidth: 100});
   })
 
   // TESTS #createNewDrawing

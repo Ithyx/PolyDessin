@@ -24,7 +24,7 @@ describe('ValeurCouleurComponent', () => {
     component.colorManager = new ColorManagerService(new ColorParameterService(), commandes);
 
     fixture.detectChanges();
-    fixture.autoDetectChanges()
+    fixture.autoDetectChanges();
   });
 
   it('should create', () => {

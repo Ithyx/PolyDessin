@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import { GuideSujet } from '../components/guide-sujet/subject-guide';
-import { CONTENU_GUIDE } from '../components/page-guide/guide-contents';
+import { GUIDE_CONTENTS } from '../components/guide-page/guide-contents';
+import { SubjectGuide } from '../components/guide-subject/subject-guide';
 import { EMPTY_SUBJECT, NavigationGuideService } from './navigation-guide.service';
 
 describe('NavigationGuideService', () => {
-  let subjects: GuideSujet[];
+  let subjects: SubjectGuide[];
   let service: NavigationGuideService;
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(NavigationGuideService));
-  beforeEach(() => subjects = CONTENU_GUIDE);
+  beforeEach(() => subjects = GUIDE_CONTENTS);
 
   it('should be created', () => {
     const testService: NavigationGuideService = TestBed.get(NavigationGuideService);
@@ -34,12 +34,12 @@ describe('NavigationGuideService', () => {
 
   it('#ouvrirCategorie devrait ouvrir toutes les catégories', () => {
     service.openCategories(subjects);
-    expect(subjects[1].categorieOuverte).toBe(true);
+    expect(subjects[1].openCategory).toBe(true);
     /* TODO: Ajouter les catégories qui doivent etre ouvertes pour sprint 2 et sprint 3. */
   })
 
   it('#ouvrirCategorie ne devrait pas affecter les objets purs', () => {
-    const sujetVideCopy: GuideSujet = EMPTY_SUBJECT;
+    const sujetVideCopy: SubjectGuide = EMPTY_SUBJECT;
     service.openCategories([EMPTY_SUBJECT]);
     expect(EMPTY_SUBJECT).toBe(sujetVideCopy);
   })

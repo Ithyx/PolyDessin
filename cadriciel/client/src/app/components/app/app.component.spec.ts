@@ -33,15 +33,15 @@ describe('AppComponent', () => {
 
     it('#updateURL devrait mettre à jour l\'URL courante', () => {
         const routes: [any, any] = [{url: 'précédante'}, {url: 'actuelle'}];
-        app.updateURL(routes)
+        app.updateURL(routes);
         expect(app.routingManager.currentPage).toBe('actuelle')
-    })
+    });
 
     it('#updateURL devrait mettre à jour l\'URL précédante', () => {
         const routes: [any, any] = [{url: 'précédante'}, {url: 'actuelle'}];
-        app.updateURL(routes)
+        app.updateURL(routes);
         expect(app.routingManager.previousPage).toBe('précédante')
-    })
+    });
 
     //  Tests filterFunction
 
@@ -50,10 +50,10 @@ describe('AppComponent', () => {
         expect(app.filterFunction('test')).toBe(false);
         expect(app.filterFunction(true)).toBe(false);
         expect(app.filterFunction([123, 'test'])).toBe(false);
-    })
+    });
 
     it('#filterFunction devrait accepter un paramètre de type RouteRecognized', () => {
         const evt: RoutesRecognized = injecteur.get(RoutesRecognized);
         expect(app.filterFunction(evt)).toBe(true);
-    })
+    });
 });

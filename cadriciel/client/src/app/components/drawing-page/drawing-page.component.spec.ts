@@ -5,9 +5,9 @@ import { RouterModule } from '@angular/router';
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
 import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
+import { DrawingToolComponent } from '../drawing-tool/drawing-tool.component';
 import { GuidePageComponent } from '../guide-page/guide-page.component';
 import { GuideSubjectComponent } from '../guide-subject/guide-subject.component';
-import { OutilDessinComponent } from '../outil-dessin/drawing-tool.component';
 import { ToolbarComponent } from '../toolbar/toolbar.component';
 import { DrawingPageComponent } from './drawing-page.component';
 
@@ -65,7 +65,7 @@ describe('PageDessinComponent', () => {
       ])],
       providers: [ {provide: ToolManagerService, useValue: GestionnaireOutilServiceStub} ],
       declarations: [ DrawingPageComponent, GuidePageComponent, ToolbarComponent,
-        OutilDessinComponent, DrawingSurfaceComponent, GuideSubjectComponent ]
+        DrawingToolComponent, DrawingSurfaceComponent, GuideSubjectComponent ]
     })
     .compileComponents();
   }));

@@ -11,10 +11,10 @@ import { ColorChoiceComponent } from '../color-choice/color-choice.component';
 import { ColorInputComponent } from '../color-choice/color-input/color-input.component';
 import { ColorPickerComponent } from '../color-choice/color-picker/color-picker.component';
 import { ColorSliderComponent } from '../color-choice/color-slider/color-slider.component';
+import { DrawingToolComponent } from '../drawing-tool/drawing-tool.component';
 import { GuidePageComponent } from '../guide-page/guide-page.component';
 import { GuideSubjectComponent } from '../guide-subject/guide-subject.component';
 import { NewDrawingWarningComponent } from '../new-drawing-warning/new-drawing-warning.component';
-import { OutilDessinComponent } from '../outil-dessin/drawing-tool.component';
 import { ToolbarComponent } from './toolbar.component';
 
 /* Service stub pour réduire les dépendances */
@@ -62,7 +62,7 @@ describe('BarreOutilsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GuidePageComponent, ToolbarComponent, OutilDessinComponent, GuideSubjectComponent, ColorChoiceComponent,
+      declarations: [ GuidePageComponent, ToolbarComponent, DrawingToolComponent, GuideSubjectComponent, ColorChoiceComponent,
                       ColorPickerComponent, ColorSliderComponent, ColorInputComponent ],
       providers: [ {provide: ToolManagerService, useValue: GestionnaireOutilServiceStub} ],
       imports: [ RouterModule.forRoot([
