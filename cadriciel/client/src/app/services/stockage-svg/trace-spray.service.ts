@@ -18,6 +18,9 @@ export class TraceSprayService implements DrawElement {
 
   primaryColor: string;
 
+  pointMin: Point;
+  pointMax: Point;
+
   draw() {
     this.SVG = '';
     for (const point of this.points) {

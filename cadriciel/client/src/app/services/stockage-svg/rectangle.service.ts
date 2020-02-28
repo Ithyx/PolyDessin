@@ -26,6 +26,9 @@ export class RectangleService implements DrawElement {
   width = 0;
   height = 0;
 
+  pointMin: Point;
+  pointMax: Point;
+
   getWidth(): number {
     return Math.abs(this.points[1].x - this.points[0].x);
   };

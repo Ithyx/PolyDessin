@@ -43,13 +43,8 @@ export class SelectionService implements ToolInterface {
   }
 
   onMousePress(mouse: MouseEvent) {
-
-    // if (mouse.button === 2) {         // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
-      // console.log('right click');
-    // } else {
     this.deleteBoundingBox();
     this.selectionRectangle.mouseDown(mouse);
-    // }
   }
 
   onMouseRelease() {
@@ -122,6 +117,7 @@ export class SelectionService implements ToolInterface {
         }
       }
     }
+
     pointMin = {x: pointMin.x - 0.5 * epaisseurMin.x, y: pointMin.y - 0.5 * epaisseurMin.y};
     pointMax = {x: pointMax.x + 0.5 * epaisseurMax.x, y: pointMax.y + 0.5 * epaisseurMax.y};
     this.selectionBox.createSelectionBox(pointMin, pointMax);
@@ -138,17 +134,15 @@ export class SelectionService implements ToolInterface {
     }
   };
 
-  isInRectangleSelection(rectangleSelection: RectangleService) {
-    let belongInX = false;
-    let belongInY = false;
+  isInRectangleSelection2(rectangleSelection: RectangleService) {
     let belongToRectangle = false;
 
     for (const element of this.SVGStockage.getCompleteSVG()) {
       for (const point of element[1].points) {
-        belongInX = (point.x >= rectangleSelection.points[0].x && point.x <= rectangleSelection.points[1].x);
-        belongInY = (point.y >= rectangleSelection.points[0].y && point.y <= rectangleSelection.points[1].y);
+        const belongX = (point.x >= rectangleSelection.points[0].x && point.x <= rectangleSelection.points[1].x);
+        const belongY = (point.y >= rectangleSelection.points[0].y && point.y <= rectangleSelection.points[1].y);
 
-        if (belongInX && belongInY) {
+        if (belongX && belongY) {
           belongToRectangle = true;
         }
       }
@@ -159,5 +153,62 @@ export class SelectionService implements ToolInterface {
       }
     }
   };
+
+  isInRectangleSelection(rectangleSelection: RectangleService) {
+
+    for (const element of this.SVGStockage.getCompleteSVG()) {
+      this.findPointMinAndMax(element[1]);
+
+      const belongXMin = (rectangleSelection.points[0].x <= element[1].pointMin.x
+                      && rectangleSelection.points[1].x >= element[1].pointMin.x
+                      && rectangleSelection.points[0].y >= element[1].pointMin.y
+                      && rectangleSelection.points[1].y <= element[1].pointMax.y);
+
+      const belongYMin = (rectangleSelection.points[0].y <= element[1].pointMin.y
+                      && rectangleSelection.points[1].y >= element[1].pointMin.y
+                      && rectangleSelection.points[0].x >= element[1].pointMin.x
+                      && rectangleSelection.points[0].x <= element[1].pointMax.x);
+
+      const belongXMax = (rectangleSelection.points[0].x <= element[1].pointMax.x
+                      && rectangleSelection.points[1].x >= element[1].pointMax.x
+                      && rectangleSelection.points[0].y >= element[1].pointMin.y
+                      && rectangleSelection.points[1].y <= element[1].pointMax.y);
+
+      const belongYMax = (rectangleSelection.points[0].y <= element[1].pointMax.y
+                      && rectangleSelection.points[1].y >= element[1].pointMax.y
+                      && rectangleSelection.points[0].x >= element[1].pointMin.x
+                      && rectangleSelection.points[0].x <= element[1].pointMax.x);
+
+      if (belongXMin || belongYMin || belongXMax  || belongYMax) {
+        element[1].isSelected = true;
+        this.selectedElements.push(element[1]);
+      }
+    }
+  };
+
+  findPointMinAndMax(element: DrawElement) {
+    const pointMin: Point = {x: this.drawingManager.width , y: this.drawingManager.height};
+    const pointMax: Point = {x: 0 , y: 0};
+
+    for (const point of element.points) {
+      // pointMin
+      if (point.x < pointMin.x) {
+        pointMin.x = point.x;
+      }
+      if (point.y < pointMin.y) {
+        pointMin.y = point.y;
+      }
+
+      // pointMax
+      if (point.x > pointMax.x) {
+        pointMax.x = point.x;
+      }
+      if (point.y > pointMax.y) {
+        pointMax.y = point.y;
+      }
+    }
+    element.pointMin = pointMin;
+    element.pointMax = pointMax;
+  }
 
 }

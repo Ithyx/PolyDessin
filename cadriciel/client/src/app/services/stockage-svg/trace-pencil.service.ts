@@ -20,6 +20,9 @@ export class TracePencilService implements DrawElement {
   isAPoint = false;
   primaryColor: string;
 
+  pointMin: Point = {x: 0 , y: 0};
+  pointMax: Point = {x: 0 , y: 0};
+
   draw() {
     if (this.isAPoint) {
       this.drawPoint();

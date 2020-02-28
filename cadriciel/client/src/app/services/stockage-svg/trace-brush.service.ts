@@ -19,6 +19,9 @@ export class TraceBrushService implements DrawElement {
   thickness: number;
   primaryColor: string;
 
+  pointMin: Point;
+  pointMax: Point;
+
   draw() {
     if (this.isAPoint) {
       this.drawPoint();

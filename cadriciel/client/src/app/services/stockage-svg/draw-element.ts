@@ -19,5 +19,8 @@ export interface DrawElement {
   isAPoint?: boolean;               // Possible Refactoring ? Vraiment Utile?
   isDotted?: boolean;
 
+  pointMin: Point;
+  pointMax: Point;
+
   draw(): void;
 }

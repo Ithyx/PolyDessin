@@ -46,7 +46,9 @@ export class ShortcutsManagerService {
         if (keybord.ctrlKey) {
           keybord.preventDefault();
           this.tools.changeActiveTool(SELECTION_TOOL_INDEX);
-          this.selection.createBoundingBoxAllStockageSVG(this.SVGStockage.getCompleteSVG());
+          if (this.SVGStockage.getCompleteSVG().size !== 0) {
+            this.selection.createBoundingBoxAllStockageSVG(this.SVGStockage.getCompleteSVG());
+          }
         } else {this.tools.changeActiveTool(SPRAY_TOOL_INDEX); };
         break;
 

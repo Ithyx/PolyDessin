@@ -21,6 +21,9 @@ export class LineService implements DrawElement {
   isAPolygon = false;
   mousePosition = {x: 0, y: 0};
 
+  pointMin: Point;
+  pointMax: Point;
+
   draw() {
     if (this.tool.parameters[0].value) {
       this.thickness = this.tool.parameters[0].value;
