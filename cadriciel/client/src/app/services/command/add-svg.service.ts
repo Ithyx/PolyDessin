@@ -15,15 +15,19 @@ export class AddSVGService implements Command {
   }
 
   undo(): void {
+    console.log('undo before', this.SVGStockage);
     const element = this.SVGStockage.removeSVG(this.SVGKey);
     if (element) {
       this.element = element;
     }
+    console.log('undo after', this.SVGStockage);
   }
 
   redo(): void {
+    console.log('redo before', this.SVGStockage);
     if (this.element) {
       this.SVGStockage.addSVG(this.element, this.SVGKey);
     }
+    console.log('redo after', this.SVGStockage);
   }
 }

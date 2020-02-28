@@ -23,7 +23,7 @@ export class TracePencilService implements DrawElement {
   pointMin: Point = {x: 0 , y: 0};
   pointMax: Point = {x: 0 , y: 0};
 
-  draw() {
+  draw(): void {
     if (this.isAPoint) {
       this.drawPoint();
     } else {
@@ -31,7 +31,7 @@ export class TracePencilService implements DrawElement {
     }
   }
 
-  drawPath() {
+  drawPath(): void {
     if (this.tool.parameters[0].value) {
       this.thickness = this.tool.parameters[0].value;
     }
@@ -44,7 +44,7 @@ export class TracePencilService implements DrawElement {
     this.SVG += '" />';
   }
 
-  drawPoint() {
+  drawPoint(): void {
     if (this.tool.parameters[0].value) {
       this.thickness = this.tool.parameters[0].value;
       this.SVG = '<circle cx="' + this.points[0].x + '" cy="' + this.points[0].y

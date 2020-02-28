@@ -6,33 +6,36 @@ import { DrawElement } from './draw-element';
   providedIn: 'root'
 })
 export class SVGStockageService {
-  size: number;
+  size: number;                             // refactoring: utilisé la taille de completeSVG ?
 
   private ongoingSVG: SafeHtml;
-  private ongoingPerimeter: SafeHtml;
-  private completeSVG: Map<number, DrawElement>;
+  private ongoingPerimeter: SafeHtml;       // refactoring: plus utile en public ?
+  private completeSVG: DrawElement[];
 
   constructor(private sanitizer: DomSanitizer) {
     this.size = 0;
-    this.completeSVG = new Map<number, DrawElement>();
+    this.completeSVG = [];
   }
 
   addSVG(element: DrawElement, key?: number): void {
     element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
-    this.completeSVG.set(key ? key : ++this.size, element);
+    // this.completeSVG.set(key ? key : ++this.size, element);
+    this.completeSVG.splice(key ? key : this.getCompleteSVG.length, 0, element);
     this.ongoingSVG = '';
     this.ongoingPerimeter = '';
   }
 
-  removeSVG(key: number): DrawElement | undefined {
-    const element = this.completeSVG.get(key);
-    this.completeSVG.delete(key);
+  removeSVG(id: number): DrawElement | undefined {
+    // const element = this.completeSVG.get(id);
+    // this.completeSVG.delete(id);
+    const element = this.completeSVG[id];
+    this.completeSVG.splice(id, 1);
     this.size--;
     return element;
   }
 
   removeLastSVG(): void {
-    this.completeSVG.delete(this.size);
+    this.completeSVG.pop();
     this.size--;
   }
 
@@ -51,12 +54,12 @@ export class SVGStockageService {
     }
   }
 
-  getCompleteSVG(): Map<number, DrawElement> {
+  getCompleteSVG(): DrawElement[] {
     return this.completeSVG;
   }
 
   cleanDrawing(): void {
-    this.completeSVG.clear();
+    this.completeSVG = [];
     this.size = 0;
   }
 }

@@ -57,13 +57,13 @@ export class SelectionService implements ToolInterface {
     this.selectionRectangle.rectangle = new RectangleService();
   }
 
-  createBoundingBoxAllStockageSVG(elements: Map<number, DrawElement>): void {
+  /* createBoundingBoxAllStockageSVG(elements: Map<number, DrawElement>): void {
     let pointMin: Point = {x: elements.values().next().value.points[0].x, y: elements.values().next().value.points[0].y};
     let pointMax: Point = {x: elements.values().next().value.points[0].x, y: elements.values().next().value.points[0].y};
 
     for (const element of elements) {
-      element[1].isSelected = true;
-      for (const point of element[1].points) {
+      element.isSelected = true;
+      for (const point of element.points) {
         // Point Min
         if (pointMin.x > point.x) {
           pointMin.x = point.x;
@@ -86,7 +86,7 @@ export class SelectionService implements ToolInterface {
     pointMax = {x: pointMax.x + 2, y: pointMax.y + 2};
 
     this.selectionBox.createSelectionBox(pointMin, pointMax);
-  };
+  } */
 
   createBoundingBox(): void {
     let pointMin: Point = {x: this.drawingManager.width , y: this.drawingManager.height};
@@ -128,17 +128,17 @@ export class SelectionService implements ToolInterface {
     this.selectedElements = [];
 
     for (const element of this.SVGStockage.getCompleteSVG()) {
-      if (element[1].isSelected) {
-        element[1].isSelected = false;
+      if (element.isSelected) {
+        element.isSelected = false;
       }
     }
-  };
+  }
 
-  isInRectangleSelection2(rectangleSelection: RectangleService): void {
+  isInRectangleSelection(rectangleSelection: RectangleService): void {
     let belongToRectangle = false;
 
     for (const element of this.SVGStockage.getCompleteSVG()) {
-      for (const point of element[1].points) {
+      for (const point of element.points) {
         const belongX = (point.x >= rectangleSelection.points[0].x && point.x <= rectangleSelection.points[1].x);
         const belongY = (point.y >= rectangleSelection.points[0].y && point.y <= rectangleSelection.points[1].y);
 
@@ -147,44 +147,44 @@ export class SelectionService implements ToolInterface {
         }
       }
       if (belongToRectangle) {
-        element[1].isSelected = true;
-        this.selectedElements.push(element[1]);
+        element.isSelected = true;
+        this.selectedElements.push(element);
         belongToRectangle = false;
       }
     }
-  };
+  }
 
-  isInRectangleSelection(rectangleSelection: RectangleService): void {
+  isInRectangleSelection2(rectangleSelection: RectangleService): void {
 
     for (const element of this.SVGStockage.getCompleteSVG()) {
-      this.findPointMinAndMax(element[1]);
+      this.findPointMinAndMax(element);
 
-      const belongXMin = (rectangleSelection.points[0].x <= element[1].pointMin.x
-                      && rectangleSelection.points[1].x >= element[1].pointMin.x
-                      && rectangleSelection.points[0].y >= element[1].pointMin.y
-                      && rectangleSelection.points[1].y <= element[1].pointMax.y);
+      const belongXMin = (rectangleSelection.points[0].x <= element.pointMin.x
+                      && rectangleSelection.points[1].x >= element.pointMin.x
+                      && rectangleSelection.points[0].y >= element.pointMin.y
+                      && rectangleSelection.points[1].y <= element.pointMax.y);
 
-      const belongYMin = (rectangleSelection.points[0].y <= element[1].pointMin.y
-                      && rectangleSelection.points[1].y >= element[1].pointMin.y
-                      && rectangleSelection.points[0].x >= element[1].pointMin.x
-                      && rectangleSelection.points[0].x <= element[1].pointMax.x);
+      const belongYMin = (rectangleSelection.points[0].y <= element.pointMin.y
+                      && rectangleSelection.points[1].y >= element.pointMin.y
+                      && rectangleSelection.points[0].x >= element.pointMin.x
+                      && rectangleSelection.points[0].x <= element.pointMax.x);
 
-      const belongXMax = (rectangleSelection.points[0].x <= element[1].pointMax.x
-                      && rectangleSelection.points[1].x >= element[1].pointMax.x
-                      && rectangleSelection.points[0].y >= element[1].pointMin.y
-                      && rectangleSelection.points[1].y <= element[1].pointMax.y);
+      const belongXMax = (rectangleSelection.points[0].x <= element.pointMax.x
+                      && rectangleSelection.points[1].x >= element.pointMax.x
+                      && rectangleSelection.points[0].y >= element.pointMin.y
+                      && rectangleSelection.points[1].y <= element.pointMax.y);
 
-      const belongYMax = (rectangleSelection.points[0].y <= element[1].pointMax.y
-                      && rectangleSelection.points[1].y >= element[1].pointMax.y
-                      && rectangleSelection.points[0].x >= element[1].pointMin.x
-                      && rectangleSelection.points[0].x <= element[1].pointMax.x);
+      const belongYMax = (rectangleSelection.points[0].y <= element.pointMax.y
+                      && rectangleSelection.points[1].y >= element.pointMax.y
+                      && rectangleSelection.points[0].x >= element.pointMin.x
+                      && rectangleSelection.points[0].x <= element.pointMax.x);
 
       if (belongXMin || belongYMin || belongXMax  || belongYMax) {
-        element[1].isSelected = true;
-        this.selectedElements.push(element[1]);
+        element.isSelected = true;
+        this.selectedElements.push(element);
       }
     }
-  };
+  }
 
   findPointMinAndMax(element: DrawElement): void {
     const pointMin: Point = {x: this.drawingManager.width , y: this.drawingManager.height};

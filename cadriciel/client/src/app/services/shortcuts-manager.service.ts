@@ -44,8 +44,10 @@ export class ShortcutsManagerService {
         if (keybord.ctrlKey) {
           keybord.preventDefault();
           this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
-          if (this.SVGStockage.getCompleteSVG().size !== 0) {
-            this.selection.createBoundingBoxAllStockageSVG(this.SVGStockage.getCompleteSVG());
+          if (this.SVGStockage.getCompleteSVG().length !== 0) {
+            // this.selection.createBoundingBoxAllStockageSVG(this.SVGStockage.getCompleteSVG());
+            this.selection.selectedElements = this.SVGStockage.getCompleteSVG();
+            this.selection.createBoundingBox();
           }
         } else {this.tools.changeActiveTool(TOOL_INDEX.SPRAY); };
         break;
