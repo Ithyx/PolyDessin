@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ChangeBackgroundColorService } from '../command/change-background-color.service';
 import { CommandManagerService } from '../command/command-manager.service';
-import { ColorParameterService } from './color-parameter.service'
+import { ColorParameterService } from './color-parameter.service';
 
 export enum Scope {
   Primary = 1,
@@ -16,25 +16,28 @@ export const MAX_COLORS = 10;
   providedIn: 'root'
 })
 export class ColorManagerService {
-  color = 'rgba(0, 0, 0,';
-  hue = 'rgba(255,255,255';
+  color: string;
+  hue: string;
   RGB: number[] = [0, 0, 0];
 
   constructor(public colorParameter: ColorParameterService,
-              public commands: CommandManagerService) {}
+              public commands: CommandManagerService) {
+    this.color = 'rgba(0, 0, 0,';
+    this.hue = 'rgba(255,255,255';
+  }
 
-  getColor() {
+  getColor(): string {
     return this.color + '1)';
   }
 
-  editRGB() {
+  editRGB(): void {
     const newColor = 'rgba(' + this.RGB[0] + ', '
                              + this.RGB[1] + ', '
                              + this.RGB[2] + ', ';
     this.color = newColor;
   }
 
-  applyColor(scope: Scope) {
+  applyColor(scope: Scope): void {
     switch (scope) {
       case Scope.Primary:
         this.colorParameter.primaryColor = this.color;
@@ -52,7 +55,7 @@ export class ColorManagerService {
     }
   }
 
-  addLastColor() {
+  addLastColor(): void {
     while (this.colorParameter.lastColors.length >= MAX_COLORS) {
       this.colorParameter.lastColors.shift();
     }

@@ -14,14 +14,14 @@ export class AddSVGService implements Command {
     this.SVGKey = this.SVGStockage.size;
   }
 
-  undo() {
+  undo(): void {
     const element = this.SVGStockage.removeSVG(this.SVGKey);
     if (element) {
       this.element = element;
     }
   }
 
-  redo() {
+  redo(): void {
     if (this.element) {
       this.SVGStockage.addSVG(this.element, this.SVGKey);
     }

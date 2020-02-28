@@ -4,6 +4,11 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class DrawingManagerService {
-  height = 500;
-  width = 500;
+  height: number;
+  width: number;
+
+  constructor() {
+    this.height = 500;
+    this.width = 500;
+  }
 }
