@@ -190,7 +190,7 @@ describe('DessinCrayonService', () => {
   it('#refreshSVG devrait changer la couleur du trait', () => {
     service.trace.primaryColor = 'test';
     service.refreshSVG();
-    expect(service.trace.primaryColor).toEqual(service.couleur.getCouleurPrincipale());
+    expect(service.trace.primaryColor).toEqual(service.colorParameter.getPrimaryColor());
   });
 
   it('#refreshSVG devrait changer l\'outil du trait', () => {

@@ -1,40 +1,40 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ParametresCouleurService } from './color-parameter.service';
+import { ColorParameterService } from './color-parameter.service';
 
-describe('ParametresCouleurService', () => {
-  let service: ParametresCouleurService;
+describe('ColorParameterService', () => {
+  let service: ColorParameterService;
 
   beforeEach(() => TestBed.configureTestingModule({}));
-  beforeEach(() => service = TestBed.get(ParametresCouleurService));
+  beforeEach(() => service = TestBed.get(ColorParameterService));
 
   it('should be created', () => {
-    const testService: ParametresCouleurService = TestBed.get(ParametresCouleurService);
+    const testService: ColorParameterService = TestBed.get(ColorParameterService);
     expect(testService).toBeTruthy();
   });
 
   // TEST intervertirCouleur
 
   it('#intervetirCouleur devrait échanger la couleur principale et la couleur secondaire', () => {
-    const copieCouleurPrincipal = service.couleurPrincipale;
-    const copieCouleurSecondaire = service.couleurSecondaire;
+    const copieCouleurPrincipal = service.primaryColor;
+    const copieCouleurSecondaire = service.secondaryColor;
 
-    service.intervertirCouleurs();
+    service.intervertColors();
 
-    expect(service.couleurPrincipale).toBe(copieCouleurSecondaire);
-    expect(service.couleurSecondaire).toBe(copieCouleurPrincipal);
+    expect(service.primaryColor).toBe(copieCouleurSecondaire);
+    expect(service.secondaryColor).toBe(copieCouleurPrincipal);
   });
 
-  // TEST getCouleurPrincipale
+  // TEST getPrimaryColor
 
-  it('#getCouleurPrincipale devrait retourner la couleur principale avec une opacité de 1', () => {
-    expect(service.getCouleurPrincipale()).toBe('rgba(0, 0, 0, 1)')
+  it('#getPrimaryColor devrait retourner la couleur principale avec une opacité de 1', () => {
+    expect(service.getPrimaryColor()).toBe('rgba(0, 0, 0, 1)')
   });
 
   // TEST getCouleurSecondaire
 
   it('#getCouleurSecondaire devrait retourner la couleur secondaire avec une opacité de 1', () => {
-    expect(service.getCouleurSecondaire()).toBe('rgba(0, 0, 0, 1)')
+    expect(service.getSecondaryColor()).toBe('rgba(0, 0, 0, 1)')
   });
 
 });

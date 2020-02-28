@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { OutilDessinComponent } from './drawing-tool.component';
+import { DrawingToolComponent } from './drawing-tool.component';
 
-describe('OutilDessinComponent', () => {
-  let component: OutilDessinComponent;
-  let fixture: ComponentFixture<OutilDessinComponent>;
+describe('DrawingToolComponent', () => {
+  let component: DrawingToolComponent;
+  let fixture: ComponentFixture<DrawingToolComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OutilDessinComponent ]
+      declarations: [ DrawingToolComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OutilDessinComponent);
+    fixture = TestBed.createComponent(DrawingToolComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GestionnaireRoutingService } from './routing-manager.service';
+import { RoutingManagerService } from './routing-manager.service';
 
-describe('GestionnaireRoutingService', () => {
+describe('RoutingManagerService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: GestionnaireRoutingService = TestBed.get(GestionnaireRoutingService);
+    const service: RoutingManagerService = TestBed.get(RoutingManagerService);
     expect(service).toBeTruthy();
   });
 });
