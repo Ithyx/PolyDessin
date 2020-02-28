@@ -6,9 +6,7 @@ import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { LineToolService } from './tools/line-tool.service';
 import { RectangleToolService } from './tools/rectangle-tool.service';
 import { SelectionService } from './tools/selection/selection.service';
-import { BRUSH_TOOL_INDEX,
-        LINE_TOOL_INDEX, PENCIL_TOOL_INDEX,
-        RECTANGLE_TOOL_INDEX, SELECTION_TOOL_INDEX, SPRAY_TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
+import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,17 +24,17 @@ export class ShortcutsManagerService {
               public SVGStockage: SVGStockageService,
               public grid: GridService) { }
 
-  clearOngoingSVG() {
+  clearOngoingSVG(): void {
     this.rectangleTool.clear();
     this.lineTool.clear();
   }
 
-  treatInput(keybord: KeyboardEvent) {
+  treatInput(keybord: KeyboardEvent): void {
     if (this.focusOnInput) { return; };
     switch (keybord.key) {
       case '1':
         this.selection.deleteBoundingBox();
-        this.tools.changeActiveTool(RECTANGLE_TOOL_INDEX);
+        this.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
         this.clearOngoingSVG();
         break;
 
@@ -45,34 +43,34 @@ export class ShortcutsManagerService {
 
         if (keybord.ctrlKey) {
           keybord.preventDefault();
-          this.tools.changeActiveTool(SELECTION_TOOL_INDEX);
+          this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
           if (this.SVGStockage.getCompleteSVG().size !== 0) {
             this.selection.createBoundingBoxAllStockageSVG(this.SVGStockage.getCompleteSVG());
           }
-        } else {this.tools.changeActiveTool(SPRAY_TOOL_INDEX); };
+        } else {this.tools.changeActiveTool(TOOL_INDEX.SPRAY); };
         break;
 
       case 'c':
         this.selection.deleteBoundingBox();
-        this.tools.changeActiveTool(PENCIL_TOOL_INDEX);
+        this.tools.changeActiveTool(TOOL_INDEX.PENCIL);
         this.clearOngoingSVG();
         break;
 
       case 'l':
         this.selection.deleteBoundingBox();
-        this.tools.changeActiveTool(LINE_TOOL_INDEX);
+        this.tools.changeActiveTool(TOOL_INDEX.LINE);
         this.clearOngoingSVG();
         break;
 
       case 'w':
         this.selection.deleteBoundingBox();
-        this.tools.changeActiveTool(BRUSH_TOOL_INDEX);
+        this.tools.changeActiveTool(TOOL_INDEX.BRUSH);
         this.clearOngoingSVG();
         break;
 
       case 's':
         this.selection.deleteBoundingBox();
-        this.tools.changeActiveTool(SELECTION_TOOL_INDEX);
+        this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
         this.clearOngoingSVG();
 
       case 'z':
@@ -88,10 +86,10 @@ export class ShortcutsManagerService {
         break;
 
       case 'Shift':
-        if (this.tools.activeTool.ID === RECTANGLE_TOOL_INDEX) {
+        if (this.tools.activeTool.ID === TOOL_INDEX.RECTANGLE) {
           this.rectangleTool.shiftPress();
         }
-        if (this.tools.activeTool.ID === LINE_TOOL_INDEX) {
+        if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
           this.lineTool.stockerCurseur();
         }
         break;
@@ -105,13 +103,13 @@ export class ShortcutsManagerService {
         break;
 
       case 'Backspace':
-        if (this.tools.activeTool.ID === LINE_TOOL_INDEX) {
+        if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
           this.lineTool.retirerPoint();
         }
         break;
 
       case 'Escape':
-        if (this.tools.activeTool.ID === LINE_TOOL_INDEX) {
+        if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
           this.lineTool.clear();
         }
         break;
@@ -133,13 +131,13 @@ export class ShortcutsManagerService {
     }
   }
 
-  treatReleaseKey(keybord: KeyboardEvent) {
+  treatReleaseKey(keybord: KeyboardEvent): void {
     switch (keybord.key) {
       case 'Shift':
-        if (this.tools.activeTool.ID === RECTANGLE_TOOL_INDEX) {
+        if (this.tools.activeTool.ID === TOOL_INDEX.RECTANGLE) {
           this.rectangleTool.shiftRelease();
         }
-        if (this.tools.activeTool.ID === LINE_TOOL_INDEX) {
+        if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
           this.lineTool.shiftRelease();
         }
         break;

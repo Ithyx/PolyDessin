@@ -7,7 +7,7 @@ import { RoutingManagerService } from 'src/app/services/routing-manager.service'
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
-import { SELECTION_TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
+import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 
 @Component({
   selector: 'app-drawing-surface',
@@ -28,17 +28,17 @@ export class DrawingSurfaceComponent {
     }
   }
 
-  handleBackgroundClick() {
-    if (this.tools.activeTool.ID === SELECTION_TOOL_INDEX) {
+  handleBackgroundClick(): void {
+    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       if (!this.selection.selectionRectangle.rectangle) {
         this.selection.deleteBoundingBox();
       }
     }
   }
 
-  handleElementClick(element: DrawElement) {
+  handleElementClick(element: DrawElement): void {
     // TODO : Vérification de l'outil (Selection, Pipette, Applicateur de Couleur)
-    if (this.tools.activeTool.ID === SELECTION_TOOL_INDEX) {
+    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       this.selection.traiterClic(element);
     }
   }

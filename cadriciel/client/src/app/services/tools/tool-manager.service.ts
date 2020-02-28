@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 
-export const PENCIL_TOOL_INDEX = 0;
-export const BRUSH_TOOL_INDEX = 1;
-export const RECTANGLE_TOOL_INDEX = 2;          // Refactoring sous forme d'enum
-export const LINE_TOOL_INDEX = 3;
-export const SELECTION_TOOL_INDEX = 4;
-export const SPRAY_TOOL_INDEX = 5;
+export enum TOOL_INDEX {
+  PENCIL = 0,
+  BRUSH,
+  RECTANGLE,
+  LINE,
+  SELECTION,
+  SPRAY
+}
 
 export interface ToolParameter {
   type: string;
@@ -40,7 +42,7 @@ export class ToolManagerService {
     return 0;
   }
 
-  changeActiveTool(index: number) {
+  changeActiveTool(index: number): void {
     // On vérifie qu'on essaye d'accéder à un index valide
     if (index <= this.toolList.length) {
       this.activeTool.isActive = false;

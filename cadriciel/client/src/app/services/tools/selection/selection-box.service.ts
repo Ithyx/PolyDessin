@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { Point } from '../line-tool.service';
-import { SELECTION_TOOL_INDEX, ToolManagerService} from '../tool-manager.service';
+import { ToolManagerService} from '../tool-manager.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,11 +27,9 @@ export class SelectionBoxService {
 
     this.selectionBox.drawRectangle();
     this.selectionBox.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.selectionBox.SVG);
-  };
+  }
 
   deleteSelectionBox(): void {
-    if (this.tools.activeTool.ID === SELECTION_TOOL_INDEX) {
-      delete this.selectionBox;
-    }
-  };
+    delete this.selectionBox;
+  }
 }

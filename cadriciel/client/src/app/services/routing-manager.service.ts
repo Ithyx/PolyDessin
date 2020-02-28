@@ -4,6 +4,11 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class RoutingManagerService {
-  previousPage = '';
-  currentPage = ''
+  previousPage: string;
+  currentPage: string;
+
+  constructor() {
+    this.previousPage = '';
+    this.currentPage = '';
+  }
 }

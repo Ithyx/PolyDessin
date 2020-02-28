@@ -25,7 +25,7 @@ export class NavigationGuideService {
     return EMPTY_SUBJECT;
   }
 
-  openCategories(category: SubjectGuide[]) {
+  openCategories(category: SubjectGuide[]): void {
     category.forEach((element) => {
       if (element.subSubjects) {
         element.openCategory = true;
