@@ -40,7 +40,7 @@ describe('CouleurPaletteComponent', () => {
     component.colorManager.hue = 'testTeinte';
     spyOn(component, 'dessin');
     component.ngOnChanges(changementsTeinte);
-    expect(component.dessin).toHaveBeenCalled();
+    expect(component.draw).toHaveBeenCalled();
   });
 
   it('#ngOnChanges devrait appeler colorPosition si hauteurChoisie n\'est pas nulle', () => {
@@ -62,7 +62,7 @@ describe('CouleurPaletteComponent', () => {
     spyOn(component, 'dessin');
     spyOn(component, 'colorPosition');
     component.ngOnChanges({});
-    expect(component.dessin).not.toHaveBeenCalled();
+    expect(component.draw).not.toHaveBeenCalled();
     expect(component.colorPosition).not.toHaveBeenCalled();
   });
 
@@ -70,14 +70,14 @@ describe('CouleurPaletteComponent', () => {
 
   it('#colorPosition devrait actualiser la couleur du service gestionnaireCouleur', () => {
     component.colorManager.hue = 'rgba(50, 50, 50,';
-    component.dessin();
+    component.draw();
     component.colorPosition(249, 0);
     expect(component.colorManager.color).toBe('rgba(49,49,49,');
   });
 
   it('#colorPosition devrait actualiser le RGB du service gestionnaireCouleur', () => {
     component.colorManager.hue = 'rgba(50, 50, 50,';
-    component.dessin();
+    component.draw();
     component.colorPosition(249, 0);
     expect(component.colorManager.RGB).toEqual([49, 49, 49]);
   });
@@ -96,7 +96,7 @@ describe('CouleurPaletteComponent', () => {
     spyOn(component, 'dessin');
     component.onMouseRelease(new MouseEvent('mousedown'));
     component.onMouseMove(new MouseEvent('mousemove')); // teste la valeur de sourisBas
-    expect(component.dessin).not.toHaveBeenCalled();
+    expect(component.draw).not.toHaveBeenCalled();
   });
 
   // TESTS sourisEnfoncee
@@ -105,7 +105,7 @@ describe('CouleurPaletteComponent', () => {
     component.onMousePress(new MouseEvent('mousedown'));
     spyOn(component, 'dessin');
     component.onMouseMove(new MouseEvent('mousemove')); // teste la valeur de sourisBas
-    expect(component.dessin).toHaveBeenCalled();
+    expect(component.draw).toHaveBeenCalled();
   });
 
   it('#sourisEnfoncee devrait changer la hauteur choisie', () => {
@@ -116,7 +116,7 @@ describe('CouleurPaletteComponent', () => {
   it('#sourisEnfoncee devrait dessiner la palette de couleur', () => {
     spyOn(component, 'dessin')
     component.onMousePress(new MouseEvent('mousedown'));
-    expect(component.dessin).toHaveBeenCalled();
+    expect(component.draw).toHaveBeenCalled();
   });
 
   it('#sourisEnfoncee devrait appeler colorPosition sur les coordonnées du clic', () => {
@@ -144,6 +144,6 @@ describe('CouleurPaletteComponent', () => {
   it('#ngAfterViewInit devrait dessiner la palette de couleurs', () => {
     spyOn(component, 'dessin');
     component.ngAfterViewInit();
-    expect(component.dessin).toHaveBeenCalled();
+    expect(component.draw).toHaveBeenCalled();
   });
 });

@@ -8,10 +8,10 @@ import { RouterModule } from '@angular/router';
 
 // Component
 import { AppComponent } from './components/app/app.component';
-import { ColorChoiceComponent } from './components/color-choice/color-choice.component'
+import { ColorChoiceComponent } from './components/color-choice/color-choice.component';
 import { ColorInputComponent } from './components/color-choice/color-input/color-input.component';
-import { ColorPickerComponent } from './components/color-choice/color-picker/color-picker.component'
-import { ColorSliderComponent } from './components/color-choice/color-slider/color-slider.component'
+import { ColorPickerComponent } from './components/color-choice/color-picker/color-picker.component';
+import { ColorSliderComponent } from './components/color-choice/color-slider/color-slider.component';
 import { DrawingPageComponent } from './components/drawing-page/drawing-page.component';
 import { DrawingSurfaceComponent } from './components/drawing-surface/drawing-surface.component';
 import { DrawingToolComponent } from './components/drawing-tool/drawing-tool.component';

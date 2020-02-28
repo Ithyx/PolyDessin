@@ -18,14 +18,16 @@ export class ColorPickerComponent implements AfterViewInit, OnChanges, ToolInter
   canvas: ElementRef<HTMLCanvasElement>;
 
   private context2D: CanvasRenderingContext2D;
-
-  private mouseDown = false;
-
+  private mouseDown: boolean;
   chosenHeight: { x: number; y: number};
 
-  ngOnChanges(changes: SimpleChanges) {
+  constructor() {
+    this.mouseDown = false;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes[this.colorManager.hue]) {
-      this.dessin();
+      this.draw();
       const pos = this.chosenHeight;
       if (pos) {
         this.colorPosition(pos.x, pos.y);
@@ -33,42 +35,42 @@ export class ColorPickerComponent implements AfterViewInit, OnChanges, ToolInter
     }
   }
 
-  colorPosition(x: number, y: number) {
+  colorPosition(x: number, y: number): void {
     const imageData = this.context2D.getImageData(x, y, 1, 1).data;
     this.colorManager.color = 'rgba(' + imageData[0] + ',' + imageData[1] + ','
       + imageData[2] + ',';
     this.colorManager.RGB = [imageData[0], imageData[1], imageData[2]];
   }
 
-  emittedColor(x: number, y: number) {
+  emittedColor(x: number, y: number): void {
     this.colorPosition(x, y);
   }
 
   @HostListener ('window:mouseup', ['$event'] )
-    onMouseRelease(evt: MouseEvent) {
+    onMouseRelease(evt: MouseEvent): void {
       this.mouseDown = false;
     }
 
-    onMousePress(evt: MouseEvent) {
+    onMousePress(evt: MouseEvent): void {
       this.mouseDown = true;
       this.chosenHeight = {x: evt.offsetX, y: evt.offsetY};
-      this.dessin();
+      this.draw();
       this.colorPosition(evt.offsetX, evt.offsetY);
     }
 
-    onMouseMove(evt: MouseEvent) {
+    onMouseMove(evt: MouseEvent): void {
       if (this.mouseDown) {
         this.chosenHeight = { x: evt.offsetX, y: evt.offsetY};
-        this.dessin();
+        this.draw();
         this.emittedColor(evt.offsetX, evt.offsetY);
       }
     }
 
-  ngAfterViewInit() {
-    this.dessin();
+  ngAfterViewInit(): void {
+    this.draw();
   }
 
-  dessin() {
+  draw(): void {
 
     this.context2D = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
 
@@ -102,7 +104,7 @@ export class ColorPickerComponent implements AfterViewInit, OnChanges, ToolInter
         10,
         0,
         2 * Math.PI
-      )
+      );
       this.context2D.lineWidth = 5;
       this.context2D.stroke();
     }
