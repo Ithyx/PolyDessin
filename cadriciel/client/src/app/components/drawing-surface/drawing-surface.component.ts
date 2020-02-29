@@ -49,8 +49,8 @@ export class DrawingSurfaceComponent {
       /* TODO */
       console.log('hello, you have click on the selection box');
       this.selection.clickOnSelectionBox = true;
-      this.selection.selectionBox.mouseClickPosition = {x: event.offsetX, y: event.offsetY};
-      this.selection.selectionBox.updatePosition(event);
+      // this.selection.selectionBox.mouseClickPosition = {x: event.offsetX, y: event.offsetY};
+      // this.selection.selectionBox.updatePosition(event);
     }
   }
 }

@@ -37,9 +37,11 @@ export class SelectionBoxService {
     delete this.selectionBox;
   }
 
-  updatePosition(mouve: MouseEvent): void {
-    this.selectionBox.translateX += 10;
+  updatePosition(x: number, y: number): void {
+    this.selectionBox.translateX += x;
+    this.selectionBox.translateY += y;
     this.selectionBox.drawRectangle();
     this.selectionBox.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.selectionBox.SVG);
+    console.log('update selectionBox');
   }
 }

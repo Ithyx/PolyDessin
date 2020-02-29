@@ -48,7 +48,6 @@ export class ShortcutsManagerService {
           keybord.preventDefault();
           this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
           if (this.SVGStockage.getCompleteSVG().length !== 0) {
-            // this.selection.createBoundingBoxAllStockageSVG(this.SVGStockage.getCompleteSVG());
             this.selection.selectedElements = this.SVGStockage.getCompleteSVG();
             this.selection.createBoundingBox();
           }
@@ -129,6 +128,22 @@ export class ShortcutsManagerService {
 
       case '-':
         this.grid.decreaseSize();
+        break;
+
+      case 'ArrowLeft':
+        this.selection.selectionBox.updatePosition(-3, 0);
+        break;
+      
+      case 'ArrowRight':
+        this.selection.selectionBox.updatePosition(3, 0);
+        break;
+
+      case 'ArrowDown':
+      this.selection.selectionBox.updatePosition(0, 3);
+        break;
+
+      case 'ArrowUp':
+      this.selection.selectionBox.updatePosition(0, -3);
         break;
 
       default:
