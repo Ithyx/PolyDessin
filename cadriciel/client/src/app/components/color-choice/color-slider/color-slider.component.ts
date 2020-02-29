@@ -1,7 +1,7 @@
 /*Component de couleur inspire de https://malcoded.com/posts/angular-color-picker/*/
 
 import { AfterViewInit, Component, ElementRef, HostListener, Input,
-         ViewChild } from '@angular/core'
+         ViewChild } from '@angular/core';
 import { ColorManagerService } from 'src/app/services/color/color-manager.service';
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
 
@@ -20,7 +20,7 @@ export class ColorSliderComponent implements AfterViewInit, ToolInterface {
   private MouseDown =  false
   chosenHeight: number;
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.draw();
   }
 

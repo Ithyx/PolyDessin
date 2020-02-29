@@ -37,7 +37,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         description: `<h1> Crayon </h1>
                               <hr>
                               <p> Le crayon est l'outil de traçage de base permettant de dessiner de simples traits
-                              avec une pointe ronde. </p>
+                              avec une pointe ronde. L'outil est également accessible en appuyant sur la touche 'c'.</p>
                               <img src="assets/crayon.gif" width="300" height="300">
                               <p> Les paramètres personalisables sont:
                               <li> Épaisseur du trait (en px) </li> </p>`,
@@ -50,7 +50,8 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         name: 'Pinceau',
                         description: `<h1> Pinceau </h1>
                               <hr>
-                              <p> Le pinceau est très similaire au crayon, mais offre une texture supplémentaire.</p>
+                              <p> Le pinceau est très similaire au crayon, mais offre une texture supplémentaire. L'outil est également
+                              accessible en appuyant sur la touche 'w'. </p>
                               <img src="assets/pinceau.gif" width="300" height="300">
                               <p> Les paramètres personalisables sont:
                               <li> Épaisseur du trait (en px) </li> <li> Texture du trait </li> </p>`,
@@ -85,9 +86,10 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                                       <hr>
                                       <p> Après avoir sélectionné l'outil, il suffit à l'utilisateur de "glisser-déposer"
                                       vers la zone de dessin pour créer un rectangle. En maintenant le clic gauche enfoncé,
-                                      on peut choisir la forme de notre rectangle en navigant avec la souris. </p>
+                                      on peut choisir la forme de notre rectangle en navigant avec la souris. L'outil est également
+                                      accessible en appuyant sur la touche 'c'. </p>
                                       <img src="assets/rectangle.gif" width="300" height="300">
-                                      <p> L'enfoncement de la touche SHIFT transforme le rectangle en cours de création au 
+                                      <p> L'enfoncement de la touche SHIFT transforme le rectangle en cours de création au
                                       carré le plus proche et vice-versa. </p>
                                       <p> Les paramètres personalisables sont:
                                       <li> Épaisseur du trait de coutour (en px) </li> <li> Type de tracé </li> </p>`,
@@ -123,7 +125,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                               <p> L'outil ligne permet de tracer une ou plusieurs segments d'une ligne. Il suffit, après avoir
                               sélectionné l'outil, de choisir le début de la ligne avec un clic quelque part sur la zone de dessin. Ensuite,
                               chaque nouveau clic fermera le segment en cours pour en débuter un nouveau. Pour terminer la ligne, on
-                              effectue un double-clic. </p>
+                              effectue un double-clic. L'outil est également accessible en appuyant sur la touche 'l'. </p>
                               <img src="assets/ligne.gif" width="300" height="300">
                               <p> En enfonçant la touche SHIFT, le segment en cours s'aligne avec l'axe des X par rapport à un angle de
                               45 degrés. Il est aussi possible d'annuler la ligne sans son entièreté avec la touche ESPACE. Pour supprimer

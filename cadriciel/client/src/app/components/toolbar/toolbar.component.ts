@@ -18,8 +18,8 @@ import { NewDrawingWarningComponent } from '../new-drawing-warning/new-drawing-w
 })
 export class ToolbarComponent implements OnDestroy {
 
-  primaryScope = Scope.Primary;
-  secondaryScope = Scope.Secondary;
+  primaryScope: number;
+  secondaryScope: number;
   colorPickerPopup: ColorChoiceComponent;
 
   private newDrawingSubscription: Subscription;
@@ -32,16 +32,18 @@ export class ToolbarComponent implements OnDestroy {
               public selection: SelectionService
              ) {
     this.newDrawingSubscription = shortcuts.newDrawingEmmiter.subscribe((isIgnored: boolean) => {
-     if (!isIgnored) { this.warningNewDrawing(); };
+    if (!isIgnored) { this.warningNewDrawing(); }
+    this.primaryScope = Scope.Primary;
+    this.secondaryScope = Scope.Secondary;
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.newDrawingSubscription.unsubscribe();
     this.shortcuts.newDrawingEmmiter.next(true);
   }
 
-  onClick(tool: DrawingTool) {
+  onClick(tool: DrawingTool): void {
     if (this.tools.activeTool.name === 'Selection' && this.selection.selectionBox) {
       this.selection.deleteBoundingBox();
   }
@@ -51,25 +53,25 @@ export class ToolbarComponent implements OnDestroy {
     this.shortcuts.clearOngoingSVG();
   }
 
-  onChange(event: Event, parameterName: string) {
+  onChange(event: Event, parameterName: string): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.tools.activeTool.parameters[this.tools.findParameterIndex(parameterName)].value = Math.max(Number(eventCast.value), 1);
   }
 
-  selectChoice(event: Event, parameterName: string) {
+  selectChoice(event: Event, parameterName: string): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.tools.activeTool.parameters[this.tools.findParameterIndex(parameterName)].chosenOption = eventCast.value;
   }
 
-  disableShortcuts() {
+  disableShortcuts(): void {
     this.shortcuts.focusOnInput = true;
   }
 
-  enableShortcuts() {
+  enableShortcuts(): void {
     this.shortcuts.focusOnInput = false;
   }
 
-  warningNewDrawing() {
+  warningNewDrawing(): void {
     this.disableShortcuts();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -78,7 +80,7 @@ export class ToolbarComponent implements OnDestroy {
     this.dialog.open(NewDrawingWarningComponent, dialogConfig);
   }
 
-  selectColor(scope: string) {
+  selectColor(scope: string): void {
     this.disableShortcuts();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -97,7 +99,7 @@ export class ToolbarComponent implements OnDestroy {
     }
   }
 
-  openGridWindow() {
+  openGridWindow(): void {
     this.disableShortcuts();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -106,22 +108,22 @@ export class ToolbarComponent implements OnDestroy {
     this.dialog.open(GridOptionsComponent, dialogConfig);
   }
 
-  selectPreviousPrimaryColor(chosenColor: string) {
+  selectPreviousPrimaryColor(chosenColor: string): void {
     this.colorParameter.primaryColor = chosenColor;
   }
 
-  selectPreviousSecondaryColor(chosenColor: string, event: MouseEvent) {
+  selectPreviousSecondaryColor(chosenColor: string, event: MouseEvent): void {
     this.colorParameter.secondaryColor = chosenColor;
     event.preventDefault();
   }
 
-  applyPrimaryOpacity(event: Event) {
+  applyPrimaryOpacity(event: Event): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.colorParameter.primaryOpacity = Math.max(Math.min(Number(eventCast.value), 1), 0);
     this.colorParameter.primaryOpacityDisplayed = Math.round(100 * this.colorParameter.primaryOpacity);
   }
 
-  applySecondaryOpacity(event: Event) {
+  applySecondaryOpacity(event: Event): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.colorParameter.secondaryOpacity = Math.max(Math.min(Number(eventCast.value), 1), 0);
     this.colorParameter.secondaryOpacityDisplayed = Math.round(100 * this.colorParameter.secondaryOpacity);

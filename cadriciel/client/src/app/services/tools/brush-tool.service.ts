@@ -12,27 +12,31 @@ import { ToolManagerService } from './tool-manager.service';
 })
 export class BrushToolService implements ToolInterface {
 
+  trace: TraceBrushService;
+  canClick: boolean;
+
   constructor(public SVGStockage: SVGStockageService,
               public tools: ToolManagerService,
               public colorParameter: ColorParameterService,
-              public commands: CommandManagerService) { }
+              public commands: CommandManagerService
+             ) {
+              this.trace = new TraceBrushService();
+              this.canClick = true;
+              }
 
-  trace = new TraceBrushService();
-  canClick = true;
-
-  onMouseMove(mouse: MouseEvent) {
+  onMouseMove(mouse: MouseEvent): void {
     if (this.commands.drawingInProgress) {
       this.trace.points.push({x: mouse.offsetX, y: mouse.offsetY});
       this.refreshSVG();
     }
   }
 
-  onMousePress() {
+  onMousePress(): void {
     this.commands.drawingInProgress = true;
     this.refreshSVG();
   }
 
-  onMouseRelease() {
+  onMouseRelease(): void {
     if (this.commands.drawingInProgress) {
       if (this.trace.SVG.includes('L')) {
         // on ne stocke le path que s'il n'y a au moins une ligne
@@ -44,7 +48,7 @@ export class BrushToolService implements ToolInterface {
     }
   }
 
-  onMouseClick(mouse: MouseEvent) {
+  onMouseClick(mouse: MouseEvent): void {
     if (this.canClick) {
       if (this.tools.activeTool.parameters[0].value) {
         this.trace.points.push({x: mouse.offsetX, y: mouse.offsetY});
@@ -54,10 +58,10 @@ export class BrushToolService implements ToolInterface {
         this.trace = new TraceBrushService();
       }
       this.commands.drawingInProgress = false;
-    } else {this.canClick = true};
+    } else { this.canClick = true; }
   }
 
-  onMouseLeave() {
+  onMouseLeave(): void {
     if (this.commands.drawingInProgress) {
       this.commands.execute(new AddSVGService(this.trace, this.SVGStockage));
       this.trace = new TraceBrushService();
@@ -66,7 +70,7 @@ export class BrushToolService implements ToolInterface {
     this.canClick = false;
   }
 
-  refreshSVG() {
+  refreshSVG(): void {
     this.trace.primaryColor = this.colorParameter.getPrimaryColor();
     this.trace.tool = this.tools.activeTool;
     this.trace.draw();

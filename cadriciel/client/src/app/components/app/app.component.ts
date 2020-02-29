@@ -21,11 +21,11 @@ export class AppComponent {
             .subscribe({next: this.updateURL.bind(this)});
     }
 
-    filterFunction(event: any) {
-        return event instanceof RoutesRecognized
+    filterFunction(event: any): boolean{
+        return event instanceof RoutesRecognized;
     }
 
-    updateURL(event: [any, any]) {
+    updateURL(event: [any, any]): void {
         this.routingManager.previousPage = event[0].url;
         this.routingManager.currentPage = event[1].url;
     };

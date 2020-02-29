@@ -12,7 +12,7 @@ import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
   providedIn: 'root'
 })
 export class ShortcutsManagerService {
-  focusOnInput = false;
+  focusOnInput: boolean;
 
   newDrawingEmmiter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
@@ -22,7 +22,10 @@ export class ShortcutsManagerService {
               public commands: CommandManagerService,
               public selection: SelectionService,
               public SVGStockage: SVGStockageService,
-              public grid: GridService) { }
+              public grid: GridService
+              ) {
+                this.focusOnInput = false;
+              }
 
   clearOngoingSVG(): void {
     this.rectangleTool.clear();
@@ -92,7 +95,7 @@ export class ShortcutsManagerService {
           this.rectangleTool.shiftPress();
         }
         if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
-          this.lineTool.stockerCurseur();
+          this.lineTool.memorizeCursor();
         }
         break;
 

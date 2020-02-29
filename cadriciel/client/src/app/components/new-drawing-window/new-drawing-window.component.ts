@@ -2,8 +2,8 @@ import { Component, HostListener, NgZone } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
-import { ColorChoiceComponent } from 'src/app/components/color-choice/color-choice.component'
-import { Scope } from 'src/app/services/color/color-manager.service'
+import { ColorChoiceComponent } from 'src/app/components/color-choice/color-choice.component';
+import { Scope } from 'src/app/services/color/color-manager.service';
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
@@ -44,17 +44,17 @@ export class NewDrawingWindowComponent {
                 this.changeWindowDimension();
               }
 
-  closeWindow() {
+  closeWindow(): void {
     this.shortcuts.focusOnInput = false;
     this.dialogRef.close();
   }
 
-  changeWindowDimensionManually() {
+  changeWindowDimensionManually(): void {
     this.dimensionManuallyChange = true;
   }
 
   @HostListener('window:resize', ['$event'])
-  changeWindowDimension() {
+  changeWindowDimension(): void {
     if (!this.dimensionManuallyChange) {
       this.windowHeight = window.innerHeight - BUFFER_HEIGHT;
       this.windowWidth = window.innerWidth - BUFFER_WIDTH;
@@ -62,7 +62,7 @@ export class NewDrawingWindowComponent {
     }
   }
 
-  createNewDrawing() {
+  createNewDrawing(): void {
     this.SVGStockage.cleanDrawing();
     this.commands.clearCommand();
     this.drawingManager.height = this.newDrawing.value[KEY_FORM_HEIGHT];
@@ -72,7 +72,7 @@ export class NewDrawingWindowComponent {
     this.ngZone.run(() => this.router.navigate(['dessin']));
   }
 
-  selectColor() {
+  selectColor(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;

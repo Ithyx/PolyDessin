@@ -37,16 +37,16 @@ export class DrawingPageComponent {
   }
 
   @HostListener('document:keydown', ['$event'])
-  onKeyDown(event: KeyboardEvent) {
+  onKeyDown(event: KeyboardEvent): void {
     this.shortcuts.treatInput(event);
   }
 
   @HostListener('document:keyup', ['$event'])
-  onKeyUp(event: KeyboardEvent) {
+  onKeyUp(event: KeyboardEvent): void {
     this.shortcuts.treatReleaseKey(event);
   }
 
-  onClick(mouse: MouseEvent) {
+  onClick(mouse: MouseEvent): void {
     const tool = this.toolMap.get(this.tools.activeTool.name);
     if (tool && tool.onMouseClick) {
       tool.onMouseClick(mouse);
@@ -54,7 +54,7 @@ export class DrawingPageComponent {
     }
   }
 
-  onMouseMove(mouse: MouseEvent) {
+  onMouseMove(mouse: MouseEvent): void {
     const tool = this.toolMap.get(this.tools.activeTool.name);
     if (tool && tool.onMouseMove) {
       tool.onMouseMove(mouse);
@@ -62,7 +62,7 @@ export class DrawingPageComponent {
     }
   }
 
-  onMouseDown(mouse: MouseEvent) {
+  onMouseDown(mouse: MouseEvent): void {
     const tool = this.toolMap.get(this.tools.activeTool.name);
     if (tool && tool.onMousePress) {
       tool.onMousePress(mouse);
@@ -70,7 +70,7 @@ export class DrawingPageComponent {
     }
   }
 
-  onMouseUp(mouse: MouseEvent) {
+  onMouseUp(mouse: MouseEvent): void {
     const tool = this.toolMap.get(this.tools.activeTool.name);
     if (tool && tool.onMouseRelease) {
       tool.onMouseRelease(mouse);
@@ -78,7 +78,7 @@ export class DrawingPageComponent {
     }
   }
 
-  onMouseLeave(mouse: MouseEvent) {
+  onMouseLeave(mouse: MouseEvent): void {
     const tool = this.toolMap.get(this.tools.activeTool.name);
     if (tool && tool.onMouseLeave) {
       tool.onMouseLeave(mouse);
@@ -86,7 +86,7 @@ export class DrawingPageComponent {
     }
   }
 
-  onMouseEnter(mouse: MouseEvent) {
+  onMouseEnter(mouse: MouseEvent): void {
     const tool = this.toolMap.get(this.tools.activeTool.name);
     if (tool && tool.onMouseEnter) {
       tool.onMouseEnter(mouse);
@@ -94,7 +94,7 @@ export class DrawingPageComponent {
     }
   }
 
-  onDblClick(mouse: MouseEvent) {
+  onDblClick(mouse: MouseEvent): void {
     const tool = this.toolMap.get(this.tools.activeTool.name);
     if (tool && tool.onDoubleClick) {
       tool.onDoubleClick(mouse);

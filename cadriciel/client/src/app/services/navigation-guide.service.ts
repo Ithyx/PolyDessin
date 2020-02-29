@@ -32,7 +32,7 @@ export class NavigationGuideService {
         this.openCategories(element.subSubjects);
       }
     });
-  };
+  }
 }
 
 export const EMPTY_SUBJECT: SubjectGuide = {

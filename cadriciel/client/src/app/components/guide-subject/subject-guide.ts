@@ -5,5 +5,9 @@ export class SubjectGuide {
    next: boolean;
    id?: number;
    subSubjects?: SubjectGuide[];
-   openCategory ? = false;
+   openCategory ?: boolean;
+
+   constructor() {
+      this.openCategory = false;
+   }
 }

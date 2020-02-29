@@ -13,13 +13,17 @@ import { ToolManagerService } from './tool-manager.service';
 
 export class DrawingToolService implements ToolInterface {
 
+  trace: TracePencilService;
+  canClick: boolean;
+
   constructor(public SVGStockage: SVGStockageService,
               public tools: ToolManagerService,
               public colorParameter: ColorParameterService,
-              public commands: CommandManagerService) { }
-
-  trace = new TracePencilService();
-  canClick = true;
+              public commands: CommandManagerService
+             ) {
+               this.trace = new TracePencilService();
+               this.canClick = true;
+              }
 
   onMouseMove(mouse: MouseEvent): void {
     if (this.commands.drawingInProgress) {

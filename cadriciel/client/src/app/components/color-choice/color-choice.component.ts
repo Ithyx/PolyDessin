@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material'
+import { MatDialogRef } from '@angular/material';
 import { ColorManagerService, Scope } from 'src/app/services/color/color-manager.service';
 
 @Component({
@@ -15,11 +15,11 @@ export class ColorChoiceComponent  {
   constructor(public colorManager: ColorManagerService,
               public dialogRef: MatDialogRef<ColorChoiceComponent>) {}
 
-  closeWindow() {
+  closeWindow(): void {
     this.dialogRef.close();
   }
 
-  applyColor() {
+  applyColor(): void {
     this.colorManager.applyColor(this.portee);
     this.dialogRef.close();
   }

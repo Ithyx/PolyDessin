@@ -28,24 +28,24 @@ export class GridOptionsComponent {
               public shortcuts: ShortcutsManagerService,
               public grid: GridService) { }
 
-  closeWindow() {
+  closeWindow(): void {
     this.shortcuts.focusOnInput = false;
     this.dialogRef.close();
   }
 
-  confirmOptions() {
+  confirmOptions(): void {
     this.grid.opacity = this.options.value[KEY_FORM_OPACITY];
     this.grid.showGrid = this.options.value[KEY_FORM_SHOW_GRID];
     this.grid.cellSize = this.options.value[KEY_FORM_CELL_SIZE];
     this.closeWindow();
   }
 
-  changeOpacity(event: Event) {
+  changeOpacity(event: Event): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.opacitySelected = Math.round(100 * Number(eventCast.value));
   }
 
-  validateCellSize(event: Event) {
+  validateCellSize(event: Event): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.cellSizeValue = Math.max(Math.min(Number(eventCast.value), MAX_CELL_SIZE), MIN_CELL_SIZE);
     this.options.value[KEY_FORM_CELL_SIZE] = this.cellSizeValue;

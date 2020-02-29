@@ -3,6 +3,7 @@ import { DrawingManagerService } from '../drawing-manager/drawing-manager.servic
 
 export const MAX_CELL_SIZE = 500;
 export const MIN_CELL_SIZE = 5;
+const INITIAL_CELL_SIZE = 50;
 
 export interface Line {
   x1: number;
@@ -22,7 +23,7 @@ export class GridService {
 
   constructor(public drawing: DrawingManagerService) {
     this.showGrid = false;
-    this.cellSize = 50;
+    this.cellSize = INITIAL_CELL_SIZE;
     this.opacity = 0.75;
   }
 

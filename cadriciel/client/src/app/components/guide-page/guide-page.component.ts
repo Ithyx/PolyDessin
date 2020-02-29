@@ -17,7 +17,7 @@ export class GuidePageComponent {
   constructor(private navigationGuide: NavigationGuideService,
               public routingManager: RoutingManagerService) { }
 
-  onClick(changedID: number) {
+  onClick(changedID: number): void {
     this.navigationGuide.openCategories(this.subjects);
 
     // L'ID est optionnel, on vérifie que le sujet actif en a bien un
@@ -30,7 +30,7 @@ export class GuidePageComponent {
     }
   }
 
-  notificationReceived(subject: SubjectGuide) {
+  notificationReceived(subject: SubjectGuide): void {
     this.activeSubject = subject;
   }
 }

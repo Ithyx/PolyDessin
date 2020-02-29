@@ -12,21 +12,26 @@ import { ToolManagerService } from './tool-manager.service'
   providedIn: 'root'
 })
 export class RectangleToolService implements ToolInterface {
-  rectangle = new RectangleService();
+  rectangle: RectangleService;
   // Coordonnées du clic initial de souris
   initial: Point = {x: 0, y: 0};
   // Coordonnées du point inférieur gauche
   calculatedBase: Point = {x: 0, y: 0};
   // Dimensions du rectangle
-  calculatedWidth = 0;
-  calculatedHeight = 0;
+  calculatedWidth: number;
+  calculatedHeight: number;
 
   constructor(public stockageSVG: SVGStockageService,
               public tools: ToolManagerService,
               public colorParameter: ColorParameterService,
-              public commands: CommandManagerService) { }
+              public commands: CommandManagerService
+              ) {
+                this.rectangle = new RectangleService();
+                this.calculatedWidth = 0;
+                this.calculatedHeight = 0;
+              }
 
-  refreshSVG() {
+  refreshSVG(): void {
     this.rectangle.tool = this.tools.activeTool;
     this.rectangle.primaryColor = this.colorParameter.getPrimaryColor();
     this.rectangle.secondaryColor = this.colorParameter.getSecondaryColor();
@@ -34,7 +39,7 @@ export class RectangleToolService implements ToolInterface {
     this.stockageSVG.setOngoingSVG(this.rectangle);
   }
 
-  onMouseMove(mouse: MouseEvent) {
+  onMouseMove(mouse: MouseEvent): void {
     if (this.commands.drawingInProgress) {
       // Calcule des valeurs pour former un rectangle
       this.calculatedWidth = Math.abs(this.initial.x - mouse.offsetX);
@@ -50,14 +55,14 @@ export class RectangleToolService implements ToolInterface {
     }
   }
 
-  onMousePress(mouse: MouseEvent) {
+  onMousePress(mouse: MouseEvent): void {
     if (!this.commands.drawingInProgress) {
       this.commands.drawingInProgress = true;
       this.initial = {x: mouse.offsetX, y: mouse.offsetY};
     }
   }
 
-  onMouseRelease() {
+  onMouseRelease(): void {
     this.commands.drawingInProgress = false;
     // On évite de créer des formes vides
     if (this.rectangle.getWidth() !== 0 || this.rectangle.getHeight() !== 0) {
@@ -69,7 +74,7 @@ export class RectangleToolService implements ToolInterface {
     this.rectangle = new RectangleService();
   }
 
-  shiftPress() {
+  shiftPress(): void {
     if (this.commands.drawingInProgress) {
       // Lorsque la touche 'shift' est enfoncée, la forme à dessiner est un carré
       if (this.calculatedWidth < this.calculatedHeight) {
@@ -88,7 +93,7 @@ export class RectangleToolService implements ToolInterface {
     }
   }
 
-  shiftRelease() {
+  shiftRelease(): void {
     if (this.commands.drawingInProgress) {
       // Lorsque la touche 'shift' est relâchée, la forme à dessiner est un rectangle
       this.rectangle.points[0] = this.calculatedBase;
@@ -97,7 +102,7 @@ export class RectangleToolService implements ToolInterface {
     }
   }
 
-  clear() {
+  clear(): void {
     this.commands.drawingInProgress = false;
     this.rectangle = new RectangleService();
   }

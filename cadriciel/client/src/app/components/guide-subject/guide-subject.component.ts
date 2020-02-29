@@ -17,7 +17,7 @@ export class GuideSubjectComponent {
 
   getRange = (size: number) => Array(size);
 
-  onClick() {
+  onClick(): void {
     if (this.node.subSubjects) {
       // c'est une catégorie: un click n'affiche pas la description, mais ouvre ou ferme la catégorie
       this.node.openCategory = !this.node.openCategory;
@@ -27,7 +27,7 @@ export class GuideSubjectComponent {
     }
   }
 
-  notificationReceived(subject: SubjectGuide) {
+  notificationReceived(subject: SubjectGuide): void {
     this.notification.emit(subject);
   }
 

@@ -15,12 +15,12 @@ export class NewDrawingWarningComponent {
               public dialogRef: MatDialogRef<NewDrawingWindowComponent> ) {
    }
 
-  cancel() {
+  cancel(): void {
     this.shortcuts.focusOnInput = false;
     this.dialogRef.close();
   }
 
-  openParameter() {
+  openParameter(): void {
     this.dialogRef.close();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;

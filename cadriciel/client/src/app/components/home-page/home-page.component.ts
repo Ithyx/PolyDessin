@@ -17,7 +17,7 @@ export class HomePageComponent {
                 dialogConfig.autoFocus = true;
                 dialogConfig.width = '60%'; }
 
-  createDrawing() {
+  createDrawing(): void {
     this.dialog.open(NewDrawingWindowComponent, this.dialogConfig);
   }
 
