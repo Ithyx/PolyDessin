@@ -7,6 +7,7 @@ import { Point } from '../line-tool.service';
 import { ToolInterface } from '../tool-interface';
 import { SelectionBoxService } from './selection-box.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,8 @@ export class SelectionService implements ToolInterface {
   constructor(public SVGStockage: SVGStockageService,
               public selectionBox: SelectionBoxService,
               public selectionRectangle: SelectionRectangleService,
-              public drawingManager: DrawingManagerService
+              public drawingManager: DrawingManagerService,
+              private sanitizer: DomSanitizer
              ) {
               this.clickOnSelectionBox = false;
              }
@@ -151,6 +153,18 @@ export class SelectionService implements ToolInterface {
     }
     element.pointMin = pointMin;
     element.pointMax = pointMax;
+  }
+
+  updatePosition(x: number, y: number): void {
+    for (const element of this.SVGStockage.getCompleteSVG()) {
+      if (element.isSelected) {
+        element.updatePosition(x, y);
+        element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
+
+        // TODO: Retirer l'élément bougé de selectedElements et le ré-insérer avec les nouveaux coordonnées
+      }
+    }
+    this.selectionBox.updatePosition(x, y);
   }
 
 }

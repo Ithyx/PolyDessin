@@ -20,5 +20,8 @@ export interface DrawElement {
   pointMin: Point;
   pointMax: Point;
 
+  translate: Point;
+
   draw(): void;
+  updatePosition(x: number, y: number): void;
 }

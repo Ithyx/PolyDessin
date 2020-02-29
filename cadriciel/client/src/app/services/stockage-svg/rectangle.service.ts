@@ -21,26 +21,25 @@ export class RectangleService implements DrawElement {
   perimeter: string;
   isDotted: boolean;
 
-  tool: DrawingTool = EMPTY_TOOL;
+  tool: DrawingTool;
   width: number;
   height: number;
 
-  translateX: number;
-  translateY: number;
+  pointMin: Point;
+  pointMax: Point;
+  translate: Point;
 
   constructor() {
+    this.SVGHtml = '';
     this.points = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
                    {x: 0, y: 0}];   // points[1], coin bas droite
     this.isSelected = false;
+    this.tool = EMPTY_TOOL;
     this.width = 0;
     this.height = 0;
 
-    this.translateX = 0;
-    this.translateY = 0;
+    this.translate = { x: 0, y: 0};
   }
-
-  pointMin: Point;
-  pointMax: Point;
 
   getWidth(): number {
     return Math.abs(this.points[1].x - this.points[0].x);
@@ -76,7 +75,7 @@ export class RectangleService implements DrawElement {
 
   drawRectangle(): void {
     const choosedOption = this.tool.parameters[1].chosenOption;
-    this.SVG = '<rect transform=" translate(' + this.translateX + ' ' + this.translateY +
+    this.SVG = '<rect transform=" translate(' + this.translate.x + ' ' + this.translate.y +
       ')" fill="' + ((choosedOption !== 'Contour') ? this.primaryColor : 'none')
       + '" stroke="' + ((choosedOption !== 'Plein') ? this.secondaryColor : 'none')
       + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')
@@ -102,5 +101,11 @@ export class RectangleService implements DrawElement {
       this.perimeter += '" height="' + ((this.getHeight() === 0) ? thickness : (this.getHeight() + thickness))
         + '" width="' + ((this.getWidth() === 0) ? thickness : (this.getWidth() + thickness)) + '"/>';
     }
+  }
+
+  updatePosition(x: number, y: number): void {
+    this.translate.x += x;
+    this.translate.y += y;
+    this.draw();
   }
 }

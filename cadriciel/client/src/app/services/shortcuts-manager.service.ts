@@ -131,19 +131,23 @@ export class ShortcutsManagerService {
         break;
 
       case 'ArrowLeft':
-        this.selection.selectionBox.updatePosition(-3, 0);
+        // this.selection.selectionBox.updatePosition(-3, 0);
+        this.selection.updatePosition(-3, 0);
         break;
       
       case 'ArrowRight':
-        this.selection.selectionBox.updatePosition(3, 0);
+        // this.selection.selectionBox.updatePosition(3, 0);
+        this.selection.updatePosition(3, 0);
         break;
 
       case 'ArrowDown':
-      this.selection.selectionBox.updatePosition(0, 3);
+        // this.selection.selectionBox.updatePosition(0, 3);
+        this.selection.updatePosition(0, 3);
         break;
 
       case 'ArrowUp':
-      this.selection.selectionBox.updatePosition(0, -3);
+        // this.selection.selectionBox.updatePosition(0, -3);
+        this.selection.updatePosition(0, -3);
         break;
 
       default:

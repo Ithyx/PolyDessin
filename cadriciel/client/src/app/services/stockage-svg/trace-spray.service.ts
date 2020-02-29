@@ -13,22 +13,33 @@ export class TraceSprayService implements DrawElement {
   SVGHtml: SafeHtml;
   isSelected: boolean;
 
-  tool: DrawingTool = EMPTY_TOOL;
+  tool: DrawingTool;
   points: Point[] = [];
 
   primaryColor: string;
 
   pointMin: Point;
   pointMax: Point;
+  translate: Point;
 
   constructor() {
+    this.SVGHtml = '';
     this.isSelected = false;
+    this.tool = EMPTY_TOOL;
+    this.translate = { x: 0, y: 0};
   }
 
   draw(): void {
     this.SVG = '';
     for (const point of this.points) {
-      this.SVG += `<circle cx="${point.x}" cy="${point.y}" r="2" fill="black" />`;
+      this.SVG += '<circle transform ="translate(' + this.translate.x + ' ' + this.translate.y
+      + `)"cx="${point.x}" cy="${point.y}" r="2" fill="black" />`;
     }
+  }
+
+  updatePosition(x: number, y: number): void {
+    this.translate.x += x;
+    this.translate.y += y;
+    this.draw();
   }
 }

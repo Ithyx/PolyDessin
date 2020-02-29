@@ -14,18 +14,22 @@ export class TraceBrushService implements DrawElement {
   points: Point[];
   isSelected: boolean;
 
-  tool: DrawingTool = EMPTY_TOOL;
+  tool: DrawingTool;
   isAPoint: boolean;
   thickness: number;
   primaryColor: string;
 
   pointMin: Point;
   pointMax: Point;
+  translate: Point;
 
   constructor() {
+    this.SVGHtml = '';
     this.points = [];
     this.isSelected = false;
+    this.tool = EMPTY_TOOL;
     this.isAPoint = false;
+    this.translate = { x: 0, y: 0};
   }
 
   draw(): void {
@@ -40,7 +44,7 @@ export class TraceBrushService implements DrawElement {
     if (this.tool.parameters[0].value) {
       this.thickness = this.tool.parameters[0].value;
     }
-    this.SVG = `<path fill="none" stroke="${this.primaryColor}"`
+    this.SVG = '<path transform ="translate(' + this.translate.x + ' ' + this.translate.y + `)" fill="none" stroke="${this.primaryColor}"`
       + ' filter="url(#' + this.tool.parameters[1].chosenOption
       + ')" stroke-linecap="round" stroke-width="' + this.tool.parameters[0].value + '" d="';
     for (let i = 0; i < this.points.length; ++i) {
@@ -58,5 +62,11 @@ export class TraceBrushService implements DrawElement {
         + ')" r="' + this.tool.parameters[0].value / 2
         + '" fill="' + this.primaryColor + '"/>';
     }
+  }
+
+  updatePosition(x: number, y: number): void {
+    this.translate.x += x;
+    this.translate.y += y;
+    this.draw();
   }
 }

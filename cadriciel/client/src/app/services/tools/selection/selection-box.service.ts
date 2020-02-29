@@ -38,8 +38,8 @@ export class SelectionBoxService {
   }
 
   updatePosition(x: number, y: number): void {
-    this.selectionBox.translateX += x;
-    this.selectionBox.translateY += y;
+    this.selectionBox.translate.x += x;
+    this.selectionBox.translate.y += y;
     this.selectionBox.drawRectangle();
     this.selectionBox.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.selectionBox.SVG);
     console.log('update selectionBox');
