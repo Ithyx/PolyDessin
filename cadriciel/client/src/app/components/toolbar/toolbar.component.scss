@@ -1,5 +1,5 @@
 /* exemple de navbar fourni par W3C: https://www.w3schools.com/howto/howto_css_fixed_sidebar.asp */
-.sidenav, .panneau-attributs {
+.sidenav, .attributs-panel {
     height: 100%; /* Full-height: remove this if you want "auto" height */
     position: fixed; /* Fixed Sidebar (stay in place on scroll) */
     z-index: 1; /* Stay on top */
@@ -23,7 +23,7 @@
     
 }
 
-.panneau-attributs {
+.attributs-panel {
     text-align: center;
     font-size: 30px;
     color: lightcyan;
@@ -35,7 +35,7 @@
     padding-right: 25px;
 }
 
-.panneau-attributs label {
+.attributs-panel label {
     text-align: left;
     font-size: 20px;
     color: white;
