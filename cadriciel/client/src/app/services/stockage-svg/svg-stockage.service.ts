@@ -60,6 +60,6 @@ export class SVGStockageService {
 
   cleanDrawing(): void {
     this.completeSVG = [];
-    this.size = 0;
+    this.size = -1;
   }
 }
