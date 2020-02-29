@@ -4,8 +4,6 @@ import { Point } from '../tools/line-tool.service';
 export interface DrawElement {
   SVG: string;
   SVGHtml: SafeHtml;
-  // transformationSVG: string;
-  // transformationSVGHtml: SafeHtml;
 
   points: Point[];
   isSelected: boolean;

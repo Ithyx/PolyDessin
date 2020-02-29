@@ -25,12 +25,18 @@ export class RectangleService implements DrawElement {
   width: number;
   height: number;
 
+  translateX: number;
+  translateY: number;
+
   constructor() {
     this.points = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
                    {x: 0, y: 0}];   // points[1], coin bas droite
     this.isSelected = false;
     this.width = 0;
     this.height = 0;
+
+    this.translateX = 0;
+    this.translateY = 0;
   }
 
   pointMin: Point;
@@ -70,8 +76,8 @@ export class RectangleService implements DrawElement {
 
   drawRectangle(): void {
     const choosedOption = this.tool.parameters[1].chosenOption;
-    this.SVG = '<rect fill="'
-      + ((choosedOption !== 'Contour') ? this.primaryColor : 'none')
+    this.SVG = '<rect transform=" translate(' + this.translateX + ' ' + this.translateY +
+      ')" fill="' + ((choosedOption !== 'Contour') ? this.primaryColor : 'none')
       + '" stroke="' + ((choosedOption !== 'Plein') ? this.secondaryColor : 'none')
       + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')
       + '" stroke-width="' + this.tool.parameters[0].value

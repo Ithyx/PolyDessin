@@ -13,15 +13,17 @@ import { SelectionRectangleService } from './selection-rectangle.service';
 })
 export class SelectionService implements ToolInterface {
   selectedElements: DrawElement[] = [];
+  clickOnSelectionBox: boolean;
 
   constructor(public SVGStockage: SVGStockageService,
               public selectionBox: SelectionBoxService,
               public selectionRectangle: SelectionRectangleService,
               public drawingManager: DrawingManagerService
-             ) {}
+             ) {
+              this.clickOnSelectionBox = false;
+             }
 
-  traiterClic(element: DrawElement): void {
-    this.deleteBoundingBox();
+  handleClick(element: DrawElement): void {
     if (!this.selectedElements.includes(element)) {
       this.selectedElements.push(element);
       element.isSelected = true;
@@ -43,8 +45,11 @@ export class SelectionService implements ToolInterface {
   }
 
   onMousePress(mouse: MouseEvent): void {
-    this.deleteBoundingBox();
-    this.selectionRectangle.mouseDown(mouse);
+    if (!this.clickOnSelectionBox) {
+      this.deleteBoundingBox();
+      this.selectionRectangle.mouseDown(mouse);
+      console.log('Selection.onMousePress');
+    }
   }
 
   onMouseRelease(): void {
@@ -56,37 +61,6 @@ export class SelectionService implements ToolInterface {
     this.selectionRectangle.mouseUp();
     this.selectionRectangle.rectangle = new RectangleService();
   }
-
-  /* createBoundingBoxAllStockageSVG(elements: Map<number, DrawElement>): void {
-    let pointMin: Point = {x: elements.values().next().value.points[0].x, y: elements.values().next().value.points[0].y};
-    let pointMax: Point = {x: elements.values().next().value.points[0].x, y: elements.values().next().value.points[0].y};
-
-    for (const element of elements) {
-      element.isSelected = true;
-      for (const point of element.points) {
-        // Point Min
-        if (pointMin.x > point.x) {
-          pointMin.x = point.x;
-        }
-        if (pointMin.y > point.y) {
-          pointMin.y = point.y;
-        }
-
-        // Point Max
-        if (pointMax.x < point.x) {
-          pointMax.x = point.x;
-        }
-        if (pointMax.y < point.y) {
-          pointMax.y = point.y;
-        }
-      }
-    }
-
-    pointMin = {x: pointMin.x - 2, y: pointMin.y - 2};
-    pointMax = {x: pointMax.x + 2, y: pointMax.y + 2};
-
-    this.selectionBox.createSelectionBox(pointMin, pointMax);
-  } */
 
   createBoundingBox(): void {
     let pointMin: Point = {x: this.drawingManager.width , y: this.drawingManager.height};
@@ -150,38 +124,6 @@ export class SelectionService implements ToolInterface {
         element.isSelected = true;
         this.selectedElements.push(element);
         belongToRectangle = false;
-      }
-    }
-  }
-
-  isInRectangleSelection2(rectangleSelection: RectangleService): void {
-
-    for (const element of this.SVGStockage.getCompleteSVG()) {
-      this.findPointMinAndMax(element);
-
-      const belongXMin = (rectangleSelection.points[0].x <= element.pointMin.x
-                      && rectangleSelection.points[1].x >= element.pointMin.x
-                      && rectangleSelection.points[0].y >= element.pointMin.y
-                      && rectangleSelection.points[1].y <= element.pointMax.y);
-
-      const belongYMin = (rectangleSelection.points[0].y <= element.pointMin.y
-                      && rectangleSelection.points[1].y >= element.pointMin.y
-                      && rectangleSelection.points[0].x >= element.pointMin.x
-                      && rectangleSelection.points[0].x <= element.pointMax.x);
-
-      const belongXMax = (rectangleSelection.points[0].x <= element.pointMax.x
-                      && rectangleSelection.points[1].x >= element.pointMax.x
-                      && rectangleSelection.points[0].y >= element.pointMin.y
-                      && rectangleSelection.points[1].y <= element.pointMax.y);
-
-      const belongYMax = (rectangleSelection.points[0].y <= element.pointMax.y
-                      && rectangleSelection.points[1].y >= element.pointMax.y
-                      && rectangleSelection.points[0].x >= element.pointMin.x
-                      && rectangleSelection.points[0].x <= element.pointMax.x);
-
-      if (belongXMin || belongYMin || belongXMax  || belongYMax) {
-        element.isSelected = true;
-        this.selectedElements.push(element);
       }
     }
   }

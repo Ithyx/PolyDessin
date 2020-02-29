@@ -10,9 +10,13 @@ import { ToolManagerService} from '../tool-manager.service';
 export class SelectionBoxService {
 
   selectionBox: RectangleService;
+  mouseClickPosition: Point;
 
   constructor(public tools: ToolManagerService,
-              private sanitizer: DomSanitizer) { }
+              private sanitizer: DomSanitizer
+              ) {
+                // this.mouseClickPosition = {x: 0 , y: 0 };
+              }
 
   createSelectionBox(pointMin: Point, pointMax: Point): void {
 
@@ -31,5 +35,11 @@ export class SelectionBoxService {
 
   deleteSelectionBox(): void {
     delete this.selectionBox;
+  }
+
+  updatePosition(mouve: MouseEvent): void {
+    this.selectionBox.translateX += 10;
+    this.selectionBox.drawRectangle();
+    this.selectionBox.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.selectionBox.SVG);
   }
 }

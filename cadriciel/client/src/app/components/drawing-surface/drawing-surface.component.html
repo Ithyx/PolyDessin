@@ -40,7 +40,7 @@
 
     <g *ngFor="let element of SVGStockage.getCompleteSVG()" [innerHTML]="element.SVGHtml" (click)="handleElementClick(element)"></g>
     <g *ngIf="this.selection.selectionRectangle.rectangle" [innerHTML]="this.selection.selectionRectangle.rectangle.SVGHtml"></g>
-    <g *ngIf="this.selection.selectionBox.selectionBox" [innerHTML]="this.selection.selectionBox.selectionBox.SVGHtml" ></g>
+    <g *ngIf="this.selection.selectionBox.selectionBox" [innerHTML]="this.selection.selectionBox.selectionBox.SVGHtml" (mousedown)="handleMouseDown($event)"></g>
     <g [innerHTML]="SVGStockage.getOngoingSVGHTML()"></g>
     <g [innerHTML]="SVGStockage.getOngoingPerimeterHTML()"></g>
     <g *ngFor="let line of grid.getLines()">
