@@ -46,13 +46,13 @@ describe('NewDrawingWindowComponent', () => {
     component.shortcuts.focusOnInput = true;
     component.closeWindow();
     expect(component.shortcuts.focusOnInput).toBe(false);
-  })
+  });
 
   it('#closeWindow devrait appeler la fonction close de dialogRef', () => {
     spyOn(component.dialogRef, 'close');
     component.closeWindow();
     expect(component.dialogRef.close).toHaveBeenCalled();
-  })
+  });
 
   // TESTS #changeWindowDimensionManually
 
@@ -60,7 +60,7 @@ describe('NewDrawingWindowComponent', () => {
     component.dimensionManuallyChange = false;
     component.changeWindowDimensionManually();
     expect(component.dimensionManuallyChange).toBe(true);
-  })
+  });
 
   // TESTS #changeWindowDimension
 
@@ -72,7 +72,7 @@ describe('NewDrawingWindowComponent', () => {
     component.changeWindowDimension();
     expect(component.windowWidth).toBe(-100);
     expect(component.windowHeight).toBe(-100);
-  })
+  });
 
   it('#changeWindowDimension devrait changer la hauteur et largeur stockée', () => {
     spyOnProperty(window, 'innerHeight').and.returnValue(100 + BUFFER_HEIGHT);
@@ -80,7 +80,7 @@ describe('NewDrawingWindowComponent', () => {
     component.changeWindowDimension();
     expect(component.windowHeight).toBe(100);
     expect(component.windowWidth).toBe(100);
-  })
+  });
 
   it('#changeWindowDimension appelle patchValue avec les bonnes valeurs', () => {
     spyOnProperty(window, 'innerHeight').and.returnValue(100 + BUFFER_HEIGHT);
@@ -88,7 +88,7 @@ describe('NewDrawingWindowComponent', () => {
     spyOn(component.newDrawing, 'patchValue');
     component.changeWindowDimension();
     expect(component.newDrawing.patchValue).toHaveBeenCalledWith({formHeight: 100, formWidth: 100});
-  })
+  });
 
   // TESTS #createNewDrawing
 
@@ -96,7 +96,7 @@ describe('NewDrawingWindowComponent', () => {
     spyOn(component.SVGStockage, 'cleanDrawing');
     component.createNewDrawing();
     expect(component.SVGStockage.cleanDrawing).toHaveBeenCalled();
-  })
+  });
 
   it('#createNewDrawing doit metter à jour la hauteur de dessin', () => {
     component.newDrawing.value[KEY_FORM_HEIGHT] = 100;
@@ -104,25 +104,25 @@ describe('NewDrawingWindowComponent', () => {
     component.createNewDrawing();
     expect(component.drawingManager.height).toBe(100);
     expect(component.drawingManager.width).toBe(100);
-  })
+  });
 
   it('#createNewDrawing doit mettre réactiver les raccourcis à l\' aide de "champDeTexteEstFocus"', () => {
     component.shortcuts.focusOnInput = true;
     component.createNewDrawing();
     expect(component.shortcuts.focusOnInput).toBe(false);
-  })
+  });
 
   it('#createNewDrawing devrait fermer la fenêtre de dialogue', () => {
     spyOn(component.dialogRef, 'close');
     component.createNewDrawing();
     expect(component.dialogRef.close).toHaveBeenCalled();
-  })
+  });
 
   it('#createNewDrawing devrait changer la page actuelle à l\'aide du router vers celle de dessin', () => {
     spyOn(component.router, 'navigate');
     component.createNewDrawing();
     expect(component.router.navigate).toHaveBeenCalledWith(['dessin']);
-  })
+  });
 
   // TESTS #selectColor
 
@@ -137,5 +137,6 @@ describe('NewDrawingWindowComponent', () => {
     component.selectColor();
 
     expect(component.dialog.open).toHaveBeenCalledWith(ColorChoiceComponent, dialogConfig);
-  })
+  });
+
 });

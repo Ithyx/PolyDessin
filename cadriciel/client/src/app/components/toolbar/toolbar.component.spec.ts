@@ -82,7 +82,7 @@ describe('BarreOutilsComponent', () => {
     service.toolList[0].isActive = true; // outil crayon
     service.toolList[1].isActive = false; // outil pinceau
     service.toolList[2].isActive = false; // outil rectangle
-  })
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -247,7 +247,7 @@ describe('BarreOutilsComponent', () => {
 
   it("#selectionDerniereCouleurSecondaire devrait s'assurer que preventDefault est appelé", () => {
     const evenement = new MouseEvent ('click');
-    spyOn(evenement, 'preventDefault')
+    spyOn(evenement, 'preventDefault');
     component.selectPreviousSecondaryColor('rgba(1, 1, 1, ', evenement);
     expect(evenement.preventDefault).toHaveBeenCalled();
   });

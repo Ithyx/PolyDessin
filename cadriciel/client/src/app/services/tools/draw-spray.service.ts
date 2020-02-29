@@ -13,7 +13,7 @@ import { ToolManagerService } from './tool-manager.service';
 })
 export class DrawSprayService implements ToolInterface {
 
-  trace : TraceSprayService;
+  trace: TraceSprayService;
   mousePosition: Point = {x: 0, y: 0};
   intervalMethodID: number;
 

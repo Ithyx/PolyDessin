@@ -11,7 +11,7 @@ export class TraceSprayService implements DrawElement {
 
   SVG: string;
   SVGHtml: SafeHtml;
-  isSelected = false;
+  isSelected: boolean;
 
   tool: DrawingTool = EMPTY_TOOL;
   points: Point[] = [];
@@ -21,7 +21,11 @@ export class TraceSprayService implements DrawElement {
   pointMin: Point;
   pointMax: Point;
 
-  draw() {
+  constructor() {
+    this.isSelected = false;
+  }
+
+  draw(): void {
     this.SVG = '';
     for (const point of this.points) {
       this.SVG += `<circle cx="${point.x}" cy="${point.y}" r="2" fill="black" />`;

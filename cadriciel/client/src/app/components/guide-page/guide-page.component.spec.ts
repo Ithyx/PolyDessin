@@ -53,5 +53,6 @@ describe('GuidePageComponent', () => {
     const sujet: SubjectGuide = GUIDE_CONTENTS[3];
     component.notificationReceived(sujet);
     expect(component.activeSubject).toBe(sujet);
-  })
+  });
+
 });

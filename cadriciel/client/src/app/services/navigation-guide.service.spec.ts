@@ -24,11 +24,11 @@ describe('NavigationGuideService', () => {
   it('#browseSubjects devrait retourner un sujet vide quand on lui demande un ID nul ou négatif', () => {
     expect(service.browseSubjects(-5, subjects)).toBe(EMPTY_SUBJECT);
     expect(service.browseSubjects(0, subjects)).toBe(EMPTY_SUBJECT);
-  })
+  });
 
   it('#browseSubjects devrait retourner un sujet dans une catégorie', () => {
     expect(service.browseSubjects(4, subjects).id).toBe(4);
-  })
+  });
 
   // TESTS ouvrirCaterogie
 
@@ -36,11 +36,12 @@ describe('NavigationGuideService', () => {
     service.openCategories(subjects);
     expect(subjects[1].openCategory).toBe(true);
     /* TODO: Ajouter les catégories qui doivent etre ouvertes pour sprint 2 et sprint 3. */
-  })
+  });
 
   it('#ouvrirCategorie ne devrait pas affecter les objets purs', () => {
     const sujetVideCopy: SubjectGuide = EMPTY_SUBJECT;
     service.openCategories([EMPTY_SUBJECT]);
     expect(EMPTY_SUBJECT).toBe(sujetVideCopy);
-  })
+  });
+
 });

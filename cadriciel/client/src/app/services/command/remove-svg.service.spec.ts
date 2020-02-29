@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { RemoveSVGService } from './remove-svg.service';
 
-
 describe('RetraitSvgService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 

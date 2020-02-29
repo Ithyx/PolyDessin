@@ -11,11 +11,14 @@ import { ColorChoiceComponent } from '../color-choice/color-choice.component';
 import { GridOptionsComponent } from '../grid-options/grid-options.component';
 import { NewDrawingWarningComponent } from '../new-drawing-warning/new-drawing-warning.component';
 
+const PERCENTAGE = 100;
+
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss']
 })
+
 export class ToolbarComponent implements OnDestroy {
 
   primaryScope: number;
@@ -120,12 +123,12 @@ export class ToolbarComponent implements OnDestroy {
   applyPrimaryOpacity(event: Event): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.colorParameter.primaryOpacity = Math.max(Math.min(Number(eventCast.value), 1), 0);
-    this.colorParameter.primaryOpacityDisplayed = Math.round(100 * this.colorParameter.primaryOpacity);
+    this.colorParameter.primaryOpacityDisplayed = Math.round(PERCENTAGE * this.colorParameter.primaryOpacity);
   }
 
   applySecondaryOpacity(event: Event): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.colorParameter.secondaryOpacity = Math.max(Math.min(Number(eventCast.value), 1), 0);
-    this.colorParameter.secondaryOpacityDisplayed = Math.round(100 * this.colorParameter.secondaryOpacity);
+    this.colorParameter.secondaryOpacityDisplayed = Math.round(PERCENTAGE * this.colorParameter.secondaryOpacity);
   }
 }

@@ -43,5 +43,6 @@ describe('AccueilComponent', () => {
     spyOn(component.dialog, 'open');
     component.createDrawing();
     expect(component.dialog.open).toHaveBeenCalledWith(NewDrawingWindowComponent, component.dialogConfig);
-  })
+  });
+
 });

@@ -114,13 +114,13 @@ describe('CouleurPaletteComponent', () => {
   });
 
   it('#sourisEnfoncee devrait dessiner la palette de couleur', () => {
-    spyOn(component, 'draw')
+    spyOn(component, 'draw');
     component.onMousePress(new MouseEvent('mousedown'));
     expect(component.draw).toHaveBeenCalled();
   });
 
   it('#sourisEnfoncee devrait appeler colorPosition sur les coordonnées du clic', () => {
-    spyOn(component, 'colorPosition')
+    spyOn(component, 'colorPosition');
     component.onMousePress(new MouseEvent('mousedown', {clientX: 35, clientY: 35}));
     expect(component.colorPosition).toHaveBeenCalledWith(35, 35);
   });

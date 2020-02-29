@@ -22,7 +22,7 @@ describe('GlissiereCouleurComponent', () => {
     component = fixture.componentInstance;
     commandes = TestBed.get(CommandManagerService);
     fixture.detectChanges();
-    component.colorManager = new ColorManagerService(new ColorParameterService(), commandes)
+    component.colorManager = new ColorManagerService(new ColorParameterService(), commandes);
   });
 
   it('should create', () => {

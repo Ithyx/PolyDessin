@@ -5,8 +5,8 @@ import { CommandManagerService } from '../command/command-manager.service';
 import { RectangleService } from '../stockage-svg/rectangle.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { Point } from './line-tool.service';
-import { ToolInterface } from './tool-interface'
-import { ToolManagerService } from './tool-manager.service'
+import { ToolInterface } from './tool-interface';
+import { ToolManagerService } from './tool-manager.service';
 
 @Injectable({
   providedIn: 'root'

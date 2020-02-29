@@ -43,7 +43,7 @@ describe('GuideSujetComponent', () => {
     component.onClick();
 
     expect(component.notification.emit).toHaveBeenCalledWith(GUIDE_CONTENTS[0]);
-  })
+  });
 
   it('#onClick() est appelé sur une catégorie alors celle-ci devrait être ouverte', () => {
       component.node = GUIDE_CONTENTS[1];   // Catégorie des outils

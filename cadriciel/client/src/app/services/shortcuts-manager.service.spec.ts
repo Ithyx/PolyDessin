@@ -16,13 +16,13 @@ describe('GestionnaireRaccourcisService', () => {
   // TESTS viderSVGECcours
 
   it('#clearOngoingSVG devrait vider le SVGEnCours de l\' outil rectange', () => {
-    spyOn(service.rectangleTool, 'clear')
+    spyOn(service.rectangleTool, 'clear');
     service.clearOngoingSVG();
     expect(service.rectangleTool.clear).toHaveBeenCalled();
   });
 
   it('#clearOngoingSVG devrait vider le SVGEnCours de l\' outil ligne', () => {
-    spyOn(service.lineTool, 'clear')
+    spyOn(service.lineTool, 'clear');
     service.clearOngoingSVG();
     expect(service.lineTool.clear).toHaveBeenCalled();
   });

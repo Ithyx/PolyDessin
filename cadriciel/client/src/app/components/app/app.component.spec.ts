@@ -34,13 +34,13 @@ describe('AppComponent', () => {
     it('#updateURL devrait mettre à jour l\'URL courante', () => {
         const routes: [any, any] = [{url: 'précédante'}, {url: 'actuelle'}];
         app.updateURL(routes);
-        expect(app.routingManager.currentPage).toBe('actuelle')
+        expect(app.routingManager.currentPage).toBe('actuelle');
     });
 
     it('#updateURL devrait mettre à jour l\'URL précédante', () => {
         const routes: [any, any] = [{url: 'précédante'}, {url: 'actuelle'}];
         app.updateURL(routes);
-        expect(app.routingManager.previousPage).toBe('précédante')
+        expect(app.routingManager.previousPage).toBe('précédante');
     });
 
     //  Tests filterFunction

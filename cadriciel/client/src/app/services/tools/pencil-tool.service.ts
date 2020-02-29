@@ -59,7 +59,7 @@ export class DrawingToolService implements ToolInterface {
         this.trace = new TracePencilService();
       }
       this.commands.drawingInProgress = false;
-    } else {this.canClick = true}
+    } else { this.canClick = true; }
   }
 
   onMouseLeave(): void {

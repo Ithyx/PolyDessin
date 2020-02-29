@@ -40,7 +40,8 @@ const gestionnaireOutilServiceStub: Partial<ToolManagerService> = {
     outilTestInexistant
   ],
   activeTool: outilTestActif
-}
+};
+
 class StubOutil implements ToolInterface {
   onMouseMove(event: MouseEvent): void {/**/}
   onMouseRelease(event: MouseEvent): void {/**/}

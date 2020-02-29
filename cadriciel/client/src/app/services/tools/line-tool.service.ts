@@ -43,7 +43,7 @@ export class LineToolService implements ToolInterface {
     this.isSimpleClick = true;
     this.line.points.push({x: this.line.mousePosition.x, y: this.line.mousePosition.y});
     window.setTimeout(() => {
-      if (this.isSimpleClick) {this.refreshSVG()}
+      if (this.isSimpleClick) { this.refreshSVG(); }
     }, 250);
   }
 

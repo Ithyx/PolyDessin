@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+const INIT_OPACITY = 100;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,8 +24,8 @@ export class ColorParameterService {
     this.secondaryColor = 'rgba(0, 0, 0, ';
     this.primaryOpacity = 1;
     this.secondaryOpacity = 1;
-    this.primaryOpacityDisplayed = 100;
-    this.secondaryOpacityDisplayed = 100;
+    this.primaryOpacityDisplayed = INIT_OPACITY;
+    this.secondaryOpacityDisplayed = INIT_OPACITY;
     this.backgroundColor = 'rgba(255, 255, 255, 1)';
   }
 

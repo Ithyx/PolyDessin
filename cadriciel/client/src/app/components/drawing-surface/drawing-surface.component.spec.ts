@@ -12,7 +12,7 @@ import { DrawingSurfaceComponent } from './drawing-surface.component';
 
 const parametresCouleurStub: Partial<ColorParameterService> = {
   backgroundColor: undefined
-}
+};
 
 describe('SurfaceDessinComponent', () => {
   let component: DrawingSurfaceComponent;
@@ -47,6 +47,9 @@ describe('SurfaceDessinComponent', () => {
     routingManager = TestBed.get(RoutingManagerService);
     routing = TestBed.get(Router);
     parametresCouleur = TestBed.get(ColorParameterService);
+    tools = TestBed.get(ToolManagerService);
+    selection = TestBed.get(SelectionService);
+    grid = TestBed.get(GridService);
   });
 
   it('should create', () => {

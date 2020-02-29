@@ -11,17 +11,19 @@ import { RoutingManagerService } from 'src/app/services/routing-manager.service'
 })
 export class AppComponent {
     readonly title: string = 'LOG2990';
-    message = new BehaviorSubject<string>('');
+    message: BehaviorSubject<string>;
 
     constructor(
                 private routing: Router,
-                public routingManager: RoutingManagerService) {
-        this.routing.events
-            .pipe(filter(this.filterFunction), pairwise())
-            .subscribe({next: this.updateURL.bind(this)});
-    }
+                public routingManager: RoutingManagerService
+            ) {
+                this.routing.events
+                    .pipe(filter(this.filterFunction), pairwise())
+                    .subscribe({next: this.updateURL.bind(this)});
+                this.message = new BehaviorSubject<string>('');
+            }
 
-    filterFunction(event: any): boolean{
+    filterFunction(event: any): boolean {
         return event instanceof RoutesRecognized;
     }
 

@@ -12,16 +12,21 @@ export class TracePencilService implements DrawElement {
   SVGHtml: SafeHtml;
 
   points: Point[] = [];
-  isSelected = false;
+  isSelected: boolean;
 
   tool: DrawingTool = EMPTY_TOOL;
   thickness: number;
 
-  isAPoint = false;
+  isAPoint: boolean;
   primaryColor: string;
 
   pointMin: Point = {x: 0 , y: 0};
   pointMax: Point = {x: 0 , y: 0};
+
+  constructor() {
+    this.isSelected = false;
+    this.isAPoint = false;
+  }
 
   draw(): void {
     if (this.isAPoint) {
