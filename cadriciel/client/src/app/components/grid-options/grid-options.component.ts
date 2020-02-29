@@ -9,24 +9,31 @@ export const KEY_FORM_SHOW_GRID = 'showGridForm';
 export const KEY_FORM_OPACITY = 'opacityForm';
 export const KEY_FORM_CELL_SIZE = 'cellSizeForm';
 
+const PERCENTAGE = 100;
+
 @Component({
   selector: 'app-grid-options',
   templateUrl: './grid-options.component.html',
   styleUrls: ['./grid-options.component.scss']
 })
 export class GridOptionsComponent {
-  cellSizeValue = this.grid.cellSize;
-  opacitySelected = Math.round(100 * this.grid.opacity);
-  options = new FormGroup({
-    showGridForm: new FormControl(this.grid.showGrid),
-    opacityForm: new FormControl(this.grid.opacity),
-    cellSizeForm: new FormControl(this.grid.cellSize)
-  });
+  cellSizeValue: number;
+  opacitySelected: number;
+  options: FormGroup;
 
   constructor(public dialog: MatDialog,
               public dialogRef: MatDialogRef<NewDrawingWindowComponent>,
               public shortcuts: ShortcutsManagerService,
-              public grid: GridService) { }
+              public grid: GridService
+              ) {
+                this.cellSizeValue = this.grid.cellSize;
+                this.opacitySelected = Math.round(PERCENTAGE * this.grid.opacity);
+                this.options = new FormGroup({
+                  showGridForm: new FormControl(this.grid.showGrid),
+                  opacityForm: new FormControl(this.grid.opacity),
+                  cellSizeForm: new FormControl(this.grid.cellSize)
+                });
+              }
 
   closeWindow(): void {
     this.shortcuts.focusOnInput = false;
@@ -42,7 +49,7 @@ export class GridOptionsComponent {
 
   changeOpacity(event: Event): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
-    this.opacitySelected = Math.round(100 * Number(eventCast.value));
+    this.opacitySelected = Math.round(PERCENTAGE * Number(eventCast.value));
   }
 
   validateCellSize(event: Event): void {

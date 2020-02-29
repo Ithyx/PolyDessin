@@ -28,6 +28,6 @@ export class AppComponent {
     updateURL(event: [any, any]): void {
         this.routingManager.previousPage = event[0].url;
         this.routingManager.currentPage = event[1].url;
-    };
+    }
 
 }

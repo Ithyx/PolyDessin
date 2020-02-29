@@ -15,18 +15,18 @@ describe('NewDrawingWarningComponent', () => {
 
   const injecteur = Injector.create(
     {providers: [{provide: MatDialogRef, useValue: {componentInstance: NewDrawingWarningComponent}}]
-  })
+  });
 
-  const MatDialogRefStub: Partial<MatDialogRef<NewDrawingWarningComponent>> = {
-    close() { /* NE RIEN FAIRE */ }
-  }
+  const matDialogRefStub: Partial<MatDialogRef<NewDrawingWarningComponent>> = {
+    close(): void { /* NE RIEN FAIRE */ }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ MatDialogModule, BrowserAnimationsModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule,
                  RouterModule.forRoot([]) ],
       declarations: [ NewDrawingWarningComponent, NewDrawingWindowComponent ],
-      providers: [ {provide: MatDialogRef, useValue: MatDialogRefStub} ]
+      providers: [ {provide: MatDialogRef, useValue: matDialogRefStub} ]
     })
     .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [ NewDrawingWindowComponent ] } })
     .compileComponents();

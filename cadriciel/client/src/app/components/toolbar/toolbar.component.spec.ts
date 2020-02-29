@@ -43,17 +43,17 @@ const rectangle: DrawingTool = {
   iconName: ''
 };
 
-const GestionnaireOutilServiceStub: Partial<ToolManagerService> = {
+const gestionnaireOutilServiceStub: Partial<ToolManagerService> = {
   toolList: [
     outilTestActif,
     outilTestInactif,
     rectangle
   ],
   activeTool: outilTestActif,
-  findParameterIndex(nomParametre) {
+  findParameterIndex(nomParametre: string): number {
     return (nomParametre === 'Épaisseur') ? 0 : 1;
   }
-}
+};
 
 describe('BarreOutilsComponent', () => {
   let component: ToolbarComponent;
@@ -64,7 +64,7 @@ describe('BarreOutilsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ GuidePageComponent, ToolbarComponent, DrawingToolComponent, GuideSubjectComponent, ColorChoiceComponent,
                       ColorPickerComponent, ColorSliderComponent, ColorInputComponent ],
-      providers: [ {provide: ToolManagerService, useValue: GestionnaireOutilServiceStub} ],
+      providers: [ {provide: ToolManagerService, useValue: gestionnaireOutilServiceStub} ],
       imports: [ RouterModule.forRoot([
         {path: 'guide', component : GuidePageComponent}
     ]), MatDialogModule, BrowserAnimationsModule]

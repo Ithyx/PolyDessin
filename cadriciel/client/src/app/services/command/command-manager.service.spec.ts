@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { CommandManagerService } from './command-manager.service';
 
-
 describe('GestionnaireCommandesService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 

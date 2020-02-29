@@ -18,7 +18,7 @@ export class ColorInputComponent {
 
   constructor(public shortcuts: ShortcutsManagerService) {}
 
-  editRGB(event: Event, index: number) {
+  editRGB(event: Event, index: number): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     let value = parseInt(eventCast.value, 16);
 
@@ -42,11 +42,11 @@ export class ColorInputComponent {
     return (estUnNombreAcceptee || estUneLettreAcceptee || (resultat === 'backspace'));
   }
 
-  disableShortcuts() {
+  disableShortcuts(): void {
     this.shortcuts.focusOnInput = true;
   }
 
-  enableShortcuts() {
+  enableShortcuts(): void {
     this.shortcuts.focusOnInput = false;
   }
 }

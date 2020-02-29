@@ -33,7 +33,7 @@ export class ShortcutsManagerService {
   }
 
   treatInput(keybord: KeyboardEvent): void {
-    if (this.focusOnInput) { return; };
+    if (this.focusOnInput) { return; }
     switch (keybord.key) {
       case '1':
         this.selection.deleteBoundingBox();

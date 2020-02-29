@@ -4,7 +4,7 @@ import { AddSVGService } from '../command/add-svg.service';
 import { LineService } from '../stockage-svg/line.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { LineToolService } from './line-tool.service';
-import { LINE_TOOL_INDEX } from './tool-manager.service';
+import { TOOL_INDEX } from './tool-manager.service';
 
 describe('DessinLigneService', () => {
   let service: LineToolService;
@@ -19,12 +19,12 @@ describe('DessinLigneService', () => {
     service.cursor = ({x: 0, y: 0});
     service.line.mousePosition = ({x: 0, y: 0});
     service.line.points.push({x: 0, y: 0});
-    service.line.tool = service.tools.toolList[LINE_TOOL_INDEX];
+    service.line.tool = service.tools.toolList[TOOL_INDEX.LINE];
     element = service.line;
     stockageService.setOngoingSVG(element);
     service.commands.drawingInProgress = true;
     // Mettre l'outil ligne comme l'outil actif
-    service.tools.activeTool = service.tools.toolList[LINE_TOOL_INDEX];
+    service.tools.activeTool = service.tools.toolList[TOOL_INDEX.LINE];
     service.tools.activeTool.parameters[1].chosenOption = 'Sans points';
   });
 
@@ -189,12 +189,12 @@ describe('DessinLigneService', () => {
     expect(service.refreshSVG).toHaveBeenCalled();
   });
 
-  // TESTS stockerCurseur
+  // TESTS memorizeCursor
 
-  it('#stockerCurseur devrait contenir les informations sur le curseur X et Y', () => {
-    service.ShiftPressPosition = ({x: 100, y: 100});
-    service.stockerCurseur();
-    expect(service.ShiftPressPosition).toEqual({x: 0, y: 0});
+  it('#memorizeCursor devrait contenir les informations sur le curseur X et Y', () => {
+    service.shiftPressPosition = ({x: 100, y: 100});
+    service.memorizeCursor();
+    expect(service.shiftPressPosition).toEqual({x: 0, y: 0});
   });
 
   // TESTS shiftPress
@@ -285,9 +285,9 @@ describe('DessinLigneService', () => {
   });
 
   it('#vider devrait mettre positionshiftPresse à (x: 0, y: 0)', () => {
-    service.ShiftPressPosition = ({x: 100, y: 100});
+    service.shiftPressPosition = ({x: 100, y: 100});
     service.clear();
-    expect(service.ShiftPressPosition).toEqual({x: 0, y: 0});
+    expect(service.shiftPressPosition).toEqual({x: 0, y: 0});
   });
 
   it('#vider devrait mettre curseur à (x: 0, y: 0)', () => {

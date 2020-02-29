@@ -8,9 +8,9 @@ import { ColorInputComponent } from './color-input/color-input.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { ColorSliderComponent } from './color-slider/color-slider.component';
 
-const MatDialogRefStub: Partial<MatDialogRef<ColorChoiceComponent>> = {
-  close() { /* NE RIEN FAIRE */ }
-}
+const matDialogRefStub: Partial<MatDialogRef<ColorChoiceComponent>> = {
+  close(): void { /* NE RIEN FAIRE */ }
+};
 
 describe('ChoixCouleurComponent', () => {
   let component: ColorChoiceComponent;
@@ -22,7 +22,7 @@ describe('ChoixCouleurComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ColorChoiceComponent, ColorPickerComponent, ColorSliderComponent,
         ColorInputComponent ],
-      providers: [ { provide: MatDialogRef, useValue: MatDialogRefStub } ]
+      providers: [ { provide: MatDialogRef, useValue: matDialogRefStub } ]
     })
     .compileComponents();
   }));

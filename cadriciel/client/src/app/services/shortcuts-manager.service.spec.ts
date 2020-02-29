@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ShortcutsManagerService } from './shortcuts-manager.service';
-import { LINE_TOOL_INDEX, RECTANGLE_TOOL_INDEX } from './tools/tool-manager.service';
+import { TOOL_INDEX } from './tools/tool-manager.service';
 
 describe('GestionnaireRaccourcisService', () => {
   let service: ShortcutsManagerService;
@@ -47,7 +47,7 @@ describe('GestionnaireRaccourcisService', () => {
     // Liste des opérations possible par treatInput
     spyOn(service, 'clearOngoingSVG');
     spyOn(service.tools, 'changeActiveTool');
-    spyOn(service.lineTool, 'stockerCurseur');
+    spyOn(service.lineTool, 'memorizeCursor');
     spyOn(service.lineTool, 'retirerPoint');
     spyOn(service.lineTool, 'clear');
     spyOn(service.rectangleTool, 'shiftPress');
@@ -58,7 +58,7 @@ describe('GestionnaireRaccourcisService', () => {
 
     expect(service.clearOngoingSVG).not.toHaveBeenCalled();
     expect(service.tools.changeActiveTool).not.toHaveBeenCalled();
-    expect(service.lineTool.stockerCurseur).not.toHaveBeenCalled();
+    expect(service.lineTool.memorizeCursor).not.toHaveBeenCalled();
     expect(service.lineTool.retirerPoint).not.toHaveBeenCalled();
     expect(service.lineTool.clear).not.toHaveBeenCalled();
     expect(service.rectangleTool.shiftPress).not.toHaveBeenCalled();
@@ -108,7 +108,7 @@ describe('GestionnaireRaccourcisService', () => {
 
   it('#treatInput devrait retirer le dernier point en cours si il reçoit Backspace et que ligne est active', () => {
     const clavier = new KeyboardEvent('keypress', { key: 'Backspace'});
-    service.tools.changeActiveTool(LINE_TOOL_INDEX);
+    service.tools.changeActiveTool(TOOL_INDEX.LINE);
     spyOn(service.lineTool, 'retirerPoint');
 
     service.treatInput(clavier);
@@ -118,7 +118,7 @@ describe('GestionnaireRaccourcisService', () => {
 
   it('#treatInput ne devrait rien faire si il reçoit Backspace mais que ligne est inactive', () => {
     const clavier = new KeyboardEvent('keypress', { key: 'Backspace'});
-    service.tools.changeActiveTool(RECTANGLE_TOOL_INDEX);
+    service.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
     spyOn(service.lineTool, 'retirerPoint');
 
     service.treatInput(clavier);
@@ -128,7 +128,7 @@ describe('GestionnaireRaccourcisService', () => {
 
   it('#treatInput devrait annuler la ligne en cours si il reçoit Escape et que ligne est active', () => {
     const clavier = new KeyboardEvent('keypress', { key: 'Escape'});
-    service.tools.changeActiveTool(LINE_TOOL_INDEX);
+    service.tools.changeActiveTool(TOOL_INDEX.LINE);
     spyOn(service.lineTool, 'clear');
 
     service.treatInput(clavier);
@@ -138,7 +138,7 @@ describe('GestionnaireRaccourcisService', () => {
 
   it('#treatInput ne devrait rien faire si il reçoit Escape mais que ligne est inactive', () => {
     const clavier = new KeyboardEvent('keypress', { key: 'Escape'});
-    service.tools.changeActiveTool(RECTANGLE_TOOL_INDEX);
+    service.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
     spyOn(service.lineTool, 'clear');
 
     service.treatInput(clavier);
@@ -175,19 +175,19 @@ describe('GestionnaireRaccourcisService', () => {
     expect(service.newDrawingEmmiter.next).not.toHaveBeenCalledWith(false);
   });
 
-  it('#treatInput devrait appeler stockerCurseur de l\'outil ligne si il reçoit Shift', () => {
+  it('#treatInput devrait appeler memorizeCursor de l\'outil ligne si il reçoit Shift', () => {
     const clavier = new KeyboardEvent('keypress', { key: 'Shift'});
-    service.tools.changeActiveTool(LINE_TOOL_INDEX);
-    spyOn(service.lineTool, 'stockerCurseur');
+    service.tools.changeActiveTool(TOOL_INDEX.LINE);
+    spyOn(service.lineTool, 'memorizeCursor');
 
     service.treatInput(clavier);
 
-    expect(service.lineTool.stockerCurseur).toHaveBeenCalled();
+    expect(service.lineTool.memorizeCursor).toHaveBeenCalled();
   });
 
   it('#treatInput devrait appeler ShiftEnfonce de l\'outil rectangle si il reçoit Shift', () => {
     const clavier = new KeyboardEvent('keypress', { key: 'Shift'});
-    service.tools.changeActiveTool(RECTANGLE_TOOL_INDEX);
+    service.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
     spyOn(service.rectangleTool, 'shiftPress');
 
     service.treatInput(clavier);
@@ -199,7 +199,7 @@ describe('GestionnaireRaccourcisService', () => {
 
   it('#treatReleaseKey devrait appeler shiftRelache de l\'outil rectangle si il reçoit Shift', () => {
     const clavier = new KeyboardEvent('keypress', { key: 'Shift'});
-    service.tools.changeActiveTool(RECTANGLE_TOOL_INDEX);
+    service.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
     spyOn(service.rectangleTool, 'shiftRelease');
 
     service.treatReleaseKey(clavier);
@@ -209,7 +209,7 @@ describe('GestionnaireRaccourcisService', () => {
 
   it('#treatReleaseKey devrait appeler shiftRelache de l\'outil ligne si il reçoit Shift', () => {
     const clavier = new KeyboardEvent('keypress', { key: 'Shift'});
-    service.tools.changeActiveTool(LINE_TOOL_INDEX);
+    service.tools.changeActiveTool(TOOL_INDEX.LINE);
     spyOn(service.lineTool, 'shiftRelease');
 
     service.treatReleaseKey(clavier);
@@ -221,13 +221,13 @@ describe('GestionnaireRaccourcisService', () => {
     const clavier = new KeyboardEvent('keypress');
 
     // Dans le cas de la ligne
-    service.tools.changeActiveTool(LINE_TOOL_INDEX);
+    service.tools.changeActiveTool(TOOL_INDEX.LINE);
     spyOn(service.lineTool, 'shiftRelease');
     service.treatReleaseKey(clavier);
     expect(service.lineTool.shiftRelease).not.toHaveBeenCalled();
 
     // Dans le cas du rectangle
-    service.tools.changeActiveTool(RECTANGLE_TOOL_INDEX);
+    service.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
     spyOn(service.rectangleTool, 'shiftRelease');
     service.treatReleaseKey(clavier);
     expect(service.rectangleTool.shiftRelease).not.toHaveBeenCalled();

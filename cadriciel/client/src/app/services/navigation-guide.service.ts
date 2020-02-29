@@ -41,4 +41,4 @@ export const EMPTY_SUBJECT: SubjectGuide = {
   previous: false,
   next: false,
   id: 0
-}
+};

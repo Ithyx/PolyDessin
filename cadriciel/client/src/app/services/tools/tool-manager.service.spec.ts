@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import {  LINE_TOOL_INDEX, TOOL_LIST, ToolManagerService } from './tool-manager.service';
+import { TOOL_INDEX, TOOL_LIST, ToolManagerService } from './tool-manager.service';
 
 describe('GestionnaireOutilsService', () => {
   let service: ToolManagerService;
@@ -21,7 +21,7 @@ describe('GestionnaireOutilsService', () => {
   });
 
   it('#trouverIndexParametre devrait renvoyer l\'index du parametre recherché', () => {
-    service.activeTool = TOOL_LIST[LINE_TOOL_INDEX];
+    service.activeTool = TOOL_LIST[TOOL_INDEX.LINE];
     expect(service.findParameterIndex('Type de jonction')).toBe(1);
   });
 
@@ -34,12 +34,12 @@ describe('GestionnaireOutilsService', () => {
   });
 
   it('#changerOutilActif devrait changer d\' outil pour celui de l\'index spécifié', () => {
-    service.changeActiveTool(LINE_TOOL_INDEX);
+    service.changeActiveTool(TOOL_INDEX.LINE);
     expect(service.activeTool.name).toBe('Ligne');
   });
 
   it('#changerOutilActif devrait rendre actif le nouvel outil', () => {
-    service.changeActiveTool(LINE_TOOL_INDEX);
+    service.changeActiveTool(TOOL_INDEX.LINE);
     expect(service.activeTool.isActive).toBe(true);
   });
 

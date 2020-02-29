@@ -13,18 +13,22 @@ import { ToolInterface } from 'src/app/services/tools/tool-interface';
 
 export class ColorSliderComponent implements AfterViewInit, ToolInterface {
   @ViewChild('canvas', {static: true})
-  canvas: ElementRef<HTMLCanvasElement>
+  canvas: ElementRef<HTMLCanvasElement>;
   @Input() colorManager: ColorManagerService;
 
   private context2D: CanvasRenderingContext2D ;
-  private MouseDown =  false
+  private mouseDown: boolean;
   chosenHeight: number;
+
+  constructor() {
+    this.mouseDown =  false;
+  }
 
   ngAfterViewInit(): void {
     this.draw();
   }
 
-  draw() {
+  draw(): void {
 
     if (!this.context2D) {
       this.context2D = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
@@ -61,30 +65,30 @@ export class ColorSliderComponent implements AfterViewInit, ToolInterface {
   }
 
   @HostListener('window:mouseup', ['$event'])
-  onMouseRelease(evt: MouseEvent) {
-    this.MouseDown = false;
+  onMouseRelease(evt: MouseEvent): void {
+    this.mouseDown = false;
   }
 
-  onMousePress(evt: MouseEvent) {
-    this.MouseDown = true;
+  onMousePress(evt: MouseEvent): void {
+    this.mouseDown = true;
     this.chosenHeight = evt.offsetY;
     this.draw();
     this.emittedColor(evt.offsetX, evt.offsetY);
   }
 
-  onMouseMove(evt: MouseEvent) {
-    if (this.MouseDown) {
+  onMouseMove(evt: MouseEvent): void {
+    if (this.mouseDown) {
       this.chosenHeight = evt.offsetY;
       this.draw();
       this.emittedColor(evt.offsetX, evt.offsetY);
     }
   }
 
-  emittedColor(x: number, y: number) {
+  emittedColor(x: number, y: number): void {
     this.colorPosition(x, y);
   }
 
-  colorPosition(x: number, y: number) {
+  colorPosition(x: number, y: number): void {
     const imageData = this.context2D.getImageData(x, y, 1, 1).data;
     const rgbaCouleur = 'rgba(' + imageData[0] + ',' + imageData[1] + ',' +
       imageData[2] + ',';

@@ -33,7 +33,7 @@ const outilTestInexistant: DrawingTool = {
   parameters: [],
   iconName: ''
 };
-const GestionnaireOutilServiceStub: Partial<ToolManagerService> = {
+const gestionnaireOutilServiceStub: Partial<ToolManagerService> = {
   toolList: [
     outilTestActif,
     outilTestInactif,
@@ -42,13 +42,13 @@ const GestionnaireOutilServiceStub: Partial<ToolManagerService> = {
   activeTool: outilTestActif
 }
 class StubOutil implements ToolInterface {
-  onMouseMove(evenement: MouseEvent) {/**/}
-  onMouseRelease(evenement: MouseEvent) {/**/}
-  onMousePress(evenement: MouseEvent) {/**/}
-  onMouseClick(evenement: MouseEvent) {/**/}
-  onMouseLeave(evenement: MouseEvent) {/**/}
-  onMouseEnter(evenement: MouseEvent) {/**/}
-  onDoubleClick(evenement: MouseEvent) {/**/}
+  onMouseMove(event: MouseEvent): void {/**/}
+  onMouseRelease(event: MouseEvent): void {/**/}
+  onMousePress(event: MouseEvent): void {/**/}
+  onMouseClick(event: MouseEvent): void {/**/}
+  onMouseLeave(event: MouseEvent): void {/**/}
+  onMouseEnter(event: MouseEvent): void {/**/}
+  onDoubleClick(event: MouseEvent): void {/**/}
 }
 
 describe('PageDessinComponent', () => {
@@ -63,7 +63,7 @@ describe('PageDessinComponent', () => {
         {path: 'dessin', component: DrawingPageComponent},
         {path: 'guide', component : GuidePageComponent}
       ])],
-      providers: [ {provide: ToolManagerService, useValue: GestionnaireOutilServiceStub} ],
+      providers: [ {provide: ToolManagerService, useValue: gestionnaireOutilServiceStub} ],
       declarations: [ DrawingPageComponent, GuidePageComponent, ToolbarComponent,
         DrawingToolComponent, DrawingSurfaceComponent, GuideSubjectComponent ]
     })

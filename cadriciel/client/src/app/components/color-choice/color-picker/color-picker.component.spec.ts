@@ -38,7 +38,7 @@ describe('CouleurPaletteComponent', () => {
 
   it('#ngOnChanges devrait dessiner la palette si la teinte est modifiée', () => {
     component.colorManager.hue = 'testTeinte';
-    spyOn(component, 'dessin');
+    spyOn(component, 'draw');
     component.ngOnChanges(changementsTeinte);
     expect(component.draw).toHaveBeenCalled();
   });
@@ -59,7 +59,7 @@ describe('CouleurPaletteComponent', () => {
 
   it('#ngOnChanges ne devrait rien faire si la teinte n\'est pas modifiée', () => {
     component.colorManager.hue = 'testTeinte';
-    spyOn(component, 'dessin');
+    spyOn(component, 'draw');
     spyOn(component, 'colorPosition');
     component.ngOnChanges({});
     expect(component.draw).not.toHaveBeenCalled();
@@ -93,7 +93,7 @@ describe('CouleurPaletteComponent', () => {
   // TEST sourisRelachee
 
   it('#sourisRelachee devrait mettre la variable booléenne sourisBas à false', () => {
-    spyOn(component, 'dessin');
+    spyOn(component, 'draw');
     component.onMouseRelease(new MouseEvent('mousedown'));
     component.onMouseMove(new MouseEvent('mousemove')); // teste la valeur de sourisBas
     expect(component.draw).not.toHaveBeenCalled();
@@ -103,7 +103,7 @@ describe('CouleurPaletteComponent', () => {
 
   it('#sourisEnfoncee devrait mettre la variable booléenne sourisBas à true', () => {
     component.onMousePress(new MouseEvent('mousedown'));
-    spyOn(component, 'dessin');
+    spyOn(component, 'draw');
     component.onMouseMove(new MouseEvent('mousemove')); // teste la valeur de sourisBas
     expect(component.draw).toHaveBeenCalled();
   });
@@ -114,7 +114,7 @@ describe('CouleurPaletteComponent', () => {
   });
 
   it('#sourisEnfoncee devrait dessiner la palette de couleur', () => {
-    spyOn(component, 'dessin')
+    spyOn(component, 'draw')
     component.onMousePress(new MouseEvent('mousedown'));
     expect(component.draw).toHaveBeenCalled();
   });
@@ -142,7 +142,7 @@ describe('CouleurPaletteComponent', () => {
 
   // TEST ngAfterViewInit
   it('#ngAfterViewInit devrait dessiner la palette de couleurs', () => {
-    spyOn(component, 'dessin');
+    spyOn(component, 'draw');
     component.ngAfterViewInit();
     expect(component.draw).toHaveBeenCalled();
   });

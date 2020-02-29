@@ -13,19 +13,19 @@ describe('NewDrawingWindowComponent', () => {
   let component: NewDrawingWindowComponent;
   let fixture: ComponentFixture<NewDrawingWindowComponent>;
 
-  const MatDialogRefStub: Partial<MatDialogRef<NewDrawingWindowComponent>> = {
-    close() { /* NE RIEN FAIRE */ }
-  }
+  const matDialogRefStub: Partial<MatDialogRef<NewDrawingWindowComponent>> = {
+    close(): void { /* NE RIEN FAIRE */ }
+  };
 
   const injecteur = Injector.create(
     {providers: [{provide: MatDialogRef, useValue: {componentInstance: ColorChoiceComponent}}]
-  })
+  });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ ReactiveFormsModule, MatDialogModule, RouterModule.forRoot([{path: 'dessin', component: NewDrawingWindowComponent}]) ],
       declarations: [ NewDrawingWindowComponent ],
-      providers: [ {provide: MatDialogRef, useValue: MatDialogRefStub} ]
+      providers: [ {provide: MatDialogRef, useValue: matDialogRefStub} ]
     })
     .compileComponents();
   }));

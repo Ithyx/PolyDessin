@@ -22,15 +22,12 @@ export const BUFFER_HEIGHT = 15;
 })
 
 export class NewDrawingWindowComponent {
-  windowHeight = window.innerHeight - BUFFER_HEIGHT;
-  windowWidth = window.innerWidth - BUFFER_WIDTH;
+  windowHeight: number;
+  windowWidth: number;
 
-  dimensionManuallyChange = false;
+  dimensionManuallyChange: boolean;
 
-  newDrawing = new FormGroup({
-    formHeight: new FormControl(this.windowHeight),
-    formWidth: new FormControl(this.windowWidth),
-  });
+  newDrawing: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<NewDrawingWindowComponent>,
               public shortcuts: ShortcutsManagerService,
@@ -41,6 +38,15 @@ export class NewDrawingWindowComponent {
               public colorParameter: ColorParameterService,
               public commands: CommandManagerService,
               private ngZone: NgZone ) {
+                this.windowHeight = window.innerHeight - BUFFER_HEIGHT;
+                this.windowWidth = window.innerWidth - BUFFER_WIDTH;
+                this.dimensionManuallyChange = false;
+
+                this.newDrawing = new FormGroup({
+                  formHeight: new FormControl(this.windowHeight),
+                  formWidth: new FormControl(this.windowWidth),
+                });
+
                 this.changeWindowDimension();
               }
 

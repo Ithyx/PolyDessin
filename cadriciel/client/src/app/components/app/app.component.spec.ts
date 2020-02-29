@@ -7,10 +7,10 @@ import { AppComponent } from './app.component';
 
 const injecteur = Injector.create(
     { providers: [{provide: RouterStateSnapshot, useValue: {}}, {provide: RoutesRecognized, deps: [RouterStateSnapshot]}] }
-)
+);
 
 describe('AppComponent', () => {
-    let app: AppComponent
+    let app: AppComponent;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
