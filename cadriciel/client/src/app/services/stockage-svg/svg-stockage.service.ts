@@ -17,10 +17,10 @@ export class SVGStockageService {
     this.completeSVG = [];
   }
 
-  addSVG(element: DrawElement, id?: number): void {
+  addSVG(element: DrawElement): void {
     element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
     // this.completeSVG.set(id ? id : ++this.size, element);
-    this.completeSVG[id ? id : ++this.size] = element;
+    this.completeSVG[++this.size] = element;
     this.ongoingSVG = '';
     this.ongoingPerimeter = '';
   }

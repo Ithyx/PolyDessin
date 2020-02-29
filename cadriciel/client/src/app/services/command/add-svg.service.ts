@@ -7,15 +7,15 @@ import { Command } from './command';
   providedIn: 'root'
 })
 export class AddSVGService implements Command {
-  SVGKey: number;
+  svgKey: number;
   constructor(public element: DrawElement,
-              public SVGStockage: SVGStockageService) {
-    this.SVGStockage.addSVG(this.element);
-    this.SVGKey = this.SVGStockage.size;
+              public svgStockage: SVGStockageService) {
+    this.svgStockage.addSVG(this.element);
+    this.svgKey = this.svgStockage.size;
   }
 
   undo(): void {
-    const element = this.SVGStockage.removeSVG(this.SVGKey);
+    const element = this.svgStockage.removeSVG(this.svgKey);
     if (element) {
       this.element = element;
     }
@@ -23,7 +23,8 @@ export class AddSVGService implements Command {
 
   redo(): void {
     if (this.element) {
-      this.SVGStockage.addSVG(this.element, this.SVGKey);
+      this.svgStockage.addSVG(this.element);
+      this.svgKey = this.svgStockage.size;
     }
   }
 }
