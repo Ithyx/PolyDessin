@@ -11,7 +11,7 @@ export class AddSVGService implements Command {
   constructor(public element: DrawElement,
               public svgStockage: SVGStockageService) {
     this.svgStockage.addSVG(this.element);
-    this.svgKey = this.svgStockage.size;
+    this.svgKey = this.svgStockage.size - 1;
   }
 
   undo(): void {
@@ -24,7 +24,7 @@ export class AddSVGService implements Command {
   redo(): void {
     if (this.element) {
       this.svgStockage.addSVG(this.element);
-      this.svgKey = this.svgStockage.size;
+      this.svgKey = this.svgStockage.size - 1;
     }
   }
 }
