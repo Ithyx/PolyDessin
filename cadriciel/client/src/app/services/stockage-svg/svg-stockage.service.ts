@@ -13,14 +13,14 @@ export class SVGStockageService {
   private completeSVG: DrawElement[];
 
   constructor(private sanitizer: DomSanitizer) {
-    this.size = -1;
+    this.size = 0;
     this.completeSVG = [];
   }
 
   addSVG(element: DrawElement): void {
     element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
     // this.completeSVG.set(id ? id : ++this.size, element);
-    this.completeSVG[++this.size] = element;
+    this.completeSVG[this.size++] = element;
     this.ongoingSVG = '';
     this.ongoingPerimeter = '';
   }
