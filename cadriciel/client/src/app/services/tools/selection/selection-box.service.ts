@@ -10,6 +10,7 @@ import { ToolManagerService} from '../tool-manager.service';
 export class SelectionBoxService {
 
   selectionBox: RectangleService;
+  // controlPointBox: RectangleService[];
   mouseClick: Point;
 
   constructor(public tools: ToolManagerService,
@@ -28,7 +29,20 @@ export class SelectionBoxService {
     this.selectionBox.secondaryColor =  'rgba(0, 80, 150, 1)';
 
     this.selectionBox.drawRectangle();
+
     this.selectionBox.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.selectionBox.SVG);
+  }
+
+  createControlPointBox(rectangle: RectangleService): string {
+    // Corner 1
+
+    // Corner 2
+
+    // Corner 3
+
+    // Corner 4
+
+    return '';
   }
 
   deleteSelectionBox(): void {
@@ -43,8 +57,8 @@ export class SelectionBoxService {
   }
 
   updatePositionMouse(mouse: MouseEvent): void {
-    this.selectionBox.translate.x += mouse.offsetX - this.mouseClick.x;
-    this.selectionBox.translate.y += mouse.offsetY - this.mouseClick.y;
+    this.selectionBox.translate.x = mouse.offsetX - this.mouseClick.x;
+    this.selectionBox.translate.y = mouse.offsetY - this.mouseClick.y;
     this.selectionBox.drawRectangle();
     this.selectionBox.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.selectionBox.SVG);
   }

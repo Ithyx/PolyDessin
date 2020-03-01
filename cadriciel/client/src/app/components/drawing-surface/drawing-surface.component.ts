@@ -49,7 +49,8 @@ export class DrawingSurfaceComponent {
       /* TODO */
       this.selection.clickOnSelectionBox = true;
       this.selection.updatePosition(5, 0);    // TEMPORAIRE
-      console.log('selectiobBox click');
+      this.selection.selectionBox.mouseClick = {x: event.offsetX , y: event.offsetY };
+      console.log('selectionBox click');
     }
   }
 }

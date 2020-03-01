@@ -42,4 +42,10 @@ export class TraceSprayService implements DrawElement {
     this.translate.y += y;
     this.draw();
   }
+
+  updatePositionMouse(mouse: MouseEvent, mouseClick: Point): void {
+    this.translate.x = mouse.offsetX - mouseClick.x;
+    this.translate.y = mouse.offsetY - mouseClick.y;
+    this.draw();
+  }
 }
