@@ -29,28 +29,27 @@ export class DrawingSurfaceComponent {
   }
 
   handleBackgroundClick(): void {
-    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
+    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION && !this.selection.selectionRectangle) {
         this.selection.deleteBoundingBox();
         this.selection.clickOnSelectionBox = false;
-        console.log('hello, you have click on the background');
     }
+    console.log('background click');
   }
 
   handleElementClick(element: DrawElement): void {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       this.selection.handleClick(element);
       this.selection.clickOnSelectionBox = false;
-      console.log('hello, you have click on a SVGElement');
     }
+    console.log('SVG element click');
   }
 
   handleMouseDown(event: MouseEvent): void {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       /* TODO */
-      console.log('hello, you have click on the selection box');
       this.selection.clickOnSelectionBox = true;
-      // this.selection.selectionBox.mouseClickPosition = {x: event.offsetX, y: event.offsetY};
-      // this.selection.selectionBox.updatePosition(event);
+      this.selection.updatePosition(5, 0);    // TEMPORAIRE
+      console.log('selectiobBox click');
     }
   }
 }

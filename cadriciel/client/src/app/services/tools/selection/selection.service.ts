@@ -50,7 +50,6 @@ export class SelectionService implements ToolInterface {
     if (!this.clickOnSelectionBox) {
       this.deleteBoundingBox();
       this.selectionRectangle.mouseDown(mouse);
-      console.log('Selection.onMousePress');
     }
   }
 
@@ -100,6 +99,7 @@ export class SelectionService implements ToolInterface {
   }
 
   deleteBoundingBox(): void {
+    console.log('deleteBoundingBox');
     this.selectionBox.deleteSelectionBox();
     this.selectedElements = [];
 

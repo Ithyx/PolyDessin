@@ -10,13 +10,11 @@ import { ToolManagerService} from '../tool-manager.service';
 export class SelectionBoxService {
 
   selectionBox: RectangleService;
-  mouseClickPosition: Point;
+  mouseClick: Point;
 
   constructor(public tools: ToolManagerService,
               private sanitizer: DomSanitizer
-              ) {
-                // this.mouseClickPosition = {x: 0 , y: 0 };
-              }
+              ) {}
 
   createSelectionBox(pointMin: Point, pointMax: Point): void {
 
@@ -42,6 +40,12 @@ export class SelectionBoxService {
     this.selectionBox.translate.y += y;
     this.selectionBox.drawRectangle();
     this.selectionBox.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.selectionBox.SVG);
-    console.log('update selectionBox');
+  }
+
+  updatePositionMouse(mouse: MouseEvent): void {
+    this.selectionBox.translate.x += mouse.offsetX - this.mouseClick.x;
+    this.selectionBox.translate.y += mouse.offsetY - this.mouseClick.y;
+    this.selectionBox.drawRectangle();
+    this.selectionBox.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.selectionBox.SVG);
   }
 }
