@@ -156,15 +156,17 @@ export class SelectionService implements ToolInterface {
   }
 
   updatePosition(x: number, y: number): void {
-    for (const element of this.SVGStockage.getCompleteSVG()) {
-      if (element.isSelected) {
-        element.updatePosition(x, y);
-        element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
+    if (this.selectionBox.selectionBox) {
+      for (const element of this.SVGStockage.getCompleteSVG()) {
+        if (element.isSelected) {
+          element.updatePosition(x, y);
+          element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
 
-        // TODO: Retirer l'élément bougé de selectedElements et le ré-insérer avec les nouveaux coordonnées
+          // TODO: Retirer l'élément bougé de selectedElements et le ré-insérer avec les nouveaux coordonnées
+        }
       }
+      this.selectionBox.updatePosition(x, y);
     }
-    this.selectionBox.updatePosition(x, y);
   }
 
 }
