@@ -10,6 +10,8 @@ import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
 
 type FunctionShortcut = (keyboard?: KeyboardEvent ) => void;
 
+const SELECTION_MOVEMENT_PIXEL = 3;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -47,9 +49,13 @@ export class ShortcutsManagerService {
                                     .set('ArrowLeft', this.shortcutKeyArrowLeft.bind(this))
                                     .set('ArrowRight', this.shortcutKeyArrowRight.bind(this))
                                     .set('ArrowDown', this.shortcutKeyArrowDown.bind(this))
-                                    .set('ArrowUp', this.shortcutKeyArrowUp.bind(this))
-                                    ;
+                                    .set('ArrowUp', this.shortcutKeyArrowUp.bind(this));
               }
+
+  updatePositionTimer(): void {
+    // Si supérieur à 500 ms
+      // Tous les 100 ms on updatePosition
+  }
 
   treatInput(keyboard: KeyboardEvent): void {
     if (this.focusOnInput) { return; }
@@ -160,19 +166,27 @@ export class ShortcutsManagerService {
   }
 
   shortcutKeyArrowLeft(): void {
-    this.selection.updatePosition(-3, 0);
+    if (this.selection.selectionBox.selectionBox) {
+      this.selection.updatePosition(-SELECTION_MOVEMENT_PIXEL, 0);
+    }
   }
 
   shortcutKeyArrowRight(): void {
-    this.selection.updatePosition(3, 0);
+    if (this.selection.selectionBox.selectionBox) {
+      this.selection.updatePosition(SELECTION_MOVEMENT_PIXEL, 0);
+    }
   }
 
   shortcutKeyArrowUp(): void {
-    this.selection.updatePosition(0, -3);
+    if (this.selection.selectionBox.selectionBox) {
+      this.selection.updatePosition(0, -SELECTION_MOVEMENT_PIXEL);
+    }
   }
 
   shortcutKeyArrowDown(): void {
-    this.selection.updatePosition(0, 3);
+    if (this.selection.selectionBox.selectionBox) {
+      this.selection.updatePosition(0, SELECTION_MOVEMENT_PIXEL);
+    }
   }
 
   treatReleaseKey(keybord: KeyboardEvent): void {

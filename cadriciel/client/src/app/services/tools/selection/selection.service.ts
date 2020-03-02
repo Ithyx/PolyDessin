@@ -110,7 +110,6 @@ export class SelectionService implements ToolInterface {
   }
 
   deleteBoundingBox(): void {
-    console.log('deleteBoundingBox');
     this.selectionBox.deleteSelectionBox();
     this.selectedElements = [];
 
