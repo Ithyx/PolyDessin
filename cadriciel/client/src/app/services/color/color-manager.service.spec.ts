@@ -59,11 +59,21 @@ describe('ColorManagerService', () => {
     expect(service.addLastColor).toHaveBeenCalled();
   });
 
-  it('#applyColor devrait changer la couleur de fond si la Scope est Fond', () => {
-    scope = Scope.Background;
+  it('#applyColor devrait changer la couleur de fond temporaire lors de la creation de nouveau dessin '
+    + 'si le Scope est BackgroundNewDrawing', () => {
+    scope = Scope.BackgroundNewDrawing;
     service.applyColor(scope);
 
     expect(service.colorParameter.temporaryBackgroundColor).toBe('rgba(0, 0, 0,1)');
+  });
+
+  it('#applyColor devrait changer la couleur de fond sur la barre d\'outils '
+    + 'si le Scope est BackgroundToolBar', () => {
+    scope = Scope.BackgroundToolBar;
+    service.applyColor(scope);
+
+    expect(service.colorParameter.temporaryBackgroundColor).toBe('rgba(0, 0, 0,1)');
+    expect(service.drawingManager.backgroundColor).toBe('rgba(0, 0, 0,1)');
   });
 
   it('#applyColor ne devrait rien faire si la Scope est non reconnue', () => {

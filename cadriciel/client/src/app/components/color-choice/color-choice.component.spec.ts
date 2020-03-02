@@ -64,7 +64,7 @@ describe('ChoixCouleurComponent', () => {
 
   it('#applyColor should apply background color', () => {
     component.colorManager.color = COLOR_TEST.slice(0, -2);
-    component.portee = Scope.Background;
+    component.portee = Scope.BackgroundNewDrawing;
     component.applyColor();
     expect(color.temporaryBackgroundColor).toBe(COLOR_TEST);
   });

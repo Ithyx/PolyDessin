@@ -210,23 +210,23 @@ describe('BarreOutilsComponent', () => {
 
   it('#selectionCouleur devrait appeler disableShortcuts', () => {
     spyOn(component, 'disableShortcuts');
-    component.selectColor('principale');
+    component.selectColor('primary');
     expect(component.disableShortcuts).toHaveBeenCalled();
   });
 
   it('#selectionCouleur devrait assignee portee à Portee.Principale si le paramètre de la fonction contient principale', () => {
-    component.selectColor('principale');
+    component.selectColor('primary');
     expect(component.colorPickerPopup.portee).toEqual(component.primaryScope);
   });
 
   it('#selectionCouleur devrait assignee portee à Portee.Secondaire si le paramètre de la fonction contient secondaire', () => {
-    component.selectColor('secondaire');
+    component.selectColor('secondary');
     expect(component.colorPickerPopup.portee).toEqual(component.secondaryScope);
   });
 
   it('#selectionCouleur devrait assignee portee à Portee.fond si le paramètre de la fonction contient fond', () => {
-    component.selectColor('fond');
-    expect(component.colorPickerPopup.portee).toEqual(Scope.Background);
+    component.selectColor('background');
+    expect(component.colorPickerPopup.portee).toEqual(Scope.BackgroundToolBar);
   });
 
   // TESTS selectionDerniereCouleurPrimaire

@@ -21,9 +21,7 @@ export class RectangleService implements DrawElement {
   perimeter: string;
   isDotted: boolean;
 
-  tool: DrawingTool;
-  width: number;
-  height: number;
+  tool: DrawingTool = EMPTY_TOOL;
 
   pointMin: Point;
   pointMax: Point;
@@ -34,10 +32,6 @@ export class RectangleService implements DrawElement {
     this.points = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
                    {x: 0, y: 0}];   // points[1], coin bas droite
     this.isSelected = false;
-    this.tool = EMPTY_TOOL;
-    this.width = 0;
-    this.height = 0;
-
     this.translate = { x: 0, y: 0};
   }
 
