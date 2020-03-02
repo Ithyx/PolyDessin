@@ -67,7 +67,7 @@ export class LineToolService implements ToolInterface {
     }
   }
 
-  retirerPoint(): void {
+  removePoint(): void {
     if (this.line.points.length > 1) {
       this.line.points.pop();
       this.refreshSVG();
