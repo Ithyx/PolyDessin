@@ -32,7 +32,8 @@ export class TraceSprayService implements DrawElement {
   draw(): void {
     this.SVG = '';
     for (const point of this.points) {
-      this.SVG += `<circle cx="${point.x}" cy="${point.y}" r="1" fill="${this.primaryColor}" />`;
+      this.SVG += '<circle transform ="translate(' + this.translate.x + ' ' + this.translate.y
+      + `)"cx="${point.x}" cy="${point.y}" r="1" fill="${this.primaryColor}" />`;
     }
   }
 
