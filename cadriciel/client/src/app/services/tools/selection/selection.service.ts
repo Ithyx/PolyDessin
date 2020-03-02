@@ -145,7 +145,7 @@ export class SelectionService implements ToolInterface {
                           && (mouse.offsetY >= element.pointMin.y && mouse.offsetY <= element.pointMax.y);
 
       const yCornerSelection = (mouse.offsetX >= element.pointMin.x && mouse.pageX <= element.pointMax.x)
-                          && (rectangleSelection.points[0].y >= element.pointMin.y && rectangleSelection.points[0].y <= element.pointMax.y);
+                          && (rectangleSelection.points[1].y >= element.pointMin.y && rectangleSelection.points[1].y <= element.pointMax.y);
 
 
       mouseBelongToElement = mouseCornerSelection || xCornerSelection || yCornerSelection;
