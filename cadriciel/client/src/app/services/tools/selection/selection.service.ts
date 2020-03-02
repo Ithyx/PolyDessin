@@ -173,14 +173,21 @@ export class SelectionService implements ToolInterface {
           this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePosition(x, y);
           element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
-          // TODO: Retirer l'élément bougé de selectedElements et le ré-insérer avec les nouveaux coordonnées
+
+          for ( const point of element.points) {
+            point.x += element.translate.x;
+            point.y += element.translate.y;
+          }
+
+          element.translate.x = 0;
+          element.translate.y = 0;
+
           this.selectedElements.push(element);
         }
       }
       this.selectionBox.updatePosition(x, y);
     }
   }
-
 
   updatePositionMouse(mouse: MouseEvent): void {
     if (this.selectionBox.selectionBox) {
@@ -189,7 +196,6 @@ export class SelectionService implements ToolInterface {
           this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePositionMouse(mouse, this.selectionBox.mouseClick);
           element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
-          // TODO: Retirer l'élément bougé de selectedElements et le ré-insérer avec les nouveaux coordonnées
           this.selectedElements.push(element);
         }
       }
