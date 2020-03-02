@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CommandManagerService } from './command/command-manager.service';
+import { DatabaseService } from './database/database.service';
 import { GridService } from './grid/grid.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { LineToolService } from './tools/line-tool.service';
@@ -22,7 +23,8 @@ export class ShortcutsManagerService {
               public commands: CommandManagerService,
               public selection: SelectionService,
               public SVGStockage: SVGStockageService,
-              public grid: GridService
+              public grid: GridService,
+              private db: DatabaseService
               ) {
                 this.focusOnInput = false;
               }
@@ -74,9 +76,17 @@ export class ShortcutsManagerService {
         break;
 
       case 's':
-        this.selection.deleteBoundingBox();
-        this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
-        this.clearOngoingSVG();
+        if (keybord.ctrlKey) {
+          this.db.sendData();
+          if (event) {
+            event.preventDefault();
+          }
+        } else {
+          this.selection.deleteBoundingBox();
+          this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
+          this.clearOngoingSVG();
+        }
+        break;
 
       case 'z':
         if (keybord.ctrlKey && !this.commands.drawingInProgress) {

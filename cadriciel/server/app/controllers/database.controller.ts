@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response, Router } from 'express';
+import * as HttpStatus from 'http-status-codes';
 import { inject, injectable } from 'inversify';
 import { DatabaseService } from '../services/databse.service';
 import Types from '../types';
@@ -14,18 +15,19 @@ export class DatabaseController {
         this.configureRouter();
     }
 
-    private configureRouter() {
+    private configureRouter(): void {
         this.router = Router();
         this.router.get('/listDrawings', async (req: Request, res: Response, next: NextFunction) => {
             res.send(await this.databaseService.getDrawings());
-        })
+        });
         this.router.post('/addNewDrawing', async (req: Request, res: Response, next: NextFunction) => {
             try {
                 this.databaseService.SendData(req.body);
-                res.send(SUCCESS_STRING);
+                res.status(HttpStatus.OK).send(SUCCESS_STRING);
             } catch {
-                res.status(400).send(ERROR_STRING)
+                console.log('ERROR DETECTED');
+                res.status(HttpStatus.BAD_REQUEST).send(ERROR_STRING);
             }
-        })
+        });
     }
 }

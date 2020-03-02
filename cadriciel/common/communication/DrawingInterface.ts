@@ -1,4 +1,4 @@
-import { ElementDessin } from './element-dessin';
+import { DrawElement } from '../../client/src/app/services/stockage-svg/draw-element';
 
 export interface Drawing {
     name: string;
@@ -6,5 +6,5 @@ export interface Drawing {
     width: number;
     backgroundColor: string;
     tags?: string[];
-    elements?: ElementDessin[];
+    elements?: DrawElement[];
 }
