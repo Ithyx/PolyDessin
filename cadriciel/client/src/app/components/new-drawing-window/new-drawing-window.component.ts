@@ -39,18 +39,18 @@ export class NewDrawingWindowComponent {
               public colorParameter: ColorParameterService,
               public commands: CommandManagerService,
               private ngZone: NgZone ) {
-                this.windowHeight = window.innerHeight - BUFFER_HEIGHT;
-                this.windowWidth = window.innerWidth - BUFFER_WIDTH;
-                this.dimensionManuallyChange = false;
+    this.windowHeight = window.innerHeight - BUFFER_HEIGHT;
+    this.windowWidth = window.innerWidth - BUFFER_WIDTH;
+    this.dimensionManuallyChange = false;
 
-                this.newDrawing = new FormGroup({
-                  formName: new FormControl(),
-                  formHeight: new FormControl(this.windowHeight),
-                  formWidth: new FormControl(this.windowWidth),
-                });
+    this.newDrawing = new FormGroup({
+      formName: new FormControl(),
+      formHeight: new FormControl(this.windowHeight),
+      formWidth: new FormControl(this.windowWidth),
+    });
 
-                this.changeWindowDimension();
-              }
+    this.changeWindowDimension();
+  }
 
   closeWindow(): void {
     this.shortcuts.focusOnInput = false;
