@@ -9,10 +9,12 @@ import { ToolInterface } from '../tool-interface';
 import { SelectionBoxService } from './selection-box.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
 
+const HALF_DRAW_ELEMENT = 0.5 ;
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class SelectionService implements ToolInterface {
   selectedElements: DrawElement[] = [];
   clickOnSelectionBox: boolean;
@@ -28,8 +30,8 @@ export class SelectionService implements ToolInterface {
 
   handleClick(element: DrawElement): void {
     if (!this.selectedElements.includes(element)) {
-      this.selectedElements.push(element);
       element.isSelected = true;
+      this.selectedElements.push(element);
       this.createBoundingBox();
     }
 
@@ -83,28 +85,28 @@ export class SelectionService implements ToolInterface {
       for (const point of element.points) {
         // Point Min
         if (pointMin.x > point.x) {
-          pointMin.x = point.x;
+          pointMin.x = point.x + element.translate.x;
           epaisseurMin.x = element.thickness ? element.thickness : 0;
         }
         if (pointMin.y > point.y) {
-          pointMin.y = point.y;
+          pointMin.y = point.y + element.translate.y;
           epaisseurMin.y = element.thickness ? element.thickness : 0;
         }
 
         // Point Max
         if (pointMax.x < point.x) {
-          pointMax.x = point.x;
+          pointMax.x = point.x + element.translate.x;
           epaisseurMax.x = element.thickness ? element.thickness : 0;
         }
         if (pointMax.y < point.y) {
-          pointMax.y = point.y;
+          pointMax.y = point.y + element.translate.y;
           epaisseurMax.y = element.thickness ? element.thickness : 0;
         }
       }
     }
 
-    pointMin = {x: pointMin.x - 0.5 * epaisseurMin.x, y: pointMin.y - 0.5 * epaisseurMin.y};
-    pointMax = {x: pointMax.x + 0.5 * epaisseurMax.x, y: pointMax.y + 0.5 * epaisseurMax.y};
+    pointMin = {x: pointMin.x - HALF_DRAW_ELEMENT * epaisseurMin.x, y: pointMin.y - HALF_DRAW_ELEMENT * epaisseurMin.y};
+    pointMax = {x: pointMax.x + HALF_DRAW_ELEMENT * epaisseurMax.x, y: pointMax.y + HALF_DRAW_ELEMENT * epaisseurMax.y};
     this.selectionBox.createSelectionBox(pointMin, pointMax);
   }
 
@@ -169,10 +171,11 @@ export class SelectionService implements ToolInterface {
     if (this.selectionBox.selectionBox) {
       for (const element of this.SVGStockage.getCompleteSVG()) {
         if (element.isSelected) {
+          this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePosition(x, y);
           element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
-
           // TODO: Retirer l'élément bougé de selectedElements et le ré-insérer avec les nouveaux coordonnées
+          this.selectedElements.push(element);
         }
       }
       this.selectionBox.updatePosition(x, y);
@@ -184,10 +187,11 @@ export class SelectionService implements ToolInterface {
     if (this.selectionBox.selectionBox) {
       for (const element of this.SVGStockage.getCompleteSVG()) {
         if (element.isSelected) {
+          this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePositionMouse(mouse, this.selectionBox.mouseClick);
           element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
-
           // TODO: Retirer l'élément bougé de selectedElements et le ré-insérer avec les nouveaux coordonnées
+          this.selectedElements.push(element);
         }
       }
       this.selectionBox.updatePositionMouse(mouse);
