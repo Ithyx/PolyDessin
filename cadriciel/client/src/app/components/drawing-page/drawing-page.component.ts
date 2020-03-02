@@ -26,15 +26,15 @@ export class DrawingPageComponent {
               public line: LineToolService,
               public shortcuts: ShortcutsManagerService,
               public selection: SelectionService,
-              public spray: DrawSprayService  ) {
-    this.toolMap.set('Crayon', pencil)
-                      .set('Rectangle', rectangle)
-                      .set('Ligne', line)
-                      .set('Pinceau', brush)
-                      .set('Selection', selection)
-                      .set('Aérosol', spray);
-
-  }
+              public spray: DrawSprayService
+              ) {
+              this.toolMap.set('Crayon', pencil)
+                          .set('Rectangle', rectangle)
+                          .set('Ligne', line)
+                          .set('Pinceau', brush)
+                          .set('Selection', selection)
+                          .set('Aérosol', spray);
+                }
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent): void {
