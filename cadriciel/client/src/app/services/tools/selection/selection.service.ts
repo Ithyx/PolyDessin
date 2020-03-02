@@ -46,7 +46,7 @@ export class SelectionService implements ToolInterface {
         this.deleteBoundingBox();
         // Éviter de créer une boite de sélection si on effectue un simple clic
         if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
-          this.isInRectangleSelection(this.selectionRectangle.rectangle);
+          this.isInRectangleSelection(this.selectionRectangle.rectangle, mouse);
           this.createBoundingBox();
         }
       }
@@ -60,13 +60,13 @@ export class SelectionService implements ToolInterface {
     }
   }
 
-  onMouseRelease(): void {
+  onMouseRelease(mouse: MouseEvent): void {
     if (this.clickOnSelectionBox) {
       this.clickOnSelectionBox = false;
     } else {
       // Éviter de créer une boite de sélection si on effectue un simple clic
       if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
-        this.isInRectangleSelection(this.selectionRectangle.rectangle);
+        this.isInRectangleSelection(this.selectionRectangle.rectangle, mouse);
         this.createBoundingBox();
       }
       this.selectionRectangle.mouseUp();
@@ -121,19 +121,36 @@ export class SelectionService implements ToolInterface {
     }
   }
 
-  isInRectangleSelection(rectangleSelection: RectangleService): void {
+  isInRectangleSelection(rectangleSelection: RectangleService, mouse: MouseEvent): void {
     let belongToRectangle = false;
+    let mouseBelongToElement = false;
 
     for (const element of this.SVGStockage.getCompleteSVG()) {
+      this.findPointMinAndMax(element);
       for (const point of element.points) {
-        const belongX = (point.x + element.translate.x >= rectangleSelection.points[0].x && point.x + element.translate.x <= rectangleSelection.points[1].x);
-        const belongY = (point.y + element.translate.y >= rectangleSelection.points[0].y && point.y + element.translate.y <= rectangleSelection.points[1].y);
+        const belongX = (point.x + element.translate.x >= rectangleSelection.points[0].x
+                      && point.x + element.translate.x <= rectangleSelection.points[1].x);
+        const belongY = (point.y + element.translate.y >= rectangleSelection.points[0].y
+                      && point.y + element.translate.y <= rectangleSelection.points[1].y);
 
         if (belongX && belongY) {
           belongToRectangle = true;
         }
       }
-      if (belongToRectangle) {
+
+      const mouseCornerSelection = (mouse.offsetX >= element.pointMin.x && mouse.offsetX <= element.pointMax.x)
+                            && (mouse.offsetY >= element.pointMin.y && mouse.offsetY <= element.pointMax.y);
+      
+      const xCornerSelection = (rectangleSelection.points[0].x >= element.pointMin.x && rectangleSelection.points[0].x <= element.pointMax.x)
+                          && (mouse.offsetY >= element.pointMin.y && mouse.offsetY <= element.pointMax.y);
+
+      const yCornerSelection = (mouse.offsetX >= element.pointMin.x && mouse.pageX <= element.pointMax.x)
+                          && (rectangleSelection.points[0].y >= element.pointMin.y && rectangleSelection.points[0].y <= element.pointMax.y);
+
+
+      mouseBelongToElement = mouseCornerSelection || xCornerSelection || yCornerSelection;
+
+      if (belongToRectangle || mouseBelongToElement) {
         element.isSelected = true;
         this.selectedElements.push(element);
         belongToRectangle = false;
