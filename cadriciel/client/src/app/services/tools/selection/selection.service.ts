@@ -63,6 +63,11 @@ export class SelectionService implements ToolInterface {
   onMouseRelease(mouse: MouseEvent): void {
     if (this.clickOnSelectionBox) {
       this.clickOnSelectionBox = false;
+      for (const element of this.selectedElements) {
+        if (element.isSelected) {
+          element.translateAllPoints();
+        }
+      }
     } else {
       // Éviter de créer une boite de sélection si on effectue un simple clic
       if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
@@ -189,14 +194,6 @@ export class SelectionService implements ToolInterface {
           this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePosition(x, y);
           element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
-
-          for ( const point of element.points) {
-            point.x += element.translate.x;
-            point.y += element.translate.y;
-          }
-
-          element.translate.x = 0;
-          element.translate.y = 0;
 
           this.selectedElements.push(element);
         }

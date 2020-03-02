@@ -25,5 +25,5 @@ export interface DrawElement {
   draw(): void;
   updatePosition(x: number, y: number): void;
   updatePositionMouse(mouse: MouseEvent, mouseClick: Point): void;
-
+  translateAllPoints(): void;
 }

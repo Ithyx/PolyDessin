@@ -44,7 +44,7 @@ export class TraceSprayService implements DrawElement {
     const x = mousePosition.x + position * Math.cos(angle);
     const y = mousePosition.y + position * Math.sin(angle);
     this.points.push({x, y});
-      this.SVG += '<circle transform ="translate(' + this.translate.x + ' ' + this.translate.y
+    this.SVG += '<circle transform ="translate(' + this.translate.x + ' ' + this.translate.y
       + `)"cx="${x}" cy="${y}" r="1" fill="${this.primaryColor}" />`;
     }
 
@@ -58,5 +58,13 @@ export class TraceSprayService implements DrawElement {
     this.translate.x = mouse.offsetX - mouseClick.x;
     this.translate.y = mouse.offsetY - mouseClick.y;
     this.draw();
+  }
+
+  translateAllPoints(): void {
+    for (const point of this.points) {
+      point.x += this.translate.x;
+      point.y += this.translate.y;
+    }
+    this.translate = {x: 0, y: 0};
   }
 }

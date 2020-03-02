@@ -75,4 +75,12 @@ export class TraceBrushService implements DrawElement {
     this.translate.y = mouse.offsetY - mouseClick.y;
     this.draw();
   }
+
+  translateAllPoints(): void {
+    for (const point of this.points) {
+      point.x += this.translate.x;
+      point.y += this.translate.y;
+    }
+    this.translate = {x: 0, y: 0};
+  }
 }
