@@ -22,15 +22,11 @@ export class RectangleService implements DrawElement {
   isDotted: boolean;
 
   tool: DrawingTool = EMPTY_TOOL;
-  width: number;
-  height: number;
 
   constructor() {
     this.points = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
                    {x: 0, y: 0}];   // points[1], coin bas droite
     this.isSelected = false;
-    this.width = 0;
-    this.height = 0;
   }
 
   pointMin: Point;

@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
+import { AddSVGService } from '../command/add-svg.service';
 import { RectangleService } from '../stockage-svg/rectangle.service';
 import { RectangleToolService } from './rectangle-tool.service';
 
@@ -95,23 +96,14 @@ describe('DessinRectangleService', () => {
   it('#shiftRelease devrait actualiser la height du rectangle si commandes.drawingInProgress est vrai', () => {
     service.calculatedHeight = 1;
     service.shiftRelease();
-    expect(service.rectangle.height).toEqual(1);
+    expect(service.rectangle.getHeight()).toEqual(1);
   });
   it('#shiftRelease devrait actualiser la width du rectangle si commandes.drawingInProgress est vrai', () => {
-    service.calculatedHeight = 2;
+    service.calculatedWidth = 2;
     service.shiftRelease();
-    expect(service.rectangle.width).toEqual(2);
+    expect(service.rectangle.getWidth()).toEqual(2);
   });
-  // it('#shiftRelease devrait actualiser la base en x du rectangle si commandes.drawingInProgress est vrai', () => {
-  //   service.calculatedBase.x = 3;
-  //   service.shiftRelease();
-  //   expect(service.rectangle.base.x).toEqual(3);
-  // });
-  // it('#shiftRelease devrait actualiser la base en y du rectangle si commandes.drawingInProgress est vrai', () => {
-  //   service.calculatedBase.y = 4;
-  //   service.shiftRelease();
-  //   expect(service.rectangle.base.y).toEqual(4);
-  // });
+
   it('#shiftRelease devrait actualise le SVG si commandes.drawingInProgress est vrai', () => {
     spyOn(service, 'refreshSVG');
     service.shiftRelease();
@@ -133,179 +125,90 @@ describe('DessinRectangleService', () => {
   });
   it('#shiftPress devrait corriger la width si elle est plus grande '
     + 'que la height', () => {
-    service.calculatedHeight = 100;
+    service.calculatedWidth = 100;
     service.calculatedHeight = 50;
     service.shiftPress();
-    expect(service.rectangle.width).toBe(50);
+    expect(service.rectangle.getWidth()).toBe(50);
   });
   it('#shiftPress ne devrait pas corriger la width si elle est plus petite '
     + 'que la height', () => {
-    service.calculatedHeight = 50;
+    service.calculatedWidth = 50;
     service.calculatedHeight = 100;
     service.shiftPress();
-    expect(service.rectangle.width).toBe(50);
+    expect(service.rectangle.getWidth()).toBe(50);
   });
   it('#shiftPress devrait corriger la height si elle est plus grande '
     + 'que la width', () => {
-    service.calculatedHeight = 50;
+    service.calculatedWidth = 50;
     service.calculatedHeight = 100;
     service.shiftPress();
-    expect(service.rectangle.height).toBe(50);
+    expect(service.rectangle.getHeight()).toBe(50);
   });
   it('#shiftPress ne devrait pas corriger la height si elle est plus petite '
     + 'que la width', () => {
-    service.calculatedHeight = 100;
+    service.calculatedWidth = 100;
     service.calculatedHeight = 50;
     service.shiftPress();
-    expect(service.rectangle.width).toBe(50);
+    expect(service.rectangle.getHeight()).toBe(50);
   });
-  // it('#shiftPress devrait corriger la base en Y si elle diffère '
-  //   + 'du Y initial et que la width est supérieure à la height', () => {
-  //   service.calculatedBase.y = 50;
-  //   service.calculatedHeight = 5;
-  //   service.calculatedHeight = 10;
-  //   service.shiftPress();
-  //   expect(service.rectangle.base.y).toBe(55);
-  // });
-  // it('#shiftPress ne devrait pas corriger la base en Y si elle est égale '
-  //   + 'au Y initial et que la width est supérieure à la height', () => {
-  //   service.calculatedBase.y = 0;
-  //   service.calculatedHeight = 5;
-  //   service.calculatedHeight = 10;
-  //   service.shiftPress();
-  //   expect(service.rectangle.base.y).toBe(0);
-  // });
-  // it('#shiftPress devrait corriger la base en X si elle diffère '
-  //   + 'du X initial et que la height est supérieure à la width', () => {
-  //   service.calculatedBase.x = 50;
-  //   service.calculatedHeight = 10;
-  //   service.calculatedHeight = 5;
-  //   service.shiftPress();
-  //   expect(service.rectangle.base.x).toBe(55);
-  // });
-  // it('#shiftPress ne devrait pas corriger la base en X si elle est égale '
-  //   + 'au X initial et que la height est supérieure à la width', () => {
-  //   service.calculatedBase.x = 0;
-  //   service.calculatedHeight = 10;
-  //   service.calculatedHeight = 5;
-  //   service.shiftPress();
-  //   expect(service.rectangle.base.x).toBe(0);
-  // });
+  it('#shiftPress devrait assigner calculatedBase.y au point intial en y du rectangle '
+    + 'si calculatedBase.y égal au point initial du clic en y', () => {
+    service.initial.y = 10;
+    service.calculatedBase.y = service.initial.y;
+    service.shiftPress();
+    expect(service.rectangle.points[0].y).toBe(10);
+  });
+  it('#shiftPress devrait assigner calculatedBase.x au point intial en x du rectangle '
+    + 'si calculatedBase.x égal au point initial du clic en x', () => {
+    service.initial.x = 10;
+    service.calculatedBase.x = service.initial.x;
+    service.shiftPress();
+    expect(service.rectangle.points[0].x).toBe(10);
+  });
+  it('#shiftPress devrait calculer le point en y au point intial en y du rectangle '
+    + 'si calculatedBase.y n\'égal pas au point initial du clic en y', () => {
+    service.initial.y = 10;
+    service.calculatedBase.y = 100;
+    service.calculatedHeight = 50;
+    service.calculatedWidth = 25;
+    const calculated = service.calculatedBase.y + service.calculatedHeight - service.calculatedWidth;
+    service.shiftPress();
+    expect(service.rectangle.points[0].y).toEqual(calculated);
+  });
+  it('#shiftPress devrait calculer le point en x au point intial en x du rectangle '
+    + 'si calculatedBase.x n\'égal pas au point initial du clic en x', () => {
+      service.initial.x = 10;
+      service.calculatedBase.x = 100;
+      service.calculatedHeight = 25;
+      service.calculatedWidth = 50;
+      const calculated = service.calculatedBase.x + service.calculatedWidth - service.calculatedHeight;
+      service.shiftPress();
+      expect(service.rectangle.points[0].x).toEqual(calculated);
+  });
 
-  // TODO : Déplacer les tests de création de SVG vers RectangleService
-
-  // TESTS SUR LA CRÉATION DE RECTANGLES
-  /*
-  it("#refreshSVG devrait tracer un rectangle lors d'un mouvement "
-    + 'vers le coin inférieur droit', () => {
-    // on simule un mouvement de 20 en x et de 50 en y
-    const evenement = new MouseEvent('mousemove', { clientX: 20, clientY: 50 });
-    service.onMouseMove(evenement);
-    // on vérifie le SVG qui a été tracé
-    expect(stockageService.getSVGEnCours() + '"/>').toEqual(referenceSVG);
-  });
-  it("#refreshSVG devrait tracer un rectangle lors d'un mouvement "
-    + 'vers le coin supérieur droit', () => {
-    // on simule un mouvement de 20 en x et de -50 en y
-    service.initial.y = 50;
-    const evenement = new MouseEvent('mousemove', { clientX: 20, clientY: 0 });
-    service.onMouseMove(evenement);
-    // on vérifie le SVG qui a été tracé
-    expect(stockageService.getSVGEnCours() + '"/>').toEqual(referenceSVG);
-  });
-  it("#refreshSVG devrait tracer un rectangle lors d'un mouvement "
-    + 'vers le coin inférieur gauche', () => {
-    // on simule un mouvement de -20 en x et de 50 en y
-    service.initial.x = 20;
-    const evenement = new MouseEvent('mousemove', { clientX: 0, clientY: 50 });
-    service.onMouseMove(evenement);
-    // on vérifie le SVG qui a été tracé
-    expect(stockageService.getSVGEnCours() + '"/>').toEqual(referenceSVG);
-  });
-  it("#refreshSVG devrait tracer un rectangle lors d'un mouvement "
-    + 'vers le coin supérieur gauche', () => {
-    // on simule un mouvement de -20 en x et de -50 en y
-    service.initial.x = 20;
-    service.initial.y = 50;
-    const evenement = new MouseEvent('mousemove', { clientX: 0, clientY: 0 });
-    service.onMouseMove(evenement);
-    // on vérifie le SVG qui a été tracé
-    expect(stockageService.getSVGEnCours() + '"/>').toEqual(referenceSVG);
-  });
-  it("#refreshSVG devrait tracer un rectangle sans contour si l'épaisseur"
-    + 'est invalide', () => {
-    service.outils.outilActif = {
-      nom: 'outilActifTest',
-      estActif: true,
-      ID: 0,
-      parametres: [
-        {type: 'select', nom: 'testEpaisseurInvalide', optionChoisie: '1', options: ['1', '2']},
-        {type: 'select', nom: 'testTypeTrace', optionChoisie: '1', options: ['1', '2']}
-      ],
-      nomIcone: ''
-    };
+  // TESTS refreshSVG
+  it('#refreshSVG devrait actualiser l\'outil actif', () => {
     service.refreshSVG();
-    expect(stockageService.getSVGEnCours()).toContain('stroke-width="0"');
+    expect(service.rectangle.tool).toEqual(service.tools.activeTool);
   });
-
-  // TESTS SUR LA CRÉATION DE LIGNES
-
-  it('#refreshSVG devrait tracer une ligne si la height est nulle', () => {
-    // on simule un mouvement de 20 en x et de 0 en y
-    const evenement = new MouseEvent('mousemove', { clientX: 20, clientY: 0 });
-    service.onMouseMove(evenement);
-    // on vérifie le SVG qui a été tracé
-    expect(stockageService.getSVGEnCours()).toContain('<line');
+  it('#refreshSVG devrait appeler getPrimaryColor', () => {
+    service.refreshSVG();
+    expect(service.rectangle.primaryColor).toEqual(service.colorParameter.getPrimaryColor());
   });
-  it('#refreshSVG devrait tracer une ligne si la width est nulle', () => {
-    // on simule un mouvement de 0 en x et de 20 en y
-    const evenement = new MouseEvent('mousemove', { clientX: 0, clientY: 20 });
-    service.onMouseMove(evenement);
-    // on vérifie le SVG qui a été tracé
-    expect(stockageService.getSVGEnCours()).toContain('<line');
+  it('#refreshSVG devrait appeler getSecondaryColor', () => {
+    service.refreshSVG();
+    expect(service.rectangle.secondaryColor).toEqual(service.colorParameter.getSecondaryColor());
   });
-  it('#refreshSVG ne devrait pas tracer de ligne si le tracé est plein sans contour', () => {
-    // on simule un mouvement de 0 en x et de 20 en y
-    service.outils.outilActif.parametres[1].optionChoisie = 'Plein';
-    const evenement = new MouseEvent('mousemove', { clientX: 0, clientY: 20 });
-    service.onMouseMove(evenement);
-    // on vérifie le SVG qui a été tracé
-    expect(stockageService.getSVGEnCours()).toContain('<rect');
+  it('#refreshSVG devrait appeler draw', () => {
+    spyOn(service.rectangle, 'draw');
+    service.refreshSVG();
+    expect(service.rectangle.draw).toHaveBeenCalled();
   });
-
-  // TESTS SUR LA CRÉATION DE PÉRIMÈTRES
-
-  it("#refreshSVG devrait tracer un périmètre en prenant en compte l'épaisseur "
-    + "s'il y a un contour", () => {
-    // on simule un mouvement de 20 en x et de 50 en y
-    const evenement = new MouseEvent('mousemove', { clientX: 20, clientY: 50 });
-    service.onMouseMove(evenement);
-    // on vérifie le périmètre qui a été tracé
-    expect(String(stockageService.getPerimetreEnCoursHTML())).toContain(
-      'x="-2.5" y="-2.5" height="55" width="25"'
-    );
+  it('#refreshSVG devrait appeler setOngoingSVG', () => {
+    spyOn(service.stockageSVG, 'setOngoingSVG');
+    service.refreshSVG();
+    expect(service.stockageSVG.setOngoingSVG).toHaveBeenCalledWith(service.rectangle);
   });
-  it("#refreshSVG devrait tracer un périmètre sans prendre en compte l'épaisseur "
-    + "s'il n'y a pas de contour", () => {
-    // on simule un mouvement de 20 en x et de 50 en y
-    service.outils.outilActif.parametres[1].optionChoisie = 'Plein';
-    const evenement = new MouseEvent('mousemove', { clientX: 20, clientY: 50 });
-    service.onMouseMove(evenement);
-    // on vérifie le périmètre qui a été tracé
-    expect(String(stockageService.getPerimetreEnCoursHTML())).toContain(
-      'x="0" y="0" height="50" width="20"'
-    );
-  });
-  it("#refreshSVG devrait tracer un périmètre autour d'une ligne "
-    + 'dans le cas où une ligne est tracée', () => {
-    // on simule un mouvement de 0 en x et de 20 en y
-    const evenement = new MouseEvent('mousemove', { clientX: 0, clientY: 20 });
-    service.onMouseMove(evenement);
-    // on vérifie le périmètre qui a été tracé
-    expect(String(stockageService.getPerimetreEnCoursHTML())).toContain(
-      'x="-2.5" y="-2.5" height="25" width="5"'
-    );
-  });*/
 
   // TESTS onMousePress
 
@@ -334,13 +237,14 @@ describe('DessinRectangleService', () => {
   });
   it('#onMousePress devrait remettre la height et la width à 0', () => {
     service.commands.drawingInProgress = false;
-    service.rectangle.height = 100; service.rectangle.width = 100;
+    const rectangle = new RectangleService();
+    rectangle.points = [{x: 0, y: 0}, {x: 10, y: 10}];
     // on fait un clic aux coordonnees (100,50)
     const clic = new MouseEvent('click', { clientX: 100, clientY: 50 });
     service.onMousePress(clic);
     // on vérifie que la fonction contient la width et longueur à 0
-    expect(service.rectangle.height).toBe(0);
-    expect(service.rectangle.width).toBe(0);
+    expect(service.rectangle.getHeight()).toBe(0);
+    expect(service.rectangle.getWidth()).toBe(0);
   });
 
   // TESTS onMouseRelease
@@ -354,32 +258,25 @@ describe('DessinRectangleService', () => {
   it("#onMouseRelease devrait s'assurer que le curseur n'est pas nul " +
       'en height et width apres un relachement de clic', () => {
     // la height et la width sont nulles
-    service.rectangle.height = 0;
-    service.rectangle.width = 0;
     spyOn(service.commands, 'execute');
     service.onMouseRelease();
     // vérifier que la fonction d'AjoutSVG n'a pas été appelée
     expect(service.commands.execute).not.toHaveBeenCalled();
   });
-  // it('#onMouseRelease devrait appeler correctement la fonction execute avec un AjoutSVG', () => {
-  //   // la height et la width sont non nulles
-  //   const rectangle = new RectangleService();
-  //   rectangle.height = 10;
-  //   rectangle.width = 10;
-  //   rectangle.base = {x: 42, y: 42};
-  //   service.rectangle = rectangle;
-  //   spyOn(service.commands, 'execute');
-  //   service.onMouseRelease();
-  //   // vérifier que la fonction ajouterSVG a été correctement appelée
-  //   const ajout = new AddSVGService(rectangle, stockageService);
-  //   ajout.SVGKey = 1;
-  //   expect(service.commands.execute).toHaveBeenCalledWith(ajout);
-  // });
+  it('#onMouseRelease devrait appeler correctement la fonction execute avec un AjoutSVG', () => {
+    // la height et la width sont non nulles
+    const rectangle = new RectangleService();
+    rectangle.points = [{x: 0, y: 0}, {x: 10, y: 10}];
+    service.rectangle = rectangle;
+    spyOn(service.commands, 'execute');
+    service.onMouseRelease();
+    // vérifier que la fonction ajouterSVG a été correctement appelée
+    const addSVG = new AddSVGService(rectangle, service.stockageSVG);
+    addSVG.svgKey = 0;
+    expect(service.commands.execute).toHaveBeenCalledWith(addSVG);
+  });
   it('#onMouseRelease devrait reinitialiser le rectangle', () => {
     const rectangle = new RectangleService();
-    rectangle.height = 10;
-    rectangle.width = 10;
-    // rectangle.base = {x: 42, y: 42};
     service.rectangle = rectangle;
     service.onMouseRelease();
     // vérifier que le SVG est vide
@@ -408,14 +305,12 @@ describe('DessinRectangleService', () => {
     expect(service.commands.drawingInProgress).toBe(false);
   });
 
-  // it('#clear devrait reinitialiser le rectangle', () => {
-  //   const rectangle = new RectangleService();
-  //   rectangle.height = 10;
-  //   rectangle.width = 10;
-  //   rectangle.base = {x: 42, y: 42};
-  //   service.rectangle = rectangle;
-  //   service.clear();
-  //   // vérifier que le SVG est vide
-  //   expect(service.rectangle).toEqual(new RectangleService());
-  // });
+  it('#clear devrait reinitialiser le rectangle', () => {
+    const rectangle = new RectangleService();
+    rectangle.points = [{x: 0, y: 0}, {x: 10, y: 10}];
+    service.rectangle = rectangle;
+    service.clear();
+    // vérifier que le SVG est vide
+    expect(service.rectangle).toEqual(new RectangleService());
+  });
 });
