@@ -3,6 +3,9 @@
 
 <h2>Dimension canvas</h2>
 <form [formGroup]="newDrawing">
+<label>Nom du dessin:
+    <input type="text" maxlength="15" formControlName="formName">
+</label>
 <label>Hauteur: (pixels)
 <input type="number" min = "0" (input)="changeWindowDimensionManually()" formControlName="formHeight">
 </label>

@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { Collection, MongoClient, MongoClientOptions, } from 'mongodb';
+import { Collection, MongoClient, MongoClientOptions } from 'mongodb';
 import 'reflect-metadata';
 
 import { Drawing } from '../../../common/communication/DrawingInterface';
@@ -36,9 +36,9 @@ export class DatabaseService {
         return await this.collection.find().toArray();
     }
 
-    SendData(drawing: Drawing): void {
+    async SendData(drawing: Drawing): Promise<number> {
         console.log('tried to send: ', drawing);
-        if (!this.collection) { return; }
-        this.collection.insertOne(drawing);
+        if (!this.collection) { return -1; }
+        return ((await this.collection.insertOne(drawing)).insertedId as unknown as number);
     }
 }

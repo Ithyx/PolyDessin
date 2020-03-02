@@ -26,6 +26,7 @@ export class DrawingSurfaceComponent {
     if (colorParameter.backgroundColor === undefined) {
       routing.navigate([routingManager.previousPage]);
     }
+    console.log('id du dessin: ', drawingManager.id);
   }
 
   handleBackgroundClick(): void {

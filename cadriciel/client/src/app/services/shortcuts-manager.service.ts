@@ -76,16 +76,9 @@ export class ShortcutsManagerService {
         break;
 
       case 's':
-        if (keybord.ctrlKey) {
-          this.db.sendData();
-          if (event) {
-            event.preventDefault();
-          }
-        } else {
-          this.selection.deleteBoundingBox();
-          this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
-          this.clearOngoingSVG();
-        }
+        this.selection.deleteBoundingBox();
+        this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
+        this.clearOngoingSVG();
         break;
 
       case 'z':
@@ -130,7 +123,11 @@ export class ShortcutsManagerService {
         break;
 
       case 'g':
-        this.grid.showGrid = !this.grid.showGrid;
+        if (keybord.ctrlKey) {
+          this.db.getData();
+        } else {
+          this.grid.showGrid = !this.grid.showGrid;
+        }
         break;
 
       case '+':

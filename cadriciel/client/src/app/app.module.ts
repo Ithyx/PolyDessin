@@ -36,12 +36,13 @@ import { LineToolService } from './services/tools/line-tool.service';
 import { DrawingToolService } from './services/tools/pencil-tool.service';
 import { RectangleToolService } from './services/tools/rectangle-tool.service';
 import { SelectionService } from './services/tools/selection/selection.service';
+import { SavePopupComponent } from './components/save-popup/save-popup.component';
 
 @NgModule({
 
     declarations: [AppComponent, HomePageComponent, NewDrawingWarningComponent, DrawingPageComponent, GuidePageComponent,
         NewDrawingWindowComponent, ToolbarComponent, DrawingToolComponent, GuideSubjectComponent, DrawingSurfaceComponent,
-        ColorChoiceComponent, ColorSliderComponent, ColorPickerComponent, ColorInputComponent, GridOptionsComponent],
+        ColorChoiceComponent, ColorSliderComponent, ColorPickerComponent, ColorInputComponent, GridOptionsComponent, SavePopupComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
         MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
         {path: '', component: HomePageComponent},

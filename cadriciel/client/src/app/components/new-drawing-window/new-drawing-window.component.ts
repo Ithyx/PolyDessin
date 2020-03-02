@@ -12,6 +12,7 @@ import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.s
 
 export const KEY_FORM_HEIGHT = 'formHeight';
 export const KEY_FORM_WIDHT = 'formWidth';
+export const KEY_FORM_NAME = 'formName';
 export const BUFFER_WIDTH = 510;
 export const BUFFER_HEIGHT = 15;
 
@@ -43,6 +44,7 @@ export class NewDrawingWindowComponent {
                 this.dimensionManuallyChange = false;
 
                 this.newDrawing = new FormGroup({
+                  formName: new FormControl(),
                   formHeight: new FormControl(this.windowHeight),
                   formWidth: new FormControl(this.windowWidth),
                 });
@@ -73,6 +75,8 @@ export class NewDrawingWindowComponent {
     this.commands.clearCommand();
     this.drawingManager.height = this.newDrawing.value[KEY_FORM_HEIGHT];
     this.drawingManager.width = this.newDrawing.value[KEY_FORM_WIDHT];
+    this.drawingManager.name = this.newDrawing.value[KEY_FORM_NAME];
+    this.drawingManager.id = 0;
     this.shortcuts.focusOnInput = false;
     this.dialogRef.close();
     this.ngZone.run(() => this.router.navigate(['dessin']));
