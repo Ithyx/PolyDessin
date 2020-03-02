@@ -28,7 +28,17 @@ export class TraceSprayService implements DrawElement {
   draw(): void {
     this.SVG = '';
     for (const point of this.points) {
-      this.SVG += `<circle cx="${point.x}" cy="${point.y}" r="2" fill="black" />`;
+      this.SVG += `<circle cx="${point.x}" cy="${point.y}" r="1" fill="${this.primaryColor}" />`;
     }
+  }
+
+  addPoint(mousePosition: Point): void {
+    const diameter = this.tool.parameters[0].value;
+    const position = Math.random() * (diameter ? diameter / 2 : 1);
+    const angle = Math.random() * 2 * Math.PI;
+    const x = mousePosition.x + position * Math.cos(angle);
+    const y = mousePosition.y + position * Math.sin(angle);
+    this.points.push({x, y});
+    this.SVG += `<circle cx="${x}" cy="${y}" r="1" fill="${this.primaryColor}" />`;
   }
 }
