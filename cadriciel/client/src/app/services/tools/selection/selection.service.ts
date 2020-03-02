@@ -181,6 +181,7 @@ export class SelectionService implements ToolInterface {
     }
   }
 
+
   updatePositionMouse(mouse: MouseEvent): void {
     if (this.selectionBox.selectionBox) {
       for (const element of this.SVGStockage.getCompleteSVG()) {
