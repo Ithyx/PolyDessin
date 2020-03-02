@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ColorManagerService } from 'src/app/services/color/color-manager.service';
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
+import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { ColorSliderComponent } from './color-slider.component';
 
 describe('GlissiereCouleurComponent', () => {
@@ -22,7 +23,10 @@ describe('GlissiereCouleurComponent', () => {
     component = fixture.componentInstance;
     commandes = TestBed.get(CommandManagerService);
     fixture.detectChanges();
-    component.colorManager = new ColorManagerService(new ColorParameterService(), commandes);
+    const drawingManager = TestBed.get(DrawingManagerService);
+    component.colorManager = new ColorManagerService(new ColorParameterService(),
+                                                     commandes,
+                                                     drawingManager);
   });
 
   it('should create', () => {

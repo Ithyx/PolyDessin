@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { interval, Subscription } from 'rxjs';
 import { ColorParameterService } from '../color/color-parameter.service';
 import { AddSVGService } from '../command/add-svg.service';
 import { CommandManagerService } from '../command/command-manager.service';
@@ -8,6 +9,9 @@ import { Point } from './line-tool.service';
 import { ToolInterface } from './tool-interface';
 import { ToolManagerService } from './tool-manager.service';
 
+export const ONE_SECOND_DELAY = 1000;
+export const POINTS_PER_EMISSION = 20;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,49 +19,38 @@ export class DrawSprayService implements ToolInterface {
 
   trace: TraceSprayService;
   mousePosition: Point = {x: 0, y: 0};
-  intervalMethodID: number;
+  intervalSubscription: Subscription;
 
   constructor(public stockageSVG: SVGStockageService,
               public tools: ToolManagerService,
               public colorParameter: ColorParameterService,
               public commands: CommandManagerService
              ) {
-              this.trace = new TraceSprayService();
-             }
+              this.resetTrace();
+            }
 
-  onMouseMove(souris: MouseEvent): void {
+  onMouseMove(mouse: MouseEvent): void {
     if (this.commands.drawingInProgress) {
-      this.mousePosition = {x: souris.offsetX, y: souris.offsetY};
+      this.mousePosition = {x: mouse.offsetX, y: mouse.offsetY};
     }
   }
 
-  actualizeSVG(): void {
-    this.trace.primaryColor = this.colorParameter.getPrimaryColor();
-    this.trace.tool = this.tools.activeTool;
-    this.trace.draw();
-    this.stockageSVG.setOngoingSVG(this.trace);
-    console.log(this.trace.SVG);
-  }
-
-  onMousePress(souris: MouseEvent): void {
+  onMousePress(mouse: MouseEvent): void {
     const frequence = this.tools.activeTool.parameters[1].value;
+    const delay = frequence ? ONE_SECOND_DELAY / frequence : ONE_SECOND_DELAY;
+    this.resetTrace();
     this.commands.drawingInProgress = true;
-    this.mousePosition = {x: souris.offsetX, y: souris.offsetY};
-    window.clearInterval(this.intervalMethodID);
-    this.intervalMethodID = window.setInterval(() => {
-      this.addPoint();
-      this.actualizeSVG();
-    }, frequence ? 1000 / frequence : 1000);
-  }
-
-  addPoint(): void {
-    const diameter = this.tools.activeTool.parameters[0].value;
-    const position = Math.random() * (diameter ? diameter / 2 : 1);
-    const angle = Math.random() * 2 * Math.PI;
-    const x = this.mousePosition.x + position * Math.cos(angle);
-    const y = this.mousePosition.y + position * Math.sin(angle);
-    this.trace.points.push({x, y});
-    this.actualizeSVG();
+    this.mousePosition = {x: mouse.offsetX, y: mouse.offsetY};
+    const counter = interval(delay);
+    if (this.intervalSubscription) {
+      this.intervalSubscription.unsubscribe();
+    }
+    this.intervalSubscription = counter.subscribe(() => {
+      for (let i = 0; i < POINTS_PER_EMISSION; ++i) {
+        this.trace.addPoint(this.mousePosition);
+      }
+      this.stockageSVG.setOngoingSVG(this.trace);
+    });
   }
 
   onMouseRelease(): void {
@@ -66,8 +59,14 @@ export class DrawSprayService implements ToolInterface {
         this.commands.execute(new AddSVGService(this.trace, this.stockageSVG));
       }
     }
-    this.trace = new TraceSprayService();
+    this.resetTrace();
     this.commands.drawingInProgress = false;
-    window.clearInterval(this.intervalMethodID);
+    this.intervalSubscription.unsubscribe();
+  }
+
+  resetTrace(): void {
+    this.trace = new TraceSprayService();
+    this.trace.primaryColor = this.colorParameter.getPrimaryColor();
+    this.trace.tool = this.tools.activeTool;
   }
 }

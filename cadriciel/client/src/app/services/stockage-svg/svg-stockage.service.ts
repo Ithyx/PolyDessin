@@ -6,7 +6,7 @@ import { DrawElement } from './draw-element';
   providedIn: 'root'
 })
 export class SVGStockageService {
-  size: number;                             // refactoring: utilisé la taille de completeSVG ?
+  size: number;
 
   private ongoingSVG: SafeHtml;
   private ongoingPerimeter: SafeHtml;       // refactoring: plus utile en public ?
@@ -19,15 +19,12 @@ export class SVGStockageService {
 
   addSVG(element: DrawElement): void {
     element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
-    // this.completeSVG.set(id ? id : ++this.size, element);
     this.completeSVG[this.size++] = element;
     this.ongoingSVG = '';
     this.ongoingPerimeter = '';
   }
 
   removeSVG(id: number): DrawElement | undefined {
-    // const element = this.completeSVG.get(id);
-    // this.completeSVG.delete(id);
     const element = this.completeSVG[id];
     this.completeSVG.splice(id, 1);
     this.size--;

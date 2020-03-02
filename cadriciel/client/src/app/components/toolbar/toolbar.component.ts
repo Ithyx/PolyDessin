@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { Scope } from 'src/app/services/color/color-manager.service';
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
+import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
@@ -32,7 +33,8 @@ export class ToolbarComponent implements OnDestroy {
               public shortcuts: ShortcutsManagerService,
               public colorParameter: ColorParameterService,
               public commands: CommandManagerService,
-              public selection: SelectionService
+              public selection: SelectionService,
+              public drawingManager: DrawingManagerService
              ) {
     this.newDrawingSubscription = shortcuts.newDrawingEmmiter.subscribe((isIgnored: boolean) => {
     if (!isIgnored) { this.warningNewDrawing(); }
@@ -91,14 +93,14 @@ export class ToolbarComponent implements OnDestroy {
     dialogConfig.width = '30%';
     dialogConfig.panelClass = 'fenetre-couleur';
     this.colorPickerPopup = this.dialog.open(ColorChoiceComponent, dialogConfig).componentInstance;
-    if (scope === 'principale') {
+    if (scope === 'primary') {
       this.colorPickerPopup.portee = Scope.Primary;
     }
-    if (scope === 'secondaire') {
+    if (scope === 'secondary') {
       this.colorPickerPopup.portee = Scope.Secondary;
     }
-    if (scope === 'fond') {
-      this.colorPickerPopup.portee = Scope.Background;
+    if (scope === 'background') {
+      this.colorPickerPopup.portee = Scope.BackgroundToolBar;
     }
   }
 

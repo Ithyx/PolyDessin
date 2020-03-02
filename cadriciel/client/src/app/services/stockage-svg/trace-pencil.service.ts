@@ -11,21 +11,29 @@ export class TracePencilService implements DrawElement {
   SVG: string;
   SVGHtml: SafeHtml;
 
-  points: Point[] = [];
+  points: Point[];
   isSelected: boolean;
 
-  tool: DrawingTool = EMPTY_TOOL;
+  tool: DrawingTool;
   thickness: number;
 
   isAPoint: boolean;
   primaryColor: string;
 
-  pointMin: Point = {x: 0 , y: 0};
-  pointMax: Point = {x: 0 , y: 0};
+  pointMin: Point;
+  pointMax: Point;
+
+  translate: Point;
 
   constructor() {
+    this.SVGHtml = '';
+    this.points = [];
     this.isSelected = false;
+    this.tool = EMPTY_TOOL;
     this.isAPoint = false;
+    this.pointMin = {x: 0 , y: 0};
+    this.pointMax = {x: 0 , y: 0};
+    this.translate = { x: 0, y: 0};
   }
 
   draw(): void {
@@ -40,7 +48,7 @@ export class TracePencilService implements DrawElement {
     if (this.tool.parameters[0].value) {
       this.thickness = this.tool.parameters[0].value;
     }
-    this.SVG = `<path fill="none" stroke="${this.primaryColor}"`
+    this.SVG = '<path transform ="translate(' + this.translate.x + ' ' + this.translate.y + `)" fill="none" stroke="${this.primaryColor}"`
       + 'stroke-linecap="round" stroke-width="' + this.tool.parameters[0].value + '" d="';
     for (let i = 0; i < this.points.length; ++i) {
       this.SVG += (i === 0) ? 'M ' : 'L ';
@@ -56,5 +64,18 @@ export class TracePencilService implements DrawElement {
         + '" r="' + this.tool.parameters[0].value / 2
         + '" fill="' + this.primaryColor + '"/>';
     }
+  }
+
+  updatePosition(x: number, y: number): void {
+    this.translate.x += x;
+    this.translate.y += y;
+    this.draw();
+  }
+
+  updatePositionMouse(mouse: MouseEvent, mouseClick: Point): void {
+    this.translate.x = mouse.offsetX - mouseClick.x;
+    this.translate.y = mouse.offsetY - mouseClick.y;
+
+    this.draw();
   }
 }
