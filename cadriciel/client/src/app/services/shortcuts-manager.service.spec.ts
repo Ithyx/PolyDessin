@@ -48,7 +48,7 @@ describe('GestionnaireRaccourcisService', () => {
     spyOn(service, 'clearOngoingSVG');
     spyOn(service.tools, 'changeActiveTool');
     spyOn(service.lineTool, 'memorizeCursor');
-    spyOn(service.lineTool, 'retirerPoint');
+    spyOn(service.lineTool, 'removePoint');
     spyOn(service.lineTool, 'clear');
     spyOn(service.rectangleTool, 'shiftPress');
     spyOn(clavier, 'preventDefault');
@@ -59,7 +59,7 @@ describe('GestionnaireRaccourcisService', () => {
     expect(service.clearOngoingSVG).not.toHaveBeenCalled();
     expect(service.tools.changeActiveTool).not.toHaveBeenCalled();
     expect(service.lineTool.memorizeCursor).not.toHaveBeenCalled();
-    expect(service.lineTool.retirerPoint).not.toHaveBeenCalled();
+    expect(service.lineTool.removePoint).not.toHaveBeenCalled();
     expect(service.lineTool.clear).not.toHaveBeenCalled();
     expect(service.rectangleTool.shiftPress).not.toHaveBeenCalled();
     expect(clavier.preventDefault).not.toHaveBeenCalled();
@@ -109,21 +109,21 @@ describe('GestionnaireRaccourcisService', () => {
   it('#treatInput devrait retirer le dernier point en cours si il reçoit Backspace et que ligne est active', () => {
     const clavier = new KeyboardEvent('keypress', { key: 'Backspace'});
     service.tools.changeActiveTool(TOOL_INDEX.LINE);
-    spyOn(service.lineTool, 'retirerPoint');
+    spyOn(service.lineTool, 'removePoint');
 
     service.treatInput(clavier);
 
-    expect(service.lineTool.retirerPoint).toHaveBeenCalled();
+    expect(service.lineTool.removePoint).toHaveBeenCalled();
   });
 
   it('#treatInput ne devrait rien faire si il reçoit Backspace mais que ligne est inactive', () => {
     const clavier = new KeyboardEvent('keypress', { key: 'Backspace'});
     service.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
-    spyOn(service.lineTool, 'retirerPoint');
+    spyOn(service.lineTool, 'removePoint');
 
     service.treatInput(clavier);
 
-    expect(service.lineTool.retirerPoint).not.toHaveBeenCalled();
+    expect(service.lineTool.removePoint).not.toHaveBeenCalled();
   });
 
   it('#treatInput devrait annuler la ligne en cours si il reçoit Escape et que ligne est active', () => {

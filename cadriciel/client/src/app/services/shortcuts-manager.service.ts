@@ -109,7 +109,7 @@ export class ShortcutsManagerService {
 
       case 'Backspace':
         if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
-          this.lineTool.retirerPoint();
+          this.lineTool.removePoint();
         }
         break;
 
