@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { DrawingManagerService } from '../../drawing-manager/drawing-manager.service';
 import { DrawElement } from '../../stockage-svg/draw-element';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
@@ -7,7 +8,7 @@ import { Point } from '../line-tool.service';
 import { ToolInterface } from '../tool-interface';
 import { SelectionBoxService } from './selection-box.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
-import { DomSanitizer } from '@angular/platform-browser';
+
 
 @Injectable({
   providedIn: 'root'
@@ -177,6 +178,7 @@ export class SelectionService implements ToolInterface {
       this.selectionBox.updatePosition(x, y);
     }
   }
+
 
   updatePositionMouse(mouse: MouseEvent): void {
     if (this.selectionBox.selectionBox) {

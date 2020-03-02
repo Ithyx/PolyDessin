@@ -34,13 +34,13 @@ export class SelectionBoxService {
   }
 
   createControlPointBox(rectangle: RectangleService): string {
-    // Corner 1
+    // TOP
+    
+    // BOTTOM
 
-    // Corner 2
+    // LEFT
 
-    // Corner 3
-
-    // Corner 4
+    // RIGHT
 
     return '';
   }

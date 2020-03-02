@@ -18,6 +18,7 @@ export class SelectionRectangleService {
   widthCalculated: number;
   heightCalculated: number;
 
+  
   rectangleSelectionTool: DrawingTool = {name: '',
                                          isActive: true,
                                          ID: -1,
