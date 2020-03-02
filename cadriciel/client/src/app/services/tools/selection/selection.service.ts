@@ -39,7 +39,6 @@ export class SelectionService implements ToolInterface {
 
   onMouseMove(mouse: MouseEvent): void {
     if (this.clickOnSelectionBox) {
-      // this.selectionBox.updatePositionMouse(mouse);
       this.updatePositionMouse(mouse);
     } else {
       this.selectionRectangle.mouseMouve(mouse);
@@ -84,21 +83,21 @@ export class SelectionService implements ToolInterface {
     for (const element of this.selectedElements) {
       for (const point of element.points) {
         // Point Min
-        if (pointMin.x > point.x) {
+        if (pointMin.x > point.x + element.translate.x) {
           pointMin.x = point.x + element.translate.x;
           epaisseurMin.x = element.thickness ? element.thickness : 0;
         }
-        if (pointMin.y > point.y) {
+        if (pointMin.y > point.y + element.translate.y) {
           pointMin.y = point.y + element.translate.y;
           epaisseurMin.y = element.thickness ? element.thickness : 0;
         }
 
         // Point Max
-        if (pointMax.x < point.x) {
+        if (pointMax.x < point.x + element.translate.x) {
           pointMax.x = point.x + element.translate.x;
           epaisseurMax.x = element.thickness ? element.thickness : 0;
         }
-        if (pointMax.y < point.y) {
+        if (pointMax.y < point.y + element.translate.y) {
           pointMax.y = point.y + element.translate.y;
           epaisseurMax.y = element.thickness ? element.thickness : 0;
         }
@@ -127,8 +126,8 @@ export class SelectionService implements ToolInterface {
 
     for (const element of this.SVGStockage.getCompleteSVG()) {
       for (const point of element.points) {
-        const belongX = (point.x >= rectangleSelection.points[0].x && point.x <= rectangleSelection.points[1].x);
-        const belongY = (point.y >= rectangleSelection.points[0].y && point.y <= rectangleSelection.points[1].y);
+        const belongX = (point.x + element.translate.x >= rectangleSelection.points[0].x && point.x + element.translate.x <= rectangleSelection.points[1].x);
+        const belongY = (point.y + element.translate.y >= rectangleSelection.points[0].y && point.y + element.translate.y <= rectangleSelection.points[1].y);
 
         if (belongX && belongY) {
           belongToRectangle = true;
