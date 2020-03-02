@@ -11,7 +11,7 @@ import { ToolManagerService } from 'src/app/services/tools/tool-manager.service'
 import { DrawingSurfaceComponent } from './drawing-surface.component';
 
 const parametresCouleurStub: Partial<ColorParameterService> = {
-  backgroundColor: undefined
+  temporaryBackgroundColor: undefined
 };
 
 describe('SurfaceDessinComponent', () => {

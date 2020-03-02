@@ -23,9 +23,6 @@ export class DrawingSurfaceComponent {
               public colorParameter: ColorParameterService,
               public selection: SelectionService,
               public grid: GridService) {
-    if (colorParameter.backgroundColor === undefined) {
-      routing.navigate([routingManager.previousPage]);
-    }
   }
 
   handleBackgroundClick(): void {

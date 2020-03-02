@@ -63,7 +63,7 @@ describe('ColorManagerService', () => {
     scope = Scope.Background;
     service.applyColor(scope);
 
-    expect(service.colorParameter.backgroundColor).toBe('rgba(0, 0, 0,1)');
+    expect(service.colorParameter.temporaryBackgroundColor).toBe('rgba(0, 0, 0,1)');
   });
 
   it('#applyColor ne devrait rien faire si la Scope est non reconnue', () => {

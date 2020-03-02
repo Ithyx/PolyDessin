@@ -66,7 +66,7 @@ describe('ChoixCouleurComponent', () => {
     component.colorManager.color = COLOR_TEST.slice(0, -2);
     component.portee = Scope.Background;
     component.applyColor();
-    expect(color.backgroundColor).toBe(COLOR_TEST);
+    expect(color.temporaryBackgroundColor).toBe(COLOR_TEST);
   });
 
   it('#applyColor should close the popup', () => {
