@@ -27,8 +27,7 @@ export class ShortcutsManagerService {
               public commands: CommandManagerService,
               public selection: SelectionService,
               public SVGStockage: SVGStockageService,
-              public grid: GridService,
-              private db: DatabaseService
+              public grid: GridService
               ) {
                 this.focusOnInput = false;
                 this.shortcutManager.set('1', this.shortcutKey1.bind(this))
@@ -103,10 +102,15 @@ export class ShortcutsManagerService {
       this.clearOngoingSVG();
   }
 
-  shortcutKeyS(): void {
-    this.selection.deleteBoundingBox();
-    this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
-    this.clearOngoingSVG();
+  shortcutKeyS(keyboard: KeyboardEvent): void {
+    if (keyboard.ctrlKey) {
+      this
+      keyboard.preventDefault();
+    } else {
+      this.selection.deleteBoundingBox();
+      this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
+      this.clearOngoingSVG();
+    }
   }
 
   shortcutKeyZ(keyboard: KeyboardEvent): void {

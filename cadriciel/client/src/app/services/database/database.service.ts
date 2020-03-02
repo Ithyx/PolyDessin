@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Drawing } from '../../../../../common/communication/DrawingInterface';
-import { ColorParameterService } from '../color/color-parameter.service';
 import { DrawingManagerService } from '../drawing-manager/drawing-manager.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 
@@ -17,8 +16,7 @@ export class DatabaseService {
 
   constructor(private http: HttpClient,
               private SVGSockage: SVGStockageService,
-              private drawingParams: DrawingManagerService,
-              private colorParams: ColorParameterService) {
+              private drawingParams: DrawingManagerService) {
     headers.set('content-type', 'application/json');
   }
 
@@ -27,7 +25,7 @@ export class DatabaseService {
       name: newName,
       height: this.drawingParams.height,
       width: this.drawingParams.width,
-      backgroundColor: this.colorParams.backgroundColor,
+      backgroundColor: this.drawingParams.backgroundColor,
       tags: ['tag1', 'tag2'],
       elements: this.SVGSockage.getCompleteSVG()
     };
