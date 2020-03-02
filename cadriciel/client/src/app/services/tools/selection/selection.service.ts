@@ -212,6 +212,7 @@ export class SelectionService implements ToolInterface {
           this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePositionMouse(mouse, this.selectionBox.mouseClick);
           element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
+
           this.selectedElements.push(element);
         }
       }

@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { CommandManagerService } from './command/command-manager.service';
 import { GridService } from './grid/grid.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
-import { LineToolService } from './tools/line-tool.service';
+import { LineToolService, Point } from './tools/line-tool.service';
 import { RectangleToolService } from './tools/rectangle-tool.service';
 import { SelectionService } from './tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
@@ -19,6 +19,13 @@ const SELECTION_MOVEMENT_PIXEL = 3;
 export class ShortcutsManagerService {
   focusOnInput: boolean;
   shortcutManager: Map<string, FunctionShortcut > = new Map<string, FunctionShortcut>();
+  counter100ms: number;
+  clearTimeout: number;
+
+  leftArrow: boolean;
+  rightArrow: boolean;
+  upArrow: boolean;
+  downArrow: boolean;
 
   newDrawingEmmiter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
@@ -31,6 +38,12 @@ export class ShortcutsManagerService {
               public grid: GridService
               ) {
                 this.focusOnInput = false;
+                this.counter100ms = 0;
+                this.clearTimeout = 0;
+                this.leftArrow = false;
+                this.rightArrow = false;
+                this.upArrow = false;
+                this.downArrow = false;
                 this.shortcutManager.set('1', this.shortcutKey1.bind(this))
                                     .set('a', this.shortcutKeyA.bind(this))
                                     .set('c', this.shortcutKeyC.bind(this))
@@ -53,13 +66,44 @@ export class ShortcutsManagerService {
               }
 
   updatePositionTimer(): void {
-    // Si supérieur à 500 ms
-      // Tous les 100 ms on updatePosition
+    if (this.selection.selectionBox.selectionBox) {
+      if (!this.leftArrow && !this.rightArrow && !this.upArrow && !this.downArrow) {
+        window.clearInterval(this.clearTimeout);
+        this.counter100ms = 0;
+        this.clearTimeout = 0;
+      } else if (this.clearTimeout === 0) {
+        this.clearTimeout = window.setInterval(() => {
+          const translate: Point = {x: 0 , y: 0};
+
+          if (this.leftArrow) {
+            translate.x = -SELECTION_MOVEMENT_PIXEL;
+          }
+
+          if (this.rightArrow) {
+            translate.x = SELECTION_MOVEMENT_PIXEL;
+          }
+
+          if (this.upArrow) {
+            translate.y = -SELECTION_MOVEMENT_PIXEL;
+          }
+
+          if (this.downArrow) {
+            translate.y = SELECTION_MOVEMENT_PIXEL;
+          }
+
+          this.counter100ms++;
+          if (this.counter100ms > 5) {
+              this.selection.updatePosition(translate.x , translate.y);
+          }
+        }, 100);
+      }
+    }
   }
 
   treatInput(keyboard: KeyboardEvent): void {
     if (this.focusOnInput) { return; }
     (this.shortcutManager.get(keyboard.key) as FunctionShortcut)(keyboard);
+    this.updatePositionTimer();
   }
 
   clearOngoingSVG(): void {
@@ -166,27 +210,19 @@ export class ShortcutsManagerService {
   }
 
   shortcutKeyArrowLeft(): void {
-    if (this.selection.selectionBox.selectionBox) {
-      this.selection.updatePosition(-SELECTION_MOVEMENT_PIXEL, 0);
-    }
+    this.leftArrow = true;
   }
 
   shortcutKeyArrowRight(): void {
-    if (this.selection.selectionBox.selectionBox) {
-      this.selection.updatePosition(SELECTION_MOVEMENT_PIXEL, 0);
-    }
+    this.rightArrow = true;
   }
 
   shortcutKeyArrowUp(): void {
-    if (this.selection.selectionBox.selectionBox) {
-      this.selection.updatePosition(0, -SELECTION_MOVEMENT_PIXEL);
-    }
+    this.upArrow = true;
   }
 
   shortcutKeyArrowDown(): void {
-    if (this.selection.selectionBox.selectionBox) {
-      this.selection.updatePosition(0, SELECTION_MOVEMENT_PIXEL);
-    }
+    this.downArrow = true;
   }
 
   treatReleaseKey(keybord: KeyboardEvent): void {
@@ -200,8 +236,25 @@ export class ShortcutsManagerService {
         }
         break;
 
+      case 'ArrowLeft':
+        this.leftArrow = false;
+        break;
+
+      case 'ArrowRight':
+        this.rightArrow = false;
+        break;
+
+      case 'ArrowDown':
+        this.downArrow = false;
+        break;
+
+      case 'ArrowUp':
+        this.upArrow = false;
+        break;
+
       default:
         break;
     }
+    this.updatePositionTimer();
   }
 }
