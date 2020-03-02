@@ -4,6 +4,7 @@ import { BrushToolService } from 'src/app/services/tools/brush-tool.service';
 import { DrawSprayService } from 'src/app/services/tools/draw-spray.service';
 import { LineToolService } from 'src/app/services/tools/line-tool.service';
 import { DrawingToolService } from 'src/app/services/tools/pencil-tool.service';
+import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
 import { RectangleToolService } from 'src/app/services/tools/rectangle-tool.service';
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
@@ -26,14 +27,16 @@ export class DrawingPageComponent {
               public line: LineToolService,
               public shortcuts: ShortcutsManagerService,
               public selection: SelectionService,
-              public spray: DrawSprayService
+              public spray: DrawSprayService,
+              public pipette: PipetteToolService
               ) {
               this.toolMap.set('Crayon', pencil)
                           .set('Rectangle', rectangle)
                           .set('Ligne', line)
                           .set('Pinceau', brush)
                           .set('Selection', selection)
-                          .set('Aérosol', spray);
+                          .set('Aérosol', spray)
+                          .set('Pipette', pipette);
                 }
 
   @HostListener('document:keydown', ['$event'])

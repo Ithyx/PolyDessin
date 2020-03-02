@@ -114,5 +114,12 @@ export const TOOL_LIST: DrawingTool[] = [
       { type: 'number', name: 'Diamétre du jet', value: 20 },
       { type: 'number', name: 'Nombre d\'émissions par seconde', value: 100 }
     ]
+  },
+  {
+    name: 'Pipette',
+    isActive: false,
+    ID: 6,
+    iconName: 'fas fa-eye-dropper',
+    parameters: []
   }
 ];

@@ -33,7 +33,7 @@
         <!-- https://developer.mozilla.org/fr/docs/Web/SVG/Element/feDropShadow -->
         <filter id="Ombre" filterUnits="userSpaceOnUse">
             <feDropShadow dx="1.5" dy="20" stdDeviation="5"/>
-          </filter>
+        </filter>
     </defs>
     
     <rect x="0" y="0" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" [attr.fill]="drawingManager.backgroundColor" (click)="handleBackgroundClick()"/>
@@ -43,9 +43,12 @@
     <g *ngIf="this.selection.selectionBox.selectionBox" [innerHTML]="this.selection.selectionBox.selectionBox.SVGHtml" (mousedown)="handleMouseDown($event)"></g>
     <g [innerHTML]="SVGStockage.getOngoingSVGHTML()"></g>
     <g [innerHTML]="SVGStockage.getOngoingPerimeterHTML()"></g>
+</svg>
+<svg class="grid" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" version="1.1" xlmns="http://www.w3.org/2000/svg">
     <g *ngFor="let line of grid.getLines()">
         <line [attr.stroke]="grid.getColor()" stroke-width="1"
-              [attr.x1.px]="line.x1" [attr.x2.px]="line.x2"
-              [attr.y1.px]="line.y1" [attr.y2.px]="line.y2" />
+            [attr.x1.px]="line.x1" [attr.x2.px]="line.x2"
+            [attr.y1.px]="line.y1" [attr.y2.px]="line.y2" />
     </g>
 </svg>
+<canvas id="canvas" [width]="drawingManager.width" [height]="drawingManager.height"></canvas>
