@@ -9,11 +9,15 @@ import { RectangleToolService } from './tools/rectangle-tool.service';
 import { SelectionService } from './tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
 
+type FunctionShortcut = (keyboard?: KeyboardEvent ) => void;
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class ShortcutsManagerService {
   focusOnInput: boolean;
+  shortcutManager: Map<string, FunctionShortcut > = new Map<string, FunctionShortcut>();
 
   newDrawingEmmiter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
@@ -27,120 +31,150 @@ export class ShortcutsManagerService {
               private db: DatabaseService
               ) {
                 this.focusOnInput = false;
+                this.shortcutManager.set('1', this.shortcutKey1.bind(this))
+                                    .set('a', this.shortcutKeyA.bind(this))
+                                    .set('c', this.shortcutKeyC.bind(this))
+                                    .set('l', this.shortcutKeyL.bind(this))
+                                    .set('w', this.shortcutKeyW.bind(this))
+                                    .set('s', this.shortcutKeyS.bind(this))
+                                    .set('z', this.shortcutKeyZ.bind(this))
+                                    .set('Z', this.shortcutKeyUpperZ.bind(this))
+                                    .set('Shift', this.shortcutKeyShift.bind(this))
+                                    .set('o', this.shortcutKeyO.bind(this))
+                                    .set('Backspace', this.shortcutKeyBackSpace.bind(this))
+                                    .set('Escape', this.shortcutKeyEscape.bind(this))
+                                    .set('g', this.shortcutKeyG.bind(this))
+                                    .set('+', this.shortcutKeyPlus.bind(this))
+                                    .set('-', this.shortcutKeyMinus.bind(this))
+                                    .set('ArrowLeft', this.shortcutKeyArrowLeft.bind(this))
+                                    .set('ArrowRight', this.shortcutKeyArrowRight.bind(this))
+                                    .set('ArrowDown', this.shortcutKeyArrowDown.bind(this))
+                                    .set('ArrowUp', this.shortcutKeyArrowUp.bind(this))
+                                    ;
               }
+
+  treatInput(keyboard: KeyboardEvent): void {
+    if (this.focusOnInput) { return; }
+    (this.shortcutManager.get(keyboard.key) as FunctionShortcut)(keyboard);
+  }
 
   clearOngoingSVG(): void {
     this.rectangleTool.clear();
     this.lineTool.clear();
   }
 
-  treatInput(keybord: KeyboardEvent): void {
-    if (this.focusOnInput) { return; }
-    switch (keybord.key) {
-      case '1':
-        this.selection.deleteBoundingBox();
-        this.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
-        this.clearOngoingSVG();
-        break;
+  // SHORTCUT FUNCTIONS
 
-      case 'a':
-        this.selection.deleteBoundingBox();
+  shortcutKey1(): void {
+    this.selection.deleteBoundingBox();
+    this.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
+    this.clearOngoingSVG();
+  }
 
-        if (keybord.ctrlKey) {
-          keybord.preventDefault();
-          this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
-          if (this.SVGStockage.getCompleteSVG().length !== 0) {
-            // this.selection.createBoundingBoxAllStockageSVG(this.SVGStockage.getCompleteSVG());
-            this.selection.selectedElements = this.SVGStockage.getCompleteSVG();
-            this.selection.createBoundingBox();
+  shortcutKeyA(keyboard: KeyboardEvent): void {
+    this.selection.deleteBoundingBox();
+
+    if (keyboard.ctrlKey) {
+        keyboard.preventDefault();
+        this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
+        if (this.SVGStockage.getCompleteSVG().length !== 0) {
+          this.selection.selectedElements = this.SVGStockage.getCompleteSVG();
+          this.selection.createBoundingBox();
           }
         } else {this.tools.changeActiveTool(TOOL_INDEX.SPRAY); };
-        break;
 
-      case 'c':
-        this.selection.deleteBoundingBox();
-        this.tools.changeActiveTool(TOOL_INDEX.PENCIL);
-        this.clearOngoingSVG();
-        break;
+  }
 
-      case 'l':
-        this.selection.deleteBoundingBox();
-        this.tools.changeActiveTool(TOOL_INDEX.LINE);
-        this.clearOngoingSVG();
-        break;
+  shortcutKeyC(): void {
+    this.selection.deleteBoundingBox();
+    this.tools.changeActiveTool(TOOL_INDEX.PENCIL);
+    this.clearOngoingSVG();
+  }
 
-      case 'w':
-        this.selection.deleteBoundingBox();
-        this.tools.changeActiveTool(TOOL_INDEX.BRUSH);
-        this.clearOngoingSVG();
-        break;
+  shortcutKeyL(): void {
+  this.selection.deleteBoundingBox();
+  this.tools.changeActiveTool(TOOL_INDEX.LINE);
+  this.clearOngoingSVG();
+  }
 
-      case 's':
-        this.selection.deleteBoundingBox();
-        this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
-        this.clearOngoingSVG();
-        break;
+  shortcutKeyW(): void {
+      this.selection.deleteBoundingBox();
+      this.tools.changeActiveTool(TOOL_INDEX.BRUSH);
+      this.clearOngoingSVG();
+  }
 
-      case 'z':
-        if (keybord.ctrlKey && !this.commands.drawingInProgress) {
-          this.commands.cancelCommand();
-        }
-        break;
+  shortcutKeyS(): void {
+    this.selection.deleteBoundingBox();
+    this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
+    this.clearOngoingSVG();
+  }
 
-      case 'Z':
-        if (keybord.ctrlKey && !this.commands.drawingInProgress) {
-          this.commands.redoCommand();
-        }
-        break;
-
-      case 'Shift':
-        if (this.tools.activeTool.ID === TOOL_INDEX.RECTANGLE) {
-          this.rectangleTool.shiftPress();
-        }
-        if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
-          this.lineTool.memorizeCursor();
-        }
-        break;
-
-      case 'o':
-        if (keybord.ctrlKey) {
-          this.newDrawingEmmiter.next(false);
-          this.selection.deleteBoundingBox();
-          keybord.preventDefault();
-        }
-        break;
-
-      case 'Backspace':
-        if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
-          this.lineTool.retirerPoint();
-        }
-        break;
-
-      case 'Escape':
-        if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
-          this.lineTool.clear();
-        }
-        break;
-
-      case 'g':
-        if (keybord.ctrlKey) {
-          this.db.getData();
-        } else {
-          this.grid.showGrid = !this.grid.showGrid;
-        }
-        break;
-
-      case '+':
-        this.grid.increaseSize();
-        break;
-
-      case '-':
-        this.grid.decreaseSize();
-        break;
-
-      default:
-        break;
+  shortcutKeyZ(keyboard: KeyboardEvent): void {
+    if (keyboard.ctrlKey && !this.commands.drawingInProgress) {
+      this.commands.cancelCommand();
     }
+  }
+
+  shortcutKeyUpperZ(keyboard: KeyboardEvent): void {
+    if (keyboard.ctrlKey && !this.commands.drawingInProgress) {
+      this.commands.redoCommand();
+    }
+  }
+
+  shortcutKeyShift(): void {
+    if (this.tools.activeTool.ID === TOOL_INDEX.RECTANGLE) {
+      this.rectangleTool.shiftPress();
+    } else if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
+      this.lineTool.memorizeCursor();
+    }
+  }
+
+  shortcutKeyO(keyboard: KeyboardEvent): void {
+    if (keyboard.ctrlKey) {
+      this.newDrawingEmmiter.next(false);
+      this.selection.deleteBoundingBox();
+      keyboard.preventDefault();
+    }
+  }
+
+  shortcutKeyBackSpace(): void {
+    if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
+      this.lineTool.removePoint();
+    }
+  }
+
+  shortcutKeyEscape(): void{
+    if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
+      this.lineTool.clear();
+    }
+  }
+
+  shortcutKeyG(): void {
+    this.grid.showGrid = !this.grid.showGrid;
+  }
+
+  shortcutKeyPlus(): void {
+    this.grid.increaseSize();
+  }
+
+  shortcutKeyMinus(): void {
+    this.grid.decreaseSize();
+  }
+
+  shortcutKeyArrowLeft(): void {
+    this.selection.updatePosition(-3, 0);
+  }
+
+  shortcutKeyArrowRight(): void {
+    this.selection.updatePosition(3, 0);
+  }
+
+  shortcutKeyArrowUp(): void {
+    this.selection.updatePosition(0, -3);
+  }
+
+  shortcutKeyArrowDown(): void {
+    this.selection.updatePosition(0, 3);
   }
 
   treatReleaseKey(keybord: KeyboardEvent): void {

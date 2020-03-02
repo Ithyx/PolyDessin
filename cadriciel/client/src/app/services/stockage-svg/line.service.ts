@@ -23,14 +23,17 @@ export class LineService implements DrawElement {
 
   pointMin: Point;
   pointMax: Point;
+  translate: Point;
 
   constructor() {
+    this.SVGHtml = '';
     this.points = [];
     this.isSelected = false;
     this.primaryColor = 'rgba(0,0,0,1)';
     this.tool = EMPTY_TOOL;
     this.isAPolygon = false;
     this.mousePosition = {x: 0, y: 0};
+    this.translate = { x: 0, y: 0};
   }
 
   draw(): void {
@@ -38,6 +41,7 @@ export class LineService implements DrawElement {
       this.thickness = this.tool.parameters[0].value;
     }
     this.SVG = (this.isAPolygon) ? '<polygon ' : '<polyline ';
+    this.SVG += ' transform ="translate(' + this.translate.x + ' ' + this.translate.y + ')"';
     this.SVG += 'fill="none" stroke="' + this.primaryColor + '" stroke-width="' + this.tool.parameters[0].value;
     this.SVG += '" points="';
     for (const point of this.points) {
@@ -59,13 +63,25 @@ export class LineService implements DrawElement {
     }
   }
     for (const point of this.points) {
-      this.SVG += ' <circle cx="' + point.x + '" cy="' + point.y + '" r="'
-      + this.tool.parameters[2].value  + '" fill="' + this.primaryColor + '"/>';
+      this.SVG += '<circle transform ="translate(' + this.translate.x + ' ' + this.translate.y
+      + ')"cx="' + point.x + '" cy="' + point.y + '" r="' + this.tool.parameters[2].value  + '" fill="' + this.primaryColor + '"/>';
     }
   }
 
   isEmpty(): boolean {
     return this.points.length === 0 ||
       (this.points.length === 1 && this.tool.parameters[1].chosenOption === 'Sans points');
+  }
+
+  updatePosition(x: number, y: number): void {
+    this.translate.x += x;
+    this.translate.y += y;
+    this.draw();
+  }
+
+  updatePositionMouse(mouse: MouseEvent, mouseClick: Point): void {
+    this.translate.x = mouse.offsetX - mouseClick.x;
+    this.translate.y = mouse.offsetY - mouseClick.y;
+    this.draw();
   }
 }

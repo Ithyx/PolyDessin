@@ -41,31 +41,6 @@ describe('GestionnaireRaccourcisService', () => {
     expect(service.tools.activeTool.name).not.toBe('Rectangle');    // On ne devrait pas changer d'outil actif
   });
 
-  it('#treatInput ne fait rien si la touche n\'est pas programmée', () => {
-    const clavier = new KeyboardEvent('keypress');
-
-    // Liste des opérations possible par treatInput
-    spyOn(service, 'clearOngoingSVG');
-    spyOn(service.tools, 'changeActiveTool');
-    spyOn(service.lineTool, 'memorizeCursor');
-    spyOn(service.lineTool, 'retirerPoint');
-    spyOn(service.lineTool, 'clear');
-    spyOn(service.rectangleTool, 'shiftPress');
-    spyOn(clavier, 'preventDefault');
-    spyOn(service.newDrawingEmmiter, 'next');
-
-    service.treatInput(clavier);
-
-    expect(service.clearOngoingSVG).not.toHaveBeenCalled();
-    expect(service.tools.changeActiveTool).not.toHaveBeenCalled();
-    expect(service.lineTool.memorizeCursor).not.toHaveBeenCalled();
-    expect(service.lineTool.retirerPoint).not.toHaveBeenCalled();
-    expect(service.lineTool.clear).not.toHaveBeenCalled();
-    expect(service.rectangleTool.shiftPress).not.toHaveBeenCalled();
-    expect(clavier.preventDefault).not.toHaveBeenCalled();
-    expect(service.newDrawingEmmiter.next).not.toHaveBeenCalled();
-  });
-
   it('#treatInput devrait mettre rectangle comme outil actif si il reçoit 1', () => {
     const clavier = new KeyboardEvent('keypress', { key: '1'});
     spyOn(service, 'clearOngoingSVG');
@@ -109,21 +84,21 @@ describe('GestionnaireRaccourcisService', () => {
   it('#treatInput devrait retirer le dernier point en cours si il reçoit Backspace et que ligne est active', () => {
     const clavier = new KeyboardEvent('keypress', { key: 'Backspace'});
     service.tools.changeActiveTool(TOOL_INDEX.LINE);
-    spyOn(service.lineTool, 'retirerPoint');
+    spyOn(service.lineTool, 'removePoint');
 
     service.treatInput(clavier);
 
-    expect(service.lineTool.retirerPoint).toHaveBeenCalled();
+    expect(service.lineTool.removePoint).toHaveBeenCalled();
   });
 
   it('#treatInput ne devrait rien faire si il reçoit Backspace mais que ligne est inactive', () => {
     const clavier = new KeyboardEvent('keypress', { key: 'Backspace'});
     service.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
-    spyOn(service.lineTool, 'retirerPoint');
+    spyOn(service.lineTool, 'removePoint');
 
     service.treatInput(clavier);
 
-    expect(service.lineTool.retirerPoint).not.toHaveBeenCalled();
+    expect(service.lineTool.removePoint).not.toHaveBeenCalled();
   });
 
   it('#treatInput devrait annuler la ligne en cours si il reçoit Escape et que ligne est active', () => {

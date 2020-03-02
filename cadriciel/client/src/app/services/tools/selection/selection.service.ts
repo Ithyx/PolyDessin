@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { DrawingManagerService } from '../../drawing-manager/drawing-manager.service';
 import { DrawElement } from '../../stockage-svg/draw-element';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
@@ -8,85 +9,70 @@ import { ToolInterface } from '../tool-interface';
 import { SelectionBoxService } from './selection-box.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
 
+const HALF_DRAW_ELEMENT = 0.5 ;
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class SelectionService implements ToolInterface {
   selectedElements: DrawElement[] = [];
+  clickOnSelectionBox: boolean;
 
   constructor(public SVGStockage: SVGStockageService,
               public selectionBox: SelectionBoxService,
               public selectionRectangle: SelectionRectangleService,
-              public drawingManager: DrawingManagerService
-             ) {}
+              public drawingManager: DrawingManagerService,
+              private sanitizer: DomSanitizer
+             ) {
+              this.clickOnSelectionBox = false;
+             }
 
-  traiterClic(element: DrawElement): void {
-    this.deleteBoundingBox();
+  handleClick(element: DrawElement): void {
     if (!this.selectedElements.includes(element)) {
-      this.selectedElements.push(element);
       element.isSelected = true;
+      this.selectedElements.push(element);
       this.createBoundingBox();
     }
 
   }
 
   onMouseMove(mouse: MouseEvent): void {
-    this.selectionRectangle.mouseMouve(mouse);
-    if (this.selectionRectangle.ongoingSelection) {
-      this.deleteBoundingBox();
-      // Éviter de créer une boite de sélection si on effectue un simple clic
-      if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
-        this.isInRectangleSelection(this.selectionRectangle.rectangle);
-        this.createBoundingBox();
+    if (this.clickOnSelectionBox) {
+      this.updatePositionMouse(mouse);
+    } else {
+      this.selectionRectangle.mouseMouve(mouse);
+      if (this.selectionRectangle.ongoingSelection) {
+        this.deleteBoundingBox();
+        // Éviter de créer une boite de sélection si on effectue un simple clic
+        if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
+          this.isInRectangleSelection(this.selectionRectangle.rectangle);
+          this.createBoundingBox();
+        }
       }
     }
   }
 
   onMousePress(mouse: MouseEvent): void {
-    this.deleteBoundingBox();
-    this.selectionRectangle.mouseDown(mouse);
+    if (!this.clickOnSelectionBox) {
+      this.deleteBoundingBox();
+      this.selectionRectangle.mouseDown(mouse);
+    }
   }
 
   onMouseRelease(): void {
-    // Éviter de créer une boite de sélection si on effectue un simple clic
-    if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
-      this.isInRectangleSelection(this.selectionRectangle.rectangle);
-      this.createBoundingBox();
-    }
-    this.selectionRectangle.mouseUp();
-    this.selectionRectangle.rectangle = new RectangleService();
-  }
-
-  /* createBoundingBoxAllStockageSVG(elements: Map<number, DrawElement>): void {
-    let pointMin: Point = {x: elements.values().next().value.points[0].x, y: elements.values().next().value.points[0].y};
-    let pointMax: Point = {x: elements.values().next().value.points[0].x, y: elements.values().next().value.points[0].y};
-
-    for (const element of elements) {
-      element.isSelected = true;
-      for (const point of element.points) {
-        // Point Min
-        if (pointMin.x > point.x) {
-          pointMin.x = point.x;
-        }
-        if (pointMin.y > point.y) {
-          pointMin.y = point.y;
-        }
-
-        // Point Max
-        if (pointMax.x < point.x) {
-          pointMax.x = point.x;
-        }
-        if (pointMax.y < point.y) {
-          pointMax.y = point.y;
-        }
+    if (this.clickOnSelectionBox) {
+      this.clickOnSelectionBox = false;
+    } else {
+      // Éviter de créer une boite de sélection si on effectue un simple clic
+      if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
+        this.isInRectangleSelection(this.selectionRectangle.rectangle);
+        this.createBoundingBox();
       }
+      this.selectionRectangle.mouseUp();
+      this.selectionRectangle.rectangle = new RectangleService();
     }
-
-    pointMin = {x: pointMin.x - 2, y: pointMin.y - 2};
-    pointMax = {x: pointMax.x + 2, y: pointMax.y + 2};
-
-    this.selectionBox.createSelectionBox(pointMin, pointMax);
-  } */
+  }
 
   createBoundingBox(): void {
     let pointMin: Point = {x: this.drawingManager.width , y: this.drawingManager.height};
@@ -97,33 +83,34 @@ export class SelectionService implements ToolInterface {
     for (const element of this.selectedElements) {
       for (const point of element.points) {
         // Point Min
-        if (pointMin.x > point.x) {
-          pointMin.x = point.x;
+        if (pointMin.x > point.x + element.translate.x) {
+          pointMin.x = point.x + element.translate.x;
           epaisseurMin.x = element.thickness ? element.thickness : 0;
         }
-        if (pointMin.y > point.y) {
-          pointMin.y = point.y;
+        if (pointMin.y > point.y + element.translate.y) {
+          pointMin.y = point.y + element.translate.y;
           epaisseurMin.y = element.thickness ? element.thickness : 0;
         }
 
         // Point Max
-        if (pointMax.x < point.x) {
-          pointMax.x = point.x;
+        if (pointMax.x < point.x + element.translate.x) {
+          pointMax.x = point.x + element.translate.x;
           epaisseurMax.x = element.thickness ? element.thickness : 0;
         }
-        if (pointMax.y < point.y) {
-          pointMax.y = point.y;
+        if (pointMax.y < point.y + element.translate.y) {
+          pointMax.y = point.y + element.translate.y;
           epaisseurMax.y = element.thickness ? element.thickness : 0;
         }
       }
     }
 
-    pointMin = {x: pointMin.x - 0.5 * epaisseurMin.x, y: pointMin.y - 0.5 * epaisseurMin.y};
-    pointMax = {x: pointMax.x + 0.5 * epaisseurMax.x, y: pointMax.y + 0.5 * epaisseurMax.y};
+    pointMin = {x: pointMin.x - HALF_DRAW_ELEMENT * epaisseurMin.x, y: pointMin.y - HALF_DRAW_ELEMENT * epaisseurMin.y};
+    pointMax = {x: pointMax.x + HALF_DRAW_ELEMENT * epaisseurMax.x, y: pointMax.y + HALF_DRAW_ELEMENT * epaisseurMax.y};
     this.selectionBox.createSelectionBox(pointMin, pointMax);
   }
 
   deleteBoundingBox(): void {
+    console.log('deleteBoundingBox');
     this.selectionBox.deleteSelectionBox();
     this.selectedElements = [];
 
@@ -139,8 +126,8 @@ export class SelectionService implements ToolInterface {
 
     for (const element of this.SVGStockage.getCompleteSVG()) {
       for (const point of element.points) {
-        const belongX = (point.x >= rectangleSelection.points[0].x && point.x <= rectangleSelection.points[1].x);
-        const belongY = (point.y >= rectangleSelection.points[0].y && point.y <= rectangleSelection.points[1].y);
+        const belongX = (point.x + element.translate.x >= rectangleSelection.points[0].x && point.x + element.translate.x <= rectangleSelection.points[1].x);
+        const belongY = (point.y + element.translate.y >= rectangleSelection.points[0].y && point.y + element.translate.y <= rectangleSelection.points[1].y);
 
         if (belongX && belongY) {
           belongToRectangle = true;
@@ -150,38 +137,6 @@ export class SelectionService implements ToolInterface {
         element.isSelected = true;
         this.selectedElements.push(element);
         belongToRectangle = false;
-      }
-    }
-  }
-
-  isInRectangleSelection2(rectangleSelection: RectangleService): void {
-
-    for (const element of this.SVGStockage.getCompleteSVG()) {
-      this.findPointMinAndMax(element);
-
-      const belongXMin = (rectangleSelection.points[0].x <= element.pointMin.x
-                      && rectangleSelection.points[1].x >= element.pointMin.x
-                      && rectangleSelection.points[0].y >= element.pointMin.y
-                      && rectangleSelection.points[1].y <= element.pointMax.y);
-
-      const belongYMin = (rectangleSelection.points[0].y <= element.pointMin.y
-                      && rectangleSelection.points[1].y >= element.pointMin.y
-                      && rectangleSelection.points[0].x >= element.pointMin.x
-                      && rectangleSelection.points[0].x <= element.pointMax.x);
-
-      const belongXMax = (rectangleSelection.points[0].x <= element.pointMax.x
-                      && rectangleSelection.points[1].x >= element.pointMax.x
-                      && rectangleSelection.points[0].y >= element.pointMin.y
-                      && rectangleSelection.points[1].y <= element.pointMax.y);
-
-      const belongYMax = (rectangleSelection.points[0].y <= element.pointMax.y
-                      && rectangleSelection.points[1].y >= element.pointMax.y
-                      && rectangleSelection.points[0].x >= element.pointMin.x
-                      && rectangleSelection.points[0].x <= element.pointMax.x);
-
-      if (belongXMin || belongYMin || belongXMax  || belongYMax) {
-        element.isSelected = true;
-        this.selectedElements.push(element);
       }
     }
   }
@@ -209,6 +164,43 @@ export class SelectionService implements ToolInterface {
     }
     element.pointMin = pointMin;
     element.pointMax = pointMax;
+  }
+
+  updatePosition(x: number, y: number): void {
+    if (this.selectionBox.selectionBox) {
+      for (const element of this.SVGStockage.getCompleteSVG()) {
+        if (element.isSelected) {
+          this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
+          element.updatePosition(x, y);
+          element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
+
+          for ( const point of element.points) {
+            point.x += element.translate.x;
+            point.y += element.translate.y;
+          }
+
+          element.translate.x = 0;
+          element.translate.y = 0;
+
+          this.selectedElements.push(element);
+        }
+      }
+      this.selectionBox.updatePosition(x, y);
+    }
+  }
+
+  updatePositionMouse(mouse: MouseEvent): void {
+    if (this.selectionBox.selectionBox) {
+      for (const element of this.SVGStockage.getCompleteSVG()) {
+        if (element.isSelected) {
+          this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
+          element.updatePositionMouse(mouse, this.selectionBox.mouseClick);
+          element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
+          this.selectedElements.push(element);
+        }
+      }
+      this.selectionBox.updatePositionMouse(mouse);
+    }
   }
 
 }

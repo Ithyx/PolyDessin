@@ -101,7 +101,7 @@ export const TOOL_LIST: DrawingTool[] = [
     ID: 4,
     iconName: 'fas fa-vector-square',
     parameters: [
-      { type: 'invisible', name: 'Épaisseur', value: 1 },
+      { type: 'invisible', name: 'Épaisseur', value: 3 },
       { type: 'invisible', name: 'Type de tracé', chosenOption: 'Contour'}
     ]
   },
@@ -111,8 +111,8 @@ export const TOOL_LIST: DrawingTool[] = [
     ID: 5,
     iconName: 'fas fa-spray-can',
     parameters: [
-      { type: 'number', name: 'Diamétre du jet', value: 10 },
-      { type: 'number', name: 'Nombre d\'émissions par seconde', value: 10 }
+      { type: 'number', name: 'Diamétre du jet', value: 20 },
+      { type: 'number', name: 'Nombre d\'émissions par seconde', value: 100 }
     ]
   }
 ];

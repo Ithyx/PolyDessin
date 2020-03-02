@@ -13,7 +13,7 @@
 </label>
 
 <h2>Couleur d'Arrière-Plan</h2>
-<button [ngStyle]= "{'background-color': colorParameter.backgroundColor || 'white'}" 
+<button [ngStyle]= "{'background-color': colorParameter.temporaryBackgroundColor || 'white'}" 
     (click)="selectColor()" class="select-color"></button>
 </form>
 

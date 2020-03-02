@@ -23,24 +23,32 @@ export class DrawingSurfaceComponent {
               public colorParameter: ColorParameterService,
               public selection: SelectionService,
               public grid: GridService) {
-    if (colorParameter.backgroundColor === undefined) {
-      routing.navigate([routingManager.previousPage]);
-    }
     console.log('id du dessin: ', drawingManager.id);
   }
 
   handleBackgroundClick(): void {
-    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
-      if (!this.selection.selectionRectangle.rectangle) {
+    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION && !this.selection.selectionRectangle) {
         this.selection.deleteBoundingBox();
-      }
+        this.selection.clickOnSelectionBox = false;
     }
+    console.log('background click');
   }
 
   handleElementClick(element: DrawElement): void {
-    // TODO : Vérification de l'outil (Selection, Pipette, Applicateur de Couleur)
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
-      this.selection.traiterClic(element);
+      this.selection.handleClick(element);
+      this.selection.clickOnSelectionBox = false;
+    }
+    console.log('SVG element click');
+  }
+
+  handleMouseDown(event: MouseEvent): void {
+    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
+      /* TODO */
+      this.selection.clickOnSelectionBox = true;
+      this.selection.updatePosition(5, 0);    // TEMPORAIRE
+      this.selection.selectionBox.mouseClick = {x: event.offsetX , y: event.offsetY };
+      console.log('selectionBox click');
     }
   }
 }

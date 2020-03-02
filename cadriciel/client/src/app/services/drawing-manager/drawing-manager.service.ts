@@ -12,11 +12,13 @@ export class DrawingManagerService {
   width: number;
   id: number;
   name: string;
+  backgroundColor: string;
 
   constructor() {
     this.height = INITIAL_HEIGHT;
     this.width = INITIAL_WIDTH;
     this.id = 0;
     this.name = '';
+    this.backgroundColor = 'rgba(255, 255, 255, 1)';
   }
 }
