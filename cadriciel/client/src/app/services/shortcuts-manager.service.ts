@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { BehaviorSubject } from 'rxjs';
+import { SavePopupComponent } from '../components/save-popup/save-popup.component';
 import { CommandManagerService } from './command/command-manager.service';
-import { DatabaseService } from './database/database.service';
 import { GridService } from './grid/grid.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { LineToolService } from './tools/line-tool.service';
@@ -27,7 +28,8 @@ export class ShortcutsManagerService {
               public commands: CommandManagerService,
               public selection: SelectionService,
               public SVGStockage: SVGStockageService,
-              public grid: GridService
+              public grid: GridService,
+              private dialog: MatDialog
               ) {
                 this.focusOnInput = false;
                 this.shortcutManager.set('1', this.shortcutKey1.bind(this))
@@ -54,7 +56,9 @@ export class ShortcutsManagerService {
 
   treatInput(keyboard: KeyboardEvent): void {
     if (this.focusOnInput) { return; }
-    (this.shortcutManager.get(keyboard.key) as FunctionShortcut)(keyboard);
+    if (this.shortcutManager.has(keyboard.key)) {
+      (this.shortcutManager.get(keyboard.key) as FunctionShortcut)(keyboard);
+    }
   }
 
   clearOngoingSVG(): void {
@@ -104,7 +108,11 @@ export class ShortcutsManagerService {
 
   shortcutKeyS(keyboard: KeyboardEvent): void {
     if (keyboard.ctrlKey) {
-      this
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = true;
+      dialogConfig.autoFocus = true;
+      dialogConfig.width = '40%';
+      this.dialog.open(SavePopupComponent, dialogConfig);
       keyboard.preventDefault();
     } else {
       this.selection.deleteBoundingBox();

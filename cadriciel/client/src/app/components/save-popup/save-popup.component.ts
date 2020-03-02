@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
-import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
+import { DatabaseService } from 'src/app/services/database/database.service';
+import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 
 @Component({
   selector: 'app-save-popup',
@@ -10,12 +11,14 @@ import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.serv
 export class SavePopupComponent {
 
   constructor(private dialogRef: MatDialogRef<SavePopupComponent>,
-              private shortcuts: ShortcutsManagerService) {
-    shortcuts.focusOnInput = true;
-  }
+              private db: DatabaseService,
+              private drawingParams: DrawingManagerService) {}
 
+  confirmSave(): void {
+    (this.drawingParams.id === 0) ? this.db.sendNewDrawing() : this.db.updateDrawing();
+    this.dialogRef.close();
+ }
   closeDialogue(): void {
-    this.shortcuts.focusOnInput = false;
     this.dialogRef.close();
   }
 

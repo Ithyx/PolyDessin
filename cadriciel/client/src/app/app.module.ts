@@ -55,7 +55,7 @@ import { SavePopupComponent } from './components/save-popup/save-popup.component
                 CommandManagerService, GridService],
 
     entryComponents: [NewDrawingWindowComponent, NewDrawingWarningComponent,
-                      ColorChoiceComponent, GridOptionsComponent],
+                      ColorChoiceComponent, GridOptionsComponent, SavePopupComponent],
     bootstrap: [AppComponent],
 })
 export class AppModule {}
