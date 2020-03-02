@@ -14,9 +14,9 @@ import { ToolManagerService } from './tool-manager.service';
 export class RectangleToolService implements ToolInterface {
   rectangle: RectangleService;
   // Coordonnées du clic initial de souris
-  initial: Point = {x: 0, y: 0};
+  initial: Point;
   // Coordonnées du point inférieur gauche
-  calculatedBase: Point = {x: 0, y: 0};
+  calculatedBase: Point;
   // Dimensions du rectangle
   calculatedWidth: number;
   calculatedHeight: number;
@@ -27,6 +27,8 @@ export class RectangleToolService implements ToolInterface {
               public commands: CommandManagerService
               ) {
                 this.rectangle = new RectangleService();
+                this.initial = {x: 0, y: 0};
+                this.calculatedBase = {x: 0, y: 0};
                 this.calculatedWidth = 0;
                 this.calculatedHeight = 0;
               }

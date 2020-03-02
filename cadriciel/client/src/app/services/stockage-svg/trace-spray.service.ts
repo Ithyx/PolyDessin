@@ -13,16 +13,20 @@ export class TraceSprayService implements DrawElement {
   SVGHtml: SafeHtml;
   isSelected: boolean;
 
-  tool: DrawingTool = EMPTY_TOOL;
+  tool: DrawingTool;
   points: Point[] = [];
 
   primaryColor: string;
 
   pointMin: Point;
   pointMax: Point;
+  translate: Point;
 
   constructor() {
+    this.SVGHtml = '';
     this.isSelected = false;
+    this.tool = EMPTY_TOOL;
+    this.translate = { x: 0, y: 0};
   }
 
   draw(): void {
@@ -39,6 +43,17 @@ export class TraceSprayService implements DrawElement {
     const x = mousePosition.x + position * Math.cos(angle);
     const y = mousePosition.y + position * Math.sin(angle);
     this.points.push({x, y});
-    this.SVG += `<circle cx="${x}" cy="${y}" r="1" fill="${this.primaryColor}" />`;
+    this.SVG += '<circle transform ="translate(' + this.translate.x + ' ' + this.translate.y
+      + `)"cx="${x}" cy="${y}" r="1" fill="${this.primaryColor}" />`;
+    }
+    updatePosition(x: number, y: number): void {
+      this.translate.x += x;
+      this.translate.y += y;
+      this.draw();
+    }
+    updatePositionMouse(mouse: MouseEvent, mouseClick: Point): void {
+      this.translate.x = mouse.offsetX - mouseClick.x;
+      this.translate.y = mouse.offsetY - mouseClick.y;
+      this.draw();
   }
 }
