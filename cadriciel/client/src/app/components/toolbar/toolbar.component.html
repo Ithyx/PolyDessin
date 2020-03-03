@@ -54,25 +54,25 @@
 
         </div>
         <br />
-        <div class="annuler-refaire">
-            <a *ngIf="commands.executedCommands.length > 0; else annulerNonDisponible"
+        <div class="redo-undo">
+            <a *ngIf="commands.executedCommands.length > 0; else undoNotAvailable"
                     mat-stroked-button (click)="commands.cancelCommand()">Annuler</a>
-            <ng-template #annulerNonDisponible>
-                <a mat-stroked-button class="nonDisponible">Annuler</a>
+            <ng-template #undoNotAvailable>
+                <a mat-stroked-button class="notavailable">Annuler</a>
             </ng-template>
-            <a *ngIf="commands.cancelledCommands.length > 0; else refaireNonDisponible"
+            <a *ngIf="commands.cancelledCommands.length > 0; else redoNotAvailable"
                 mat-stroked-button (click)="commands.redoCommand()">Refaire</a>
-            <ng-template #refaireNonDisponible>
-                <a mat-stroked-button class="nonDisponible">Refaire</a>
+            <ng-template #redoNotAvailable>
+                <a mat-stroked-button class="notavailable">Refaire</a>
             </ng-template>
         </div>
         <br />
-        <div class="boutons-couleur">
+        <div class="color_button">
             Couleur primaire
             <button [ngStyle]= "{'background-color': colorParameter.getPrimaryColor() || 'white'}" 
                     (click)="selectColor('primary')"></button>
             <br />
-            <div class="selection-opacite">
+            <div class="opacity_selector">
                 <label for="opacite-principale">Opacité: </label>
                 <input type="range" name="opacite-principale" min="0" max="1" step="0.01"
                        [value]="colorParameter.primaryOpacity"
@@ -92,7 +92,7 @@
                 {{colorParameter.secondaryOpacityDisplayed}}%
             </div>
             <br />
-            <div *ngIf="colorParameter.lastColors.length > 0" class="dernieres-couleurs">
+            <div *ngIf="colorParameter.lastColors.length > 0" class="last_color">
                 Dernières couleurs utilisées
                 <br />
                 <button *ngFor="let derniereCouleur of colorParameter.lastColors"
@@ -101,7 +101,7 @@
                         (contextmenu)="selectPreviousSecondaryColor(derniereCouleur, $event)">
                 </button>
             </div>
-            <div class="couleur-fond"> 
+            <div class="background_color"> 
                 Couleur de fond
                 <button [ngStyle]= "{'background-color': drawingManager.backgroundColor || 'white'}" 
                         (click)="selectColor('background')"></button>
