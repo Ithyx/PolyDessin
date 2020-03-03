@@ -142,9 +142,9 @@ export class SelectionService implements ToolInterface {
         }
       }
 
-      const mouseCornerSelection = (mouse.offsetX >= element.pointMin.x && mouse.offsetX <= element.pointMax.x)
+      /* const mouseCornerSelection = (mouse.offsetX >= element.pointMin.x && mouse.offsetX <= element.pointMax.x)
                             && (mouse.offsetY >= element.pointMin.y && mouse.offsetY <= element.pointMax.y);
-      
+
       const xCornerSelection = (rectangleSelection.pointMin.x >= element.pointMin.x && rectangleSelection.pointMin.x <= element.pointMax.x)
                           && (mouse.offsetY >= element.pointMin.y && mouse.offsetY <= element.pointMax.y);
 
@@ -152,7 +152,22 @@ export class SelectionService implements ToolInterface {
                           && (rectangleSelection.pointMin.y >= element.pointMin.y && rectangleSelection.pointMin.y <= element.pointMax.y);
 
 
-      let mouseBelongToElement = mouseCornerSelection || xCornerSelection || yCornerSelection;
+      let mouseBelongToElement = mouseCornerSelection || xCornerSelection || yCornerSelection; */
+
+      const corner1Selection = (rectangleSelection.pointMin.x >= element.pointMin.x && rectangleSelection.pointMin.x <= element.pointMax.x)
+                              && (rectangleSelection.pointMin.y >= element.pointMin.y && rectangleSelection.pointMin.y <= element.pointMax.y);    // corner 1
+
+      const corner2Selection = (rectangleSelection.pointMax.x >= element.pointMin.x && rectangleSelection.pointMax.x <= element.pointMax.x)
+                              && (rectangleSelection.pointMin.y >= element.pointMin.y && rectangleSelection.pointMin.y <= element.pointMax.y);    // corner 2
+                              
+      const corner3Selection = (rectangleSelection.pointMin.x >= element.pointMin.x && rectangleSelection.pointMin.x <= element.pointMax.x)
+                              && (rectangleSelection.pointMax.y >= element.pointMin.y && rectangleSelection.pointMax.y <= element.pointMax.y);    // corner 3
+
+      const corner4Selection = (rectangleSelection.pointMax.x >= element.pointMin.x && rectangleSelection.pointMax.x <= element.pointMax.x)
+                              && (rectangleSelection.pointMax.y >= element.pointMin.y && rectangleSelection.pointMax.y <= element.pointMax.y);    // corner 4
+
+
+      let mouseBelongToElement = corner1Selection || corner2Selection || corner3Selection || corner4Selection;
 
       if (belongToRectangle || mouseBelongToElement) {
         element.isSelected = true;
