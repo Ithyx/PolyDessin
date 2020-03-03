@@ -34,23 +34,12 @@ describe('SelectionRectangleService', () => {
     expect(service.rectangle.points).toEqual(oldPoints);
   });
 
-  it('#mouseMove', () => {
-
-  });
-
-  it('#mouseMove devrait appeler RefreshSVG s\'il y a une sélection en cours', () => {
-    service.ongoingSelection = true;
-    spyOn(service, 'refreshSVG');
-    service.mouseMove(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
-    expect(service.refreshSVG).toHaveBeenCalled();
-  });
-
   // Tests mouseDown
 
   it('#mouseDown devrait créer un nouveau rectangleService', () => {
     const mouse = new MouseEvent('click', { clientX: 100, clientY: 100 });
     service.mouseDown(mouse);
-    expect(service.rectangle).toBe(new RectangleService());
+    expect(service.rectangle).toEqual(new RectangleService());
   });
 
   it('#mouseDown, le rectangle créé devrait être en pointillé', () => {

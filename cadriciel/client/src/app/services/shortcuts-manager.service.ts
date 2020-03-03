@@ -71,6 +71,11 @@ export class ShortcutsManagerService {
         window.clearInterval(this.clearTimeout);
         this.counter100ms = 0;
         this.clearTimeout = 0;
+        for (const element of this.SVGStockage.getCompleteSVG()) {
+          if (element.isSelected) {
+            element.translateAllPoints();
+          }
+        }
       } else if (this.clearTimeout === 0) {
         this.clearTimeout = window.setInterval(() => {
           const translate: Point = {x: 0 , y: 0};
@@ -125,13 +130,13 @@ export class ShortcutsManagerService {
     this.selection.deleteBoundingBox();
 
     if (keyboard.ctrlKey) {
-        keyboard.preventDefault();
-        this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
-        if (this.SVGStockage.getCompleteSVG().length !== 0) {
-          this.selection.selectedElements = this.SVGStockage.getCompleteSVG();
-          this.selection.createBoundingBox();
-          }
-        } else {this.tools.changeActiveTool(TOOL_INDEX.SPRAY); };
+      keyboard.preventDefault();
+      this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
+      if (this.SVGStockage.getCompleteSVG().length !== 0) {
+        this.selection.selectedElements = this.SVGStockage.getCompleteSVG();
+        this.selection.createBoundingBox();
+      }
+    } else { this.tools.changeActiveTool(TOOL_INDEX.SPRAY); }
 
   }
 
