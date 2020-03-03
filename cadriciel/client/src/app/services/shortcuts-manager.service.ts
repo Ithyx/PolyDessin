@@ -102,7 +102,9 @@ export class ShortcutsManagerService {
 
   treatInput(keyboard: KeyboardEvent): void {
     if (this.focusOnInput) { return; }
-    (this.shortcutManager.get(keyboard.key) as FunctionShortcut)(keyboard);
+    if(this.shortcutManager.has(keyboard.key)) {
+      (this.shortcutManager.get(keyboard.key) as FunctionShortcut)(keyboard);
+    }
     this.updatePositionTimer();
   }
 

@@ -1,5 +1,7 @@
 <svg class="drawing" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" version="1.1" xlmns="http://www.w3.org/2000/svg">
-    
+    <style>
+        .selectionBox :hover{ cursor: move;}
+    </style>
     <defs>
         <!-- Texture libre de droit-->
 
@@ -35,12 +37,13 @@
             <feDropShadow dx="1.5" dy="20" stdDeviation="5"/>
           </filter>
     </defs>
+
     
     <rect x="0" y="0" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" [attr.fill]="drawingManager.backgroundColor" (click)="handleBackgroundClick()"/>
 
     <g *ngFor="let element of SVGStockage.getCompleteSVG()" [innerHTML]="element.SVGHtml" (click)="handleElementClick(element)"></g>
-    <g *ngIf="this.selection.selectionRectangle.rectangle" [innerHTML]="this.selection.selectionRectangle.rectangle.SVGHtml"></g>
-    <g *ngIf="this.selection.selectionBox.selectionBox" [innerHTML]="this.selection.selectionBox.selectionBox.SVGHtml" (mousedown)="handleMouseDown($event)"></g>
+    <g *ngIf="this.selection.selectionRectangle.rectangle"  [innerHTML]="this.selection.selectionRectangle.rectangle.SVGHtml"></g>
+    <g  class = "selectionBox" *ngIf="this.selection.selectionBox.selectionBox" [innerHTML]="this.selection.selectionBox.selectionBox.SVGHtml"  (mousedown)="handleMouseDown($event)"></g>
     <g [innerHTML]="SVGStockage.getOngoingSVGHTML()"></g>
     <g [innerHTML]="SVGStockage.getOngoingPerimeterHTML()"></g>
     <g *ngFor="let line of grid.getLines()">
