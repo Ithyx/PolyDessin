@@ -105,4 +105,12 @@ export class DrawingPageComponent {
     }
   }
 
+  onRightClick(mouse: MouseEvent): void {
+    const tool = this.toolMap.get(this.tools.activeTool.name);
+    if (tool && tool.onRightClick) {
+      tool.onRightClick(mouse);
+      mouse.preventDefault();
+    }
+  }
+
 }

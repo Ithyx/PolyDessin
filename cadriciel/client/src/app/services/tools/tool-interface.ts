@@ -6,5 +6,6 @@ export interface ToolInterface {
     onMouseLeave?(evenement?: MouseEvent): void;
     onMouseEnter?(evenement: MouseEvent): void;
     onDoubleClick?(evenement: MouseEvent): void;
+    onRightClick?(evenement: MouseEvent): void;
     clear?(): void;
 }
