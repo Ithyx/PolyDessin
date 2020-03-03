@@ -109,6 +109,7 @@ export class SelectionService implements ToolInterface {
       }
     }
 
+    
     pointMin = {x: pointMin.x - HALF_DRAW_ELEMENT * epaisseurMin.x, y: pointMin.y - HALF_DRAW_ELEMENT * epaisseurMin.y};
     pointMax = {x: pointMax.x + HALF_DRAW_ELEMENT * epaisseurMax.x, y: pointMax.y + HALF_DRAW_ELEMENT * epaisseurMax.y};
     this.selectionBox.createSelectionBox(pointMin, pointMax);
