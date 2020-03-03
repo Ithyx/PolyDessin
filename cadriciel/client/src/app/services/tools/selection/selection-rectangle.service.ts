@@ -33,6 +33,7 @@ export class SelectionRectangleService {
     this.heightCalculated = 0;
    }
 
+   
   refreshSVG(): void {
     this.rectangle.tool = this.rectangleSelectionTool;
     this.rectangle.primaryColor = 'rgba(0, 80, 130, 0.35)';

@@ -159,7 +159,9 @@ export class ShortcutsManagerService {
   }
 
   shortcutKeyS(): void {
-    this.selection.deleteBoundingBox();
+    if(this.selection.selectionBox){
+      this.selection.deleteBoundingBox();
+    }
     this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
     this.clearOngoingSVG();
   }
