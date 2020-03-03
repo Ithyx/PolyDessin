@@ -80,39 +80,40 @@ export class SelectionService implements ToolInterface {
   }
 
   createBoundingBox(): void {
-    let pointMin: Point = {x: this.drawingManager.width , y: this.drawingManager.height};
-    let pointMax: Point = {x: 0 , y: 0};
-    const epaisseurMin: Point = {x: 0, y: 0};
-    const epaisseurMax: Point = {x: 0, y: 0};
+    if (this.selectedElements !== []) {
+      let pointMin: Point = {x: this.drawingManager.width , y: this.drawingManager.height};
+      let pointMax: Point = {x: 0 , y: 0};
+      const epaisseurMin: Point = {x: 0, y: 0};
+      const epaisseurMax: Point = {x: 0, y: 0};
 
-    for (const element of this.selectedElements) {
-      for (const point of element.points) {
-        // Point Min
-        if (pointMin.x > point.x + element.translate.x) {
-          pointMin.x = point.x + element.translate.x;
-          epaisseurMin.x = element.thickness ? element.thickness : 0;
-        }
-        if (pointMin.y > point.y + element.translate.y) {
-          pointMin.y = point.y + element.translate.y;
-          epaisseurMin.y = element.thickness ? element.thickness : 0;
-        }
+      for (const element of this.selectedElements) {
+        for (const point of element.points) {
+          // Point Min
+          if (pointMin.x > point.x + element.translate.x) {
+            pointMin.x = point.x + element.translate.x;
+            epaisseurMin.x = element.thickness ? element.thickness : 0;
+          }
+          if (pointMin.y > point.y + element.translate.y) {
+            pointMin.y = point.y + element.translate.y;
+            epaisseurMin.y = element.thickness ? element.thickness : 0;
+          }
 
-        // Point Max
-        if (pointMax.x < point.x + element.translate.x) {
-          pointMax.x = point.x + element.translate.x;
-          epaisseurMax.x = element.thickness ? element.thickness : 0;
-        }
-        if (pointMax.y < point.y + element.translate.y) {
-          pointMax.y = point.y + element.translate.y;
-          epaisseurMax.y = element.thickness ? element.thickness : 0;
+          // Point Max
+          if (pointMax.x < point.x + element.translate.x) {
+            pointMax.x = point.x + element.translate.x;
+            epaisseurMax.x = element.thickness ? element.thickness : 0;
+          }
+          if (pointMax.y < point.y + element.translate.y) {
+            pointMax.y = point.y + element.translate.y;
+            epaisseurMax.y = element.thickness ? element.thickness : 0;
+          }
         }
       }
-    }
 
-    
-    pointMin = {x: pointMin.x - HALF_DRAW_ELEMENT * epaisseurMin.x, y: pointMin.y - HALF_DRAW_ELEMENT * epaisseurMin.y};
-    pointMax = {x: pointMax.x + HALF_DRAW_ELEMENT * epaisseurMax.x, y: pointMax.y + HALF_DRAW_ELEMENT * epaisseurMax.y};
-    this.selectionBox.createSelectionBox(pointMin, pointMax);
+      pointMin = {x: pointMin.x - HALF_DRAW_ELEMENT * epaisseurMin.x, y: pointMin.y - HALF_DRAW_ELEMENT * epaisseurMin.y};
+      pointMax = {x: pointMax.x + HALF_DRAW_ELEMENT * epaisseurMax.x, y: pointMax.y + HALF_DRAW_ELEMENT * epaisseurMax.y};
+      this.selectionBox.createSelectionBox(pointMin, pointMax);
+    }
   }
 
   deleteBoundingBox(): void {

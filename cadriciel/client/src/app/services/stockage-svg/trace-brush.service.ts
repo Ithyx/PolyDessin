@@ -41,12 +41,12 @@ export class TraceBrushService implements DrawElement {
   }
 
   drawPath(): void {
-    if (this.tool.parameters[0].value) {
+    if (this.tool.parameters[0].value && !this.isSelected)  {
       this.thickness = this.tool.parameters[0].value;
     }
     this.SVG = '<path transform ="translate(' + this.translate.x + ' ' + this.translate.y + `)" fill="none" stroke="${this.primaryColor}"`
       + ' filter="url(#' + this.tool.parameters[1].chosenOption
-      + ')" stroke-linecap="round" stroke-width="' + this.tool.parameters[0].value + '" d="';
+      + ')" stroke-linecap="round" stroke-width="' + this.thickness + '" d="';
     for (let i = 0; i < this.points.length; ++i) {
       this.SVG += (i === 0) ? 'M ' : 'L ';
       this.SVG += this.points[i].x + ' ' + this.points[i].y + ' ';
@@ -55,11 +55,11 @@ export class TraceBrushService implements DrawElement {
   }
 
   drawPoint(): void {
-    if (this.tool.parameters[0].value) {
+    if (this.tool.parameters[0].value && !this.isSelected) {
       this.thickness = this.tool.parameters[0].value;
       this.SVG = '<circle cx="' + this.points[0].x + '" cy="' + this.points[0].y
         + '" filter="url(#' + this.tool.parameters[1].chosenOption
-        + ')" r="' + this.tool.parameters[0].value / 2
+        + ')" r="' + this.thickness / 2
         + '" fill="' + this.primaryColor + '"/>';
     }
   }
