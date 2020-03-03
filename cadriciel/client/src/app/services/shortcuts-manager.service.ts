@@ -32,6 +32,7 @@ export class ShortcutsManagerService {
                 this.shortcutManager.set('1', this.shortcutKey1.bind(this))
                                     .set('a', this.shortcutKeyA.bind(this))
                                     .set('c', this.shortcutKeyC.bind(this))
+                                    .set('i', this.shortcutKeyI.bind(this))
                                     .set('l', this.shortcutKeyL.bind(this))
                                     .set('w', this.shortcutKeyW.bind(this))
                                     .set('s', this.shortcutKeyS.bind(this))
@@ -86,6 +87,12 @@ export class ShortcutsManagerService {
   shortcutKeyC(): void {
     this.selection.deleteBoundingBox();
     this.tools.changeActiveTool(TOOL_INDEX.PENCIL);
+    this.clearOngoingSVG();
+  }
+
+  shortcutKeyI(): void {
+    this.selection.deleteBoundingBox();
+    this.tools.changeActiveTool(TOOL_INDEX.PIPETTE);
     this.clearOngoingSVG();
   }
 

@@ -6,7 +6,8 @@ export enum TOOL_INDEX {
   RECTANGLE,
   LINE,
   SELECTION,
-  SPRAY
+  SPRAY,
+  PIPETTE
 }
 
 export interface ToolParameter {
