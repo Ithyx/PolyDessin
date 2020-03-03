@@ -18,7 +18,6 @@ export class SelectionRectangleService {
   widthCalculated: number;
   heightCalculated: number;
 
-  
   rectangleSelectionTool: DrawingTool = {name: '',
                                          isActive: true,
                                          ID: -1,
@@ -42,7 +41,7 @@ export class SelectionRectangleService {
     this.rectangle.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.rectangle.SVG);
   }
 
-  mouseMouve(mouse: MouseEvent): void {
+  mouseMove(mouse: MouseEvent): void {
     if (this.ongoingSelection) {
       // Calcule des valeurs pour former un rectangle
       this.widthCalculated = Math.abs(this.initialPoint.x - mouse.offsetX);

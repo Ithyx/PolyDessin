@@ -41,7 +41,7 @@ export class SelectionService implements ToolInterface {
     if (this.clickOnSelectionBox) {
       this.updatePositionMouse(mouse);
     } else {
-      this.selectionRectangle.mouseMouve(mouse);
+      this.selectionRectangle.mouseMove(mouse);
       if (this.selectionRectangle.ongoingSelection) {
         this.deleteBoundingBox();
         // Éviter de créer une boite de sélection si on effectue un simple clic
