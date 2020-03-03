@@ -9,13 +9,13 @@
         <a  href="javascript:void(0);"   (click)="warningNewDrawing()">
             <i class="fas fa-plus"></i> Nouveau Dessin
         </a>
-        <a class="nonDisponible" href="javascript:void(0);">
+        <a class="notavailable" href="javascript:void(0);">
             Ouvrir la galerie
         </a>
-        <a class="nonDisponible" href="javascript:void(0);">
+        <a class="notavailable" href="javascript:void(0);">
             Sauvergarder le dessin
         </a>
-        <a class="nonDisponible" href="javascript:void(0);">
+        <a class="notavailable" href="javascript:void(0);">
             Exporter le dessin
         </a>
         <a  href="javascript:void(0);"   (click)="openGridWindow()">
@@ -73,8 +73,8 @@
                     (click)="selectColor('primary')"></button>
             <br />
             <div class="opacity_selector">
-                <label for="opacite-principale">Opacité: </label>
-                <input type="range" name="opacite-principale" min="0" max="1" step="0.01"
+                <label for="primary-opacity">Opacité: </label>
+                <input type="range" name="primary-opacity" min="0" max="1" step="0.01"
                        [value]="colorParameter.primaryOpacity"
                        (input)="applyPrimaryOpacity($event)" />
                 {{colorParameter.primaryOpacityDisplayed}}%
@@ -84,9 +84,9 @@
             Couleur secondaire
             <button [ngStyle]= "{'background-color': colorParameter.getSecondaryColor() || 'white'}"
                     (click)="selectColor('secondary')"></button>
-            <div class="selection-opacite">
-                <label for="opacite-secondaire">Opacité: </label>
-                <input type="range" name="opacite-secondaire" min="0" max="1" step="0.01"
+            <div class="opacity_selector">
+                <label for="secondary-opacity">Opacité: </label>
+                <input type="range" name="secondary-opacity" min="0" max="1" step="0.01"
                        [value]="colorParameter.secondaryOpacity"
                        (input)="applySecondaryOpacity($event)" />
                 {{colorParameter.secondaryOpacityDisplayed}}%
@@ -95,10 +95,10 @@
             <div *ngIf="colorParameter.lastColors.length > 0" class="last_color">
                 Dernières couleurs utilisées
                 <br />
-                <button *ngFor="let derniereCouleur of colorParameter.lastColors"
-                        [ngStyle]= "{'background-color': derniereCouleur + '1)' || 'white'}" 
-                        (click)="selectPreviousPrimaryColor(derniereCouleur)"
-                        (contextmenu)="selectPreviousSecondaryColor(derniereCouleur, $event)">
+                <button *ngFor="let last-color of colorParameter.lastColors"
+                        [ngStyle]= "{'background-color': last-color + '1)' || 'white'}" 
+                        (click)="selectPreviousPrimaryColor(last-color)"
+                        (contextmenu)="selectPreviousSecondaryColor(last-color, $event)">
                 </button>
             </div>
             <div class="background_color"> 
