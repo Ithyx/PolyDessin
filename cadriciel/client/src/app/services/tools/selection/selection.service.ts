@@ -126,8 +126,8 @@ export class SelectionService implements ToolInterface {
   }
 
   isInRectangleSelection(rectangleSelection: RectangleService, mouse: MouseEvent): void {
+    this.findPointMinAndMax(rectangleSelection);
     let belongToRectangle = false;
-    let mouseBelongToElement = false;
 
     for (const element of this.SVGStockage.getCompleteSVG()) {
       this.findPointMinAndMax(element);
@@ -145,14 +145,14 @@ export class SelectionService implements ToolInterface {
       const mouseCornerSelection = (mouse.offsetX >= element.pointMin.x && mouse.offsetX <= element.pointMax.x)
                             && (mouse.offsetY >= element.pointMin.y && mouse.offsetY <= element.pointMax.y);
       
-      const xCornerSelection = (rectangleSelection.points[0].x >= element.pointMin.x && rectangleSelection.points[0].x <= element.pointMax.x)
+      const xCornerSelection = (rectangleSelection.pointMin.x >= element.pointMin.x && rectangleSelection.pointMin.x <= element.pointMax.x)
                           && (mouse.offsetY >= element.pointMin.y && mouse.offsetY <= element.pointMax.y);
 
       const yCornerSelection = (mouse.offsetX >= element.pointMin.x && mouse.pageX <= element.pointMax.x)
-                          && (rectangleSelection.points[1].y >= element.pointMin.y && rectangleSelection.points[1].y <= element.pointMax.y);
+                          && (rectangleSelection.pointMax.y >= element.pointMin.y && rectangleSelection.pointMax.y <= element.pointMax.y);
 
 
-      mouseBelongToElement = mouseCornerSelection || xCornerSelection || yCornerSelection;
+      let mouseBelongToElement = mouseCornerSelection || xCornerSelection || yCornerSelection;
 
       if (belongToRectangle || mouseBelongToElement) {
         element.isSelected = true;
