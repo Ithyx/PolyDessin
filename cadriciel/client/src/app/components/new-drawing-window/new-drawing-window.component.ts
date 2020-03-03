@@ -51,6 +51,7 @@ export class NewDrawingWindowComponent {
               }
 
   closeWindow(): void {
+    this.colorParameter.temporaryBackgroundColor = this.drawingManager.backgroundColor;
     this.shortcuts.focusOnInput = false;
     this.dialogRef.close();
   }
@@ -73,6 +74,7 @@ export class NewDrawingWindowComponent {
     this.commands.clearCommand();
     this.drawingManager.height = this.newDrawing.value[KEY_FORM_HEIGHT];
     this.drawingManager.width = this.newDrawing.value[KEY_FORM_WIDHT];
+    this.drawingManager.backgroundColor = this.colorParameter.temporaryBackgroundColor;
     this.shortcuts.focusOnInput = false;
     this.dialogRef.close();
     this.ngZone.run(() => this.router.navigate(['dessin']));
@@ -84,6 +86,6 @@ export class NewDrawingWindowComponent {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '30%';
     dialogConfig.panelClass = 'fenetre-couleur';
-    this.dialog.open(ColorChoiceComponent, dialogConfig).componentInstance.portee = Scope.Background;
+    this.dialog.open(ColorChoiceComponent, dialogConfig).componentInstance.portee = Scope.BackgroundNewDrawing;
   }
 }

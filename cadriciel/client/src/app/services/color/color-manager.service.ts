@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { ChangeBackgroundColorService } from '../command/change-background-color.service';
 import { CommandManagerService } from '../command/command-manager.service';
+import { DrawingManagerService } from '../drawing-manager/drawing-manager.service';
 import { ColorParameterService } from './color-parameter.service';
 
 export enum Scope {
   Primary = 1,
   Secondary,
-  Background,
+  BackgroundNewDrawing,
+  BackgroundToolBar,
   Default,
 }
 
@@ -21,7 +22,8 @@ export class ColorManagerService {
   RGB: number[] = [0, 0, 0];
 
   constructor(public colorParameter: ColorParameterService,
-              public commands: CommandManagerService) {
+              public commands: CommandManagerService,
+              public drawingManager: DrawingManagerService) {
     this.color = 'rgba(0, 0, 0,';
     this.hue = 'rgba(255,255,255';
   }
@@ -47,8 +49,12 @@ export class ColorManagerService {
         this.colorParameter.secondaryColor = this.color;
         this.addLastColor();
         break;
-      case Scope.Background:
-        this.commands.execute(new ChangeBackgroundColorService(this.colorParameter, this.color + '1)'));
+      case Scope.BackgroundNewDrawing:
+        this.colorParameter.temporaryBackgroundColor = this.getColor();
+        break;
+      case Scope.BackgroundToolBar:
+        this.drawingManager.backgroundColor = this.getColor();
+        this.colorParameter.temporaryBackgroundColor = this.getColor();
       default:
         /* Par mesure de sécurité, ne rien faire. */
         break;
