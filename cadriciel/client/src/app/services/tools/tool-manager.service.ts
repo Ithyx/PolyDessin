@@ -99,7 +99,7 @@ export const TOOL_LIST: DrawingTool[] = [
     name: 'Selection',
     isActive: false,
     ID: 4,
-    iconName: 'fas fa-vector-square',
+    iconName: 'far fa-object-group',
     parameters: [
       { type: 'invisible', name: 'Épaisseur', value: 3 },
       { type: 'invisible', name: 'Type de tracé', chosenOption: 'Contour'}
