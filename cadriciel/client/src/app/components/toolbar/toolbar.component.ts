@@ -58,9 +58,10 @@ export class ToolbarComponent implements OnDestroy {
     this.shortcuts.clearOngoingSVG();
   }
 
-  onChange(event: Event, parameterName: string): void {
+  onChange(event: Event, parameterName: string, min: number, max: number): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
-    this.tools.activeTool.parameters[this.tools.findParameterIndex(parameterName)].value = Math.max(Number(eventCast.value), 1);
+    const validatedValue = Math.max(Math.min(Number(eventCast.value), max), min);
+    this.tools.activeTool.parameters[this.tools.findParameterIndex(parameterName)].value = validatedValue;
   }
 
   selectChoice(event: Event, parameterName: string): void {

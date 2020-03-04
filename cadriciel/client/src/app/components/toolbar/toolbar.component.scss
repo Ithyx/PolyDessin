@@ -53,7 +53,7 @@
     background-color: rgb(25, 25, 40);
 }
 
-.boutons-couleur {
+.color_button {
     font-size: 20px;
 }
 
@@ -62,7 +62,7 @@ button {
     width: 40px;
 }
 
-.dernieres-couleurs {
+.last_color {
     display: inline;
 }
 
@@ -71,24 +71,24 @@ button {
     height: 20px;
 }
 
-.selection-opacite label {
+.opacity_selector label {
     font-size: 15px;
     vertical-align: text-top;
 }
 
-.couleur-fond {
+.background_color {
     padding-top: 40px;
 }
 .options a:hover {
     color: #EFE2BA;
   }
 
-a.nonDisponible{
+a.notavailable{
     opacity: 0.4;
     cursor: not-allowed;
 }
 
-.annuler-refaire {
+.redo-undo {
     font-size: 15px;
     color: lightcyan;
 }
