@@ -3,7 +3,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { Point } from '../line-tool.service';
 import { ToolManagerService} from '../tool-manager.service';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -32,6 +31,7 @@ export class SelectionBoxService {
     this.selectionBox.points[0] = pointMin;
     this.selectionBox.points[1] = pointMax;
     this.selectionBox.secondaryColor =  'rgba(0, 80, 150, 1)';
+    this.selectionBox.thickness = 4;
 
     this.selectionBox.drawRectangle();
 
@@ -66,7 +66,9 @@ export class SelectionBoxService {
       controlPoint.isSelected = true;
       controlPoint.tool = this.tools.activeTool;
       controlPoint.secondaryColor =  'rgba(173, 255, 47, 1)';
+      controlPoint.thickness = 4;
       controlPoint.drawRectangle();
+      
       controlPoint.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(controlPoint.SVG);
     }
 

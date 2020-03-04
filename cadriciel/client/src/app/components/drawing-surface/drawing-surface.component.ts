@@ -45,4 +45,14 @@ export class DrawingSurfaceComponent {
       this.selection.selectionBox.mouseClick = {x: event.offsetX , y: event.offsetY };
     }
   }
+
+  handleMouseUp(event: MouseEvent): void {
+   if(this.tools.activeTool.ID === TOOL_INDEX.SELECTION){
+     this.selection.selectionBox.selectionBox.translateAllPoints();
+     for(const controlPoint of this.selection.selectionBox.controlPointBox){
+       controlPoint.translateAllPoints();
+     }
+   }
+  }
+
 }
