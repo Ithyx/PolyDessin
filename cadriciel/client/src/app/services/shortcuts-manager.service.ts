@@ -133,7 +133,10 @@ export class ShortcutsManagerService {
       keyboard.preventDefault();
       this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
       if (this.SVGStockage.getCompleteSVG().length !== 0) {
-        this.selection.selectedElements = this.SVGStockage.getCompleteSVG();
+        for (const element of this.SVGStockage.getCompleteSVG()) {
+          element.isSelected = true;
+          this.selection.selectedElements.push(element);
+        }
         this.selection.createBoundingBox();
       }
     } else { this.tools.changeActiveTool(TOOL_INDEX.SPRAY); }

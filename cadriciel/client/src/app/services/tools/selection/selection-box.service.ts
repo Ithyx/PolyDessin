@@ -39,7 +39,6 @@ export class SelectionBoxService {
     this.createControlPointBox();
   }
 
-
   createControlPointBox(): void {
     // TOP
     this.controlPointBox[0].points[0].x = ((this.selectionBox.points[0].x + this.selectionBox.points[1].x)/2) - 4;
@@ -68,7 +67,7 @@ export class SelectionBoxService {
       controlPoint.secondaryColor =  'rgba(173, 255, 47, 1)';
       controlPoint.thickness = 4;
       controlPoint.drawRectangle();
-      
+
       controlPoint.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(controlPoint.SVG);
     }
 
