@@ -7,7 +7,9 @@ export enum TOOL_INDEX {
   LINE,
   SELECTION,
   SPRAY,
-  PIPETTE
+  PIPETTE,
+  ELLIPSE,
+  POLYGON
 }
 
 export interface ToolParameter {
@@ -124,5 +126,23 @@ export const TOOL_LIST: DrawingTool[] = [
     ID: 6,
     iconName: 'fas fa-eye-dropper',
     parameters: []
+  },
+  {
+    name: 'Ellipse',
+    isActive: false,
+    ID: 7,
+    iconName: 'far fa-circle',
+    parameters: []
+  },
+  {
+    name: 'Polygone',
+    isActive: false,
+    ID: 8,
+    iconName: 'fab fa-jira',
+    parameters: [
+      {type: 'number', name: 'Épaisseur du contour', value: 5, min: 1, max: 100},
+      {type: 'select', name: 'Type de tracé', chosenOption: 'Contour', options: ['Contour', 'Plein', 'Plein avec contour']},
+      {type: 'number', name: 'Nombre de côtés', value: 4, min: 3, max: 12}
+    ]
   }
 ];

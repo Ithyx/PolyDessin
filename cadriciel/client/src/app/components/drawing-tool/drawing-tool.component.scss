@@ -16,4 +16,14 @@ a {
 
 a:hover {
     color: #EFE2BA;
-  }
+}
+
+.hexagon {
+    // Image d'hexagone libre de droits : https://www.flaticon.com/free-icon/hexagon_631570?term=polygon&page=1&position=1
+    // TODO: utiliser l'image correctement
+    background-image: url(../../../assets/hexagon.png);
+    background-attachment: fixed;
+    height: 100%;
+    display: block;
+    background-color: #EFE2BA;
+}

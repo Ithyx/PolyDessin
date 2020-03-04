@@ -53,7 +53,6 @@
             </div>
 
         </div>
-        <br />
         <div class="redo-undo">
             <a *ngIf="commands.executedCommands.length > 0; else undoNotAvailable"
                     mat-stroked-button (click)="commands.cancelCommand()">Annuler</a>
@@ -66,9 +65,10 @@
                 <a mat-stroked-button class="notavailable">Refaire</a>
             </ng-template>
         </div>
-        <br />
+        <i class="fas fa-palette" style ="margin-top : 10px"></i>
         <div class="color_button">
             Couleur primaire
+            <br />
             <button [ngStyle]= "{'background-color': colorParameter.getPrimaryColor() || 'white'}" 
                     (click)="selectColor('primary')"></button>
             <br />
@@ -79,9 +79,10 @@
                        (input)="applyPrimaryOpacity($event)" />
                 {{colorParameter.primaryOpacityDisplayed}}%
             </div>
-            <button mat-stroked-button (click)="colorParameter.intervertColors()">intervertir</button>
+            <a mat-stroked-button (click)="colorParameter.intervertColors()">Intervertir</a>
             <br />
             Couleur secondaire
+            <br />
             <button [ngStyle]= "{'background-color': colorParameter.getSecondaryColor() || 'white'}"
                     (click)="selectColor('secondary')"></button>
             <div class="opacity_selector">
@@ -95,14 +96,15 @@
             <div *ngIf="colorParameter.lastColors.length > 0" class="last_color">
                 Dernières couleurs utilisées
                 <br />
-                <button *ngFor="let last-color of colorParameter.lastColors"
-                        [ngStyle]= "{'background-color': last-color + '1)' || 'white'}" 
-                        (click)="selectPreviousPrimaryColor(last-color)"
-                        (contextmenu)="selectPreviousSecondaryColor(last-color, $event)">
+                <button *ngFor="let lastcolor of colorParameter.lastColors"
+                        [ngStyle]= "{'background-color': lastcolor + '1)' || 'white'}" 
+                        (click)="selectPreviousPrimaryColor(lastcolor)"
+                        (contextmenu)="selectPreviousSecondaryColor(lastcolor, $event)">
                 </button>
             </div>
             <div class="background_color"> 
                 Couleur de fond
+                <br />
                 <button [ngStyle]= "{'background-color': drawingManager.backgroundColor || 'white'}" 
                         (click)="selectColor('background')"></button>
             </div>
