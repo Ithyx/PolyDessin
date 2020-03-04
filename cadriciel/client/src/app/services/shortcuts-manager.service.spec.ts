@@ -13,7 +13,7 @@ describe('GestionnaireRaccourcisService', () => {
     expect(testService).toBeTruthy();
   });
 
-  // TESTS viderSVGECcours
+  // TESTS clearOngoingSVG
 
   it('#clearOngoingSVG devrait vider le SVGEnCours de l\' outil rectange', () => {
     spyOn(service.rectangleTool, 'clear');
@@ -29,7 +29,7 @@ describe('GestionnaireRaccourcisService', () => {
 
   // TESTS treatInput
 
-  it('#treatInput ne fait rien si le focus est sur un champ de texte', () => {
+  /* it('#treatInput ne fait rien si le focus est sur un champ de texte', () => {
     const keyboard = new KeyboardEvent('keypress', { key: '1'});
     service.focusOnInput = true;
 
@@ -168,6 +168,63 @@ describe('GestionnaireRaccourcisService', () => {
     service.treatInput(keyboard);
 
     expect(service.rectangleTool.shiftPress).toHaveBeenCalled();
+  }); */
+
+  // TESTS shorcutKey1
+
+  it('#shortcutKey1 devrait changer l\'outil actif pour le rectange', () => {
+    service.shortcutKey1();
+    expect(service.tools.activeTool.ID).toEqual(TOOL_INDEX.RECTANGLE);
+  });
+
+  it('#shortcutKey1 devrait supprimer la boite de sélection', () => {
+    spyOn(service.selection, 'deleteBoundingBox');
+    service.shortcutKey1();
+    expect(service.selection.deleteBoundingBox).toHaveBeenCalled();
+  });
+
+  it('#shortcutKey1 devrait supprimer le SVG en cours', () => {
+    spyOn(service, 'clearOngoingSVG');
+    service.shortcutKey1();
+    expect(service.clearOngoingSVG).toHaveBeenCalled();
+  });
+
+  // TESTS shortcutKeyC
+
+  it('#shortcutKeyC devrait changer l\'outil actif pour le crayon', () => {
+    service.shortcutKeyC();
+    expect(service.tools.activeTool.ID).toEqual(TOOL_INDEX.PENCIL);
+  });
+
+  it('#shortcutKeyC devrait supprimer la boite de sélection', () => {
+    spyOn(service.selection, 'deleteBoundingBox');
+    service.shortcutKeyC();
+    expect(service.selection.deleteBoundingBox).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyC devrait supprimer le SVG en cours', () => {
+    spyOn(service, 'clearOngoingSVG');
+    service.shortcutKeyC();
+    expect(service.clearOngoingSVG).toHaveBeenCalled();
+  });
+
+  // TESTS shortcutKeyL
+
+  it('#shortcutKeyL devrait changer l\'outil actif pour la ligne', () => {
+    service.shortcutKeyL();
+    expect(service.tools.activeTool.ID).toEqual(TOOL_INDEX.LINE);
+  });
+
+  it('#shortcutKeyL devrait supprimer la boite de sélection', () => {
+    spyOn(service.selection, 'deleteBoundingBox');
+    service.shortcutKeyL();
+    expect(service.selection.deleteBoundingBox).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyL devrait supprimer le SVG en cours', () => {
+    spyOn(service, 'clearOngoingSVG');
+    service.shortcutKeyL();
+    expect(service.clearOngoingSVG).toHaveBeenCalled();
   });
 
   // TESTS treatReleaseKey
