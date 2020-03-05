@@ -11,7 +11,7 @@ import { SubjectGuide } from './subject-guide';
 export class GuideSubjectComponent {
 
   @Input() node: SubjectGuide = EMPTY_SUBJECT;
-  @Input() depth = 0;
+  @Input() depth: number = 0;
 
   @Output() notification = new EventEmitter<SubjectGuide>();
 
