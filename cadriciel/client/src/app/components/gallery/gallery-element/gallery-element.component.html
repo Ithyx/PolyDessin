@@ -5,6 +5,7 @@
     </svg>
     <div class="informations">
         Nom: {{drawing.name}} <br>
-        Dimensions: {{drawing.height}}x{{drawing.width}}
+        Dimensions: {{drawing.height}}x{{drawing.width}} <br>
+        Étiquettes: {{(drawing.tags.length !== 0) ? drawing.tags : "aucune"}}
     </div>
 </div>
