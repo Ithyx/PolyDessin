@@ -46,6 +46,6 @@ export class DatabaseService {
         console.log('tried to send: ', drawing);
         if (!this.collection) { return -1; }
         console.log('recherche de id = ', drawing._id);
-        return ((await this.collection.replaceOne({_id: drawing._id}, drawing)).upsertedId._id as unknown as number);
+        return ((await this.collection.replaceOne({_id: drawing._id}, drawing, {upsert: true})).upsertedId._id as unknown as number);
     }
 }

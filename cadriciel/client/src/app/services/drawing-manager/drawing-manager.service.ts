@@ -13,6 +13,7 @@ export class DrawingManagerService {
   id: number;
   name: string;
   backgroundColor: string;
+  tags: string[];
 
   constructor() {
     this.height = INITIAL_HEIGHT;
@@ -20,5 +21,6 @@ export class DrawingManagerService {
     this.id = 0;
     this.name = '';
     this.backgroundColor = 'rgba(255, 255, 255, 1)';
+    this.tags = [];
   }
 }

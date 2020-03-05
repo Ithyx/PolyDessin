@@ -20,24 +20,14 @@ export class DatabaseController {
         this.router.get('/listDrawings', async (req: Request, res: Response, next: NextFunction) => {
             res.send(await this.databaseService.getDrawings());
         });
-        this.router.post('/addNewDrawing', async (req: Request, res: Response, next: NextFunction) => {
-            try {
-                const id = await this.databaseService.sendData(req.body);
-                console.log('id: ', id);
-                res.status(HttpStatus.OK).send(id);
-            } catch (err) {
-                console.log('ERROR DETECTED');
-                res.status(HttpStatus.BAD_REQUEST).send(err);
-            }
-        });
-        this.router.put('/updateDrawing', async (req: Request, res: Response, next: NextFunction) => {
+        this.router.post('/saveDrawing', async (req: Request, res: Response, next: NextFunction) => {
             try {
                 const id = await this.databaseService.updateData(req.body);
                 console.log('id: ', id);
-                res.status(HttpStatus.OK).send(id);
+                res.status(HttpStatus.OK).send(id.toString());
             } catch (err) {
-                console.log('ERROR DETECTED', err);
-                res.status(HttpStatus.BAD_REQUEST).send(err);
+                console.log('ERROR DETECTED 1: ', err);
+                res.status(HttpStatus.OK).send(err);
             }
         });
     }

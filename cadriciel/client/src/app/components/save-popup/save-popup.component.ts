@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { DatabaseService } from 'src/app/services/database/database.service';
-import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 
 @Component({
   selector: 'app-save-popup',
@@ -11,11 +10,10 @@ import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-
 export class SavePopupComponent {
 
   constructor(private dialogRef: MatDialogRef<SavePopupComponent>,
-              private db: DatabaseService,
-              private drawingParams: DrawingManagerService) {}
+              private db: DatabaseService) {}
 
   confirmSave(): void {
-    (this.drawingParams.id === 0) ? this.db.sendNewDrawing() : this.db.updateDrawing();
+    this.db.saveDrawing();
     this.dialogRef.close();
  }
   closeDialogue(): void {

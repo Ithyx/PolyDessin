@@ -9,12 +9,3 @@ export interface Drawing {
     tags?: string[];
     elements?: DrawElement[];
 }
-
-export interface NewDrawing {
-    name: string;
-    height: number;
-    width: number;
-    backgroundColor: string;
-    tags?: string[];
-    elements?: DrawElement[];
-}
