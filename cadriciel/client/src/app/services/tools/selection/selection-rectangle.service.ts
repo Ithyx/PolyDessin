@@ -4,6 +4,15 @@ import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { Point } from '../line-tool.service';
 import { DrawingTool } from '../tool-manager.service';
 
+const rectangleSelectionTool: DrawingTool = {name: '',
+                                             isActive: true,
+                                             ID: -1,
+                                             parameters: [
+                                              {type: 'invisible', name: 'Épaisseur du contour', value: 3},
+                                              {type: 'invisible', name: 'Type de tracé', chosenOption: 'Plein avec contour'}
+                                            ],
+                                             iconName: ''};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,24 +27,14 @@ export class SelectionRectangleService {
   widthCalculated: number;
   heightCalculated: number;
 
-  rectangleSelectionTool: DrawingTool = {name: '',
-                                         isActive: true,
-                                         ID: -1,
-                                         parameters: [
-                                          {type: 'invisible', name: 'Épaisseur du contour', value: 3},
-                                          {type: 'invisible', name: 'Type de tracé', chosenOption: 'Plein avec contour'}
-                                         ],
-                                         iconName: ''};
-
   constructor(private sanitizer: DomSanitizer) {
     this.ongoingSelection = false;
     this.widthCalculated = 0;
     this.heightCalculated = 0;
    }
 
-   
   refreshSVG(): void {
-    this.rectangle.tool = this.rectangleSelectionTool;
+    this.rectangle.tool = rectangleSelectionTool;
     this.rectangle.primaryColor = 'rgba(0, 80, 130, 0.35)';
     this.rectangle.secondaryColor = 'rgba(80, 80, 80, 0.45)';
     this.rectangle.draw();

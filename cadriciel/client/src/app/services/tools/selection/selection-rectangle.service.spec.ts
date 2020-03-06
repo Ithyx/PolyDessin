@@ -15,31 +15,38 @@ describe('SelectionRectangleService', () => {
     expect(testService).toBeTruthy();
   });
 
-  // Tests mouseMove
+  // Tests refreshSVG
 
-  it('#mouseMove ne devrait rien faire si il n\'y a pas de sélection', () => {
-    service.ongoingSelection = false;
-    const oldWidthCalculated: number = service.widthCalculated;
-    const oldHeightCalculated: number = service.heightCalculated;
-    const oldBasisPoint: Point = service.basisPoint;
-    const oldPoints: Point[] = service.rectangle.points;
-    spyOn(service, 'refreshSVG');
+  it('#refreshSVG devrait avoir la couleur principal à rgba(0, 80, 130, 0.35)', () => {
+    service.refreshSVG();
+    expect(service.rectangle.primaryColor).toBe('rgba(0, 80, 130, 0.35)');
+  });
 
-    service.mouseMove(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
+  it('#refreshSVG devrait avoir la couleur secondaire à rgba(80, 80, 80, 0.45)', () => {
+    service.refreshSVG();
+    expect(service.rectangle.secondaryColor).toBe('rgba(80, 80, 80, 0.45)');
+  });
 
-    expect(service.refreshSVG).not.toHaveBeenCalled();
-    expect(service.widthCalculated).toEqual(oldWidthCalculated);
-    expect(service.heightCalculated).toEqual(oldHeightCalculated);
-    expect(service.basisPoint).toEqual(oldBasisPoint);
-    expect(service.rectangle.points).toEqual(oldPoints);
+  it('#refreshSVG devrait dessiner le nouveau rectange de selection', () => {
+    spyOn(service.rectangle, 'draw');
+    service.refreshSVG();
+    expect(service.rectangle.draw).toHaveBeenCalled();
+  });
+
+  it('#refreshSVG devrait convertir le SVG du rectangle en HTML', () => {
+    service.rectangle.SVG = '<rect test>';
+    service.refreshSVG();
+    expect(service.rectangle.SVGHtml).toBe('<rect test>');
   });
 
   // Tests mouseDown
 
   it('#mouseDown devrait créer un nouveau rectangleService', () => {
     const mouse = new MouseEvent('click', { clientX: 100, clientY: 100 });
+    const initRectangle = new RectangleService();
+    initRectangle.isDotted = true;
     service.mouseDown(mouse);
-    expect(service.rectangle).toEqual(new RectangleService());
+    expect(service.rectangle).toEqual(initRectangle);
   });
 
   it('#mouseDown, le rectangle créé devrait être en pointillé', () => {

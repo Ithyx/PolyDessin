@@ -45,8 +45,8 @@ export class TracePencilService implements DrawElement {
   }
 
   drawPath(): void {
-    if (this.tool.parameters[0].value && !this.isSelected) {
-      this.thickness = this.tool.parameters[0].value;
+    if (!this.isSelected) {
+      this.thickness = (this.tool.parameters[0].value) ? this.tool.parameters[0].value : 1;
     }
     this.SVG = '<path transform ="translate(' + this.translate.x + ' ' + this.translate.y + `)" fill="none" stroke="${this.primaryColor}"`
       + 'stroke-linecap="round" stroke-width="' + this.thickness + '" d="';
@@ -58,8 +58,8 @@ export class TracePencilService implements DrawElement {
   }
 
   drawPoint(): void {
-    if (this.tool.parameters[0].value && !this.isSelected) {
-      this.thickness = this.tool.parameters[0].value;
+    if (!this.isSelected) {
+      this.thickness = (this.tool.parameters[0].value) ? this.tool.parameters[0].value : 1;
     }
     this.SVG = '<circle cx="' + this.points[0].x + '" cy="' + this.points[0].y
       + '" r="' + this.thickness / 2
