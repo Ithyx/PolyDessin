@@ -6,6 +6,7 @@ import { GridService } from 'src/app/services/grid/grid.service';
 import { RoutingManagerService } from 'src/app/services/routing-manager.service';
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
+import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 
@@ -22,7 +23,8 @@ export class DrawingSurfaceComponent {
               public routing: Router,
               public colorParameter: ColorParameterService,
               public selection: SelectionService,
-              public grid: GridService) {
+              public grid: GridService,
+              public colorChanger: ColorChangerToolService) {
   }
 
   handleBackgroundClick(): void {
@@ -36,6 +38,10 @@ export class DrawingSurfaceComponent {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       this.selection.handleClick(element);
       this.selection.clickOnSelectionBox = false;
+    } else if (this.tools.activeTool.ID === TOOL_INDEX.COLOR_CHANGER) {
+      console.log(this.SVGStockage.getCompleteSVG());
+      this.colorChanger.activeElementID = this.SVGStockage.getCompleteSVG().indexOf(element);
+      this.colorChanger.onMouseClick();
     }
   }
 
@@ -47,9 +53,9 @@ export class DrawingSurfaceComponent {
   }
 
   handleMouseUp(event: MouseEvent): void {
-   if(this.tools.activeTool.ID === TOOL_INDEX.SELECTION){
+   if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION){
      this.selection.selectionBox.selectionBox.translateAllPoints();
-     for(const controlPoint of this.selection.selectionBox.controlPointBox){
+     for (const controlPoint of this.selection.selectionBox.controlPointBox) {
        controlPoint.translateAllPoints();
      }
    }

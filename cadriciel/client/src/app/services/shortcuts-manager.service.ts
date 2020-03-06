@@ -52,6 +52,7 @@ export class ShortcutsManagerService {
                                     .set('i', this.shortcutKeyI.bind(this))
                                     .set('l', this.shortcutKeyL.bind(this))
                                     .set('w', this.shortcutKeyW.bind(this))
+                                    .set('r', this.shortcutKeyR.bind(this))
                                     .set('s', this.shortcutKeyS.bind(this))
                                     .set('z', this.shortcutKeyZ.bind(this))
                                     .set('Z', this.shortcutKeyUpperZ.bind(this))
@@ -174,8 +175,13 @@ export class ShortcutsManagerService {
   }
 
   shortcutKeyW(): void {
-      this.tools.changeActiveTool(TOOL_INDEX.BRUSH);
-      this.clearOngoingSVG();
+    this.tools.changeActiveTool(TOOL_INDEX.BRUSH);
+    this.clearOngoingSVG();
+  }
+
+  shortcutKeyR(): void {
+    this.tools.changeActiveTool(TOOL_INDEX.COLOR_CHANGER);
+    this.clearOngoingSVG();
   }
 
   shortcutKeyS(): void {

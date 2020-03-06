@@ -1,6 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { BrushToolService } from 'src/app/services/tools/brush-tool.service';
+import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
 import { DrawSprayService } from 'src/app/services/tools/draw-spray.service';
 import { LineToolService } from 'src/app/services/tools/line-tool.service';
 import { DrawingToolService } from 'src/app/services/tools/pencil-tool.service';
@@ -30,7 +31,8 @@ export class DrawingPageComponent {
               public selection: SelectionService,
               public spray: DrawSprayService,
               public pipette: PipetteToolService,
-              public polygon: PolygonToolService
+              public polygon: PolygonToolService,
+              public colorChanger: ColorChangerToolService
               ) {
               this.toolMap.set('Crayon', pencil)
                           .set('Rectangle', rectangle)
@@ -39,7 +41,8 @@ export class DrawingPageComponent {
                           .set('Selection', selection)
                           .set('Aérosol', spray)
                           .set('Pipette', pipette)
-                          .set('Polygone', polygon);
+                          .set('Polygone', polygon)
+                          .set('Applicateur Couleur', colorChanger);
                 }
 
   @HostListener('document:keydown', ['$event'])
