@@ -143,6 +143,24 @@ export const TOOL_LIST: DrawingTool[] = [
     isActive: false,
     ID: 8,
     iconName: 'far fa-circle',
+<<<<<<< Updated upstream
     parameters: []
+=======
+    parameters: [
+      {type: 'number', name: 'Épaisseur du contour', value: 5, min: 1, max: 100},
+      {type: 'select', name: 'Type de tracé', chosenOption: 'Contour', options: ['Contour', 'Plein', 'Plein avec contour']}
+    ]
+  },
+  {
+    name: 'Polygone',
+    isActive: false,
+    ID: 8,
+    iconName: 'fab fa-jira',
+    parameters: [
+      {type: 'number', name: 'Épaisseur du contour', value: 5, min: 1, max: 100},
+      {type: 'select', name: 'Type de tracé', chosenOption: 'Contour', options: ['Contour', 'Plein', 'Plein avec contour']},
+      {type: 'number', name: 'Nombre de côtés', value: 4, min: 3, max: 12}
+    ]
+>>>>>>> Stashed changes
   }
 ];

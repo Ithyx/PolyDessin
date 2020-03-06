@@ -3,7 +3,12 @@ import { BehaviorSubject } from 'rxjs';
 import { CommandManagerService } from './command/command-manager.service';
 import { GridService } from './grid/grid.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
+<<<<<<< Updated upstream
 import { LineToolService, Point } from './tools/line-tool.service';
+=======
+import { EllipseToolService } from './tools/ellipse-tool.service';
+import { LineToolService } from './tools/line-tool.service';
+>>>>>>> Stashed changes
 import { RectangleToolService } from './tools/rectangle-tool.service';
 import { SelectionService } from './tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
@@ -31,6 +36,7 @@ export class ShortcutsManagerService {
 
   constructor(public tools: ToolManagerService,
               public rectangleTool: RectangleToolService,
+              public ellipseTool: EllipseToolService,
               public lineTool: LineToolService,
               public commands: CommandManagerService,
               public selection: SelectionService,
@@ -196,10 +202,16 @@ export class ShortcutsManagerService {
   }
 
   shortcutKeyShift(): void {
-    if (this.tools.activeTool.ID === TOOL_INDEX.RECTANGLE) {
-      this.rectangleTool.shiftPress();
-    } else if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
-      this.lineTool.memorizeCursor();
+    switch (this.tools.activeTool.ID) {
+      case TOOL_INDEX.RECTANGLE:
+        this.rectangleTool.shiftPress();
+        break;
+      case TOOL_INDEX.LINE:
+        this.lineTool.memorizeCursor();
+        break;
+      case TOOL_INDEX.ELLIPSE:
+        this.ellipseTool.shiftPress();
+        break;
     }
   }
 
@@ -259,6 +271,9 @@ export class ShortcutsManagerService {
         }
         if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
           this.lineTool.shiftRelease();
+        }
+        if (this.tools.activeTool.ID === TOOL_INDEX.ELLIPSE) {
+          this.ellipseTool.shiftRelease();
         }
         break;
 

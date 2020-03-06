@@ -4,7 +4,6 @@ import { Point } from '../tools/line-tool.service';
 import { DrawingTool, EMPTY_TOOL } from '../tools/tool-manager.service';
 import { DrawElement } from './draw-element';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -21,31 +20,52 @@ export class EllipseService implements DrawElement {
 
   thickness: number;
   perimeter: string;
-  isDotted: boolean;
 
   tool: DrawingTool = EMPTY_TOOL;
 
   pointMin: Point;
   pointMax: Point;
-
   translate: Point;
 
   constructor() {
     this.SVGHtml = '';
-    this.points = [];
+    this.points = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
+                   {x: 0, y: 0}];   // points[1], coin bas droite
     this.pointMin = {x: 0, y: 0};
     this.pointMax = {x: 0, y: 0};
     this.isSelected = false;
     this.translate = { x: 0, y: 0};
   }
 
-  getRadius(): number {
-    return (this.pointMax.x - this.pointMin.x) / 2;
+  getWidth(): number {
+    return Math.abs(this.points[1].x - this.points[0].x);
+  }
+
+  getHeight(): number {
+    return Math.abs(this.points[1].y - this.points[0].y);
   }
 
   draw(): void {
-    this.drawEllipse();
+    if ((this.getWidth() === 0 || this.getHeight() === 0)
+      && this.tool.parameters[1].chosenOption !== 'Plein') {
+      this.drawLine();
+    } else {
+      this.drawEllipse();
+    }
     this.drawPerimeter();
+  }
+
+  drawLine(): void {
+    if (this.tool.parameters[0].value) {
+      this.thickness = this.tool.parameters[0].value;
+    }
+
+    this.SVG = '<line stroke-linecap="round'
+      + '" stroke="' + this.secondaryColor
+      + '" stroke-width="' + this.tool.parameters[0].value
+      + '" x1="' + this.points[0].x + '" y1="' + this.points[0].y
+      + '" x2="' + (this.points[0].x + this.getWidth())
+      + '" y2="' + (this.points[0].y + this.getHeight()) + '"/>';
   }
 
   drawEllipse(): void {
@@ -53,10 +73,9 @@ export class EllipseService implements DrawElement {
     this.SVG = '<ellipse transform=" translate(' + this.translate.x + ' ' + this.translate.y +
       ')" fill="' + ((choosedOption !== 'Contour') ? this.primaryColor : 'none')
       + '" stroke="' + ((choosedOption !== 'Plein') ? this.secondaryColor : 'none')
-      + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')
       + '" stroke-width="' + this.tool.parameters[0].value
-      + '" cx="' + this.points[0].x + '" cy="' + this.points[0].y
-      + '" r="' + this.getRadius() + '"/>';
+      + '" cx="' + (this.points[0].x + this.points[1].x) / 2 + '" cy="' + (this.points[0].y + this.points[1].y) / 2
+      + '" rx="' + this.getWidth() / 2 + '" ry="' + this.getHeight() / 2 + '"/>';
   }
 
   drawPerimeter(): void {
@@ -65,14 +84,16 @@ export class EllipseService implements DrawElement {
     } else if (this.tool.parameters[0].value) {
       this.thickness = this.tool.parameters[0].value;
     }
-    this.perimeter = '<ellipse stroke="gray" fill="none" stroke-width="2';
+    const thickness = (this.tool.parameters[0].value) ? this.tool.parameters[0].value : 0;
+    this.perimeter = '<rect stroke="gray" fill="none" stroke-width="2';
     if (this.tool.parameters[1].chosenOption === 'Plein') {
-      this.perimeter += '" cx="' + this.pointMin.x + '" cy="' + this.pointMin.y
-        + '" r="' + this.getRadius() + '"/>';
+      this.perimeter += '" x="' + this.points[0].x + '" y="' + this.points[0].y
+        + '" height="' + this.getHeight() + '" width="' + this.getWidth() + '"/>';
     } else {
-      this.perimeter += '" cx="' + (this.pointMin.x - this.thickness / 2)
-        + '" cy="' + (this.pointMin.y - this.thickness / 2);
-      this.perimeter += '" rx="' + ((this.getRadius() === 0) ? this.thickness : (this.getRadius() + this.thickness)) + '"/>';
+      this.perimeter += '" x="' + (this.points[0].x - thickness / 2)
+        + '" y="' + (this.points[0].y - thickness / 2);
+      this.perimeter += '" height="' + ((this.getHeight() === 0) ? thickness : (this.getHeight() + thickness))
+        + '" width="' + ((this.getWidth() === 0) ? thickness : (this.getWidth() + thickness)) + '"/>';
     }
   }
 
