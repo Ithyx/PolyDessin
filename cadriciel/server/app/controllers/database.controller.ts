@@ -26,8 +26,17 @@ export class DatabaseController {
                 console.log('id: ', id);
                 res.status(HttpStatus.OK).send(id.toString());
             } catch (err) {
-                console.log('ERROR DETECTED 1: ', err);
-                res.status(HttpStatus.OK).send(err);
+                console.log('ERROR DETECTED: ', err);
+                res.status(HttpStatus.BAD_REQUEST).send(err);
+            }
+        });
+        this.router.delete('/deleteDrawing', async (req: Request, res: Response, next: NextFunction) => {
+            try {
+                const ok = await this.databaseService.deleteData(req.query.id);
+                ok ? res.status(HttpStatus.OK) : res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+            } catch (err) {
+                console.log('ERROR DETECTED: ', err);
+                res.status(HttpStatus.BAD_REQUEST).send(err);
             }
         });
     }

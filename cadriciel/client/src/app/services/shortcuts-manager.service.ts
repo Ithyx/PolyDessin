@@ -112,7 +112,7 @@ export class ShortcutsManagerService {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = true;
       dialogConfig.autoFocus = true;
-      dialogConfig.width = '40%';
+      dialogConfig.width = '80%';
       this.dialog.open(SavePopupComponent, dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
       keyboard.preventDefault();
     } else {

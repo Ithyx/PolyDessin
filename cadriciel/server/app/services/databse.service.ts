@@ -36,16 +36,17 @@ export class DatabaseService {
         return await this.collection.find().toArray();
     }
 
-    async sendData(drawing: Drawing): Promise<number> {
-        console.log('tried to send: ', drawing);
-        if (!this.collection) { return -1; }
-        return ((await this.collection.insertOne(drawing)).insertedId);
-    }
-
     async updateData(drawing: Drawing): Promise<number> {
         console.log('tried to send: ', drawing);
         if (!this.collection) { return -1; }
         console.log('recherche de id = ', drawing._id);
         return ((await this.collection.replaceOne({_id: drawing._id}, drawing, {upsert: true})).upsertedId._id as unknown as number);
+    }
+
+    async deleteData(id: number): Promise<boolean> {
+        console.log(id);
+        if (!this.collection) { return false; }
+        console.log(await this.collection.findOne({_id: id}));
+        return (await this.collection.deleteOne({_id: id})).result.ok === undefined;
     }
 }

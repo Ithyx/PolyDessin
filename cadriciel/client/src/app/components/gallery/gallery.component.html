@@ -1,23 +1,9 @@
 <h1 style="text-align: center;">GALERIE :</h1>
 <br>
-<div *ngFor="let element of drawings" class="drawings">
-    <app-gallery-element [drawing]="element"></app-gallery-element>
+<div *ngFor="let element of drawings; let i = index" class="drawings">
+    <app-gallery-element [drawing]="element" [isSelected]="i === selected" (click)="selected = i;"></app-gallery-element>
 </div>
 <div class="clear"></div>
-<!--PAR PITIÉE FAITES QUELQUE CHOSE POUR ÉVITER ÇA:-->
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<!--HELP-->
-<button (click)="close()" class="close-button">fermer</button>
+<button mat-stroked-button (click)="close()" class="close-button" style="float: left;">fermer</button>
+<button mat-raised-button (click)="loadDrawing(drawings[selected])" color="primary" [disabled]="selected === null" style="float: right;">Charger</button>
+<button mat-raised-button (click)="deleteDrawing(drawings[selected])" color="warn" [disabled]="selected === null" style="float: right;">Supprimer</button>

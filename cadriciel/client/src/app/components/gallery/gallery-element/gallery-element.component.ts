@@ -9,6 +9,7 @@ import { Drawing } from '../../../../../../common/communication/DrawingInterface
 })
 export class GalleryElementComponent {
   @Input() drawing: Drawing;
+  @Input() isSelected: boolean;
 
   constructor(protected sanitizer: DomSanitizer) {}
 

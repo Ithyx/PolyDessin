@@ -6,7 +6,7 @@ import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 
 const SERVER_POST_URL = 'http://localhost:3000/api/db/saveDrawing';
 const SERVER_GET_URL = 'http://localhost:3000/api/db/listDrawings';
-// const HEADER = 'Content-Type: application/json';
+const SERVER_DELETE_URL = 'http://localhost:3000/api/db/deleteDrawing';
 const headers: HttpHeaders = new HttpHeaders();
 
 @Injectable({
@@ -38,5 +38,9 @@ export class DatabaseService {
     const list = await this.http.get<Drawing[]>(SERVER_GET_URL).toPromise();
     console.log(list);
     return list;
+  }
+
+  async deleteDrawing(id: number): Promise<void> {
+    await this.http.delete(SERVER_DELETE_URL + '?id=' + id.toString()).toPromise();
   }
 }

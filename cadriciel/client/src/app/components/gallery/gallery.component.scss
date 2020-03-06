@@ -1,3 +1,10 @@
 .drawings { float: left; }
 
-.clear { clear: both; }
+.clear {
+    clear: both;
+    float: left;
+    display: block;
+    position: relative;
+}
+
+.selected { background-color: rgba($color: #000000, $alpha: 0.4); }
