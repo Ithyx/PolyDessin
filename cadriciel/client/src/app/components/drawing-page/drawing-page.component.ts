@@ -3,6 +3,7 @@ import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.serv
 import { BrushToolService } from 'src/app/services/tools/brush-tool.service';
 import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
 import { DrawSprayService } from 'src/app/services/tools/draw-spray.service';
+import { EllipseToolService } from 'src/app/services/tools/ellipse-tool.service';
 import { LineToolService } from 'src/app/services/tools/line-tool.service';
 import { DrawingToolService } from 'src/app/services/tools/pencil-tool.service';
 import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
@@ -31,8 +32,9 @@ export class DrawingPageComponent {
               public selection: SelectionService,
               public spray: DrawSprayService,
               public pipette: PipetteToolService,
-              public polygon: PolygonToolService,
-              public colorChanger: ColorChangerToolService
+              public colorChanger: ColorChangerToolService,
+              public ellipse: EllipseToolService,
+              public polygon: PolygonToolService
               ) {
               this.toolMap.set('Crayon', pencil)
                           .set('Rectangle', rectangle)
@@ -41,8 +43,9 @@ export class DrawingPageComponent {
                           .set('Selection', selection)
                           .set('Aérosol', spray)
                           .set('Pipette', pipette)
-                          .set('Polygone', polygon)
-                          .set('Applicateur Couleur', colorChanger);
+                          .set('Applicateur Couleur', colorChanger)
+                          .set('Ellipse', ellipse)
+                          .set('Polygone', polygon);
                 }
 
   @HostListener('document:keydown', ['$event'])

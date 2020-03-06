@@ -1,4 +1,4 @@
-/*import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ColorParameterService } from '../color/color-parameter.service';
 import { AddSVGService } from '../command/add-svg.service';
 import { CommandManagerService } from '../command/command-manager.service';
@@ -17,7 +17,8 @@ export class EllipseToolService {
   // Coordonnées du point inférieur gauche
   calculatedBase: Point;
   // Dimensions de l'ellipse
-  calculatedRadius: number;
+  calculatedWidth: number;
+  calculatedHeight: number;
 
   constructor(
               public stockageSVG: SVGStockageService,
@@ -28,7 +29,8 @@ export class EllipseToolService {
       this.ellipse = new EllipseService();
       this.initial = {x: 0, y: 0};
       this.calculatedBase = {x: 0, y: 0};
-      this.calculatedRadius = 0;
+      this.calculatedWidth = 0;
+      this.calculatedHeight = 0;
    }
 
    refreshSVG(): void {
@@ -42,10 +44,8 @@ export class EllipseToolService {
   onMouseMove(mouse: MouseEvent): void {
     if (this.commands.drawingInProgress) {
       // Calcule des valeurs pour former une ellipse
-      const calculatedWidth = Math.abs(this.initial.x - mouse.offsetX);
-      const calculatedHeight = Math.abs(this.initial.y - mouse.offsetY);
-      this.calculatedRadius = (calculatedHeight >= calculatedWidth) ? calculatedHeight / 2 : calculatedWidth / 2;
-
+      this.calculatedWidth = Math.abs(this.initial.x - mouse.offsetX);
+      this.calculatedHeight = Math.abs(this.initial.y - mouse.offsetY);
       this.calculatedBase.x = Math.min(this.initial.x, mouse.offsetX);
       this.calculatedBase.y = Math.min(this.initial.y, mouse.offsetY);
       // Si shift est enfoncé, les valeurs calculées sont ajustées pour former un cercle
@@ -67,16 +67,18 @@ export class EllipseToolService {
   onMouseRelease(): void {
     this.commands.drawingInProgress = false;
     // On évite de créer des formes vides
-    if (this.ellipse.getRadius() !== 0) {
+    if (this.ellipse.getWidth() !== 0 || this.ellipse.getHeight() !== 0) {
       this.commands.execute(new AddSVGService(this.ellipse, this.stockageSVG));
     }
     this.calculatedBase = {x: 0, y: 0};
+    this.calculatedHeight = 0;
+    this.calculatedWidth = 0;
     this.ellipse = new EllipseService();
   }
 
   shiftPress(): void {
     if (this.commands.drawingInProgress) {
-      // Lorsque la touche 'shift' est enfoncée, la forme à dessiner est un carré
+      // Lorsque la touche 'shift' est enfoncée, la forme à dessiner est un cercle
       if (this.calculatedWidth < this.calculatedHeight) {
         this.ellipse.points[0].y = (this.calculatedBase.y === this.initial.y) ?
           this.calculatedBase.y : (this.calculatedBase.y + (this.calculatedHeight - this.calculatedWidth));
@@ -95,7 +97,7 @@ export class EllipseToolService {
 
   shiftRelease(): void {
     if (this.commands.drawingInProgress) {
-      // Lorsque la touche 'shift' est relâchée, la forme à dessiner est un rectangle
+      // Lorsque la touche 'shift' est relâchée, la forme à dessiner est une ellipse
       this.ellipse.points[0] = this.calculatedBase;
       this.ellipse.points[1] = {x: this.calculatedBase.x + this.calculatedWidth, y: this.calculatedBase.y + this.calculatedHeight};
       this.refreshSVG();
@@ -107,4 +109,3 @@ export class EllipseToolService {
     this.ellipse = new EllipseService();
   }
 }
-*/

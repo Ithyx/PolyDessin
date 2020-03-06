@@ -2,6 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { By } from '@angular/platform-browser';
+import { MAX_CELL_SIZE, MIN_CELL_SIZE } from 'src/app/services/grid/grid.service';
 import { GridOptionsComponent, KEY_FORM_CELL_SIZE, KEY_FORM_OPACITY, KEY_FORM_SHOW_GRID } from './grid-options.component';
 
 describe('GridOptionsComponent', () => {
@@ -66,13 +68,51 @@ describe('GridOptionsComponent', () => {
   });
 
   // TESTS changeOpacity
-/*
+
   it('#changeOpacity devrait changer la valeur de opacitySelected', () => {
-    const event = fixture.debugElement.query(By.css('input[type="range"]')).nativeElement;
-    const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
+    const element = fixture.debugElement.query(By.css('input[formControlName="opacityForm"]')).nativeElement;
     // tslint:disable-next-line:no-magic-numbers
-    const test = Math.round(100 * Number(eventCast.value));
-    component.changeOpacity(event);
-    expect(component.opacitySelected).toEqual(test);
-  });*/
+    element.value = 0.589;
+    element.dispatchEvent(new Event('input'));  // changeOpacity appelée implicitement
+    // tslint:disable-next-line:no-magic-numbers
+    expect(component.opacitySelected).toEqual(59);
+  });
+
+  // TESTS validateCellSize
+
+  it('#validateCellSize devrait changer la valeur de cellSizeValue', () => {
+    const element = fixture.debugElement.query(By.css('input[formControlName="cellSizeForm"]')).nativeElement;
+    // tslint:disable-next-line:no-magic-numbers
+    element.value = 10;
+    element.dispatchEvent(new Event('change'));  // validateCellSize appelée implicitement
+    // tslint:disable-next-line:no-magic-numbers
+    expect(component.cellSizeValue).toEqual(10);
+  });
+
+  it('#validateCellSize devrait changer la valeur de cellSizeValue à MIN_CELL_SIZE si la valeur est inférieure', () => {
+    const element = fixture.debugElement.query(By.css('input[formControlName="cellSizeForm"]')).nativeElement;
+    // tslint:disable-next-line:no-magic-numbers
+    element.value = MIN_CELL_SIZE - 10;
+    element.dispatchEvent(new Event('change'));  // validateCellSize appelée implicitement
+    // tslint:disable-next-line:no-magic-numbers
+    expect(component.cellSizeValue).toEqual(MIN_CELL_SIZE);
+  });
+
+  it('#validateCellSize devrait changer la valeur de cellSizeValue à MAX_CELL_SIZE si la valeur est supérieure', () => {
+    const element = fixture.debugElement.query(By.css('input[formControlName="cellSizeForm"]')).nativeElement;
+    // tslint:disable-next-line:no-magic-numbers
+    element.value = MAX_CELL_SIZE + 10;
+    element.dispatchEvent(new Event('change'));  // validateCellSize appelée implicitement
+    // tslint:disable-next-line:no-magic-numbers
+    expect(component.cellSizeValue).toEqual(MAX_CELL_SIZE);
+  });
+
+  it('#validateCellSize devrait changer la valeur dans options', () => {
+    const element = fixture.debugElement.query(By.css('input[formControlName="cellSizeForm"]')).nativeElement;
+    // tslint:disable-next-line:no-magic-numbers
+    element.value = 25;
+    element.dispatchEvent(new Event('change'));  // validateCellSize appelée implicitement
+    // tslint:disable-next-line:no-magic-numbers
+    expect(component.options.value[KEY_FORM_CELL_SIZE]).toEqual(25);
+  });
 });

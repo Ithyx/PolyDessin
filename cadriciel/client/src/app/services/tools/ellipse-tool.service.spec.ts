@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+/*import { TestBed } from '@angular/core/testing';
 
 import { EllipseToolService } from './ellipse-tool.service';
 
@@ -9,4 +9,9 @@ describe('EllipseToolService', () => {
     const service: EllipseToolService = TestBed.get(EllipseToolService);
     expect(service).toBeTruthy();
   });
+<<<<<<< Updated upstream
+});*/
+=======
 });
+*/
+>>>>>>> Stashed changes
