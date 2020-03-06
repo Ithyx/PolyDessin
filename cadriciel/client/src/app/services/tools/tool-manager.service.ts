@@ -80,9 +80,19 @@ export const TOOL_LIST: DrawingTool[] = [
     ]
   },
   {
-    name: 'Rectangle',
+    name: 'Aérosol',
     isActive: false,
     ID: 2,
+    iconName: 'fas fa-spray-can',
+    parameters: [
+      { type: 'number', name: 'Diamétre du jet', value: 20, min: 5, max: 100 },
+      { type: 'number', name: 'Nombre d\'émissions par seconde', value: 100, min: 1, max: 200 }
+    ]
+  },
+  {
+    name: 'Rectangle',
+    isActive: false,
+    ID: 3,
     iconName: 'far fa-square',
     parameters: [
       {type: 'number', name: 'Épaisseur du contour', value: 5, min: 1, max: 100},
@@ -90,9 +100,20 @@ export const TOOL_LIST: DrawingTool[] = [
     ]
   },
   {
+    name: 'Polygone',
+    isActive: false,
+    ID: 4,
+    iconName: 'fab fa-jira',
+    parameters: [
+      {type: 'number', name: 'Épaisseur du contour', value: 5, min: 1, max: 100},
+      {type: 'select', name: 'Type de tracé', chosenOption: 'Contour', options: ['Contour', 'Plein', 'Plein avec contour']},
+      {type: 'number', name: 'Nombre de côtés', value: 4, min: 3, max: 12}
+    ]
+  },
+  {
     name: 'Ligne',
     isActive: false,
-    ID: 3,
+    ID: 5,
     iconName: 'fas fa-vector-square',
     parameters: [
       {type: 'number', name: 'Épaisseur', value: 5, min: 1, max: 100},
@@ -103,7 +124,7 @@ export const TOOL_LIST: DrawingTool[] = [
   {
     name: 'Selection',
     isActive: false,
-    ID: 4,
+    ID: 6,
     iconName: 'fas fa-vector-square',
     parameters: [
       { type: 'invisible', name: 'Épaisseur', value: 3, min: 1, max: 100 },
@@ -111,38 +132,17 @@ export const TOOL_LIST: DrawingTool[] = [
     ]
   },
   {
-    name: 'Aérosol',
-    isActive: false,
-    ID: 5,
-    iconName: 'fas fa-spray-can',
-    parameters: [
-      { type: 'number', name: 'Diamétre du jet', value: 20, min: 5, max: 100 },
-      { type: 'number', name: 'Nombre d\'émissions par seconde', value: 100, min: 1, max: 200 }
-    ]
-  },
-  {
     name: 'Pipette',
     isActive: false,
-    ID: 6,
+    ID: 7,
     iconName: 'fas fa-eye-dropper',
     parameters: []
   },
   {
     name: 'Ellipse',
     isActive: false,
-    ID: 7,
+    ID: 8,
     iconName: 'far fa-circle',
     parameters: []
-  },
-  {
-    name: 'Polygone',
-    isActive: false,
-    ID: 8,
-    iconName: 'fab fa-jira',
-    parameters: [
-      {type: 'number', name: 'Épaisseur du contour', value: 5, min: 1, max: 100},
-      {type: 'select', name: 'Type de tracé', chosenOption: 'Contour', options: ['Contour', 'Plein', 'Plein avec contour']},
-      {type: 'number', name: 'Nombre de côtés', value: 4, min: 3, max: 12}
-    ]
   }
 ];
