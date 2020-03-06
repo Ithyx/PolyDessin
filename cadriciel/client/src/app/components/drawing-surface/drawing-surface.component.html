@@ -39,7 +39,7 @@
     </defs>
 
     
-    <rect x="0" y="0" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" [attr.fill]="drawingManager.backgroundColor" (click)="handleBackgroundClick()"/>
+    <rect x="0" y="0" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" [attr.fill]="drawingManager.backgroundColor" (click)="handleBackgroundClick()" (contextmenu)="onRightClick($event)"/>
 
     <g *ngFor="let element of SVGStockage.getCompleteSVG()" [innerHTML]="element.SVGHtml" (click)="handleElementClick(element)"></g>
     <g *ngIf="this.selection.selectionRectangle.rectangle"  [innerHTML]="this.selection.selectionRectangle.rectangle.SVGHtml"></g>

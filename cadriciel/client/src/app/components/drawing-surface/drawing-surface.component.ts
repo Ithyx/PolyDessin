@@ -34,13 +34,19 @@ export class DrawingSurfaceComponent {
     }
   }
 
+  handleElementRightClick(element: DrawElement): void {
+    if (this.tools.activeTool.ID === TOOL_INDEX.COLOR_CHANGER) {
+      this.colorChanger.onRightClick();
+      this.colorChanger.activeElementID = this.SVGStockage.getCompleteSVG().indexOf(element);
+    }
+  }
+
   handleElementClick(element: DrawElement): void {
+    this.colorChanger.activeElementID = this.SVGStockage.getCompleteSVG().indexOf(element);
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       this.selection.handleClick(element);
       this.selection.clickOnSelectionBox = false;
     } else if (this.tools.activeTool.ID === TOOL_INDEX.COLOR_CHANGER) {
-      console.log(this.SVGStockage.getCompleteSVG());
-      this.colorChanger.activeElementID = this.SVGStockage.getCompleteSVG().indexOf(element);
       this.colorChanger.onMouseClick();
     }
   }

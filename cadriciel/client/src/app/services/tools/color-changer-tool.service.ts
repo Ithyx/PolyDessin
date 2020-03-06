@@ -3,12 +3,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ColorParameterService } from '../color/color-parameter.service';
 import { DrawElement } from '../stockage-svg/draw-element';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
-import { ToolInterface } from './tool-interface';
+// import { ToolInterface } from './tool-interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ColorChangerToolService implements ToolInterface {
+export class ColorChangerToolService /*implements ToolInterface*/ {
 
   activeElement: DrawElement;
   activeElementID: number;
@@ -17,11 +17,10 @@ export class ColorChangerToolService implements ToolInterface {
               public SVGStockage: SVGStockageService,
               private sanitizer: DomSanitizer
               ) {
-                this.activeElementID = 0;
+                // this.activeElementID = 0;
               }
 
   onMouseClick(): void {
-    console.log(this.activeElementID);
     if (this.SVGStockage.getCompleteSVG()[this.activeElementID].primaryColor) {
       this.SVGStockage.getCompleteSVG()[this.activeElementID].primaryColor = this.colorParameter.getPrimaryColor();
       this.SVGStockage.getCompleteSVG()[this.activeElementID].draw();
