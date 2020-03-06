@@ -108,11 +108,12 @@ export class ShortcutsManagerService {
 
   shortcutKeyS(keyboard: KeyboardEvent): void {
     if (keyboard.ctrlKey) {
+      this.focusOnInput = true;
       const dialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = true;
       dialogConfig.autoFocus = true;
       dialogConfig.width = '40%';
-      this.dialog.open(SavePopupComponent, dialogConfig);
+      this.dialog.open(SavePopupComponent, dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
       keyboard.preventDefault();
     } else {
       this.selection.deleteBoundingBox();

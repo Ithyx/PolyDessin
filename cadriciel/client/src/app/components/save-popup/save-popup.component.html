@@ -1,3 +1,8 @@
 <h1>Voulez-vous sauvegarder le dessin sur le serveur ?</h1>
+<form>
+    <label>Nom du dessin:
+        <input type="text" maxlength="15" [formControl]="name">
+    </label>
+</form>
 <button mat-raised-button (click)="confirmSave()">Confirmer</button>
 <button mat-stroked-button (click)="closeDialogue()">Annuler</button>

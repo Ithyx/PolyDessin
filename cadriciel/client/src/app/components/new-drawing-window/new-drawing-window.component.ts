@@ -25,10 +25,11 @@ export const BUFFER_HEIGHT = 15;
 export class NewDrawingWindowComponent {
   windowHeight: number;
   windowWidth: number;
-
   dimensionManuallyChange: boolean;
-
   newDrawing: FormGroup;
+
+  heightValid: boolean;
+  widthValid: boolean;
 
   constructor(public dialogRef: MatDialogRef<NewDrawingWindowComponent>,
               public shortcuts: ShortcutsManagerService,
@@ -44,12 +45,20 @@ export class NewDrawingWindowComponent {
     this.dimensionManuallyChange = false;
 
     this.newDrawing = new FormGroup({
-      formName: new FormControl(),
       formHeight: new FormControl(this.windowHeight),
       formWidth: new FormControl(this.windowWidth),
     });
 
+    this.heightValid = true;
+    this.widthValid = true;
+
     this.changeWindowDimension();
+  }
+
+  areDimensionsValid(): boolean {
+    this.heightValid = this.newDrawing.value[KEY_FORM_HEIGHT];
+    this.widthValid = this.newDrawing.value[KEY_FORM_WIDHT];
+    return this.heightValid && this.widthValid;
   }
 
   closeWindow(): void {
@@ -72,11 +81,12 @@ export class NewDrawingWindowComponent {
   }
 
   createNewDrawing(): void {
+    if (!this.areDimensionsValid()) { return; }
     this.SVGStockage.cleanDrawing();
     this.commands.clearCommand();
     this.drawingManager.height = this.newDrawing.value[KEY_FORM_HEIGHT];
     this.drawingManager.width = this.newDrawing.value[KEY_FORM_WIDHT];
-    this.drawingManager.name = this.newDrawing.value[KEY_FORM_NAME];
+    this.drawingManager.name = '';
     this.drawingManager.id = 0;
     this.drawingManager.backgroundColor = this.colorParameter.temporaryBackgroundColor;
     this.shortcuts.focusOnInput = false;
@@ -89,7 +99,6 @@ export class NewDrawingWindowComponent {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '30%';
-    dialogConfig.panelClass = 'fenetre-couleur';
     this.dialog.open(ColorChoiceComponent, dialogConfig).componentInstance.portee = Scope.BackgroundNewDrawing;
   }
 }

@@ -2,14 +2,11 @@
 <h1>Paramètres pour la création d'un nouveau dessin</h1>
 
 <form [formGroup]="newDrawing">
-<label>Nom du dessin:
-    <input type="text" maxlength="15" formControlName="formName">
-</label>
 <label>Hauteur: (pixels)
-<input type="number" min = "0" (input)="changeWindowDimensionManually()" formControlName="formHeight">
+<input type="number" min = "0" (input)="changeWindowDimensionManually()" formControlName="formHeight" [className]="heightValid ? '' : 'invalid'">
 </label>
 <label>Largeur: (pixels)
-<input type="number" min = "0"  (input)="changeWindowDimensionManually()"  formControlName="formWidth">
+<input type="number" min = "0"  (input)="changeWindowDimensionManually()"  formControlName="formWidth" [className]="widthValid ? '' : 'invalid'">
 </label>
 
 <h2>Couleur d'Arrière-Plan</h2>
