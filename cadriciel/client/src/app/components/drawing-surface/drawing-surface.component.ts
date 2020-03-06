@@ -30,7 +30,6 @@ export class DrawingSurfaceComponent {
         this.selection.deleteBoundingBox();
         this.selection.clickOnSelectionBox = false;
     }
-    console.log('background click');
   }
 
   handleElementClick(element: DrawElement): void {
@@ -38,16 +37,22 @@ export class DrawingSurfaceComponent {
       this.selection.handleClick(element);
       this.selection.clickOnSelectionBox = false;
     }
-    console.log('SVG element click');
   }
 
   handleMouseDown(event: MouseEvent): void {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
-      /* TODO */
       this.selection.clickOnSelectionBox = true;
-      this.selection.updatePosition(5, 0);    // TEMPORAIRE
       this.selection.selectionBox.mouseClick = {x: event.offsetX , y: event.offsetY };
-      console.log('selectionBox click');
     }
   }
+
+  handleMouseUp(event: MouseEvent): void {
+   if(this.tools.activeTool.ID === TOOL_INDEX.SELECTION){
+     this.selection.selectionBox.selectionBox.translateAllPoints();
+     for(const controlPoint of this.selection.selectionBox.controlPointBox){
+       controlPoint.translateAllPoints();
+     }
+   }
+  }
+
 }

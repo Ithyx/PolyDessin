@@ -14,7 +14,8 @@ export class PipetteToolService implements ToolInterface {
   mousePosition: Point;
   colorScope: Scope;
 
-  constructor(public colorParameter: ColorParameterService) {}
+  constructor(public colorParameter: ColorParameterService,
+               ) {}
 
   onMouseClick(mouse: MouseEvent): void {
     this.colorScope = Scope.Primary;

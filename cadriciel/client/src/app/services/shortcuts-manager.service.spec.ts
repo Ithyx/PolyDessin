@@ -13,7 +13,7 @@ describe('GestionnaireRaccourcisService', () => {
     expect(testService).toBeTruthy();
   });
 
-  // TESTS viderSVGECcours
+  // TESTS clearOngoingSVG
 
   it('#clearOngoingSVG devrait vider le SVGEnCours de l\' outil rectange', () => {
     spyOn(service.rectangleTool, 'clear');
@@ -29,182 +29,263 @@ describe('GestionnaireRaccourcisService', () => {
 
   // TESTS treatInput
 
-  it('#treatInput ne fait rien si le focus est sur un champ de texte', () => {
-    const clavier = new KeyboardEvent('keypress', { key: '1'});
+  /* it('#treatInput ne fait rien si le focus est sur un champ de texte', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: '1'});
     service.focusOnInput = true;
 
     spyOn(service, 'clearOngoingSVG');
 
-    service.treatInput(clavier);
+    service.treatInput(keyboard);
 
     expect(service.clearOngoingSVG).not.toHaveBeenCalled();         // On ne devrait pas vider le SVG en cours
     expect(service.tools.activeTool.name).not.toBe('Rectangle');    // On ne devrait pas changer d'outil actif
   });
 
   it('#treatInput devrait mettre rectangle comme outil actif si il reçoit 1', () => {
-    const clavier = new KeyboardEvent('keypress', { key: '1'});
+    const keyboard = new KeyboardEvent('keypress', { key: '1'});
     spyOn(service, 'clearOngoingSVG');
 
-    service.treatInput(clavier);
+    service.treatInput(keyboard);
 
     expect(service.clearOngoingSVG).toHaveBeenCalled();
     expect(service.tools.activeTool.name).toBe('Rectangle');
   });
 
   it('#treatInput devrait mettre crayon comme outil actif si il reçoit c', () => {
-    const clavier = new KeyboardEvent('keypress', { key: 'c'});
+    const keyboard = new KeyboardEvent('keypress', { key: 'c'});
     spyOn(service, 'clearOngoingSVG');
 
-    service.treatInput(clavier);
+    service.treatInput(keyboard);
 
     expect(service.clearOngoingSVG).toHaveBeenCalled();
     expect(service.tools.activeTool.name).toBe('Crayon');
   });
 
   it('#treatInput devrait mettre ligne comme outil actif si il reçoit l', () => {
-    const clavier = new KeyboardEvent('keypress', { key: 'l'});
+    const keyboard = new KeyboardEvent('keypress', { key: 'l'});
     spyOn(service, 'clearOngoingSVG');
 
-    service.treatInput(clavier);
+    service.treatInput(keyboard);
 
     expect(service.clearOngoingSVG).toHaveBeenCalled();
     expect(service.tools.activeTool.name).toBe('Ligne');
   });
 
   it('#treatInput devrait mettre pinceau comme outil actif si il reçoit w', () => {
-    const clavier = new KeyboardEvent('keypress', { key: 'w'});
+    const keyboard = new KeyboardEvent('keypress', { key: 'w'});
     spyOn(service, 'clearOngoingSVG');
 
-    service.treatInput(clavier);
+    service.treatInput(keyboard);
 
     expect(service.clearOngoingSVG).toHaveBeenCalled();
     expect(service.tools.activeTool.name).toBe('Pinceau');
   });
 
   it('#treatInput devrait retirer le dernier point en cours si il reçoit Backspace et que ligne est active', () => {
-    const clavier = new KeyboardEvent('keypress', { key: 'Backspace'});
+    const keyboard = new KeyboardEvent('keypress', { key: 'Backspace'});
     service.tools.changeActiveTool(TOOL_INDEX.LINE);
     spyOn(service.lineTool, 'removePoint');
 
-    service.treatInput(clavier);
+    service.treatInput(keyboard);
 
     expect(service.lineTool.removePoint).toHaveBeenCalled();
   });
 
   it('#treatInput ne devrait rien faire si il reçoit Backspace mais que ligne est inactive', () => {
-    const clavier = new KeyboardEvent('keypress', { key: 'Backspace'});
+    const keyboard = new KeyboardEvent('keypress', { key: 'Backspace'});
     service.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
     spyOn(service.lineTool, 'removePoint');
 
-    service.treatInput(clavier);
+    service.treatInput(keyboard);
 
     expect(service.lineTool.removePoint).not.toHaveBeenCalled();
   });
 
   it('#treatInput devrait annuler la ligne en cours si il reçoit Escape et que ligne est active', () => {
-    const clavier = new KeyboardEvent('keypress', { key: 'Escape'});
+    const keyboard = new KeyboardEvent('keypress', { key: 'Escape'});
     service.tools.changeActiveTool(TOOL_INDEX.LINE);
     spyOn(service.lineTool, 'clear');
 
-    service.treatInput(clavier);
+    service.treatInput(keyboard);
 
     expect(service.lineTool.clear).toHaveBeenCalled();
   });
 
   it('#treatInput ne devrait rien faire si il reçoit Escape mais que ligne est inactive', () => {
-    const clavier = new KeyboardEvent('keypress', { key: 'Escape'});
+    const keyboard = new KeyboardEvent('keypress', { key: 'Escape'});
     service.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
     spyOn(service.lineTool, 'clear');
 
-    service.treatInput(clavier);
+    service.treatInput(keyboard);
 
     expect(service.lineTool.clear).not.toHaveBeenCalled();
   });
 
   it('#treatInput devrait emmettre un nouveau dessin si il reçoit o avec ctrl actif', () => {
-    const clavier = new KeyboardEvent('keypress', { key: 'o' , ctrlKey: true});
+    const keyboard = new KeyboardEvent('keypress', { key: 'o' , ctrlKey: true});
     spyOn(service.newDrawingEmmiter, 'next');
 
-    service.treatInput(clavier);
+    service.treatInput(keyboard);
 
     expect(service.newDrawingEmmiter.next).toHaveBeenCalledWith(false);
   });
 
   it('#treatInput devrait empeche le declenchement du raccoruci Google Chrome si il reçoit o avec ctrl actif', () => {
-    const clavier = new KeyboardEvent('keypress', { key: 'o' , ctrlKey: true});
-    spyOn(clavier, 'preventDefault');
+    const keyboard = new KeyboardEvent('keypress', { key: 'o' , ctrlKey: true});
+    spyOn(keyboard, 'preventDefault');
 
-    service.treatInput(clavier);
+    service.treatInput(keyboard);
 
-    expect(clavier.preventDefault).toHaveBeenCalled();
+    expect(keyboard.preventDefault).toHaveBeenCalled();
   });
 
   it('#treatInput ne devrait rien faire si il reçoit o avec ctrl inactif', () => {
-    const clavier = new KeyboardEvent('keypress', { key: 'o'});
-    spyOn(clavier, 'preventDefault');
+    const keyboard = new KeyboardEvent('keypress', { key: 'o'});
+    spyOn(keyboard, 'preventDefault');
     spyOn(service.newDrawingEmmiter, 'next');
 
-    service.treatInput(clavier);
+    service.treatInput(keyboard);
 
-    expect(clavier.preventDefault).not.toHaveBeenCalled();
+    expect(keyboard.preventDefault).not.toHaveBeenCalled();
     expect(service.newDrawingEmmiter.next).not.toHaveBeenCalledWith(false);
   });
 
   it('#treatInput devrait appeler memorizeCursor de l\'outil ligne si il reçoit Shift', () => {
-    const clavier = new KeyboardEvent('keypress', { key: 'Shift'});
+    const keyboard = new KeyboardEvent('keypress', { key: 'Shift'});
     service.tools.changeActiveTool(TOOL_INDEX.LINE);
     spyOn(service.lineTool, 'memorizeCursor');
 
-    service.treatInput(clavier);
+    service.treatInput(keyboard);
 
     expect(service.lineTool.memorizeCursor).toHaveBeenCalled();
   });
 
   it('#treatInput devrait appeler ShiftEnfonce de l\'outil rectangle si il reçoit Shift', () => {
-    const clavier = new KeyboardEvent('keypress', { key: 'Shift'});
+    const keyboard = new KeyboardEvent('keypress', { key: 'Shift'});
     service.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
     spyOn(service.rectangleTool, 'shiftPress');
 
-    service.treatInput(clavier);
+    service.treatInput(keyboard);
 
     expect(service.rectangleTool.shiftPress).toHaveBeenCalled();
+  }); */
+
+  // TESTS shorcutKey1
+
+  it('#shortcutKey1 devrait changer l\'outil actif pour le rectange', () => {
+    service.shortcutKey1();
+    expect(service.tools.activeTool.ID).toEqual(TOOL_INDEX.RECTANGLE);
+  });
+
+  it('#shortcutKey1 devrait supprimer la boite de sélection', () => {
+    spyOn(service.selection, 'deleteBoundingBox');
+    service.shortcutKey1();
+    expect(service.selection.deleteBoundingBox).toHaveBeenCalled();
+  });
+
+  it('#shortcutKey1 devrait supprimer le SVG en cours', () => {
+    spyOn(service, 'clearOngoingSVG');
+    service.shortcutKey1();
+    expect(service.clearOngoingSVG).toHaveBeenCalled();
+  });
+
+  // TESTS shortcutKeyC
+
+  it('#shortcutKeyC devrait changer l\'outil actif pour le crayon', () => {
+    service.shortcutKeyC();
+    expect(service.tools.activeTool.ID).toEqual(TOOL_INDEX.PENCIL);
+  });
+
+  it('#shortcutKeyC devrait supprimer la boite de sélection', () => {
+    spyOn(service.selection, 'deleteBoundingBox');
+    service.shortcutKeyC();
+    expect(service.selection.deleteBoundingBox).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyC devrait supprimer le SVG en cours', () => {
+    spyOn(service, 'clearOngoingSVG');
+    service.shortcutKeyC();
+    expect(service.clearOngoingSVG).toHaveBeenCalled();
+  });
+
+  // TESTS shortcutKeyL
+
+  it('#shortcutKeyL devrait changer l\'outil actif pour la ligne', () => {
+    service.shortcutKeyL();
+    expect(service.tools.activeTool.ID).toEqual(TOOL_INDEX.LINE);
+  });
+
+  it('#shortcutKeyL devrait supprimer la boite de sélection', () => {
+    spyOn(service.selection, 'deleteBoundingBox');
+    service.shortcutKeyL();
+    expect(service.selection.deleteBoundingBox).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyL devrait supprimer le SVG en cours', () => {
+    spyOn(service, 'clearOngoingSVG');
+    service.shortcutKeyL();
+    expect(service.clearOngoingSVG).toHaveBeenCalled();
   });
 
   // TESTS treatReleaseKey
 
   it('#treatReleaseKey devrait appeler shiftRelache de l\'outil rectangle si il reçoit Shift', () => {
-    const clavier = new KeyboardEvent('keypress', { key: 'Shift'});
+    const keyboard = new KeyboardEvent('keypress', { key: 'Shift'});
     service.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
     spyOn(service.rectangleTool, 'shiftRelease');
 
-    service.treatReleaseKey(clavier);
+    service.treatReleaseKey(keyboard);
 
     expect(service.rectangleTool.shiftRelease).toHaveBeenCalled();
   });
 
   it('#treatReleaseKey devrait appeler shiftRelache de l\'outil ligne si il reçoit Shift', () => {
-    const clavier = new KeyboardEvent('keypress', { key: 'Shift'});
+    const keyboard = new KeyboardEvent('keypress', { key: 'Shift'});
     service.tools.changeActiveTool(TOOL_INDEX.LINE);
     spyOn(service.lineTool, 'shiftRelease');
 
-    service.treatReleaseKey(clavier);
+    service.treatReleaseKey(keyboard);
 
     expect(service.lineTool.shiftRelease).toHaveBeenCalled();
   });
 
+  it('#treatReleaseKey devrait mettre leftArrow a false si il reçoit ArrowLeft', () => {
+    const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowLeft'});
+    service.treatReleaseKey(keyboard);
+    expect(service.leftArrow).toBe(false);
+  });
+
+  it('#treatReleaseKey devrait mettre rightArrow a false si il reçoit ArrowRight', () => {
+    const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowRight'});
+    service.treatReleaseKey(keyboard);
+    expect(service.rightArrow).toBe(false);
+  });
+
+  it('#treatReleaseKey devrait mettre upArrow a false si il reçoit ArrowUp', () => {
+    const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowUp'});
+    service.treatReleaseKey(keyboard);
+    expect(service.upArrow).toBe(false);
+  });
+
+  it('#treatReleaseKey devrait mettre downArrow a false si il reçoit ArrowDown', () => {
+    const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowDown'});
+    service.treatReleaseKey(keyboard);
+    expect(service.downArrow).toBe(false);
+  });
+
   it('#treatReleaseKey ne fait rien dans le cas d\'une touche non programmée', () => {
-    const clavier = new KeyboardEvent('keypress');
+    const keyboard = new KeyboardEvent('keypress');
 
     // Dans le cas de la ligne
     service.tools.changeActiveTool(TOOL_INDEX.LINE);
     spyOn(service.lineTool, 'shiftRelease');
-    service.treatReleaseKey(clavier);
+    service.treatReleaseKey(keyboard);
     expect(service.lineTool.shiftRelease).not.toHaveBeenCalled();
 
     // Dans le cas du rectangle
     service.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
     spyOn(service.rectangleTool, 'shiftRelease');
-    service.treatReleaseKey(clavier);
+    service.treatReleaseKey(keyboard);
     expect(service.rectangleTool.shiftRelease).not.toHaveBeenCalled();
 
   });

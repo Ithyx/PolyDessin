@@ -54,14 +54,14 @@ export class RectangleService implements DrawElement {
   }
 
   drawLine(): void {
-    if (this.tool.parameters[0].value) {
+    if (this.tool.parameters[0].value && !this.isSelected) {
       this.thickness = this.tool.parameters[0].value;
     }
 
     this.SVG = '<line stroke-linecap="square'
       + '" stroke="' + this.secondaryColor
-      + '" stroke-width="' + this.tool.parameters[0].value
-      + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')
+      + '" stroke-width="' + this.thickness
+      + (this.isDotted ? '"stroke-dasharray="2, 8"'  : '')
       + '" x1="' + this.points[0].x + '" y1="' + this.points[0].y
       + '" x2="' + (this.points[0].x + this.getWidth())
       + '" y2="' + (this.points[0].y + this.getHeight()) + '"/>';
@@ -73,7 +73,7 @@ export class RectangleService implements DrawElement {
       ')" fill="' + ((choosedOption !== 'Contour') ? this.primaryColor : 'none')
       + '" stroke="' + ((choosedOption !== 'Plein') ? this.secondaryColor : 'none')
       + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')
-      + '" stroke-width="' + this.tool.parameters[0].value
+      + '" stroke-width="' + this.thickness
       + '" x="' + this.points[0].x + '" y="' + this.points[0].y
       + '" width="' + this.getWidth() + '" height="' + this.getHeight() + '"/>';
   }
@@ -107,5 +107,13 @@ export class RectangleService implements DrawElement {
     this.translate.x = mouse.offsetX - mouseClick.x;
     this.translate.y = mouse.offsetY - mouseClick.y;
     this.draw();
+  }
+
+  translateAllPoints(): void {
+    for (const point of this.points) {
+      point.x += this.translate.x;
+      point.y += this.translate.y;
+    }
+    this.translate = {x: 0, y: 0};
   }
 }
