@@ -9,7 +9,8 @@ export enum TOOL_INDEX {
   SPRAY,
   PIPETTE,
   ELLIPSE,
-  POLYGON
+  POLYGON,
+  COLOR_CHANGER
 }
 
 export interface ToolParameter {
@@ -144,5 +145,12 @@ export const TOOL_LIST: DrawingTool[] = [
       {type: 'select', name: 'Type de tracé', chosenOption: 'Contour', options: ['Contour', 'Plein', 'Plein avec contour']},
       {type: 'number', name: 'Nombre de côtés', value: 4, min: 3, max: 12}
     ]
-  }
+  },
+  {
+    name: 'Applicateur Couleur',
+    isActive: false,
+    ID: 7,
+    iconName: 'fas fa-tint',
+    parameters: []
+  },
 ];
