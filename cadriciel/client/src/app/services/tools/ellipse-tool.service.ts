@@ -78,7 +78,7 @@ export class EllipseToolService {
 
   shiftPress(): void {
     if (this.commands.drawingInProgress) {
-      // Lorsque la touche 'shift' est enfoncée, la forme à dessiner est un carré
+      // Lorsque la touche 'shift' est enfoncée, la forme à dessiner est un cercle
       if (this.calculatedWidth < this.calculatedHeight) {
         this.ellipse.points[0].y = (this.calculatedBase.y === this.initial.y) ?
           this.calculatedBase.y : (this.calculatedBase.y + (this.calculatedHeight - this.calculatedWidth));
@@ -97,7 +97,7 @@ export class EllipseToolService {
 
   shiftRelease(): void {
     if (this.commands.drawingInProgress) {
-      // Lorsque la touche 'shift' est relâchée, la forme à dessiner est un rectangle
+      // Lorsque la touche 'shift' est relâchée, la forme à dessiner est une ellipse
       this.ellipse.points[0] = this.calculatedBase;
       this.ellipse.points[1] = {x: this.calculatedBase.x + this.calculatedWidth, y: this.calculatedBase.y + this.calculatedHeight};
       this.refreshSVG();

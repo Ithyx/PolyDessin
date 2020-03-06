@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 export enum TOOL_INDEX {
   PENCIL = 0,
   BRUSH,
+  SPRAY,
   RECTANGLE,
+  POLYGON,
   LINE,
   SELECTION,
-  SPRAY,
   PIPETTE,
-  ELLIPSE,
-  POLYGON
+  ELLIPSE
 }
 
 export interface ToolParameter {
@@ -148,15 +148,4 @@ export const TOOL_LIST: DrawingTool[] = [
       {type: 'select', name: 'Type de tracé', chosenOption: 'Contour', options: ['Contour', 'Plein', 'Plein avec contour']}
     ]
   },
-  {
-    name: 'Polygone',
-    isActive: false,
-    ID: 8,
-    iconName: 'fab fa-jira',
-    parameters: [
-      {type: 'number', name: 'Épaisseur du contour', value: 5, min: 1, max: 100},
-      {type: 'select', name: 'Type de tracé', chosenOption: 'Contour', options: ['Contour', 'Plein', 'Plein avec contour']},
-      {type: 'number', name: 'Nombre de côtés', value: 4, min: 3, max: 12}
-    ]
-  }
 ];
