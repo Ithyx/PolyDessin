@@ -3,9 +3,13 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { Point } from '../line-tool.service';
 import { ToolManagerService} from '../tool-manager.service';
+
+const NUMBER_OF_CONTROL_POINT = 4;
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class SelectionBoxService {
 
   selectionBox: RectangleService;
@@ -20,7 +24,7 @@ export class SelectionBoxService {
   createSelectionBox(pointMin: Point, pointMax: Point): void {
 
     this.selectionBox = new RectangleService();
-    this.controlPointBox = new Array<RectangleService>(4);
+    this.controlPointBox = new Array<RectangleService>(NUMBER_OF_CONTROL_POINT);
     for (let index = 0; index < this.controlPointBox.length; index++) {
       this.controlPointBox[index] = new RectangleService();
     }
@@ -56,10 +60,10 @@ export class SelectionBoxService {
     this.controlPointBox[2].points[1].x = (this.selectionBox.points[0].x + 4);
     this.controlPointBox[2].points[1].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y)/2) + 4;
     // RIGHT
-    this.controlPointBox[3].points[0].x = (this.selectionBox.points[1].x - 4); 
-    this.controlPointBox[3].points[0].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y)/2) - 4;
-    this.controlPointBox[3].points[1].x = (this.selectionBox.points[1].x + 4);
-    this.controlPointBox[3].points[1].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y)/2) + 4;
+    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[0].x = (this.selectionBox.points[1].x - 4); 
+    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[0].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y)/2) - 4;
+    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[1].x = (this.selectionBox.points[1].x + 4);
+    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[1].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y)/2) + 4;
 
     for (const controlPoint of this.controlPointBox) {
       controlPoint.isSelected = true;

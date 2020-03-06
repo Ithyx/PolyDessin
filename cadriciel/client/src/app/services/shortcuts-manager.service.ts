@@ -107,13 +107,14 @@ export class ShortcutsManagerService {
 
   treatInput(keyboard: KeyboardEvent): void {
     if (this.focusOnInput) { return; }
-    if(this.shortcutManager.has(keyboard.key)) {
+    if (this.shortcutManager.has(keyboard.key)) {
       (this.shortcutManager.get(keyboard.key) as FunctionShortcut)(keyboard);
     }
     this.updatePositionTimer();
   }
 
   clearOngoingSVG(): void {
+    this.selection.deleteBoundingBox();
     this.rectangleTool.clear();
     this.lineTool.clear();
   }
@@ -121,15 +122,13 @@ export class ShortcutsManagerService {
   // SHORTCUT FUNCTIONS
 
   shortcutKey1(): void {
-    this.selection.deleteBoundingBox();
     this.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
     this.clearOngoingSVG();
   }
 
   shortcutKeyA(keyboard: KeyboardEvent): void {
-    this.selection.deleteBoundingBox();
-
     if (keyboard.ctrlKey) {
+      this.selection.deleteBoundingBox();
       keyboard.preventDefault();
       this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
       if (this.SVGStockage.getCompleteSVG().length !== 0) {
@@ -144,27 +143,21 @@ export class ShortcutsManagerService {
   }
 
   shortcutKeyC(): void {
-    this.selection.deleteBoundingBox();
     this.tools.changeActiveTool(TOOL_INDEX.PENCIL);
     this.clearOngoingSVG();
   }
 
   shortcutKeyL(): void {
-  this.selection.deleteBoundingBox();
-  this.tools.changeActiveTool(TOOL_INDEX.LINE);
-  this.clearOngoingSVG();
+    this.tools.changeActiveTool(TOOL_INDEX.LINE);
+    this.clearOngoingSVG();
   }
 
   shortcutKeyW(): void {
-      this.selection.deleteBoundingBox();
       this.tools.changeActiveTool(TOOL_INDEX.BRUSH);
       this.clearOngoingSVG();
   }
 
   shortcutKeyS(): void {
-    if(this.selection.selectionBox){
-      this.selection.deleteBoundingBox();
-    }
     this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
     this.clearOngoingSVG();
   }
