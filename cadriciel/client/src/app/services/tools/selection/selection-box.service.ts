@@ -10,6 +10,7 @@ const NUMBER_OF_CONTROL_POINT = 4;
   providedIn: 'root'
 })
 
+
 export class SelectionBoxService {
 
   selectionBox: RectangleService;

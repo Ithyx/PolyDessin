@@ -29,12 +29,31 @@ export class SelectionService implements ToolInterface {
              }
 
   handleClick(element: DrawElement): void {
-    if (!this.selectedElements.includes(element)) {
+      for(const element_ of this.selectedElements){
+        element_.isSelected = false;
+      }
+      element.isSelected = true;
+      this.selectedElements.splice(0, this.selectedElements.length);
+      this.selectedElements.push(element);
+      this.createBoundingBox();
+
+  }
+
+  handleRightClick(element: DrawElement): void {
+    if (this.selectedElements.includes(element)) {
+      element.isSelected = false;
+      const index = this.selectedElements.indexOf(element, 0);
+      this.selectedElements.splice(index, 1);
+      if(this.selectedElements.length == 0){
+        this.deleteBoundingBox();
+      } else{
+        this.createBoundingBox();
+      }
+    } else {
       element.isSelected = true;
       this.selectedElements.push(element);
       this.createBoundingBox();
     }
-
   }
 
   onMouseMove(mouse: MouseEvent): void {
@@ -55,7 +74,7 @@ export class SelectionService implements ToolInterface {
 
   onMousePress(mouse: MouseEvent): void {
     if (!this.clickOnSelectionBox) {
-      this.deleteBoundingBox();
+      //this.deleteBoundingBox();
       this.selectionRectangle.mouseDown(mouse);
     }
   }
@@ -64,9 +83,7 @@ export class SelectionService implements ToolInterface {
     if (this.clickOnSelectionBox) {
       this.clickOnSelectionBox = false;
       for (const element of this.selectedElements) {
-        if (element.isSelected) {
           element.translateAllPoints();
-        }
       }
     } else {
       // Éviter de créer une boite de sélection si on effectue un simple clic
@@ -118,8 +135,7 @@ export class SelectionService implements ToolInterface {
 
   deleteBoundingBox(): void {
     this.selectionBox.deleteSelectionBox();
-    this.selectedElements = [];
-
+    this.selectedElements.splice(0, this.selectedElements.length);
     for (const element of this.SVGStockage.getCompleteSVG()) {
       if (element.isSelected) {
         element.isSelected = false;

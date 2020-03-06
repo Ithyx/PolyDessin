@@ -16,6 +16,7 @@ const rectangleSelectionTool: DrawingTool = {name: '',
 @Injectable({
   providedIn: 'root'
 })
+
 export class SelectionRectangleService {
   ongoingSelection: boolean;
   rectangle: RectangleService;
