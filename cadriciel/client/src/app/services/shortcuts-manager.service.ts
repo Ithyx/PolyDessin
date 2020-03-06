@@ -3,12 +3,8 @@ import { BehaviorSubject } from 'rxjs';
 import { CommandManagerService } from './command/command-manager.service';
 import { GridService } from './grid/grid.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
-<<<<<<< Updated upstream
-import { LineToolService, Point } from './tools/line-tool.service';
-=======
 import { EllipseToolService } from './tools/ellipse-tool.service';
-import { LineToolService } from './tools/line-tool.service';
->>>>>>> Stashed changes
+import { LineToolService, Point } from './tools/line-tool.service';
 import { RectangleToolService } from './tools/rectangle-tool.service';
 import { SelectionService } from './tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
