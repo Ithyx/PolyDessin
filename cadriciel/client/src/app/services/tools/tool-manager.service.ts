@@ -138,7 +138,7 @@ export const TOOL_LIST: DrawingTool[] = [
     name: 'Polygone',
     isActive: false,
     ID: 8,
-    iconName: 'flaticon-hexagon',
+    iconName: 'fab fa-jira',
     parameters: [
       {type: 'number', name: 'Épaisseur du contour', value: 5, min: 1, max: 100},
       {type: 'select', name: 'Type de tracé', chosenOption: 'Contour', options: ['Contour', 'Plein', 'Plein avec contour']},
