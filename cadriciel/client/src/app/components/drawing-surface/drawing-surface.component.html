@@ -39,9 +39,9 @@
     </defs>
 
     
-    <rect x="0" y="0" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" [attr.fill]="drawingManager.backgroundColor" (click)="handleBackgroundClick()" (contextmenu)="onRightClick($event)"/>
+    <rect x="0" y="0" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" [attr.fill]="drawingManager.backgroundColor" (click)="handleBackgroundClick()"/>
 
-    <g *ngFor="let element of SVGStockage.getCompleteSVG()" [innerHTML]="element.SVGHtml" (click)="handleElementClick(element)"></g>
+    <g *ngFor="let element of SVGStockage.getCompleteSVG()" [innerHTML]="element.SVGHtml" (click)="handleElementClick(element)" (contextmenu)="handleElementRightClick(element)"></g>
     <g *ngIf="this.selection.selectionRectangle.rectangle"  [innerHTML]="this.selection.selectionRectangle.rectangle.SVGHtml"></g>
     <g  class = "selectionBox" *ngIf="this.selection.selectionBox.selectionBox" [innerHTML]="this.selection.selectionBox.selectionBox.SVGHtml"  (mousedown)="handleMouseDown($event)"  (mouseup)="handleMouseUp($event)"></g>
     <g *ngFor="let controlPoint of this.selection.selectionBox.controlPointBox" [innerHTML]="controlPoint.SVGHtml" ></g>

@@ -35,9 +35,9 @@ export class DrawingSurfaceComponent {
   }
 
   handleElementRightClick(element: DrawElement): void {
+    this.colorChanger.activeElementID = this.SVGStockage.getCompleteSVG().indexOf(element);
     if (this.tools.activeTool.ID === TOOL_INDEX.COLOR_CHANGER) {
       this.colorChanger.onRightClick();
-      this.colorChanger.activeElementID = this.SVGStockage.getCompleteSVG().indexOf(element);
     }
   }
 

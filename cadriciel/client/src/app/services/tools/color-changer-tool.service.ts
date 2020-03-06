@@ -17,7 +17,7 @@ export class ColorChangerToolService implements ToolInterface {
               public stockageSVG: SVGStockageService,
               private sanitizer: DomSanitizer
               ) {
-                this.activeElementID = 0;
+                // this.activeElementID = 0;
               }
 
   onMouseClick(): void {
