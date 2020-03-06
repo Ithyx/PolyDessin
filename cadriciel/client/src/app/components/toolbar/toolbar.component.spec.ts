@@ -22,7 +22,7 @@ const outilTestActif: DrawingTool = {
   name: 'stubActif',
   isActive: true,
   ID: 0,
-  parameters: [{type: 'number', name: 'Épaisseur', value: 5},
+  parameters: [{type: 'number', name: 'Épaisseur', value: 5, min: 1, max: 100},
                {type: 'select', name: 'Type', options: ['A', 'B'], chosenOption: 'A'}],
   iconName: ''
 };

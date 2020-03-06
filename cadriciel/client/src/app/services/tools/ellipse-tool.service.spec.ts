@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GridToolService } from './grid-tool.service';
+import { EllipseToolService } from './ellipse-tool.service';
 
-describe('OutilGrilleService', () => {
+describe('EllipseToolService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: GridToolService = TestBed.get(GridToolService);
+    const service: EllipseToolService = TestBed.get(EllipseToolService);
     expect(service).toBeTruthy();
   });
 });
