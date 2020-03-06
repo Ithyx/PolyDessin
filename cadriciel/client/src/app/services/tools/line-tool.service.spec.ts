@@ -6,7 +6,7 @@ import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { LineToolService } from './line-tool.service';
 import { TOOL_INDEX } from './tool-manager.service';
 
-describe('DessinLigneService', () => {
+describe('LineToolService', () => {
   let service: LineToolService;
   let stockageService: SVGStockageService;
   let element: LineService;

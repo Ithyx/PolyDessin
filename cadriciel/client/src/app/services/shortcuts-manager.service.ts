@@ -45,8 +45,11 @@ export class ShortcutsManagerService {
                 this.upArrow = false;
                 this.downArrow = false;
                 this.shortcutManager.set('1', this.shortcutKey1.bind(this))
+                                    .set('2', this.shortcutKey2.bind(this))
+                                    .set('3', this.shortcutKey3.bind(this))
                                     .set('a', this.shortcutKeyA.bind(this))
                                     .set('c', this.shortcutKeyC.bind(this))
+                                    .set('i', this.shortcutKeyI.bind(this))
                                     .set('l', this.shortcutKeyL.bind(this))
                                     .set('w', this.shortcutKeyW.bind(this))
                                     .set('s', this.shortcutKeyS.bind(this))
@@ -126,6 +129,18 @@ export class ShortcutsManagerService {
     this.clearOngoingSVG();
   }
 
+  shortcutKey2(): void {
+    this.selection.deleteBoundingBox();
+    this.tools.changeActiveTool(TOOL_INDEX.ELLIPSE);
+    this.clearOngoingSVG();
+  }
+
+  shortcutKey3(): void {
+    this.selection.deleteBoundingBox();
+    this.tools.changeActiveTool(TOOL_INDEX.POLYGON);
+    this.clearOngoingSVG();
+  }
+
   shortcutKeyA(keyboard: KeyboardEvent): void {
     if (keyboard.ctrlKey) {
       this.selection.deleteBoundingBox();
@@ -144,6 +159,12 @@ export class ShortcutsManagerService {
 
   shortcutKeyC(): void {
     this.tools.changeActiveTool(TOOL_INDEX.PENCIL);
+    this.clearOngoingSVG();
+  }
+
+  shortcutKeyI(): void {
+    this.selection.deleteBoundingBox();
+    this.tools.changeActiveTool(TOOL_INDEX.PIPETTE);
     this.clearOngoingSVG();
   }
 
