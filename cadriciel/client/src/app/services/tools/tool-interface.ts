@@ -1,10 +1,11 @@
 export interface ToolInterface {
-    onMouseMove?(evenement: MouseEvent): void;
-    onMousePress?(evenement: MouseEvent): void;
-    onMouseRelease?(evenement?: MouseEvent): void;
-    onMouseClick?(evenement?: MouseEvent): void;
-    onMouseLeave?(evenement?: MouseEvent): void;
-    onMouseEnter?(evenement: MouseEvent): void;
-    onDoubleClick?(evenement: MouseEvent): void;
+    onMouseMove?(event: MouseEvent): void;
+    onMousePress?(event: MouseEvent): void;
+    onMouseRelease?(event?: MouseEvent): void;
+    onMouseClick?(event?: MouseEvent): void;
+    onMouseLeave?(event?: MouseEvent): void;
+    onMouseEnter?(event?: MouseEvent): void;
+    onDoubleClick?(event?: MouseEvent): void;
+    onRightClick?(event?: MouseEvent): void;
     clear?(): void;
 }

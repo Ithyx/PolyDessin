@@ -6,6 +6,7 @@ import { GridService } from 'src/app/services/grid/grid.service';
 import { RoutingManagerService } from 'src/app/services/routing-manager.service';
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
+import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 
@@ -22,8 +23,8 @@ export class DrawingSurfaceComponent {
               public routing: Router,
               public colorParameter: ColorParameterService,
               public selection: SelectionService,
-              public grid: GridService) {
-    console.log('id du dessin: ', drawingManager.id);
+              public grid: GridService,
+              public colorChanger: ColorChangerToolService) {
   }
 
   handleBackgroundClick(): void {
@@ -31,24 +32,39 @@ export class DrawingSurfaceComponent {
         this.selection.deleteBoundingBox();
         this.selection.clickOnSelectionBox = false;
     }
-    console.log('background click');
+  }
+
+  handleElementRightClick(element: DrawElement): void {
+    this.colorChanger.activeElementID = this.SVGStockage.getCompleteSVG().indexOf(element);
+    if (this.tools.activeTool.ID === TOOL_INDEX.COLOR_CHANGER) {
+      this.colorChanger.onRightClick();
+    }
   }
 
   handleElementClick(element: DrawElement): void {
+    this.colorChanger.activeElementID = this.SVGStockage.getCompleteSVG().indexOf(element);
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       this.selection.handleClick(element);
       this.selection.clickOnSelectionBox = false;
+    } else if (this.tools.activeTool.ID === TOOL_INDEX.COLOR_CHANGER) {
+      this.colorChanger.onMouseClick();
     }
-    console.log('SVG element click');
   }
 
   handleMouseDown(event: MouseEvent): void {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
-      /* TODO */
       this.selection.clickOnSelectionBox = true;
-      this.selection.updatePosition(5, 0);    // TEMPORAIRE
       this.selection.selectionBox.mouseClick = {x: event.offsetX , y: event.offsetY };
-      console.log('selectionBox click');
     }
   }
+
+  handleMouseUp(event: MouseEvent): void {
+   if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION){
+     this.selection.selectionBox.selectionBox.translateAllPoints();
+     for (const controlPoint of this.selection.selectionBox.controlPointBox) {
+       controlPoint.translateAllPoints();
+     }
+   }
+  }
+
 }

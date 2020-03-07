@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GridToolService } from './grid-tool.service';
+import { PolygonToolService } from './polygon-tool.service';
 
-describe('OutilGrilleService', () => {
+describe('PolygonToolService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: GridToolService = TestBed.get(GridToolService);
+    const service: PolygonToolService = TestBed.get(PolygonToolService);
     expect(service).toBeTruthy();
   });
 });

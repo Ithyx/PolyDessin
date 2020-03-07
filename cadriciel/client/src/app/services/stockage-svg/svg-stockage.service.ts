@@ -48,6 +48,8 @@ export class SVGStockageService {
     this.ongoingSVG = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
     if (element.perimeter) {
       this.ongoingPerimeter = this.sanitizer.bypassSecurityTrustHtml(element.perimeter);
+    } else {
+      this.ongoingPerimeter = '';
     }
   }
 

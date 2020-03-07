@@ -53,42 +53,47 @@
     background-color: rgb(25, 25, 40);
 }
 
-.boutons-couleur {
+.color_button {
     font-size: 20px;
+    margin-top: 10px;
 }
+
 
 button {
-    height: 40px;
-    width: 40px;
+    height: 30px;
+    width: 30px;
+    margin-top: 5px;
 }
 
-.dernieres-couleurs {
+.last_color {
     display: inline;
 }
 
-.dernieres-couleurs button {
+.last_color button {
     width: 20px;
     height: 20px;
 }
 
-.selection-opacite label {
+.opacity_selector label {
     font-size: 15px;
     vertical-align: text-top;
 }
 
-.couleur-fond {
-    padding-top: 40px;
+.background_color {
+    padding-top: 30px;
 }
+
+
 .options a:hover {
     color: #EFE2BA;
   }
 
-a.nonDisponible{
+a.notavailable{
     opacity: 0.4;
     cursor: not-allowed;
 }
 
-.annuler-refaire {
+.redo-undo {
     font-size: 15px;
     color: lightcyan;
 }

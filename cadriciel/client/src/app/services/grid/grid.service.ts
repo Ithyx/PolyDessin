@@ -4,6 +4,8 @@ import { DrawingManagerService } from '../drawing-manager/drawing-manager.servic
 export const MAX_CELL_SIZE = 500;
 export const MIN_CELL_SIZE = 5;
 const INITIAL_CELL_SIZE = 50;
+const INITIAL_OPACITY = 0.75;
+const SIZE_VARIATION = 5;
 
 export interface Line {
   x1: number;
@@ -24,18 +26,18 @@ export class GridService {
   constructor(public drawing: DrawingManagerService) {
     this.showGrid = false;
     this.cellSize = INITIAL_CELL_SIZE;
-    this.opacity = 0.75;
+    this.opacity = INITIAL_OPACITY;
   }
 
   increaseSize(): void {
-    this.cellSize += 5 - (this.cellSize % 5);
+    this.cellSize += SIZE_VARIATION - (this.cellSize % SIZE_VARIATION);
     if (this.cellSize > MAX_CELL_SIZE) {
       this.cellSize = MAX_CELL_SIZE;
     }
   }
 
   decreaseSize(): void {
-    this.cellSize -= (this.cellSize % 5 === 0) ? 5 : this.cellSize % 5;
+    this.cellSize -= (this.cellSize % SIZE_VARIATION === 0) ? SIZE_VARIATION : this.cellSize % SIZE_VARIATION;
     if (this.cellSize < MIN_CELL_SIZE) {
       this.cellSize = MIN_CELL_SIZE;
     }

@@ -41,7 +41,7 @@ export class SelectionService implements ToolInterface {
     if (this.clickOnSelectionBox) {
       this.updatePositionMouse(mouse);
     } else {
-      this.selectionRectangle.mouseMouve(mouse);
+      this.selectionRectangle.mouseMove(mouse);
       if (this.selectionRectangle.ongoingSelection) {
         this.deleteBoundingBox();
         // Éviter de créer une boite de sélection si on effectue un simple clic
@@ -60,9 +60,14 @@ export class SelectionService implements ToolInterface {
     }
   }
 
-  onMouseRelease(): void {
+  onMouseRelease(mouse: MouseEvent): void {
     if (this.clickOnSelectionBox) {
       this.clickOnSelectionBox = false;
+      for (const element of this.selectedElements) {
+        if (element.isSelected) {
+          element.translateAllPoints();
+        }
+      }
     } else {
       // Éviter de créer une boite de sélection si on effectue un simple clic
       if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
@@ -75,42 +80,43 @@ export class SelectionService implements ToolInterface {
   }
 
   createBoundingBox(): void {
-    let pointMin: Point = {x: this.drawingManager.width , y: this.drawingManager.height};
-    let pointMax: Point = {x: 0 , y: 0};
-    const epaisseurMin: Point = {x: 0, y: 0};
-    const epaisseurMax: Point = {x: 0, y: 0};
+    if (this.selectedElements.length !== 0) {
+      let pointMin: Point = {x: this.drawingManager.width , y: this.drawingManager.height};
+      let pointMax: Point = {x: 0 , y: 0};
+      const epaisseurMin: Point = {x: 0, y: 0};
+      const epaisseurMax: Point = {x: 0, y: 0};
 
-    for (const element of this.selectedElements) {
-      for (const point of element.points) {
-        // Point Min
-        if (pointMin.x > point.x + element.translate.x) {
-          pointMin.x = point.x + element.translate.x;
-          epaisseurMin.x = element.thickness ? element.thickness : 0;
-        }
-        if (pointMin.y > point.y + element.translate.y) {
-          pointMin.y = point.y + element.translate.y;
-          epaisseurMin.y = element.thickness ? element.thickness : 0;
-        }
+      for (const element of this.selectedElements) {
+        for (const point of element.points) {
+          // Point Min
+          if (pointMin.x > point.x + element.translate.x) {
+            pointMin.x = point.x + element.translate.x;
+            epaisseurMin.x = element.thickness ? element.thickness : 0;
+          }
+          if (pointMin.y > point.y + element.translate.y) {
+            pointMin.y = point.y + element.translate.y;
+            epaisseurMin.y = element.thickness ? element.thickness : 0;
+          }
 
-        // Point Max
-        if (pointMax.x < point.x + element.translate.x) {
-          pointMax.x = point.x + element.translate.x;
-          epaisseurMax.x = element.thickness ? element.thickness : 0;
-        }
-        if (pointMax.y < point.y + element.translate.y) {
-          pointMax.y = point.y + element.translate.y;
-          epaisseurMax.y = element.thickness ? element.thickness : 0;
+          // Point Max
+          if (pointMax.x < point.x + element.translate.x) {
+            pointMax.x = point.x + element.translate.x;
+            epaisseurMax.x = element.thickness ? element.thickness : 0;
+          }
+          if (pointMax.y < point.y + element.translate.y) {
+            pointMax.y = point.y + element.translate.y;
+            epaisseurMax.y = element.thickness ? element.thickness : 0;
+          }
         }
       }
-    }
 
-    pointMin = {x: pointMin.x - HALF_DRAW_ELEMENT * epaisseurMin.x, y: pointMin.y - HALF_DRAW_ELEMENT * epaisseurMin.y};
-    pointMax = {x: pointMax.x + HALF_DRAW_ELEMENT * epaisseurMax.x, y: pointMax.y + HALF_DRAW_ELEMENT * epaisseurMax.y};
-    this.selectionBox.createSelectionBox(pointMin, pointMax);
+      pointMin = {x: pointMin.x - HALF_DRAW_ELEMENT * epaisseurMin.x, y: pointMin.y - HALF_DRAW_ELEMENT * epaisseurMin.y};
+      pointMax = {x: pointMax.x + HALF_DRAW_ELEMENT * epaisseurMax.x, y: pointMax.y + HALF_DRAW_ELEMENT * epaisseurMax.y};
+      this.selectionBox.createSelectionBox(pointMin, pointMax);
+    }
   }
 
   deleteBoundingBox(): void {
-    console.log('deleteBoundingBox');
     this.selectionBox.deleteSelectionBox();
     this.selectedElements = [];
 
@@ -122,18 +128,38 @@ export class SelectionService implements ToolInterface {
   }
 
   isInRectangleSelection(rectangleSelection: RectangleService): void {
+    this.findPointMinAndMax(rectangleSelection);
     let belongToRectangle = false;
 
     for (const element of this.SVGStockage.getCompleteSVG()) {
+      this.findPointMinAndMax(element);
       for (const point of element.points) {
-        const belongX = (point.x + element.translate.x >= rectangleSelection.points[0].x && point.x + element.translate.x <= rectangleSelection.points[1].x);
-        const belongY = (point.y + element.translate.y >= rectangleSelection.points[0].y && point.y + element.translate.y <= rectangleSelection.points[1].y);
+        const belongX = (point.x + element.translate.x >= rectangleSelection.points[0].x
+                      && point.x + element.translate.x <= rectangleSelection.points[1].x);
+        const belongY = (point.y + element.translate.y >= rectangleSelection.points[0].y
+                      && point.y + element.translate.y <= rectangleSelection.points[1].y);
 
         if (belongX && belongY) {
           belongToRectangle = true;
         }
       }
-      if (belongToRectangle) {
+
+      const corner1Selection = (rectangleSelection.pointMin.x >= element.pointMin.x && rectangleSelection.pointMin.x <= element.pointMax.x)
+                              && (rectangleSelection.pointMin.y >= element.pointMin.y && rectangleSelection.pointMin.y <= element.pointMax.y);
+
+      const corner2Selection = (rectangleSelection.pointMax.x >= element.pointMin.x && rectangleSelection.pointMax.x <= element.pointMax.x)
+                              && (rectangleSelection.pointMin.y >= element.pointMin.y && rectangleSelection.pointMin.y <= element.pointMax.y);
+                              
+      const corner3Selection = (rectangleSelection.pointMin.x >= element.pointMin.x && rectangleSelection.pointMin.x <= element.pointMax.x)
+                              && (rectangleSelection.pointMax.y >= element.pointMin.y && rectangleSelection.pointMax.y <= element.pointMax.y);
+
+      const corner4Selection = (rectangleSelection.pointMax.x >= element.pointMin.x && rectangleSelection.pointMax.x <= element.pointMax.x)
+                              && (rectangleSelection.pointMax.y >= element.pointMin.y && rectangleSelection.pointMax.y <= element.pointMax.y);
+
+
+      let mouseBelongToElement = corner1Selection || corner2Selection || corner3Selection || corner4Selection;
+
+      if (belongToRectangle || mouseBelongToElement) {
         element.isSelected = true;
         this.selectedElements.push(element);
         belongToRectangle = false;
@@ -174,14 +200,6 @@ export class SelectionService implements ToolInterface {
           element.updatePosition(x, y);
           element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
 
-          for ( const point of element.points) {
-            point.x += element.translate.x;
-            point.y += element.translate.y;
-          }
-
-          element.translate.x = 0;
-          element.translate.y = 0;
-
           this.selectedElements.push(element);
         }
       }
@@ -196,6 +214,7 @@ export class SelectionService implements ToolInterface {
           this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePositionMouse(mouse, this.selectionBox.mouseClick);
           element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
+
           this.selectedElements.push(element);
         }
       }

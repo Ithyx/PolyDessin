@@ -2,53 +2,53 @@ import { Injectable } from '@angular/core';
 import { ColorParameterService } from '../color/color-parameter.service';
 import { AddSVGService } from '../command/add-svg.service';
 import { CommandManagerService } from '../command/command-manager.service';
-import { RectangleService } from '../stockage-svg/rectangle.service';
+import { EllipseService } from '../stockage-svg/ellipse.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { Point } from './line-tool.service';
-import { ToolInterface } from './tool-interface';
 import { ToolManagerService } from './tool-manager.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RectangleToolService implements ToolInterface {
-  rectangle: RectangleService;
+export class EllipseToolService {
+  ellipse: EllipseService;
   // Coordonnées du clic initial de souris
   initial: Point;
   // Coordonnées du point inférieur gauche
   calculatedBase: Point;
-  // Dimensions du rectangle
+  // Dimensions de l'ellipse
   calculatedWidth: number;
   calculatedHeight: number;
 
-  constructor(public stockageSVG: SVGStockageService,
+  constructor(
+              public stockageSVG: SVGStockageService,
               public tools: ToolManagerService,
               public colorParameter: ColorParameterService,
               public commands: CommandManagerService
-              ) {
-                this.rectangle = new RectangleService();
-                this.initial = {x: 0, y: 0};
-                this.calculatedBase = {x: 0, y: 0};
-                this.calculatedWidth = 0;
-                this.calculatedHeight = 0;
-              }
+  ) {
+      this.ellipse = new EllipseService();
+      this.initial = {x: 0, y: 0};
+      this.calculatedBase = {x: 0, y: 0};
+      this.calculatedWidth = 0;
+      this.calculatedHeight = 0;
+   }
 
-  refreshSVG(): void {
-    this.rectangle.tool = this.tools.activeTool;
-    this.rectangle.primaryColor = this.colorParameter.getPrimaryColor();
-    this.rectangle.secondaryColor = this.colorParameter.getSecondaryColor();
-    this.rectangle.draw();
-    this.stockageSVG.setOngoingSVG(this.rectangle);
+   refreshSVG(): void {
+    this.ellipse.tool = this.tools.activeTool;
+    this.ellipse.primaryColor = this.colorParameter.getPrimaryColor();
+    this.ellipse.secondaryColor = this.colorParameter.getSecondaryColor();
+    this.ellipse.draw();
+    this.stockageSVG.setOngoingSVG(this.ellipse);
   }
 
   onMouseMove(mouse: MouseEvent): void {
     if (this.commands.drawingInProgress) {
-      // Calcule des valeurs pour former un rectangle
+      // Calcule des valeurs pour former une ellipse
       this.calculatedWidth = Math.abs(this.initial.x - mouse.offsetX);
       this.calculatedHeight = Math.abs(this.initial.y - mouse.offsetY);
       this.calculatedBase.x = Math.min(this.initial.x, mouse.offsetX);
       this.calculatedBase.y = Math.min(this.initial.y, mouse.offsetY);
-      // Si shift est enfoncé, les valeurs calculées sont ajustées pour former un carré
+      // Si shift est enfoncé, les valeurs calculées sont ajustées pour former un cercle
       if (mouse.shiftKey) {
         this.shiftPress();
       } else {
@@ -67,30 +67,30 @@ export class RectangleToolService implements ToolInterface {
   onMouseRelease(): void {
     this.commands.drawingInProgress = false;
     // On évite de créer des formes vides
-    if (this.rectangle.getWidth() !== 0 || this.rectangle.getHeight() !== 0) {
-      this.commands.execute(new AddSVGService(this.rectangle, this.stockageSVG));
+    if (this.ellipse.getWidth() !== 0 || this.ellipse.getHeight() !== 0) {
+      this.commands.execute(new AddSVGService(this.ellipse, this.stockageSVG));
     }
     this.calculatedBase = {x: 0, y: 0};
     this.calculatedHeight = 0;
     this.calculatedWidth = 0;
-    this.rectangle = new RectangleService();
-    this.stockageSVG.setOngoingSVG(this.rectangle);
+    this.ellipse = new EllipseService();
+    this.stockageSVG.setOngoingSVG(this.ellipse);
   }
 
   shiftPress(): void {
     if (this.commands.drawingInProgress) {
-      // Lorsque la touche 'shift' est enfoncée, la forme à dessiner est un carré
+      // Lorsque la touche 'shift' est enfoncée, la forme à dessiner est un cercle
       if (this.calculatedWidth < this.calculatedHeight) {
-        this.rectangle.points[0].y = (this.calculatedBase.y === this.initial.y) ?
+        this.ellipse.points[0].y = (this.calculatedBase.y === this.initial.y) ?
           this.calculatedBase.y : (this.calculatedBase.y + (this.calculatedHeight - this.calculatedWidth));
-        this.rectangle.points[0].x = this.calculatedBase.x;
-        this.rectangle.points[1] = {x: this.calculatedBase.x + this.calculatedWidth, y: this.calculatedBase.y + this.calculatedWidth};
+        this.ellipse.points[0].x = this.calculatedBase.x;
+        this.ellipse.points[1] = {x: this.calculatedBase.x + this.calculatedWidth, y: this.calculatedBase.y + this.calculatedWidth};
 
       } else {
-        this.rectangle.points[0].x = (this.calculatedBase.x === this.initial.x) ?
+        this.ellipse.points[0].x = (this.calculatedBase.x === this.initial.x) ?
           this.calculatedBase.x : (this.calculatedBase.x + (this.calculatedWidth - this.calculatedHeight));
-        this.rectangle.points[0].y = this.calculatedBase.y;
-        this.rectangle.points[1] = {x: this.calculatedBase.x + this.calculatedHeight, y: this.calculatedBase.y + this.calculatedHeight};
+        this.ellipse.points[0].y = this.calculatedBase.y;
+        this.ellipse.points[1] = {x: this.calculatedBase.x + this.calculatedHeight, y: this.calculatedBase.y + this.calculatedHeight};
       }
       this.refreshSVG();
     }
@@ -98,15 +98,15 @@ export class RectangleToolService implements ToolInterface {
 
   shiftRelease(): void {
     if (this.commands.drawingInProgress) {
-      // Lorsque la touche 'shift' est relâchée, la forme à dessiner est un rectangle
-      this.rectangle.points[0] = this.calculatedBase;
-      this.rectangle.points[1] = {x: this.calculatedBase.x + this.calculatedWidth, y: this.calculatedBase.y + this.calculatedHeight};
+      // Lorsque la touche 'shift' est relâchée, la forme à dessiner est une ellipse
+      this.ellipse.points[0] = this.calculatedBase;
+      this.ellipse.points[1] = {x: this.calculatedBase.x + this.calculatedWidth, y: this.calculatedBase.y + this.calculatedHeight};
       this.refreshSVG();
     }
   }
 
   clear(): void {
     this.commands.drawingInProgress = false;
-    this.rectangle = new RectangleService();
+    this.ellipse = new EllipseService();
   }
 }
