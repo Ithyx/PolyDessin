@@ -51,7 +51,7 @@ export class ToolbarComponent implements OnDestroy {
   onClick(tool: DrawingTool): void {
     if (this.tools.activeTool.name === 'Selection' && this.selection.selectionBox) {
       this.selection.deleteBoundingBox();
-  }
+    }
     this.tools.activeTool.isActive = false;
     this.tools.activeTool = tool;
     this.tools.activeTool.isActive = true;
