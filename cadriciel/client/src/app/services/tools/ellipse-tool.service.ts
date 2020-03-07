@@ -74,6 +74,7 @@ export class EllipseToolService {
     this.calculatedHeight = 0;
     this.calculatedWidth = 0;
     this.ellipse = new EllipseService();
+    this.stockageSVG.setOngoingSVG(this.ellipse);
   }
 
   shiftPress(): void {
