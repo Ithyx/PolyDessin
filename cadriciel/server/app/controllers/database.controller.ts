@@ -22,9 +22,7 @@ export class DatabaseController {
         });
         this.router.post('/saveDrawing', async (req: Request, res: Response, next: NextFunction) => {
             try {
-                console.log('attempting saving');
                 await this.databaseService.updateData(req.body);
-                console.log('saving sucessful');
                 res.status(HttpStatus.OK).end();
             } catch (err) {
                 res.status(HttpStatus.BAD_REQUEST).send(err);
