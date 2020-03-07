@@ -32,6 +32,7 @@ export class GalleryComponent implements OnInit {
 
   async update(): Promise<void> {
     this.drawings = await this.db.getData();
+    console.log('finished updating');
   }
 
   close(): void {
@@ -56,7 +57,9 @@ export class GalleryComponent implements OnInit {
   }
 
   async deleteDrawing(drawing: Drawing): Promise<void> {
+    console.log('starting deletion');
     await this.db.deleteDrawing(drawing._id);
-    this.update();
+    await this.update();
+    console.log('finished deleting');
   }
 }

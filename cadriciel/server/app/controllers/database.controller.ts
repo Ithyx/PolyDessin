@@ -22,20 +22,19 @@ export class DatabaseController {
         });
         this.router.post('/saveDrawing', async (req: Request, res: Response, next: NextFunction) => {
             try {
-                const id = await this.databaseService.updateData(req.body);
-                console.log('id: ', id);
-                res.status(HttpStatus.OK).send(id.toString());
+                console.log('attempting saving');
+                await this.databaseService.updateData(req.body);
+                console.log('saving sucessful');
+                res.status(HttpStatus.OK).end();
             } catch (err) {
-                console.log('ERROR DETECTED: ', err);
                 res.status(HttpStatus.BAD_REQUEST).send(err);
             }
         });
         this.router.delete('/deleteDrawing', async (req: Request, res: Response, next: NextFunction) => {
             try {
-                const ok = await this.databaseService.deleteData(req.query.id);
-                ok ? res.status(HttpStatus.OK) : res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+                await this.databaseService.deleteData(req.query.id);
+                res.status(HttpStatus.OK).end();
             } catch (err) {
-                console.log('ERROR DETECTED: ', err);
                 res.status(HttpStatus.BAD_REQUEST).send(err);
             }
         });

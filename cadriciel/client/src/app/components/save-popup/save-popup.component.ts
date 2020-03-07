@@ -16,7 +16,7 @@ export class SavePopupComponent {
   constructor(private dialogRef: MatDialogRef<SavePopupComponent>,
               private db: DatabaseService,
               private drawingParams: DrawingManagerService) {
-    this.name = new FormControl();
+    this.name = new FormControl(drawingParams.name);
   }
 
   confirmSave(): void {
