@@ -9,9 +9,4 @@ describe('EllipseToolService', () => {
     const service: EllipseToolService = TestBed.get(EllipseToolService);
     expect(service).toBeTruthy();
   });
-<<<<<<< Updated upstream
 });*/
-=======
-});
-*/
->>>>>>> Stashed changes

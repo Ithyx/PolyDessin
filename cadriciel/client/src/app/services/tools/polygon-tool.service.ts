@@ -87,6 +87,7 @@ export class PolygonToolService implements ToolInterface {
     this.calculatedCenter = {x: 0, y: 0};
     this.calculatedRadius = 0;
     this.polygon = new PolygonService();
+    this.stockageSVG.setOngoingSVG(this.polygon);
   }
 
   clear(): void {

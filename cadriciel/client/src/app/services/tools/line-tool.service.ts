@@ -11,6 +11,10 @@ export interface Point {
   y: number;
 }
 
+const CLICK_DELAY = 250;
+const POLYGON_DISTANCE = 3;
+const ANGLE_DIVIDER = 4;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -21,7 +25,7 @@ export class LineToolService implements ToolInterface {
 
   cursor: Point = {x: 0, y: 0};
 
-  constructor(public SVGStockage: SVGStockageService,
+  constructor(public svgStockage: SVGStockageService,
               public tools: ToolManagerService,
               public commands: CommandManagerService
               ) {
@@ -44,15 +48,15 @@ export class LineToolService implements ToolInterface {
     this.line.points.push({x: this.line.mousePosition.x, y: this.line.mousePosition.y});
     window.setTimeout(() => {
       if (this.isSimpleClick) { this.refreshSVG(); }
-    }, 250);
+    }, CLICK_DELAY);
   }
 
   onDoubleClick(mouse: MouseEvent): void {
     this.commands.drawingInProgress = false;
     this.isSimpleClick = false;
     if (this.line.points.length !== 0) {
-      if (Math.abs(mouse.offsetX - this.line.points[0].x) <= 3
-          && Math.abs(mouse.offsetY - this.line.points[0].y) <= 3) {
+      if (Math.abs(mouse.offsetX - this.line.points[0].x) <= POLYGON_DISTANCE
+          && Math.abs(mouse.offsetY - this.line.points[0].y) <= POLYGON_DISTANCE) {
         this.line.points.pop();
         this.line.points.pop();
         this.line.isAPolygon = true;
@@ -61,9 +65,10 @@ export class LineToolService implements ToolInterface {
       }
       this.line.draw();
       if (!this.line.isEmpty()) {
-        this.commands.execute(new AddSVGService(this.line, this.SVGStockage));
+        this.commands.execute(new AddSVGService(this.line, this.svgStockage));
       }
       this.line = new LineService();
+      this.line.mousePosition = this.cursor;
     }
   }
 
@@ -82,7 +87,7 @@ export class LineToolService implements ToolInterface {
     if (this.commands.drawingInProgress) {
       const lastPoint = this.line.points[this.line.points.length - 1];
       const angle = Math.atan((this.cursor.y - lastPoint.y) / (this.cursor.x - lastPoint.x));
-      const alignment = Math.abs(Math.round(angle / (Math.PI / 4)));
+      const alignment = Math.abs(Math.round(angle / (Math.PI / ANGLE_DIVIDER)));
 
       // alignement = 0 lorsque angle = 0,180­°
       // alignement = 1 lorsque angle = 45,135,225,315°
@@ -111,12 +116,14 @@ export class LineToolService implements ToolInterface {
   refreshSVG(): void {
     this.line.tool = this.tools.activeTool;
     this.line.draw();
-    this.SVGStockage.setOngoingSVG(this.line);
+    this.svgStockage.setOngoingSVG(this.line);
   }
 
   clear(): void {
     this.line = new LineService();
+    this.line.mousePosition = this.cursor;
     this.shiftPressPosition = {x: 0, y: 0};
     this.cursor = {x: 0, y: 0};
+    this.svgStockage.setOngoingSVG(this.line);
   }
 }
