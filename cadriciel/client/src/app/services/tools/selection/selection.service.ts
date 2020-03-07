@@ -29,7 +29,7 @@ export class SelectionService implements ToolInterface {
              }
 
   handleClick(element: DrawElement): void {
-      for(const element_ of this.selectedElements){
+      for (const element_ of this.selectedElements) {
         element_.isSelected = false;
       }
       element.isSelected = true;
@@ -44,9 +44,9 @@ export class SelectionService implements ToolInterface {
       element.isSelected = false;
       const index = this.selectedElements.indexOf(element, 0);
       this.selectedElements.splice(index, 1);
-      if(this.selectedElements.length == 0){
+      if (this.selectedElements.length === 0) {
         this.deleteBoundingBox();
-      } else{
+      } else {
         this.createBoundingBox();
       }
     } else {
@@ -74,7 +74,7 @@ export class SelectionService implements ToolInterface {
 
   onMousePress(mouse: MouseEvent): void {
     if (!this.clickOnSelectionBox) {
-      //this.deleteBoundingBox();
+      // this.deleteBoundingBox();
       this.selectionRectangle.mouseDown(mouse);
     }
   }
@@ -160,27 +160,31 @@ export class SelectionService implements ToolInterface {
         }
       }
 
-      const corner1Selection = (rectangleSelection.pointMin.x >= element.pointMin.x && rectangleSelection.pointMin.x <= element.pointMax.x)
-                              && (rectangleSelection.pointMin.y >= element.pointMin.y && rectangleSelection.pointMin.y <= element.pointMax.y);
+      const selectionBelongToElement = this.collisionBetweenSelectionAndElement(rectangleSelection, element);
 
-      const corner2Selection = (rectangleSelection.pointMax.x >= element.pointMin.x && rectangleSelection.pointMax.x <= element.pointMax.x)
-                              && (rectangleSelection.pointMin.y >= element.pointMin.y && rectangleSelection.pointMin.y <= element.pointMax.y);
-                              
-      const corner3Selection = (rectangleSelection.pointMin.x >= element.pointMin.x && rectangleSelection.pointMin.x <= element.pointMax.x)
-                              && (rectangleSelection.pointMax.y >= element.pointMin.y && rectangleSelection.pointMax.y <= element.pointMax.y);
-
-      const corner4Selection = (rectangleSelection.pointMax.x >= element.pointMin.x && rectangleSelection.pointMax.x <= element.pointMax.x)
-                              && (rectangleSelection.pointMax.y >= element.pointMin.y && rectangleSelection.pointMax.y <= element.pointMax.y);
-
-
-      let mouseBelongToElement = corner1Selection || corner2Selection || corner3Selection || corner4Selection;
-
-      if (belongToRectangle || mouseBelongToElement) {
+      if (belongToRectangle || selectionBelongToElement) {
         element.isSelected = true;
         this.selectedElements.push(element);
         belongToRectangle = false;
       }
     }
+  }
+
+  collisionBetweenSelectionAndElement(rectangleSelection: RectangleService, element: DrawElement): boolean {
+    // TODO: Permission de changer la règle TSLINT ?
+    const corner1Selection = (rectangleSelection.pointMin.x >= element.pointMin.x && rectangleSelection.pointMin.x <= element.pointMax.x)
+                          && (rectangleSelection.pointMin.y >= element.pointMin.y && rectangleSelection.pointMin.y <= element.pointMax.y);
+
+    const corner2Selection = (rectangleSelection.pointMax.x >= element.pointMin.x && rectangleSelection.pointMax.x <= element.pointMax.x)
+                          && (rectangleSelection.pointMin.y >= element.pointMin.y && rectangleSelection.pointMin.y <= element.pointMax.y);
+                              
+    const corner3Selection = (rectangleSelection.pointMin.x >= element.pointMin.x && rectangleSelection.pointMin.x <= element.pointMax.x)
+                          && (rectangleSelection.pointMax.y >= element.pointMin.y && rectangleSelection.pointMax.y <= element.pointMax.y);
+
+    const corner4Selection = (rectangleSelection.pointMax.x >= element.pointMin.x && rectangleSelection.pointMax.x <= element.pointMax.x)
+                          && (rectangleSelection.pointMax.y >= element.pointMin.y && rectangleSelection.pointMax.y <= element.pointMax.y);
+
+    return corner1Selection || corner2Selection || corner3Selection || corner4Selection;
   }
 
   findPointMinAndMax(element: DrawElement): void {

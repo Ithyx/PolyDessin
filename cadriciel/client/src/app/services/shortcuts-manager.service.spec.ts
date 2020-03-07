@@ -15,6 +15,12 @@ describe('GestionnaireRaccourcisService', () => {
 
   // TESTS clearOngoingSVG
 
+  it('#clearOngoingSVG devrait detruire la boite de selection en cours', () => {
+    spyOn(service.selection, 'deleteBoundingBox');
+    service.clearOngoingSVG();
+    expect(service.selection.deleteBoundingBox).toHaveBeenCalled();
+  });
+
   it('#clearOngoingSVG devrait vider le SVGEnCours de l\' outil rectange', () => {
     spyOn(service.rectangleTool, 'clear');
     service.clearOngoingSVG();
@@ -27,160 +33,11 @@ describe('GestionnaireRaccourcisService', () => {
     expect(service.lineTool.clear).toHaveBeenCalled();
   });
 
-  // TESTS treatInput
-
-  /* it('#treatInput ne fait rien si le focus est sur un champ de texte', () => {
-    const keyboard = new KeyboardEvent('keypress', { key: '1'});
-    service.focusOnInput = true;
-
-    spyOn(service, 'clearOngoingSVG');
-
-    service.treatInput(keyboard);
-
-    expect(service.clearOngoingSVG).not.toHaveBeenCalled();         // On ne devrait pas vider le SVG en cours
-    expect(service.tools.activeTool.name).not.toBe('Rectangle');    // On ne devrait pas changer d'outil actif
-  });
-
-  it('#treatInput devrait mettre rectangle comme outil actif si il reçoit 1', () => {
-    const keyboard = new KeyboardEvent('keypress', { key: '1'});
-    spyOn(service, 'clearOngoingSVG');
-
-    service.treatInput(keyboard);
-
-    expect(service.clearOngoingSVG).toHaveBeenCalled();
-    expect(service.tools.activeTool.name).toBe('Rectangle');
-  });
-
-  it('#treatInput devrait mettre crayon comme outil actif si il reçoit c', () => {
-    const keyboard = new KeyboardEvent('keypress', { key: 'c'});
-    spyOn(service, 'clearOngoingSVG');
-
-    service.treatInput(keyboard);
-
-    expect(service.clearOngoingSVG).toHaveBeenCalled();
-    expect(service.tools.activeTool.name).toBe('Crayon');
-  });
-
-  it('#treatInput devrait mettre ligne comme outil actif si il reçoit l', () => {
-    const keyboard = new KeyboardEvent('keypress', { key: 'l'});
-    spyOn(service, 'clearOngoingSVG');
-
-    service.treatInput(keyboard);
-
-    expect(service.clearOngoingSVG).toHaveBeenCalled();
-    expect(service.tools.activeTool.name).toBe('Ligne');
-  });
-
-  it('#treatInput devrait mettre pinceau comme outil actif si il reçoit w', () => {
-    const keyboard = new KeyboardEvent('keypress', { key: 'w'});
-    spyOn(service, 'clearOngoingSVG');
-
-    service.treatInput(keyboard);
-
-    expect(service.clearOngoingSVG).toHaveBeenCalled();
-    expect(service.tools.activeTool.name).toBe('Pinceau');
-  });
-
-  it('#treatInput devrait retirer le dernier point en cours si il reçoit Backspace et que ligne est active', () => {
-    const keyboard = new KeyboardEvent('keypress', { key: 'Backspace'});
-    service.tools.changeActiveTool(TOOL_INDEX.LINE);
-    spyOn(service.lineTool, 'removePoint');
-
-    service.treatInput(keyboard);
-
-    expect(service.lineTool.removePoint).toHaveBeenCalled();
-  });
-
-  it('#treatInput ne devrait rien faire si il reçoit Backspace mais que ligne est inactive', () => {
-    const keyboard = new KeyboardEvent('keypress', { key: 'Backspace'});
-    service.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
-    spyOn(service.lineTool, 'removePoint');
-
-    service.treatInput(keyboard);
-
-    expect(service.lineTool.removePoint).not.toHaveBeenCalled();
-  });
-
-  it('#treatInput devrait annuler la ligne en cours si il reçoit Escape et que ligne est active', () => {
-    const keyboard = new KeyboardEvent('keypress', { key: 'Escape'});
-    service.tools.changeActiveTool(TOOL_INDEX.LINE);
-    spyOn(service.lineTool, 'clear');
-
-    service.treatInput(keyboard);
-
-    expect(service.lineTool.clear).toHaveBeenCalled();
-  });
-
-  it('#treatInput ne devrait rien faire si il reçoit Escape mais que ligne est inactive', () => {
-    const keyboard = new KeyboardEvent('keypress', { key: 'Escape'});
-    service.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
-    spyOn(service.lineTool, 'clear');
-
-    service.treatInput(keyboard);
-
-    expect(service.lineTool.clear).not.toHaveBeenCalled();
-  });
-
-  it('#treatInput devrait emmettre un nouveau dessin si il reçoit o avec ctrl actif', () => {
-    const keyboard = new KeyboardEvent('keypress', { key: 'o' , ctrlKey: true});
-    spyOn(service.newDrawingEmmiter, 'next');
-
-    service.treatInput(keyboard);
-
-    expect(service.newDrawingEmmiter.next).toHaveBeenCalledWith(false);
-  });
-
-  it('#treatInput devrait empeche le declenchement du raccoruci Google Chrome si il reçoit o avec ctrl actif', () => {
-    const keyboard = new KeyboardEvent('keypress', { key: 'o' , ctrlKey: true});
-    spyOn(keyboard, 'preventDefault');
-
-    service.treatInput(keyboard);
-
-    expect(keyboard.preventDefault).toHaveBeenCalled();
-  });
-
-  it('#treatInput ne devrait rien faire si il reçoit o avec ctrl inactif', () => {
-    const keyboard = new KeyboardEvent('keypress', { key: 'o'});
-    spyOn(keyboard, 'preventDefault');
-    spyOn(service.newDrawingEmmiter, 'next');
-
-    service.treatInput(keyboard);
-
-    expect(keyboard.preventDefault).not.toHaveBeenCalled();
-    expect(service.newDrawingEmmiter.next).not.toHaveBeenCalledWith(false);
-  });
-
-  it('#treatInput devrait appeler memorizeCursor de l\'outil ligne si il reçoit Shift', () => {
-    const keyboard = new KeyboardEvent('keypress', { key: 'Shift'});
-    service.tools.changeActiveTool(TOOL_INDEX.LINE);
-    spyOn(service.lineTool, 'memorizeCursor');
-
-    service.treatInput(keyboard);
-
-    expect(service.lineTool.memorizeCursor).toHaveBeenCalled();
-  });
-
-  it('#treatInput devrait appeler ShiftEnfonce de l\'outil rectangle si il reçoit Shift', () => {
-    const keyboard = new KeyboardEvent('keypress', { key: 'Shift'});
-    service.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
-    spyOn(service.rectangleTool, 'shiftPress');
-
-    service.treatInput(keyboard);
-
-    expect(service.rectangleTool.shiftPress).toHaveBeenCalled();
-  }); */
-
   // TESTS shorcutKey1
 
   it('#shortcutKey1 devrait changer l\'outil actif pour le rectange', () => {
     service.shortcutKey1();
     expect(service.tools.activeTool.ID).toEqual(TOOL_INDEX.RECTANGLE);
-  });
-
-  it('#shortcutKey1 devrait supprimer la boite de sélection', () => {
-    spyOn(service.selection, 'deleteBoundingBox');
-    service.shortcutKey1();
-    expect(service.selection.deleteBoundingBox).toHaveBeenCalled();
   });
 
   it('#shortcutKey1 devrait supprimer le SVG en cours', () => {
@@ -189,6 +46,69 @@ describe('GestionnaireRaccourcisService', () => {
     expect(service.clearOngoingSVG).toHaveBeenCalled();
   });
 
+  // TESTS shorcutKey2
+
+  it('#shortcutKey2 devrait changer l\'outil actif pour l\'ellipse', () => {
+    service.shortcutKey2();
+    expect(service.tools.activeTool.ID).toEqual(TOOL_INDEX.ELLIPSE);
+  });
+
+  it('#shortcutKey2 devrait supprimer le SVG en cours', () => {
+    spyOn(service, 'clearOngoingSVG');
+    service.shortcutKey2();
+    expect(service.clearOngoingSVG).toHaveBeenCalled();
+  });
+
+  // TESTS shorcutKey3
+
+  it('#shortcutKey3 devrait changer l\'outil actif pour le polygone', () => {
+    service.shortcutKey3();
+    expect(service.tools.activeTool.ID).toEqual(TOOL_INDEX.POLYGON);
+  });
+
+  it('#shortcutKey3 devrait supprimer le SVG en cours', () => {
+    spyOn(service, 'clearOngoingSVG');
+    service.shortcutKey3();
+    expect(service.clearOngoingSVG).toHaveBeenCalled();
+  });
+
+   // TESTS shortcutKeyA
+
+  it('#shortcutKeyA devrait changer l\'outil actif pour l\'aérosol si CTRL est inactif', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'a' , ctrlKey: false});
+    service.shortcutKeyA(keyboard);
+    expect(service.tools.activeTool.ID).toEqual(TOOL_INDEX.SPRAY);
+  });
+
+  it('#shortcutKeyA devrait supprimer la boite de selection en cours', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'a' , ctrlKey: true});
+    spyOn(service.selection, 'deleteBoundingBox');
+    service.shortcutKeyA(keyboard);
+    expect(service.selection.deleteBoundingBox).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyA devrait bloquer les raccourcis clavier du navigateur', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'a' , ctrlKey: true});
+    spyOn(keyboard, 'preventDefault');
+    service.shortcutKeyA(keyboard);
+    expect(keyboard.preventDefault).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyA devrait changer changer l\'outil actif pour la sélection', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'a' , ctrlKey: true});
+    service.shortcutKeyA(keyboard);
+    expect(service.tools.activeTool.ID).toEqual(TOOL_INDEX.SELECTION);
+  });
+
+  it('#shortcutKeyA ne devrait pas changer créer de boite de sélection si le nombre d\'SVG est nul', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'a' , ctrlKey: true});
+    spyOn(service.selection, 'createBoundingBox');
+    service.shortcutKeyA(keyboard);
+    expect(service.selection.createBoundingBox).not.toHaveBeenCalled();
+  });
+
+  // TODO : ShortcutKeyA dans le cas de plusieurs SVG
+
   // TESTS shortcutKeyC
 
   it('#shortcutKeyC devrait changer l\'outil actif pour le crayon', () => {
@@ -196,15 +116,22 @@ describe('GestionnaireRaccourcisService', () => {
     expect(service.tools.activeTool.ID).toEqual(TOOL_INDEX.PENCIL);
   });
 
-  it('#shortcutKeyC devrait supprimer la boite de sélection', () => {
-    spyOn(service.selection, 'deleteBoundingBox');
+  it('#shortcutKeyC devrait supprimer le SVG en cours', () => {
+    spyOn(service, 'clearOngoingSVG');
     service.shortcutKeyC();
-    expect(service.selection.deleteBoundingBox).toHaveBeenCalled();
+    expect(service.clearOngoingSVG).toHaveBeenCalled();
+  });
+
+  // TESTS shortcutKeyI
+
+  it('#shortcutKeyI devrait changer l\'outil actif pour la pipette', () => {
+    service.shortcutKeyI();
+    expect(service.tools.activeTool.ID).toEqual(TOOL_INDEX.PIPETTE);
   });
 
   it('#shortcutKeyC devrait supprimer le SVG en cours', () => {
     spyOn(service, 'clearOngoingSVG');
-    service.shortcutKeyC();
+    service.shortcutKeyI();
     expect(service.clearOngoingSVG).toHaveBeenCalled();
   });
 
@@ -215,16 +142,120 @@ describe('GestionnaireRaccourcisService', () => {
     expect(service.tools.activeTool.ID).toEqual(TOOL_INDEX.LINE);
   });
 
-  it('#shortcutKeyL devrait supprimer la boite de sélection', () => {
-    spyOn(service.selection, 'deleteBoundingBox');
-    service.shortcutKeyL();
-    expect(service.selection.deleteBoundingBox).toHaveBeenCalled();
-  });
-
   it('#shortcutKeyL devrait supprimer le SVG en cours', () => {
     spyOn(service, 'clearOngoingSVG');
     service.shortcutKeyL();
     expect(service.clearOngoingSVG).toHaveBeenCalled();
+  });
+
+  // TESTS shortcutKeyW
+
+  it('#shortcutKeyW devrait changer l\'outil actif pour la ligne', () => {
+    service.shortcutKeyW();
+    expect(service.tools.activeTool.ID).toEqual(TOOL_INDEX.BRUSH);
+  });
+
+  it('#shortcutKeyW devrait supprimer le SVG en cours', () => {
+    spyOn(service, 'clearOngoingSVG');
+    service.shortcutKeyW();
+    expect(service.clearOngoingSVG).toHaveBeenCalled();
+  });
+
+  // TESTS shortcutKeyS
+
+  it('#shortcutKeyS devrait changer l\'outil actif pour la ligne', () => {
+    service.shortcutKeyS();
+    expect(service.tools.activeTool.ID).toEqual(TOOL_INDEX.SELECTION);
+  });
+
+  it('#shortcutKeyS devrait supprimer le SVG en cours', () => {
+    spyOn(service, 'clearOngoingSVG');
+    service.shortcutKeyS();
+    expect(service.clearOngoingSVG).toHaveBeenCalled();
+  });
+
+  // TESTS shortcutKeyBackSpace
+
+  it('#shortcutKeyBackSpace devrait retirer le dernier si l\'outil acitf est la ligne', () => {
+    service.tools.activeTool = service.tools.toolList[TOOL_INDEX.LINE];
+    spyOn(service.lineTool, 'removePoint');
+    service.shortcutKeyBackSpace();
+    expect(service.lineTool.removePoint).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyBackSpace ne devrait pas retirer le dernier si l\'outil acitf n\'est pas la ligne', () => {
+    service.tools.activeTool = service.tools.toolList[TOOL_INDEX.PENCIL];
+    spyOn(service.lineTool, 'removePoint');
+    service.shortcutKeyBackSpace();
+    expect(service.lineTool.removePoint).not.toHaveBeenCalled();
+  });
+
+  // TESTS shortcutKeyEscape
+
+  it('#shortcutKeyEscape devrait supprimer la ligne en cours si l\'outil acitf est la ligne', () => {
+    service.tools.activeTool = service.tools.toolList[TOOL_INDEX.LINE];
+    spyOn(service.lineTool, 'clear');
+    service.shortcutKeyEscape();
+    expect(service.lineTool.clear).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyEscape ne devrait pas supprimer la ligne en cours si l\'outil acitf est la ligne', () => {
+    service.tools.activeTool = service.tools.toolList[TOOL_INDEX.PENCIL];
+    spyOn(service.lineTool, 'clear');
+    service.shortcutKeyEscape();
+    expect(service.lineTool.clear).not.toHaveBeenCalled();
+  });
+
+  // TESTS shortcutG
+
+  it('#shortcutKeyG devrait inverser l\'etat d\'affichage de la grille', () => {
+    service.grid.showGrid = false;
+    service.shortcutKeyG();
+    expect(service.grid.showGrid).toBe(true);
+  });
+
+  // TESTS shortcutKeyPlus
+
+  it('#shortcutKeyPlus devrait augmenter l\'espace de la grille', () => {
+    spyOn(service.grid, 'increaseSize');
+    service.shortcutKeyPlus();
+    expect(service.grid.increaseSize).toHaveBeenCalled();
+  });
+
+  // TESTS shortcutKeyMinus
+
+  it('#shortcutKeyMinus devrait diminuer l\'espace de la grille', () => {
+    spyOn(service.grid, 'decreaseSize');
+    service.shortcutKeyMinus();
+    expect(service.grid.decreaseSize).toHaveBeenCalled();
+  });
+
+   // TESTS shortcutArrowLeft
+
+  it('#shortcutKeyArrowLeft devrait mettre leftArrow à vrai', () => {
+    service.shortcutKeyArrowLeft();
+    expect(service.leftArrow).toBe(true);
+  });
+
+  // TESTS shortcutArrowRight
+
+  it('#shortcutKeyArrowRight devrait mettre RightArrow à vrai', () => {
+    service.shortcutKeyArrowRight();
+    expect(service.rightArrow).toBe(true);
+  });
+
+  // TESTS shortcutArrowDown
+
+  it('#shortcutKeyArrowDown devrait mettre DownArrow à vrai', () => {
+    service.shortcutKeyArrowDown();
+    expect(service.downArrow).toBe(true);
+  });
+
+  // TESTS shortcutArrowUp
+
+  it('#shortcutKeyArrowUp devrait mettre UpArrow à vrai', () => {
+    service.shortcutKeyArrowUp();
+    expect(service.upArrow).toBe(true);
   });
 
   // TESTS treatReleaseKey

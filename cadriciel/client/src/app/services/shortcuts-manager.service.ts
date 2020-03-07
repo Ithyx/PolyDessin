@@ -11,6 +11,7 @@ import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
 type FunctionShortcut = (keyboard?: KeyboardEvent ) => void;
 
 const SELECTION_MOVEMENT_PIXEL = 3;
+const MOVEMENT_DELAY_MS = 100;
 
 @Injectable({
   providedIn: 'root'
@@ -103,7 +104,7 @@ export class ShortcutsManagerService {
           if (this.counter100ms > 5) {
               this.selection.updatePosition(translate.x , translate.y);
           }
-        }, 100);
+        }, MOVEMENT_DELAY_MS);
       }
     }
   }
@@ -130,13 +131,11 @@ export class ShortcutsManagerService {
   }
 
   shortcutKey2(): void {
-    this.selection.deleteBoundingBox();
     this.tools.changeActiveTool(TOOL_INDEX.ELLIPSE);
     this.clearOngoingSVG();
   }
 
   shortcutKey3(): void {
-    this.selection.deleteBoundingBox();
     this.tools.changeActiveTool(TOOL_INDEX.POLYGON);
     this.clearOngoingSVG();
   }
@@ -163,7 +162,6 @@ export class ShortcutsManagerService {
   }
 
   shortcutKeyI(): void {
-    this.selection.deleteBoundingBox();
     this.tools.changeActiveTool(TOOL_INDEX.PIPETTE);
     this.clearOngoingSVG();
   }
