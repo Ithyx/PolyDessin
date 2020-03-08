@@ -29,11 +29,10 @@ export class DrawingSurfaceComponent {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
         this.selection.deleteBoundingBox();
         this.selection.clickOnSelectionBox = false;
-        for(const element of this.selection.selectedElements){
+        for (const element of this.selection.selectedElements) {
           element.isSelected = false;
         }
         this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
-        
     }
   }
 

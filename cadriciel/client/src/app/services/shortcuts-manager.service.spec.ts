@@ -13,6 +13,12 @@ describe('GestionnaireRaccourcisService', () => {
     expect(testService).toBeTruthy();
   });
 
+  // TESTS updatePositionTimer
+    // TODO
+
+  // TESTS treatInput
+    // TODO
+
   // TESTS clearOngoingSVG
 
   it('#clearOngoingSVG devrait detruire la boite de selection en cours', () => {
@@ -174,6 +180,117 @@ describe('GestionnaireRaccourcisService', () => {
     expect(service.clearOngoingSVG).toHaveBeenCalled();
   });
 
+  // TESTS shortcutKeyZ
+
+  it('#shortcutKeyZ devrait annuler la dernier commande si CTRL est actif et qu\'il n\'y a pas de dessin en cours', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'z' , ctrlKey: true});
+    service.commands.drawingInProgress = false;
+    spyOn(service.commands, 'cancelCommand');
+    service.shortcutKeyZ(keyboard);
+    expect(service.commands.cancelCommand).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyZ ne devrait rien faire si CTRL n\'est pas actif', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'z' , ctrlKey: false});
+    service.commands.drawingInProgress = false;
+    spyOn(service.commands, 'cancelCommand');
+    service.shortcutKeyZ(keyboard);
+    expect(service.commands.cancelCommand).not.toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyZ ne devrait rien faire si un dessin est en cours', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'z' , ctrlKey: true});
+    service.commands.drawingInProgress = true;
+    spyOn(service.commands, 'cancelCommand');
+    service.shortcutKeyZ(keyboard);
+    expect(service.commands.cancelCommand).not.toHaveBeenCalled();
+  });
+
+  // TESTS shortcutKeyUpperZ
+
+  it('#shortcutKeyUpperZ devrait refaire la dernier commande si CTRL est actif et qu\'il n\'y a pas de dessin en cours', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'Z' , ctrlKey: true});
+    service.commands.drawingInProgress = false;
+    spyOn(service.commands, 'redoCommand');
+    service.shortcutKeyUpperZ(keyboard);
+    expect(service.commands.redoCommand).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyUpperZ ne devrait rien faire si CTRL n\'est pas actif', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'Z' , ctrlKey: false});
+    service.commands.drawingInProgress = false;
+    spyOn(service.commands, 'redoCommand');
+    service.shortcutKeyUpperZ(keyboard);
+    expect(service.commands.redoCommand).not.toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyUpperZ ne devrait rien faire si un dessin est en cours', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'Z' , ctrlKey: true});
+    service.commands.drawingInProgress = true;
+    spyOn(service.commands, 'redoCommand');
+    service.shortcutKeyUpperZ(keyboard);
+    expect(service.commands.redoCommand).not.toHaveBeenCalled();
+  });
+
+  // TESTS shortcutKeyShift
+
+  it('#shortcutKeyShift devrait appeler shiftPress si l\'outil actif est le rectangle', () => {
+    service.tools.activeTool = service.tools.toolList[TOOL_INDEX.RECTANGLE];
+    spyOn(service.rectangleTool, 'shiftPress');
+    service.shortcutKeyShift();
+    expect(service.rectangleTool.shiftPress).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyShift devrait memoriser la position du curseur si l\'outil actif est la ligne', () => {
+    service.tools.activeTool = service.tools.toolList[TOOL_INDEX.LINE];
+    spyOn(service.lineTool, 'memorizeCursor');
+    service.shortcutKeyShift();
+    expect(service.lineTool.memorizeCursor).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyShift ne devrait rien faire si l\'outil actif n\'est ni la ligne ou le rectangle', () => {
+    service.tools.activeTool = service.tools.toolList[TOOL_INDEX.PENCIL];
+    spyOn(service.lineTool, 'memorizeCursor');
+    spyOn(service.rectangleTool, 'shiftPress');
+    service.shortcutKeyShift();
+    expect(service.lineTool.memorizeCursor).not.toHaveBeenCalled();
+    expect(service.rectangleTool.shiftPress).not.toHaveBeenCalled();
+  });
+
+  // TESTS shortcutKeyO
+
+  it('#shortcutKeyO devrait emettre un nouveau dessin avec l\'attribut false si CTRL est actif', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'o' , ctrlKey: true});
+    spyOn(service.newDrawingEmmiter, 'next');
+    service.shortcutKeyO(keyboard);
+    expect(service.newDrawingEmmiter.next).toHaveBeenCalledWith(false);
+  });
+
+  it('#shortcutKeyO devrait detruire la boite de selection si CTRL est actif', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'o' , ctrlKey: true});
+    spyOn(service.selection, 'deleteBoundingBox');
+    service.shortcutKeyO(keyboard);
+    expect(service.selection.deleteBoundingBox).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyO devrait bloquer les raccourcis du navigateur si CTRL est actif', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'o' , ctrlKey: true});
+    spyOn(keyboard, 'preventDefault');
+    service.shortcutKeyO(keyboard);
+    expect(keyboard.preventDefault).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyO ne devrait rien faire si CTRL est inactif', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'o' , ctrlKey: false});
+    spyOn(service.newDrawingEmmiter, 'next');
+    spyOn(service.selection, 'deleteBoundingBox');
+    spyOn(keyboard, 'preventDefault');
+    service.shortcutKeyO(keyboard);
+    expect(service.newDrawingEmmiter.next).not.toHaveBeenCalledWith(false);
+    expect(service.selection.deleteBoundingBox).not.toHaveBeenCalled();
+    expect(keyboard.preventDefault).not.toHaveBeenCalled();
+  });
+
   // TESTS shortcutKeyBackSpace
 
   it('#shortcutKeyBackSpace devrait retirer le dernier si l\'outil acitf est la ligne', () => {
@@ -234,28 +351,32 @@ describe('GestionnaireRaccourcisService', () => {
 
   it('#shortcutKeyArrowLeft devrait mettre leftArrow à vrai', () => {
     service.shortcutKeyArrowLeft();
-    expect(service.leftArrow).toBe(true);
+    // tslint:disable-next-line:no-string-literal
+    expect(service['leftArrow']).toBe(true);
   });
 
   // TESTS shortcutArrowRight
 
   it('#shortcutKeyArrowRight devrait mettre RightArrow à vrai', () => {
     service.shortcutKeyArrowRight();
-    expect(service.rightArrow).toBe(true);
+    // tslint:disable-next-line:no-string-literal
+    expect(service['rightArrow']).toBe(true);
   });
 
   // TESTS shortcutArrowDown
 
   it('#shortcutKeyArrowDown devrait mettre DownArrow à vrai', () => {
     service.shortcutKeyArrowDown();
-    expect(service.downArrow).toBe(true);
+    // tslint:disable-next-line:no-string-literal
+    expect(service['downArrow']).toBe(true);
   });
 
   // TESTS shortcutArrowUp
 
   it('#shortcutKeyArrowUp devrait mettre UpArrow à vrai', () => {
     service.shortcutKeyArrowUp();
-    expect(service.upArrow).toBe(true);
+    // tslint:disable-next-line:no-string-literal
+    expect(service['upArrow']).toBe(true);
   });
 
   // TESTS treatReleaseKey
@@ -283,25 +404,29 @@ describe('GestionnaireRaccourcisService', () => {
   it('#treatReleaseKey devrait mettre leftArrow a false si il reçoit ArrowLeft', () => {
     const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowLeft'});
     service.treatReleaseKey(keyboard);
-    expect(service.leftArrow).toBe(false);
+    // tslint:disable-next-line:no-string-literal
+    expect(service['leftArrow']).toBe(false);
   });
 
   it('#treatReleaseKey devrait mettre rightArrow a false si il reçoit ArrowRight', () => {
     const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowRight'});
     service.treatReleaseKey(keyboard);
-    expect(service.rightArrow).toBe(false);
+    // tslint:disable-next-line:no-string-literal
+    expect(service['rightArrow']).toBe(false);
   });
 
   it('#treatReleaseKey devrait mettre upArrow a false si il reçoit ArrowUp', () => {
     const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowUp'});
     service.treatReleaseKey(keyboard);
-    expect(service.upArrow).toBe(false);
+    // tslint:disable-next-line:no-string-literal
+    expect(service['upArrow']).toBe(false);
   });
 
   it('#treatReleaseKey devrait mettre downArrow a false si il reçoit ArrowDown', () => {
     const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowDown'});
     service.treatReleaseKey(keyboard);
-    expect(service.downArrow).toBe(false);
+    // tslint:disable-next-line:no-string-literal
+    expect(service['downArrow']).toBe(false);
   });
 
   it('#treatReleaseKey ne fait rien dans le cas d\'une touche non programmée', () => {
@@ -321,4 +446,5 @@ describe('GestionnaireRaccourcisService', () => {
 
   });
 
+  // TODO: Désactiver limite fichier avec TSLINT
 });

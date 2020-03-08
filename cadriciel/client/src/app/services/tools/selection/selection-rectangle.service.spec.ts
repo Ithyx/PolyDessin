@@ -1,14 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { Point } from '../line-tool.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
 
 describe('SelectionRectangleService', () => {
   let service: SelectionRectangleService;
+  let sanitizer: DomSanitizer;
 
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(SelectionRectangleService));
+  beforeEach(() => sanitizer = TestBed.get(DomSanitizer));
 
   it('should be created', () => {
     const testService: SelectionRectangleService = TestBed.get(SelectionRectangleService);
@@ -18,25 +21,40 @@ describe('SelectionRectangleService', () => {
   // Tests refreshSVG
 
   it('#refreshSVG devrait avoir la couleur principal à rgba(0, 80, 130, 0.35)', () => {
+    service.rectangle = new RectangleService();
     service.refreshSVG();
     expect(service.rectangle.primaryColor).toBe('rgba(0, 80, 130, 0.35)');
   });
 
   it('#refreshSVG devrait avoir la couleur secondaire à rgba(80, 80, 80, 0.45)', () => {
+    service.rectangle = new RectangleService();
     service.refreshSVG();
     expect(service.rectangle.secondaryColor).toBe('rgba(80, 80, 80, 0.45)');
   });
 
   it('#refreshSVG devrait dessiner le nouveau rectange de selection', () => {
+    service.rectangle = new RectangleService();
     spyOn(service.rectangle, 'draw');
     service.refreshSVG();
     expect(service.rectangle.draw).toHaveBeenCalled();
   });
 
   it('#refreshSVG devrait convertir le SVG du rectangle en HTML', () => {
-    service.rectangle.SVG = '<rect test>';
+    service.rectangle = new RectangleService();
+    service.rectangle.SVG = '<line stroke-linecap="square" stroke="rgba(80, 80, 80, 0.45)" stroke-width="3" x1="0" y1="0" x2="0" y2="0"/>';
     service.refreshSVG();
-    expect(service.rectangle.SVGHtml).toBe('<rect test>');
+    const testHTML: SafeHtml = sanitizer.bypassSecurityTrustHtml(service.rectangle.SVG);
+    expect(service.rectangle.SVGHtml).toEqual(testHTML);
+  });
+
+  // Tests mouseMove
+
+  it('#mouseMove ne devrait rien faire si il n\'y a pas de selection en cours', () => {
+    const mouse = new MouseEvent('mousemove', { clientX: 50, clientY: 50 });
+    service.ongoingSelection = false;
+    spyOn(service, 'refreshSVG');
+    service.mouseMove(mouse);
+    expect(service.refreshSVG).not.toHaveBeenCalled();
   });
 
   // Tests mouseDown

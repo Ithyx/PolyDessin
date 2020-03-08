@@ -18,8 +18,7 @@ export class SelectionBoxService {
 
   constructor(public tools: ToolManagerService,
               private sanitizer: DomSanitizer,
-              ) {
-              }
+              ) {}
 
   createSelectionBox(pointMin: Point, pointMax: Point): void {
 

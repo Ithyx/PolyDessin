@@ -20,13 +20,13 @@ const MOVEMENT_DELAY_MS = 100;
 export class ShortcutsManagerService {
   focusOnInput: boolean;
   shortcutManager: Map<string, FunctionShortcut > = new Map<string, FunctionShortcut>();
-  counter100ms: number;
-  clearTimeout: number;
+  private counter100ms: number;
+  private clearTimeout: number;
 
-  leftArrow: boolean;
-  rightArrow: boolean;
-  upArrow: boolean;
-  downArrow: boolean;
+  private leftArrow: boolean;
+  private rightArrow: boolean;
+  private upArrow: boolean;
+  private downArrow: boolean;
 
   newDrawingEmmiter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
