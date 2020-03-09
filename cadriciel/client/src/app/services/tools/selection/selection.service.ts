@@ -39,6 +39,7 @@ export class SelectionService implements ToolInterface {
 
   onMouseMove(mouse: MouseEvent): void {
     if (this.clickOnSelectionBox) {
+      // this.selectionBox.updatePositionMouse(mouse);
       this.updatePositionMouse(mouse);
     } else {
       this.selectionRectangle.mouseMove(mouse);
@@ -199,13 +200,13 @@ export class SelectionService implements ToolInterface {
           this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePosition(x, y);
           element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
-
           this.selectedElements.push(element);
         }
       }
       this.selectionBox.updatePosition(x, y);
     }
   }
+
 
   updatePositionMouse(mouse: MouseEvent): void {
     if (this.selectionBox.selectionBox) {
@@ -214,7 +215,6 @@ export class SelectionService implements ToolInterface {
           this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePositionMouse(mouse, this.selectionBox.mouseClick);
           element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
-
           this.selectedElements.push(element);
         }
       }
