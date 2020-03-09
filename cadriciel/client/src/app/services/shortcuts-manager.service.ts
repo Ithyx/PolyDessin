@@ -125,6 +125,7 @@ export class ShortcutsManagerService {
   treatInput(keyboard: KeyboardEvent): void {
     if (this.focusOnInput) { return; }
     if (this.shortcutManager.has(keyboard.key)) {
+      keyboard.preventDefault();
       (this.shortcutManager.get(keyboard.key) as FunctionShortcut)(keyboard);
     }
     this.updatePositionTimer();
@@ -156,7 +157,6 @@ export class ShortcutsManagerService {
   shortcutKeyA(keyboard: KeyboardEvent): void {
     if (keyboard.ctrlKey) {
       this.selection.deleteBoundingBox();
-      keyboard.preventDefault();
       this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
       if (this.SVGStockage.getCompleteSVG().length !== 0) {
         for (const element of this.SVGStockage.getCompleteSVG()) {
@@ -198,7 +198,6 @@ export class ShortcutsManagerService {
     if (keyboard.ctrlKey) {
       this.focusOnInput = true;
       this.dialog.open(SavePopupComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
-      keyboard.preventDefault();
     } else {
       this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
       this.clearOngoingSVG();
@@ -235,7 +234,6 @@ export class ShortcutsManagerService {
     if (keyboard.ctrlKey) {
       this.newDrawingEmmiter.next(false);
       this.selection.deleteBoundingBox();
-      keyboard.preventDefault();
     }
   }
 
@@ -255,7 +253,6 @@ export class ShortcutsManagerService {
     if (keyboard.ctrlKey) {
       this.focusOnInput = true;
       this.dialog.open(GalleryComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
-      keyboard.preventDefault();
     } else { this.grid.showGrid = !this.grid.showGrid; }
   }
 
@@ -283,8 +280,8 @@ export class ShortcutsManagerService {
     this.downArrow = true;
   }
 
-  treatReleaseKey(keybord: KeyboardEvent): void {
-    switch (keybord.key) {
+  treatReleaseKey(keyboard: KeyboardEvent): void {
+    switch (keyboard.key) {
       case 'Shift':
         if (this.tools.activeTool.ID === TOOL_INDEX.RECTANGLE) {
           this.rectangleTool.shiftRelease();
