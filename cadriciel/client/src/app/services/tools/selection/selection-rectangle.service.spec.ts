@@ -34,9 +34,9 @@ describe('SelectionRectangleService', () => {
   });
 
   it('#refreshSVG devrait convertir le SVG du rectangle en HTML', () => {
-    service.rectangle.SVG = '<rect test>';
+    service.rectangle.svg = '<rect test>';
     service.refreshSVG();
-    expect(service.rectangle.SVGHtml).toBe('<rect test>');
+    expect(service.rectangle.svgHtml).toBe('<rect test>');
   });
 
   // Tests mouseDown

@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
-import { DrawingTool, EMPTY_TOOL } from '../tools/tool-manager.service';
+import { DrawingTool } from '../tools/tool-manager.service';
 import { DrawElement } from './draw-element';
+
+const MIN_SIDES = 4;
 
 @Injectable({
   providedIn: 'root'
 })
 export class PolygonService implements DrawElement {
-  SVG: string;
-  SVGHtml: SafeHtml;
+  svg: string;
+  svgHtml: SafeHtml;
 
   points: Point[];
   isSelected: boolean;
@@ -18,9 +20,9 @@ export class PolygonService implements DrawElement {
   secondaryColor: string;
 
   thickness: number;
+  chosenOption: string;
+  sides: number;
   perimeter: string;
-
-  tool: DrawingTool = EMPTY_TOOL;
 
   pointMin: Point;
   pointMax: Point;
@@ -28,7 +30,7 @@ export class PolygonService implements DrawElement {
   translate: Point;
 
   constructor() {
-    this.SVGHtml = '';
+    this.svgHtml = '';
     this.points = [];
     this.pointMin = {x: 0, y: 0};
     this.pointMax = {x: 0, y: 0};
@@ -50,33 +52,28 @@ export class PolygonService implements DrawElement {
   }
 
   drawPolygon(): void {
-    const chosenOption = this.tool.parameters[1].chosenOption;
-    this.SVG = '<polygon transform=" translate(' + this.translate.x + ' ' + this.translate.y +
-      ')" fill="' + ((chosenOption !== 'Contour') ? this.primaryColor : 'none')
-      + '" stroke="' + ((chosenOption !== 'Plein') ? this.secondaryColor : 'none')
-      + '" stroke-width="' + this.tool.parameters[0].value
+    this.svg = '<polygon transform=" translate(' + this.translate.x + ' ' + this.translate.y +
+      ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor : 'none')
+      + '" stroke="' + ((this.chosenOption !== 'Plein') ? this.secondaryColor : 'none')
+      + '" stroke-width="' + this.thickness
       + '" points="';
     for (const point of this.points) {
-      this.SVG += point.x + ' ' + point.y + ' ';
+      this.svg += point.x + ' ' + point.y + ' ';
     }
-    this.SVG += '"/>';
+    this.svg += '"/>';
   }
 
   drawPerimeter(): void {
-    if (this.tool.parameters[1].chosenOption === 'Plein') {
-      this.thickness = 0;
-    } else if (this.tool.parameters[0].value) {
-      this.thickness = this.tool.parameters[0].value;
-    }
+    const thickness = (this.chosenOption === 'Plein') ? 0 : this.thickness;
     this.perimeter = '<rect stroke="gray" fill="none" stroke-width="2';
-    if (this.tool.parameters[1].chosenOption === 'Plein') {
+    if (this.chosenOption === 'Plein') {
       this.perimeter += '" x="' + this.pointMin.x + '" y="' + this.pointMin.y
         + '" height="' + this.getHeight() + '" width="' + this.getWidth() + '"/>';
     } else {
-      this.perimeter += '" x="' + (this.pointMin.x - this.thickness / 2)
-        + '" y="' + (this.pointMin.y - this.thickness / 2);
-      this.perimeter += '" height="' + ((this.getHeight() === 0) ? this.thickness : (this.getHeight() + this.thickness))
-        + '" width="' + ((this.getWidth() === 0) ? this.thickness : (this.getWidth() + this.thickness)) + '"/>';
+      this.perimeter += '" x="' + (this.pointMin.x - thickness / 2)
+        + '" y="' + (this.pointMin.y - thickness / 2);
+      this.perimeter += '" height="' + ((this.getHeight() === 0) ? thickness : (this.getHeight() + thickness))
+        + '" width="' + ((this.getWidth() === 0) ? thickness : (this.getWidth() + thickness)) + '"/>';
     }
   }
 
@@ -90,6 +87,12 @@ export class PolygonService implements DrawElement {
     this.translate.x = mouse.offsetX - mouseClick.x;
     this.translate.y = mouse.offsetY - mouseClick.y;
     this.draw();
+  }
+
+  updateParameters(tool: DrawingTool): void {
+    this.thickness = (tool.parameters[0].value) ? tool.parameters[0].value : 1;
+    this.chosenOption = (tool.parameters[1].chosenOption) ? tool.parameters[1].chosenOption : '';
+    this.sides = (tool.parameters[2].value) ? tool.parameters[2].value : MIN_SIDES;
   }
 
   translateAllPoints(): void {

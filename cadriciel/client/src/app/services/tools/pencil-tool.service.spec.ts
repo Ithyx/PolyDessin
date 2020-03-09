@@ -3,7 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { TracePencilService } from '../stockage-svg/trace-pencil.service';
 import { DrawingToolService } from './pencil-tool.service';
-import { EMPTY_TOOL } from './tool-manager.service';
 
 describe('DessinCrayonService', () => {
   let service: DrawingToolService;
@@ -20,11 +19,11 @@ describe('DessinCrayonService', () => {
     service.tools.activeTool.parameters[0].value = 5;
 
     element = new TracePencilService();
-    element.tool = service.tools.toolList[0];
+    element.updateParameters(service.tools.toolList[0]);
     element.primaryColor = 'rgba(0, 0, 0, 1)';
 
     stockageService.setOngoingSVG(element);
-    service.trace.SVG = 'L';
+    service.trace.svg = 'L';
   });
 
   it('should be created', () => {
@@ -128,7 +127,7 @@ describe('DessinCrayonService', () => {
   });
 
   it("#sourisRelachee devrait changer peutCliquer à vrai si SVG de trait ne contient pas 'L'", () => {
-    service.trace.SVG = 'P';
+    service.trace.svg = 'P';
     service.onMouseRelease();
     expect(service.canClick).toBe(true);
   });
@@ -193,10 +192,10 @@ describe('DessinCrayonService', () => {
     expect(service.trace.primaryColor).toEqual(service.colorParameter.getPrimaryColor());
   });
 
-  it('#refreshSVG devrait changer l\'outil du trait', () => {
-    service.trace.tool = EMPTY_TOOL;
+  it('#refreshSVG devrait appeler updateParameters avec l\'outil en cours', () => {
+    spyOn(service.trace, 'updateParameters');
     service.refreshSVG();
-    expect(service.trace.tool).toEqual(service.tools.activeTool);
+    expect(service.trace.updateParameters).toHaveBeenCalledWith(service.tools.activeTool);
   });
 
   it('#refreshSVG devrait appeler dessiner du trait', () => {

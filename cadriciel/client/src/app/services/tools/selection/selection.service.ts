@@ -199,7 +199,7 @@ export class SelectionService implements ToolInterface {
         if (element.isSelected) {
           this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePosition(x, y);
-          element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
+          element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
           this.selectedElements.push(element);
         }
       }
@@ -214,7 +214,7 @@ export class SelectionService implements ToolInterface {
         if (element.isSelected) {
           this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePositionMouse(mouse, this.selectionBox.mouseClick);
-          element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
+          element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
           this.selectedElements.push(element);
         }
       }

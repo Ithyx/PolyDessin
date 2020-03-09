@@ -4,6 +4,8 @@ import { AddSVGService } from '../command/add-svg.service';
 import { RectangleService } from '../stockage-svg/rectangle.service';
 import { RectangleToolService } from './rectangle-tool.service';
 
+// tslint:disable: no-magic-numbers
+
 describe('DessinRectangleService', () => {
   let service: RectangleToolService;
   beforeEach(() => TestBed.configureTestingModule({}));
@@ -187,9 +189,10 @@ describe('DessinRectangleService', () => {
   });
 
   // TESTS refreshSVG
-  it('#refreshSVG devrait actualiser l\'outil actif', () => {
+  it('#refreshSVG devrait appeler updateParameters avec l\'outil en cours', () => {
+    spyOn(service.rectangle, 'updateParameters');
     service.refreshSVG();
-    expect(service.rectangle.tool).toEqual(service.tools.activeTool);
+    expect(service.rectangle.updateParameters).toHaveBeenCalledWith(service.tools.activeTool);
   });
   it('#refreshSVG devrait appeler getPrimaryColor', () => {
     service.refreshSVG();

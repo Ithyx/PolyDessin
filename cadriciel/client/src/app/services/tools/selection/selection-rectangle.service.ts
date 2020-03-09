@@ -34,11 +34,11 @@ export class SelectionRectangleService {
    }
 
   refreshSVG(): void {
-    this.rectangle.tool = rectangleSelectionTool;
+    this.rectangle.updateParameters(rectangleSelectionTool);
     this.rectangle.primaryColor = 'rgba(0, 80, 130, 0.35)';
     this.rectangle.secondaryColor = 'rgba(80, 80, 80, 0.45)';
     this.rectangle.draw();
-    this.rectangle.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.rectangle.SVG);
+    this.rectangle.svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.rectangle.svg);
   }
 
   mouseMove(mouse: MouseEvent): void {
