@@ -59,8 +59,8 @@ export class TracePencilService implements DrawElement {
   }
 
   drawPoint(): void {
-    this.SVG = '<circle cx="' + this.points[0].x + '" cy="' + this.points[0].y
-      + '" r="' + this.thickness / 2
+    this.SVG = '<circle transform ="translate(' + this.translate.x + ' ' + this.translate.y +
+      ')"cx="' + this.points[0].x + '" cy="' + this.points[0].y+ '" r="' + this.thickness / 2
       + '" fill="' + this.primaryColor + '"/>';
   }
 
