@@ -16,7 +16,7 @@ const outilTestActif: DrawingTool = {
   name: 'stubComplet',
   isActive: true,
   ID: 0,
-  parameters: [],
+  parameters: [{type: '', name: '', value: 0 }],
   iconName: ''
 };
 const outilTestInactif: DrawingTool = {
@@ -52,7 +52,7 @@ class StubOutil implements ToolInterface {
   onDoubleClick(event: MouseEvent): void {/**/}
 }
 
-describe('PageDessinComponent', () => {
+describe('DrawingPageComponent', () => {
   let component: DrawingPageComponent;
   let fixture: ComponentFixture<DrawingPageComponent>;
   let service: ToolManagerService;

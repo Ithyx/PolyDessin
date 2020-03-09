@@ -4,7 +4,6 @@ import { DrawElement } from '../stockage-svg/draw-element';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { TraceBrushService } from '../stockage-svg/trace-brush.service';
 import { BrushToolService } from './brush-tool.service';
-import { EMPTY_TOOL } from './tool-manager.service';
 
 describe('DessinPinceauService', () => {
   let service: BrushToolService;
@@ -19,11 +18,12 @@ describe('DessinPinceauService', () => {
     service.commands.drawingInProgress = true;
     service.canClick = true;
     service.tools.activeTool = service.tools.toolList[1];
+    // tslint:disable-next-line: no-magic-numbers
     service.tools.activeTool.parameters[0].value = 5;
 
     element = new TraceBrushService();
     stockageService.setOngoingSVG(element);
-    service.trace.SVG = 'L';
+    service.trace.svg = 'L';
   });
 
   it('should be created', () => {
@@ -127,7 +127,7 @@ describe('DessinPinceauService', () => {
   });
 
   it("#sourisRelachee devrait changer peutCliquer à vrai si SVG de trait ne contient pas 'L'", () => {
-    service.trace.SVG = 'P';
+    service.trace.svg = 'P';
     service.onMouseRelease();
     expect(service.canClick).toBe(true);
   });
@@ -192,12 +192,6 @@ describe('DessinPinceauService', () => {
     expect(service.trace.primaryColor).toEqual(service.colorParameter.getPrimaryColor());
   });
 
-  it('#refreshSVG devrait changer l\'outil du trait', () => {
-    service.trace.tool = EMPTY_TOOL;
-    service.refreshSVG();
-    expect(service.trace.tool).toEqual(service.tools.activeTool);
-  });
-
   it('#refreshSVG devrait appeler dessiner du trait', () => {
     spyOn(service.trace, 'draw');
     service.refreshSVG();
@@ -208,5 +202,11 @@ describe('DessinPinceauService', () => {
     spyOn(stockageService, 'setOngoingSVG');
     service.refreshSVG();
     expect(stockageService.setOngoingSVG).toHaveBeenCalledWith(service.trace);
+  });
+
+  it('#refreshSVG devrait appeler updateParameters avec l\'outil en cours', () => {
+    spyOn(service.trace, 'updateParameters');
+    service.refreshSVG();
+    expect(service.trace.updateParameters).toHaveBeenCalledWith(service.tools.activeTool);
   });
 });

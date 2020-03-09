@@ -29,12 +29,31 @@ export class SelectionService implements ToolInterface {
              }
 
   handleClick(element: DrawElement): void {
-    if (!this.selectedElements.includes(element)) {
+      for (const element_ of this.selectedElements) {
+        element_.isSelected = false;
+      }
+      element.isSelected = true;
+      this.selectedElements.splice(0, this.selectedElements.length);
+      this.selectedElements.push(element);
+      this.createBoundingBox();
+
+  }
+
+  handleRightClick(element: DrawElement): void {
+    if (this.selectedElements.includes(element)) {
+      element.isSelected = false;
+      const index = this.selectedElements.indexOf(element, 0);
+      this.selectedElements.splice(index, 1);
+      if (this.selectedElements.length === 0) {
+        this.deleteBoundingBox();
+      } else {
+        this.createBoundingBox();
+      }
+    } else {
       element.isSelected = true;
       this.selectedElements.push(element);
       this.createBoundingBox();
     }
-
   }
 
   onMouseMove(mouse: MouseEvent): void {
@@ -56,7 +75,7 @@ export class SelectionService implements ToolInterface {
 
   onMousePress(mouse: MouseEvent): void {
     if (!this.clickOnSelectionBox) {
-      this.deleteBoundingBox();
+      // this.deleteBoundingBox();
       this.selectionRectangle.mouseDown(mouse);
     }
   }
@@ -65,9 +84,7 @@ export class SelectionService implements ToolInterface {
     if (this.clickOnSelectionBox) {
       this.clickOnSelectionBox = false;
       for (const element of this.selectedElements) {
-        if (element.isSelected) {
           element.translateAllPoints();
-        }
       }
     } else {
       // Éviter de créer une boite de sélection si on effectue un simple clic
@@ -119,8 +136,7 @@ export class SelectionService implements ToolInterface {
 
   deleteBoundingBox(): void {
     this.selectionBox.deleteSelectionBox();
-    this.selectedElements = [];
-
+    this.selectedElements.splice(0, this.selectedElements.length);
     for (const element of this.SVGStockage.getCompleteSVG()) {
       if (element.isSelected) {
         element.isSelected = false;
@@ -130,67 +146,80 @@ export class SelectionService implements ToolInterface {
 
   isInRectangleSelection(rectangleSelection: RectangleService): void {
     this.findPointMinAndMax(rectangleSelection);
-    let belongToRectangle = false;
 
     for (const element of this.SVGStockage.getCompleteSVG()) {
       this.findPointMinAndMax(element);
-      for (const point of element.points) {
-        const belongX = (point.x + element.translate.x >= rectangleSelection.points[0].x
-                      && point.x + element.translate.x <= rectangleSelection.points[1].x);
-        const belongY = (point.y + element.translate.y >= rectangleSelection.points[0].y
-                      && point.y + element.translate.y <= rectangleSelection.points[1].y);
-
-        if (belongX && belongY) {
-          belongToRectangle = true;
-        }
-      }
-
-      const corner1Selection = (rectangleSelection.pointMin.x >= element.pointMin.x && rectangleSelection.pointMin.x <= element.pointMax.x)
-                              && (rectangleSelection.pointMin.y >= element.pointMin.y && rectangleSelection.pointMin.y <= element.pointMax.y);
-
-      const corner2Selection = (rectangleSelection.pointMax.x >= element.pointMin.x && rectangleSelection.pointMax.x <= element.pointMax.x)
-                              && (rectangleSelection.pointMin.y >= element.pointMin.y && rectangleSelection.pointMin.y <= element.pointMax.y);
-                              
-      const corner3Selection = (rectangleSelection.pointMin.x >= element.pointMin.x && rectangleSelection.pointMin.x <= element.pointMax.x)
-                              && (rectangleSelection.pointMax.y >= element.pointMin.y && rectangleSelection.pointMax.y <= element.pointMax.y);
-
-      const corner4Selection = (rectangleSelection.pointMax.x >= element.pointMin.x && rectangleSelection.pointMax.x <= element.pointMax.x)
-                              && (rectangleSelection.pointMax.y >= element.pointMin.y && rectangleSelection.pointMax.y <= element.pointMax.y);
-
-
-      let mouseBelongToElement = corner1Selection || corner2Selection || corner3Selection || corner4Selection;
-
-      if (belongToRectangle || mouseBelongToElement) {
+      if (this.belongToRectangle(element, this.selectionRectangle.rectangle)) {
         element.isSelected = true;
         this.selectedElements.push(element);
-        belongToRectangle = false;
       }
     }
   }
 
+  belongToRectangle(element: DrawElement, rectangle: RectangleService): boolean{
+    // BOTTOM RIGHT corner of element with TOP LEFT corner of selection
+    const collision1 = element.pointMax.x >= rectangle.pointMin.x && element.pointMax.y >= rectangle.pointMin.y;
+    // BOTTOM LEFT corner of element with TOP RIGHT corner of selection
+    const collision2 = element.pointMin.x <= rectangle.pointMax.x && element.pointMax.y >= rectangle.pointMin.y;
+    // TOP LEFT corner of element with BOTTOM RIGHT corner of selection
+    const collision3 = element.pointMin.x <= rectangle.pointMax.x && element.pointMin.y <= rectangle.pointMax.y;
+    // TOP RIGHT corner of element with BOTTOM LEFT corner of selection
+    const collision4 =  element.pointMax.x >= rectangle.pointMin.x && element.pointMin.y <= rectangle.pointMax.y;
+
+    let nbCollisions = 0;
+
+    if(collision1){
+      console.log("top left of selection");
+      nbCollisions++;
+    }
+    if(collision2){
+      console.log("top right of selection");
+      nbCollisions++;
+    }
+    if(collision3){
+      console.log("bottom right of selection");
+      nbCollisions++;
+    }
+    if(collision4){
+      console.log("bottom left of selection");
+      nbCollisions++;
+    }
+    
+    return (nbCollisions === 4);
+  }
+
+
+
   findPointMinAndMax(element: DrawElement): void {
     const pointMin: Point = {x: this.drawingManager.width , y: this.drawingManager.height};
     const pointMax: Point = {x: 0 , y: 0};
+    const epaisseurMin: Point = {x: 0, y: 0};
+    const epaisseurMax: Point = {x: 0, y: 0};
+
 
     for (const point of element.points) {
       // pointMin
       if (point.x < pointMin.x) {
         pointMin.x = point.x;
+        epaisseurMin.x = element.thickness ? element.thickness : 0;
       }
       if (point.y < pointMin.y) {
         pointMin.y = point.y;
+        epaisseurMin.y = element.thickness ? element.thickness : 0;
       }
 
       // pointMax
       if (point.x > pointMax.x) {
         pointMax.x = point.x;
+        epaisseurMax.x = element.thickness ? element.thickness : 0;
       }
       if (point.y > pointMax.y) {
         pointMax.y = point.y;
+        epaisseurMax.y = element.thickness ? element.thickness : 0;
       }
     }
-    element.pointMin = pointMin;
-    element.pointMax = pointMax;
+    element.pointMin = {x: pointMin.x - HALF_DRAW_ELEMENT * epaisseurMin.x, y: pointMin.y - HALF_DRAW_ELEMENT * epaisseurMin.y};
+    element.pointMax = {x: pointMax.x + HALF_DRAW_ELEMENT * epaisseurMax.x, y: pointMax.y + HALF_DRAW_ELEMENT * epaisseurMax.y };
   }
 
   updatePosition(x: number, y: number): void {
@@ -199,7 +228,7 @@ export class SelectionService implements ToolInterface {
         if (element.isSelected) {
           this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePosition(x, y);
-          element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
+          element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
           this.selectedElements.push(element);
         }
       }
@@ -214,7 +243,7 @@ export class SelectionService implements ToolInterface {
         if (element.isSelected) {
           this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePositionMouse(mouse, this.selectionBox.mouseClick);
-          element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
+          element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
           this.selectedElements.push(element);
         }
       }

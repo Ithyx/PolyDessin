@@ -39,12 +39,12 @@
     </defs>
 
     
-    <rect x="0" y="0" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" [attr.fill]="drawingManager.backgroundColor" (click)="handleBackgroundClick()"/>
+    <rect x="0" y="0" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" [attr.fill]="drawingManager.backgroundColor" (click)="handleBackgroundClick()" (contextmenu)="handleBackgroundRightClick()"  />
 
-    <g *ngFor="let element of SVGStockage.getCompleteSVG()" [innerHTML]="element.SVGHtml" (click)="handleElementClick(element)" (contextmenu)="handleElementRightClick(element)"></g>
-    <g *ngIf="this.selection.selectionRectangle.rectangle"  [innerHTML]="this.selection.selectionRectangle.rectangle.SVGHtml"></g>
-    <g  class = "selectionBox" *ngIf="this.selection.selectionBox.selectionBox" [innerHTML]="this.selection.selectionBox.selectionBox.SVGHtml"  (mousedown)="handleMouseDown($event)"  (mouseup)="handleMouseUp($event)"></g>
-    <g *ngFor="let controlPoint of this.selection.selectionBox.controlPointBox" [innerHTML]="controlPoint.SVGHtml" ></g>
+    <g *ngFor="let element of SVGStockage.getCompleteSVG()" [innerHTML]="element.svgHtml" (click)="handleElementClick(element)" (contextmenu)="handleElementRightClick(element)"></g>
+    <g *ngIf="this.selection.selectionRectangle.rectangle"  [innerHTML]="this.selection.selectionRectangle.rectangle.svgHtml"></g>
+    <g  class = "selectionBox" *ngIf="this.selection.selectionBox.selectionBox" [innerHTML]="this.selection.selectionBox.selectionBox.svgHtml"  (mousedown)="handleMouseDown($event)"  (mouseup)="handleMouseUp($event)"></g>
+    <g *ngFor="let controlPoint of this.selection.selectionBox.controlPointBox" [innerHTML]="controlPoint.svgHtml" ></g>
     <g [innerHTML]="SVGStockage.getOngoingSVGHTML()"></g>
     <g [innerHTML]="SVGStockage.getOngoingPerimeterHTML()"></g>
     <g *ngIf="this.tools.activeTool.id === this.tools.toolList[TOOL_INDEX.ERASER].id" [innerHTML]="this.eraser.SVGHtml"></g>

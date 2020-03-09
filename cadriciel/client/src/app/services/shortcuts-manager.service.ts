@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { BehaviorSubject } from 'rxjs';
+import { GalleryComponent } from '../components/gallery/gallery.component';
+import { SavePopupComponent } from '../components/save-popup/save-popup.component';
 import { CommandManagerService } from './command/command-manager.service';
 import { GridService } from './grid/grid.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
@@ -12,6 +15,7 @@ import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
 type FunctionShortcut = (keyboard?: KeyboardEvent ) => void;
 
 const SELECTION_MOVEMENT_PIXEL = 3;
+const MOVEMENT_DELAY_MS = 100;
 
 @Injectable({
   providedIn: 'root'
@@ -20,13 +24,15 @@ const SELECTION_MOVEMENT_PIXEL = 3;
 export class ShortcutsManagerService {
   focusOnInput: boolean;
   shortcutManager: Map<string, FunctionShortcut > = new Map<string, FunctionShortcut>();
-  counter100ms: number;
-  clearTimeout: number;
+  private counter100ms: number;
+  private clearTimeout: number;
 
-  leftArrow: boolean;
-  rightArrow: boolean;
-  upArrow: boolean;
-  downArrow: boolean;
+  private leftArrow: boolean;
+  private rightArrow: boolean;
+  private upArrow: boolean;
+  private downArrow: boolean;
+
+  dialogConfig: MatDialogConfig;
 
   newDrawingEmmiter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
@@ -37,7 +43,8 @@ export class ShortcutsManagerService {
               public commands: CommandManagerService,
               public selection: SelectionService,
               public SVGStockage: SVGStockageService,
-              public grid: GridService
+              public grid: GridService,
+              private dialog: MatDialog
               ) {
                 this.focusOnInput = false;
                 this.counter100ms = 0;
@@ -46,6 +53,10 @@ export class ShortcutsManagerService {
                 this.rightArrow = false;
                 this.upArrow = false;
                 this.downArrow = false;
+                this.dialogConfig = new MatDialogConfig();
+                this.dialogConfig.disableClose = true;
+                this.dialogConfig.autoFocus = true;
+                this.dialogConfig.width = '80%';
                 this.shortcutManager.set('1', this.shortcutKey1.bind(this))
                                     .set('2', this.shortcutKey2.bind(this))
                                     .set('3', this.shortcutKey3.bind(this))
@@ -107,7 +118,7 @@ export class ShortcutsManagerService {
           if (this.counter100ms > 5) {
               this.selection.updatePosition(translate.x , translate.y);
           }
-        }, 100);
+        }, MOVEMENT_DELAY_MS);
       }
     }
   }
@@ -115,6 +126,7 @@ export class ShortcutsManagerService {
   treatInput(keyboard: KeyboardEvent): void {
     if (this.focusOnInput) { return; }
     if (this.shortcutManager.has(keyboard.key)) {
+      keyboard.preventDefault();
       (this.shortcutManager.get(keyboard.key) as FunctionShortcut)(keyboard);
     }
     this.updatePositionTimer();
@@ -134,13 +146,11 @@ export class ShortcutsManagerService {
   }
 
   shortcutKey2(): void {
-    this.selection.deleteBoundingBox();
     this.tools.changeActiveTool(TOOL_INDEX.ELLIPSE);
     this.clearOngoingSVG();
   }
 
   shortcutKey3(): void {
-    this.selection.deleteBoundingBox();
     this.tools.changeActiveTool(TOOL_INDEX.POLYGON);
     this.clearOngoingSVG();
   }
@@ -148,7 +158,6 @@ export class ShortcutsManagerService {
   shortcutKeyA(keyboard: KeyboardEvent): void {
     if (keyboard.ctrlKey) {
       this.selection.deleteBoundingBox();
-      keyboard.preventDefault();
       this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
       if (this.SVGStockage.getCompleteSVG().length !== 0) {
         for (const element of this.SVGStockage.getCompleteSVG()) {
@@ -172,7 +181,6 @@ export class ShortcutsManagerService {
   }
 
   shortcutKeyI(): void {
-    this.selection.deleteBoundingBox();
     this.tools.changeActiveTool(TOOL_INDEX.PIPETTE);
     this.clearOngoingSVG();
   }
@@ -192,9 +200,14 @@ export class ShortcutsManagerService {
     this.clearOngoingSVG();
   }
 
-  shortcutKeyS(): void {
-    this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
-    this.clearOngoingSVG();
+  shortcutKeyS(keyboard: KeyboardEvent): void {
+    if (keyboard.ctrlKey) {
+      this.focusOnInput = true;
+      this.dialog.open(SavePopupComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
+    } else {
+      this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
+      this.clearOngoingSVG();
+    }
   }
 
   shortcutKeyZ(keyboard: KeyboardEvent): void {
@@ -227,7 +240,6 @@ export class ShortcutsManagerService {
     if (keyboard.ctrlKey) {
       this.newDrawingEmmiter.next(false);
       this.selection.deleteBoundingBox();
-      keyboard.preventDefault();
     }
   }
 
@@ -237,14 +249,17 @@ export class ShortcutsManagerService {
     }
   }
 
-  shortcutKeyEscape(): void{
+  shortcutKeyEscape(): void {
     if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
       this.lineTool.clear();
     }
   }
 
-  shortcutKeyG(): void {
-    this.grid.showGrid = !this.grid.showGrid;
+  shortcutKeyG(keyboard: KeyboardEvent): void {
+    if (keyboard.ctrlKey) {
+      this.focusOnInput = true;
+      this.dialog.open(GalleryComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
+    } else { this.grid.showGrid = !this.grid.showGrid; }
   }
 
   shortcutKeyPlus(): void {
@@ -271,8 +286,8 @@ export class ShortcutsManagerService {
     this.downArrow = true;
   }
 
-  treatReleaseKey(keybord: KeyboardEvent): void {
-    switch (keybord.key) {
+  treatReleaseKey(keyboard: KeyboardEvent): void {
+    switch (keyboard.key) {
       case 'Shift':
         if (this.tools.activeTool.ID === TOOL_INDEX.RECTANGLE) {
           this.rectangleTool.shiftRelease();

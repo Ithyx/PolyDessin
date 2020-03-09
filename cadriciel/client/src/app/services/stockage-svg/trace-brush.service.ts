@@ -1,23 +1,22 @@
 import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
-import { DrawingTool, EMPTY_TOOL } from '../tools/tool-manager.service';
+import { DrawingTool } from '../tools/tool-manager.service';
 import { DrawElement } from './draw-element';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TraceBrushService implements DrawElement {
-  SVG: string;
-  SVGHtml: SafeHtml;
+  svg: string;
+  svgHtml: SafeHtml;
 
   points: Point[];
   isSelected: boolean;
 
-  tool: DrawingTool;
   isAPoint: boolean;
   thickness: number;
-  choosedOption: string;
+  chosenOption: string;
   primaryColor: string;
 
   pointMin: Point;
@@ -25,20 +24,14 @@ export class TraceBrushService implements DrawElement {
   translate: Point;
 
   constructor() {
-    this.SVGHtml = '';
+    this.svgHtml = '';
     this.points = [];
     this.isSelected = false;
-    this.tool = EMPTY_TOOL;
     this.isAPoint = false;
     this.translate = { x: 0, y: 0};
   }
 
   draw(): void {
-    if (!this.isSelected)  {
-      this.thickness = (this.tool.parameters[0].value) ? this.tool.parameters[0].value : 1;
-      this.choosedOption = (this.tool.parameters[1].chosenOption) ? this.tool.parameters[1].chosenOption : '';
-    }
-
     if (this.isAPoint) {
       this.drawPoint();
     } else {
@@ -47,19 +40,19 @@ export class TraceBrushService implements DrawElement {
   }
 
   drawPath(): void {
-    this.SVG = '<path transform ="translate(' + this.translate.x + ' ' + this.translate.y + `)" fill="none" stroke="${this.primaryColor}"`
-      + ' filter="url(#' + this.choosedOption
+    this.svg = '<path transform ="translate(' + this.translate.x + ' ' + this.translate.y + `)" fill="none" stroke="${this.primaryColor}"`
+      + ' filter="url(#' + this.chosenOption
       + ')" stroke-linecap="round" stroke-width="' + this.thickness + '" d="';
     for (let i = 0; i < this.points.length; ++i) {
-      this.SVG += (i === 0) ? 'M ' : 'L ';
-      this.SVG += this.points[i].x + ' ' + this.points[i].y + ' ';
+      this.svg += (i === 0) ? 'M ' : 'L ';
+      this.svg += this.points[i].x + ' ' + this.points[i].y + ' ';
     }
-    this.SVG += '" />';
+    this.svg += '" />';
   }
 
   drawPoint(): void {
-    this.SVG = '<circle cx="' + this.points[0].x + '" cy="' + this.points[0].y
-      + '" filter="url(#' + this.tool.parameters[1].chosenOption
+    this.svg = '<circle cx="' + this.points[0].x + '" cy="' + this.points[0].y
+      + '" filter="url(#' + this.chosenOption
       + ')" r="' + this.thickness / 2
       + '" fill="' + this.primaryColor + '"/>';
   }
@@ -82,5 +75,10 @@ export class TraceBrushService implements DrawElement {
       point.y += this.translate.y;
     }
     this.translate = {x: 0, y: 0};
+  }
+
+  updateParameters(tool: DrawingTool): void {
+    this.thickness = (tool.parameters[0].value) ? tool.parameters[0].value : 1;
+    this.chosenOption = (tool.parameters[1].chosenOption) ? tool.parameters[1].chosenOption : '';
   }
 }

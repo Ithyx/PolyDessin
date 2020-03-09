@@ -24,10 +24,12 @@ export class AppComponent {
             }
 
     filterFunction(event: any): boolean {
+        console.log('filterFunction', event);
         return event instanceof RoutesRecognized;
     }
 
     updateURL(event: [any, any]): void {
+        console.log('updateURL', event);
         this.routingManager.previousPage = event[0].url;
         this.routingManager.currentPage = event[1].url;
     }

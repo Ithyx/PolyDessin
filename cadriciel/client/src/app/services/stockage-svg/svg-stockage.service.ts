@@ -18,7 +18,7 @@ export class SVGStockageService {
   }
 
   addSVG(element: DrawElement): void {
-    element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
+    element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
     this.completeSVG[this.size++] = element;
     this.ongoingSVG = '';
     this.ongoingPerimeter = '';
@@ -43,7 +43,7 @@ export class SVGStockageService {
   }
 
   setOngoingSVG(element: DrawElement): void {
-    this.ongoingSVG = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
+    this.ongoingSVG = this.sanitizer.bypassSecurityTrustHtml(element.svg);
     if (element.perimeter) {
       this.ongoingPerimeter = this.sanitizer.bypassSecurityTrustHtml(element.perimeter);
     } else {
@@ -60,7 +60,7 @@ export class SVGStockageService {
     if (oldColor) {
       this.completeSVG[id].primaryColor = color;
       this.completeSVG[id].draw();
-      this.completeSVG[id].SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.completeSVG[id].SVG);
+      this.completeSVG[id].svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.completeSVG[id].svg);
     }
     return oldColor;
   }
@@ -70,7 +70,7 @@ export class SVGStockageService {
     if (oldColor) {
       this.completeSVG[id].secondaryColor = color;
       this.completeSVG[id].draw();
-      this.completeSVG[id].SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.completeSVG[id].SVG);
+      this.completeSVG[id].svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.completeSVG[id].svg);
     }
     return oldColor;
   }

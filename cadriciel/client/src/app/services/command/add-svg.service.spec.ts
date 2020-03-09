@@ -12,7 +12,7 @@ describe('AddSVGService', () =>  {
   beforeEach(() => {
     stockageService = TestBed.get(SVGStockageService);
     element = new LineService();
-    element.SVG = 'test element';
+    element.svg = 'test element';
     service = new AddSVGService(element, stockageService);
   });
 

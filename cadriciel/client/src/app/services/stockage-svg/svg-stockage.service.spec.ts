@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { ToolManagerService } from '../tools/tool-manager.service';
 import { DrawElement } from './draw-element';
 import { LineService } from './line.service';
 import { SVGStockageService } from './svg-stockage.service';
@@ -17,13 +18,24 @@ describe('StockageSvgService', () => {
   beforeEach(() => SVGHTML = sanitizer.bypassSecurityTrustHtml(
   '<path fill="transparent" stroke="black" stroke-width="1" d="M467 330 L460 300"/>'));
   beforeEach(() => {
+    TestBed.get(ToolManagerService).activeTool = {name: '', ID: -1, isActive: true, parameters: [
+      {name: '', type: '', value: 0},
+      {name: '', type: '', chosenOption: ''},
+      {name: '', type: '', value: 0}
+    ], iconName: ''};
+  });
+  beforeEach(() => {
     drawElement = new LineService();
     lineElement = new LineService();
-    lineElement.SVGHtml = '';
+    lineElement.svgHtml = '';
     lineElement.points = [{x: 10, y: 10}];
     lineElement.isSelected = true;
     lineElement.primaryColor = 'rgba(0,1,0,1)';
-    lineElement.tool = {name: 'test', isActive: true, ID: -1, parameters: [], iconName: 'nomIcone'};
+    lineElement.updateParameters({name: 'test', isActive: true, ID: -1, parameters: [
+      {name: '', type: '', value: 0},
+      {name: '', type: '', chosenOption: ''},
+      {name: '', type: '', value: 0}
+    ], iconName: 'nomIcone'});
     lineElement.isAPolygon = false;
     lineElement.mousePosition = {x: 100, y: 100};
     lineElement.translate = { x: 20, y: 20};
@@ -38,9 +50,9 @@ describe('StockageSvgService', () => {
   // TESTS addSVG
 
   it('#addSVG devrait attribuer la valeur de SVG à SVGHtml', () => {
-    SVGHTML = sanitizer.bypassSecurityTrustHtml(drawElement.SVG);
+    SVGHTML = sanitizer.bypassSecurityTrustHtml(drawElement.svg);
     service.addSVG(drawElement);
-    expect(drawElement.SVGHtml).toEqual(SVGHTML);
+    expect(drawElement.svgHtml).toEqual(SVGHTML);
   });
 
   it('#addSVG devrait ajouter drawElement en paramètre à completeSVG', () => {
@@ -119,10 +131,10 @@ describe('StockageSvgService', () => {
   // TESTS setOngoingSVG
 
   it('#setOngoingSVG devrait assigner SVG à setOngoingSVG', () => {
-    drawElement.SVG = 'test';
+    drawElement.svg = 'test';
     service.setOngoingSVG(drawElement);
     // tslint:disable-next-line:no-string-literal
-    expect(service['ongoingSVG']).toEqual(service['sanitizer'].bypassSecurityTrustHtml(drawElement.SVG));
+    expect(service['ongoingSVG']).toEqual(service['sanitizer'].bypassSecurityTrustHtml(drawElement.svg));
   });
 
   it('#setOngoingSVG devrait modifier ongoingPerimeter si perimeter est défini', () => {

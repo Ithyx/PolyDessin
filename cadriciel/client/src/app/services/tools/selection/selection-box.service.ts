@@ -18,8 +18,7 @@ export class SelectionBoxService {
 
   constructor(public tools: ToolManagerService,
               private sanitizer: DomSanitizer,
-              ) {
-              }
+              ) {}
 
   createSelectionBox(pointMin: Point, pointMax: Point): void {
 
@@ -30,7 +29,7 @@ export class SelectionBoxService {
     }
 
     this.selectionBox.isSelected = true;
-    this.selectionBox.tool = this.tools.activeTool;
+    this.selectionBox.updateParameters(this.tools.activeTool);
 
     this.selectionBox.points[0] = pointMin;
     this.selectionBox.points[1] = pointMax;
@@ -39,47 +38,49 @@ export class SelectionBoxService {
 
     this.selectionBox.drawRectangle();
 
-    this.selectionBox.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.selectionBox.SVG);
+    this.selectionBox.svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.selectionBox.svg);
     this.createControlPointBox();
   }
 
   createControlPointBox(): void {
     // TOP
-    this.controlPointBox[0].points[0].x = ((this.selectionBox.points[0].x + this.selectionBox.points[1].x)/2) - 4;
+    this.controlPointBox[0].points[0].x = ((this.selectionBox.points[0].x + this.selectionBox.points[1].x) / 2) - 4;
     this.controlPointBox[0].points[0].y = (this.selectionBox.points[0].y - 4);
-    this.controlPointBox[0].points[1].x = ((this.selectionBox.points[0].x + this.selectionBox.points[1].x)/2) + 4;
+    this.controlPointBox[0].points[1].x = ((this.selectionBox.points[0].x + this.selectionBox.points[1].x) / 2) + 4;
     this.controlPointBox[0].points[1].y = (this.selectionBox.points[0].y + 4);
     // BOTTOM
-    this.controlPointBox[1].points[0].x = ((this.selectionBox.points[0].x + this.selectionBox.points[1].x)/2) - 4;
+    this.controlPointBox[1].points[0].x = ((this.selectionBox.points[0].x + this.selectionBox.points[1].x) / 2) - 4;
     this.controlPointBox[1].points[0].y = (this.selectionBox.points[1].y - 4);
-    this.controlPointBox[1].points[1].x = ((this.selectionBox.points[0].x + this.selectionBox.points[1].x)/2) + 4;
+    this.controlPointBox[1].points[1].x = ((this.selectionBox.points[0].x + this.selectionBox.points[1].x) / 2) + 4;
     this.controlPointBox[1].points[1].y = (this.selectionBox.points[1].y + 4);
     // LEFT
     this.controlPointBox[2].points[0].x = (this.selectionBox.points[0].x - 4); 
-    this.controlPointBox[2].points[0].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y)/2) - 4;
+    this.controlPointBox[2].points[0].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y) / 2) - 4;
     this.controlPointBox[2].points[1].x = (this.selectionBox.points[0].x + 4);
-    this.controlPointBox[2].points[1].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y)/2) + 4;
+    this.controlPointBox[2].points[1].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y) / 2) + 4;
     // RIGHT
-    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[0].x = (this.selectionBox.points[1].x - 4); 
-    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[0].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y)/2) - 4;
+    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[0].x = (this.selectionBox.points[1].x - 4);
+    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[0].y = ((this.selectionBox.points[0].y 
+                                                                  + this.selectionBox.points[1].y) / 2) - 4;
     this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[1].x = (this.selectionBox.points[1].x + 4);
-    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[1].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y)/2) + 4;
+    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[1].y = ((this.selectionBox.points[0].y 
+                                                                  + this.selectionBox.points[1].y) / 2) + 4;
 
     for (const controlPoint of this.controlPointBox) {
       controlPoint.isSelected = true;
-      controlPoint.tool = this.tools.activeTool;
+      controlPoint.updateParameters(this.tools.activeTool);
       controlPoint.secondaryColor =  'rgba(173, 255, 47, 1)';
       controlPoint.thickness = 4;
       controlPoint.drawRectangle();
 
-      controlPoint.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(controlPoint.SVG);
+      controlPoint.svgHtml = this.sanitizer.bypassSecurityTrustHtml(controlPoint.svg);
     }
 
   }
 
   deleteSelectionBox(): void {
     delete this.selectionBox;
-    if(this.controlPointBox) {
+    if (this.controlPointBox) {
       for (let index = 0; index < this.controlPointBox.length; index++) {
         delete this.controlPointBox[index];
       }
@@ -91,12 +92,12 @@ export class SelectionBoxService {
     this.selectionBox.translate.x += x;
     this.selectionBox.translate.y += y;
     this.selectionBox.drawRectangle();
-    this.selectionBox.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.selectionBox.SVG);
+    this.selectionBox.svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.selectionBox.svg);
     for (const controlPoint of this.controlPointBox) {
       controlPoint.translate.x += x;
       controlPoint.translate.y += y;
       controlPoint.drawRectangle();
-      controlPoint.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(controlPoint.SVG);
+      controlPoint.svgHtml = this.sanitizer.bypassSecurityTrustHtml(controlPoint.svg);
     }
   }
 
@@ -104,12 +105,12 @@ export class SelectionBoxService {
     this.selectionBox.translate.x = mouse.offsetX - this.mouseClick.x;
     this.selectionBox.translate.y = mouse.offsetY - this.mouseClick.y;
     this.selectionBox.drawRectangle();
-    this.selectionBox.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.selectionBox.SVG);
+    this.selectionBox.svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.selectionBox.svg);
     for (const controlPoint of this.controlPointBox) {
       controlPoint.translate.x = mouse.offsetX - this.mouseClick.x;
       controlPoint.translate.y = mouse.offsetY - this.mouseClick.y;
       controlPoint.drawRectangle();
-      controlPoint.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(controlPoint.SVG);
+      controlPoint.svgHtml = this.sanitizer.bypassSecurityTrustHtml(controlPoint.svg);
     }
   }
 }

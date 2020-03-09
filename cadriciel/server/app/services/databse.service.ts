@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
-import { Collection, MongoClient, MongoClientOptions, } from 'mongodb';
-import 'reflect-metadata'
+import { Collection, MongoClient, MongoClientOptions } from 'mongodb';
+import 'reflect-metadata';
 
 import { Drawing } from '../../../common/communication/DrawingInterface';
 
@@ -32,12 +32,22 @@ export class DatabaseService {
     }
 
     async getDrawings(): Promise<Drawing[]> {
-        if (!this.collection) { return []; };
+        if (!this.collection) { return []; }
         return await this.collection.find().toArray();
     }
 
-    SendData(drawing: Drawing) {
-        console.log('tried to send: ', drawing);
-        if (!this.collection) { return; };
+    async getDrawingWithTags(tagList: string[]): Promise<Drawing[]> {
+        if (!this.collection) { return []; }
+        return await this.collection.find({tags: tagList}).toArray();
+    }
+
+    async updateData(drawing: Drawing): Promise<void> {
+        if (!this.collection) { return; }
+        await this.collection.replaceOne({_id: drawing._id}, drawing, {upsert: true});
+    }
+
+    async deleteData(id: number): Promise<void> {
+        if (!this.collection) { return; }
+        (await this.collection.deleteOne({_id: Number(id)}));
     }
 }

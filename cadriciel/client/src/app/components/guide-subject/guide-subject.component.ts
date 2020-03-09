@@ -10,10 +10,16 @@ import { SubjectGuide } from './subject-guide';
 
 export class GuideSubjectComponent {
 
-  @Input() node: SubjectGuide = EMPTY_SUBJECT;
-  @Input() depth = 0;
+  @Input() node: SubjectGuide;
+  @Input() depth: number;
 
-  @Output() notification = new EventEmitter<SubjectGuide>();
+  @Output() notification: EventEmitter<SubjectGuide>;
+
+  constructor() {
+    this.node = EMPTY_SUBJECT;
+    this.depth = 0;
+    this.notification = new EventEmitter<SubjectGuide>();
+  }
 
   getRange = (size: number) => Array(size);
 
