@@ -29,6 +29,7 @@ export class DrawingSurfaceComponent {
 
   handleBackgroundClick(): void {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
+      if()
         this.selection.deleteBoundingBox();
         this.selection.clickOnSelectionBox = false;
         for (const element of this.selection.selectedElements) {

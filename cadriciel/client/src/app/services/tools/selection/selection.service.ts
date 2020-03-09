@@ -10,6 +10,7 @@ import { SelectionBoxService } from './selection-box.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
 
 const HALF_DRAW_ELEMENT = 0.5 ;
+const COLLISIONS_NEEDED = 4;
 
 @Injectable({
   providedIn: 'root'
@@ -168,34 +169,26 @@ export class SelectionService implements ToolInterface {
 
     let nbCollisions = 0;
 
-    if(collision1){
-      console.log("top left of selection");
+    if (collision1) {
       nbCollisions++;
     }
-    if(collision2){
-      console.log("top right of selection");
+    if (collision2) {
       nbCollisions++;
     }
-    if(collision3){
-      console.log("bottom right of selection");
+    if (collision3) {
       nbCollisions++;
     }
-    if(collision4){
-      console.log("bottom left of selection");
+    if (collision4) {
       nbCollisions++;
     }
-    
-    return (nbCollisions === 4);
+    return (nbCollisions === COLLISIONS_NEEDED);
   }
-
-
 
   findPointMinAndMax(element: DrawElement): void {
     const pointMin: Point = {x: this.drawingManager.width , y: this.drawingManager.height};
     const pointMax: Point = {x: 0 , y: 0};
     const epaisseurMin: Point = {x: 0, y: 0};
     const epaisseurMax: Point = {x: 0, y: 0};
-
 
     for (const point of element.points) {
       // pointMin
