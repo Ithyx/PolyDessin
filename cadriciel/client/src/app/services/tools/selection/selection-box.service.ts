@@ -69,7 +69,9 @@ export class SelectionBoxService {
     for (const controlPoint of this.controlPointBox) {
       controlPoint.isSelected = true;
       controlPoint.updateParameters(this.tools.activeTool);
-      controlPoint.secondaryColor =  'rgba(173, 255, 47, 1)';
+      controlPoint.chosenOption = 'Plein avec contour';
+      controlPoint.primaryColor =  'rgba(0, 0, 0, 1)';
+      controlPoint.secondaryColor = 'rgba(0, 255, 0, 1)';
       controlPoint.thickness = 4;
       controlPoint.drawRectangle();
 
