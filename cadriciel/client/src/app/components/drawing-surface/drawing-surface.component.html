@@ -47,7 +47,7 @@
     <g *ngFor="let controlPoint of this.selection.selectionBox.controlPointBox" [innerHTML]="controlPoint.svgHtml" ></g>
     <g [innerHTML]="SVGStockage.getOngoingSVGHTML()"></g>
     <g [innerHTML]="SVGStockage.getOngoingPerimeterHTML()"></g>
-    <g *ngIf="this.tools.activeTool.id === this.tools.toolList[TOOL_INDEX.ERASER].id" [innerHTML]="this.eraser.SVGHtml"></g>
+    <g *ngIf="this.tools.activeTool.id == 10" [innerHTML]="this.eraser.eraser.svgHtml"></g>
 
     <g class="grid" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" version="1.1" xlmns="http://www.w3.org/2000/svg">
         <g *ngFor="let line of grid.getLines()">
