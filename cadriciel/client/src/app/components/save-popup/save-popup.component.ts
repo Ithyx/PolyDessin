@@ -49,6 +49,10 @@ export class SavePopupComponent {
     this.drawingParams.tags.push(this.tag.value);
   }
 
+  deleteTag(tag: string): void {
+    this.drawingParams.tags = this.drawingParams.tags.filter((element) => element !== tag);
+  }
+
   closeDialogue(): void {
     this.dialogRef.close();
   }

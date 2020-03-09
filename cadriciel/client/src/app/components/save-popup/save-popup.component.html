@@ -13,7 +13,7 @@
     <button (click)="addTag()">Ajouter étiquette</button>
 </form>
 <div *ngFor="let tag of drawingParams.tags">
-    <p>{{tag}}, </p>
+    <span>{{tag}}, </span> <i class="material-icons delete-button" (click)="deleteTag(tag)">cancel</i>
 </div>
 <button mat-raised-button [disabled]="isSaving" (click)="confirmSave()">Confirmer</button>
 <button mat-stroked-button (click)="closeDialogue()">Annuler</button>
