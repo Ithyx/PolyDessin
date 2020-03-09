@@ -27,9 +27,9 @@ export class DrawingSurfaceComponent {
               public colorChanger: ColorChangerToolService) {
   }
 
-  handleBackgroundClick(): void {
+  handleBackgroundClick(event: MouseEvent): void {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
-      if()
+      if(event.)
         this.selection.deleteBoundingBox();
         this.selection.clickOnSelectionBox = false;
         for (const element of this.selection.selectedElements) {
