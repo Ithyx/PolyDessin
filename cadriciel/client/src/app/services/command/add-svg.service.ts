@@ -22,9 +22,7 @@ export class AddSVGService implements Command {
   }
 
   redo(): void {
-    if (this.element) {
-      this.svgStockage.addSVG(this.element);
-      this.svgKey = this.svgStockage.size - 1;
-    }
+    this.svgStockage.addSVG(this.element);
+    this.svgKey = this.svgStockage.size - 1;
   }
 }

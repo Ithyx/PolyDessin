@@ -74,6 +74,7 @@ export class RectangleToolService implements ToolInterface {
     this.calculatedHeight = 0;
     this.calculatedWidth = 0;
     this.rectangle = new RectangleService();
+    this.stockageSVG.setOngoingSVG(this.rectangle);
   }
 
   shiftPress(): void {

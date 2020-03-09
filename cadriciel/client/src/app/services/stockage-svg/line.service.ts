@@ -17,7 +17,10 @@ export class LineService implements DrawElement {
   primaryColor: string;
 
   tool: DrawingTool;
+  thicknessLine: number;
+  thicknessPoint: number;           // REFACTORING
   thickness: number;
+  chosenOption: string;
   isAPolygon: boolean;
   mousePosition: Point;
 
@@ -37,12 +40,14 @@ export class LineService implements DrawElement {
   }
 
   draw(): void {
-    if (this.tool.parameters[0].value) {
-      this.thickness = this.tool.parameters[0].value;
+    if (!this.isSelected) {
+      this.thicknessLine = (this.tool.parameters[0].value) ? this.tool.parameters[0].value : 1;
+      this.chosenOption = (this.tool.parameters[1].chosenOption) ? this.tool.parameters[1].chosenOption : '';
     }
+
     this.SVG = (this.isAPolygon) ? '<polygon ' : '<polyline ';
     this.SVG += ' transform ="translate(' + this.translate.x + ' ' + this.translate.y + ')"';
-    this.SVG += 'fill="none" stroke="' + this.primaryColor + '" stroke-width="' + this.tool.parameters[0].value;
+    this.SVG += 'fill="none" stroke="' + this.primaryColor + '" stroke-width="' + this.thicknessLine;
     this.SVG += '" points="';
     for (const point of this.points) {
       this.SVG += point.x + ' ' + point.y + ' ';
@@ -51,20 +56,22 @@ export class LineService implements DrawElement {
       this.SVG += this.mousePosition.x + ' ' + this.mousePosition.y;
     }
     this.SVG += '" />';
-    if (this.tool.parameters[1].chosenOption === 'Avec points') {
+    if (this.chosenOption === 'Avec points') {
+      this.thickness = this.thicknessLine;
       this.drawPoints();
     }
   }
 
   drawPoints(): void {
-    if (this.tool.parameters[2].value) {
+    if (this.tool.parameters[2].value && !this.isSelected) {
       if (2 * this.tool.parameters[2].value > this.thickness) {
         this.thickness = 2 * this.tool.parameters[2].value;
+      }
+      this.thicknessPoint = this.tool.parameters[2].value;
     }
-  }
     for (const point of this.points) {
       this.SVG += '<circle transform ="translate(' + this.translate.x + ' ' + this.translate.y
-      + ')"cx="' + point.x + '" cy="' + point.y + '" r="' + this.tool.parameters[2].value  + '" fill="' + this.primaryColor + '"/>';
+      + ')"cx="' + point.x + '" cy="' + point.y + '" r="' + this.thicknessPoint  + '" fill="' + this.primaryColor + '"/>';
     }
   }
 
@@ -83,5 +90,13 @@ export class LineService implements DrawElement {
     this.translate.x = mouse.offsetX - mouseClick.x;
     this.translate.y = mouse.offsetY - mouseClick.y;
     this.draw();
+  }
+
+  translateAllPoints(): void {
+    for (const point of this.points) {
+      point.x += this.translate.x;
+      point.y += this.translate.y;
+    }
+    this.translate = {x: 0, y: 0};
   }
 }

@@ -2,11 +2,15 @@ import { Injectable } from '@angular/core';
 
 export enum TOOL_INDEX {
   PENCIL = 0,
-  BRUSH,
-  RECTANGLE,
-  LINE,
-  SELECTION,
-  SPRAY
+  BRUSH,          // 1
+  SPRAY,          // 2
+  RECTANGLE,      // 3
+  POLYGON,        // 4
+  LINE,           // 5
+  SELECTION,      // 6
+  PIPETTE,        // 7
+  ELLIPSE,        // 8
+  COLOR_CHANGER   // 9
 }
 
 export interface ToolParameter {
@@ -15,6 +19,8 @@ export interface ToolParameter {
   options?: string[];
   chosenOption?: string;
   value?: number;
+  min?: number;
+  max?: number;
 }
 
 export interface DrawingTool {
@@ -61,7 +67,7 @@ export const TOOL_LIST: DrawingTool[] = [
     ID: 0,
     iconName: 'fas fa-pencil-alt',
     parameters: [
-      {type: 'number', name: 'Épaisseur', value: 5}
+      {type: 'number', name: 'Épaisseur', value: 5, min: 1, max: 100}
     ]
   },
   {
@@ -70,49 +76,84 @@ export const TOOL_LIST: DrawingTool[] = [
     ID: 1,
     iconName: 'fas fa-paint-brush',
     parameters: [
-      {type: 'number', name: 'Épaisseur', value: 5},
+      {type: 'number', name: 'Épaisseur', value: 5, min: 1, max: 100},
       {type: 'select', name: 'Texture', chosenOption: 'Flou', options: ['Flou', 'Ombre', 'Surbrillance', 'Tache', 'Tremblant']}
-    ]
-  },
-  {
-    name: 'Rectangle',
-    isActive: false,
-    ID: 2,
-    iconName: 'far fa-square',
-    parameters: [
-      {type: 'number', name: 'Épaisseur du contour', value: 5},
-      {type: 'select', name: 'Type de tracé', chosenOption: 'Contour', options: ['Contour', 'Plein', 'Plein avec contour']}
-    ]
-  },
-  {
-    name: 'Ligne',
-    isActive: false,
-    ID: 3,
-    iconName: 'fas fa-vector-square',
-    parameters: [
-      {type: 'number', name: 'Épaisseur', value: 5},
-      {type: 'select', name: 'Type de jonction', chosenOption: 'Avec points', options: ['Avec points', 'Sans points']},
-      {type: 'number', name: 'Diamètre des jonctions', value: 5}
-    ]
-  },
-  {
-    name: 'Selection',
-    isActive: false,
-    ID: 4,
-    iconName: 'fas fa-vector-square',
-    parameters: [
-      { type: 'invisible', name: 'Épaisseur', value: 3 },
-      { type: 'invisible', name: 'Type de tracé', chosenOption: 'Contour'}
     ]
   },
   {
     name: 'Aérosol',
     isActive: false,
-    ID: 5,
+    ID: 2,
     iconName: 'fas fa-spray-can',
     parameters: [
-      { type: 'number', name: 'Diamétre du jet', value: 20 },
-      { type: 'number', name: 'Nombre d\'émissions par seconde', value: 100 }
+      { type: 'number', name: 'Diamétre du jet', value: 20, min: 5, max: 100 },
+      { type: 'number', name: 'Nombre d\'émissions par seconde', value: 100, min: 1, max: 200 }
     ]
+  },
+  {
+    name: 'Rectangle',
+    isActive: false,
+    ID: 3,
+    iconName: 'far fa-square',
+    parameters: [
+      {type: 'number', name: 'Épaisseur du contour', value: 5, min: 1, max: 100},
+      {type: 'select', name: 'Type de tracé', chosenOption: 'Contour', options: ['Contour', 'Plein', 'Plein avec contour']}
+    ]
+  },
+  {
+    name: 'Polygone',
+    isActive: false,
+    ID: 4,
+    iconName: 'fab fa-jira',
+    parameters: [
+      {type: 'number', name: 'Épaisseur du contour', value: 5, min: 1, max: 100},
+      {type: 'select', name: 'Type de tracé', chosenOption: 'Contour', options: ['Contour', 'Plein', 'Plein avec contour']},
+      {type: 'number', name: 'Nombre de côtés', value: 4, min: 3, max: 12}
+    ]
+  },
+  {
+    name: 'Ligne',
+    isActive: false,
+    ID: 5,
+    iconName: 'fas fa-vector-square',
+    parameters: [
+      {type: 'number', name: 'Épaisseur', value: 5, min: 1, max: 100},
+      {type: 'select', name: 'Type de jonction', chosenOption: 'Avec points', options: ['Avec points', 'Sans points']},
+      {type: 'number', name: 'Diamètre des jonctions', value: 5, min: 1, max: 100}
+    ]
+  },
+  {
+    name: 'Selection',
+    isActive: false,
+    ID: 6,
+    iconName: 'fas fa-vector-square',
+    parameters: [
+      { type: 'invisible', name: 'Épaisseur', value: 3, min: 1, max: 100 },
+      { type: 'invisible', name: 'Type de tracé', chosenOption: 'Contour'}
+    ]
+  },
+  {
+    name: 'Pipette',
+    isActive: false,
+    ID: 7,
+    iconName: 'fas fa-eye-dropper',
+    parameters: []
+  },
+  {
+    name: 'Ellipse',
+    isActive: false,
+    ID: 8,
+    iconName: 'far fa-circle',
+    parameters: [
+      {type: 'number', name: 'Épaisseur du contour', value: 5, min: 1, max: 100},
+      {type: 'select', name: 'Type de tracé', chosenOption: 'Contour', options: ['Contour', 'Plein', 'Plein avec contour']}
+    ]
+  },
+  {
+    name: 'Applicateur Couleur',
+    isActive: false,
+    ID: 9,
+    iconName: 'fas fa-tint',
+    parameters: []
   }
 ];

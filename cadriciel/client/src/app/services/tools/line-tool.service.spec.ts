@@ -6,7 +6,7 @@ import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { LineToolService } from './line-tool.service';
 import { TOOL_INDEX } from './tool-manager.service';
 
-describe('DessinLigneService', () => {
+describe('LineToolService', () => {
   let service: LineToolService;
   let stockageService: SVGStockageService;
   let element: LineService;
@@ -250,7 +250,7 @@ describe('DessinLigneService', () => {
 
   // TESTS refreshSVG
 
-  it("#refreshSVG devrait actualiser l'outilActif", () => {
+  it("#refreshSVG devrait actualiser l'outil actif", () => {
     service.tools.activeTool.parameters[0].value = 42;
     service.refreshSVG();
     expect(service.line.tool.parameters[0].value).toEqual(42);
@@ -280,19 +280,19 @@ describe('DessinLigneService', () => {
     expect(service.line.points).toEqual([]);
   });
 
-  it('#clear devrait mettre positionshiftPresse à (x: 0, y: 0)', () => {
+  it('#clear devrait mettre shiftPressPosition à (x: 0, y: 0)', () => {
     service.shiftPressPosition = ({x: 100, y: 100});
     service.clear();
     expect(service.shiftPressPosition).toEqual({x: 0, y: 0});
   });
 
-  it('#clear devrait mettre curseur à (x: 0, y: 0)', () => {
+  it('#clear devrait mettre cursor à (x: 0, y: 0)', () => {
     service.cursor = ({x: 100, y: 100});
     service.clear();
     expect(service.cursor).toEqual({x: 0, y: 0});
   });
 
-  it('#clear devrait mettre position à (x: 0, y: 0)', () => {
+  it('#clear devrait mettre mousePosition à (x: 0, y: 0)', () => {
     service.line.mousePosition = ({x: 100, y: 100});
     service.clear();
     expect(service.line.mousePosition).toEqual({x: 0, y: 0});

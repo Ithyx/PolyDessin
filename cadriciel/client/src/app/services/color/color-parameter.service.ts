@@ -16,7 +16,7 @@ export class ColorParameterService {
   primaryOpacityDisplayed: number;
   secondaryOpacityDisplayed: number;
 
-  backgroundColor: string;
+  temporaryBackgroundColor: string;
 
   constructor() {
     this.lastColors = [];
@@ -26,7 +26,7 @@ export class ColorParameterService {
     this.secondaryOpacity = 1;
     this.primaryOpacityDisplayed = INIT_OPACITY;
     this.secondaryOpacityDisplayed = INIT_OPACITY;
-    this.backgroundColor = 'rgba(255, 255, 255, 1)';
+    this.temporaryBackgroundColor = 'rgba(255, 255, 255, 1)';
   }
 
   intervertColors(): void {

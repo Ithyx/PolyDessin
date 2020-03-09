@@ -12,6 +12,7 @@ import { ColorInputComponent } from '../color-choice/color-input/color-input.com
 import { ColorPickerComponent } from '../color-choice/color-picker/color-picker.component';
 import { ColorSliderComponent } from '../color-choice/color-slider/color-slider.component';
 import { DrawingToolComponent } from '../drawing-tool/drawing-tool.component';
+import { GridOptionsComponent } from '../grid-options/grid-options.component';
 import { GuidePageComponent } from '../guide-page/guide-page.component';
 import { GuideSubjectComponent } from '../guide-subject/guide-subject.component';
 import { NewDrawingWarningComponent } from '../new-drawing-warning/new-drawing-warning.component';
@@ -22,7 +23,7 @@ const outilTestActif: DrawingTool = {
   name: 'stubActif',
   isActive: true,
   ID: 0,
-  parameters: [{type: 'number', name: 'Épaisseur', value: 5},
+  parameters: [{type: 'number', name: 'Épaisseur', value: 5, min: 1, max: 100},
                {type: 'select', name: 'Type', options: ['A', 'B'], chosenOption: 'A'}],
   iconName: ''
 };
@@ -123,19 +124,19 @@ describe('BarreOutilsComponent', () => {
     expect(component.shortcuts.newDrawingEmmiter.next).toHaveBeenCalledWith(true);
   });
 
-  // TESTS clic
+  // TESTS onClick
 
-  it('#clic devrait changer d\'outil', () => {
+  it('#onClick devrait changer d\'outil', () => {
     component.onClick(service.toolList[1]); // on sélectionne l'outil 2
     expect(service.activeTool).toBe(service.toolList[1]); // on vérifie que l'outil actif est bien le deuxième
   });
 
-  it('#clic devrait mettre le nouvel outil sélectionné comme actif', () => {
+  it('#onClick devrait mettre le nouvel outil sélectionné comme actif', () => {
     component.onClick(service.toolList[1]); // on sélectionne l'outil 2
     expect(service.toolList[1].isActive).toBe(true); // on vérifie que le nouvel outil est bien "actif"
   });
 
-  it('#clic devrait appeler la fonction viderSVGEnCours', () => {
+  it('#onClick devrait appeler la fonction viderSVGEnCours', () => {
     spyOn(component.shortcuts, 'clearOngoingSVG');
     component.onClick(service.toolList[2]); // on sélectionne l'outil 2 (rectangle)
     expect(component.shortcuts.clearOngoingSVG).toHaveBeenCalled();
@@ -156,18 +157,18 @@ describe('BarreOutilsComponent', () => {
     expect(component.tools.activeTool.parameters[0].value).toBe(1);
   });
 
-  // TESTS choixSelectionne
+  // TESTS selectChoice
 
-  it('#choixSelectionne ne devrait pas changer la valeur du paramètre si l\'évènement qui lui est donné n\'est pas un string', () => {
+  it('#selectChoice ne devrait pas changer la valeur du paramètre si l\'évènement qui lui est donné n\'est pas un string', () => {
     const element = fixture.debugElement.query(By.css('select[name="Type"]')).nativeElement;
-    element.dispatchEvent(new Event('change')); // choixSelectionne appelée implicitement
+    element.dispatchEvent(new Event('change')); // selectChoice appelée implicitement
     expect(component.tools.activeTool.parameters[1].chosenOption).toBe('A');
   });
 
-  it('#choixSelectionne devrait changer la valeur du paramètre si l\'évènement qui lui est donné est un string', () => {
+  it('#selectChoice devrait changer la valeur du paramètre si l\'évènement qui lui est donné est un string', () => {
     const element = fixture.debugElement.query(By.css('select[name="Type"]')).nativeElement;
     element.value = 'B';
-    element.dispatchEvent(new Event('change')); // choixSelectionne appelée implicitement
+    element.dispatchEvent(new Event('change')); // selectChoice appelée implicitement
     expect(component.tools.activeTool.parameters[1].chosenOption).toBe('B');
   });
 
@@ -179,9 +180,9 @@ describe('BarreOutilsComponent', () => {
     expect(component.shortcuts.focusOnInput).toBe(true);
   });
 
-  // TESTS activerRaccourcis
+  // TESTS enableShortcuts
 
-  it('#activerRaccourcis devrait assigner faux à focusOnInput', () => {
+  it('#enableShortcuts devrait assigner faux à focusOnInput', () => {
     component.shortcuts.focusOnInput = true;
     component.enableShortcuts();
     expect(component.shortcuts.focusOnInput).toBe(false);
@@ -206,133 +207,158 @@ describe('BarreOutilsComponent', () => {
     expect(component.dialog.open).toHaveBeenCalledWith(NewDrawingWarningComponent, dialogConfig);
   });
 
-  // TESTS selectionCouleur
+  // TESTS selectColor
 
-  it('#selectionCouleur devrait appeler disableShortcuts', () => {
+  it('#selectColor devrait appeler disableShortcuts', () => {
     spyOn(component, 'disableShortcuts');
-    component.selectColor('principale');
+    component.selectColor('primary');
     expect(component.disableShortcuts).toHaveBeenCalled();
   });
 
-  it('#selectionCouleur devrait assignee portee à Portee.Principale si le paramètre de la fonction contient principale', () => {
-    component.selectColor('principale');
+  it('#selectColor devrait assignee portee à Portee.Principale si le paramètre de la fonction contient principale', () => {
+    component.selectColor('primary');
     expect(component.colorPickerPopup.portee).toEqual(component.primaryScope);
   });
 
-  it('#selectionCouleur devrait assignee portee à Portee.Secondaire si le paramètre de la fonction contient secondaire', () => {
-    component.selectColor('secondaire');
+  it('#selectColor devrait assignee portee à Portee.Secondaire si le paramètre de la fonction contient secondaire', () => {
+    component.selectColor('secondary');
     expect(component.colorPickerPopup.portee).toEqual(component.secondaryScope);
   });
 
-  it('#selectionCouleur devrait assignee portee à Portee.fond si le paramètre de la fonction contient fond', () => {
-    component.selectColor('fond');
-    expect(component.colorPickerPopup.portee).toEqual(Scope.Background);
+  it('#selectColor devrait assignee portee à Portee.fond si le paramètre de la fonction contient fond', () => {
+    component.selectColor('background');
+    expect(component.colorPickerPopup.portee).toEqual(Scope.BackgroundToolBar);
   });
 
-  // TESTS selectionDerniereCouleurPrimaire
+  // TESTS openGridWindow
 
-  it('#selectionDerniereCouleurPrimaire devrait assigner sa couleur en paramètre à couleurPrincipale', () => {
+  it('#openGridWindow devrait appeler disableShortcuts', () => {
+    spyOn(component.dialog, 'open');
+    spyOn(component, 'disableShortcuts');
+    component.openGridWindow();
+    expect(component.disableShortcuts).toHaveBeenCalled();
+  });
+
+  it('#openGridWindow devrait appeler open avec GridOptionsComponent et dialogConfig comme paramètres', () => {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '50%';
+    spyOn(component.dialog, 'open');
+    component.openGridWindow();
+    expect(component.dialog.open).toHaveBeenCalledWith(GridOptionsComponent, dialogConfig);
+  });
+
+  // TESTS selectPreviousPrimaryColor
+
+  it('#selectPreviousPrimaryColor devrait assigner sa couleur en paramètre à couleurPrincipale', () => {
     component.colorParameter.primaryColor = 'rgba(0, 0, 0, ';
     component.selectPreviousPrimaryColor('rgba(1, 1, 1, ');
     expect(component.colorParameter.primaryColor).toEqual('rgba(1, 1, 1, ');
   });
 
-  // TESTS selectionDerniereCouleurSecondaire
+  // TESTS selectPreviousSecondaryColor
 
-  it('#selectionDerniereCouleurSecondaire devrait assigner sa couleur en paramètre à couleurSecondaire', () => {
+  it('#selectPreviousSecondaryColor devrait assigner sa couleur en paramètre à couleurSecondaire', () => {
     component.colorParameter.secondaryColor = 'rgba(0, 0, 0, ';
     component.selectPreviousSecondaryColor('rgba(1, 1, 1, ', new MouseEvent ('click'));
     expect(component.colorParameter.secondaryColor).toEqual('rgba(1, 1, 1, ');
   });
 
-  it("#selectionDerniereCouleurSecondaire devrait s'assurer que preventDefault est appelé", () => {
+  it("#selectPreviousSecondaryColor devrait s'assurer que preventDefault est appelé", () => {
     const evenement = new MouseEvent ('click');
     spyOn(evenement, 'preventDefault');
     component.selectPreviousSecondaryColor('rgba(1, 1, 1, ', evenement);
     expect(evenement.preventDefault).toHaveBeenCalled();
   });
 
-  // TESTS appliquerOpacitePrincipale
+  // TESTS applyPrimaryOpacity
 
-  it("#appliquerOpacitePrincipale ne devrait pas changer l'opacité si l'évènement "
+  it("#applyPrimaryOpacity ne devrait pas changer l'opacité si l'évènement "
     + 'qui lui est donné n\'est pas un nombre', () => {
-    const element = fixture.debugElement.query(By.css('input[name="opacite-principale"]')).nativeElement;
+    const element = fixture.debugElement.query(By.css('input[name="primary-opacity"]')).nativeElement;
     element.value = 'test';
-    element.dispatchEvent(new Event('input')); // appliquerOpacitePrincipale appelée implicitement
+    element.dispatchEvent(new Event('input')); // applyPrimaryOpacity appelée implicitement
+    // tslint:disable-next-line: no-magic-numbers
     expect(component.colorParameter.primaryOpacity).toBe(0.5);
   });
 
-  it("#appliquerOpacitePrincipale devrait changer l'opacité si l'évènement "
+  it("#applyPrimaryOpacity devrait changer l'opacité si l'évènement "
     + 'qui lui est donné est un nombre', () => {
-    const element = fixture.debugElement.query(By.css('input[name="opacite-principale"]')).nativeElement;
+    const element = fixture.debugElement.query(By.css('input[name="primary-opacity"]')).nativeElement;
     element.value = '0.1';
-    element.dispatchEvent(new Event('input')); // appliquerOpacitePrincipale appelée implicitement
+    element.dispatchEvent(new Event('input')); // applyPrimaryOpacity appelée implicitement
+    // tslint:disable-next-line: no-magic-numbers
     expect(component.colorParameter.primaryOpacity).toBe(0.1);
   });
 
-  it("#appliquerOpacitePrincipale devrait changer l'opacité à 0 si la valeur "
+  it("#applyPrimaryOpacity devrait changer l'opacité à 0 si la valeur "
     + 'qui lui est donnée est négative', () => {
-    const element = fixture.debugElement.query(By.css('input[name="opacite-principale"]')).nativeElement;
+    const element = fixture.debugElement.query(By.css('input[name="primary-opacity"]')).nativeElement;
     element.value = '-0.1';
-    element.dispatchEvent(new Event('input')); // appliquerOpacitePrincipale appelée implicitement
+    element.dispatchEvent(new Event('input')); // applyPrimaryOpacity appelée implicitement
     expect(component.colorParameter.primaryOpacity).toBe(0);
   });
 
-  it("#appliquerOpacitePrincipale devrait changer l'opacité à 1 si la valeur "
+  it("#applyPrimaryOpacity devrait changer l'opacité à 1 si la valeur "
     + 'qui lui est donnée est supérieure à 1', () => {
-    const element = fixture.debugElement.query(By.css('input[name="opacite-principale"]')).nativeElement;
+    const element = fixture.debugElement.query(By.css('input[name="primary-opacity"]')).nativeElement;
     element.value = '1.1';
-    element.dispatchEvent(new Event('input')); // appliquerOpacitePrincipale appelée implicitement
+    element.dispatchEvent(new Event('input')); // applyPrimaryOpacity appelée implicitement
     expect(component.colorParameter.primaryOpacity).toBe(1);
   });
 
-  it('#appliquerOpacitePrincipale devrait changer l\'opacité d\'affichage '
+  it('#applyPrimaryOpacity devrait changer l\'opacité d\'affichage '
   + 'si la valeur entree est conforme', () => {
-    const element = fixture.debugElement.query(By.css('input[name="opacite-principale"]')).nativeElement;
+    const element = fixture.debugElement.query(By.css('input[name="primary-opacity"]')).nativeElement;
     element.value = '0.75';
-    element.dispatchEvent(new Event('input')); // appliquerOpacitePrincipale appelée implicitement
+    element.dispatchEvent(new Event('input')); // applyPrimaryOpacity appelée implicitement
+    // tslint:disable-next-line: no-magic-numbers
     expect(component.colorParameter.primaryOpacityDisplayed).toBe(75);
   });
 
-  // TESTS appliquerOpaciteSecondaire
+  // TESTS applySecondaryOpacity
 
-  it("#appliquerOpaciteSecondaire ne devrait pas changer l'opacité si l'évènement "
+  it("#applySecondaryOpacity ne devrait pas changer l'opacité si l'évènement "
     + 'qui lui est donné n\'est pas un nombre', () => {
-    const element = fixture.debugElement.query(By.css('input[name="opacite-secondaire"]')).nativeElement;
+    const element = fixture.debugElement.query(By.css('input[name="secondary-opacity"]')).nativeElement;
     element.value = 'test';
-    element.dispatchEvent(new Event('input')); // appliquerOpaciteSecondaire appelée implicitement
+    element.dispatchEvent(new Event('input')); // applySecondaryOpacity appelée implicitement
+    // tslint:disable-next-line: no-magic-numbers
     expect(component.colorParameter.secondaryOpacity).toBe(0.5);
   });
 
-  it("#appliquerOpaciteSecondaire devrait changer l'opacité si l'évènement "
+  it("#applySecondaryOpacity devrait changer l'opacité si l'évènement "
     + 'qui lui est donné est un nombre', () => {
-    const element = fixture.debugElement.query(By.css('input[name="opacite-secondaire"]')).nativeElement;
+    const element = fixture.debugElement.query(By.css('input[name="secondary-opacity"]')).nativeElement;
     element.value = '0.1';
-    element.dispatchEvent(new Event('input')); // appliquerOpaciteSecondaire appelée implicitement
+    element.dispatchEvent(new Event('input')); // applySecondaryOpacity appelée implicitement
+    // tslint:disable-next-line: no-magic-numbers
     expect(component.colorParameter.secondaryOpacity).toBe(0.1);
   });
 
-  it("#appliquerOpaciteSecondaire devrait changer l'opacité à 0 si la valeur "
+  it("#applySecondaryOpacity devrait changer l'opacité à 0 si la valeur "
     + 'qui lui est donnée est négative', () => {
-    const element = fixture.debugElement.query(By.css('input[name="opacite-secondaire"]')).nativeElement;
+    const element = fixture.debugElement.query(By.css('input[name="secondary-opacity"]')).nativeElement;
     element.value = '-0.1';
-    element.dispatchEvent(new Event('input')); // appliquerOpaciteSecondaire appelée implicitement
+    element.dispatchEvent(new Event('input')); // applySecondaryOpacity appelée implicitement
     expect(component.colorParameter.secondaryOpacity).toBe(0);
   });
 
-  it("#appliquerOpaciteSecondaire devrait changer l'opacité à 1 si la valeur "
+  it("#applySecondaryOpacity devrait changer l'opacité à 1 si la valeur "
     + 'qui lui est donnée est supérieure à 1', () => {
-    const element = fixture.debugElement.query(By.css('input[name="opacite-secondaire"]')).nativeElement;
+    const element = fixture.debugElement.query(By.css('input[name="secondary-opacity"]')).nativeElement;
     element.value = '1.1';
-    element.dispatchEvent(new Event('input')); // appliquerOpaciteSecondaire appelée implicitement
+    element.dispatchEvent(new Event('input')); // applySecondaryOpacity appelée implicitement
     expect(component.colorParameter.secondaryOpacity).toBe(1);
   });
 
-  it('#appliquerOpaciteSecondaire devrait changer l\'opacité d\'affichage '
+  it('#applySecondaryOpacity devrait changer l\'opacité d\'affichage '
   + 'si la valeur entree est conforme', () => {
-    const element = fixture.debugElement.query(By.css('input[name="opacite-secondaire"]')).nativeElement;
+    const element = fixture.debugElement.query(By.css('input[name="secondary-opacity"]')).nativeElement;
     element.value = '0.75';
-    element.dispatchEvent(new Event('input')); // appliquerOpaciteSecondaire appelée implicitement
+    element.dispatchEvent(new Event('input')); // applySecondaryOpacity appelée implicitement
+    // tslint:disable-next-line: no-magic-numbers
     expect(component.colorParameter.secondaryOpacityDisplayed).toBe(75);
   });
 });
