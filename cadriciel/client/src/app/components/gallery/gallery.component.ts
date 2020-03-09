@@ -14,8 +14,8 @@ import { Drawing } from '../../../../../common/communication/DrawingInterface';
 })
 export class GalleryComponent implements OnInit {
   protected drawings: Drawing[];
-
   protected selected: number | null;
+  protected isLoading: boolean;
 
   constructor(private dialogRef: MatDialogRef<GalleryComponent>,
               private db: DatabaseService,
@@ -24,6 +24,7 @@ export class GalleryComponent implements OnInit {
               private ngZone: NgZone,
               private router: Router) {
     this.selected = null;
+    this.isLoading = false;
   }
 
   async ngOnInit(): Promise<void> {
@@ -31,7 +32,9 @@ export class GalleryComponent implements OnInit {
   }
 
   async update(): Promise<void> {
+    this.isLoading = true;
     this.drawings = await this.db.getData();
+    this.isLoading = false;
   }
 
   close(): void {

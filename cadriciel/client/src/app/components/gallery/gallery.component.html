@@ -1,9 +1,16 @@
 <h1 style="text-align: center;">GALERIE :</h1>
 <br>
-<div *ngFor="let element of drawings; let i = index" class="drawings">
-    <app-gallery-element [drawing]="element" [isSelected]="i === selected" (click)="selected = i;"></app-gallery-element>
+<div class="content">
+    <div *ngIf="isLoading; else notLoading" class="loadingUI">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <ng-template #notLoading>
+        <div *ngFor="let element of drawings; let i = index" class="drawings">
+            <app-gallery-element [drawing]="element" [isSelected]="i === selected" (click)="selected = i;"></app-gallery-element>
+        </div>
+    </ng-template>
+    <div class="clear"></div>
 </div>
-<div class="clear"></div>
 <button mat-stroked-button (click)="close()" class="close-button" style="float: left;">fermer</button>
 <button mat-raised-button (click)="loadDrawing(drawings[selected])" color="primary" [disabled]="selected === null" style="float: right;">Charger</button>
 <button mat-raised-button (click)="deleteDrawing(drawings[selected])" color="warn" [disabled]="selected === null" style="float: right;">Supprimer</button>

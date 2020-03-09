@@ -21,7 +21,7 @@ export class DatabaseService {
   }
 
   async saveDrawing(): Promise<void> {
-    this.drawingParams.id = (this.drawingParams.id === 0) ? Math.floor(Math.random() * 1000000000) : this.drawingParams.id;
+    if (this.drawingParams.id === 0) { this.drawingParams.id = Math.floor(Math.random() * 1000000000); }
     const drawing: Drawing = {
       _id: this.drawingParams.id,
       name: this.drawingParams.name,
@@ -35,9 +35,7 @@ export class DatabaseService {
   }
 
   async getData(): Promise<Drawing[]> {
-    const list = await this.http.get<Drawing[]>(SERVER_GET_URL).toPromise();
-    console.log(list);
-    return list;
+    return await this.http.get<Drawing[]>(SERVER_GET_URL).toPromise();
   }
 
   async deleteDrawing(id: number): Promise<void> {
