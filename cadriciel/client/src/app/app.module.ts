@@ -40,13 +40,14 @@ import { LineToolService } from './services/tools/line-tool.service';
 import { DrawingToolService } from './services/tools/pencil-tool.service';
 import { RectangleToolService } from './services/tools/rectangle-tool.service';
 import { SelectionService } from './services/tools/selection/selection.service';
+import { GalleryLoadWarningComponent } from './components/gallery-load-warning/gallery-load-warning.component';
 
 @NgModule({
 
     declarations: [AppComponent, HomePageComponent, NewDrawingWarningComponent, DrawingPageComponent, GuidePageComponent,
         NewDrawingWindowComponent, ToolbarComponent, DrawingToolComponent, GuideSubjectComponent, DrawingSurfaceComponent,
         ColorChoiceComponent, ColorSliderComponent, ColorPickerComponent, ColorInputComponent, GridOptionsComponent,
-        SavePopupComponent, GalleryComponent, GalleryElementComponent],
+        SavePopupComponent, GalleryComponent, GalleryElementComponent, GalleryLoadWarningComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
         MatProgressSpinnerModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
         {path: '', component: HomePageComponent},
@@ -59,7 +60,8 @@ import { SelectionService } from './services/tools/selection/selection.service';
                 CommandManagerService, GridService],
 
     entryComponents: [NewDrawingWindowComponent, NewDrawingWarningComponent,
-                      ColorChoiceComponent, GridOptionsComponent, SavePopupComponent, GalleryComponent],
+                      ColorChoiceComponent, GridOptionsComponent, SavePopupComponent, GalleryComponent,
+                      GalleryLoadWarningComponent],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

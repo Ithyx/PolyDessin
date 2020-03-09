@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { BehaviorSubject } from 'rxjs';
+import { GalleryComponent } from '../components/gallery/gallery.component';
 import { SavePopupComponent } from '../components/save-popup/save-popup.component';
 import { CommandManagerService } from './command/command-manager.service';
 import { GridService } from './grid/grid.service';
@@ -30,6 +31,8 @@ export class ShortcutsManagerService {
   upArrow: boolean;
   downArrow: boolean;
 
+  dialogConfig: MatDialogConfig;
+
   newDrawingEmmiter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   constructor(public tools: ToolManagerService,
@@ -49,6 +52,10 @@ export class ShortcutsManagerService {
                 this.rightArrow = false;
                 this.upArrow = false;
                 this.downArrow = false;
+                this.dialogConfig = new MatDialogConfig();
+                this.dialogConfig.disableClose = true;
+                this.dialogConfig.autoFocus = true;
+                this.dialogConfig.width = '80%';
                 this.shortcutManager.set('1', this.shortcutKey1.bind(this))
                                     .set('2', this.shortcutKey2.bind(this))
                                     .set('3', this.shortcutKey3.bind(this))
@@ -192,11 +199,7 @@ export class ShortcutsManagerService {
   shortcutKeyS(keyboard: KeyboardEvent): void {
     if (keyboard.ctrlKey) {
       this.focusOnInput = true;
-      const dialogConfig = new MatDialogConfig();
-      dialogConfig.disableClose = true;
-      dialogConfig.autoFocus = true;
-      dialogConfig.width = '80%';
-      this.dialog.open(SavePopupComponent, dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
+      this.dialog.open(SavePopupComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
       keyboard.preventDefault();
     } else {
       this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
@@ -244,14 +247,18 @@ export class ShortcutsManagerService {
     }
   }
 
-  shortcutKeyEscape(): void{
+  shortcutKeyEscape(): void {
     if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
       this.lineTool.clear();
     }
   }
 
-  shortcutKeyG(): void {
-    this.grid.showGrid = !this.grid.showGrid;
+  shortcutKeyG(keyboard: KeyboardEvent): void {
+    if (keyboard.ctrlKey) {
+      this.focusOnInput = true;
+      this.dialog.open(GalleryComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
+      keyboard.preventDefault();
+    } else { this.grid.showGrid = !this.grid.showGrid; }
   }
 
   shortcutKeyPlus(): void {

@@ -1,11 +1,12 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { Router } from '@angular/router';
 import { DatabaseService } from 'src/app/services/database/database.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { Drawing } from '../../../../../common/communication/DrawingInterface';
+import { GalleryLoadWarningComponent } from '../gallery-load-warning/gallery-load-warning.component';
 
 @Component({
   selector: 'app-gallery',
@@ -16,13 +17,19 @@ export class GalleryComponent implements OnInit {
   protected drawings: Drawing[];
   protected selected: number | null;
   protected isLoading: boolean;
+  private dialogConfig: MatDialogConfig;
 
   constructor(private dialogRef: MatDialogRef<GalleryComponent>,
               private db: DatabaseService,
               private drawingManager: DrawingManagerService,
               private stockageSVG: SVGStockageService,
               private ngZone: NgZone,
-              private router: Router) {
+              private router: Router,
+              private dialog: MatDialog) {
+    this.dialogConfig = new MatDialogConfig();
+    this.dialogConfig.disableClose = true;
+    this.dialogConfig.autoFocus = true;
+    this.dialogConfig.width = '80%';
     this.selected = null;
     this.isLoading = false;
   }
@@ -45,7 +52,10 @@ export class GalleryComponent implements OnInit {
     this.stockageSVG.addSVG(element);
   }
 
-  loadDrawing(drawing: Drawing): void {
+  async loadDrawing(drawing: Drawing): Promise<void> {
+    if (this.stockageSVG.size !== 0) {
+      if (!(await this.dialog.open(GalleryLoadWarningComponent, this.dialogConfig).afterClosed().toPromise())) { return; }
+    }
     this.stockageSVG.cleanDrawing();
     this.drawingManager.id = drawing._id;
     this.drawingManager.height = drawing.height;
@@ -60,6 +70,7 @@ export class GalleryComponent implements OnInit {
 
   async deleteDrawing(drawing: Drawing): Promise<void> {
     await this.db.deleteDrawing(drawing._id);
+    this.selected = null;
     await this.update();
   }
 }
