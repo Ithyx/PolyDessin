@@ -11,19 +11,28 @@ import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-
 })
 export class SavePopupComponent {
   private name: FormControl;
+  private tag: FormControl;
   protected isSaving: boolean;
   private isNameValid: boolean;
+  private isTagValid: boolean;
 
   constructor(private dialogRef: MatDialogRef<SavePopupComponent>,
               private db: DatabaseService,
               private drawingParams: DrawingManagerService) {
     this.name = new FormControl(drawingParams.name);
+    this.tag = new FormControl();
     this.isSaving = false;
+    this.isTagValid = false;
   }
 
   checkName(): boolean {
     this.isNameValid = (this.name.value !== '');
     return this.isNameValid;
+  }
+
+  checkTag(): boolean {
+    this.isTagValid = (this.tag.value !== '');
+    return this.isTagValid;
   }
 
   async confirmSave(): Promise<void> {
@@ -33,7 +42,13 @@ export class SavePopupComponent {
     await this.db.saveDrawing();
     this.isSaving = false;
     // this.dialogRef.close();
- }
+  }
+
+  addTag(): void {
+    if (!this.checkTag()) { return; }
+    this.drawingParams.tags.push(this.tag.value);
+  }
+
   closeDialogue(): void {
     this.dialogRef.close();
   }
