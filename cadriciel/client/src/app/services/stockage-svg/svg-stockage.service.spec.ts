@@ -67,19 +67,12 @@ describe('StockageSvgService', () => {
 
   // TESTS removeSVG
 
-  it('#removeSVG devrait retourner drawElement se trouvant au bon id en parametre', () => {
-    service.addSVG(lineElement);
-    // tslint:disable-next-line:no-string-literal
-    const object = service['completeSVG'][service.size - 1];
-    expect(service.removeSVG(service.size - 1)).toEqual(object);
-  });
-
   it('#removeSVG devrait appeler la fonction splice avec id et 1 en paramètre', () => {
     const idTest = service.size;
     service.addSVG(lineElement);
     // tslint:disable-next-line:no-string-literal
     spyOn(service['completeSVG'], 'splice');
-    service.removeSVG(service.size - 1);
+    service.removeSVG(lineElement);
     // tslint:disable-next-line:no-string-literal
     expect(service['completeSVG'].splice).toHaveBeenCalledWith(idTest, 1);
   });
@@ -87,7 +80,7 @@ describe('StockageSvgService', () => {
   it('#removeLastSVG devrait décrémenter size', () => {
     const content = service.size;
     service.addSVG(lineElement);
-    service.removeSVG(service.size - 1);
+    service.removeSVG(lineElement);
     expect(service.size).toEqual(content);
   });
 

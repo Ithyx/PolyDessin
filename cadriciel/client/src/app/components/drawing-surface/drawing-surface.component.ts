@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
+import { CommandManagerService } from 'src/app/services/command/command-manager.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { GridService } from 'src/app/services/grid/grid.service';
 import { RoutingManagerService } from 'src/app/services/routing-manager.service';
@@ -24,7 +25,8 @@ export class DrawingSurfaceComponent {
               public colorParameter: ColorParameterService,
               public selection: SelectionService,
               public grid: GridService,
-              public colorChanger: ColorChangerToolService) {
+              public colorChanger: ColorChangerToolService,
+              public commands: CommandManagerService) {
   }
 
   handleBackgroundClick(): void {

@@ -24,11 +24,9 @@ export class SVGStockageService {
     this.ongoingPerimeter = '';
   }
 
-  removeSVG(id: number): DrawElement | undefined {
-    const element = this.completeSVG[id];
-    this.completeSVG.splice(id, 1);
+  removeSVG(element: DrawElement): void {
+    this.completeSVG.splice(this.completeSVG.indexOf(element), 1);
     this.size--;
-    return element;
   }
 
   removeLastSVG(): void {

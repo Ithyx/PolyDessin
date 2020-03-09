@@ -272,7 +272,6 @@ describe('DessinRectangleService', () => {
     service.onMouseRelease();
     // vérifier que la fonction ajouterSVG a été correctement appelée
     const addSVG = new AddSVGService(rectangle, service.stockageSVG);
-    addSVG.svgKey = 0;
     expect(service.commands.execute).toHaveBeenCalledWith(addSVG);
   });
   it('#onMouseRelease devrait reinitialiser le rectangle', () => {
