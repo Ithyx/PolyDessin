@@ -18,6 +18,7 @@ const HALF_DRAW_ELEMENT = 0.5 ;
 export class SelectionService implements ToolInterface {
   selectedElements: DrawElement[] = [];
   clickOnSelectionBox: boolean;
+  clickInSelectionBox: boolean;
 
   constructor(public SVGStockage: SVGStockageService,
               public selectionBox: SelectionBoxService,
@@ -26,6 +27,7 @@ export class SelectionService implements ToolInterface {
               private sanitizer: DomSanitizer
              ) {
               this.clickOnSelectionBox = false;
+              this.clickInSelectionBox = false;
              }
 
   handleClick(element: DrawElement): void {
@@ -57,8 +59,7 @@ export class SelectionService implements ToolInterface {
   }
 
   onMouseMove(mouse: MouseEvent): void {
-    if (this.clickOnSelectionBox) {
-      // this.selectionBox.updatePositionMouse(mouse);
+    if (this.clickOnSelectionBox || this.clickInSelectionBox) {
       this.updatePositionMouse(mouse);
     } else {
       this.selectionRectangle.mouseMove(mouse);
@@ -74,15 +75,16 @@ export class SelectionService implements ToolInterface {
   }
 
   onMousePress(mouse: MouseEvent): void {
-    if (!this.clickOnSelectionBox) {
+    if (!(this.clickOnSelectionBox || this.clickInSelectionBox)) {
       // this.deleteBoundingBox();
       this.selectionRectangle.mouseDown(mouse);
     }
   }
 
   onMouseRelease(mouse: MouseEvent): void {
-    if (this.clickOnSelectionBox) {
+    if (this.clickOnSelectionBox || this.clickInSelectionBox) {
       this.clickOnSelectionBox = false;
+      this.clickInSelectionBox = false;
       for (const element of this.selectedElements) {
           element.translateAllPoints();
       }
@@ -169,19 +171,16 @@ export class SelectionService implements ToolInterface {
     let nbCollisions = 0;
 
     if(collision1){
-      console.log("top left of selection");
       nbCollisions++;
     }
     if(collision2){
-      console.log("top right of selection");
       nbCollisions++;
     }
     if(collision3){
-      console.log("bottom right of selection");
+
       nbCollisions++;
     }
     if(collision4){
-      console.log("bottom left of selection");
       nbCollisions++;
     }
     
