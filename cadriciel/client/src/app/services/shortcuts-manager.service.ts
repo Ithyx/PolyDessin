@@ -11,6 +11,7 @@ import { LineToolService, Point } from './tools/line-tool.service';
 import { RectangleToolService } from './tools/rectangle-tool.service';
 import { SelectionService } from './tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
+import { ExportWindowComponent } from '../components/export-window/export-window.component';
 
 type FunctionShortcut = (keyboard?: KeyboardEvent ) => void;
 
@@ -62,6 +63,7 @@ export class ShortcutsManagerService {
                                     .set('3', this.shortcutKey3.bind(this))
                                     .set('a', this.shortcutKeyA.bind(this))
                                     .set('c', this.shortcutKeyC.bind(this))
+                                    .set('e', this.shortcutKeyE.bind(this))
                                     .set('i', this.shortcutKeyI.bind(this))
                                     .set('l', this.shortcutKeyL.bind(this))
                                     .set('w', this.shortcutKeyW.bind(this))
@@ -172,6 +174,13 @@ export class ShortcutsManagerService {
   shortcutKeyC(): void {
     this.tools.changeActiveTool(TOOL_INDEX.PENCIL);
     this.clearOngoingSVG();
+  }
+
+  shortcutKeyE(keyboard: KeyboardEvent): void {
+    if (keyboard.ctrlKey) {
+      this.focusOnInput = true;
+      this.dialog.open(ExportWindowComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
+    }
   }
 
   shortcutKeyI(): void {
