@@ -10,7 +10,7 @@
         <input type="text" maxlength="15" [formControl]="tag" [className]="isTagValid ? '' : 'invalid'">
         <label *ngIf="!isTagValid"> L'étiquette ne peut pas être vide !</label>
     </label>
-    <button (click)="addTag()">Ajouter étiquette</button>
+    <button mat-stroked-button (click)="addTag()" style="float: right;">Ajouter étiquette</button>
 </form>
 <div *ngFor="let tag of drawingParams.tags">
     <span>{{tag}}, </span> <i class="material-icons delete-button" (click)="deleteTag(tag)">cancel</i>

@@ -18,7 +18,11 @@ export class DatabaseController {
     private configureRouter(): void {
         this.router = Router();
         this.router.get('/listDrawings', async (req: Request, res: Response, next: NextFunction) => {
-            res.send(await this.databaseService.getDrawings());
+            if (req.query.tags) {
+                res.send(await this.databaseService.getDrawingWithTags(JSON.parse(decodeURIComponent(req.query.tags))));
+            } else {
+                res.send(await this.databaseService.getDrawings());
+            }
         });
         this.router.post('/saveDrawing', async (req: Request, res: Response, next: NextFunction) => {
             try {

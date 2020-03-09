@@ -1,5 +1,5 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { DatabaseService } from 'src/app/services/database/database.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
@@ -7,6 +7,7 @@ import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { Drawing } from '../../../../../common/communication/DrawingInterface';
 import { GalleryLoadWarningComponent } from '../gallery-load-warning/gallery-load-warning.component';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-gallery',
@@ -18,6 +19,7 @@ export class GalleryComponent implements OnInit {
   protected selected: number | null;
   protected isLoading: boolean;
   private dialogConfig: MatDialogConfig;
+  private tagSearch: FormControl;
 
   constructor(private dialogRef: MatDialogRef<GalleryComponent>,
               private db: DatabaseService,
@@ -32,6 +34,7 @@ export class GalleryComponent implements OnInit {
     this.dialogConfig.width = '80%';
     this.selected = null;
     this.isLoading = false;
+    this.tagSearch = new FormControl();
   }
 
   async ngOnInit(): Promise<void> {
@@ -41,6 +44,12 @@ export class GalleryComponent implements OnInit {
   async update(): Promise<void> {
     this.isLoading = true;
     this.drawings = await this.db.getData();
+    this.isLoading = false;
+  }
+
+  async filter(): Promise<void> {
+    this.isLoading = true;
+    this.drawings = await this.db.getDataWithTags(this.tagSearch.value);
     this.isLoading = false;
   }
 

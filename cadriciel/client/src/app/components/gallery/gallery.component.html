@@ -1,5 +1,9 @@
 <h1 style="text-align: center;">GALERIE :</h1>
 <br>
+<div class="tag-search">
+    <input type="text" maxlength="15" [formControl]="tagSearch">
+    <button mat-stroked-button (click)="filter()">filtrer</button>
+</div>
 <div class="content">
     <div *ngIf="isLoading; else notLoading" class="loadingUI">
         <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>

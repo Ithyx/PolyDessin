@@ -36,6 +36,11 @@ export class DatabaseService {
         return await this.collection.find().toArray();
     }
 
+    async getDrawingWithTags(tagList: string[]): Promise<Drawing[]> {
+        if (!this.collection) { return []; }
+        return await this.collection.find({tags: tagList}).toArray();
+    }
+
     async updateData(drawing: Drawing): Promise<void> {
         if (!this.collection) { return; }
         await this.collection.replaceOne({_id: drawing._id}, drawing, {upsert: true});

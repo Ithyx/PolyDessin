@@ -38,6 +38,10 @@ export class DatabaseService {
     return await this.http.get<Drawing[]>(SERVER_GET_URL).toPromise();
   }
 
+  async getDataWithTags(tags: string[]): Promise<Drawing[]> {
+    return await this.http.get<Drawing[]>(SERVER_GET_URL + '?tags=' + encodeURIComponent(JSON.stringify(tags))).toPromise();
+  }
+
   async deleteDrawing(id: number): Promise<void> {
     await this.http.delete(SERVER_DELETE_URL + '?id=' + id.toString()).toPromise();
   }
