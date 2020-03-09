@@ -28,6 +28,7 @@ describe('TraitCrayonService', () => {
   it('#draw devrait rien faire si isSelected est vrai', () => {
     element.isSelected = true;
     element.thickness = 0;
+    // tslint:disable-next-line:no-magic-numbers
     element.tool.parameters[0].value = 10;
     element.draw();
     expect(element.thickness).toEqual(0);
@@ -166,7 +167,7 @@ describe('TraitCrayonService', () => {
     spyOn(element, 'draw');
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
     // tslint:disable-next-line:no-magic-numbers
-    element.updatePositionMouse(click, { x: 10, y: 10})
+    element.updatePositionMouse(click, { x: 10, y: 10});
     expect(element.draw).toHaveBeenCalled();
   });
 
