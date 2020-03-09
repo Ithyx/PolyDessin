@@ -12,6 +12,7 @@ import { RectangleToolService } from 'src/app/services/tools/rectangle-tool.serv
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
 import { ToolManagerService } from 'src/app/services/tools/tool-manager.service';
+import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
 
 const LEFT_CLICK = 0;
 
@@ -36,7 +37,8 @@ export class DrawingPageComponent {
               public pipette: PipetteToolService,
               public colorChanger: ColorChangerToolService,
               public ellipse: EllipseToolService,
-              public polygon: PolygonToolService
+              public polygon: PolygonToolService,
+              public eraser: EraserToolService
               ) {
               this.toolMap.set('Crayon', pencil)
                           .set('Rectangle', rectangle)
@@ -47,7 +49,8 @@ export class DrawingPageComponent {
                           .set('Pipette', pipette)
                           .set('Applicateur Couleur', colorChanger)
                           .set('Ellipse', ellipse)
-                          .set('Polygone', polygon);
+                          .set('Polygone', polygon)
+                          .set('Efface', eraser);
                 }
 
   @HostListener('document:keydown', ['$event'])
