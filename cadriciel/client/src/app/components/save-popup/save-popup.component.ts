@@ -45,7 +45,7 @@ export class SavePopupComponent {
   }
 
   addTag(): void {
-    if (!this.checkTag()) { return; }
+    if (!this.checkTag() || this.drawingParams.tags.indexOf(this.tag.value) !== -1) { return; }
     this.drawingParams.tags.push(this.tag.value);
   }
 
