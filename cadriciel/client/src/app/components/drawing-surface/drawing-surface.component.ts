@@ -8,6 +8,7 @@ import { RoutingManagerService } from 'src/app/services/routing-manager.service'
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
+import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 
@@ -26,7 +27,8 @@ export class DrawingSurfaceComponent {
               public selection: SelectionService,
               public grid: GridService,
               public colorChanger: ColorChangerToolService,
-              public commands: CommandManagerService) {
+              public commands: CommandManagerService,
+              public eraser: EraserToolService) {
   }
 
   handleBackgroundClick(): void {
