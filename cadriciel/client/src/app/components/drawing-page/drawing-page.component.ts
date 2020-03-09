@@ -13,6 +13,8 @@ import { SelectionService } from 'src/app/services/tools/selection/selection.ser
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
 import { ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 
+const LEFT_CLICK = 0;
+
 @Component({
   selector: 'app-drawing-page',
   templateUrl: './drawing-page.component.html',
@@ -76,7 +78,7 @@ export class DrawingPageComponent {
 
   onMouseDown(mouse: MouseEvent): void {
     const tool = this.toolMap.get(this.tools.activeTool.name);
-    if (tool && tool.onMousePress) {
+    if (mouse.button === LEFT_CLICK && tool && tool.onMousePress) {
       tool.onMousePress(mouse);
       mouse.preventDefault();
     }
