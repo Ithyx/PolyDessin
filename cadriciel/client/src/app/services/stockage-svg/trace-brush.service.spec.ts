@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { DrawingToolService } from '../tools/pencil-tool.service';
 import { TraceBrushService } from './trace-brush.service';
 
-describe('TraitPinceauService', () => {
+describe('trace-brush', () => {
   let element: TraceBrushService;
   let service: DrawingToolService;
   beforeEach(() => TestBed.configureTestingModule({}));
@@ -157,6 +157,37 @@ describe('TraitPinceauService', () => {
     // tslint:disable-next-line:no-magic-numbers
     element.updatePositionMouse(click, { x: 10, y: 10});
     expect(element.draw).toHaveBeenCalled();
+  });
+
+  // TESTS updateParameters
+
+  it('#updateParameters devrait assigner la valeur en paramètre à thickness', () => {
+    // tslint:disable-next-line: no-magic-numbers
+    service.tools.toolList[1].parameters[0].value = 10;
+    const testTool = service.tools.toolList[1];
+    element.updateParameters(testTool);
+    expect(element.thickness).toEqual(service.tools.toolList[1].parameters[0].value);
+  });
+
+  it('#updateParameters devrait assigner 1 à thickness', () => {
+    service.tools.toolList[1].parameters[0].value = 0;
+    const testTool = service.tools.toolList[1];
+    element.updateParameters(testTool);
+    expect(element.thickness).toEqual(1);
+  });
+
+  it('#updateParameters devrait assigner chosenOption en paramètre à chosenOption', () => {
+    service.tools.toolList[1].parameters[1].chosenOption = 'Flou';
+    const testTool = service.tools.toolList[1];
+    element.updateParameters(testTool);
+    expect(element.chosenOption).toEqual('Flou');
+  });
+
+  it('#updateParameters devrait assigner une chaine de caractère vide à chosenOption', () => {
+    service.tools.toolList[1].parameters[1].chosenOption = '';
+    const testTool = service.tools.toolList[1];
+    element.updateParameters(testTool);
+    expect(element.chosenOption).toEqual('');
   });
 
   // TESTS translateAllPoints
