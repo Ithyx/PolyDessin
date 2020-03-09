@@ -28,14 +28,18 @@ export class DrawingSurfaceComponent {
   }
 
   handleBackgroundClick(): void {
-    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION && !this.selection.selectionRectangle) {
+    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
         this.selection.deleteBoundingBox();
         this.selection.clickOnSelectionBox = false;
+        for (const element of this.selection.selectedElements) {
+          element.isSelected = false;
+        }
+        this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
     }
   }
 
-  handleElementRightClick(element: DrawElement): void {
-    this.colorChanger.activeElementID = this.SVGStockage.getCompleteSVG().indexOf(element);
+  handleBackgroundRightClick(): boolean {
+    return false;
   }
 
   handleElementClick(element: DrawElement): void {
@@ -46,6 +50,17 @@ export class DrawingSurfaceComponent {
     }
   }
 
+  handleElementRightClick(element: DrawElement): boolean {
+    this.colorChanger.activeElementID = this.SVGStockage.getCompleteSVG().indexOf(element);
+    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
+      this.selection.handleRightClick(element);
+      this.selection.clickOnSelectionBox = false;
+    } else if (this.tools.activeTool.ID === TOOL_INDEX.COLOR_CHANGER) {
+      this.colorChanger.onRightClick();
+    }
+    return false;
+  }
+
   handleMouseDown(event: MouseEvent): void {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       this.selection.clickOnSelectionBox = true;
@@ -54,7 +69,7 @@ export class DrawingSurfaceComponent {
   }
 
   handleMouseUp(event: MouseEvent): void {
-   if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION){
+   if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
      this.selection.selectionBox.selectionBox.translateAllPoints();
      for (const controlPoint of this.selection.selectionBox.controlPointBox) {
        controlPoint.translateAllPoints();

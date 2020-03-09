@@ -18,8 +18,7 @@ export class SelectionBoxService {
 
   constructor(public tools: ToolManagerService,
               private sanitizer: DomSanitizer,
-              ) {
-              }
+              ) {}
 
   createSelectionBox(pointMin: Point, pointMax: Point): void {
 
@@ -45,25 +44,27 @@ export class SelectionBoxService {
 
   createControlPointBox(): void {
     // TOP
-    this.controlPointBox[0].points[0].x = ((this.selectionBox.points[0].x + this.selectionBox.points[1].x)/2) - 4;
+    this.controlPointBox[0].points[0].x = ((this.selectionBox.points[0].x + this.selectionBox.points[1].x) / 2) - 4;
     this.controlPointBox[0].points[0].y = (this.selectionBox.points[0].y - 4);
-    this.controlPointBox[0].points[1].x = ((this.selectionBox.points[0].x + this.selectionBox.points[1].x)/2) + 4;
+    this.controlPointBox[0].points[1].x = ((this.selectionBox.points[0].x + this.selectionBox.points[1].x) / 2) + 4;
     this.controlPointBox[0].points[1].y = (this.selectionBox.points[0].y + 4);
     // BOTTOM
-    this.controlPointBox[1].points[0].x = ((this.selectionBox.points[0].x + this.selectionBox.points[1].x)/2) - 4;
+    this.controlPointBox[1].points[0].x = ((this.selectionBox.points[0].x + this.selectionBox.points[1].x) / 2) - 4;
     this.controlPointBox[1].points[0].y = (this.selectionBox.points[1].y - 4);
-    this.controlPointBox[1].points[1].x = ((this.selectionBox.points[0].x + this.selectionBox.points[1].x)/2) + 4;
+    this.controlPointBox[1].points[1].x = ((this.selectionBox.points[0].x + this.selectionBox.points[1].x) / 2) + 4;
     this.controlPointBox[1].points[1].y = (this.selectionBox.points[1].y + 4);
     // LEFT
     this.controlPointBox[2].points[0].x = (this.selectionBox.points[0].x - 4); 
-    this.controlPointBox[2].points[0].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y)/2) - 4;
+    this.controlPointBox[2].points[0].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y) / 2) - 4;
     this.controlPointBox[2].points[1].x = (this.selectionBox.points[0].x + 4);
-    this.controlPointBox[2].points[1].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y)/2) + 4;
+    this.controlPointBox[2].points[1].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y) / 2) + 4;
     // RIGHT
-    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[0].x = (this.selectionBox.points[1].x - 4); 
-    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[0].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y)/2) - 4;
+    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[0].x = (this.selectionBox.points[1].x - 4);
+    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[0].y = ((this.selectionBox.points[0].y 
+                                                                  + this.selectionBox.points[1].y) / 2) - 4;
     this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[1].x = (this.selectionBox.points[1].x + 4);
-    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[1].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y)/2) + 4;
+    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[1].y = ((this.selectionBox.points[0].y 
+                                                                  + this.selectionBox.points[1].y) / 2) + 4;
 
     for (const controlPoint of this.controlPointBox) {
       controlPoint.isSelected = true;
@@ -79,7 +80,7 @@ export class SelectionBoxService {
 
   deleteSelectionBox(): void {
     delete this.selectionBox;
-    if(this.controlPointBox) {
+    if (this.controlPointBox) {
       for (let index = 0; index < this.controlPointBox.length; index++) {
         delete this.controlPointBox[index];
       }

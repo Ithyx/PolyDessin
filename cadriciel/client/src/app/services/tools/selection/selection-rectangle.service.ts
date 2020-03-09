@@ -16,12 +16,13 @@ const rectangleSelectionTool: DrawingTool = {name: '',
 @Injectable({
   providedIn: 'root'
 })
+
 export class SelectionRectangleService {
   ongoingSelection: boolean;
   rectangle: RectangleService;
 
-  initialPoint: Point = {x: 0, y: 0};     // Coordonnées du clic initial de souris
-  basisPoint: Point = {x: 0, y: 0};     // Coordonnées du point inférieur gauche
+  initialPoint: Point;   // Coordonnées du clic initial de souris
+  basisPoint: Point;     // Coordonnées du point inférieur gauche
 
   // Dimensions du rectangle
   widthCalculated: number;
@@ -29,6 +30,8 @@ export class SelectionRectangleService {
 
   constructor(private sanitizer: DomSanitizer) {
     this.ongoingSelection = false;
+    this.initialPoint = {x: 0, y: 0};
+    this.basisPoint = {x: 0, y: 0};
     this.widthCalculated = 0;
     this.heightCalculated = 0;
    }

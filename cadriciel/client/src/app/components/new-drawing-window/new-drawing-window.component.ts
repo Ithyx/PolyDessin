@@ -12,6 +12,7 @@ import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.s
 
 export const KEY_FORM_HEIGHT = 'formHeight';
 export const KEY_FORM_WIDHT = 'formWidth';
+export const KEY_FORM_NAME = 'formName';
 export const BUFFER_WIDTH = 510;
 export const BUFFER_HEIGHT = 15;
 
@@ -24,10 +25,11 @@ export const BUFFER_HEIGHT = 15;
 export class NewDrawingWindowComponent {
   windowHeight: number;
   windowWidth: number;
-
   dimensionManuallyChange: boolean;
-
   newDrawing: FormGroup;
+
+  heightValid: boolean;
+  widthValid: boolean;
 
   constructor(public dialogRef: MatDialogRef<NewDrawingWindowComponent>,
               public shortcuts: ShortcutsManagerService,
@@ -38,17 +40,26 @@ export class NewDrawingWindowComponent {
               public colorParameter: ColorParameterService,
               public commands: CommandManagerService,
               private ngZone: NgZone ) {
-                this.windowHeight = window.innerHeight - BUFFER_HEIGHT;
-                this.windowWidth = window.innerWidth - BUFFER_WIDTH;
-                this.dimensionManuallyChange = false;
+    this.windowHeight = window.innerHeight - BUFFER_HEIGHT;
+    this.windowWidth = window.innerWidth - BUFFER_WIDTH;
+    this.dimensionManuallyChange = false;
 
-                this.newDrawing = new FormGroup({
-                  formHeight: new FormControl(this.windowHeight),
-                  formWidth: new FormControl(this.windowWidth),
-                });
+    this.newDrawing = new FormGroup({
+      formHeight: new FormControl(this.windowHeight),
+      formWidth: new FormControl(this.windowWidth),
+    });
 
-                this.changeWindowDimension();
-              }
+    this.heightValid = true;
+    this.widthValid = true;
+
+    this.changeWindowDimension();
+  }
+
+  areDimensionsValid(): boolean {
+    this.heightValid = this.newDrawing.value[KEY_FORM_HEIGHT];
+    this.widthValid = this.newDrawing.value[KEY_FORM_WIDHT];
+    return this.heightValid && this.widthValid;
+  }
 
   closeWindow(): void {
     this.colorParameter.temporaryBackgroundColor = this.drawingManager.backgroundColor;
@@ -70,10 +81,13 @@ export class NewDrawingWindowComponent {
   }
 
   createNewDrawing(): void {
+    if (!this.areDimensionsValid()) { return; }
     this.SVGStockage.cleanDrawing();
     this.commands.clearCommand();
     this.drawingManager.height = this.newDrawing.value[KEY_FORM_HEIGHT];
     this.drawingManager.width = this.newDrawing.value[KEY_FORM_WIDHT];
+    this.drawingManager.name = '';
+    this.drawingManager.id = 0;
     this.drawingManager.backgroundColor = this.colorParameter.temporaryBackgroundColor;
     this.shortcuts.focusOnInput = false;
     this.dialogRef.close();
@@ -85,7 +99,6 @@ export class NewDrawingWindowComponent {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '30%';
-    dialogConfig.panelClass = 'fenetre-couleur';
     this.dialog.open(ColorChoiceComponent, dialogConfig).componentInstance.portee = Scope.BackgroundNewDrawing;
   }
 }
