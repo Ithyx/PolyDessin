@@ -1,7 +1,9 @@
 import { Component, HostListener } from '@angular/core';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { BrushToolService } from 'src/app/services/tools/brush-tool.service';
+import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
 import { DrawSprayService } from 'src/app/services/tools/draw-spray.service';
+import { EllipseToolService } from 'src/app/services/tools/ellipse-tool.service';
 import { LineToolService } from 'src/app/services/tools/line-tool.service';
 import { DrawingToolService } from 'src/app/services/tools/pencil-tool.service';
 import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
@@ -10,6 +12,8 @@ import { RectangleToolService } from 'src/app/services/tools/rectangle-tool.serv
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
 import { ToolManagerService } from 'src/app/services/tools/tool-manager.service';
+
+const LEFT_CLICK = 0;
 
 @Component({
   selector: 'app-drawing-page',
@@ -30,6 +34,8 @@ export class DrawingPageComponent {
               public selection: SelectionService,
               public spray: DrawSprayService,
               public pipette: PipetteToolService,
+              public colorChanger: ColorChangerToolService,
+              public ellipse: EllipseToolService,
               public polygon: PolygonToolService
               ) {
               this.toolMap.set('Crayon', pencil)
@@ -39,6 +45,8 @@ export class DrawingPageComponent {
                           .set('Selection', selection)
                           .set('Aérosol', spray)
                           .set('Pipette', pipette)
+                          .set('Applicateur Couleur', colorChanger)
+                          .set('Ellipse', ellipse)
                           .set('Polygone', polygon);
                 }
 
@@ -70,7 +78,7 @@ export class DrawingPageComponent {
 
   onMouseDown(mouse: MouseEvent): void {
     const tool = this.toolMap.get(this.tools.activeTool.name);
-    if (tool && tool.onMousePress) {
+    if (mouse.button === LEFT_CLICK && tool && tool.onMousePress) {
       tool.onMousePress(mouse);
       mouse.preventDefault();
     }

@@ -73,7 +73,6 @@ export class TracePencilService implements DrawElement {
   updatePositionMouse(mouse: MouseEvent, mouseClick: Point): void {
     this.translate.x = mouse.offsetX - mouseClick.x;
     this.translate.y = mouse.offsetY - mouseClick.y;
-
     this.draw();
   }
 

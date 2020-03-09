@@ -48,11 +48,33 @@ export class SVGStockageService {
     this.ongoingSVG = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
     if (element.perimeter) {
       this.ongoingPerimeter = this.sanitizer.bypassSecurityTrustHtml(element.perimeter);
+    } else {
+      this.ongoingPerimeter = '';
     }
   }
 
   getCompleteSVG(): DrawElement[] {
     return this.completeSVG;
+  }
+
+  changePrimaryColor(id: number, color: string): string | undefined {
+    const oldColor = this.completeSVG[id].primaryColor;
+    if (oldColor) {
+      this.completeSVG[id].primaryColor = color;
+      this.completeSVG[id].draw();
+      this.completeSVG[id].SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.completeSVG[id].SVG);
+    }
+    return oldColor;
+  }
+
+  changeSecondaryColor(id: number, color: string): string | undefined {
+    const oldColor = this.completeSVG[id].secondaryColor;
+    if (oldColor) {
+      this.completeSVG[id].secondaryColor = color;
+      this.completeSVG[id].draw();
+      this.completeSVG[id].SVGHtml = this.sanitizer.bypassSecurityTrustHtml(this.completeSVG[id].SVG);
+    }
+    return oldColor;
   }
 
   cleanDrawing(): void {

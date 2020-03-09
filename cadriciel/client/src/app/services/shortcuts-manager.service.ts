@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { BehaviorSubject } from 'rxjs';
+import { GalleryComponent } from '../components/gallery/gallery.component';
+import { SavePopupComponent } from '../components/save-popup/save-popup.component';
 import { CommandManagerService } from './command/command-manager.service';
 import { GridService } from './grid/grid.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
+import { EllipseToolService } from './tools/ellipse-tool.service';
 import { LineToolService, Point } from './tools/line-tool.service';
 import { RectangleToolService } from './tools/rectangle-tool.service';
 import { SelectionService } from './tools/selection/selection.service';
@@ -28,15 +32,19 @@ export class ShortcutsManagerService {
   private upArrow: boolean;
   private downArrow: boolean;
 
+  dialogConfig: MatDialogConfig;
+
   newDrawingEmmiter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   constructor(public tools: ToolManagerService,
               public rectangleTool: RectangleToolService,
+              public ellipseTool: EllipseToolService,
               public lineTool: LineToolService,
               public commands: CommandManagerService,
               public selection: SelectionService,
               public SVGStockage: SVGStockageService,
-              public grid: GridService
+              public grid: GridService,
+              private dialog: MatDialog
               ) {
                 this.focusOnInput = false;
                 this.counter100ms = 0;
@@ -45,6 +53,10 @@ export class ShortcutsManagerService {
                 this.rightArrow = false;
                 this.upArrow = false;
                 this.downArrow = false;
+                this.dialogConfig = new MatDialogConfig();
+                this.dialogConfig.disableClose = true;
+                this.dialogConfig.autoFocus = true;
+                this.dialogConfig.width = '80%';
                 this.shortcutManager.set('1', this.shortcutKey1.bind(this))
                                     .set('2', this.shortcutKey2.bind(this))
                                     .set('3', this.shortcutKey3.bind(this))
@@ -53,6 +65,7 @@ export class ShortcutsManagerService {
                                     .set('i', this.shortcutKeyI.bind(this))
                                     .set('l', this.shortcutKeyL.bind(this))
                                     .set('w', this.shortcutKeyW.bind(this))
+                                    .set('r', this.shortcutKeyR.bind(this))
                                     .set('s', this.shortcutKeyS.bind(this))
                                     .set('z', this.shortcutKeyZ.bind(this))
                                     .set('Z', this.shortcutKeyUpperZ.bind(this))
@@ -172,13 +185,24 @@ export class ShortcutsManagerService {
   }
 
   shortcutKeyW(): void {
-      this.tools.changeActiveTool(TOOL_INDEX.BRUSH);
-      this.clearOngoingSVG();
+    this.tools.changeActiveTool(TOOL_INDEX.BRUSH);
+    this.clearOngoingSVG();
   }
 
-  shortcutKeyS(): void {
-    this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
+  shortcutKeyR(): void {
+    this.tools.changeActiveTool(TOOL_INDEX.COLOR_CHANGER);
     this.clearOngoingSVG();
+  }
+
+  shortcutKeyS(keyboard: KeyboardEvent): void {
+    if (keyboard.ctrlKey) {
+      this.focusOnInput = true;
+      this.dialog.open(SavePopupComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
+      keyboard.preventDefault();
+    } else {
+      this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
+      this.clearOngoingSVG();
+    }
   }
 
   shortcutKeyZ(keyboard: KeyboardEvent): void {
@@ -194,10 +218,16 @@ export class ShortcutsManagerService {
   }
 
   shortcutKeyShift(): void {
-    if (this.tools.activeTool.ID === TOOL_INDEX.RECTANGLE) {
-      this.rectangleTool.shiftPress();
-    } else if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
-      this.lineTool.memorizeCursor();
+    switch (this.tools.activeTool.ID) {
+      case TOOL_INDEX.RECTANGLE:
+        this.rectangleTool.shiftPress();
+        break;
+      case TOOL_INDEX.LINE:
+        this.lineTool.memorizeCursor();
+        break;
+      case TOOL_INDEX.ELLIPSE:
+        this.ellipseTool.shiftPress();
+        break;
     }
   }
 
@@ -215,14 +245,18 @@ export class ShortcutsManagerService {
     }
   }
 
-  shortcutKeyEscape(): void{
+  shortcutKeyEscape(): void {
     if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
       this.lineTool.clear();
     }
   }
 
-  shortcutKeyG(): void {
-    this.grid.showGrid = !this.grid.showGrid;
+  shortcutKeyG(keyboard: KeyboardEvent): void {
+    if (keyboard.ctrlKey) {
+      this.focusOnInput = true;
+      this.dialog.open(GalleryComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
+      keyboard.preventDefault();
+    } else { this.grid.showGrid = !this.grid.showGrid; }
   }
 
   shortcutKeyPlus(): void {
@@ -257,6 +291,9 @@ export class ShortcutsManagerService {
         }
         if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
           this.lineTool.shiftRelease();
+        }
+        if (this.tools.activeTool.ID === TOOL_INDEX.ELLIPSE) {
+          this.ellipseTool.shiftRelease();
         }
         break;
 
