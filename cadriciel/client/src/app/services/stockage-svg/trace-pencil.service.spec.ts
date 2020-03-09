@@ -25,27 +25,6 @@ describe('TracePencilService', () => {
 
   // TESTS draw
 
-<<<<<<< HEAD
-=======
-  it('#draw devrait rien faire si isSelected est vrai', () => {
-    element.isSelected = true;
-    element.thickness = 0;
-    // tslint:disable-next-line:no-magic-numbers
-    element.tool.parameters[0].value = 10;
-    element.draw();
-    expect(element.thickness).toEqual(0);
-  });
-
-  it('#draw devrait changer la valeur de thickness si isSelected est faux', () => {
-    element.thickness = 0;
-    // tslint:disable-next-line:no-magic-numbers
-    element.tool.parameters[0].value = 10;
-    element.draw();
-    // tslint:disable-next-line:no-magic-numbers
-    expect(element.thickness).toEqual(10);
-  });
-
->>>>>>> 85da7a480efa8f3527e826ad749fe7796be67624
   it('#draw devrait appeler drawPoint si isAPoint est vrai', () => {
     spyOn(element, 'drawPoint');
     element.isAPoint = true;
