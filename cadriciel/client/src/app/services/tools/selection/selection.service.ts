@@ -81,33 +81,6 @@ export class SelectionService implements ToolInterface {
   }
 
   createBoundingBox(): void {
-<<<<<<< HEAD
-    let pointMin: Point = {x: this.drawingManager.width , y: this.drawingManager.height};
-    let pointMax: Point = {x: 0 , y: 0};
-    const epaisseurMin: Point = {x: 0, y: 0};
-    const epaisseurMax: Point = {x: 0, y: 0};
-
-    for (const element of this.selectedElements) {
-      for (const point of element.points) {
-        // Point Min
-        if (pointMin.x > point.x) {
-          pointMin.x = point.x + element.translate.x;
-          epaisseurMin.x = element.thickness ? element.thickness : 0;
-        }
-        if (pointMin.y > point.y) {
-          pointMin.y = point.y + element.translate.y;
-          epaisseurMin.y = element.thickness ? element.thickness : 0;
-        }
-
-        // Point Max
-        if (pointMax.x < point.x) {
-          pointMax.x = point.x + element.translate.x;
-          epaisseurMax.x = element.thickness ? element.thickness : 0;
-        }
-        if (pointMax.y < point.y) {
-          pointMax.y = point.y + element.translate.y;
-          epaisseurMax.y = element.thickness ? element.thickness : 0;
-=======
     if (this.selectedElements.length !== 0) {
       let pointMin: Point = {x: this.drawingManager.width , y: this.drawingManager.height};
       let pointMax: Point = {x: 0 , y: 0};
@@ -135,7 +108,6 @@ export class SelectionService implements ToolInterface {
             pointMax.y = point.y + element.translate.y;
             epaisseurMax.y = element.thickness ? element.thickness : 0;
           }
->>>>>>> 8907f040707f2ace6ea2867a119076ac40c7beac
         }
       }
 
@@ -163,15 +135,10 @@ export class SelectionService implements ToolInterface {
     for (const element of this.SVGStockage.getCompleteSVG()) {
       this.findPointMinAndMax(element);
       for (const point of element.points) {
-<<<<<<< HEAD
-        const belongX = (point.x >= rectangleSelection.points[0].x && point.x <= rectangleSelection.points[1].x);
-        const belongY = (point.y >= rectangleSelection.points[0].y && point.y <= rectangleSelection.points[1].y);
-=======
         const belongX = (point.x + element.translate.x >= rectangleSelection.points[0].x
                       && point.x + element.translate.x <= rectangleSelection.points[1].x);
         const belongY = (point.y + element.translate.y >= rectangleSelection.points[0].y
                       && point.y + element.translate.y <= rectangleSelection.points[1].y);
->>>>>>> 8907f040707f2ace6ea2867a119076ac40c7beac
 
         if (belongX && belongY) {
           belongToRectangle = true;
@@ -233,11 +200,6 @@ export class SelectionService implements ToolInterface {
           this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePosition(x, y);
           element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
-<<<<<<< HEAD
-          // TODO: Retirer l'élément bougé de selectedElements et le ré-insérer avec les nouveaux coordonnées
-=======
-
->>>>>>> 8907f040707f2ace6ea2867a119076ac40c7beac
           this.selectedElements.push(element);
         }
       }
@@ -253,11 +215,6 @@ export class SelectionService implements ToolInterface {
           this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePositionMouse(mouse, this.selectionBox.mouseClick);
           element.SVGHtml = this.sanitizer.bypassSecurityTrustHtml(element.SVG);
-<<<<<<< HEAD
-          // TODO: Retirer l'élément bougé de selectedElements et le ré-insérer avec les nouveaux coordonnées
-=======
-
->>>>>>> 8907f040707f2ace6ea2867a119076ac40c7beac
           this.selectedElements.push(element);
         }
       }
