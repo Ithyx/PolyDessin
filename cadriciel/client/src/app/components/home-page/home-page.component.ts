@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { GalleryComponent } from '../gallery/gallery.component';
@@ -24,6 +24,14 @@ export class HomePageComponent {
 
   openGallery(): void {
     this.dialog.open(GalleryComponent, this.dialogConfig);
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent): void {
+    if (event.key === 'o' && event.ctrlKey === true) {
+      this.createDrawing();
+      event.preventDefault();
+    }
   }
 
 }
