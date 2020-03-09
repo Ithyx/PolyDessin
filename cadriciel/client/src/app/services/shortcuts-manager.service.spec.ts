@@ -170,13 +170,15 @@ describe('GestionnaireRaccourcisService', () => {
   // TESTS shortcutKeyS
 
   it('#shortcutKeyS devrait changer l\'outil actif pour la ligne', () => {
-    service.shortcutKeyS();
+    const keyboard = new KeyboardEvent('keypress', { key: 's' , ctrlKey: false});
+    service.shortcutKeyS(keyboard);
     expect(service.tools.activeTool.ID).toEqual(TOOL_INDEX.SELECTION);
   });
 
   it('#shortcutKeyS devrait supprimer le SVG en cours', () => {
     spyOn(service, 'clearOngoingSVG');
-    service.shortcutKeyS();
+    const keyboard = new KeyboardEvent('keypress', { key: 's' , ctrlKey: false});
+    service.shortcutKeyS(keyboard);
     expect(service.clearOngoingSVG).toHaveBeenCalled();
   });
 
@@ -327,7 +329,8 @@ describe('GestionnaireRaccourcisService', () => {
 
   it('#shortcutKeyG devrait inverser l\'etat d\'affichage de la grille', () => {
     service.grid.showGrid = false;
-    service.shortcutKeyG();
+    const keyboard = new KeyboardEvent('keypress', { key: 'g' , ctrlKey: false});
+    service.shortcutKeyG(keyboard);
     expect(service.grid.showGrid).toBe(true);
   });
 
