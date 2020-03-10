@@ -9,11 +9,21 @@ import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.s
 })
 
 export class ExportWindowComponent {
+
+  EXPORT_FORMAT: string[] = ['png', 'jpeg', 'svg'];
+  EXPORT_FILTER: string[] = ['', 'filter1', 'filter2', 'filter3', 'filter4', 'filter5'];
+
   private context: CanvasRenderingContext2D;
   private image: HTMLImageElement;
+  private selectedExportFormat: string;
+  private selectedExportFilter: string;
 
   constructor(private dialogRef: MatDialogRef<ExportWindowComponent>,
-              private stockageSVG: SVGStockageService) { }
+              private stockageSVG: SVGStockageService
+              ) {
+                this.selectedExportFormat = this.EXPORT_FORMAT[0];
+                this.selectedExportFilter = this.EXPORT_FILTER[0];
+              }
 
   close(): void {
     this.dialogRef.close();
@@ -40,6 +50,18 @@ export class ExportWindowComponent {
     };
       this.image.src = URL.createObjectURL(svg);
     }
+  }
+
+  updateSelectedFormat(event: Event): void {
+    const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
+    this.selectedExportFormat = eventCast.value;
+    console.log('format: ', this.selectedExportFormat);
+  }
+
+  updateSelectedFilter(event: Event): void {
+    const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
+    this.selectedExportFilter = eventCast.value;
+    console.log('filter: ', this.selectedExportFilter);
   }
 
 }

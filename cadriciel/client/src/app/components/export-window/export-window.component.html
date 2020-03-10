@@ -2,4 +2,16 @@
     <div id="png-container"></div>
     <button mat-stroked-button (click)="export()">EXPORTER</button>
     <button mat-button (click)="close()">fermer</button>
+    <div>
+        <label for="format">Choisissez un format d'exporation :</label>
+            <select id="format" (change)="updateSelectedFormat($event)">
+                <option *ngFor="let format of EXPORT_FORMAT" [value]="format"> {{format}} </option>
+            </select>
+        
+        <label for="filter">Choisissez un filtre d'exporation :</label>
+            <select id="filter" (change)="updateSelectedFilter($event)">
+                <option *ngFor="let filter of EXPORT_FILTER" [value]="filter"> {{filter}} </option>
+            </select>
+    </div>
+
 </mat-dialog-content>
