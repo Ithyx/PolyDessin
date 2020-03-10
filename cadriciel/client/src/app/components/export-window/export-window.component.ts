@@ -40,14 +40,20 @@ export class ExportWindowComponent {
       this.image = new Image();
       this.image.onload = () => {
         this.context.drawImage(this.image, 0, 0);
-        const png = canvas.toDataURL('image/jpeg');
-        const container = document.querySelector('#png-container');
+        let imageType = '';
+        if (this.selectedExportFormat === 'png' || 'jpeg') {
+          imageType = 'image/' + this.selectedExportFormat;
+        } else if (this.selectedExportFormat === 'svg') {
+          // TODO : gérer le cas 'svg'
+        }
+        const imageSrc = canvas.toDataURL(imageType);
+        const container = document.querySelector('#image-container');
         console.log(this.stockageSVG.getCompleteSVG());
         if (container) {
-          container.innerHTML = '<img src="' + png + '" width="500" height="500"/>';
+          container.innerHTML = '<img src="' + imageSrc + '" width="500" height="500"/>';
         }
-        URL.revokeObjectURL(png);
-    };
+        URL.revokeObjectURL(imageSrc);
+      };
       this.image.src = URL.createObjectURL(svg);
     }
   }
