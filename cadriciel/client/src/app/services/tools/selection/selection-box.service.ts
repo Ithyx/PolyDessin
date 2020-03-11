@@ -16,7 +16,7 @@ export class SelectionBoxService {
   mouseClick: Point;
   controlPointBox: RectangleService[];
 
-  constructor(public tools: ToolManagerService,
+  constructor(private tools: ToolManagerService,
               private sanitizer: DomSanitizer,
               ) {}
 

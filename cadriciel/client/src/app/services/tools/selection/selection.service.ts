@@ -76,8 +76,7 @@ export class SelectionService implements ToolInterface {
   }
 
   onMousePress(mouse: MouseEvent): void {
-    if (!(this.clickOnSelectionBox || this.clickInSelectionBox)) {
-      // this.deleteBoundingBox();
+    if (!this.clickOnSelectionBox || !this.clickInSelectionBox) {
       this.selectionRectangle.mouseDown(mouse);
     }
   }
@@ -159,7 +158,7 @@ export class SelectionService implements ToolInterface {
     }
   }
 
-  belongToRectangle(element: DrawElement, rectangle: RectangleService): boolean{
+  belongToRectangle(element: DrawElement, rectangle: RectangleService): boolean {
     // BOTTOM RIGHT corner of element with TOP LEFT corner of selection
     const collision1 = element.pointMax.x >= rectangle.pointMin.x && element.pointMax.y >= rectangle.pointMin.y;
     // BOTTOM LEFT corner of element with TOP RIGHT corner of selection
@@ -230,7 +229,6 @@ export class SelectionService implements ToolInterface {
       this.selectionBox.updatePosition(x, y);
     }
   }
-
 
   updatePositionMouse(mouse: MouseEvent): void {
     if (this.selectionBox.selectionBox) {
