@@ -64,12 +64,10 @@ export class ExportWindowComponent {
           // TODO : gérer le cas 'svg'
         }
         const imageSrc = canvas.toDataURL(imageType);
-        const container = document.querySelector('#image-container');
-        console.log(this.stockageSVG.getCompleteSVG());
-        if (container) {
-          container.innerHTML = '<a href="' + imageSrc + '" download="' + this.selectedFileName + '">'
-            + '<img src="' + imageSrc + '" width="500" height="500"/></a>';
-        }
+        const container = document.createElement('a');
+        container.href = imageSrc;
+        container.download = this.selectedFileName;
+        container.click();
         URL.revokeObjectURL(imageSrc);
       };
       this.image.src = URL.createObjectURL(svg);

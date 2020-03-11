@@ -1,5 +1,4 @@
 <mat-dialog-content>
-    <div id="image-container"></div>
     <svg width="200" height="200" [attr.viewBox]="'0 0 ' + drawing.width.toString() + ' ' + drawing.height.toString()">
         <rect [attr.width]="drawing.width" [attr.height]="drawing.height" [attr.fill]="drawing.backgroundColor" />
         <g *ngFor="let element of drawing.elements" [innerHtml]="sanatize(element.svg)" />
