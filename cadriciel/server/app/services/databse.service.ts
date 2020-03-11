@@ -38,7 +38,14 @@ export class DatabaseService {
 
     async getDrawingWithTags(tagList: string[]): Promise<Drawing[]> {
         if (!this.collection) { return []; }
-        return await this.collection.find({tags: tagList}).toArray();
+        const result = new Set<Drawing>();
+        for (const tag of tagList) {
+            const query = await this.collection.find({tags: tag}).toArray();
+            for (const drawing of query) {
+                result.add(drawing);
+            }
+        }
+        return Array<Drawing>(...result);
     }
 
     async updateData(drawing: Drawing): Promise<void> {
