@@ -21,6 +21,7 @@ export class ExportWindowComponent {
   private selectedExportFormat: string;
   private selectedExportFilter: string;
   private selectedFileName: string;
+  private canvas: HTMLCanvasElement;
   protected drawing: Drawing;
 
   constructor(private dialogRef: MatDialogRef<ExportWindowComponent>,
@@ -47,30 +48,38 @@ export class ExportWindowComponent {
   }
 
   export(): void {
-    const element = document.querySelector('.drawing');
-    const canvas = (document.querySelector('.canvas') as HTMLCanvasElement);
-    const context = canvas.getContext('2d');
+    const element = document.querySelector('.drawing-preview');
+    this.canvas = (document.querySelector('.canvas') as HTMLCanvasElement);
+    const context = this.canvas.getContext('2d');
     if (element && context) {
+      element.setAttribute('width', this.drawingParams.width.toString());
+      element.setAttribute('height', this.drawingParams.height.toString());
+
       this.context = context;
       const svgString = new XMLSerializer().serializeToString(element);
       const svg = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
       this.image = new Image();
-      this.image.onload = () => {
-        this.context.drawImage(this.image, 0, 0);
-        let imageSrc = '';
-        if (this.selectedExportFormat === 'svg') {
-          imageSrc = this.image.src;
-        } else {
-          imageSrc = canvas.toDataURL('image/' + this.selectedExportFormat);
-        }
-        const container = document.createElement('a');
-        container.href = imageSrc;
-        container.download = this.selectedFileName;
-        container.click();
-        URL.revokeObjectURL(imageSrc);
-      };
+      this.image.onload = this.downloadImage.bind(this);
       this.image.src = URL.createObjectURL(svg);
+
+      element.setAttribute('width', '200');
+      element.setAttribute('height', '200');
     }
+  }
+
+  downloadImage(): void {
+    this.context.drawImage(this.image, 0, 0);
+    let imageSrc = '';
+    if (this.selectedExportFormat === 'svg') {
+      imageSrc = this.image.src;
+    } else {
+      imageSrc = this.canvas.toDataURL('image/' + this.selectedExportFormat);
+    }
+    const container = document.createElement('a');
+    container.href = imageSrc;
+    container.download = this.selectedFileName;
+    container.click();
+    URL.revokeObjectURL(imageSrc);
   }
 
   updateSelectedFormat(event: Event): void {
@@ -93,5 +102,9 @@ export class ExportWindowComponent {
 
   sanatize(svg: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(svg);
+  }
+
+  getFilter(): string {
+    return this.selectedExportFilter ? ('url(#' + this.selectedExportFilter + ')') : 'none';
   }
 }
