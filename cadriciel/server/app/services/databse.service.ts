@@ -50,9 +50,10 @@ export class DatabaseService {
         return Array<Drawing>(...result.values());
     }
 
-    async updateData(drawing: Drawing): Promise<void> {
-        if (!this.collection) { return; }
+    async updateData(drawing: Drawing): Promise<boolean> {
+        if (!this.collection || drawing.name === '') { return false; }
         await this.collection.replaceOne({_id: drawing._id}, drawing, {upsert: true});
+        return true;
     }
 
     async deleteData(id: number): Promise<void> {

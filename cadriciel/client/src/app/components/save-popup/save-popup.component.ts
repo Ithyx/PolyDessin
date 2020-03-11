@@ -24,7 +24,6 @@ export class SavePopupComponent {
     this.tag = new FormControl();
     this.isSaving = false;
     this.isNameValid = (drawingParams.name !== '');
-    console.log(drawingParams.name);
     this.isTagValid = false;
     this.saveFailed = false;
   }

@@ -23,8 +23,11 @@ export class DatabaseController {
         });
         this.router.post('/saveDrawing', async (req: Request, res: Response) => {
             try {
-                await this.databaseService.updateData(req.body);
-                res.status(HttpStatus.OK).end();
+                if ( await this.databaseService.updateData(req.body)) {
+                    res.status(HttpStatus.OK).end();
+                } else {
+                    res.status(HttpStatus.BAD_REQUEST).end();
+                }
             } catch (err) {
                 res.status(HttpStatus.BAD_REQUEST).send(err);
             }
