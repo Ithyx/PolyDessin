@@ -57,13 +57,12 @@ export class ExportWindowComponent {
       this.image = new Image();
       this.image.onload = () => {
         this.context.drawImage(this.image, 0, 0);
-        let imageType = '';
-        if (this.selectedExportFormat === 'png' || 'jpeg') {
-          imageType = 'image/' + this.selectedExportFormat;
-        } else if (this.selectedExportFormat === 'svg') {
-          // TODO : gérer le cas 'svg'
+        let imageSrc = '';
+        if (this.selectedExportFormat === 'svg') {
+          imageSrc = this.image.src;
+        } else {
+          imageSrc = canvas.toDataURL('image/' + this.selectedExportFormat);
         }
-        const imageSrc = canvas.toDataURL(imageType);
         const container = document.createElement('a');
         container.href = imageSrc;
         container.download = this.selectedFileName;
