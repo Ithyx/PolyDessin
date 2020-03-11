@@ -40,6 +40,7 @@ export class DatabaseService {
         if (!this.collection) { return []; }
         const result = new Map<number, Drawing>();
         for (const tag of tagList) {
+            if (tag === '') { continue; }
             const query = await this.collection.find({tags: tag}).toArray();
             console.log(query);
             for (const drawing of query) {
