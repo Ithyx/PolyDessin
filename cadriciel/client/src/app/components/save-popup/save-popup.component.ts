@@ -15,6 +15,7 @@ export class SavePopupComponent {
   protected isSaving: boolean;
   private isNameValid: boolean;
   private isTagValid: boolean;
+  private saveFailed: boolean;
 
   constructor(private dialogRef: MatDialogRef<SavePopupComponent>,
               private db: DatabaseService,
@@ -22,7 +23,10 @@ export class SavePopupComponent {
     this.name = new FormControl(drawingParams.name);
     this.tag = new FormControl();
     this.isSaving = false;
+    this.isNameValid = (drawingParams.name !== '');
+    console.log(drawingParams.name);
     this.isTagValid = false;
+    this.saveFailed = false;
   }
 
   checkName(): boolean {
@@ -39,9 +43,14 @@ export class SavePopupComponent {
     if (!this.checkName()) { return; }
     this.drawingParams.name = this.name.value;
     this.isSaving = true;
-    await this.db.saveDrawing();
+    try {
+      await this.db.saveDrawing();
+      this.saveFailed = false;
+    } catch (err) {
+      this.saveFailed = true;
+    }
     this.isSaving = false;
-    // this.dialogRef.close();
+    if (!this.saveFailed) { this.dialogRef.close(); }
   }
 
   addTag(): void {

@@ -1,12 +1,22 @@
-h1 {
-    text-align: center;
-}
+h1 { text-align: center; }
 
-.invalid {
-    border:3px solid red;
-}
+.invalid { border:3px solid red; }
 
 .delete-button {
     font-size: small;
     cursor: pointer;
+}
+
+.tag-button { margin: 15px; }
+
+.error-message {
+    width: 95%;
+    left: 2.5%;
+    right: 2.5%;
+    margin: auto;
+    text-align: center;
+    color: darkred;
+    background-color: rgb(223, 136, 136);
+    border: 2px solid #f44336;
+    border-radius: 15px;
 }
