@@ -24,20 +24,20 @@ export class SelectionService implements ToolInterface {
   constructor(public SVGStockage: SVGStockageService,
               public selectionBox: SelectionBoxService,
               public selectionRectangle: SelectionRectangleService,
-              public drawingManager: DrawingManagerService,
+              private drawingManager: DrawingManagerService,
               private sanitizer: DomSanitizer
              ) {
               this.clickOnSelectionBox = false;
               this.clickInSelectionBox = false;
              }
 
-  handleClick(element: DrawElement): void {
-      for (const element_ of this.selectedElements) {
-        element_.isSelected = false;
+  handleClick(drawElement: DrawElement): void {
+      for (const element of this.selectedElements) {
+        element.isSelected = false;
       }
-      element.isSelected = true;
+      drawElement.isSelected = true;
       this.selectedElements.splice(0, this.selectedElements.length);
-      this.selectedElements.push(element);
+      this.selectedElements.push(drawElement);
       this.createBoundingBox();
 
   }
@@ -76,7 +76,7 @@ export class SelectionService implements ToolInterface {
   }
 
   onMousePress(mouse: MouseEvent): void {
-    if (!this.clickOnSelectionBox || !this.clickInSelectionBox) {
+    if (!this.clickOnSelectionBox && !this.clickInSelectionBox) {
       this.selectionRectangle.mouseDown(mouse);
     }
   }
