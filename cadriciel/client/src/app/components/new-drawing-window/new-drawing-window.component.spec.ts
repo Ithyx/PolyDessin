@@ -1,12 +1,12 @@
 // Angular
-import { Injector } from '@angular/core';
+// import { Injector } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { /*MatDialogConfig,*/ MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
 
 // Component
-import { ColorChoiceComponent } from '../color-choice/color-choice.component';
+// import { ColorChoiceComponent } from '../color-choice/color-choice.component';
 import { BUFFER_HEIGHT, BUFFER_WIDTH, KEY_FORM_HEIGHT, KEY_FORM_WIDHT , NewDrawingWindowComponent } from './new-drawing-window.component';
 
 describe('NewDrawingWindowComponent', () => {
@@ -17,9 +17,9 @@ describe('NewDrawingWindowComponent', () => {
     close(): void { /* NE RIEN FAIRE */ }
   };
 
-  const injecteur = Injector.create(
+  /*const injecteur = Injector.create(
     {providers: [{provide: MatDialogRef, useValue: {componentInstance: ColorChoiceComponent}}]
-  });
+  });*/
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -123,7 +123,7 @@ describe('NewDrawingWindowComponent', () => {
     component.createNewDrawing();
     expect(component.router.navigate).toHaveBeenCalledWith(['dessin']);
   });
-
+/*
   // TESTS #selectColor
 
   it('#selectColor devrait appeler dialog.open avec les bons paramètres', () => {
@@ -138,5 +138,5 @@ describe('NewDrawingWindowComponent', () => {
 
     expect(component.dialog.open).toHaveBeenCalledWith(ColorChoiceComponent, dialogConfig);
   });
-
+*/
 });
