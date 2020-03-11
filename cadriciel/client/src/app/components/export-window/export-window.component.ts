@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
+import { Drawing } from '../../../../../common/communication/DrawingInterface';
 
 @Component({
   selector: 'app-export-window',
@@ -18,14 +21,26 @@ export class ExportWindowComponent {
   private selectedExportFormat: string;
   private selectedExportFilter: string;
   private selectedFileName: string;
+  protected drawing: Drawing;
 
   constructor(private dialogRef: MatDialogRef<ExportWindowComponent>,
-              private stockageSVG: SVGStockageService
+              private stockageSVG: SVGStockageService,
+              private drawingParams: DrawingManagerService,
+              private sanitizer: DomSanitizer
               ) {
-                this.selectedExportFormat = this.EXPORT_FORMAT[0];
-                this.selectedExportFilter = this.EXPORT_FILTER[0];
-                this.selectedFileName = 'image';
-              }
+    this.selectedExportFormat = this.EXPORT_FORMAT[0];
+    this.selectedExportFilter = this.EXPORT_FILTER[0];
+    this.selectedFileName = this.drawingParams.name;
+    this.drawing = {
+      _id: this.drawingParams.id,
+      name: this.drawingParams.name,
+      height: this.drawingParams.height,
+      width: this.drawingParams.width,
+      backgroundColor: this.drawingParams.backgroundColor,
+      tags: this.drawingParams.tags,
+      elements: this.stockageSVG.getCompleteSVG()
+    };
+  }
 
   close(): void {
     this.dialogRef.close();
@@ -77,5 +92,9 @@ export class ExportWindowComponent {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.selectedFileName = eventCast.value;
     console.log('file name: ', this.selectedFileName);
+  }
+
+  sanatize(svg: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(svg);
   }
 }
