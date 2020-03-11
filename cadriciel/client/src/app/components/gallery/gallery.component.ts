@@ -9,6 +9,12 @@ import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.s
 import { Drawing } from '../../../../../common/communication/DrawingInterface';
 import { GalleryLoadWarningComponent } from '../gallery-load-warning/gallery-load-warning.component';
 
+enum Status {
+  Loading = 0,
+  Loaded = 1,
+  Failed = 2
+}
+
 @Component({
   selector: 'app-gallery',
   templateUrl: './gallery.component.html',
@@ -17,7 +23,7 @@ import { GalleryLoadWarningComponent } from '../gallery-load-warning/gallery-loa
 export class GalleryComponent implements OnInit {
   protected drawings: Drawing[];
   protected selected: number | null;
-  protected isLoading: boolean;
+  protected status: Status;
   private dialogConfig: MatDialogConfig;
   private tagInput: FormControl;
   private searchTags: string[];
@@ -34,7 +40,7 @@ export class GalleryComponent implements OnInit {
     this.dialogConfig.autoFocus = true;
     this.dialogConfig.width = '80%';
     this.selected = null;
-    this.isLoading = false;
+    this.status = Status.Loading;
     this.tagInput = new FormControl();
     this.searchTags = [];
   }
@@ -44,23 +50,33 @@ export class GalleryComponent implements OnInit {
   }
 
   async update(): Promise<void> {
-    this.isLoading = true;
-    this.drawings = await this.db.getData();
-    this.isLoading = false;
+    this.status = Status.Loading;
+    try {
+      this.drawings = await this.db.getData();
+      this.status = Status.Loaded;
+    } catch (err) {
+      this.status = Status.Failed;
+    }
   }
 
   async filter(): Promise<void> {
     if (this.searchTags.indexOf(this.tagInput.value) === -1) { this.searchTags.push(this.tagInput.value); }
-    this.isLoading = true;
-    this.drawings = await this.db.getDataWithTags(this.searchTags);
-    this.isLoading = false;
+    try {
+      this.drawings = await this.db.getDataWithTags(this.searchTags);
+      this.status = Status.Loaded;
+    } catch (err) {
+      this.status = Status.Failed;
+    }
   }
 
   async removeTag(tag: string): Promise<void> {
     this.searchTags = this.searchTags.filter((value) => value !== tag);
-    this.isLoading = true;
-    this.drawings = await this.db.getDataWithTags(this.searchTags);
-    this.isLoading = false;
+    try {
+      this.drawings = await this.db.getDataWithTags(this.searchTags);
+      this.status = Status.Loaded;
+    } catch (err) {
+      this.status = Status.Failed;
+    }
   }
 
   close(): void {
