@@ -11,6 +11,7 @@ import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-man
 import { ColorChoiceComponent } from '../color-choice/color-choice.component';
 import { GridOptionsComponent } from '../grid-options/grid-options.component';
 import { NewDrawingWarningComponent } from '../new-drawing-warning/new-drawing-warning.component';
+import { GalleryComponent } from '../gallery/gallery.component';
 
 const PERCENTAGE = 100;
 
@@ -84,6 +85,15 @@ export class ToolbarComponent implements OnDestroy {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
     this.dialog.open(NewDrawingWarningComponent, dialogConfig);
+  }
+
+  openGallery(): void {
+    this.disableShortcuts();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    this.dialog.open(GalleryComponent, dialogConfig).afterClosed().subscribe(this.enableShortcuts.bind(this));
   }
 
   selectColor(scope: string): void {

@@ -5,10 +5,10 @@
         <app-drawing-tool [tool]="tool" (click)="onClick(tool)"></app-drawing-tool>
     </div>
     <div class="options">
-        <a  href="javascript:void(0);"   (click)="warningNewDrawing()">
+        <a href="javascript:void(0);"   (click)="warningNewDrawing()">
             <i class="fas fa-plus"></i> Nouveau Dessin
         </a>
-        <a class="notavailable" href="javascript:void(0);">
+        <a href="javascript:void(0);" (click)="openGallery()">
             Ouvrir la galerie
         </a>
         <a class="notavailable" href="javascript:void(0);">
