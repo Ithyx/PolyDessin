@@ -1,5 +1,5 @@
 <mat-dialog-content>
-    <svg class="drawing-preview" [attr.width]="200" [attr.height]="200"
+    <svg [attr.filter]="getFilter()" class="drawing-preview" [attr.width]="200" [attr.height]="200"
         [attr.viewBox]="'0 0 ' + drawing.width.toString() + ' ' + drawing.height.toString()">
         <defs>
             <!-- Texture libre de droit-->
