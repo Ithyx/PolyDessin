@@ -12,6 +12,9 @@
             <select id="filter" (change)="updateSelectedFilter($event)">
                 <option *ngFor="let filter of EXPORT_FILTER" [value]="filter"> {{filter}} </option>
             </select>
+
+        <label for="name">Choisissez un nom de fichier :</label>
+            <input id="name" type="text" (change)="updateFileName($event)" [value]="selectedFileName" />
     </div>
 
 </mat-dialog-content>

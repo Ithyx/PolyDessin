@@ -17,12 +17,14 @@ export class ExportWindowComponent {
   private image: HTMLImageElement;
   private selectedExportFormat: string;
   private selectedExportFilter: string;
+  private selectedFileName: string;
 
   constructor(private dialogRef: MatDialogRef<ExportWindowComponent>,
               private stockageSVG: SVGStockageService
               ) {
                 this.selectedExportFormat = this.EXPORT_FORMAT[0];
                 this.selectedExportFilter = this.EXPORT_FILTER[0];
+                this.selectedFileName = 'image';
               }
 
   close(): void {
@@ -50,7 +52,8 @@ export class ExportWindowComponent {
         const container = document.querySelector('#image-container');
         console.log(this.stockageSVG.getCompleteSVG());
         if (container) {
-          container.innerHTML = '<img src="' + imageSrc + '" width="500" height="500"/>';
+          container.innerHTML = '<a href="' + imageSrc + '" download="' + this.selectedFileName + '">'
+            + '<img src="' + imageSrc + '" width="500" height="500"/></a>';
         }
         URL.revokeObjectURL(imageSrc);
       };
@@ -70,4 +73,9 @@ export class ExportWindowComponent {
     console.log('filter: ', this.selectedExportFilter);
   }
 
+  updateFileName(event: Event): void {
+    const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
+    this.selectedFileName = eventCast.value;
+    console.log('file name: ', this.selectedFileName);
+  }
 }
