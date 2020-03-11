@@ -10,6 +10,7 @@ import { SelectionBoxService } from './selection-box.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
 
 const HALF_DRAW_ELEMENT = 0.5 ;
+const COLLISIONS_NEEDED = 4;
 
 @Injectable({
   providedIn: 'root'
@@ -18,23 +19,25 @@ const HALF_DRAW_ELEMENT = 0.5 ;
 export class SelectionService implements ToolInterface {
   selectedElements: DrawElement[] = [];
   clickOnSelectionBox: boolean;
+  clickInSelectionBox: boolean;
 
   constructor(public SVGStockage: SVGStockageService,
               public selectionBox: SelectionBoxService,
               public selectionRectangle: SelectionRectangleService,
-              public drawingManager: DrawingManagerService,
+              private drawingManager: DrawingManagerService,
               private sanitizer: DomSanitizer
              ) {
               this.clickOnSelectionBox = false;
+              this.clickInSelectionBox = false;
              }
 
-  handleClick(element: DrawElement): void {
-      for (const element_ of this.selectedElements) {
-        element_.isSelected = false;
+  handleClick(drawElement: DrawElement): void {
+      for (const element of this.selectedElements) {
+        element.isSelected = false;
       }
-      element.isSelected = true;
+      drawElement.isSelected = true;
       this.selectedElements.splice(0, this.selectedElements.length);
-      this.selectedElements.push(element);
+      this.selectedElements.push(drawElement);
       this.createBoundingBox();
 
   }
@@ -57,8 +60,7 @@ export class SelectionService implements ToolInterface {
   }
 
   onMouseMove(mouse: MouseEvent): void {
-    if (this.clickOnSelectionBox) {
-      // this.selectionBox.updatePositionMouse(mouse);
+    if (this.clickOnSelectionBox || this.clickInSelectionBox) {
       this.updatePositionMouse(mouse);
     } else {
       this.selectionRectangle.mouseMove(mouse);
@@ -74,15 +76,15 @@ export class SelectionService implements ToolInterface {
   }
 
   onMousePress(mouse: MouseEvent): void {
-    if (!this.clickOnSelectionBox) {
-      // this.deleteBoundingBox();
+    if (!this.clickOnSelectionBox && !this.clickInSelectionBox) {
       this.selectionRectangle.mouseDown(mouse);
     }
   }
 
   onMouseRelease(mouse: MouseEvent): void {
-    if (this.clickOnSelectionBox) {
+    if (this.clickOnSelectionBox || this.clickInSelectionBox) {
       this.clickOnSelectionBox = false;
+      this.clickInSelectionBox = false;
       for (const element of this.selectedElements) {
           element.translateAllPoints();
       }
@@ -156,7 +158,7 @@ export class SelectionService implements ToolInterface {
     }
   }
 
-  belongToRectangle(element: DrawElement, rectangle: RectangleService): boolean{
+  belongToRectangle(element: DrawElement, rectangle: RectangleService): boolean {
     // BOTTOM RIGHT corner of element with TOP LEFT corner of selection
     const collision1 = element.pointMax.x >= rectangle.pointMin.x && element.pointMax.y >= rectangle.pointMin.y;
     // BOTTOM LEFT corner of element with TOP RIGHT corner of selection
@@ -168,34 +170,26 @@ export class SelectionService implements ToolInterface {
 
     let nbCollisions = 0;
 
-    if(collision1){
-      console.log("top left of selection");
+    if (collision1) {
       nbCollisions++;
     }
-    if(collision2){
-      console.log("top right of selection");
+    if (collision2) {
       nbCollisions++;
     }
-    if(collision3){
-      console.log("bottom right of selection");
+    if (collision3) {
       nbCollisions++;
     }
-    if(collision4){
-      console.log("bottom left of selection");
+    if (collision4) {
       nbCollisions++;
     }
-    
-    return (nbCollisions === 4);
+    return (nbCollisions === COLLISIONS_NEEDED);
   }
-
-
 
   findPointMinAndMax(element: DrawElement): void {
     const pointMin: Point = {x: this.drawingManager.width , y: this.drawingManager.height};
     const pointMax: Point = {x: 0 , y: 0};
     const epaisseurMin: Point = {x: 0, y: 0};
     const epaisseurMax: Point = {x: 0, y: 0};
-
 
     for (const point of element.points) {
       // pointMin
@@ -235,7 +229,6 @@ export class SelectionService implements ToolInterface {
       this.selectionBox.updatePosition(x, y);
     }
   }
-
 
   updatePositionMouse(mouse: MouseEvent): void {
     if (this.selectionBox.selectionBox) {
