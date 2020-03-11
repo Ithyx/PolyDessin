@@ -114,7 +114,7 @@ export class LineToolService implements ToolInterface {
   }
 
   refreshSVG(): void {
-    this.line.tool = this.tools.activeTool;
+    this.line.updateParameters(this.tools.activeTool);
     this.line.draw();
     this.svgStockage.setOngoingSVG(this.line);
   }

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+/*import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ColorManagerService } from 'src/app/services/color/color-manager.service';
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
@@ -6,7 +6,7 @@ import { CommandManagerService } from 'src/app/services/command/command-manager.
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { ColorInputComponent } from './color-input.component';
 
-describe('ValeurCouleurComponent', () => {
+describe('color-input', () => {
   let component: ColorInputComponent;
   let fixture: ComponentFixture<ColorInputComponent>;
   let commandes: CommandManagerService;
@@ -110,4 +110,4 @@ describe('ValeurCouleurComponent', () => {
     expect(component.shortcuts.focusOnInput).toBe(false);
   });
 
-});
+});*/

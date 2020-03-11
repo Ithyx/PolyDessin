@@ -23,7 +23,7 @@ const MOVEMENT_DELAY_MS = 100;
 
 export class ShortcutsManagerService {
   focusOnInput: boolean;
-  shortcutManager: Map<string, FunctionShortcut > = new Map<string, FunctionShortcut>();
+  private shortcutManager: Map<string, FunctionShortcut > = new Map<string, FunctionShortcut>();
   private counter100ms: number;
   private clearTimeout: number;
 
@@ -32,18 +32,18 @@ export class ShortcutsManagerService {
   private upArrow: boolean;
   private downArrow: boolean;
 
-  dialogConfig: MatDialogConfig;
+  private dialogConfig: MatDialogConfig;
 
   newDrawingEmmiter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
-  constructor(public tools: ToolManagerService,
-              public rectangleTool: RectangleToolService,
-              public ellipseTool: EllipseToolService,
-              public lineTool: LineToolService,
-              public commands: CommandManagerService,
-              public selection: SelectionService,
-              public SVGStockage: SVGStockageService,
-              public grid: GridService,
+  constructor(private tools: ToolManagerService,
+              private rectangleTool: RectangleToolService,
+              private ellipseTool: EllipseToolService,
+              private lineTool: LineToolService,
+              private commands: CommandManagerService,
+              private selection: SelectionService,
+              private stockageSVG: SVGStockageService,
+              private grid: GridService,
               private dialog: MatDialog
               ) {
                 this.focusOnInput = false;
@@ -88,7 +88,7 @@ export class ShortcutsManagerService {
         window.clearInterval(this.clearTimeout);
         this.counter100ms = 0;
         this.clearTimeout = 0;
-        for (const element of this.SVGStockage.getCompleteSVG()) {
+        for (const element of this.stockageSVG.getCompleteSVG()) {
           if (element.isSelected) {
             element.translateAllPoints();
           }
@@ -125,6 +125,7 @@ export class ShortcutsManagerService {
   treatInput(keyboard: KeyboardEvent): void {
     if (this.focusOnInput) { return; }
     if (this.shortcutManager.has(keyboard.key)) {
+      keyboard.preventDefault();
       (this.shortcutManager.get(keyboard.key) as FunctionShortcut)(keyboard);
     }
     this.updatePositionTimer();
@@ -156,10 +157,9 @@ export class ShortcutsManagerService {
   shortcutKeyA(keyboard: KeyboardEvent): void {
     if (keyboard.ctrlKey) {
       this.selection.deleteBoundingBox();
-      keyboard.preventDefault();
       this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
-      if (this.SVGStockage.getCompleteSVG().length !== 0) {
-        for (const element of this.SVGStockage.getCompleteSVG()) {
+      if (this.stockageSVG.getCompleteSVG().length !== 0) {
+        for (const element of this.stockageSVG.getCompleteSVG()) {
           element.isSelected = true;
           this.selection.selectedElements.push(element);
         }
@@ -198,7 +198,6 @@ export class ShortcutsManagerService {
     if (keyboard.ctrlKey) {
       this.focusOnInput = true;
       this.dialog.open(SavePopupComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
-      keyboard.preventDefault();
     } else {
       this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
       this.clearOngoingSVG();
@@ -235,7 +234,6 @@ export class ShortcutsManagerService {
     if (keyboard.ctrlKey) {
       this.newDrawingEmmiter.next(false);
       this.selection.deleteBoundingBox();
-      keyboard.preventDefault();
     }
   }
 
@@ -255,7 +253,6 @@ export class ShortcutsManagerService {
     if (keyboard.ctrlKey) {
       this.focusOnInput = true;
       this.dialog.open(GalleryComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
-      keyboard.preventDefault();
     } else { this.grid.showGrid = !this.grid.showGrid; }
   }
 
@@ -283,8 +280,8 @@ export class ShortcutsManagerService {
     this.downArrow = true;
   }
 
-  treatReleaseKey(keybord: KeyboardEvent): void {
-    switch (keybord.key) {
+  treatReleaseKey(keyboard: KeyboardEvent): void {
+    switch (keyboard.key) {
       case 'Shift':
         if (this.tools.activeTool.ID === TOOL_INDEX.RECTANGLE) {
           this.rectangleTool.shiftRelease();

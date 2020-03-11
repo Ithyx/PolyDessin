@@ -39,7 +39,7 @@ export class DrawingToolService implements ToolInterface {
 
   onMouseRelease(): void {
     if (this.commands.drawingInProgress) {
-      if (this.trace.SVG.includes('L')) {
+      if (this.trace.svg.includes('L')) {
         // on ne stocke le path que s'il n'y a au moins une ligne
         this.commands.execute(new AddSVGService(this.trace, this.SVGStockage));
       }
@@ -73,7 +73,7 @@ export class DrawingToolService implements ToolInterface {
 
   refreshSVG(): void {
     this.trace.primaryColor = this.colorParameter.getPrimaryColor();
-    this.trace.tool = this.tools.activeTool;
+    this.trace.updateParameters(this.tools.activeTool);
     this.trace.draw();
     this.SVGStockage.setOngoingSVG(this.trace);
   }

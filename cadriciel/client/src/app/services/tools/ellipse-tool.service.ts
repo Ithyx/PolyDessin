@@ -34,7 +34,7 @@ export class EllipseToolService {
    }
 
    refreshSVG(): void {
-    this.ellipse.tool = this.tools.activeTool;
+    this.ellipse.updateParameters(this.tools.activeTool);
     this.ellipse.primaryColor = this.colorParameter.getPrimaryColor();
     this.ellipse.secondaryColor = this.colorParameter.getSecondaryColor();
     this.ellipse.draw();
@@ -81,16 +81,23 @@ export class EllipseToolService {
     if (this.commands.drawingInProgress) {
       // Lorsque la touche 'shift' est enfoncée, la forme à dessiner est un cercle
       if (this.calculatedWidth < this.calculatedHeight) {
-        this.ellipse.points[0].y = (this.calculatedBase.y === this.initial.y) ?
-          this.calculatedBase.y : (this.calculatedBase.y + (this.calculatedHeight - this.calculatedWidth));
-        this.ellipse.points[0].x = this.calculatedBase.x;
-        this.ellipse.points[1] = {x: this.calculatedBase.x + this.calculatedWidth, y: this.calculatedBase.y + this.calculatedWidth};
-
+        this.ellipse.points[0] = {
+          x: this.calculatedBase.x,
+          y: this.initial.y - ((this.calculatedBase.y === this.initial.y) ? 0 : this.calculatedWidth)
+        };
+        this.ellipse.points[1] = {
+          x: this.calculatedBase.x + this.calculatedWidth,
+          y: this.initial.y + ((this.calculatedBase.y === this.initial.y) ? this.calculatedWidth : 0)
+        };
       } else {
-        this.ellipse.points[0].x = (this.calculatedBase.x === this.initial.x) ?
-          this.calculatedBase.x : (this.calculatedBase.x + (this.calculatedWidth - this.calculatedHeight));
-        this.ellipse.points[0].y = this.calculatedBase.y;
-        this.ellipse.points[1] = {x: this.calculatedBase.x + this.calculatedHeight, y: this.calculatedBase.y + this.calculatedHeight};
+        this.ellipse.points[0] = {
+          x: this.initial.x - ((this.calculatedBase.x === this.initial.x) ? 0 : this.calculatedHeight),
+          y: this.calculatedBase.y
+        };
+        this.ellipse.points[1] = {
+          x: this.initial.x + ((this.calculatedBase.x === this.initial.x) ? this.calculatedHeight : 0),
+          y: this.calculatedBase.y + this.calculatedHeight
+        };
       }
       this.refreshSVG();
     }
@@ -99,7 +106,7 @@ export class EllipseToolService {
   shiftRelease(): void {
     if (this.commands.drawingInProgress) {
       // Lorsque la touche 'shift' est relâchée, la forme à dessiner est une ellipse
-      this.ellipse.points[0] = this.calculatedBase;
+      this.ellipse.points[0] = {x: this.calculatedBase.x, y: this.calculatedBase.y};
       this.ellipse.points[1] = {x: this.calculatedBase.x + this.calculatedWidth, y: this.calculatedBase.y + this.calculatedHeight};
       this.refreshSVG();
     }

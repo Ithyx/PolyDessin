@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 
-const INITIAL_HEIGHT = 500;
-const INITIAL_WIDTH = 500;
+const BUFFER_WIDTH = 535;
+const BUFFER_HEIGHT = 4;
+const INITIAL_HEIGHT = window.innerHeight - BUFFER_HEIGHT;
+const INITIAL_WIDTH = window.innerWidth - BUFFER_WIDTH;
 
 @Injectable({
   providedIn: 'root'

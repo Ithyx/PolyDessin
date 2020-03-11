@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
-import { DrawingTool, EMPTY_TOOL } from '../tools/tool-manager.service';
+import { DrawingTool } from '../tools/tool-manager.service';
 import { DrawElement } from './draw-element';
 
 @Injectable({
@@ -9,8 +9,8 @@ import { DrawElement } from './draw-element';
 })
 export class EllipseService implements DrawElement {
 
-  SVG: string;
-  SVGHtml: SafeHtml;
+  svg: string;
+  svgHtml: SafeHtml;
 
   points: Point[];
   isSelected: boolean;
@@ -19,16 +19,15 @@ export class EllipseService implements DrawElement {
   secondaryColor: string;
 
   thickness: number;
+  chosenOption: string;
   perimeter: string;
-
-  tool: DrawingTool = EMPTY_TOOL;
 
   pointMin: Point;
   pointMax: Point;
   translate: Point;
 
   constructor() {
-    this.SVGHtml = '';
+    this.svgHtml = '';
     this.points = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
                    {x: 0, y: 0}];   // points[1], coin bas droite
     this.pointMin = {x: 0, y: 0};
@@ -46,8 +45,7 @@ export class EllipseService implements DrawElement {
   }
 
   draw(): void {
-    if ((this.getWidth() === 0 || this.getHeight() === 0)
-      && this.tool.parameters[1].chosenOption !== 'Plein') {
+    if ((this.getWidth() === 0 || this.getHeight() === 0) && this.chosenOption !== 'Plein') {
       this.drawLine();
     } else {
       this.drawEllipse();
@@ -56,37 +54,27 @@ export class EllipseService implements DrawElement {
   }
 
   drawLine(): void {
-    if (this.tool.parameters[0].value) {
-      this.thickness = this.tool.parameters[0].value;
-    }
-
-    this.SVG = '<line stroke-linecap="round'
+    this.svg = '<line stroke-linecap="round'
       + '" stroke="' + this.secondaryColor
-      + '" stroke-width="' + this.tool.parameters[0].value
+      + '" stroke-width="' + this.thickness
       + '" x1="' + this.points[0].x + '" y1="' + this.points[0].y
       + '" x2="' + (this.points[0].x + this.getWidth())
       + '" y2="' + (this.points[0].y + this.getHeight()) + '"/>';
   }
 
   drawEllipse(): void {
-    const choosedOption = this.tool.parameters[1].chosenOption;
-    this.SVG = '<ellipse transform=" translate(' + this.translate.x + ' ' + this.translate.y +
-      ')" fill="' + ((choosedOption !== 'Contour') ? this.primaryColor : 'none')
-      + '" stroke="' + ((choosedOption !== 'Plein') ? this.secondaryColor : 'none')
-      + '" stroke-width="' + this.tool.parameters[0].value
+    this.svg = '<ellipse transform=" translate(' + this.translate.x + ' ' + this.translate.y +
+      ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor : 'none')
+      + '" stroke="' + ((this.chosenOption !== 'Plein') ? this.secondaryColor : 'none')
+      + '" stroke-width="' + this.thickness
       + '" cx="' + (this.points[0].x + this.points[1].x) / 2 + '" cy="' + (this.points[0].y + this.points[1].y) / 2
       + '" rx="' + this.getWidth() / 2 + '" ry="' + this.getHeight() / 2 + '"/>';
   }
 
   drawPerimeter(): void {
-    if (this.tool.parameters[1].chosenOption === 'Plein') {
-      this.thickness = 0;
-    } else if (this.tool.parameters[0].value) {
-      this.thickness = this.tool.parameters[0].value;
-    }
-    const thickness = (this.tool.parameters[0].value) ? this.tool.parameters[0].value : 0;
+    const thickness = (this.chosenOption === 'Plein') ? 0 : this.thickness;
     this.perimeter = '<rect stroke="gray" fill="none" stroke-width="2';
-    if (this.tool.parameters[1].chosenOption === 'Plein') {
+    if (this.chosenOption === 'Plein') {
       this.perimeter += '" x="' + this.points[0].x + '" y="' + this.points[0].y
         + '" height="' + this.getHeight() + '" width="' + this.getWidth() + '"/>';
     } else {
@@ -107,6 +95,11 @@ export class EllipseService implements DrawElement {
     this.translate.x = mouse.offsetX - mouseClick.x;
     this.translate.y = mouse.offsetY - mouseClick.y;
     this.draw();
+  }
+
+  updateParameters(tool: DrawingTool): void {
+    this.thickness = (tool.parameters[0].value) ? tool.parameters[0].value : 1;
+    this.chosenOption = (tool.parameters[1].chosenOption) ? tool.parameters[1].chosenOption : '';
   }
 
   translateAllPoints(): void {

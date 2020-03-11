@@ -1,9 +1,10 @@
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
+import { DrawingTool } from '../tools/tool-manager.service';
 
 export interface DrawElement {
-  SVG: string;
-  SVGHtml: SafeHtml;
+  svg: string;
+  svgHtml: SafeHtml;
 
   points: Point[];
   isSelected: boolean;
@@ -25,5 +26,6 @@ export interface DrawElement {
   draw(): void;
   updatePosition(x: number, y: number): void;
   updatePositionMouse(mouse: MouseEvent, mouseClick: Point): void;
+  updateParameters(tool: DrawingTool): void;
   translateAllPoints(): void;
 }

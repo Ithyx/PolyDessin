@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
-import { DrawingTool, EMPTY_TOOL } from '../tools/tool-manager.service';
+import { DrawingTool } from '../tools/tool-manager.service';
 import { DrawElement } from './draw-element';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RectangleService implements DrawElement {
-  SVG: string;
-  SVGHtml: SafeHtml;
+  svg: string;
+  svgHtml: SafeHtml;
 
   points: Point[];
   isSelected: boolean;
@@ -18,17 +18,16 @@ export class RectangleService implements DrawElement {
   secondaryColor: string;
 
   thickness: number;
+  chosenOption: string;
   perimeter: string;
   isDotted: boolean;
-
-  tool: DrawingTool = EMPTY_TOOL;
 
   pointMin: Point;
   pointMax: Point;
   translate: Point;
 
   constructor() {
-    this.SVGHtml = '';
+    this.svgHtml = '';
     this.points = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
                    {x: 0, y: 0}];   // points[1], coin bas droite
     this.isSelected = false;
@@ -44,8 +43,7 @@ export class RectangleService implements DrawElement {
   }
 
   draw(): void {
-    if ((this.getWidth() === 0 || this.getHeight() === 0)
-      && this.tool.parameters[1].chosenOption !== 'Plein') {
+    if ((this.getWidth() === 0 || this.getHeight() === 0) && this.chosenOption !== 'Plein') {
       this.drawLine();
     } else {
       this.drawRectangle();
@@ -54,11 +52,7 @@ export class RectangleService implements DrawElement {
   }
 
   drawLine(): void {
-    if (this.tool.parameters[0].value && !this.isSelected) {
-      this.thickness = this.tool.parameters[0].value;
-    }
-
-    this.SVG = '<line stroke-linecap="square'
+    this.svg = '<line stroke-linecap="square'
       + '" stroke="' + this.secondaryColor
       + '" stroke-width="' + this.thickness
       + (this.isDotted ? '"stroke-dasharray="2, 8"'  : '')
@@ -68,8 +62,8 @@ export class RectangleService implements DrawElement {
   }
 
   drawRectangle(): void {
-    const choosedOption = this.tool.parameters[1].chosenOption;
-    this.SVG = '<rect transform=" translate(' + this.translate.x + ' ' + this.translate.y +
+    const choosedOption = this.chosenOption;
+    this.svg = '<rect transform=" translate(' + this.translate.x + ' ' + this.translate.y +
       ')" fill="' + ((choosedOption !== 'Contour') ? this.primaryColor : 'none')
       + '" stroke="' + ((choosedOption !== 'Plein') ? this.secondaryColor : 'none')
       + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')
@@ -79,14 +73,9 @@ export class RectangleService implements DrawElement {
   }
 
   drawPerimeter(): void {
-    if (this.tool.parameters[1].chosenOption === 'Plein') {
-      this.thickness = 0;
-    } else if (this.tool.parameters[0].value) {
-      this.thickness = this.tool.parameters[0].value;
-    }
-    const thickness = (this.tool.parameters[0].value) ? this.tool.parameters[0].value : 0;
+    const thickness = (this.chosenOption === 'Plein') ? 0 : this.thickness;
     this.perimeter = '<rect stroke="gray" fill="none" stroke-width="2' + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '');
-    if (this.tool.parameters[1].chosenOption === 'Plein') {
+    if (this.chosenOption === 'Plein') {
       this.perimeter += '" x="' + this.points[0].x + '" y="' + this.points[0].y
         + '" height="' + this.getHeight() + '" width="' + this.getWidth() + '"/>';
     } else {
@@ -107,6 +96,11 @@ export class RectangleService implements DrawElement {
     this.translate.x = mouse.offsetX - mouseClick.x;
     this.translate.y = mouse.offsetY - mouseClick.y;
     this.draw();
+  }
+
+  updateParameters(tool: DrawingTool): void {
+    this.thickness = (tool.parameters[0].value) ? tool.parameters[0].value : 1;
+    this.chosenOption = (tool.parameters[1].chosenOption) ? tool.parameters[1].chosenOption : '';
   }
 
   translateAllPoints(): void {

@@ -19,7 +19,7 @@ describe('LineToolService', () => {
     service.cursor = ({x: 0, y: 0});
     service.line.mousePosition = ({x: 0, y: 0});
     service.line.points.push({x: 0, y: 0});
-    service.line.tool = service.tools.toolList[TOOL_INDEX.LINE];
+    service.line.updateParameters(service.tools.toolList[TOOL_INDEX.LINE]);
     element = service.line;
     stockageService.setOngoingSVG(element);
     service.commands.drawingInProgress = true;
@@ -250,10 +250,10 @@ describe('LineToolService', () => {
 
   // TESTS refreshSVG
 
-  it("#refreshSVG devrait actualiser l'outil actif", () => {
-    service.tools.activeTool.parameters[0].value = 42;
+  it('#refreshSVG devrait appeler updateParameters avec l\'outil en cours', () => {
+    spyOn(service.line, 'updateParameters');
     service.refreshSVG();
-    expect(service.line.tool.parameters[0].value).toEqual(42);
+    expect(service.line.updateParameters).toHaveBeenCalledWith(service.tools.activeTool);
   });
 
   it('#refreshSVG devrait appeler la fonction draw de ligne', () => {

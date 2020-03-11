@@ -41,10 +41,10 @@ describe('SelectionRectangleService', () => {
 
   it('#refreshSVG devrait convertir le SVG du rectangle en HTML', () => {
     service.rectangle = new RectangleService();
-    service.rectangle.SVG = '<line stroke-linecap="square" stroke="rgba(80, 80, 80, 0.45)" stroke-width="3" x1="0" y1="0" x2="0" y2="0"/>';
+    service.rectangle.svg = '<line stroke-linecap="square" stroke="rgba(80, 80, 80, 0.45)" stroke-width="3" x1="0" y1="0" x2="0" y2="0"/>';
     service.refreshSVG();
-    const testHTML: SafeHtml = sanitizer.bypassSecurityTrustHtml(service.rectangle.SVG);
-    expect(service.rectangle.SVGHtml).toEqual(testHTML);
+    const testHTML: SafeHtml = sanitizer.bypassSecurityTrustHtml(service.rectangle.svg);
+    expect(service.rectangle.svgHtml).toEqual(testHTML);
   });
 
   // Tests mouseMove

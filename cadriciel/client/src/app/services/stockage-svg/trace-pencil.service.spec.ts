@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { DrawingToolService } from '../tools/pencil-tool.service';
 import { TracePencilService } from './trace-pencil.service';
 
-describe('TraitCrayonService', () => {
+describe('TracePencilService', () => {
   let element: TracePencilService;
   let service: DrawingToolService;
   beforeEach(() => TestBed.configureTestingModule({}));
@@ -11,7 +11,7 @@ describe('TraitCrayonService', () => {
 
   beforeEach(() => {
     element = new TracePencilService();
-    element.tool = service.tools.toolList[0];
+    element.updateParameters(service.tools.toolList[0]);
     element.primaryColor = 'rgba(0, 0, 0, 1)';
     // tslint:disable-next-line:no-magic-numbers
     element.thickness = 5;
@@ -24,24 +24,6 @@ describe('TraitCrayonService', () => {
   });
 
   // TESTS draw
-
-  it('#draw devrait rien faire si isSelected est vrai', () => {
-    element.isSelected = true;
-    element.thickness = 0;
-    // tslint:disable-next-line:no-magic-numbers
-    element.tool.parameters[0].value = 10;
-    element.draw();
-    expect(element.thickness).toEqual(0);
-  });
-
-  it('#draw devrait changer la valeur de thickness si isSelected est faux', () => {
-    element.thickness = 0;
-    // tslint:disable-next-line:no-magic-numbers
-    element.tool.parameters[0].value = 10;
-    element.draw();
-    // tslint:disable-next-line:no-magic-numbers
-    expect(element.thickness).toEqual(10);
-  });
 
   it('#draw devrait appeler drawPoint si isAPoint est vrai', () => {
     spyOn(element, 'drawPoint');
@@ -63,12 +45,12 @@ describe('TraitCrayonService', () => {
     element.points.push({ x: 10, y: 10});
     element.points.push({ x: 10, y: 10});
     element.translate = { x: 20, y: 20};
-    element.SVG = '<path transform ="translate(' + element.translate.x + ' '
+    element.svg = '<path transform ="translate(' + element.translate.x + ' '
     + element.translate.y + `)" fill="none" stroke="${element.primaryColor}"`
     + 'stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 " />';
-    const testSVG = element.SVG;
+    const testSVG = element.svg;
     element.drawPath();
-    expect(element.SVG).toEqual(testSVG);
+    expect(element.svg).toEqual(testSVG);
   });
 
   it('#drawPath devrait  mettre la primaryColor dans SVG', () => {
@@ -76,12 +58,12 @@ describe('TraitCrayonService', () => {
     element.points.push({ x: 10, y: 10});
     element.points.push({ x: 10, y: 10});
     element.primaryColor = 'rgba(1, 1, 1, 1)';
-    element.SVG = '<path transform ="translate(' + element.translate.x + ' '
+    element.svg = '<path transform ="translate(' + element.translate.x + ' '
     + element.translate.y + `)" fill="none" stroke="${element.primaryColor}"`
     + 'stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 " />';
-    const testSVG = element.SVG;
+    const testSVG = element.svg;
     element.drawPath();
-    expect(element.SVG).toEqual(testSVG);
+    expect(element.svg).toEqual(testSVG);
   });
 
   it('#drawPath devrait  mettre le thickness dans SVG', () => {
@@ -90,47 +72,47 @@ describe('TraitCrayonService', () => {
     element.points.push({ x: 10, y: 10});
     // tslint:disable-next-line:no-magic-numbers
     element.thickness = 25;
-    element.SVG = '<path transform ="translate(' + element.translate.x + ' '
+    element.svg = '<path transform ="translate(' + element.translate.x + ' '
     + element.translate.y + `)" fill="none" stroke="${element.primaryColor}"`
     + 'stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 " />';
-    const testSVG = element.SVG;
+    const testSVG = element.svg;
     element.drawPath();
-    expect(element.SVG).toEqual(testSVG);
+    expect(element.svg).toEqual(testSVG);
   });
 
   // TESTS drawPoint
 
   it('#drawPoint devrait mettre un point dans SVG', () => {
     element.points.push({ x: 10, y: 10});
-    element.SVG = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
+    element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
     + '" r="' + element.thickness / 2
     + '" fill="' + element.primaryColor + '"/>';
-    const testSVG = element.SVG;
+    const testSVG = element.svg;
     element.drawPoint();
-    expect(element.SVG).toEqual(testSVG);
+    expect(element.svg).toEqual(testSVG);
   });
 
   it('#drawPoint devrait mettre le thickness / 2 dans SVG', () => {
     // tslint:disable-next-line:no-magic-numbers
     element.thickness = 25;
     element.points.push({ x: 10, y: 10});
-    element.SVG = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
+    element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
     + '" r="' + element.thickness / 2
     + '" fill="' + element.primaryColor + '"/>';
-    const testSVG = element.SVG;
+    const testSVG = element.svg;
     element.drawPoint();
-    expect(element.SVG).toEqual(testSVG);
+    expect(element.svg).toEqual(testSVG);
   });
 
   it('#drawPoint devrait mettre primaryColor dans SVG', () => {
     element.primaryColor = 'rgba(1, 1, 1, 1)';
     element.points.push({ x: 10, y: 10});
-    element.SVG = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
+    element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
     + '" r="' + element.thickness / 2
     + '" fill="' + element.primaryColor + '"/>';
-    const testSVG = element.SVG;
+    const testSVG = element.svg;
     element.drawPoint();
-    expect(element.SVG).toEqual(testSVG);
+    expect(element.svg).toEqual(testSVG);
   });
 
   // TESTS updatePosition
@@ -169,6 +151,23 @@ describe('TraitCrayonService', () => {
     // tslint:disable-next-line:no-magic-numbers
     element.updatePositionMouse(click, { x: 10, y: 10});
     expect(element.draw).toHaveBeenCalled();
+  });
+
+  // TESTS updateParameters
+
+  it('#updateParameters devrait assigner la valeur en paramètre à thickness', () => {
+    // tslint:disable-next-line: no-magic-numbers
+    service.tools.toolList[0].parameters[0].value = 10;
+    const testTool = service.tools.toolList[0];
+    element.updateParameters(testTool);
+    expect(element.thickness).toEqual(service.tools.toolList[0].parameters[0].value);
+  });
+
+  it('#updateParameters devrait assigner 1 à thickness', () => {
+    service.tools.toolList[0].parameters[0].value = 0;
+    const testTool = service.tools.toolList[0];
+    element.updateParameters(testTool);
+    expect(element.thickness).toEqual(1);
   });
 
   // TESTS translateAllPoints

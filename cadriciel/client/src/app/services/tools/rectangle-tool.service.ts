@@ -34,7 +34,7 @@ export class RectangleToolService implements ToolInterface {
               }
 
   refreshSVG(): void {
-    this.rectangle.tool = this.tools.activeTool;
+    this.rectangle.updateParameters(this.tools.activeTool);
     this.rectangle.primaryColor = this.colorParameter.getPrimaryColor();
     this.rectangle.secondaryColor = this.colorParameter.getSecondaryColor();
     this.rectangle.draw();
@@ -81,16 +81,23 @@ export class RectangleToolService implements ToolInterface {
     if (this.commands.drawingInProgress) {
       // Lorsque la touche 'shift' est enfoncée, la forme à dessiner est un carré
       if (this.calculatedWidth < this.calculatedHeight) {
-        this.rectangle.points[0].y = (this.calculatedBase.y === this.initial.y) ?
-          this.calculatedBase.y : (this.calculatedBase.y + (this.calculatedHeight - this.calculatedWidth));
-        this.rectangle.points[0].x = this.calculatedBase.x;
-        this.rectangle.points[1] = {x: this.calculatedBase.x + this.calculatedWidth, y: this.calculatedBase.y + this.calculatedWidth};
-
+        this.rectangle.points[0] = {
+          x: this.calculatedBase.x,
+          y: this.initial.y - ((this.calculatedBase.y === this.initial.y) ? 0 : this.calculatedWidth)
+        };
+        this.rectangle.points[1] = {
+          x: this.calculatedBase.x + this.calculatedWidth,
+          y: this.initial.y + ((this.calculatedBase.y === this.initial.y) ? this.calculatedWidth : 0)
+        };
       } else {
-        this.rectangle.points[0].x = (this.calculatedBase.x === this.initial.x) ?
-          this.calculatedBase.x : (this.calculatedBase.x + (this.calculatedWidth - this.calculatedHeight));
-        this.rectangle.points[0].y = this.calculatedBase.y;
-        this.rectangle.points[1] = {x: this.calculatedBase.x + this.calculatedHeight, y: this.calculatedBase.y + this.calculatedHeight};
+        this.rectangle.points[0] = {
+          x: this.initial.x - ((this.calculatedBase.x === this.initial.x) ? 0 : this.calculatedHeight),
+          y: this.calculatedBase.y
+        };
+        this.rectangle.points[1] = {
+          x: this.initial.x + ((this.calculatedBase.x === this.initial.x) ? this.calculatedHeight : 0),
+          y: this.calculatedBase.y + this.calculatedHeight
+        };
       }
       this.refreshSVG();
     }
@@ -99,7 +106,7 @@ export class RectangleToolService implements ToolInterface {
   shiftRelease(): void {
     if (this.commands.drawingInProgress) {
       // Lorsque la touche 'shift' est relâchée, la forme à dessiner est un rectangle
-      this.rectangle.points[0] = this.calculatedBase;
+      this.rectangle.points[0] = {x : this.calculatedBase.x, y: this.calculatedBase.y};
       this.rectangle.points[1] = {x: this.calculatedBase.x + this.calculatedWidth, y: this.calculatedBase.y + this.calculatedHeight};
       this.refreshSVG();
     }
