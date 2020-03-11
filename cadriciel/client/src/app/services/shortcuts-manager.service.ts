@@ -24,7 +24,7 @@ const MOVEMENT_DELAY_MS = 100;
 
 export class ShortcutsManagerService {
   focusOnInput: boolean;
-  shortcutManager: Map<string, FunctionShortcut > = new Map<string, FunctionShortcut>();
+  private shortcutManager: Map<string, FunctionShortcut > = new Map<string, FunctionShortcut>();
   private counter100ms: number;
   private clearTimeout: number;
 
@@ -33,18 +33,18 @@ export class ShortcutsManagerService {
   private upArrow: boolean;
   private downArrow: boolean;
 
-  dialogConfig: MatDialogConfig;
+  private dialogConfig: MatDialogConfig;
 
   newDrawingEmmiter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
-  constructor(public tools: ToolManagerService,
-              public rectangleTool: RectangleToolService,
-              public ellipseTool: EllipseToolService,
-              public lineTool: LineToolService,
-              public commands: CommandManagerService,
-              public selection: SelectionService,
-              public SVGStockage: SVGStockageService,
-              public grid: GridService,
+  constructor(private tools: ToolManagerService,
+              private rectangleTool: RectangleToolService,
+              private ellipseTool: EllipseToolService,
+              private lineTool: LineToolService,
+              private commands: CommandManagerService,
+              private selection: SelectionService,
+              private stockageSVG: SVGStockageService,
+              private grid: GridService,
               private dialog: MatDialog
               ) {
                 this.focusOnInput = false;
@@ -90,7 +90,7 @@ export class ShortcutsManagerService {
         window.clearInterval(this.clearTimeout);
         this.counter100ms = 0;
         this.clearTimeout = 0;
-        for (const element of this.SVGStockage.getCompleteSVG()) {
+        for (const element of this.stockageSVG.getCompleteSVG()) {
           if (element.isSelected) {
             element.translateAllPoints();
           }
@@ -160,8 +160,8 @@ export class ShortcutsManagerService {
     if (keyboard.ctrlKey) {
       this.selection.deleteBoundingBox();
       this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
-      if (this.SVGStockage.getCompleteSVG().length !== 0) {
-        for (const element of this.SVGStockage.getCompleteSVG()) {
+      if (this.stockageSVG.getCompleteSVG().length !== 0) {
+        for (const element of this.stockageSVG.getCompleteSVG()) {
           element.isSelected = true;
           this.selection.selectedElements.push(element);
         }
