@@ -11,6 +11,7 @@ import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-man
 import { ColorChoiceComponent } from '../color-choice/color-choice.component';
 import { GridOptionsComponent } from '../grid-options/grid-options.component';
 import { NewDrawingWarningComponent } from '../new-drawing-warning/new-drawing-warning.component';
+import { ExportWindowComponent } from '../export-window/export-window.component';
 
 const PERCENTAGE = 100;
 
@@ -103,6 +104,15 @@ export class ToolbarComponent implements OnDestroy {
     if (scope === 'background') {
       this.colorPickerPopup.portee = Scope.BackgroundToolBar;
     }
+  }
+
+  openExportWindow(): void {
+    this.disableShortcuts();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    this.dialog.open(ExportWindowComponent, dialogConfig).afterClosed().subscribe(this.enableShortcuts.bind(this));
   }
 
   openGridWindow(): void {
