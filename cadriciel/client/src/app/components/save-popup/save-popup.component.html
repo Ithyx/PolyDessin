@@ -8,11 +8,18 @@
     </label>
 </form>
 <form>
-    <label>Entrez une étiquette:
+    <label>Entrez une étiquette personalisée:
         <input type="text" maxlength="15" [formControl]="tag" (change)="checkTag()" [className]="isTagValid ? '' : 'invalid-tag'">
         <label *ngIf="!isTagValid"> L'étiquette ne peut pas être vide !</label>
     </label>
     <button mat-stroked-button (click)="addTag()" [disabled]="!isTagValid" class="tag-button">Ajouter étiquette</button>
+    <br>
+    <label>Ou choisissez une des étiquettes suivantes:
+        <select [formControl]="predefinedTag">
+            <option *ngFor="let tag of PREDEFINED_TAGS;" value="{{tag}}">{{tag}}</option>
+        </select>
+    </label>
+    <button mat-stroked-button (click)="addPredefinedTag()" class="tag-button">Ajouter étiquette</button>
 </form>
 <div *ngFor="let tag of drawingParams.tags">
     <span>{{tag}}</span> <i class="material-icons delete-button" (click)="deleteTag(tag)">cancel</i>
