@@ -62,6 +62,7 @@ export class SavePopupComponent {
   }
 
   addPredefinedTag(): void {
+    if (this.drawingParams.tags.indexOf(this.predefinedTag.value) !== -1) { return; }
     this.drawingParams.tags.push(this.predefinedTag.value);
   }
 
