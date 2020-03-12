@@ -14,7 +14,7 @@ import { Drawing } from '../../../../../common/communication/DrawingInterface';
 export class ExportWindowComponent {
 
   EXPORT_FORMAT: string[] = ['png', 'jpeg', 'svg'];
-  EXPORT_FILTER: string[] = ['', 'filter1', 'filter2', 'filter3', 'filter4', 'filter5'];
+  EXPORT_FILTER: string[] = ['', 'Noir-et-blanc', 'Sepia', 'Flou', 'Tremblant', 'Tache'];
 
   private context: CanvasRenderingContext2D;
   private image: HTMLImageElement;
