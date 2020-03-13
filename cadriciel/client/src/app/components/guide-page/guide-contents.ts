@@ -87,7 +87,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                                       <p> Après avoir sélectionné l'outil, il suffit à l'utilisateur de "glisser-déposer"
                                       vers la zone de dessin pour créer un rectangle. En maintenant le clic gauche enfoncé,
                                       on peut choisir la forme de notre rectangle en navigant avec la souris. L'outil est également
-                                      accessible en appuyant sur la touche 'c'. </p>
+                                      accessible en appuyant sur la touche '1'. </p>
                                       <img src="assets/rectangle.gif" width="300" height="300">
                                       <p> L'enfoncement de la touche SHIFT transforme le rectangle en cours de création au
                                       carré le plus proche et vice-versa. </p>
@@ -102,7 +102,17 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         name: 'Ellipse',
                         description: `<h1> Ellipse </h1>
                               <hr>
-                              <p> <p>`,
+                              <p> Après avoir sélectionné l'outil, il suffit à l'utilisateur de "glisser-déposer"
+                              vers la zone de dessin pour créer une ellipse. En maintenant le clic gauche enfoncé,
+                              on peut choisir la forme de notre ellipse en navigant avec la souris. L'outil est également
+                              accessible en appuyant sur la touche '2'. </p>
+                              <img src="assets/elipse.gif" width="300" height="300">
+                              <p> L'enfoncement de la touche SHIFT transforme l'ellipse en cours de création au
+                              cercle le plus proche et vice-versa. </p>
+                             <p> Les paramètres personalisables sont:
+                                <li> Épaisseur du trait de coutour (en px) </li>
+                                <li> Type de tracé </li>
+                            </p>`,
                         previous: true,
                         next: true,
                         id: 6
@@ -160,7 +170,9 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                               <p> L'outil se rappelle aussi des 10 dernières couleurs choisis par l'utilisateur. En effectuant un clic droit
                               , l'utilisateur peut changer sa couleur principale et avec un clic gauche, sa couleur secondaire.</p>
                               <p> Les paramètres personalisables sont:
-                              <li> Le code RGB </li> <li> L'opacité </li> </p>`,
+                              <li> Le code RGB </li> <li> L'opacité </li> </p>
+                              <img src="assets/couleur1.png" width="300" height="300">
+                              <img src="assets/couleur2.png" width="300" height="300">`,
                         previous: true,
                         next: true,
                         id: 9
@@ -170,7 +182,13 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         name: 'Pipette',
                         description: `<h1> Pipette </h1>
                                       <hr>
-                                      <p> <p>`,
+                                      <p> L'outil pipette permet de récupérer une couleur déjà présente sur la surface de dessin en
+                                      cliquant dessus. La couleur renvoyée est celle-ci du pixel se trouvant sous le pointeur de la souris.
+                                      L'outil est également accessible en appuyant sur la touche 'i'. </p>
+                                      <p> Si le clic effectué est un clic gauche, la couleur renvoyée sera assignée à la couleur
+                                      principale. </p>
+                                      <p> Si le clic effectué est un clic droit, la couleur renvoyée sera assignée à la couleur secondaire.
+                                      </p>`,
                         previous: true,
                         next: true,
                         id: 10
@@ -180,7 +198,12 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         name: 'Applicateur de Couleur',
                         description: `<h1> Applicateur de couleur </h1>
                                       <hr>
-                                      <p> <p>`,
+                                      <p> L'outil applicateur de couleur permet de changer la couleur d'un élément déjà dessiné en cliquant
+                                      dessus. L'élément prendra alors la couleur (principale ou secondaire) actuellement en cours.
+                                      L'outil est également accessible en appuyant sur la touche 'r' </p>
+                                      <p> Si le clic effectué est un clic gauche, la couleur principale de l'élément sera modifié. </p>
+                                      <p> Si le clic effectué est un clic droit, la couleur secondaire de l'élément sera modifié. </p>`
+                                      ,
                         previous: true,
                         next: true,
                         id: 11
@@ -192,7 +215,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 name: 'Selection',
                 description: `<h1> Selection </h1>
                               <hr>
-                              <p> <p>`,
+                              <p> </p>`,
                 previous: true,
                 next: true,
                 id: 12
@@ -202,7 +225,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 name: 'Efface',
                 description: `<h1> Efface </h1>
                               <hr>
-                              <p> <p>`,
+                              <p> </p>`,
                 previous: true,
                 next: true,
                 id: 13
@@ -212,7 +235,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 name: 'Grille',
                 description: `<h1> Grille </h1>
                               <hr>
-                              <p> <p>`,
+                              <p> Il est possible de faire apparaitre une grille sur l'ensemble de la surface de dessin. </p>`,
                 previous: true,
                 next: true,
                 id: 14
@@ -222,7 +245,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 name: 'Annuler-Refaire',
                 description: `<h1> Annuler-Refaire </h1>
                               <hr>
-                              <p> <p>`,
+                              <p> </p>`,
                 previous: true,
                 next: true,
                 id: 15
@@ -240,7 +263,16 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 name: 'Sauvegarde',
                 description: `<h1> Sauvegarde </h1>
                               <hr>
-                              <p> <p>`,
+                              <p> Il est possible de sauvegarder le dessin dans la galerie via l'option "Sauvegarder le dessin" ou
+                              encore avec le raccourci CTRL+S. Un menu de sauvagerde s'ouvrira alors. Pour être sauvegarder, le dessin
+                              doit avoir un nom. Afin de pouvoir facilement retrouver le dessin dans la galerie, il est possible d'y
+                              accrocher des étiquettes. L'utilisateur peut personalisé ses équittes ou utilisés les étiquettes suivantes:
+                              <li> Portrait </li>
+                              <li> Paysage </li>
+                              <li> Pixel Art </li>
+                              <li> Futuriste </li>
+                              <li> Minimaliste </li>
+                              </p>`,
                 previous: true,
                 next: true,
                 id: 16
@@ -249,7 +281,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 name: 'Galerie',
                 description: `<h1> Galerie </h1>
                               <hr>
-                              <p> <p>`,
+                              <p> </p>`,
                 previous: true,
                 next: true,
                 id: 17
@@ -258,7 +290,23 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 name: 'Exportation',
                 description: `<h1> Exportation </h1>
                               <hr>
-                              <p> <p>`,
+                              <p> Il est possible d'exporter son dessin localement via l'option "Exporter le dessin" ou encore avec le
+                              raccourci CTRL+E.
+                              Un menu d'exportation s'ouvrira alors, contenant le dessin. Le dessin peut-être nommée selon le
+                              choix de l'utilisateur. Si aucun nom n'est spécifié, il portera celcui de "téléchargement" par défaut. <p>
+                              <p> Trois formats d'exportation sont disponible:
+                                    <li> JPEG </li>
+                                    <li> PNG </li>
+                                    <li> SVG </li></p>
+                              </p>
+                              <p> Il est également possible d'appliquer un filtre lors de l'exporation du dessin.
+                              Cinq filtes sont disponibles:
+                                    <li> Noir-et-Blanc </li>
+                                    <li> Sépia </li>
+                                    <li> Flou </li>
+                                    <li> Tache </li>
+                                    <li> Tremblant </li></p>
+                              </p>`,
                 previous: true,
                 next: false,
                 id: 18
