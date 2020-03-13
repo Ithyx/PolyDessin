@@ -1,7 +1,8 @@
 <app-toolbar></app-toolbar>
 
 <div class="drawing-surface">
-    <app-drawing-surface (click)="onClick($event)"
+    <app-drawing-surface [class]="getDrawingSurfaceClass()"
+                        (click)="onClick($event)"
                         (dblclick)="onDblClick($event)"
                         (mousemove)="onMouseMove($event)"
                         (mouseup)="onMouseUp($event)"
