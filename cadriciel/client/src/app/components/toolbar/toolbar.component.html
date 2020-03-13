@@ -5,17 +5,17 @@
         <app-drawing-tool [tool]="tool" (click)="onClick(tool)"></app-drawing-tool>
     </div>
     <div class="options">
-        <a  href="javascript:void(0);"   (click)="warningNewDrawing()">
+        <a href="javascript:void(0);"   (click)="warningNewDrawing()">
             <i class="fas fa-plus"></i> Nouveau Dessin
         </a>
-        <a class="notavailable" href="javascript:void(0);">
+        <a href="javascript:void(0);" (click)="openGallery()">
             Ouvrir la galerie
         </a>
-        <a class="notavailable" href="javascript:void(0);">
+        <a href="javascript:void(0);" (click)="openSavePopup()">
             Sauvergarder le dessin
         </a>
-        <a class="notavailable" href="javascript:void(0);">
-            Exporter le dessin
+        <a href="javascript:void(0);" (click)="openExportWindow()" >
+           <i class="fas fa-file-download"></i> Exporter le dessin
         </a>
         <a  href="javascript:void(0);"   (click)="openGridWindow()">
             <i class="fas fa-border-all"></i> Options de grille

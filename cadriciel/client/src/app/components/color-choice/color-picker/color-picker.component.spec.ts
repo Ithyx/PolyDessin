@@ -7,7 +7,7 @@ import { CommandManagerService } from 'src/app/services/command/command-manager.
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { ColorPickerComponent } from './color-picker.component';
 
-describe('CouleurPaletteComponent', () => {
+describe('color-picker', () => {
   let component: ColorPickerComponent;
   let fixture: ComponentFixture<ColorPickerComponent>;
   let commandes: CommandManagerService;

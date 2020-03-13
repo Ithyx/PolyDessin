@@ -153,6 +153,23 @@ describe('TracePencilService', () => {
     expect(element.draw).toHaveBeenCalled();
   });
 
+  // TESTS updateParameters
+
+  it('#updateParameters devrait assigner la valeur en paramètre à thickness', () => {
+    // tslint:disable-next-line: no-magic-numbers
+    service.tools.toolList[0].parameters[0].value = 10;
+    const testTool = service.tools.toolList[0];
+    element.updateParameters(testTool);
+    expect(element.thickness).toEqual(service.tools.toolList[0].parameters[0].value);
+  });
+
+  it('#updateParameters devrait assigner 1 à thickness', () => {
+    service.tools.toolList[0].parameters[0].value = 0;
+    const testTool = service.tools.toolList[0];
+    element.updateParameters(testTool);
+    expect(element.thickness).toEqual(1);
+  });
+
   // TESTS translateAllPoints
 
   it('#translateAllPoints devrait changer tous les points de points pour ajouter la translation', () => {

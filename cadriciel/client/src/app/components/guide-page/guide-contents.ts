@@ -204,9 +204,65 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                               <hr>
                               <p> <p>`,
                 previous: true,
-                next: false,
+                next: true,
                 id: 13
             },
+            // Sujet 14
+            {
+                name: 'Grille',
+                description: `<h1> Grille </h1>
+                              <hr>
+                              <p> <p>`,
+                previous: true,
+                next: true,
+                id: 14
+            },
+            // Sujet 15
+            {
+                name: 'Annuler-Refaire',
+                description: `<h1> Annuler-Refaire </h1>
+                              <hr>
+                              <p> <p>`,
+                previous: true,
+                next: true,
+                id: 15
+            }
         ]
     },
+    {
+        name: 'Gestion de Dessin',
+        description: '',
+        previous: false,
+        next: false,
+        openCategory: false,
+        subSubjects: [
+            {
+                name: 'Sauvegarde',
+                description: `<h1> Sauvegarde </h1>
+                              <hr>
+                              <p> <p>`,
+                previous: true,
+                next: true,
+                id: 16
+            },
+            {
+                name: 'Galerie',
+                description: `<h1> Galerie </h1>
+                              <hr>
+                              <p> <p>`,
+                previous: true,
+                next: true,
+                id: 17
+            },
+            {
+                name: 'Exportation',
+                description: `<h1> Exportation </h1>
+                              <hr>
+                              <p> <p>`,
+                previous: true,
+                next: false,
+                id: 18
+            },
+        ]
+      }
 ];

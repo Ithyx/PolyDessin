@@ -6,7 +6,7 @@ import { RectangleToolService } from './rectangle-tool.service';
 
 // tslint:disable: no-magic-numbers
 
-describe('DessinRectangleService', () => {
+describe('RectangleToolService', () => {
   let service: RectangleToolService;
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(RectangleToolService));
@@ -173,7 +173,7 @@ describe('DessinRectangleService', () => {
     service.calculatedBase.y = 100;
     service.calculatedHeight = 50;
     service.calculatedWidth = 25;
-    const calculated = service.calculatedBase.y + service.calculatedHeight - service.calculatedWidth;
+    const calculated = service.initial.y - service.calculatedWidth;
     service.shiftPress();
     expect(service.rectangle.points[0].y).toEqual(calculated);
   });
@@ -183,7 +183,7 @@ describe('DessinRectangleService', () => {
       service.calculatedBase.x = 100;
       service.calculatedHeight = 25;
       service.calculatedWidth = 50;
-      const calculated = service.calculatedBase.x + service.calculatedWidth - service.calculatedHeight;
+      const calculated = service.initial.x - service.calculatedHeight;
       service.shiftPress();
       expect(service.rectangle.points[0].x).toEqual(calculated);
   });
