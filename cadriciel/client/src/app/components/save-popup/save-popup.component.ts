@@ -12,17 +12,24 @@ import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-
 export class SavePopupComponent {
   private name: FormControl;
   private tag: FormControl;
+  private predefinedTag: FormControl;
   protected isSaving: boolean;
   private isNameValid: boolean;
   private isTagValid: boolean;
+  private saveFailed: boolean;
+  protected PREDEFINED_TAGS: string[];
 
   constructor(private dialogRef: MatDialogRef<SavePopupComponent>,
               private db: DatabaseService,
               private drawingParams: DrawingManagerService) {
     this.name = new FormControl(drawingParams.name);
     this.tag = new FormControl();
+    this.predefinedTag = new FormControl('Portrait');
     this.isSaving = false;
+    this.isNameValid = (drawingParams.name !== '');
     this.isTagValid = false;
+    this.saveFailed = false;
+    this.PREDEFINED_TAGS = ['Portrait', 'Paysage', 'Pixel Art', 'Abstrait', 'Futuriste', 'Minimaliste'];
   }
 
   checkName(): boolean {
@@ -39,14 +46,24 @@ export class SavePopupComponent {
     if (!this.checkName()) { return; }
     this.drawingParams.name = this.name.value;
     this.isSaving = true;
-    await this.db.saveDrawing();
+    try {
+      await this.db.saveDrawing();
+      this.saveFailed = false;
+    } catch (err) {
+      this.saveFailed = true;
+    }
     this.isSaving = false;
-    // this.dialogRef.close();
+    if (!this.saveFailed) { this.dialogRef.close(); }
   }
 
   addTag(): void {
     if (!this.checkTag() || this.drawingParams.tags.indexOf(this.tag.value) !== -1) { return; }
     this.drawingParams.tags.push(this.tag.value);
+  }
+
+  addPredefinedTag(): void {
+    if (this.drawingParams.tags.indexOf(this.predefinedTag.value) !== -1) { return; }
+    this.drawingParams.tags.push(this.predefinedTag.value);
   }
 
   deleteTag(tag: string): void {

@@ -1,4 +1,5 @@
 import { Component, NgZone, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { DatabaseService } from 'src/app/services/database/database.service';
@@ -7,7 +8,12 @@ import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { Drawing } from '../../../../../common/communication/DrawingInterface';
 import { GalleryLoadWarningComponent } from '../gallery-load-warning/gallery-load-warning.component';
-import { FormControl } from '@angular/forms';
+
+enum Status {
+  Loading = 0,
+  Loaded = 1,
+  Failed = 2
+}
 
 @Component({
   selector: 'app-gallery',
@@ -17,9 +23,10 @@ import { FormControl } from '@angular/forms';
 export class GalleryComponent implements OnInit {
   protected drawings: Drawing[];
   protected selected: number | null;
-  protected isLoading: boolean;
+  protected status: Status;
   private dialogConfig: MatDialogConfig;
-  private tagSearch: FormControl;
+  private tagInput: FormControl;
+  private searchTags: string[];
 
   constructor(private dialogRef: MatDialogRef<GalleryComponent>,
               private db: DatabaseService,
@@ -33,8 +40,9 @@ export class GalleryComponent implements OnInit {
     this.dialogConfig.autoFocus = true;
     this.dialogConfig.width = '80%';
     this.selected = null;
-    this.isLoading = false;
-    this.tagSearch = new FormControl();
+    this.status = Status.Loading;
+    this.tagInput = new FormControl();
+    this.searchTags = [];
   }
 
   async ngOnInit(): Promise<void> {
@@ -42,15 +50,33 @@ export class GalleryComponent implements OnInit {
   }
 
   async update(): Promise<void> {
-    this.isLoading = true;
-    this.drawings = await this.db.getData();
-    this.isLoading = false;
+    this.status = Status.Loading;
+    try {
+      this.drawings = await this.db.getData();
+      this.status = Status.Loaded;
+    } catch (err) {
+      this.status = Status.Failed;
+    }
   }
 
   async filter(): Promise<void> {
-    this.isLoading = true;
-    this.drawings = await this.db.getDataWithTags(this.tagSearch.value);
-    this.isLoading = false;
+    if (this.searchTags.indexOf(this.tagInput.value) === -1) { this.searchTags.push(this.tagInput.value); }
+    try {
+      this.drawings = await this.db.getDataWithTags(this.searchTags);
+      this.status = Status.Loaded;
+    } catch (err) {
+      this.status = Status.Failed;
+    }
+  }
+
+  async removeTag(tag: string): Promise<void> {
+    this.searchTags = this.searchTags.filter((value) => value !== tag);
+    try {
+      this.drawings = await this.db.getDataWithTags(this.searchTags);
+      this.status = Status.Loaded;
+    } catch (err) {
+      this.status = Status.Failed;
+    }
   }
 
   close(): void {
