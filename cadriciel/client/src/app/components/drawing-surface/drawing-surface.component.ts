@@ -100,9 +100,11 @@ export class DrawingSurfaceComponent {
 
   handleMouseUpBackground(): void {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
-      this.selection.selectionBox.selectionBox.translateAllPoints();
-      for (const controlPoint of this.selection.selectionBox.controlPointBox) {
-        controlPoint.translateAllPoints();
+      if (this.selection.selectedElements.length !== 0) {
+        this.selection.selectionBox.selectionBox.translateAllPoints();
+        for (const controlPoint of this.selection.selectionBox.controlPointBox) {
+          controlPoint.translateAllPoints();
+        }
       }
     }
    }
