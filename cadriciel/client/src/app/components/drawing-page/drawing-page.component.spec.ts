@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule, MatSidenavModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
@@ -60,7 +60,7 @@ describe('DrawingPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ MatDialogModule, RouterModule.forRoot([
+      imports: [ MatSidenavModule, MatDialogModule, RouterModule.forRoot([
         {path: 'dessin', component: DrawingPageComponent},
         {path: 'guide', component : GuidePageComponent}
       ])],

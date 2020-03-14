@@ -12,23 +12,20 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                     <p> Vous vous trouvez présentement dans le guide d'utilisation.
                     Celui-ci décrit et explique les différents outils implémentés.</p>
                     <img src="assets/poly.png">`,
-      previous: false,
-      next: true
+      previous: false, next: true
     },
     // Catégorie 1 : Outils
     {
         name: 'Outils',
         description: '',
-        previous: false,
-        next: false,
+        previous: false, next: false,
         openCategory: false,
         subSubjects: [
             // Catégorie 2 : Outils de Traçages
             {
                 name: 'Traçages',
                 description: '',
-                previous: false,
-                next: false,
+                previous: false, next: false,
                 openCategory: false,
                 subSubjects: [
                     // Sujet 2
@@ -41,8 +38,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                               <img src="assets/crayon.gif" width="300" height="300">
                               <p> Les paramètres personalisables sont:
                               <li> Épaisseur du trait (en px) </li> </p>`,
-                        previous: true,
-                        next: true,
+                        previous: true, next: true,
                         id: 2
                     },
                     // Sujet 3
@@ -55,8 +51,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                               <img src="assets/pinceau.gif" width="300" height="300">
                               <p> Les paramètres personalisables sont:
                               <li> Épaisseur du trait (en px) </li> <li> Texture du trait </li> </p>`,
-                        previous: true,
-                        next: true,
+                        previous: true, next: true,
                         id: 3
                     },
                     // Sujet 4
@@ -64,9 +59,14 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         name: 'Aérosol',
                         description: `<h1> Aérosol </h1>
                                       <hr>
-                                      <p> <p>`,
-                        previous: true,
-                        next: true,
+                                      <p> L'aérosol vaporise à des intervalles réguliers des jets de peintures dans un diamètre défini.
+                                      L'outil est également accessible en appuyant sur la touche 'a'. Le motif généré est aléatoire à chaque
+                                      émission. <p>
+                                      <img src="assets/aerosol.gif" width="300" height="300">
+                                      <p> Les paramètres personalisables sont:
+                                        <li> Diamètre du jet (en px) </li>
+                                        <li> Nombre d'émisssion par seconde </li> </p>`,
+                        previous: true, next: true,
                         id: 4
                     },
                 ]
@@ -75,8 +75,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
             {
                 name: 'Formes',
                 description: '',
-                previous: false,
-                next: false,
+                previous: false, next: false,
                 openCategory: false,
                 subSubjects: [
                     {
@@ -93,8 +92,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                                       carré le plus proche et vice-versa. </p>
                                       <p> Les paramètres personalisables sont:
                                       <li> Épaisseur du trait de coutour (en px) </li> <li> Type de tracé </li> </p>`,
-                        previous: true,
-                        next: true,
+                        previous: true, next: true,
                         id: 5
                     },
                     // Sujet 6
@@ -113,8 +111,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                                 <li> Épaisseur du trait de coutour (en px) </li>
                                 <li> Type de tracé </li>
                             </p>`,
-                        previous: true,
-                        next: true,
+                        previous: true, next: true,
                         id: 6
                     },
                     // Sujet 7
@@ -122,9 +119,17 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         name: 'Polygone',
                         description: `<h1> Polygone </h1>
                               <hr>
-                              <p> <p>`,
-                        previous: true,
-                        next: true,
+                              <p> Après avoir sélectionné l'outil, il suffit à l'utilisateur de "glisser-déposer"
+                              vers la zone de dessin pour créer le polygone. En maintenant le clic gauche enfoncé,
+                              on peut choisir la taille en navigant avec la souris. L'outil est également
+                              accessible en appuyant sur la touche '3'. </p>
+                              <img src="assets/polygon.gif" width="300" height="300">
+                              <p> Les paramètres personalisables sont:
+                                <li> Épaisseur du trait de coutour (en px) </li>
+                                <li> Type de tracé </li>
+                                <li> Le nombre de côté (3 à 12) </li>
+                              </p>`,
+                        previous: true, next: true,
                         id: 7
                     },
                     // Sujet 8
@@ -143,8 +148,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                               <p> Les paramètres personalisables sont:
                               <li> Épaisseur du trait (en px) </li> <li> Type de jonction </li>
                               <li> Diamètre des jonctions </li></p>`,
-                        previous: true,
-                        next: true,
+                        previous: true, next: true,
                         id: 8
                     },
                 ]
@@ -153,8 +157,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
             {
                 name: 'Couleurs',
                 description: '',
-                previous: false,
-                next: false,
+                previous: false, next: false,
                 openCategory: false,
                 subSubjects: [
                     // Sujet 9
@@ -173,8 +176,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                               <li> Le code RGB </li> <li> L'opacité </li> </p>
                               <img src="assets/couleur1.png" width="300" height="300">
                               <img src="assets/couleur2.png" width="300" height="300">`,
-                        previous: true,
-                        next: true,
+                        previous: true, next: true,
                         id: 9
                     },
                     // Sujet 10
@@ -189,8 +191,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                                       principale. </p>
                                       <p> Si le clic effectué est un clic droit, la couleur renvoyée sera assignée à la couleur secondaire.
                                       </p>`,
-                        previous: true,
-                        next: true,
+                        previous: true, next: true,
                         id: 10
                     },
                     // Sujet 11
@@ -204,8 +205,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                                       <p> Si le clic effectué est un clic gauche, la couleur principale de l'élément sera modifié. </p>
                                       <p> Si le clic effectué est un clic droit, la couleur secondaire de l'élément sera modifié. </p>`
                                       ,
-                        previous: true,
-                        next: true,
+                        previous: true, next: true,
                         id: 11
                     },
                 ]
@@ -216,8 +216,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 description: `<h1> Selection </h1>
                               <hr>
                               <p> </p>`,
-                previous: true,
-                next: true,
+                previous: true, next: true,
                 id: 12
             },
             // Sujet 13
@@ -226,8 +225,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 description: `<h1> Efface </h1>
                               <hr>
                               <p> </p>`,
-                previous: true,
-                next: true,
+                previous: true, next: true,
                 id: 13
             },
             // Sujet 14
@@ -235,9 +233,18 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 name: 'Grille',
                 description: `<h1> Grille </h1>
                               <hr>
-                              <p> Il est possible de faire apparaitre une grille sur l'ensemble de la surface de dessin. </p>`,
-                previous: true,
-                next: true,
+                              <p> Il est possible de faire apparaitre une grille sur l'ensemble de la surface de dessin
+                              via l'option "Options de grille" ou encore avec le raccourci 'G'. </p>
+                              <p> Les paramètres personalisables sont:
+                                <li> Épaisseur du trait (en px) </li>
+                                <li> Opacité de la grille (en %) </li>
+                                <li> Largeur des cellules de la grille (en px) </li>
+                              </p>
+                              <p> Deux autres raccourcis sont disponibles pour facilement changer la largeur des cellules
+                              de la grille: </p>
+                              <p> '+' pour agrandir la largeur de 5 px </p>
+                              <p> '-' pour diminuer la lagrgeur de 5 px </p>`,
+                previous: true, next: true,
                 id: 14
             },
             // Sujet 15
@@ -246,8 +253,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 description: `<h1> Annuler-Refaire </h1>
                               <hr>
                               <p> </p>`,
-                previous: true,
-                next: true,
+                previous: true, next: true,
                 id: 15
             }
         ]
@@ -259,6 +265,14 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
         next: false,
         openCategory: false,
         subSubjects: [
+            {
+                name: 'Nouveau Dessin',
+                description: `<h1> Nouveau Dessin </h1>
+                              <hr>
+                              <p> </p>`,
+                previous: true, next: true,
+                id: 16
+            },
             {
                 name: 'Sauvegarde',
                 description: `<h1> Sauvegarde </h1>
@@ -273,18 +287,16 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                               <li> Futuriste </li>
                               <li> Minimaliste </li>
                               </p>`,
-                previous: true,
-                next: true,
-                id: 16
+                previous: true, next: true,
+                id: 17
             },
             {
                 name: 'Galerie',
                 description: `<h1> Galerie </h1>
                               <hr>
                               <p> </p>`,
-                previous: true,
-                next: true,
-                id: 17
+                previous: true, next: true,
+                id: 18
             },
             {
                 name: 'Exportation',
@@ -307,9 +319,8 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                                     <li> Tache </li>
                                     <li> Tremblant </li></p>
                               </p>`,
-                previous: true,
-                next: false,
-                id: 18
+                previous: true, next: false,
+                id: 19
             },
         ]
       }
