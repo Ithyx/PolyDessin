@@ -9,8 +9,11 @@ import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.serv
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { ColorChoiceComponent } from '../color-choice/color-choice.component';
+import { ExportWindowComponent } from '../export-window/export-window.component';
+import { GalleryComponent } from '../gallery/gallery.component';
 import { GridOptionsComponent } from '../grid-options/grid-options.component';
 import { NewDrawingWarningComponent } from '../new-drawing-warning/new-drawing-warning.component';
+import { SavePopupComponent } from '../save-popup/save-popup.component';
 
 const PERCENTAGE = 100;
 
@@ -86,6 +89,24 @@ export class ToolbarComponent implements OnDestroy {
     this.dialog.open(NewDrawingWarningComponent, dialogConfig);
   }
 
+  openGallery(): void {
+    this.disableShortcuts();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    this.dialog.open(GalleryComponent, dialogConfig).afterClosed().subscribe(this.enableShortcuts.bind(this));
+  }
+
+  openSavePopup(): void {
+    this.disableShortcuts();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    this.dialog.open(SavePopupComponent, dialogConfig).afterClosed().subscribe(this.enableShortcuts.bind(this));
+  }
+
   selectColor(scope: string): void {
     this.disableShortcuts();
     const dialogConfig = new MatDialogConfig();
@@ -103,6 +124,15 @@ export class ToolbarComponent implements OnDestroy {
     if (scope === 'background') {
       this.colorPickerPopup.portee = Scope.BackgroundToolBar;
     }
+  }
+
+  openExportWindow(): void {
+    this.disableShortcuts();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    this.dialog.open(ExportWindowComponent, dialogConfig).afterClosed().subscribe(this.enableShortcuts.bind(this));
   }
 
   openGridWindow(): void {

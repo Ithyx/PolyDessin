@@ -1,7 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatDialogConfig, MatDialogModule} from '@angular/material';
+import { MatButtonModule, MatDialogConfig, MatDialogModule, MatSidenavModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -16,6 +16,8 @@ import { ColorSliderComponent } from './components/color-choice/color-slider/col
 import { DrawingPageComponent } from './components/drawing-page/drawing-page.component';
 import { DrawingSurfaceComponent } from './components/drawing-surface/drawing-surface.component';
 import { DrawingToolComponent } from './components/drawing-tool/drawing-tool.component';
+import { ExportWindowComponent } from './components/export-window/export-window.component';
+import { GalleryLoadWarningComponent } from './components/gallery-load-warning/gallery-load-warning.component';
 import { GalleryElementComponent } from './components/gallery/gallery-element/gallery-element.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
 import { GridOptionsComponent } from './components/grid-options/grid-options.component';
@@ -40,16 +42,15 @@ import { LineToolService } from './services/tools/line-tool.service';
 import { DrawingToolService } from './services/tools/pencil-tool.service';
 import { RectangleToolService } from './services/tools/rectangle-tool.service';
 import { SelectionService } from './services/tools/selection/selection.service';
-import { GalleryLoadWarningComponent } from './components/gallery-load-warning/gallery-load-warning.component';
 
 @NgModule({
 
     declarations: [AppComponent, HomePageComponent, NewDrawingWarningComponent, DrawingPageComponent, GuidePageComponent,
         NewDrawingWindowComponent, ToolbarComponent, DrawingToolComponent, GuideSubjectComponent, DrawingSurfaceComponent,
         ColorChoiceComponent, ColorSliderComponent, ColorPickerComponent, ColorInputComponent, GridOptionsComponent,
-        SavePopupComponent, GalleryComponent, GalleryElementComponent, GalleryLoadWarningComponent],
+        SavePopupComponent, GalleryComponent, GalleryElementComponent, GalleryLoadWarningComponent, ExportWindowComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
-        MatProgressSpinnerModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
+        MatProgressSpinnerModule, MatDialogModule, MatSidenavModule, BrowserAnimationsModule, RouterModule.forRoot([
         {path: '', component: HomePageComponent},
         {path: 'dessin', component: DrawingPageComponent},
         {path: 'guide', component : GuidePageComponent}
@@ -61,7 +62,7 @@ import { GalleryLoadWarningComponent } from './components/gallery-load-warning/g
 
     entryComponents: [NewDrawingWindowComponent, NewDrawingWarningComponent,
                       ColorChoiceComponent, GridOptionsComponent, SavePopupComponent, GalleryComponent,
-                      GalleryLoadWarningComponent],
+                      GalleryLoadWarningComponent, ExportWindowComponent],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

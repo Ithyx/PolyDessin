@@ -89,6 +89,7 @@ export class NewDrawingWindowComponent {
     this.drawingManager.name = '';
     this.drawingManager.id = 0;
     this.drawingManager.backgroundColor = this.colorParameter.temporaryBackgroundColor;
+    this.drawingManager.tags = [];
     this.shortcuts.focusOnInput = false;
     this.dialogRef.close();
     this.ngZone.run(() => this.router.navigate(['dessin']));

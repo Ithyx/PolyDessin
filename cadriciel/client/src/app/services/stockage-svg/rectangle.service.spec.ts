@@ -1,19 +1,134 @@
 import { TestBed } from '@angular/core/testing';
 
+import { DrawingToolService } from '../tools/pencil-tool.service';
 import { RectangleService } from './rectangle.service';
 
+// tslint:disable:no-magic-numbers
 describe('RectangleService', () => {
+  let service: DrawingToolService;
+  let element: RectangleService;
   beforeEach(() => TestBed.configureTestingModule({}));
+  beforeEach(() => service = TestBed.get(DrawingToolService));
 
-  it('should be created', () => {
-    const service: RectangleService = TestBed.get(RectangleService);
-    expect(service).toBeTruthy();
+  beforeEach(() => {
+    element = new RectangleService();
+    element.updateParameters(service.tools.toolList[3]);
+    element.points[0].x = 10;
+    element.points[0].y = 100;
+    element.points[1].x = 100;
+    element.points[1].y = 10;
+    element.chosenOption = 'Vide';
+    element.primaryColor =   'rgba(0, 0, 0, 1)';
+    element.secondaryColor = 'rgba(0, 0, 0, 1)';
+    element.thickness = 5;
+    element.translate = { x: 10, y: 10};
   });
 
+  it('should be created', () => {
+    const testService: RectangleService = TestBed.get(RectangleService);
+    expect(testService).toBeTruthy();
+  });
+
+  // TESTS getWidth
+
+  it('#getWidth devrait retourner la largeur', () => {
+    let test = element.getWidth();
+    expect(test).toEqual(90);
+    element.points[0].x = 100;
+    element.points[1].x = 10;
+    test = element.getWidth();
+    expect(test).toEqual(90);
+  });
+
+  // TESTS getHeight
+
+  it('#getHeight devrait retourner la hauteur', () => {
+    let test = element.getHeight();
+    expect(test).toEqual(90);
+    element.points[0].y = 100;
+    element.points[1].y = 10;
+    test = element.getHeight();
+    expect(test).toEqual(90);
+  });
+
+  // TESTS draw
+
+  it('#draw devrait satisfaire les conditions pour appeler drawLine()', () => {
+    element.points[0].x = 0;
+    element.points[1].x = 0;
+    element.points[0].y = 0;
+    element.points[1].y = 0;
+    spyOn(element, 'drawLine');
+    element.draw();
+    expect(element.drawLine).toHaveBeenCalled();
+  });
+
+  it('#draw ne devrait pas satisfaire les conditions pour appeler drawLine() avec width et height pas à 0', () => {
+    spyOn(element, 'drawLine');
+    element.draw();
+    expect(element.drawLine).not.toHaveBeenCalled();
+  });
+
+  it('#draw devrait  appeler drawRectangle() en ne satisfaisant pas les conditions pour avec chosenOption à \'Plein\'', () => {
+    element.points[0].x = 0;
+    element.points[1].x = 0;
+    element.points[0].y = 0;
+    element.points[1].y = 0;
+    element.chosenOption = 'Plein';
+    spyOn(element, 'drawRectangle');
+    element.draw();
+    expect(element.drawRectangle).toHaveBeenCalled();
+  });
+
+  it('#draw devrait appeler drawPerimeter', () => {
+    spyOn(element, 'drawPerimeter');
+    element.draw();
+    expect(element.drawPerimeter).toHaveBeenCalled();
+  });
+
+  // TESTS drawLine
+
+  it('#drawLine devrait retourner le bon svg', () => {
+    const test = '<line stroke-linecap="square'
+    + '" stroke="' + element.secondaryColor
+    + '" stroke-width="' + element.thickness
+    + (element.isDotted ? '"stroke-dasharray="2, 8"'  : '')
+    + '" x1="' + element.points[0].x + '" y1="' + element.points[0].y
+    + '" x2="' + (element.points[0].x + element.getWidth())
+    + '" y2="' + (element.points[0].y + element.getHeight()) + '"/>';
+
+    element.drawLine();
+    expect(element.svg).toEqual(test);
+  });
+
+  // TESTS drawRectangle
+
+  it('#drawRectangle devrait retourner le bon svg', () => {
+    const test = '<rect transform=" translate(' + element.translate.x + ' ' + element.translate.y +
+    ')" fill="' + ((element.chosenOption !== 'Contour') ? element.primaryColor : 'none')
+    + '" stroke="' + ((element.chosenOption !== 'Plein') ? element.secondaryColor : 'none')
+    + (element.isDotted ? '"stroke-dasharray="4, 4"'  : '')
+    + '" stroke-width="' + element.thickness
+    + '" x="' + element.points[0].x + '" y="' + element.points[0].y
+    + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"/>';
+
+    element.drawRectangle();
+    expect(element.svg).toEqual(test);
+  });
+
+  // TESTS drawPerimeter
+/*
+  it('#drawPerimeter devrait retourner le bon svg', () => {
+    const test = 
+
+    element.drawPerimeter();
+    expect(element.svg).toEqual(test);
+  });*/
+/*
   // TODO : Déplacer les tests de création de SVG vers RectangleService
 
   // TESTS SUR LA CRÉATION DE RECTANGLES
-  /*
+
   it("#refreshSVG devrait tracer un rectangle lors d'un mouvement "
     + 'vers le coin inférieur droit', () => {
     // on simule un mouvement de 20 en x et de 50 en y
