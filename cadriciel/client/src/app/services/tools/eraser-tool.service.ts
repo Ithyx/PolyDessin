@@ -16,10 +16,12 @@ const DEFAULT_THICKNESS = 10;
   providedIn: 'root'
 })
 export class EraserToolService implements ToolInterface {
-  private selectedElements: DrawElement[];
+  selectedElements: DrawElement[];
   eraser: RectangleService;
+  square: SVGRect;
   mousePosition: Point = {x: 0, y: 0};
   thickness: number;
+  drawing: SVGElement;
 
   constructor(public tools: ToolManagerService,
               private sanitizer: DomSanitizer,
@@ -40,8 +42,12 @@ export class EraserToolService implements ToolInterface {
   }
 
   isInEraser(): void {
-    for (const element of this.svgStockage.getCompleteSVG()) {
+    /*for (const element of this.svgStockage.getCompleteSVG()) {
       if (!this.selectedElements.includes(element)) {
+
+        if ((this.drawing as SVGSVGElement).checkIntersection(, this.square)) {
+          this.selectedElements.push(element);
+        }
         for (const point of element.points) {
           if (this.belongsToSquare(point)) {
             console.log('add element', element);
@@ -49,7 +55,11 @@ export class EraserToolService implements ToolInterface {
           }
         }
       }
-    }
+    }*/
+    const elements = (this.drawing as SVGSVGElement).getEnclosureList(this.square, this.drawing);
+    elements.forEach((element) => {
+      console.log(element);
+    });
   }
 
   belongsToSquare(point: Point): boolean {
@@ -62,6 +72,12 @@ export class EraserToolService implements ToolInterface {
     this.thickness = (this.tools.activeTool.parameters[0].value) ? this.tools.activeTool.parameters[0].value : DEFAULT_THICKNESS;
     this.mousePosition = {x: mouse.offsetX, y: mouse.offsetY};
     this.makeSquare();
+    // console.log(this.drawing);
+    this.square = (this.drawing as SVGSVGElement).createSVGRect();
+    this.square.x = mouse.offsetX;
+    this.square.y = mouse.offsetY;
+    this.square.width = this.thickness;
+    this.square.height = this.thickness;
     if (this.commands.drawingInProgress) {
       this.isInEraser();
     }
@@ -69,6 +85,10 @@ export class EraserToolService implements ToolInterface {
 
   onMousePress(): void {
     this.commands.drawingInProgress = true;
+  }
+
+  onMouseClick(mouse: MouseEvent): void {
+    this.isInEraser();
   }
 
   onMouseRelease(): void {

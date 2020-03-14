@@ -17,7 +17,7 @@ export class LineService implements DrawElement {
   primaryColor: string;
 
   thicknessLine: number;
-  thicknessPoint: number;           // REFACTORING
+  thicknessPoint: number;
   thickness: number;
   chosenOption: string;
   isAPolygon: boolean;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
@@ -17,7 +17,10 @@ import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-mana
   templateUrl: './drawing-surface.component.html',
   styleUrls: ['./drawing-surface.component.scss']
 })
-export class DrawingSurfaceComponent {
+export class DrawingSurfaceComponent implements AfterViewInit {
+  @ViewChild('drawing', {static: false})
+  drawing: ElementRef<SVGElement>;
+
   constructor(private SVGStockage: SVGStockageService,
               private tools: ToolManagerService,
               public drawingManager: DrawingManagerService,
@@ -29,6 +32,10 @@ export class DrawingSurfaceComponent {
               public colorChanger: ColorChangerToolService,
               public commands: CommandManagerService,
               public eraser: EraserToolService) {
+  }
+
+  ngAfterViewInit(): void {
+    this.eraser.drawing = this.drawing.nativeElement;
   }
 
   clickBelongToSelectionBox(mouse: MouseEvent): boolean {
