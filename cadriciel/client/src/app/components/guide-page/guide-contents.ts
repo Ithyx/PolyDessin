@@ -104,7 +104,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                               vers la zone de dessin pour créer une ellipse. En maintenant le clic gauche enfoncé,
                               on peut choisir la forme de notre ellipse en navigant avec la souris. L'outil est également
                               accessible en appuyant sur la touche '2'. </p>
-                              <img src="assets/elipse.gif" width="300" height="300">
+                              <img src="assets/ellipse.gif" width="300" height="300">
                               <p> L'enfoncement de la touche SHIFT transforme l'ellipse en cours de création au
                               cercle le plus proche et vice-versa. </p>
                              <p> Les paramètres personalisables sont:
@@ -201,7 +201,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                                       <hr>
                                       <p> L'outil applicateur de couleur permet de changer la couleur d'un élément déjà dessiné en cliquant
                                       dessus. L'élément prendra alors la couleur (principale ou secondaire) actuellement en cours.
-                                      L'outil est également accessible en appuyant sur la touche 'r' </p>
+                                      L'outil est également accessible en appuyant sur la touche 'r'. </p>
                                       <p> Si le clic effectué est un clic gauche, la couleur principale de l'élément sera modifié. </p>
                                       <p> Si le clic effectué est un clic droit, la couleur secondaire de l'élément sera modifié. </p>`
                                       ,
@@ -215,7 +215,22 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 name: 'Selection',
                 description: `<h1> Selection </h1>
                               <hr>
-                              <p> </p>`,
+                              <p> L'outil selection permet de sélectionner un ou plusieurs élément dessinés sur la surface de dessin.
+                              L'outil est également accessible en appuyant sur la touche 's'. Il y a différentes manières pour sélectionner
+                              des éléments:
+                                <li> En cliquant sur l'élément à sélectionné</li>
+                                <li> En effectuant un glisser-déposé, ce qui créra un rectangle de sélection. Toute boîte englobante des
+                                éléments en collision avec ce rectangle sera alors considéré comme sélectionnés.  </li>
+                              </p>
+                              <p> Un élément sélectionné sera encadré par une boîte de sélection posèdant 4 points de contrôles. </p>
+                              <img src="assets/selection.png" width="300" height="300">
+                              <p> À noté que les opérations de sélection doit se faire avec le clic gauche.
+                              Le clic droit permet d'effectuer une inversion de sélection. Les éléments touchés prennent alors l'état
+                              inverse (un élément sélectionné devient non-sélectionné et vice-versa). </p>
+                              <p> Il est possible de sélectionner l'ensemble des éléments dessinés avec le raccourci 'CTRL+A'. </p>
+                              <p> La sélection permet alors de bouger les éléments à l'aide de soit la souris soit du clavier avec
+                              les flèches directionnelles. </p>
+                              <img src="assets/selection.gif" width="300" height="300">`,
                 previous: true, next: true,
                 id: 12
             },
@@ -224,7 +239,12 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 name: 'Efface',
                 description: `<h1> Efface </h1>
                               <hr>
-                              <p> </p>`,
+                              <p> L'outil efface permet d'effacer des éléments dessinés. Il est peut-être soit être utilisé comme une
+                              brosse ou avec un simple clic. Les éléments qui seront supprimés par l'efface sont mis en évidence à l'aide
+                              d'un coutour rouge. L'outil est également accessible en appuyant sur la touche 'e'. </p>
+                              <img src="assets/efface.gif" width="300" height="300">
+                              <p> Les paramètres personalisables sont:
+                              <li> Épaisseur de l'efface  (en px) </li> </p>`,
                 previous: true, next: true,
                 id: 13
             },
@@ -243,7 +263,8 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                               <p> Deux autres raccourcis sont disponibles pour facilement changer la largeur des cellules
                               de la grille: </p>
                               <p> '+' pour agrandir la largeur de 5 px </p>
-                              <p> '-' pour diminuer la lagrgeur de 5 px </p>`,
+                              <p> '-' pour diminuer la lagrgeur de 5 px </p>
+                              <img src="assets/grille.png" width="300" height="300">`,
                 previous: true, next: true,
                 id: 14
             },
@@ -252,7 +273,14 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 name: 'Annuler-Refaire',
                 description: `<h1> Annuler-Refaire </h1>
                               <hr>
-                              <p> </p>`,
+                              <p> Il est possible d'annuler refaire les dernières actions convernant l'ajouter, la
+                              suppression et la modification des éléments dessinnés </p>
+                              <p> Les modifications d'un élément concerne:
+                                <li> Changer la couleur d'un élément </li>
+                                <li> Bouger une sélection </li>
+                              </p>
+                              <p> Il est possible d'annuler une action avec le raccourci 'CTRL+Z'. </p>
+                              <p> Il est possible de refaire une action avec le raccourci 'CTRL+SHIFT+Z'. </p>`,
                 previous: true, next: true,
                 id: 15
             }
@@ -269,7 +297,11 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 name: 'Nouveau Dessin',
                 description: `<h1> Nouveau Dessin </h1>
                               <hr>
-                              <p> </p>`,
+                              <p> Il est possible de créer un nouveau dessin soit à partir de la page d'accueil ou bien la page de dessin
+                              via l'option "Nouveau Dessin". Il est également possible d'appeler la fenêtre de création de dessin via le
+                              raccourci 'CTRL+O'. La hauteur et la largeur de la surface du nouveau dessin sont paramétrable (les valeurs
+                              par défaut seront celle de votre écran). La couleur de l,arrière-plan est elle aussi modifiable. </p>
+                              <img src="assets/nouveau dessin.png" width="500" height="300">`,
                 previous: true, next: true,
                 id: 16
             },
@@ -278,15 +310,16 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 description: `<h1> Sauvegarde </h1>
                               <hr>
                               <p> Il est possible de sauvegarder le dessin dans la galerie via l'option "Sauvegarder le dessin" ou
-                              encore avec le raccourci CTRL+S. Un menu de sauvagerde s'ouvrira alors. Pour être sauvegarder, le dessin
+                              encore avec le raccourci 'CTRL+S'. Un menu de sauvagerde s'ouvrira alors. Pour être sauvegarder, le dessin
                               doit avoir un nom. Afin de pouvoir facilement retrouver le dessin dans la galerie, il est possible d'y
                               accrocher des étiquettes. L'utilisateur peut personalisé ses équittes ou utilisés les étiquettes suivantes:
-                              <li> Portrait </li>
-                              <li> Paysage </li>
-                              <li> Pixel Art </li>
-                              <li> Futuriste </li>
-                              <li> Minimaliste </li>
-                              </p>`,
+                                <li> Portrait </li>
+                                <li> Paysage </li>
+                                <li> Pixel Art </li>
+                                <li> Futuriste </li>
+                                <li> Minimaliste </li>
+                              </p>
+                              <img src="assets/sauvegarde.png" width="500" height="300">`,
                 previous: true, next: true,
                 id: 17
             },
@@ -294,7 +327,12 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 name: 'Galerie',
                 description: `<h1> Galerie </h1>
                               <hr>
-                              <p> </p>`,
+                              <p> Les dessins sauvegardés sont stockés dans la galerie. Il est possible d'y accéder soit à partir de la
+                              page d'accueil ou bien la page de dessin via l'option "Galerie". Il est également possible d'appeler la
+                              fenêtre de galerie via le raccourci 'CTRL+G'. Les dessins peuvent être re-charger ou bien supprimer.
+                               Si les dessins ont été sauvegardé avec une étiquette, une option de filtre est disponible de faciliter la
+                               rechercher. </p>
+                               <img src="assets/galerie.png" width="800" height="300">`,
                 previous: true, next: true,
                 id: 18
             },
