@@ -53,7 +53,8 @@ export class RectangleService implements DrawElement {
 
   drawLine(): void {
     this.svg = '<line stroke-linecap="square'
-      + '" stroke="' + this.secondaryColor
+      + '" transform=" translate(' + this.translate.x + ' ' + this.translate.y
+      + ')" stroke="' + this.secondaryColor
       + '" stroke-width="' + this.thickness
       + (this.isDotted ? '"stroke-dasharray="2, 8"'  : '')
       + '" x1="' + this.points[0].x + '" y1="' + this.points[0].y
