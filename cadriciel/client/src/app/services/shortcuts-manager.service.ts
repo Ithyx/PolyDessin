@@ -12,6 +12,8 @@ import { RectangleToolService } from './tools/rectangle-tool.service';
 import { SelectionService } from './tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
 import { ExportWindowComponent } from '../components/export-window/export-window.component';
+import { TranslateSvgService } from './command/translate-svg.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 type FunctionShortcut = (keyboard?: KeyboardEvent ) => void;
 
@@ -45,7 +47,8 @@ export class ShortcutsManagerService {
               private selection: SelectionService,
               private stockageSVG: SVGStockageService,
               private grid: GridService,
-              private dialog: MatDialog
+              private dialog: MatDialog,
+              private sanitizer: DomSanitizer
               ) {
                 this.focusOnInput = false;
                 this.counter100ms = 0;
@@ -90,11 +93,10 @@ export class ShortcutsManagerService {
         window.clearInterval(this.clearTimeout);
         this.counter100ms = 0;
         this.clearTimeout = 0;
-        for (const element of this.stockageSVG.getCompleteSVG()) {
-          if (element.isSelected) {
-            element.translateAllPoints();
-          }
-        }
+        this.commands.execute(new TranslateSvgService(
+          this.selection,
+          this.sanitizer));
+
       } else if (this.clearTimeout === 0) {
         this.clearTimeout = window.setInterval(() => {
           const translate: Point = {x: 0 , y: 0};

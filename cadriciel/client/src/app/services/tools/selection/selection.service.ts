@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+// import { CommandManagerService } from '../../command/command-manager.service';
 import { DrawingManagerService } from '../../drawing-manager/drawing-manager.service';
 import { DrawElement } from '../../stockage-svg/draw-element';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
@@ -25,7 +26,8 @@ export class SelectionService implements ToolInterface {
               public selectionBox: SelectionBoxService,
               public selectionRectangle: SelectionRectangleService,
               private drawingManager: DrawingManagerService,
-              private sanitizer: DomSanitizer
+              private sanitizer: DomSanitizer,
+              // private command: CommandManagerService
              ) {
               this.clickOnSelectionBox = false;
               this.clickInSelectionBox = false;
@@ -88,6 +90,8 @@ export class SelectionService implements ToolInterface {
       for (const element of this.selectedElements) {
           element.translateAllPoints();
       }
+      // TODO:
+      // this.command.execute(new TranslateSvgService(this, this.sanitizer));
     } else {
       // Éviter de créer une boite de sélection si on effectue un simple clic
       if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
@@ -151,7 +155,7 @@ export class SelectionService implements ToolInterface {
 
     for (const element of this.SVGStockage.getCompleteSVG()) {
       this.findPointMinAndMax(element);
-      if (this.belongToRectangle(element, this.selectionRectangle.rectangle)) {
+      if (this.belongToRectangle(element, this.selectionRectangle.rectangle) && !this.selectedElements.includes(element)) {
         element.isSelected = true;
         this.selectedElements.push(element);
       }
