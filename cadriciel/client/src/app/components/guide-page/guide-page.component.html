@@ -3,7 +3,7 @@
         <app-guide-subject [node]="subject" (notification)="notificationReceived($event)"></app-guide-subject>
     </div>
     <div>
-        <button class="return" [routerLink]="[routingManager.previousPage]" mat-raised-button>Retour</button>
+        <button class="return" [routerLink]="[routingManager.previousPage]" (click)="leaveGuide()" mat-raised-button>Retour</button>
     </div>
 </mat-sidenav-container>
 
