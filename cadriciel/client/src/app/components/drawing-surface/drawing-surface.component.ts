@@ -16,7 +16,7 @@ import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-mana
   styleUrls: ['./drawing-surface.component.scss']
 })
 export class DrawingSurfaceComponent {
-  constructor(private SVGStockage: SVGStockageService,
+  constructor(public SVGStockage: SVGStockageService,
               private tools: ToolManagerService,
               public drawingManager: DrawingManagerService,
               public routingManager: RoutingManagerService,
@@ -42,7 +42,7 @@ export class DrawingSurfaceComponent {
   }
 
   handleElementClick(element: DrawElement): void {
-    this.colorChanger.activeElementID = this.SVGStockage.getCompleteSVG().indexOf(element);
+    this.colorChanger.activeElement = element;
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       this.selection.handleClick(element);
       this.selection.clickOnSelectionBox = false;
@@ -51,13 +51,11 @@ export class DrawingSurfaceComponent {
   }
 
   handleElementRightClick(element: DrawElement): boolean {
-    this.colorChanger.activeElementID = this.SVGStockage.getCompleteSVG().indexOf(element);
+    this.colorChanger.activeElement = element;
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       this.selection.handleRightClick(element);
       this.selection.clickOnSelectionBox = false;
       this.selection.clickInSelectionBox = false;
-    } else if (this.tools.activeTool.ID === TOOL_INDEX.COLOR_CHANGER) {
-      this.colorChanger.onRightClick();
     }
     return false;
   }
