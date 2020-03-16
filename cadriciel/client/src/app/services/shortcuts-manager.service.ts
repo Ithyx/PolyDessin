@@ -94,11 +94,13 @@ export class ShortcutsManagerService {
         window.clearInterval(this.clearTimeout);
         this.counter100ms = 0;
         this.clearTimeout = 0;
-        this.commands.execute(new TranslateSvgService(
-          this.selection.selectedElements,
-          this.selection.selectionBox,
-          this.sanitizer,
-          this.selection.deleteBoundingBox));
+        if (this.selection.hasMoved()) {
+          this.commands.execute(new TranslateSvgService(
+            this.selection.selectedElements,
+            this.selection.selectionBox,
+            this.sanitizer,
+            this.selection.deleteBoundingBox));
+        }
 
       } else if (this.clearTimeout === 0) {
         this.clearTimeout = window.setInterval(() => {

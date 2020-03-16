@@ -91,12 +91,14 @@ export class SelectionService implements ToolInterface {
       /* for (const element of this.selectedElements) {
           element.translateAllPoints();
       }*/
-      this.command.execute(new TranslateSvgService(
-        this.selectedElements,
-        this.selectionBox,
-        this.sanitizer,
-        this.deleteBoundingBox
-      ));
+      if (this.hasMoved()) {
+        this.command.execute(new TranslateSvgService(
+          this.selectedElements,
+          this.selectionBox,
+          this.sanitizer,
+          this.deleteBoundingBox
+        ));
+      }
     } else {
       // Éviter de créer une boite de sélection si on effectue un simple clic
       if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
@@ -257,6 +259,12 @@ export class SelectionService implements ToolInterface {
       }
       this.selectionBox.updatePositionMouse(mouse);
     }
+  }
+
+  hasMoved(): boolean {
+    const xTranslation = this.selectedElements[0].translate.x !== 0;
+    const yTranslation = this.selectedElements[0].translate.y !== 0;
+    return xTranslation || yTranslation;
   }
 
 }
