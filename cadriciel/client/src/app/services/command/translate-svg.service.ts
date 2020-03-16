@@ -18,13 +18,16 @@ export class TranslateSvgService implements Command {
              ) {
                this.translation = {x: this.selection.selectedElements[0].translate.x, y: this.selection.selectedElements[0].translate.y};
                this.commandElements = [...this.selection.selectedElements];
-               console.log(this.translation);
-               console.log(this.selection.selectedElements);
-               console.log(this.commandElements);
+               console.log(this.translation, this.selection.selectedElements);
                for (const element of this.selection.selectedElements) {
                 element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
                 element.translateAllPoints();
-              }
+               }
+               this.selection.selectionBox.selectionBox.translateAllPoints();
+               for (const element of this.selection.selectionBox.controlPointBox) {
+                 element.translateAllPoints();
+               }
+               console.log(this.translation, this.selection.selectedElements);
              }
 
   undo(): void {

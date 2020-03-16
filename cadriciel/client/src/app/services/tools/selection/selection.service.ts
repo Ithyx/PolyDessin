@@ -143,11 +143,15 @@ export class SelectionService implements ToolInterface {
   deleteBoundingBox(): void {
     this.selectionBox.deleteSelectionBox();
     this.selectedElements.splice(0, this.selectedElements.length);
-    for (const element of this.SVGStockage.getCompleteSVG()) {
+    /*for (const element of this.SVGStockage.getCompleteSVG()) {
       if (element.isSelected) {
         element.isSelected = false;
       }
+    }*/
+    for (const element of this.selectedElements) {
+      element.isSelected = false;
     }
+    this.selectedElements = [];
   }
 
   isInRectangleSelection(rectangleSelection: RectangleService): void {
@@ -222,13 +226,14 @@ export class SelectionService implements ToolInterface {
 
   updatePosition(x: number, y: number): void {
     if (this.selectionBox.selectionBox) {
-      for (const element of this.SVGStockage.getCompleteSVG()) {
-        if (element.isSelected) {
-          this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
+      // for (const element of this.SVGStockage.getCompleteSVG()) {
+      for (const element of this.selectedElements) {
+        // if (element.isSelected) {
+          // this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePosition(x, y);
           element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
-          this.selectedElements.push(element);
-        }
+          // this.selectedElements.push(element);
+        // }
       }
       this.selectionBox.updatePosition(x, y);
     }
@@ -236,13 +241,14 @@ export class SelectionService implements ToolInterface {
 
   updatePositionMouse(mouse: MouseEvent): void {
     if (this.selectionBox.selectionBox) {
-      for (const element of this.SVGStockage.getCompleteSVG()) {
-        if (element.isSelected) {
-          this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
+      // for (const element of this.SVGStockage.getCompleteSVG()) {
+      for (const element of this.selectedElements) {
+        // if (element.isSelected) {
+          // this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePositionMouse(mouse, this.selectionBox.mouseClick);
           element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
-          this.selectedElements.push(element);
-        }
+          // this.selectedElements.push(element);
+        // }
       }
       this.selectionBox.updatePositionMouse(mouse);
     }
