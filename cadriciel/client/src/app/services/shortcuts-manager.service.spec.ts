@@ -3,6 +3,9 @@ import { MatDialogModule } from '@angular/material';
 import { ShortcutsManagerService } from './shortcuts-manager.service';
 import { TOOL_INDEX } from './tools/tool-manager.service';
 
+// tslint:disable: no-magic-numbers
+// tslint:disable: no-string-literal
+
 describe('shortcuts-manager', () => {
 
   let service: ShortcutsManagerService;
@@ -349,7 +352,6 @@ describe('shortcuts-manager', () => {
 
   it('#shortcutKeyArrowLeft devrait mettre leftArrow à vrai', () => {
     service.shortcutKeyArrowLeft();
-    // tslint:disable-next-line:no-string-literal
     expect(service['leftArrow']).toBe(true);
   });
 
@@ -357,7 +359,6 @@ describe('shortcuts-manager', () => {
 
   it('#shortcutKeyArrowRight devrait mettre RightArrow à vrai', () => {
     service.shortcutKeyArrowRight();
-    // tslint:disable-next-line:no-string-literal
     expect(service['rightArrow']).toBe(true);
   });
 
@@ -365,7 +366,6 @@ describe('shortcuts-manager', () => {
 
   it('#shortcutKeyArrowDown devrait mettre DownArrow à vrai', () => {
     service.shortcutKeyArrowDown();
-    // tslint:disable-next-line:no-string-literal
     expect(service['downArrow']).toBe(true);
   });
 
@@ -373,7 +373,6 @@ describe('shortcuts-manager', () => {
 
   it('#shortcutKeyArrowUp devrait mettre UpArrow à vrai', () => {
     service.shortcutKeyArrowUp();
-    // tslint:disable-next-line:no-string-literal
     expect(service['upArrow']).toBe(true);
   });
 
@@ -402,28 +401,24 @@ describe('shortcuts-manager', () => {
   it('#treatReleaseKey devrait mettre leftArrow a false si il reçoit ArrowLeft', () => {
     const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowLeft'});
     service.treatReleaseKey(keyboard);
-    // tslint:disable-next-line:no-string-literal
     expect(service['leftArrow']).toBe(false);
   });
 
   it('#treatReleaseKey devrait mettre rightArrow a false si il reçoit ArrowRight', () => {
     const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowRight'});
     service.treatReleaseKey(keyboard);
-    // tslint:disable-next-line:no-string-literal
     expect(service['rightArrow']).toBe(false);
   });
 
   it('#treatReleaseKey devrait mettre upArrow a false si il reçoit ArrowUp', () => {
     const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowUp'});
     service.treatReleaseKey(keyboard);
-    // tslint:disable-next-line:no-string-literal
     expect(service['upArrow']).toBe(false);
   });
 
   it('#treatReleaseKey devrait mettre downArrow a false si il reçoit ArrowDown', () => {
     const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowDown'});
     service.treatReleaseKey(keyboard);
-    // tslint:disable-next-line:no-string-literal
     expect(service['downArrow']).toBe(false);
   });
 

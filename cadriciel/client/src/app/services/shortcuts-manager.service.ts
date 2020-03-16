@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
+import { ExportWindowComponent } from '../components/export-window/export-window.component';
 import { GalleryComponent } from '../components/gallery/gallery.component';
 import { SavePopupComponent } from '../components/save-popup/save-popup.component';
 import { CommandManagerService } from './command/command-manager.service';
+import { TranslateSvgService } from './command/translate-svg.service';
 import { GridService } from './grid/grid.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { EllipseToolService } from './tools/ellipse-tool.service';
@@ -11,14 +14,12 @@ import { LineToolService, Point } from './tools/line-tool.service';
 import { RectangleToolService } from './tools/rectangle-tool.service';
 import { SelectionService } from './tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
-import { ExportWindowComponent } from '../components/export-window/export-window.component';
-import { TranslateSvgService } from './command/translate-svg.service';
-import { DomSanitizer } from '@angular/platform-browser';
 
 type FunctionShortcut = (keyboard?: KeyboardEvent ) => void;
 
 const SELECTION_MOVEMENT_PIXEL = 3;
 const MOVEMENT_DELAY_MS = 100;
+const CONTINUOUS_MOVEMENT = 5;
 
 @Injectable({
   providedIn: 'root'
@@ -94,8 +95,10 @@ export class ShortcutsManagerService {
         this.counter100ms = 0;
         this.clearTimeout = 0;
         this.commands.execute(new TranslateSvgService(
-          this.selection,
-          this.sanitizer));
+          this.selection.selectedElements,
+          this.selection.selectionBox,
+          this.sanitizer,
+          this.selection.deleteBoundingBox));
 
       } else if (this.clearTimeout === 0) {
         this.clearTimeout = window.setInterval(() => {
@@ -118,8 +121,11 @@ export class ShortcutsManagerService {
           }
 
           this.counter100ms++;
-          if (this.counter100ms > 5) {
-              this.selection.updatePosition(translate.x , translate.y);
+          if (this.counter100ms <= 1) {
+            this.selection.updatePosition(translate.x , translate.y);
+          }
+          if (this.counter100ms > CONTINUOUS_MOVEMENT) {
+            this.selection.updatePosition(translate.x , translate.y);
           }
         }, MOVEMENT_DELAY_MS);
       }

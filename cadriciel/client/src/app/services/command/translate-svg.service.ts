@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Point } from '../tools/line-tool.service';
-import { Command } from './command';
-import { SelectionService } from '../tools/selection/selection.service';
 import { DrawElement } from '../stockage-svg/draw-element';
+import { Point } from '../tools/line-tool.service';
+// import { SelectionService } from '../tools/selection/selection.service';
+import { SelectionBoxService } from '../tools/selection/selection-box.service';
+import { Command } from './command';
 
 @Injectable({
   providedIn: 'root'
@@ -13,32 +14,32 @@ export class TranslateSvgService implements Command {
   translation: Point;
   commandElements: DrawElement[];
 
-  constructor( public selection: SelectionService,
-               private sanitizer: DomSanitizer
+  constructor( private selectedElements: DrawElement[],
+               private selectionBox: SelectionBoxService,
+               private sanitizer: DomSanitizer,
+               private deleteBoundingBoxMethod: () => void
              ) {
-               this.translation = {x: this.selection.selectedElements[0].translate.x, y: this.selection.selectedElements[0].translate.y};
-               this.commandElements = [...this.selection.selectedElements];
-               console.log(this.translation, this.selection.selectedElements);
-               for (const element of this.selection.selectedElements) {
+               this.translation = {x: this.selectedElements[0].translate.x, y: this.selectedElements[0].translate.y};
+               this.commandElements = [...this.selectedElements];
+               for (const element of this.selectedElements) {
                 element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
                 element.translateAllPoints();
                }
-               this.selection.selectionBox.selectionBox.translateAllPoints();
-               for (const element of this.selection.selectionBox.controlPointBox) {
+               this.selectionBox.selectionBox.translateAllPoints();
+               for (const element of this.selectionBox.controlPointBox) {
                  element.translateAllPoints();
                }
-               console.log(this.translation, this.selection.selectedElements);
              }
 
   undo(): void {
     const newTranslation: Point = {x: - this.translation.x, y: -this.translation.y};
     this.applyTranslation(newTranslation);
-    this.selection.deleteBoundingBox();
+    this.deleteBoundingBoxMethod();
   }
 
   redo(): void {
     this.applyTranslation(this.translation);
-    this.selection.deleteBoundingBox();
+    this.deleteBoundingBoxMethod();
   }
 
   applyTranslation(translation: Point): void {
