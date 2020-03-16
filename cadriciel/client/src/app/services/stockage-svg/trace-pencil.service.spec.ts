@@ -85,7 +85,8 @@ describe('TracePencilService', () => {
   it('#drawPoint devrait mettre un point dans SVG', () => {
     element.points.push({ x: 10, y: 10});
     element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
-    + '" r="' + element.thickness / 2
+    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + ')" r="' + element.thickness / 2
     + '" fill="' + element.primaryColor + '"/>';
     const testSVG = element.svg;
     element.drawPoint();
@@ -97,7 +98,8 @@ describe('TracePencilService', () => {
     element.thickness = 25;
     element.points.push({ x: 10, y: 10});
     element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
-    + '" r="' + element.thickness / 2
+    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + ')" r="' + element.thickness / 2
     + '" fill="' + element.primaryColor + '"/>';
     const testSVG = element.svg;
     element.drawPoint();
@@ -108,7 +110,8 @@ describe('TracePencilService', () => {
     element.primaryColor = 'rgba(1, 1, 1, 1)';
     element.points.push({ x: 10, y: 10});
     element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
-    + '" r="' + element.thickness / 2
+    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + ')" r="' + element.thickness / 2
     + '" fill="' + element.primaryColor + '"/>';
     const testSVG = element.svg;
     element.drawPoint();

@@ -88,7 +88,8 @@ describe('trace-brush', () => {
   it('#drawPoint devrait mettre un point dans SVG', () => {
     element.points.push({ x: 10, y: 10});
     element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
-    + '" filter="url(#' + element.chosenOption
+    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + ')" filter="url(#' + element.chosenOption
     + ')" r="' + element.thickness / 2
     + '" fill="' + element.primaryColor + '"/>';
     const testSVG = element.svg;
@@ -101,7 +102,8 @@ describe('trace-brush', () => {
     element.thickness = 25;
     element.points.push({ x: 10, y: 10});
     element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
-    + '" filter="url(#' + element.chosenOption
+    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + ')" filter="url(#' + element.chosenOption
     + ')" r="' + element.thickness / 2
     + '" fill="' + element.primaryColor + '"/>';
     const testSVG = element.svg;
@@ -113,7 +115,8 @@ describe('trace-brush', () => {
     element.primaryColor = 'rgba(1, 1, 1, 1)';
     element.points.push({ x: 10, y: 10});
     element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
-    + '" filter="url(#' + element.chosenOption
+    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + ')" filter="url(#' + element.chosenOption
     + ')" r="' + element.thickness / 2
     + '" fill="' + element.primaryColor + '"/>';
     const testSVG = element.svg;
