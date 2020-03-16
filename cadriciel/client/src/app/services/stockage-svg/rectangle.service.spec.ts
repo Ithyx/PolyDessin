@@ -22,6 +22,7 @@ describe('RectangleService', () => {
     element.secondaryColor = 'rgba(0, 0, 0, 1)';
     element.thickness = 5;
     element.translate = { x: 10, y: 10};
+    element.isDotted = true;
   });
 
   it('should be created', () => {
@@ -88,11 +89,26 @@ describe('RectangleService', () => {
 
   // TESTS drawLine
 
-  it('#drawLine devrait retourner le bon svg', () => {
+  it('#drawLine devrait attribuer le bon svg si isDotted vrai', () => {
     const test = '<line stroke-linecap="square'
-    + '" stroke="' + element.secondaryColor
+    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + ')" stroke="' + element.secondaryColor
     + '" stroke-width="' + element.thickness
-    + (element.isDotted ? '"stroke-dasharray="2, 8"'  : '')
+    +  '"stroke-dasharray="2, 8"'
+    + '" x1="' + element.points[0].x + '" y1="' + element.points[0].y
+    + '" x2="' + (element.points[0].x + element.getWidth())
+    + '" y2="' + (element.points[0].y + element.getHeight()) + '"/>';
+
+    element.drawLine();
+    expect(element.svg).toEqual(test);
+  });
+
+  it('#drawLine devrait attribuer le bon svg si isDotted faux', () => {
+    element.isDotted = false;
+    const test = '<line stroke-linecap="square'
+    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + ')" stroke="' + element.secondaryColor
+    + '" stroke-width="' + element.thickness
     + '" x1="' + element.points[0].x + '" y1="' + element.points[0].y
     + '" x2="' + (element.points[0].x + element.getWidth())
     + '" y2="' + (element.points[0].y + element.getHeight()) + '"/>';
@@ -103,9 +119,10 @@ describe('RectangleService', () => {
 
   // TESTS drawRectangle
 
-  it('#drawRectangle devrait retourner le bon svg', () => {
+  it('#drawRectangle devrait attribuer le bon svg si chosenOption n\'est pas \'Contour\'', () => {
+    element.chosenOption = 'Vide';
     const test = '<rect transform=" translate(' + element.translate.x + ' ' + element.translate.y +
-    ')" fill="' + ((element.chosenOption !== 'Contour') ? element.primaryColor : 'none')
+    ')" fill="' + element.primaryColor
     + '" stroke="' + ((element.chosenOption !== 'Plein') ? element.secondaryColor : 'none')
     + (element.isDotted ? '"stroke-dasharray="4, 4"'  : '')
     + '" stroke-width="' + element.thickness
@@ -116,127 +133,198 @@ describe('RectangleService', () => {
     expect(element.svg).toEqual(test);
   });
 
+  it('#drawRectangle devrait attribuer le bon svg si chosenOption est \'Contour\'', () => {
+    element.chosenOption = 'Contour';
+    const test = '<rect transform=" translate(' + element.translate.x + ' ' + element.translate.y +
+    ')" fill="' + 'none'
+    + '" stroke="' + ((element.chosenOption !== 'Plein') ? element.secondaryColor : 'none')
+    + (element.isDotted ? '"stroke-dasharray="4, 4"'  : '')
+    + '" stroke-width="' + element.thickness
+    + '" x="' + element.points[0].x + '" y="' + element.points[0].y
+    + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"/>';
+
+    element.drawRectangle();
+    expect(element.svg).toEqual(test);
+  });
+
+  it('#drawRectangle devrait attribuer le bon svg si chosenOption n\'est pas \'Plein\'', () => {
+    element.chosenOption = 'Vide';
+    const test = '<rect transform=" translate(' + element.translate.x + ' ' + element.translate.y +
+    ')" fill="' + ((element.chosenOption !== 'Contour') ? element.primaryColor : 'none')
+    + '" stroke="' + element.secondaryColor
+    + (element.isDotted ? '"stroke-dasharray="4, 4"'  : '')
+    + '" stroke-width="' + element.thickness
+    + '" x="' + element.points[0].x + '" y="' + element.points[0].y
+    + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"/>';
+
+    element.drawRectangle();
+    expect(element.svg).toEqual(test);
+  });
+
+  it('#drawRectangle devrait attribuer le bon svg si chosenOption est \'Plein\'', () => {
+    element.chosenOption = 'Plein';
+    const test = '<rect transform=" translate(' + element.translate.x + ' ' + element.translate.y +
+    ')" fill="' + ((element.chosenOption !== 'Contour') ? element.primaryColor : 'none')
+    + '" stroke="' + 'none'
+    + (element.isDotted ? '"stroke-dasharray="4, 4"'  : '')
+    + '" stroke-width="' + element.thickness
+    + '" x="' + element.points[0].x + '" y="' + element.points[0].y
+    + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"/>';
+
+    element.drawRectangle();
+    expect(element.svg).toEqual(test);
+  });
+
+  it('#drawRectangle devrait attribuer le bon svg si isDotted vrai', () => {
+    const test = '<rect transform=" translate(' + element.translate.x + ' ' + element.translate.y +
+    ')" fill="' + ((element.chosenOption !== 'Contour') ? element.primaryColor : 'none')
+    + '" stroke="' + ((element.chosenOption !== 'Plein') ? element.secondaryColor : 'none')
+    + '"stroke-dasharray="4, 4"'
+    + '" stroke-width="' + element.thickness
+    + '" x="' + element.points[0].x + '" y="' + element.points[0].y
+    + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"/>';
+
+    element.drawRectangle();
+    expect(element.svg).toEqual(test);
+  });
+
+  it('#drawRectangle devrait attribuer le bon svg si isDotted faux', () => {
+    element.isDotted = false;
+    const test = '<rect transform=" translate(' + element.translate.x + ' ' + element.translate.y +
+    ')" fill="' + ((element.chosenOption !== 'Contour') ? element.primaryColor : 'none')
+    + '" stroke="' + ((element.chosenOption !== 'Plein') ? element.secondaryColor : 'none')
+    + '" stroke-width="' + element.thickness
+    + '" x="' + element.points[0].x + '" y="' + element.points[0].y
+    + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"/>';
+
+    element.drawRectangle();
+    expect(element.svg).toEqual(test);
+  });
+
   // TESTS drawPerimeter
-/*
-  it('#drawPerimeter devrait retourner le bon svg', () => {
-    const test = 
+
+  it('#drawPerimeter devrait attribuer le bon perimeter si chosenOption est \'Plein\'', () => {
+    element.chosenOption = 'Plein';
+    const test = '<rect stroke="gray" fill="none" stroke-width="2"stroke-dasharray="4, 4"'
+    + '" x="' + element.points[0].x + '" y="' + element.points[0].y
+    + '" height="' + element.getHeight() + '" width="' + element.getWidth() + '"/>';
 
     element.drawPerimeter();
-    expect(element.svg).toEqual(test);
-  });*/
-/*
-  // TODO : Déplacer les tests de création de SVG vers RectangleService
-
-  // TESTS SUR LA CRÉATION DE RECTANGLES
-
-  it("#refreshSVG devrait tracer un rectangle lors d'un mouvement "
-    + 'vers le coin inférieur droit', () => {
-    // on simule un mouvement de 20 en x et de 50 en y
-    const evenement = new MouseEvent('mousemove', { clientX: 20, clientY: 50 });
-    service.onMouseMove(evenement);
-    // on vérifie le SVG qui a été tracé
-    expect(stockageService.getSVGEnCours() + '"/>').toEqual(referenceSVG);
-  });
-  it("#refreshSVG devrait tracer un rectangle lors d'un mouvement "
-    + 'vers le coin supérieur droit', () => {
-    // on simule un mouvement de 20 en x et de -50 en y
-    service.initial.y = 50;
-    const evenement = new MouseEvent('mousemove', { clientX: 20, clientY: 0 });
-    service.onMouseMove(evenement);
-    // on vérifie le SVG qui a été tracé
-    expect(stockageService.getSVGEnCours() + '"/>').toEqual(referenceSVG);
-  });
-  it("#refreshSVG devrait tracer un rectangle lors d'un mouvement "
-    + 'vers le coin inférieur gauche', () => {
-    // on simule un mouvement de -20 en x et de 50 en y
-    service.initial.x = 20;
-    const evenement = new MouseEvent('mousemove', { clientX: 0, clientY: 50 });
-    service.onMouseMove(evenement);
-    // on vérifie le SVG qui a été tracé
-    expect(stockageService.getSVGEnCours() + '"/>').toEqual(referenceSVG);
-  });
-  it("#refreshSVG devrait tracer un rectangle lors d'un mouvement "
-    + 'vers le coin supérieur gauche', () => {
-    // on simule un mouvement de -20 en x et de -50 en y
-    service.initial.x = 20;
-    service.initial.y = 50;
-    const evenement = new MouseEvent('mousemove', { clientX: 0, clientY: 0 });
-    service.onMouseMove(evenement);
-    // on vérifie le SVG qui a été tracé
-    expect(stockageService.getSVGEnCours() + '"/>').toEqual(referenceSVG);
-  });
-  it("#refreshSVG devrait tracer un rectangle sans contour si l'épaisseur"
-    + 'est invalide', () => {
-    service.outils.outilActif = {
-      nom: 'outilActifTest',
-      estActif: true,
-      ID: 0,
-      parametres: [
-        {type: 'select', nom: 'testEpaisseurInvalide', optionChoisie: '1', options: ['1', '2']},
-        {type: 'select', nom: 'testTypeTrace', optionChoisie: '1', options: ['1', '2']}
-      ],
-      nomIcone: ''
-    };
-    service.refreshSVG();
-    expect(stockageService.getSVGEnCours()).toContain('stroke-width="0"');
+    expect(element.perimeter).toEqual(test);
   });
 
-  // TESTS SUR LA CRÉATION DE LIGNES
+  it('#drawPerimeter devrait attribuer le bon perimeter dans la branche chosenOption n\'est pas \'Plein\''
+  + 'si Height et Width non nuls', () => {
+    element.chosenOption = 'Vide';
+    const thicknessTest = element.thickness;
+    const test = '<rect stroke="gray" fill="none" stroke-width="2"stroke-dasharray="4, 4"'
+    + '" x="' + (element.points[0].x - thicknessTest / 2)
+    + '" y="' + (element.points[0].y - thicknessTest / 2)
+    + '" height="' + (element.getHeight() + thicknessTest)
+    + '" width="' + (element.getWidth() + thicknessTest) + '"/>';
 
-  it('#refreshSVG devrait tracer une ligne si la height est nulle', () => {
-    // on simule un mouvement de 20 en x et de 0 en y
-    const evenement = new MouseEvent('mousemove', { clientX: 20, clientY: 0 });
-    service.onMouseMove(evenement);
-    // on vérifie le SVG qui a été tracé
-    expect(stockageService.getSVGEnCours()).toContain('<line');
-  });
-  it('#refreshSVG devrait tracer une ligne si la width est nulle', () => {
-    // on simule un mouvement de 0 en x et de 20 en y
-    const evenement = new MouseEvent('mousemove', { clientX: 0, clientY: 20 });
-    service.onMouseMove(evenement);
-    // on vérifie le SVG qui a été tracé
-    expect(stockageService.getSVGEnCours()).toContain('<line');
-  });
-  it('#refreshSVG ne devrait pas tracer de ligne si le tracé est plein sans contour', () => {
-    // on simule un mouvement de 0 en x et de 20 en y
-    service.outils.outilActif.parametres[1].optionChoisie = 'Plein';
-    const evenement = new MouseEvent('mousemove', { clientX: 0, clientY: 20 });
-    service.onMouseMove(evenement);
-    // on vérifie le SVG qui a été tracé
-    expect(stockageService.getSVGEnCours()).toContain('<rect');
+    element.drawPerimeter();
+    expect(element.perimeter).toEqual(test);
   });
 
-  // TESTS SUR LA CRÉATION DE PÉRIMÈTRES
+  it('#drawPerimeter devrait attribuer le bon perimeter dans la branche chosenOption n\'est pas \'Plein\''
+  + 'si Height et Width sont nuls', () => {
+    element.points = [];
+    element.points.push({x: 10, y: 10});
+    element.points.push({x: 10, y: 10});
+    element.chosenOption = 'Vide';
+    const thicknessTest = element.thickness;
+    const test = '<rect stroke="gray" fill="none" stroke-width="2"stroke-dasharray="4, 4"'
+    + '" x="' + (element.points[0].x - thicknessTest / 2)
+    + '" y="' + (element.points[0].y - thicknessTest / 2)
+    + '" height="' + thicknessTest + '" width="' + thicknessTest + '"/>';
 
-  it("#refreshSVG devrait tracer un périmètre en prenant en compte l'épaisseur "
-    + "s'il y a un contour", () => {
-    // on simule un mouvement de 20 en x et de 50 en y
-    const evenement = new MouseEvent('mousemove', { clientX: 20, clientY: 50 });
-    service.onMouseMove(evenement);
-    // on vérifie le périmètre qui a été tracé
-    expect(String(stockageService.getPerimetreEnCoursHTML())).toContain(
-      'x="-2.5" y="-2.5" height="55" width="25"'
-    );
+    element.drawPerimeter();
+    expect(element.perimeter).toEqual(test);
   });
-  it("#refreshSVG devrait tracer un périmètre sans prendre en compte l'épaisseur "
-    + "s'il n'y a pas de contour", () => {
-    // on simule un mouvement de 20 en x et de 50 en y
-    service.outils.outilActif.parametres[1].optionChoisie = 'Plein';
-    const evenement = new MouseEvent('mousemove', { clientX: 20, clientY: 50 });
-    service.onMouseMove(evenement);
-    // on vérifie le périmètre qui a été tracé
-    expect(String(stockageService.getPerimetreEnCoursHTML())).toContain(
-      'x="0" y="0" height="50" width="20"'
-    );
+
+  it('#drawPerimeter devrait attribuer le bon perimeter si isDotted est false dans la branche chosenOption est \'Plein\'', () => {
+    element.isDotted = false;
+    element.chosenOption = 'Plein';
+    const test = '<rect stroke="gray" fill="none" stroke-width="2'
+    + '" x="' + element.points[0].x + '" y="' + element.points[0].y
+    + '" height="' + element.getHeight() + '" width="' + element.getWidth() + '"/>';
+
+    element.drawPerimeter();
+    expect(element.perimeter).toEqual(test);
   });
-  it("#refreshSVG devrait tracer un périmètre autour d'une ligne "
-    + 'dans le cas où une ligne est tracée', () => {
-    // on simule un mouvement de 0 en x et de 20 en y
-    const evenement = new MouseEvent('mousemove', { clientX: 0, clientY: 20 });
-    service.onMouseMove(evenement);
-    // on vérifie le périmètre qui a été tracé
-    expect(String(stockageService.getPerimetreEnCoursHTML())).toContain(
-      'x="-2.5" y="-2.5" height="25" width="5"'
-    );
-  });*/
+
+  // TESTS updatePosition
+
+  it('#updatePosition devrait attribuer les valeurs en paramètre à translation', () => {
+    element.translate = {x: 90, y: 90};
+    element.updatePosition(10, 10);
+    expect(element.translate).toEqual({x: 100, y: 100});
+  });
+
+  it('#updatePosition devrait appeler la fonction draw', () => {
+    spyOn(element, 'draw');
+    element.updatePosition(10, 10);
+    expect(element.draw).toHaveBeenCalled();
+  });
+
+  // TESTS updatePositionMouse
+
+  it('#updatePositionMouse devrait attribuer les valeurs en paramètre à translation', () => {
+    const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
+    element.updatePositionMouse(click, {x: 10, y: 10});
+    expect(element.translate).toEqual({x: 90, y: 90});
+  });
+
+  it('#updatePositionMouse devrait appeler la fonction draw', () => {
+    spyOn(element, 'draw');
+    const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
+    element.updatePositionMouse(click, {x: 10, y: 10});
+    expect(element.draw).toHaveBeenCalled();
+  });
+
+  // TESTS updateParameters
+
+  it('#updateParameters devrait attribuer les valeurs de l\'outil en paramètre à thickness s\'il en a une', () => {
+    service.tools.toolList[3].parameters[0].value = 20;
+    const test = service.tools.toolList[3].parameters[0].value;
+    element.updateParameters(service.tools.toolList[3]);
+    expect(element.thickness).toEqual(test);
+  });
+
+  it('#updateParameters devrait assigner 1 à thickness', () => {
+    service.tools.toolList[3].parameters[0].value = 0;
+    const testTool = service.tools.toolList[3];
+    element.updateParameters(testTool);
+    expect(element.thickness).toEqual(1);
+  });
+
+  it('#updateParameters devrait assigner chosenOption en paramètre à chosenOption', () => {
+    service.tools.toolList[3].parameters[1].chosenOption = 'Point';
+    const testTool = service.tools.toolList[3];
+    element.updateParameters(testTool);
+    expect(element.chosenOption).toEqual('Point');
+  });
+
+  it('#updateParameters devrait assigner une chaine de caractère vide à chosenOption', () => {
+    service.tools.toolList[3].parameters[1].chosenOption = '';
+    const testTool = service.tools.toolList[3];
+    element.updateParameters(testTool);
+    expect(element.chosenOption).toEqual('');
+  });
+
+  // TESTS translateAllPoints
+
+  it('#translateAllPoints devrait changer tous les points de points pour ajouter la translation', () => {
+    element.points = [];
+    element.points.push({x: 10, y: 10});
+    element.translateAllPoints();
+    expect(element.points[0].x).toEqual(20);
+    expect(element.points[0].y).toEqual(20);
+  });
+
+  it('#translateAllPoints devrait mettre translation à 0', () => {
+    element.translateAllPoints();
+    expect(element.translate).toEqual({x: 0, y: 0});
+  });
 });
