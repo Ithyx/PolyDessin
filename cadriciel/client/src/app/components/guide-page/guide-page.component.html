@@ -1,11 +1,12 @@
-<div class="sidenav">
-    <div>
-        <button class="return" [routerLink]="[routingManager.previousPage]" mat-raised-button>Retour</button>
-    </div>
+<mat-sidenav-container class="sidenav">
     <div *ngFor = 'let subject of subjects'>
         <app-guide-subject [node]="subject" (notification)="notificationReceived($event)"></app-guide-subject>
     </div>
-</div>
+    <div>
+        <button class="return" [routerLink]="[routingManager.previousPage]" mat-raised-button>Retour</button>
+    </div>
+</mat-sidenav-container>
+
 
 <div class="content">
     <div *ngIf="activeSubject" [innerHTML]="activeSubject.description"></div>

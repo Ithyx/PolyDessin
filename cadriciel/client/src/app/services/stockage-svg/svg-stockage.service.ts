@@ -55,26 +55,6 @@ export class SVGStockageService {
     return this.completeSVG;
   }
 
-  changePrimaryColor(id: number, color: string): string | undefined {
-    const oldColor = this.completeSVG[id].primaryColor;
-    if (oldColor) {
-      this.completeSVG[id].primaryColor = color;
-      this.completeSVG[id].draw();
-      this.completeSVG[id].svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.completeSVG[id].svg);
-    }
-    return oldColor;
-  }
-
-  changeSecondaryColor(id: number, color: string): string | undefined {
-    const oldColor = this.completeSVG[id].secondaryColor;
-    if (oldColor) {
-      this.completeSVG[id].secondaryColor = color;
-      this.completeSVG[id].draw();
-      this.completeSVG[id].svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.completeSVG[id].svg);
-    }
-    return oldColor;
-  }
-
   cleanDrawing(): void {
     this.completeSVG = [];
     this.size = 0;

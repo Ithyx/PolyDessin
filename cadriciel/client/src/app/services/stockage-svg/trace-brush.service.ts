@@ -52,7 +52,8 @@ export class TraceBrushService implements DrawElement {
 
   drawPoint(): void {
     this.svg = '<circle cx="' + this.points[0].x + '" cy="' + this.points[0].y
-      + '" filter="url(#' + this.chosenOption
+      + '" transform=" translate(' + this.translate.x + ' ' + this.translate.y
+      + ')" filter="url(#' + this.chosenOption
       + ')" r="' + this.thickness / 2
       + '" fill="' + this.primaryColor + '"/>';
   }

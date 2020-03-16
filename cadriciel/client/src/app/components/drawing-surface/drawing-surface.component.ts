@@ -21,7 +21,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   @ViewChild('drawing', {static: false})
   drawing: ElementRef<SVGElement>;
 
-  constructor(private SVGStockage: SVGStockageService,
+  constructor(public SVGStockage: SVGStockageService,
               private tools: ToolManagerService,
               public drawingManager: DrawingManagerService,
               public routingManager: RoutingManagerService,
@@ -53,7 +53,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   }
 
   handleElementClick(element: DrawElement): void {
-    this.colorChanger.activeElementID = this.SVGStockage.getCompleteSVG().indexOf(element);
+    this.colorChanger.activeElement = element;
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       this.selection.handleClick(element);
       this.selection.clickOnSelectionBox = false;
@@ -62,13 +62,11 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   }
 
   handleElementRightClick(element: DrawElement): boolean {
-    this.colorChanger.activeElementID = this.SVGStockage.getCompleteSVG().indexOf(element);
+    this.colorChanger.activeElement = element;
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       this.selection.handleRightClick(element);
       this.selection.clickOnSelectionBox = false;
       this.selection.clickInSelectionBox = false;
-    } else if (this.tools.activeTool.ID === TOOL_INDEX.COLOR_CHANGER) {
-      this.colorChanger.onRightClick();
     }
     return false;
   }
@@ -111,9 +109,11 @@ export class DrawingSurfaceComponent implements AfterViewInit {
 
   handleMouseUpBackground(): void {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
-      this.selection.selectionBox.selectionBox.translateAllPoints();
-      for (const controlPoint of this.selection.selectionBox.controlPointBox) {
-        controlPoint.translateAllPoints();
+      if (this.selection.selectedElements.length !== 0) {
+        this.selection.selectionBox.selectionBox.translateAllPoints();
+        for (const controlPoint of this.selection.selectionBox.controlPointBox) {
+          controlPoint.translateAllPoints();
+        }
       }
     }
    }

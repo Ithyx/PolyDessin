@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { MatDialogModule, MatSidenavModule } from '@angular/material';
 import { ExportWindowComponent } from './export-window.component';
 
 describe('ExportWindowComponent', () => {
@@ -8,7 +9,8 @@ describe('ExportWindowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExportWindowComponent ]
+      declarations: [ ExportWindowComponent ],
+      imports: [MatSidenavModule, MatDialogModule]
     })
     .compileComponents();
   }));

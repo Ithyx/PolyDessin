@@ -11,11 +11,11 @@ import { GUIDE_CONTENTS } from './guide-contents';
 })
 
 export class GuidePageComponent {
-  subjects: SubjectGuide[] = GUIDE_CONTENTS;
-  activeSubject: SubjectGuide = GUIDE_CONTENTS[0];
+  private subjects: SubjectGuide[] = GUIDE_CONTENTS;
+  private activeSubject: SubjectGuide = GUIDE_CONTENTS[0];
 
   constructor(private navigationGuide: NavigationGuideService,
-              public routingManager: RoutingManagerService) { }
+              protected routingManager: RoutingManagerService) { }
 
   onClick(changedID: number): void {
     this.navigationGuide.openCategories(this.subjects);
