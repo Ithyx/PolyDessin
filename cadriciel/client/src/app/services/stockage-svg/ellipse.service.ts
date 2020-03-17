@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { DrawElement } from './draw-element';
+import { DrawElement, EVIDENCE_COLOR } from './draw-element';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +14,7 @@ export class EllipseService implements DrawElement {
 
   points: Point[];
   isSelected: boolean;
+  erasingEvidence: boolean;
 
   primaryColor: string;
   secondaryColor: string;
@@ -33,6 +34,7 @@ export class EllipseService implements DrawElement {
     this.pointMin = {x: 0, y: 0};
     this.pointMax = {x: 0, y: 0};
     this.isSelected = false;
+    this.erasingEvidence = false;
     this.translate = { x: 0, y: 0};
   }
 
@@ -56,7 +58,7 @@ export class EllipseService implements DrawElement {
   drawLine(): void {
     this.svg = '<line stroke-linecap="round'
       + '" transform=" translate(' + this.translate.x + ' ' + this.translate.y
-      + ')" stroke="' + this.secondaryColor
+      + ')" stroke="' + (this.erasingEvidence) ? EVIDENCE_COLOR :  this.secondaryColor
       + '" stroke-width="' + this.thickness
       + '" x1="' + this.points[0].x + '" y1="' + this.points[0].y
       + '" x2="' + (this.points[0].x + this.getWidth())
@@ -66,7 +68,7 @@ export class EllipseService implements DrawElement {
   drawEllipse(): void {
     this.svg = '<ellipse transform=" translate(' + this.translate.x + ' ' + this.translate.y +
       ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor : 'none')
-      + '" stroke="' + ((this.chosenOption !== 'Plein') ? this.secondaryColor : 'none')
+      + '" stroke="' + ((this.chosenOption !== 'Plein') ? ((this.erasingEvidence) ? EVIDENCE_COLOR :  this.secondaryColor) : 'none')
       + '" stroke-width="' + this.thickness
       + '" cx="' + (this.points[0].x + this.points[1].x) / 2 + '" cy="' + (this.points[0].y + this.points[1].y) / 2
       + '" rx="' + this.getWidth() / 2 + '" ry="' + this.getHeight() / 2 + '"></ellipse>';

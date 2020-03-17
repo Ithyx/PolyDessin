@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { DrawElement } from './draw-element';
+import { DrawElement, EVIDENCE_COLOR } from './draw-element';
 
 const MIN_DIAMETER = 5;
 
@@ -14,6 +14,7 @@ export class TraceSprayService implements DrawElement {
   svg: string;
   svgHtml: SafeHtml;
   isSelected: boolean;
+  erasingEvidence: boolean;
 
   diameter: number;
   points: Point[] = [];
@@ -27,6 +28,7 @@ export class TraceSprayService implements DrawElement {
   constructor() {
     this.svgHtml = '';
     this.isSelected = false;
+    this.erasingEvidence = false;
     this.translate = { x: 0, y: 0};
   }
 
@@ -34,7 +36,8 @@ export class TraceSprayService implements DrawElement {
     this.svg = '';
     for (const point of this.points) {
       this.svg += '<circle transform ="translate(' + this.translate.x + ' ' + this.translate.y
-      + `)"cx="${point.x}" cy="${point.y}" r="1" fill="${this.primaryColor}" />`;
+      + `)"cx="${point.x}" cy="${point.y}" r="1"`
+      + `fill="${(this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor}" />`;
     }
   }
 
@@ -45,7 +48,8 @@ export class TraceSprayService implements DrawElement {
     const y = mousePosition.y + position * Math.sin(angle);
     this.points.push({x, y});
     this.svg += '<circle transform ="translate(' + this.translate.x + ' ' + this.translate.y
-      + `)"cx="${x}" cy="${y}" r="1" fill="${this.primaryColor}" />`;
+      + `)"cx="${x}" cy="${y}" r="1"`
+      + `fill="${(this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor}" />`;
   }
 
   updatePosition(x: number, y: number): void {

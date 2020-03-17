@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { DrawElement } from './draw-element';
+import { DrawElement, EVIDENCE_COLOR } from './draw-element';
 
 const MIN_SIDES = 4;
 
@@ -15,6 +15,7 @@ export class PolygonService implements DrawElement {
 
   points: Point[];
   isSelected: boolean;
+  erasingEvidence: boolean;
 
   primaryColor: string;
   secondaryColor: string;
@@ -35,6 +36,7 @@ export class PolygonService implements DrawElement {
     this.pointMin = {x: 0, y: 0};
     this.pointMax = {x: 0, y: 0};
     this.isSelected = false;
+    this.erasingEvidence = false;
     this.translate = { x: 0, y: 0};
   }
 
@@ -54,7 +56,7 @@ export class PolygonService implements DrawElement {
   drawPolygon(): void {
     this.svg = '<polygon transform=" translate(' + this.translate.x + ' ' + this.translate.y +
       ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor : 'none')
-      + '" stroke="' + ((this.chosenOption !== 'Plein') ? this.secondaryColor : 'none')
+      + '" stroke="' + ((this.chosenOption !== 'Plein') ? (this.erasingEvidence) ? EVIDENCE_COLOR :  this.secondaryColor : 'none')
       + '" stroke-width="' + this.thickness
       + '" points="';
     for (const point of this.points) {

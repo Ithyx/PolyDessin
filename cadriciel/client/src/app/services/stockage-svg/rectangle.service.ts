@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { DrawElement } from './draw-element';
+import { DrawElement, EVIDENCE_COLOR } from './draw-element';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,7 @@ export class RectangleService implements DrawElement {
 
   points: Point[];
   isSelected: boolean;
+  erasingEvidence: boolean;
 
   primaryColor: string;
   secondaryColor: string;
@@ -31,6 +32,7 @@ export class RectangleService implements DrawElement {
     this.points = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
                    {x: 0, y: 0}];   // points[1], coin bas droite
     this.isSelected = false;
+    this.erasingEvidence = false;
     this.translate = { x: 0, y: 0};
   }
 
@@ -54,7 +56,7 @@ export class RectangleService implements DrawElement {
   drawLine(): void {
     this.svg = '<line stroke-linecap="square'
       + '" transform=" translate(' + this.translate.x + ' ' + this.translate.y
-      + ')" stroke="' + this.secondaryColor
+      + ')" stroke="' + (this.erasingEvidence) ? EVIDENCE_COLOR :  this.secondaryColor
       + '" stroke-width="' + this.thickness
       + (this.isDotted ? '"stroke-dasharray="2, 8"'  : '')
       + '" x1="' + this.points[0].x + '" y1="' + this.points[0].y
@@ -66,7 +68,7 @@ export class RectangleService implements DrawElement {
     const choosedOption = this.chosenOption;
     this.svg = '<rect transform=" translate(' + this.translate.x + ' ' + this.translate.y +
       ')" fill="' + ((choosedOption !== 'Contour') ? this.primaryColor : 'none')
-      + '" stroke="' + ((choosedOption !== 'Plein') ? this.secondaryColor : 'none')
+      + '" stroke="' + ((choosedOption !== 'Plein') ? (this.erasingEvidence) ? EVIDENCE_COLOR :  this.secondaryColor : 'none')
       + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')
       + '" stroke-width="' + this.thickness
       + '" x="' + this.points[0].x + '" y="' + this.points[0].y

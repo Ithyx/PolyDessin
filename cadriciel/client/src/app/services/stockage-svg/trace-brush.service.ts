@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { DrawElement } from './draw-element';
+import { DrawElement, EVIDENCE_COLOR } from './draw-element';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,7 @@ export class TraceBrushService implements DrawElement {
 
   points: Point[];
   isSelected: boolean;
+  erasingEvidence: boolean;
 
   isAPoint: boolean;
   thickness: number;
@@ -28,6 +29,7 @@ export class TraceBrushService implements DrawElement {
     this.points = [];
     this.isSelected = false;
     this.isAPoint = false;
+    this.erasingEvidence = false;
     this.translate = { x: 0, y: 0};
   }
 
@@ -40,7 +42,8 @@ export class TraceBrushService implements DrawElement {
   }
 
   drawPath(): void {
-    this.svg = '<path transform="translate(' + this.translate.x + ' ' + this.translate.y + `)" fill="none" stroke="${this.primaryColor}"`
+    this.svg = '<path transform="translate(' + this.translate.x + ' ' + this.translate.y + ')" fill="none"'
+      + `stroke="${(this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor}"`
       + ' filter="url(#' + this.chosenOption
       + ')" stroke-linecap="round" stroke-width="' + this.thickness + '" d="';
     for (let i = 0; i < this.points.length; ++i) {
@@ -55,7 +58,7 @@ export class TraceBrushService implements DrawElement {
       + '" transform=" translate(' + this.translate.x + ' ' + this.translate.y
       + ')" filter="url(#' + this.chosenOption
       + ')" r="' + this.thickness / 2
-      + '" fill="' + this.primaryColor + '"></circle>';
+      + '" fill="' + (this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor + '"></circle>';
   }
 
   updatePosition(x: number, y: number): void {
