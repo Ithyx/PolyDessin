@@ -60,7 +60,7 @@ export class PolygonService implements DrawElement {
     for (const point of this.points) {
       this.svg += point.x + ' ' + point.y + ' ';
     }
-    this.svg += '"/>';
+    this.svg += '"></polygon>';
   }
 
   drawPerimeter(): void {

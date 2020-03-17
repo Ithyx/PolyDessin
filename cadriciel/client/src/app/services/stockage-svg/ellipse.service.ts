@@ -60,7 +60,7 @@ export class EllipseService implements DrawElement {
       + '" stroke-width="' + this.thickness
       + '" x1="' + this.points[0].x + '" y1="' + this.points[0].y
       + '" x2="' + (this.points[0].x + this.getWidth())
-      + '" y2="' + (this.points[0].y + this.getHeight()) + '"/>';
+      + '" y2="' + (this.points[0].y + this.getHeight()) + '"></line>';
   }
 
   drawEllipse(): void {
@@ -69,7 +69,7 @@ export class EllipseService implements DrawElement {
       + '" stroke="' + ((this.chosenOption !== 'Plein') ? this.secondaryColor : 'none')
       + '" stroke-width="' + this.thickness
       + '" cx="' + (this.points[0].x + this.points[1].x) / 2 + '" cy="' + (this.points[0].y + this.points[1].y) / 2
-      + '" rx="' + this.getWidth() / 2 + '" ry="' + this.getHeight() / 2 + '"/>';
+      + '" rx="' + this.getWidth() / 2 + '" ry="' + this.getHeight() / 2 + '"></ellipse>';
   }
 
   drawPerimeter(): void {

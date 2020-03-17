@@ -105,6 +105,7 @@ export class EraserToolService implements ToolInterface {
 
   onMouseClick(mouse: MouseEvent): void {
     this.isInEraser();
+    this.removeElements();
   }
 
   onMouseRelease(): void {
