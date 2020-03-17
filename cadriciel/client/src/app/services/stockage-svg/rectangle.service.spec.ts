@@ -70,7 +70,7 @@ describe('RectangleService', () => {
     expect(element.drawLine).not.toHaveBeenCalled();
   });
 
-  it('#draw devrait  appeler drawRectangle() en ne satisfaisant pas les conditions pour avec chosenOption à \'Plein\'', () => {
+  it('#draw devrait appeler drawRectangle() en ne satisfaisant pas les conditions pour avec chosenOption à \'Plein\'', () => {
     element.points[0].x = 0;
     element.points[1].x = 0;
     element.points[0].y = 0;
