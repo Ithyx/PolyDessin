@@ -18,7 +18,6 @@ const DEFAULT_THICKNESS = 10;
 export class EraserToolService implements ToolInterface {
   selectedDrawElement: DrawElement[];
   selectedSVGElement: SVGElement[];
-  eraser: RectangleService;
   square: SVGRect;
   mousePosition: Point = {x: 0, y: 0};
   thickness: number;
@@ -29,18 +28,18 @@ export class EraserToolService implements ToolInterface {
               public commands: CommandManagerService,
               public svgStockage: SVGStockageService,
               public selection: SelectionService) {
-    this.eraser = new RectangleService();
     this.selectedDrawElement = [];
     this.selectedSVGElement = [];
     this.thickness = DEFAULT_THICKNESS;
   }
 
   makeSquare(): void {
-    this.eraser.svg = '<rect class="eraser" x="' + this.mousePosition.x + '" y="' + this.mousePosition.y +
-    '" width="' + this.thickness + '" height="' + this.thickness +
+    const eraser = new RectangleService();
+    eraser.svg = '<rect class="eraser" x="' + this.square.x + '" y="' + this.square.y +
+    '" width="' + this.square.width + '" height="' + this.square.height +
     '" stroke="rgba(0, 0, 0, 1)" fill="white" stroke-width="1"></rect>';
-    this.eraser.svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.eraser.svg);
-    this.svgStockage.setOngoingSVG(this.eraser);
+    eraser.svgHtml = this.sanitizer.bypassSecurityTrustHtml(eraser.svg);
+    this.svgStockage.setOngoingSVG(eraser);
   }
 
   isInEraser(): void {
@@ -52,27 +51,42 @@ export class EraserToolService implements ToolInterface {
 
     // En convertissant en SVGPathElement, on peut obtenir les coordonnés x y de chaque point à une longueur donnée
     elements.forEach((element) => {
-      const length = (element as SVGPathElement).getTotalLength();
-      // console.log('Element lenght', length);
-      for (let index = 0; index < length; index++) {
-        const domPoint = (element as SVGPathElement).getPointAtLength(index);
-        if (this.belongsToSquare({x: domPoint.x, y: domPoint.y })         // On vérifie si le point appartient à l'efface
-            && !this.selectedSVGElement.includes(element)                 // On vérifie si on a pas deja l'element
-            && !element.outerHTML.includes('class="eraser"')) {           // On vérifie que l'element n'est pas l'efface
-          // console.log('BelongToSqare', element.outerHTML, this.eraser.svg);
-          this.selectedSVGElement.push(element);
+      if (!this.selectedSVGElement.includes(element)                 // On vérifie si on a pas deja l'element
+          && !element.outerHTML.includes('class="eraser"')
+          && !element.outerHTML.includes('class="grid"')) {        // On vérifie que l'element n'est pas l'efface
+        const length = (element as SVGPathElement).getTotalLength();
+        // console.log('Element lenght', length);
+        for (let index = 0; index < length; index++) {
+          const domPoint = (element as SVGPathElement).getPointAtLength(index);
+          if (this.belongsToSquare({x: domPoint.x, y: domPoint.y })) {      // On vérifie si le point appartient à l'efface
+            // console.log('BelongToSqare', element.outerHTML, this.eraser.svg);
+            this.selectedSVGElement.push(element);
+            /*for (const element2 of this.svgStockage.getCompleteSVG()) {
+              // console.log('Element2 HTML', element2.outerHTML);
+              // console.log('Element HTML', element.svg);
+              if ((element.outerHTML === element2.svg || this.isPointInPoly(element2, this.mousePosition))
+                  && !this.selectedDrawElement.includes(element2)) {
+                this.selectedDrawElement.push(element2);
+              }
+            }*/
+          }
         }
       }
     });
     // console.log('SelectedElement2', this.selectedSVGElement);
 
-    for (const element2 of this.selectedSVGElement) {
-      for (const element of this.svgStockage.getCompleteSVG()) {
-        // console.log('Element2 HTML', element2.outerHTML);
-        // console.log('Element HTML', element.svg);
-        if (element2.outerHTML === element.svg
-            && !this.selectedDrawElement.includes(element)) {
+    for (const element of this.svgStockage.getCompleteSVG()) {
+      if (!this.selectedDrawElement.includes(element)) {
+        if (this.isPointInPoly(element, this.mousePosition)) {
           this.selectedDrawElement.push(element);
+        } else {
+          for (const element2 of this.selectedSVGElement) {
+            // console.log('Element2 HTML', element2.outerHTML);
+            // console.log('Element HTML', element.svg);
+            if (element2.outerHTML === element.svg && !this.selectedDrawElement.includes(element)) {
+              this.selectedDrawElement.push(element);
+            }
+          }
         }
       }
     }
@@ -81,20 +95,38 @@ export class EraserToolService implements ToolInterface {
   }
 
   belongsToSquare(point: Point): boolean {
-    const isInSquareX = (point.x >= this.mousePosition.x) && (point.x <= this.mousePosition.x + this.thickness);
-    const isInSquareY = (point.y >= this.mousePosition.y) && (point.y <= this.mousePosition.y + this.thickness);
+    const isInSquareX = (point.x >= this.square.x) && (point.x <= this.square.x + this.thickness);
+    const isInSquareY = (point.y >= this.square.y) && (point.y <= this.square.y + this.thickness);
     return isInSquareX && isInSquareY;
+  }
+
+  // + Jonas Raoni Soares Silva
+  // @ http://jsfromhell.com/math/is-point-in-poly [rev. #0]
+  isPointInPoly(element: DrawElement, point: Point): boolean {
+    if (element.chosenOption !== 'Plein' && element.chosenOption !== 'Plein avec contour') {
+      return false;
+    }
+    const polygon = element.points;
+    let isInPolygon = false;
+    let i = -1;
+    for (let j = polygon.length - 1; ++i < polygon.length; j = i) {
+      if (((polygon[i].y <= point.y && point.y < polygon[j].y) || (polygon[j].y <= point.y && point.y < polygon[i].y))
+          && (point.x < (polygon[j].x - polygon[i].x) * (point.y - polygon[i].y) / (polygon[j].y - polygon[i].y) + polygon[i].x)) {
+        isInPolygon = !isInPolygon;
+      }
+    }
+    return isInPolygon;
   }
 
   onMouseMove(mouse: MouseEvent): void {
     this.thickness = (this.tools.activeTool.parameters[0].value) ? this.tools.activeTool.parameters[0].value : DEFAULT_THICKNESS;
     this.mousePosition = {x: mouse.offsetX, y: mouse.offsetY};
-    this.makeSquare();
     this.square = (this.drawing as SVGSVGElement).createSVGRect();
-    this.square.x = mouse.offsetX;
-    this.square.y = mouse.offsetY;
+    this.square.x = mouse.offsetX - this.thickness / 2;
+    this.square.y = mouse.offsetY - this.thickness / 2;
     this.square.width = this.thickness;
     this.square.height = this.thickness;
+    this.makeSquare();
     if (this.commands.drawingInProgress) {
       this.isInEraser();
     }
@@ -129,8 +161,7 @@ export class EraserToolService implements ToolInterface {
 
   clear(): void {
     this.commands.drawingInProgress = false;
-    this.eraser = new RectangleService();
-    this.svgStockage.setOngoingSVG(this.eraser);
+    this.svgStockage.setOngoingSVG(new RectangleService());
     this.selectedDrawElement = [];
     this.selectedSVGElement = [];
   }

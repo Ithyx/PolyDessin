@@ -17,6 +17,7 @@ export interface DrawElement {
   perimeter?: string;
   isAPoint?: boolean;               // Possible Refactoring ? Vraiment Utile?
   isDotted?: boolean;
+  chosenOption?: string;
 
   pointMin: Point;
   pointMax: Point;
