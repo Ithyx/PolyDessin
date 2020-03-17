@@ -45,7 +45,7 @@ export class TracePencilService implements DrawElement {
   }
 
   drawPath(): void {
-    this.svg = '<path transform="translate(' + this.translate.x + ' ' + this.translate.y + ')" fill="none"'
+    this.svg = '<path transform="translate(' + this.translate.x + ' ' + this.translate.y + ')" fill="none" '
       + `stroke="${(this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor}"`
       + ' stroke-linecap="round" stroke-width="' + this.thickness + '" d="';
     for (let i = 0; i < this.points.length; ++i) {
@@ -59,7 +59,7 @@ export class TracePencilService implements DrawElement {
     this.svg = '<circle cx="' + this.points[0].x + '" cy="' + this.points[0].y
       + '" transform=" translate(' + this.translate.x + ' ' + this.translate.y
       + ')" r="' + this.thickness / 2
-      + '" fill="' + (this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor + '"></circle>';
+      + '" fill="' + ((this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor) + '"></circle>';
   }
 
   updatePosition(x: number, y: number): void {

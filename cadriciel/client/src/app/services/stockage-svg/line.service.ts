@@ -42,7 +42,7 @@ export class LineService implements DrawElement {
   draw(): void {
     this.svg = (this.isAPolygon) ? '<polygon ' : '<polyline ';
     this.svg += ' transform ="translate(' + this.translate.x + ' ' + this.translate.y + ')"';
-    this.svg += 'fill="none" stroke="' + (this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor;
+    this.svg += 'fill="none" stroke="' + ((this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor);
     this.svg += '" stroke-width="' + this.thicknessLine;
     this.svg += '" points="';
     for (const point of this.points) {
@@ -68,7 +68,7 @@ export class LineService implements DrawElement {
     for (const point of this.points) {
       this.svg += '<circle transform ="translate(' + this.translate.x + ' ' + this.translate.y
       + ')"cx="' + point.x + '" cy="' + point.y + '" r="' + this.thicknessPoint
-      + '" fill="' + (this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor + '"/>';
+      + '" fill="' + ((this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor) + '"/>';
     }
   }
 
