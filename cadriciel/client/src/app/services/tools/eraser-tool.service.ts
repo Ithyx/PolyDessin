@@ -17,6 +17,7 @@ const DEFAULT_THICKNESS = 10;
 })
 export class EraserToolService implements ToolInterface {
   selectedElements: DrawElement[];
+  selectedElements2: SVGElement[];
   eraser: RectangleService;
   square: SVGRect;
   mousePosition: Point = {x: 0, y: 0};
@@ -30,6 +31,7 @@ export class EraserToolService implements ToolInterface {
               public selection: SelectionService) {
     this.eraser = new RectangleService();
     this.selectedElements = [];
+    this.selectedElements2 = [];
     this.thickness = DEFAULT_THICKNESS;
   }
 
@@ -56,9 +58,23 @@ export class EraserToolService implements ToolInterface {
         }
       }
     }*/
-    const elements = (this.drawing as SVGSVGElement).getEnclosureList(this.square, this.drawing);
+    // const elements = (this.drawing as SVGSVGElement).getEnclosureList(this.square, this.drawing);
+    // On regarde quels elements ont une boundingBox en intersection avec l'efface
+    const elements = (this.drawing as SVGSVGElement).getIntersectionList(this.square, this.drawing);
+    console.log('IntersectionList', elements);
     elements.forEach((element) => {
-      console.log(element);
+      const length = (element as SVGPathElement).getTotalLength();
+      console.log('Element lenght', length);
+      for (let index = 0; index < length; index++) {
+        const domPoint = (element as SVGPathElement).getPointAtLength(index);
+        if (this.belongsToSquare({x: domPoint.x, y: domPoint.y })       // On vérifie si le point appartient à l'efface
+            && !this.selectedElements2.includes(element)                // On vérifie si on a pas deja l'element
+            && element.innerHTML !== this.eraser.svg) {                 // On vérifie que l'element n'est pas l'efface --> ne fonctionne pas
+          console.log('BelongToSqare', element);
+          this.selectedElements2.push(element);
+        }
+      }
+      console.log('SelectedElement2', this.selectedElements2);
     });
   }
 
