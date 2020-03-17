@@ -120,8 +120,8 @@ export class EraserToolService implements ToolInterface {
   }
 
   removeElements(): void {
-    for (const element of this.selectedDrawElement) {
-      this.commands.execute(new RemoveSVGService(element, this.svgStockage));
+    if (this.selectedDrawElement.length !== 0) {
+      this.commands.execute(new RemoveSVGService(this.selectedDrawElement, this.svgStockage));
     }
     this.selectedDrawElement = [];
     this.selectedSVGElement = [];

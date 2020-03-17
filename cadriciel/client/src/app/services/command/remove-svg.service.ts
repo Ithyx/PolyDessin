@@ -7,16 +7,22 @@ import { Command } from './command';
   providedIn: 'root'
 })
 export class RemoveSVGService implements Command {
-  constructor(public element: DrawElement,
+  constructor(public elements: DrawElement[],
               public svgStockage: SVGStockageService) {
-    svgStockage.removeSVG(this.element);
+    for (const element of elements) {
+      svgStockage.removeSVG(element);
+    }
   }
 
   undo(): void {
-    this.svgStockage.addSVG(this.element);
+    for (const element of this.elements) {
+      this.svgStockage.addSVG(element);
+    }
   }
 
   redo(): void {
-    this.svgStockage.removeSVG(this.element);
+    for (const element of this.elements) {
+      this.svgStockage.removeSVG(element);
+    }
   }
 }
