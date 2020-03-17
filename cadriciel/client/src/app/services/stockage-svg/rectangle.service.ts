@@ -70,7 +70,7 @@ export class RectangleService implements DrawElement {
       + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')
       + '" stroke-width="' + this.thickness
       + '" x="' + this.points[0].x + '" y="' + this.points[0].y
-      + '" width="' + this.getWidth() + '" height="' + this.getHeight() + '"/>';
+      + '" width="' + this.getWidth() + '" height="' + this.getHeight() + '"></rect>';
   }
 
   drawPerimeter(): void {
@@ -78,12 +78,12 @@ export class RectangleService implements DrawElement {
     this.perimeter = '<rect stroke="gray" fill="none" stroke-width="2' + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '');
     if (this.chosenOption === 'Plein') {
       this.perimeter += '" x="' + this.points[0].x + '" y="' + this.points[0].y
-        + '" height="' + this.getHeight() + '" width="' + this.getWidth() + '"/>';
+        + '" height="' + this.getHeight() + '" width="' + this.getWidth() + '"></rect>';
     } else {
       this.perimeter += '" x="' + (this.points[0].x - thickness / 2)
         + '" y="' + (this.points[0].y - thickness / 2);
       this.perimeter += '" height="' + ((this.getHeight() === 0) ? thickness : (this.getHeight() + thickness))
-        + '" width="' + ((this.getWidth() === 0) ? thickness : (this.getWidth() + thickness)) + '"/>';
+        + '" width="' + ((this.getWidth() === 0) ? thickness : (this.getWidth() + thickness)) + '"></rect>';
     }
   }
 

@@ -43,13 +43,13 @@ export class TracePencilService implements DrawElement {
   }
 
   drawPath(): void {
-    this.svg = '<path transform ="translate(' + this.translate.x + ' ' + this.translate.y + `)" fill="none" stroke="${this.primaryColor}"`
-      + 'stroke-linecap="round" stroke-width="' + this.thickness + '" d="';
+    this.svg = '<path transform="translate(' + this.translate.x + ' ' + this.translate.y + `)" fill="none" stroke="${this.primaryColor}"`
+      + ' stroke-linecap="round" stroke-width="' + this.thickness + '" d="';
     for (let i = 0; i < this.points.length; ++i) {
       this.svg += (i === 0) ? 'M ' : 'L ';
       this.svg += this.points[i].x + ' ' + this.points[i].y + ' ';
     }
-    this.svg += '" />';
+    this.svg += '"></path>';
   }
 
   drawPoint(): void {
