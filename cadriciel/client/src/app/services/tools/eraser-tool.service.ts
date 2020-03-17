@@ -36,7 +36,7 @@ export class EraserToolService implements ToolInterface {
   }
 
   makeSquare(): void {
-    this.eraser.svg = '<rect x="' + this.mousePosition.x + '" y="' + this.mousePosition.y +
+    this.eraser.svg = '<rect class="eraser" x="' + this.mousePosition.x + '" y="' + this.mousePosition.y +
     '" width="' + this.thickness + '" height="' + this.thickness +
     '" stroke="rgba(0, 0, 0, 1)" fill="white" stroke-width="1"></rect>';
     this.eraser.svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.eraser.svg);
@@ -58,7 +58,7 @@ export class EraserToolService implements ToolInterface {
         const domPoint = (element as SVGPathElement).getPointAtLength(index);
         if (this.belongsToSquare({x: domPoint.x, y: domPoint.y })         // On vérifie si le point appartient à l'efface
             && !this.selectedSVGElement.includes(element)                 // On vérifie si on a pas deja l'element
-            && element.outerHTML !== this.eraser.svg) {                   // On vérifie que l'element n'est pas l'efface
+            && !element.outerHTML.includes('class="eraser"')) {           // On vérifie que l'element n'est pas l'efface
           // console.log('BelongToSqare', element.outerHTML, this.eraser.svg);
           this.selectedSVGElement.push(element);
         }
@@ -70,7 +70,8 @@ export class EraserToolService implements ToolInterface {
       for (const element of this.svgStockage.getCompleteSVG()) {
         // console.log('Element2 HTML', element2.outerHTML);
         // console.log('Element HTML', element.svg);
-        if (element2.outerHTML === element.svg) {
+        if (element2.outerHTML === element.svg
+            && !this.selectedDrawElement.includes(element)) {
           this.selectedDrawElement.push(element);
         }
       }
