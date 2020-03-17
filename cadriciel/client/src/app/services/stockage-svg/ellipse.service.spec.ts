@@ -198,7 +198,6 @@ describe('EllipseService', () => {
     expect(element.perimeter).toEqual(test);
   });
 
-  
   // TESTS updatePosition
 
   it('#updatePosition devrait attribuer les valeurs en paramètre à translation', () => {
