@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { DrawElement, EVIDENCE_COLOR } from './draw-element';
+import { Color, DrawElement, EVIDENCE_COLOR } from './draw-element';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,8 @@ export class EllipseService implements DrawElement {
   isSelected: boolean;
   erasingEvidence: boolean;
 
-  primaryColor: string;
-  secondaryColor: string;
+  primaryColor: Color;
+  secondaryColor: Color;
 
   thickness: number;
   chosenOption: string;

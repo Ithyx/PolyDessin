@@ -4,6 +4,11 @@ import { DrawingTool } from '../tools/tool-manager.service';
 
 export const EVIDENCE_COLOR = 'rgba(255, 0, 0, 1)';
 
+export interface Color {
+  RGBAString: string;
+  RGBA: [number, number, number, number];
+}
+
 export interface DrawElement {
   svg: string;
   svgHtml: SafeHtml;
@@ -12,8 +17,8 @@ export interface DrawElement {
   isSelected: boolean;
   erasingEvidence: boolean;
 
-  primaryColor?: string;
-  secondaryColor?: string;
+  primaryColor?: Color;
+  secondaryColor?: Color;
 
   texture?: string;
   thickness?: number;
