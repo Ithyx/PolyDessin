@@ -47,38 +47,28 @@ export class EraserToolService implements ToolInterface {
   }
 
   isInEraser(): void {
-    // NOTE : Les console.log(...) ralentissent considérament l'application - H.
-
     // On regarde quels elements ont une boundingBox en intersection avec l'efface
-    const elements = (this.drawing as SVGSVGElement).getIntersectionList(this.square, this.drawing);
-    // console.log('IntersectionList', elements);
+    const intersectionElements = (this.drawing as SVGSVGElement).getIntersectionList(this.square, this.drawing);
 
     // En convertissant en SVGPathElement, on peut obtenir les coordonnés x y de chaque point à une longueur donnée
-    elements.forEach((element) => {
-      if (!this.selectedSVGElement.includes(element)                 // On vérifie si on a pas deja l'element
-          && !element.outerHTML.includes('class="eraser"')           // On vérifie que l'element n'est pas l'efface
-          && !element.outerHTML.includes('class="grid"')) {          // On vérifie que l'element n'est pas la grille
+    intersectionElements.forEach((element) => {
+      if (!this.selectedSVGElement.includes(element)                      // On vérifie si on a pas deja l'element
+          && !element.outerHTML.includes('class="eraser"')                // On vérifie que l'element n'est pas l'efface
+          && !element.outerHTML.includes('class="grid"')) {               // On vérifie que l'element n'est pas la grille
         const length = (element as SVGPathElement).getTotalLength();
-        // console.log('Element lenght', length);
-        for (let index = 0; index < length; index++) {
+        // TODO: Il est n'est pas forcément utile de d'incrémenr l'indexde 1 en 1. Chercher la valeur limite de
+        // TODO: l'index permettrait d'éviter des calculs
+        for (let index = 0; index < length; index += 3) {
           const domPoint = (element as SVGPathElement).getPointAtLength(index);
-          if (this.belongsToSquare({x: domPoint.x, y: domPoint.y })  // On vérifie si le point appartient à l'efface
-            && !this.selectedSVGElement.includes(element)) {
-            // console.log('BelongToSqare', element.outerHTML, this.eraser.svg);
+          if (this.belongsToSquare({x: domPoint.x, y: domPoint.y })) {    // On vérifie si le point appartient à l'efface
             this.selectedSVGElement.push(element);
-            /*for (const element2 of this.svgStockage.getCompleteSVG()) {
-              // console.log('Element2 HTML', element2.outerHTML);
-              // console.log('Element HTML', element.svg);
-              if ((element.outerHTML === element2.svg || this.isPointInPoly(element2, this.mousePosition))
-                  && !this.selectedDrawElement.includes(element2)) {
-                this.selectedDrawElement.push(element2);
-              }
-            }*/
+
+            // TODO: Possible gain de performance avec l'association SVGElement à DrawElement en déplaçant la boucle for ligne 71 ici
+
           }
         }
       }
     });
-    // console.log('SelectedElement2', this.selectedSVGElement);
 
     for (const element of this.svgStockage.getCompleteSVG()) {
       if (!this.selectedDrawElement.includes(element)) {
@@ -86,17 +76,28 @@ export class EraserToolService implements ToolInterface {
           this.selectedDrawElement.push(element);
         } else {
           for (const element2 of this.selectedSVGElement) {
-            // console.log('Element2 HTML', element2.outerHTML);
-            // console.log('Element HTML', element.svg);
             if (element.svg.includes(element2.outerHTML) && !this.selectedDrawElement.includes(element)) {
               this.selectedDrawElement.push(element);
+              // Mise en évidence (rouge)
+              /* element.erasingEvidence = true;
+              element.draw();
+              element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
+            } else {
+              element.erasingEvidence = false;
+              element.draw();
+              element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg); */
             }
           }
         }
       }
     }
-    // console.log('SelectedElement', this.selectedDrawElement);
-    this.selectedSVGElement = [];
+
+    if (this.commands.drawingInProgress) {
+      this.removeElements();
+    } else {
+      this.selectedDrawElement = [];
+      this.selectedSVGElement = [];
+    }
   }
 
   belongsToSquare(point: Point): boolean {
@@ -148,9 +149,7 @@ export class EraserToolService implements ToolInterface {
     this.square.width = this.thickness;
     this.square.height = this.thickness;
     this.makeSquare();
-    if (this.commands.drawingInProgress) {
-      this.isInEraser();
-    }
+    this.isInEraser();
   }
 
   onMousePress(): void {
@@ -168,7 +167,7 @@ export class EraserToolService implements ToolInterface {
   }
 
   onMouseLeave(): void {
-    this.removeElements();
+    // this.removeElements();
     this.clear();
   }
 
