@@ -33,7 +33,10 @@ export class LineService implements DrawElement {
     this.points = [];
     this.isSelected = false;
     this.erasingEvidence = false;
-    this.primaryColor.RGBAString = 'rgba(0,0,0,1)';
+    this.primaryColor = {
+      RGBAString: 'rgba(0,0,0,1)',
+      RGBA: [0, 0, 0, 0]
+    };
     this.isAPolygon = false;
     this.mousePosition = {x: 0, y: 0};
     this.translate = { x: 0, y: 0};

@@ -68,7 +68,7 @@
         <div class="color_button">
             Couleur primaire
             <br />
-            <button [ngStyle]= "{'background-color': colorParameter.getPrimaryColor() || 'white'}" 
+            <button [ngStyle]= "{'background-color': colorParameter.getPrimaryColor().RGBAString || 'white'}" 
                     (click)="selectColor('primary')"></button>
             <br />
             <div class="opacity_selector">
@@ -82,7 +82,7 @@
             <br />
             Couleur secondaire
             <br />
-            <button [ngStyle]= "{'background-color': colorParameter.getSecondaryColor() || 'white'}"
+            <button [ngStyle]= "{'background-color': colorParameter.getSecondaryColor().RGBAString || 'white'}"
                     (click)="selectColor('secondary')"></button>
             <div class="opacity_selector">
                 <label for="secondary-opacity">Opacité: </label>

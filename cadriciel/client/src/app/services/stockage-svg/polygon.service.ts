@@ -33,6 +33,14 @@ export class PolygonService implements DrawElement {
   constructor() {
     this.svgHtml = '';
     this.points = [];
+    this.primaryColor = {
+      RGBAString: '',
+      RGBA: [0, 0, 0, 0]
+    };
+    this.secondaryColor = {
+      RGBAString: '',
+      RGBA: [0, 0, 0, 0]
+    };
     this.pointMin = {x: 0, y: 0};
     this.pointMax = {x: 0, y: 0};
     this.isSelected = false;

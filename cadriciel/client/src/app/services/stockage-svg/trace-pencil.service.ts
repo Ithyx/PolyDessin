@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { DrawElement, EVIDENCE_COLOR } from './draw-element';
+import { Color, DrawElement, EVIDENCE_COLOR } from './draw-element';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class TracePencilService implements DrawElement {
   thickness: number;
 
   isAPoint: boolean;
-  primaryColor: string;
+  primaryColor: Color;
 
   pointMin: Point;
   pointMax: Point;
@@ -29,6 +29,10 @@ export class TracePencilService implements DrawElement {
     this.svgHtml = '';
     this.points = [];
     this.isSelected = false;
+    this.primaryColor = {
+      RGBAString: '',
+      RGBA: [0, 0, 0, 0]
+    };
     this.erasingEvidence = false;
     this.isAPoint = false;
     this.pointMin = {x: 0 , y: 0};
@@ -46,7 +50,7 @@ export class TracePencilService implements DrawElement {
 
   drawPath(): void {
     this.svg = '<path transform="translate(' + this.translate.x + ' ' + this.translate.y + ')" fill="none" '
-      + `stroke="${(this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor}"`
+      + `stroke="${(this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor.RGBAString}"`
       + ' stroke-linecap="round" stroke-width="' + this.thickness + '" d="';
     for (let i = 0; i < this.points.length; ++i) {
       this.svg += (i === 0) ? 'M ' : 'L ';
@@ -59,7 +63,7 @@ export class TracePencilService implements DrawElement {
     this.svg = '<circle cx="' + this.points[0].x + '" cy="' + this.points[0].y
       + '" transform=" translate(' + this.translate.x + ' ' + this.translate.y
       + ')" r="' + this.thickness / 2
-      + '" fill="' + ((this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor) + '"></circle>';
+      + '" fill="' + ((this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor.RGBAString) + '"></circle>';
   }
 
   updatePosition(x: number, y: number): void {

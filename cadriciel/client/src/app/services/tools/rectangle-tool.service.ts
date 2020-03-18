@@ -35,8 +35,8 @@ export class RectangleToolService implements ToolInterface {
 
   refreshSVG(): void {
     this.rectangle.updateParameters(this.tools.activeTool);
-    this.rectangle.primaryColor = this.colorParameter.getPrimaryColor();
-    this.rectangle.secondaryColor = this.colorParameter.getSecondaryColor();
+    this.rectangle.primaryColor.RGBAString = this.colorParameter.getPrimaryColor().RGBAString;
+    this.rectangle.secondaryColor.RGBAString = this.colorParameter.getSecondaryColor().RGBAString;
     this.rectangle.draw();
     this.stockageSVG.setOngoingSVG(this.rectangle);
   }

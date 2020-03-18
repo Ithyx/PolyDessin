@@ -29,6 +29,14 @@ export class EllipseService implements DrawElement {
 
   constructor() {
     this.svgHtml = '';
+    this.primaryColor = {
+      RGBAString: '',
+      RGBA: [0, 0, 0, 0]
+    };
+    this.secondaryColor = {
+      RGBAString: '',
+      RGBA: [0, 0, 0, 0]
+    };
     this.points = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
                    {x: 0, y: 0}];   // points[1], coin bas droite
     this.pointMin = {x: 0, y: 0};
