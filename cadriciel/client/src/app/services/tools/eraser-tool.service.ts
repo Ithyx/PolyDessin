@@ -77,25 +77,22 @@ export class EraserToolService implements ToolInterface {
     });
 
     for (const element of this.svgStockage.getCompleteSVG()) {
+      element.erasingEvidence = false;
       if (!this.selectedDrawElement.includes(element)) {
         if (this.isPointInPoly(element, this.mousePosition)) {
           this.selectedDrawElement.push(element);
+          element.erasingEvidence = true;     // Mise en évidence (rouge)
         } else {
           for (const element2 of this.selectedSVGElement) {
             if (element.svg.includes(element2.outerHTML) && !this.selectedDrawElement.includes(element)) {
               this.selectedDrawElement.push(element);
-              // Mise en évidence (rouge)
-              /* element.erasingEvidence = true;
-              element.draw();
-              element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
-            } else {
-              element.erasingEvidence = false;
-              element.draw();
-              element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg); */
+              element.erasingEvidence = true;     // Mise en évidence (rouge)
             }
           }
         }
       }
+      element.draw();
+      element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
     }
 
     if (this.commands.drawingInProgress) {
@@ -177,6 +174,11 @@ export class EraserToolService implements ToolInterface {
   }
 
   removeElements(): void {
+    for (const element of this.selectedDrawElement) {
+      element.erasingEvidence = false;
+      element.draw();
+      element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
+    }
     if (this.selectedDrawElement.length !== 0) {
       this.commands.execute(new RemoveSVGService(this.selectedDrawElement, this.svgStockage));
     }
