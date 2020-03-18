@@ -112,7 +112,7 @@ export class EraserToolService implements ToolInterface {
       return false;
     }
 
-    let polygon: Point[] = element.points;
+    let polygon: Point[] = [];
     if (element instanceof RectangleService) {
       polygon.push(element.points[0]);
       polygon.push({x: element.points[0].x + element.getWidth(), y: element.points[0].y});
