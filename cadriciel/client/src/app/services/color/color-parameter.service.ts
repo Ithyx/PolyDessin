@@ -36,8 +36,8 @@ export class ColorParameterService {
   }
 
   intervertColors(): void {
-    const copy = this.primaryColor;
-    this.primaryColor = this.secondaryColor;
+    const copy = {...this.primaryColor};
+    this.primaryColor = {...this.secondaryColor};
     this.secondaryColor = copy;
   }
 
