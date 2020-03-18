@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CanvasConversionService } from '../canvas-conversion.service';
 import { Command } from './command';
 
 @Injectable({
@@ -7,7 +8,7 @@ import { Command } from './command';
 export class CommandManagerService {
   drawingInProgress: boolean;  // Annuler-refaire désactivé si un dessin est en cours
 
-  constructor() {
+  constructor(private canvasConversion: CanvasConversionService) {
     this.drawingInProgress = false;
   }
 
@@ -15,6 +16,7 @@ export class CommandManagerService {
   cancelledCommands: Command[] = [];
 
   execute(command: Command): void {
+    this.canvasConversion.updateDrawing();
     this.executedCommands.push(command);
     this.cancelledCommands = [];
   }
