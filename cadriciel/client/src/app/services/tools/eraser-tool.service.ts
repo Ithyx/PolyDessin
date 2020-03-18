@@ -52,13 +52,14 @@ export class EraserToolService implements ToolInterface {
     // En convertissant en SVGPathElement, on peut obtenir les coordonnés x y de chaque point à une longueur donnée
     elements.forEach((element) => {
       if (!this.selectedSVGElement.includes(element)                 // On vérifie si on a pas deja l'element
-          && !element.outerHTML.includes('class="eraser"')
-          && !element.outerHTML.includes('class="grid"')) {        // On vérifie que l'element n'est pas l'efface
+          && !element.outerHTML.includes('class="eraser"')           // On vérifie que l'element n'est pas l'efface
+          && !element.outerHTML.includes('class="grid"')) {          // On vérifie que l'element n'est pas la grille
         const length = (element as SVGPathElement).getTotalLength();
         // console.log('Element lenght', length);
         for (let index = 0; index < length; index++) {
           const domPoint = (element as SVGPathElement).getPointAtLength(index);
-          if (this.belongsToSquare({x: domPoint.x, y: domPoint.y })) {      // On vérifie si le point appartient à l'efface
+          if (this.belongsToSquare({x: domPoint.x, y: domPoint.y })  // On vérifie si le point appartient à l'efface
+            && !this.selectedSVGElement.includes(element)) {
             // console.log('BelongToSqare', element.outerHTML, this.eraser.svg);
             this.selectedSVGElement.push(element);
             /*for (const element2 of this.svgStockage.getCompleteSVG()) {
@@ -83,7 +84,7 @@ export class EraserToolService implements ToolInterface {
           for (const element2 of this.selectedSVGElement) {
             // console.log('Element2 HTML', element2.outerHTML);
             // console.log('Element HTML', element.svg);
-            if (element2.outerHTML === element.svg && !this.selectedDrawElement.includes(element)) {
+            if (element.svg.includes(element2.outerHTML) && !this.selectedDrawElement.includes(element)) {
               this.selectedDrawElement.push(element);
             }
           }

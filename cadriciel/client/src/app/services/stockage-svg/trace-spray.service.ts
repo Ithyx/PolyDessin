@@ -35,9 +35,9 @@ export class TraceSprayService implements DrawElement {
   draw(): void {
     this.svg = '';
     for (const point of this.points) {
-      this.svg += '<circle transform ="translate(' + this.translate.x + ' ' + this.translate.y
+      this.svg += '<circle transform="translate(' + this.translate.x + ' ' + this.translate.y
       + `)" cx="${point.x}" cy="${point.y}" r="1" `
-      + `fill="${(this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor}" />`;
+      + `fill="${(this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor}"></circle>`;
     }
   }
 
@@ -47,9 +47,9 @@ export class TraceSprayService implements DrawElement {
     const x = mousePosition.x + position * Math.cos(angle);
     const y = mousePosition.y + position * Math.sin(angle);
     this.points.push({x, y});
-    this.svg += '<circle transform ="translate(' + this.translate.x + ' ' + this.translate.y
+    this.svg += '<circle transform="translate(' + this.translate.x + ' ' + this.translate.y
       + `)" cx="${x}" cy="${y}" r="1" `
-      + `fill="${(this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor}" />`;
+      + `fill="${(this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor}"></circle>`;
   }
 
   updatePosition(x: number, y: number): void {
