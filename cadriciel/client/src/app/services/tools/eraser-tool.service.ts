@@ -26,6 +26,7 @@ export class EraserToolService implements ToolInterface {
   mousePosition: Point = {x: 0, y: 0};
   thickness: number;
   drawing: SVGElement;
+  removeCommand: RemoveSVGService;
 
   constructor(public tools: ToolManagerService,
               private sanitizer: DomSanitizer,
@@ -35,6 +36,7 @@ export class EraserToolService implements ToolInterface {
     this.selectedDrawElement = [];
     this.selectedSVGElement = [];
     this.thickness = DEFAULT_THICKNESS;
+    this.removeCommand = new RemoveSVGService(svgStockage);
   }
 
   makeSquare(mouse: MouseEvent): void {
@@ -164,11 +166,17 @@ export class EraserToolService implements ToolInterface {
     this.makeSquare(mouse);
     this.isInEraser();
     this.commands.drawingInProgress = false;
+    if (!this.removeCommand.isEmpty()) {
+      this.commands.execute(this.removeCommand);
+    }
   }
 
   onMouseRelease(): void {
+    if (!this.removeCommand.isEmpty()) {
+      this.commands.execute(this.removeCommand);
+    }
+    this.removeCommand = new RemoveSVGService(this.svgStockage);
     this.commands.drawingInProgress = false;
-    this.removeElements();
   }
 
   onMouseLeave(): void {
@@ -178,7 +186,7 @@ export class EraserToolService implements ToolInterface {
 
   removeElements(): void {
     if (this.selectedDrawElement.length !== 0) {
-      this.commands.execute(new RemoveSVGService(this.selectedDrawElement, this.svgStockage));
+      this.removeCommand.addElements(this.selectedDrawElement);
     }
     this.selectedDrawElement = [];
     this.selectedSVGElement = [];
@@ -186,6 +194,10 @@ export class EraserToolService implements ToolInterface {
 
   clear(): void {
     this.commands.drawingInProgress = false;
+    if (!this.removeCommand.isEmpty()) {
+      this.commands.execute(this.removeCommand);
+    }
+    this.removeCommand = new RemoveSVGService(this.svgStockage);
     this.svgStockage.setOngoingSVG(new RectangleService());
     this.selectedDrawElement = [];
     this.selectedSVGElement = [];
