@@ -30,6 +30,7 @@ import { SavePopupComponent } from './components/save-popup/save-popup.component
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 
 // Service
+import { CanvasConversionService } from './services/canvas-conversion.service';
 import { ColorParameterService } from './services/color/color-parameter.service';
 import { CommandManagerService } from './services/command/command-manager.service';
 import { DrawingManagerService } from './services/drawing-manager/drawing-manager.service';
@@ -58,7 +59,7 @@ import { SelectionService } from './services/tools/selection/selection.service';
     providers: [NavigationGuideService, SVGStockageService, DrawingToolService, DrawingManagerService,
                 ShortcutsManagerService, RectangleToolService, LineToolService,
                 RoutingManagerService, ColorParameterService, MatDialogConfig, SelectionService,
-                CommandManagerService, GridService],
+                CommandManagerService, GridService, CanvasConversionService],
 
     entryComponents: [NewDrawingWindowComponent, NewDrawingWarningComponent,
                       ColorChoiceComponent, GridOptionsComponent, SavePopupComponent, GalleryComponent,
