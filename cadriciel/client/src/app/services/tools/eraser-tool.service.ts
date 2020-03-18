@@ -3,14 +3,18 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CommandManagerService } from '../command/command-manager.service';
 import { RemoveSVGService } from '../command/remove-svg.service';
 import { DrawElement } from '../stockage-svg/draw-element';
+import { EllipseService } from '../stockage-svg/ellipse.service';
+import { PolygonService } from '../stockage-svg/polygon.service';
 import { RectangleService } from '../stockage-svg/rectangle.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { Point } from './line-tool.service';
+import { ENDING_ANGLE, STARTING_ANGLE } from './polygon-tool.service';
 import { SelectionService } from './selection/selection.service';
 import { ToolInterface } from './tool-interface';
 import { ToolManagerService } from './tool-manager.service';
 
 const DEFAULT_THICKNESS = 10;
+const ANGLE_PRECISION = 8;
 
 @Injectable({
   providedIn: 'root'
@@ -107,7 +111,23 @@ export class EraserToolService implements ToolInterface {
     if (element.chosenOption !== 'Plein' && element.chosenOption !== 'Plein avec contour') {
       return false;
     }
-    const polygon = element.points;
+
+    let polygon: Point[] = element.points;
+    if (element instanceof RectangleService) {
+      polygon.push(element.points[0]);
+      polygon.push({x: element.points[0].x + element.getWidth(), y: element.points[0].y});
+      polygon.push(element.points[1]);
+      polygon.push({x: element.points[1].x - element.getWidth(), y: element.points[1].y});
+    } else if (element instanceof EllipseService) {
+      const radius: Point = {x: element.getWidth() / 2, y: element.getHeight() / 2};
+      const center: Point = {x: element.points[0].x + radius.x, y: element.points[0].y + radius.y};
+      for (let angle = STARTING_ANGLE; angle < ENDING_ANGLE; angle += Math.PI / ANGLE_PRECISION) {
+        polygon.push({x: center.x + radius.x * Math.cos(angle), y: center.y + radius.y * Math.sin(angle)});
+      }
+    } else if (element instanceof PolygonService) {
+      polygon = element.points;
+    }
+
     let isInPolygon = false;
     let i = -1;
     for (let j = polygon.length - 1; ++i < polygon.length; j = i) {

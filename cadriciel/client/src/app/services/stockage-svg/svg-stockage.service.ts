@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { TOOL_INDEX, ToolManagerService } from '../tools/tool-manager.service';
 import { DrawElement } from './draw-element';
 
 @Injectable({
@@ -12,7 +13,8 @@ export class SVGStockageService {
   private ongoingPerimeter: SafeHtml;       // refactoring: plus utile en public ?
   private completeSVG: DrawElement[];
 
-  constructor(private sanitizer: DomSanitizer) {
+  constructor(private sanitizer: DomSanitizer,
+              private tools: ToolManagerService) {
     this.size = 0;
     this.completeSVG = [];
   }
@@ -20,7 +22,9 @@ export class SVGStockageService {
   addSVG(element: DrawElement): void {
     element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
     this.completeSVG[this.size++] = element;
-    this.ongoingSVG = '';
+    if (this.tools.activeTool.ID !== TOOL_INDEX.ERASER) {
+      this.ongoingSVG = '';
+    }
     this.ongoingPerimeter = '';
   }
 
