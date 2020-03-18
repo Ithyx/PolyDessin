@@ -23,7 +23,6 @@ describe('LineService', () => {
     element.chosenOption = 'Vide';
   });
 
-
   it('should be created', () => {
     const testService = TestBed.get(LineService);
     expect(testService).toBeTruthy();
