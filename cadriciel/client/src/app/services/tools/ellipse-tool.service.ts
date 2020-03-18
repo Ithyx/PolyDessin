@@ -35,8 +35,8 @@ export class EllipseToolService {
 
    refreshSVG(): void {
     this.ellipse.updateParameters(this.tools.activeTool);
-    this.ellipse.primaryColor = this.colorParameter.getPrimaryColor();
-    this.ellipse.secondaryColor = this.colorParameter.getSecondaryColor();
+    this.ellipse.primaryColor.RGBAString = this.colorParameter.getPrimaryColor().RGBAString;
+    this.ellipse.secondaryColor.RGBAString = this.colorParameter.getSecondaryColor().RGBAString;
     this.ellipse.draw();
     this.stockageSVG.setOngoingSVG(this.ellipse);
   }

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Color } from '../stockage-svg/draw-element';
 
 const INIT_OPACITY = 100;
 
@@ -35,11 +36,19 @@ export class ColorParameterService {
     this.secondaryColor = copy;
   }
 
-  getPrimaryColor(): string {
-    return this.primaryColor + this.primaryOpacity + ')';
+  getPrimaryColor(): Color {
+    const color: Color = {
+      RGBAString: this.primaryColor + this.primaryOpacity + ')',
+      RGBA: [0, 0, 0, 0]
+    };
+    return color;
   }
 
-  getSecondaryColor(): string {
-    return this.secondaryColor + this.secondaryOpacity + ')';
+  getSecondaryColor(): Color {
+    const color: Color = {
+      RGBAString: this.secondaryColor + this.secondaryOpacity + ')',
+      RGBA: [0, 0, 0, 0]
+    };
+    return color;
   }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { DrawElement, EVIDENCE_COLOR } from './draw-element';
+import { Color, DrawElement, EVIDENCE_COLOR } from './draw-element';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class LineService implements DrawElement {
   isSelected: boolean;
   erasingEvidence: boolean;
 
-  primaryColor: string;
+  primaryColor: Color;
 
   thicknessLine: number;
   thicknessPoint: number;
@@ -33,7 +33,7 @@ export class LineService implements DrawElement {
     this.points = [];
     this.isSelected = false;
     this.erasingEvidence = false;
-    this.primaryColor = 'rgba(0,0,0,1)';
+    this.primaryColor.RGBAString = 'rgba(0,0,0,1)';
     this.isAPolygon = false;
     this.mousePosition = {x: 0, y: 0};
     this.translate = { x: 0, y: 0};
@@ -42,7 +42,7 @@ export class LineService implements DrawElement {
   draw(): void {
     this.svg = (this.isAPolygon) ? '<polygon ' : '<polyline ';
     this.svg += 'transform="translate(' + this.translate.x + ' ' + this.translate.y + ')" ';
-    this.svg += 'fill="none" stroke="' + ((this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor);
+    this.svg += 'fill="none" stroke="' + ((this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor.RGBAString);
     this.svg += '" stroke-width="' + this.thicknessLine;
     this.svg += '" points="';
     for (const point of this.points) {
@@ -68,7 +68,7 @@ export class LineService implements DrawElement {
     for (const point of this.points) {
       this.svg += '<circle transform="translate(' + this.translate.x + ' ' + this.translate.y
       + ')" cx="' + point.x + '" cy="' + point.y + '" r="' + this.thicknessPoint
-      + '" fill="' + ((this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor) + '"></circle>';
+      + '" fill="' + ((this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor.RGBAString) + '"></circle>';
     }
   }
 

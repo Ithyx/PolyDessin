@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ColorParameterService } from '../color/color-parameter.service';
-import { DrawElement } from '../stockage-svg/draw-element';
+import { Color, DrawElement } from '../stockage-svg/draw-element';
 import { Command } from './command';
 
 @Injectable({
@@ -9,7 +9,7 @@ import { Command } from './command';
 })
 export class SecondaryColorChangeService implements Command {
 
-  oldColor: string;
+  oldColor: Color;
 
   constructor(public element: DrawElement,
               public colorParameter: ColorParameterService,
@@ -25,7 +25,7 @@ export class SecondaryColorChangeService implements Command {
     this.changeColor(this.oldColor);
   }
 
-  changeColor(color: string): void {
+  changeColor(color: Color): void {
     if (this.element.secondaryColor) {
       this.oldColor = this.element.secondaryColor;
     }
