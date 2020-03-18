@@ -166,6 +166,7 @@ export class EraserToolService implements ToolInterface {
     if (!this.removeCommand.isEmpty()) {
       this.commands.execute(this.removeCommand);
     }
+    this.removeCommand = new RemoveSVGService(this.svgStockage);
   }
 
   onMouseRelease(): void {
