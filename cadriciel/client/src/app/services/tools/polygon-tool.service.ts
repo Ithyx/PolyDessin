@@ -37,8 +37,8 @@ export class PolygonToolService implements ToolInterface {
 
   refreshSVG(): void {
     this.polygon.updateParameters(this.tools.activeTool);
-    this.polygon.primaryColor.RGBAString = this.colorParameter.getPrimaryColor().RGBAString;
-    this.polygon.secondaryColor.RGBAString = this.colorParameter.getSecondaryColor().RGBAString;
+    this.polygon.primaryColor = {...this.colorParameter.primaryColor};
+    this.polygon.secondaryColor = {...this.colorParameter.secondaryColor};
     this.polygon.draw();
     this.stockageSVG.setOngoingSVG(this.polygon);
   }

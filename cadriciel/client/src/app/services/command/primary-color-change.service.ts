@@ -14,7 +14,7 @@ export class PrimaryColorChangeService implements Command {
   constructor(public element: DrawElement,
               public colorParameter: ColorParameterService,
               private sanitizer: DomSanitizer) {
-    this.changeColor(colorParameter.getPrimaryColor());
+    this.changeColor(colorParameter.primaryColor);
   }
 
   undo(): void {

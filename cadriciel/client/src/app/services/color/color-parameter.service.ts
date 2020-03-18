@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Color } from '../stockage-svg/draw-element';
+import { Color, G, B, R, A } from '../stockage-svg/draw-element';
 
 const INIT_OPACITY = 100;
 
@@ -7,27 +7,32 @@ const INIT_OPACITY = 100;
   providedIn: 'root'
 })
 export class ColorParameterService {
-  lastColors: string[];
+  lastColors: Color[];
 
-  primaryColor: string;
-  secondaryColor: string;
+  primaryColor: Color;
+  secondaryColor: Color;
 
-  primaryOpacity: number;
-  secondaryOpacity: number;
   primaryOpacityDisplayed: number;
   secondaryOpacityDisplayed: number;
 
-  temporaryBackgroundColor: string;
+  temporaryBackgroundColor: Color;
 
   constructor() {
     this.lastColors = [];
-    this.primaryColor = 'rgba(0, 0, 0, ';
-    this.secondaryColor = 'rgba(0, 0, 0, ';
-    this.primaryOpacity = 1;
-    this.secondaryOpacity = 1;
+    this.primaryColor = {
+      RGBAString: 'rgba(0, 0, 0, 1)',
+      RGBA: [0, 0, 0, 1]
+    }
+    this.secondaryColor = {
+      RGBAString: 'rgba(0, 0, 0, 1)',
+      RGBA: [0, 0, 0, 1]
+    };
     this.primaryOpacityDisplayed = INIT_OPACITY;
     this.secondaryOpacityDisplayed = INIT_OPACITY;
-    this.temporaryBackgroundColor = 'rgba(255, 255, 255, 1)';
+    this.temporaryBackgroundColor = {
+      RGBAString: 'rgba(255, 255, 255, 1)',
+      RGBA: [255, 255, 255, 1]
+    };
   }
 
   intervertColors(): void {
@@ -36,19 +41,11 @@ export class ColorParameterService {
     this.secondaryColor = copy;
   }
 
-  getPrimaryColor(): Color {
-    const color: Color = {
-      RGBAString: this.primaryColor + this.primaryOpacity + ')',
-      RGBA: [0, 0, 0, 0]
-    };
-    return color;
-  }
+  updateColors(): void {
+    this.primaryColor.RGBAString = `rgba(${this.primaryColor.RGBA[R]}, ${this.primaryColor.RGBA[G]},
+      ${this.primaryColor.RGBA[B]}, ${this.primaryColor.RGBA[A]})`;
 
-  getSecondaryColor(): Color {
-    const color: Color = {
-      RGBAString: this.secondaryColor + this.secondaryOpacity + ')',
-      RGBA: [0, 0, 0, 0]
-    };
-    return color;
+    this.secondaryColor.RGBAString = `rgba(${this.secondaryColor.RGBA[R]}, ${this.secondaryColor.RGBA[G]},
+      ${this.secondaryColor.RGBA[B]}, ${this.secondaryColor.RGBA[A]})`;
   }
 }

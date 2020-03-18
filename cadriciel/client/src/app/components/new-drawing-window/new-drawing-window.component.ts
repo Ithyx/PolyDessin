@@ -100,6 +100,6 @@ export class NewDrawingWindowComponent {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '30%';
-    this.dialog.open(ColorChoiceComponent, dialogConfig).componentInstance.portee = Scope.BackgroundNewDrawing;
+    this.dialog.open(ColorChoiceComponent, dialogConfig).componentInstance.scope = Scope.BackgroundNewDrawing;
   }
 }

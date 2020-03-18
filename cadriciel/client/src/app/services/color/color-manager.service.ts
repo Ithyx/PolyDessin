@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CommandManagerService } from '../command/command-manager.service';
 import { DrawingManagerService } from '../drawing-manager/drawing-manager.service';
+import { B, Color, G, R } from '../stockage-svg/draw-element';
 import { ColorParameterService } from './color-parameter.service';
 
 export enum Scope {
@@ -17,36 +18,35 @@ export const MAX_COLORS = 10;
   providedIn: 'root'
 })
 export class ColorManagerService {
-  color: string;
+  color: Color;
   hue: string;
-  RGB: number[] = [0, 0, 0];
 
   constructor(public colorParameter: ColorParameterService,
               public commands: CommandManagerService,
               public drawingManager: DrawingManagerService) {
-    this.color = 'rgba(0, 0, 0,';
+    this.color = {
+      RGBAString: 'rgba(0, 0, 0, 1)',
+      RGBA: [0, 0, 0, 1]
+    };
     this.hue = 'rgba(255,255,255';
   }
 
-  getColor(): string {
-    return this.color + '1)';
+  getColor(): Color {
+    return this.color;
   }
 
-  editRGB(): void {
-    const newColor = 'rgba(' + this.RGB[0] + ', '
-                             + this.RGB[1] + ', '
-                             + this.RGB[2] + ', ';
-    this.color = newColor;
+  updateColor(): void {
+    this.color.RGBAString = `rgba(${this.color.RGBA[R]}, ${this.color.RGBA[G]}, ${this.color.RGBA[B]}, 1)`;
   }
 
   applyColor(scope: Scope): void {
     switch (scope) {
       case Scope.Primary:
-        this.colorParameter.primaryColor = this.color;
+        this.colorParameter.primaryColor = {...this.color};
         this.addLastColor();
         break;
       case Scope.Secondary:
-        this.colorParameter.secondaryColor = this.color;
+        this.colorParameter.secondaryColor = {...this.color};
         this.addLastColor();
         break;
       case Scope.BackgroundNewDrawing:

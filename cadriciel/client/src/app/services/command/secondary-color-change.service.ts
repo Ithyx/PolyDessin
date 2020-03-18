@@ -14,7 +14,7 @@ export class SecondaryColorChangeService implements Command {
   constructor(public element: DrawElement,
               public colorParameter: ColorParameterService,
               private sanitizer: DomSanitizer) {
-    this.changeColor(colorParameter.getSecondaryColor());
+    this.changeColor(colorParameter.secondaryColor);
   }
 
   undo(): void {

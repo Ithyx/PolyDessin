@@ -3,6 +3,10 @@ import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
 
 export const EVIDENCE_COLOR = 'rgba(255, 0, 0, 1)';
+export const R = 0;
+export const G = 1;
+export const B = 2;
+export const A = 3;
 
 export interface Color {
   RGBAString: string;

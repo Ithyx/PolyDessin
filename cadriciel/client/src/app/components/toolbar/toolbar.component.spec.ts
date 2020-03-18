@@ -217,17 +217,17 @@ describe('ToolbarComponent', () => {
 
   it('#selectColor devrait assignee portee à Portee.Principale si le paramètre de la fonction contient principale', () => {
     component.selectColor('primary');
-    expect(component.colorPickerPopup.portee).toEqual(component.primaryScope);
+    expect(component.colorPickerPopup.scope).toEqual(component.primaryScope);
   });
 
   it('#selectColor devrait assignee portee à Portee.Secondaire si le paramètre de la fonction contient secondaire', () => {
     component.selectColor('secondary');
-    expect(component.colorPickerPopup.portee).toEqual(component.secondaryScope);
+    expect(component.colorPickerPopup.scope).toEqual(component.secondaryScope);
   });
 
   it('#selectColor devrait assignee portee à Portee.fond si le paramètre de la fonction contient fond', () => {
     component.selectColor('background');
-    expect(component.colorPickerPopup.portee).toEqual(Scope.BackgroundToolBar);
+    expect(component.colorPickerPopup.scope).toEqual(Scope.BackgroundToolBar);
   });
 
   // TESTS openGridWindow
