@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Drawing } from '../../../../common/communication/DrawingInterface';
 import { DrawingManagerService } from './drawing-manager/drawing-manager.service';
-import { DrawElement } from './stockage-svg/draw-element';
+import { DrawElement, Color } from './stockage-svg/draw-element';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { TraceBrushService } from './stockage-svg/trace-brush.service';
 import { TracePencilService } from './stockage-svg/trace-pencil.service';
@@ -29,7 +29,10 @@ export class CanvasConversionService {
       name: this.drawingParams.name,
       height: this.drawingParams.height,
       width: this.drawingParams.width,
-      backgroundColor: 'rgba(255, 255, 255, 1)',
+      backgroundColor: {
+        RGBAString: 'rgba(255, 255, 255, 1)',
+        RGBA: [255, 255, 255, 1]
+      },
       tags: this.drawingParams.tags,
       elements: []
     };
@@ -69,7 +72,10 @@ export class CanvasConversionService {
         }
       }
       // Redessiner l'élement avec une couleur qui le distingue des autres élements
-      const color = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 1)`;
+      const color: Color = {
+        RGBAString: `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 1)`,
+        RGBA: [rgb[0], rgb[1], rgb[2], 1]
+      };
       const oldPrimary = element.primaryColor;
       const oldSecondary = element.secondaryColor;
       element.primaryColor = color;
@@ -97,7 +103,7 @@ export class CanvasConversionService {
       // Remettre l'élement aux bonnes valeurs de couleur
       element.primaryColor = oldPrimary;
       element.draw();
-      this.coloredElements.set(color, element);
+      this.coloredElements.set(color.RGBAString, element);
     }
     const timeout = window.setTimeout(() => {
       this.convertToCanvas();

@@ -69,7 +69,8 @@ export class PolygonService implements DrawElement {
   drawPolygon(): void {
     this.svg = '<polygon transform=" translate(' + this.translate.x + ' ' + this.translate.y +
       ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor.RGBAString : 'none') + '" stroke="'
-      + ((this.chosenOption !== 'Plein') ? (this.erasingEvidence) ? this.erasingColor.RGBAString :  this.secondaryColor.RGBAString : 'none')
+      + ((this.erasingEvidence) ? this.erasingColor.RGBAString :
+        ((this.chosenOption !== 'Plein') ? this.secondaryColor.RGBAString : 'none'))
       + '" stroke-width="' + this.thickness
       + '" points="';
     for (const point of this.points) {

@@ -81,7 +81,7 @@ export class RectangleService implements DrawElement {
     const choosedOption = this.chosenOption;
     this.svg = '<rect transform=" translate(' + this.translate.x + ' ' + this.translate.y +
       ')" fill="' + ((choosedOption !== 'Contour') ? this.primaryColor.RGBAString : 'none') + '" stroke="'
-      + ((choosedOption !== 'Plein') ? (this.erasingEvidence) ? this.erasingColor.RGBAString :  this.secondaryColor.RGBAString : 'none')
+      + ((this.erasingEvidence) ? this.erasingColor.RGBAString : ((this.chosenOption !== 'Plein') ? this.secondaryColor.RGBAString : 'none'))
       + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')
       + '" stroke-width="' + this.thickness
       + '" x="' + this.points[0].x + '" y="' + this.points[0].y

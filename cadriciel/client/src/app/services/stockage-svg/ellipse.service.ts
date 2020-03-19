@@ -82,8 +82,8 @@ export class EllipseService implements DrawElement {
     this.svg = '<ellipse transform=" translate(' + this.translate.x + ' ' + this.translate.y +
       ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor.RGBAString : 'none')
       + '" stroke="'
-      + ((this.chosenOption !== 'Plein') ? ((this.erasingEvidence) ? this.erasingColor.RGBAString :  this.secondaryColor.RGBAString)
-      : 'none')
+      + ((this.erasingEvidence) ? this.erasingColor.RGBAString :
+        ((this.chosenOption !== 'Plein') ? this.secondaryColor.RGBAString : 'none'))
       + '" stroke-width="' + this.thickness
       + '" cx="' + (this.points[0].x + this.points[1].x) / 2 + '" cy="' + (this.points[0].y + this.points[1].y) / 2
       + '" rx="' + this.getWidth() / 2 + '" ry="' + this.getHeight() / 2 + '"></ellipse>';
