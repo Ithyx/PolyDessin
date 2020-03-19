@@ -12,7 +12,7 @@ import { ToolInterface } from './tool-interface';
 })
 export class ColorChangerToolService implements ToolInterface {
 
-  activeElement: DrawElement;
+  activeElement: DrawElement | undefined;
 
   constructor(public colorParameter: ColorParameterService,
               public commands: CommandManagerService,
@@ -20,12 +20,14 @@ export class ColorChangerToolService implements ToolInterface {
               ) {}
 
   onMouseClick(): void {
+    if (!this.activeElement) { return; }
     if (this.activeElement.primaryColor !== this.colorParameter.primaryColor) {
       this.commands.execute(new PrimaryColorChangeService(this.activeElement, this.colorParameter, this.sanitizer));
     }
   }
 
   onRightClick(): void {
+    if (!this.activeElement) { return; }
     if (this.activeElement.secondaryColor !== this.colorParameter.secondaryColor) {
       this.commands.execute(new SecondaryColorChangeService(this.activeElement, this.colorParameter, this.sanitizer));
     }
