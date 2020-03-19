@@ -214,15 +214,22 @@ export class EraserToolService implements ToolInterface {
   }
 
   adaptRedEvidence(element: DrawElement): void {
-    if (element.secondaryColor && element.secondaryColor.RGBA[R] >= 230) {
+    if (element.secondaryColor && element.secondaryColor.RGBA[R] >= 230 && element.secondaryColor.RGBA[G] <= 200
+        && element.secondaryColor.RGBA[B] <= 200) {
       // element.erasingColor.RGBA = [140, 21, 21, 1];
-      element.erasingColor.RGBA[R] = (element.erasingColor.RGBA[R] + 10) % 255;
-      element.erasingColor.RGBA[G] = (element.erasingColor.RGBA[G] + 21) % 255;
-      element.erasingColor.RGBA[B] = (element.erasingColor.RGBA[G] + 21) % 255;
+      element.erasingColor.RGBA[R] = 170;
+      element.erasingColor.RGBA[G] = 0;
+      element.erasingColor.RGBA[B] = 0;
       this.updateErasingColor(element);
       console.log('hello there');
-    } else if (element.primaryColor && element.primaryColor.RGBA[R] === element.erasingColor.RGBA[R]) {
-      element.erasingColor.RGBA = [140, 21, 21, 1];
+    } else if (element.primaryColor && element.primaryColor.RGBA[R] >= 230 && element.primaryColor.RGBA[G] <= 200
+      && element.primaryColor.RGBA[B] <= 200) {
+        element.erasingColor.RGBA[R] = 170;
+        element.erasingColor.RGBA[G] = 0;
+        element.erasingColor.RGBA[B] = 0;
+        this.updateErasingColor(element);
+    } else {
+      element.erasingColor.RGBA = [255, 0, 0, 1];
       this.updateErasingColor(element);
     }
   }
