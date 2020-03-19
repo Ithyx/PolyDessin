@@ -4,6 +4,8 @@ import { Drawing } from '../../../../common/communication/DrawingInterface';
 import { DrawingManagerService } from './drawing-manager/drawing-manager.service';
 import { DrawElement } from './stockage-svg/draw-element';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
+import { TraceBrushService } from './stockage-svg/trace-brush.service';
+import { TracePencilService } from './stockage-svg/trace-pencil.service';
 
 const MAX_COLOR_VALUE = 256;
 const INDEX_INCREASE = 4;
@@ -66,22 +68,34 @@ export class CanvasConversionService {
           rgb[2]++;
         }
       }
-      // Redessiner l'element avec une couleur qui le distingue des autres elements
+      // Redessiner l'élement avec une couleur qui le distingue des autres élements
       const color = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 1)`;
       const oldPrimary = element.primaryColor;
       const oldSecondary = element.secondaryColor;
       element.primaryColor = color;
       element.secondaryColor = color;
-      element.draw();
 
-      // Creer un clone et l'utiliser dans le canvas
+      // Créer un clone et l'utiliser dans le canvas
       const cloneElement = {...element};
-      cloneElement.svgHtml = this.sanatize(element.svg);
+      if (element instanceof TraceBrushService) {
+        // Si l'élément est un trait de pinceau, on le convertit en trait de crayon
+        // pour éviter d'avoir un filtre qui modifie les couleurs
+        const tracePencil = new TracePencilService();
+        tracePencil.points = element.points;
+        tracePencil.primaryColor = element.primaryColor;
+        tracePencil.thickness = element.thickness;
+        tracePencil.translate = element.translate;
+        tracePencil.draw();
+        cloneElement.svgHtml = this.sanatize(tracePencil.svg);
+      } else {
+        element.draw();
+        cloneElement.svgHtml = this.sanatize(element.svg);
+        element.secondaryColor = oldSecondary;
+      }
       this.drawing.elements.push(cloneElement);
 
-      // Remettre l'element aux bonnes valeurs de couleur
+      // Remettre l'élement aux bonnes valeurs de couleur
       element.primaryColor = oldPrimary;
-      element.secondaryColor = oldSecondary;
       element.draw();
       this.coloredElements.set(color, element);
     }
