@@ -26,4 +26,4 @@
 </div>
 <br>
 <button mat-raised-button [disabled]="isSaving" (click)="confirmSave()">Confirmer</button>
-<button mat-stroked-button (click)="closeDialogue()">Annuler</button>
+<button mat-stroked-button [disabled]="isSaving" (click)="closeDialogue()">Annuler</button>
