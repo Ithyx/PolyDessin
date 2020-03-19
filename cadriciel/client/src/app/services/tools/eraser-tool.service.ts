@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommandManagerService } from '../command/command-manager.service';
 import { RemoveSVGService } from '../command/remove-svg.service';
-import { DrawElement } from '../stockage-svg/draw-element';
+import { B, DrawElement, G, R } from '../stockage-svg/draw-element';
 import { EllipseService } from '../stockage-svg/ellipse.service';
 import { PolygonService } from '../stockage-svg/polygon.service';
 import { RectangleService } from '../stockage-svg/rectangle.service';
@@ -15,6 +15,7 @@ import { ToolManagerService } from './tool-manager.service';
 
 const DEFAULT_THICKNESS = 10;
 const ANGLE_PRECISION = 8;
+const IS_IN_ERASER_INDEX_INCREMENT = 3 ;
 
 @Injectable({
   providedIn: 'root'
@@ -63,10 +64,10 @@ export class EraserToolService implements ToolInterface {
       if (!this.selectedSVGElement.includes(element)                      // On vérifie si on a pas deja l'element
           && !element.outerHTML.includes('class="eraser"')                // On vérifie que l'element n'est pas l'efface
           && !element.outerHTML.includes('class="grid"')) {               // On vérifie que l'element n'est pas la grille
+
         const length = (element as SVGPathElement).getTotalLength();
-        // TODO: Il est n'est pas forcément utile de d'incrémenr l'indexde 1 en 1. Chercher la valeur limite de
-        // TODO: l'index permettrait d'éviter des calculs
-        for (let index = 0; index < length; index += 3) {
+
+        for (let index = 0; index < length; index += IS_IN_ERASER_INDEX_INCREMENT) {
           const domPoint = (element as SVGPathElement).getPointAtLength(index);
           if (this.belongsToSquare({x: domPoint.x, y: domPoint.y })) {    // On vérifie si le point appartient à l'efface
             this.selectedSVGElement.push(element);
@@ -84,11 +85,13 @@ export class EraserToolService implements ToolInterface {
         if (this.isPointInPoly(element, this.mousePosition)) {
           this.selectedDrawElement.push(element);
           element.erasingEvidence = true;     // Mise en évidence (rouge)
+          this.adaptRedEvidence(element);
         } else {
           for (const element2 of this.selectedSVGElement) {
             if (element.svg.includes(element2.outerHTML) && !this.selectedDrawElement.includes(element)) {
               this.selectedDrawElement.push(element);
               element.erasingEvidence = true;     // Mise en évidence (rouge)
+              this.adaptRedEvidence(element);
             }
           }
         }
@@ -178,7 +181,6 @@ export class EraserToolService implements ToolInterface {
   }
 
   onMouseLeave(): void {
-    // this.removeElements();
     this.clear();
   }
 
@@ -209,5 +211,22 @@ export class EraserToolService implements ToolInterface {
     this.svgStockage.setOngoingSVG(new RectangleService());
     this.selectedDrawElement = [];
     this.selectedSVGElement = [];
+  }
+
+  adaptRedEvidence(element: DrawElement): void {
+    if (element.secondaryColor && element.secondaryColor.RGBA[R] === element.erasingColor.RGBA[R]) {
+      element.erasingColor.RGBA = [140, 21, 21, 1];
+      this.updateErasingColor(element);
+    } else if (element.primaryColor && element.primaryColor.RGBA[R] === element.erasingColor.RGBA[R]) { 
+      element.erasingColor.RGBA = [140, 21, 21, 1];
+      this.updateErasingColor(element);
+    }
+  }
+
+  updateErasingColor(element: DrawElement): void {
+    element.erasingColor.RGBAString = `rgba(${element.erasingColor.RGBA[R]},
+                                            ${element.erasingColor.RGBA[G]},
+                                            ${element.erasingColor.RGBA[B]},
+                                            1)`;
   }
 }
