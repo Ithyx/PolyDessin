@@ -196,11 +196,11 @@ describe('EllipseToolService', () => {
   });
   it('#refreshSVG devrait appeler getPrimaryColor', () => {
     service.refreshSVG();
-    expect(service.ellipse.primaryColor).toEqual(service.colorParameter.getPrimaryColor());
+    expect(service.ellipse.primaryColor).toEqual(service.colorParameter.primaryColor);
   });
   it('#refreshSVG devrait appeler getSecondaryColor', () => {
     service.refreshSVG();
-    expect(service.ellipse.secondaryColor).toEqual(service.colorParameter.getSecondaryColor());
+    expect(service.ellipse.secondaryColor).toEqual(service.colorParameter.secondaryColor);
   });
   it('#refreshSVG devrait appeler draw', () => {
     spyOn(service.ellipse, 'draw');
@@ -275,7 +275,7 @@ describe('EllipseToolService', () => {
     service.onMouseRelease();
     // vérifier que la fonction ajouterSVG a été correctement appelée
     const addSVG = new AddSVGService(rectangle, service.stockageSVG);
-    addSVG.svgKey = 0;
+    // addSVG.svgKey = 0;
     expect(service.commands.execute).toHaveBeenCalledWith(addSVG);
   });
   it('#onMouseRelease devrait reinitialiser le rectangle', () => {

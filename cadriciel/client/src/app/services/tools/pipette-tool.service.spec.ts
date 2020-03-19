@@ -17,8 +17,8 @@ describe('PipetteToolService', () => {
     svg = document.createElement('svg');
     canvas = document.createElement('canvas');
     service = TestBed.get(PipetteToolService);
-    service.colorParameter.primaryColor = 'primary';
-    service.colorParameter.secondaryColor = 'secondary';
+    service.colorParameter.primaryColor.RGBAString = 'primary';
+    service.colorParameter.secondaryColor.RGBAString = 'secondary';
     const contextCanvas = canvas.getContext('2d');
     if (contextCanvas) {
       context = contextCanvas;
@@ -139,24 +139,24 @@ describe('PipetteToolService', () => {
 
   it('#pickColor devrait changer la couleur principale si le scope est Primary', () => {
     service.colorScope = Scope.Primary;
-    service.colorParameter.primaryColor = 'primary';
+    service.colorParameter.primaryColor.RGBAString = 'primary';
     service.pickColor();
-    expect(service.colorParameter.primaryColor).toEqual('rgba(0, 0, 0, ');
+    expect(service.colorParameter.primaryColor.RGBAString).toEqual('rgba(0, 0, 0, ');
   });
 
   it('#pickColor devrait changer la couleur secondaire si le scope est Secondary', () => {
     service.colorScope = Scope.Secondary;
-    service.colorParameter.secondaryColor = 'secondary';
+    service.colorParameter.secondaryColor.RGBAString = 'secondary';
     service.pickColor();
-    expect(service.colorParameter.secondaryColor).toEqual('rgba(0, 0, 0, ');
+    expect(service.colorParameter.secondaryColor.RGBAString).toEqual('rgba(0, 0, 0, ');
   });
 
   it('#pickColor ne devrait rien faire si le scope n\'est pas Primary ou Secondary', () => {
     service.colorScope = Scope.Default;
-    service.colorParameter.primaryColor = 'primary';
-    service.colorParameter.secondaryColor = 'secondary';
+    service.colorParameter.primaryColor.RGBAString = 'primary';
+    service.colorParameter.secondaryColor.RGBAString = 'secondary';
     service.pickColor();
-    expect(service.colorParameter.primaryColor).toEqual('primary');
-    expect(service.colorParameter.secondaryColor).toEqual('secondary');
+    expect(service.colorParameter.primaryColor.RGBAString).toEqual('primary');
+    expect(service.colorParameter.secondaryColor.RGBAString).toEqual('secondary');
   });
 });

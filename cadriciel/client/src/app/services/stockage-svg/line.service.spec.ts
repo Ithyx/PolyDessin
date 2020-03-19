@@ -13,7 +13,10 @@ describe('LineService', () => {
   beforeEach(() => {
     element = new LineService();
     element.updateParameters(service.tools.toolList[5]);
-    element.primaryColor = 'rgba(0, 0, 0, 1)';
+    element.primaryColor = {
+      RGBAString: 'rgba(0, 0, 0, 1)',
+      RGBA: [0, 0, 0, 1]
+    };
     element.thickness = 5;
     element.thicknessLine = 10;
     element.thicknessPoint = 20;

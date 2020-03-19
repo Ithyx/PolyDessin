@@ -196,11 +196,11 @@ describe('RectangleToolService', () => {
   });
   it('#refreshSVG devrait appeler getPrimaryColor', () => {
     service.refreshSVG();
-    expect(service.rectangle.primaryColor).toEqual(service.colorParameter.getPrimaryColor());
+    expect(service.rectangle.primaryColor).toEqual(service.colorParameter.secondaryColor);
   });
   it('#refreshSVG devrait appeler getSecondaryColor', () => {
     service.refreshSVG();
-    expect(service.rectangle.secondaryColor).toEqual(service.colorParameter.getSecondaryColor());
+    expect(service.rectangle.secondaryColor).toEqual(service.colorParameter.secondaryColor);
   });
   it('#refreshSVG devrait appeler draw', () => {
     spyOn(service.rectangle, 'draw');

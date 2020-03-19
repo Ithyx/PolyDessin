@@ -30,7 +30,10 @@ describe('StockageSvgService', () => {
     lineElement.svgHtml = '';
     lineElement.points = [{x: 10, y: 10}];
     lineElement.isSelected = true;
-    lineElement.primaryColor = 'rgba(0,1,0,1)';
+    lineElement.primaryColor = {
+      RGBAString: 'rgba(0,1,0,1)',
+      RGBA: [0, 1, 0, 1]
+    };
     lineElement.updateParameters({name: 'test', isActive: true, ID: -1, parameters: [
       {name: '', type: '', value: 0},
       {name: '', type: '', chosenOption: ''},

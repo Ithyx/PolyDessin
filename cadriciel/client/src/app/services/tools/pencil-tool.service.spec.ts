@@ -22,7 +22,10 @@ describe('DrawingToolService', () => {
 
     element = new TracePencilService();
     element.updateParameters(service.tools.toolList[0]);
-    element.primaryColor = 'rgba(0, 0, 0, 1)';
+    element.primaryColor = {
+      RGBAString: 'rgba(0, 0, 0, 1)',
+      RGBA: [0, 0, 0, 1]
+    };
 
     stockageService.setOngoingSVG(element);
     service.trace.svg = 'L';
@@ -189,9 +192,9 @@ describe('DrawingToolService', () => {
   // TESTS refreshSVG
 
   it('#refreshSVG devrait changer la couleur du trait', () => {
-    service.trace.primaryColor = 'test';
+    service.trace.primaryColor.RGBAString = 'test';
     service.refreshSVG();
-    expect(service.trace.primaryColor).toEqual(service.colorParameter.getPrimaryColor());
+    expect(service.trace.primaryColor).toEqual(service.colorParameter.primaryColor);
   });
 
   it('#refreshSVG devrait appeler updateParameters avec l\'outil en cours', () => {

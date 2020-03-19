@@ -23,7 +23,10 @@ describe('DrawSprayService', () => {
 
     element = new TraceSprayService();
     element.updateParameters(service.tools.toolList[2]);
-    element.primaryColor = 'rgba(0, 0, 0, 1)';
+    element.primaryColor = {
+      RGBAString: 'rgba(0, 0, 0, 1)',
+      RGBA: [0, 0, 0, 1]
+    };
     service.intervalSubscription = new Subscription();
 
     stockageService.setOngoingSVG(element);
@@ -140,9 +143,9 @@ describe('DrawSprayService', () => {
   });
 
   it('#resetTrace devrait attribuer la couleur principale dans colorParameter à celle trace', () => {
-    service.trace.primaryColor = 'rgba(0, 1, 1, 0)';
+    service.trace.primaryColor.RGBAString = 'rgba(0, 1, 1, 0)';
     service.resetTrace();
-    expect(service.trace.primaryColor).toEqual(service.colorParameter.getPrimaryColor());
+    expect(service.trace.primaryColor).toEqual(service.colorParameter.primaryColor);
   });
 
   it('#resetTrace devrait appeler la fonction updateParameters', () => {

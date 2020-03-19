@@ -18,8 +18,14 @@ describe('RectangleService', () => {
     element.points[1].x = 100;
     element.points[1].y = 10;
     element.chosenOption = 'Vide';
-    element.primaryColor =   'rgba(0, 0, 0, 1)';
-    element.secondaryColor = 'rgba(0, 0, 0, 1)';
+    element.primaryColor = {
+      RGBAString: 'rgba(0, 0, 0, 1)',
+      RGBA: [0, 0, 0, 1]
+    };
+    element.secondaryColor = {
+      RGBAString: 'rgba(0, 0, 0, 1)',
+      RGBA: [0, 0, 0, 1]
+    };
     element.thickness = 5;
     element.translate = { x: 10, y: 10};
     element.isDotted = true;

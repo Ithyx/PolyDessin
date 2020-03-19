@@ -187,9 +187,9 @@ describe('DessinPinceauService', () => {
   // TESTS refreshSVG
 
   it('#refreshSVG devrait changer la couleur du trait', () => {
-    service.trace.primaryColor = 'test';
+    service.trace.primaryColor.RGBAString = 'test';
     service.refreshSVG();
-    expect(service.trace.primaryColor).toEqual(service.colorParameter.getPrimaryColor());
+    expect(service.trace.primaryColor).toEqual(service.colorParameter.primaryColor);
   });
 
   it('#refreshSVG devrait appeler dessiner du trait', () => {
