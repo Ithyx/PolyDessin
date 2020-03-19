@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+
 import { EllipseService } from '../stockage-svg/ellipse.service';
 import { LineService } from '../stockage-svg/line.service';
 import { PolygonService } from '../stockage-svg/polygon.service';
@@ -11,24 +12,31 @@ import { AddSVGService } from './add-svg.service';
 import { Command } from './command';
 import { CommandManagerService } from './command-manager.service';
 
+// tslint:disable: no-magic-numbers
+// tslint:disable: no-string-literal
+
 describe('GestionnaireCommandesService', () => {
   let service: CommandManagerService;
   let stockageService: SVGStockageService;
   let command: Command;
   let lastCommand: Command;
   let lastCancelledCommand: Command;
+
   beforeEach(() => TestBed.configureTestingModule({}));
+
   beforeEach(() => {
     stockageService = TestBed.get(SVGStockageService);
     command = new AddSVGService(new LineService(), stockageService);
     service = TestBed.get(CommandManagerService);
   });
+
   beforeEach(() => {
     lastCancelledCommand = new AddSVGService(new EllipseService(), stockageService);
     service.cancelledCommands.push(new AddSVGService(new PolygonService(), stockageService));
     service.cancelledCommands.push(new AddSVGService(new RectangleService(), stockageService));
     service.cancelledCommands.push(lastCancelledCommand);
   });
+
   beforeEach(() => {
     lastCommand = new AddSVGService(new TraceSprayService(), stockageService);
     service.executedCommands.push(new AddSVGService(new TracePencilService(), stockageService));
@@ -41,7 +49,6 @@ describe('GestionnaireCommandesService', () => {
   });
 
   it('#constructor devrait mettre drawingInProgress à false', () => {
-    service = new CommandManagerService();
     expect(service.drawingInProgress).toBe(false);
   });
 
