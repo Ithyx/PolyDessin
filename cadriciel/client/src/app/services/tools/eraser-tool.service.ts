@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { CanvasConversionService } from '../canvas-conversion.service';
 import { CommandManagerService } from '../command/command-manager.service';
 import { RemoveSVGService } from '../command/remove-svg.service';
 import { DrawElement } from '../stockage-svg/draw-element';
@@ -32,7 +33,8 @@ export class EraserToolService implements ToolInterface {
               private sanitizer: DomSanitizer,
               public commands: CommandManagerService,
               public svgStockage: SVGStockageService,
-              public selection: SelectionService) {
+              public selection: SelectionService,
+              private canvas: CanvasConversionService) {
     this.selectedDrawElement = [];
     this.selectedSVGElement = [];
     this.thickness = DEFAULT_THICKNESS;
@@ -78,9 +80,10 @@ export class EraserToolService implements ToolInterface {
       }
     });
 
+    const elementsInArea = this.canvas.getElementsInArea(this.square.x, this.square.y, this.thickness, this.thickness);
     for (const element of this.svgStockage.getCompleteSVG()) {
       element.erasingEvidence = false;
-      if (!this.selectedDrawElement.includes(element)) {
+      if (!this.selectedDrawElement.includes(element) && elementsInArea.includes(element)) {
         if (this.isPointInPoly(element, this.mousePosition)) {
           this.selectedDrawElement.push(element);
           element.erasingEvidence = true;     // Mise en évidence (rouge)

@@ -16,9 +16,9 @@ export class CommandManagerService {
   cancelledCommands: Command[] = [];
 
   execute(command: Command): void {
-    this.canvasConversion.updateDrawing();
     this.executedCommands.push(command);
     this.cancelledCommands = [];
+    this.canvasConversion.updateDrawing();
   }
 
   cancelCommand(): void {
@@ -26,6 +26,7 @@ export class CommandManagerService {
     if (command) {
       command.undo();
       this.cancelledCommands.push(command);
+      this.canvasConversion.updateDrawing();
     }
   }
 
@@ -34,6 +35,7 @@ export class CommandManagerService {
     if (command) {
       command.redo();
       this.executedCommands.push(command);
+      this.canvasConversion.updateDrawing();
     }
   }
 
