@@ -38,6 +38,7 @@ export class DrawingSurfaceComponent {
   }
 
   handleBackgroundRightClick(): boolean {
+    this.colorChanger.activeElement = undefined;
     return false;
   }
 
@@ -77,6 +78,7 @@ export class DrawingSurfaceComponent {
   }
 
   handleMouseDownBackground(mouse: MouseEvent): void {
+    this.colorChanger.activeElement = undefined;
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       // si on clique dans la boite de selection d'un element SVG
       if (this.selection.selectionBox.selectionBox && this.clickBelongToSelectionBox(mouse)) {
