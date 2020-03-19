@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { Color, DrawElement, ERASING_COLOR_STRING_INIT, ERASING_COLOR_VALUES_INIT } from './draw-element';
+import { Color, DrawElement, ERASING_COLOR_INIT } from './draw-element';
 
 @Injectable({
   providedIn: 'root'
@@ -35,10 +35,7 @@ export class TracePencilService implements DrawElement {
       RGBAString: '',
       RGBA: [0, 0, 0, 0]
     };
-    this.erasingColor = {
-      RGBAString: ERASING_COLOR_STRING_INIT,
-      RGBA: ERASING_COLOR_VALUES_INIT
-    };
+    this.erasingColor = ERASING_COLOR_INIT;
     this.erasingEvidence = false;
     this.isAPoint = false;
     this.pointMin = {x: 0 , y: 0};
