@@ -1,4 +1,5 @@
 import { Component, HostListener } from '@angular/core';
+import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { BrushToolService } from 'src/app/services/tools/brush-tool.service';
 import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
@@ -38,7 +39,8 @@ export class DrawingPageComponent {
               public colorChanger: ColorChangerToolService,
               public ellipse: EllipseToolService,
               public polygon: PolygonToolService,
-              public eraser: EraserToolService
+              public eraser: EraserToolService,
+              public canvas: CanvasConversionService
               ) {
               this.toolMap.set('Crayon', pencil)
                           .set('Rectangle', rectangle)
