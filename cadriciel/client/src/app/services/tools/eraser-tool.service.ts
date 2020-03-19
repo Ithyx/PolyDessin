@@ -193,6 +193,7 @@ export class EraserToolService implements ToolInterface {
     }
     if (this.selectedDrawElement.length !== 0) {
       this.removeCommand.addElements(this.selectedDrawElement);
+      this.canvas.updateDrawing();
     }
     this.selectedDrawElement = [];
     this.selectedSVGElement = [];
