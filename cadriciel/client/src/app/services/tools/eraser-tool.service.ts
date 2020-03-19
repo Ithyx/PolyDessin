@@ -214,10 +214,14 @@ export class EraserToolService implements ToolInterface {
   }
 
   adaptRedEvidence(element: DrawElement): void {
-    if (element.secondaryColor && element.secondaryColor.RGBA[R] === element.erasingColor.RGBA[R]) {
-      element.erasingColor.RGBA = [140, 21, 21, 1];
+    if (element.secondaryColor && element.secondaryColor.RGBA[R] >= 230) {
+      // element.erasingColor.RGBA = [140, 21, 21, 1];
+      element.erasingColor.RGBA[R] = (element.erasingColor.RGBA[R] + 10) % 255;
+      element.erasingColor.RGBA[G] = (element.erasingColor.RGBA[G] + 21) % 255;
+      element.erasingColor.RGBA[B] = (element.erasingColor.RGBA[G] + 21) % 255;
       this.updateErasingColor(element);
-    } else if (element.primaryColor && element.primaryColor.RGBA[R] === element.erasingColor.RGBA[R]) { 
+      console.log('hello there');
+    } else if (element.primaryColor && element.primaryColor.RGBA[R] === element.erasingColor.RGBA[R]) {
       element.erasingColor.RGBA = [140, 21, 21, 1];
       this.updateErasingColor(element);
     }
