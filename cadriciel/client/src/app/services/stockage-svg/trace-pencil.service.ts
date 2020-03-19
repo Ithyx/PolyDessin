@@ -15,10 +15,12 @@ export class TracePencilService implements DrawElement {
   isSelected: boolean;
   erasingEvidence: boolean;
 
+  primaryColor: Color;
+  erasingColor: Color;
+
   thickness: number;
 
   isAPoint: boolean;
-  primaryColor: Color;
 
   pointMin: Point;
   pointMax: Point;

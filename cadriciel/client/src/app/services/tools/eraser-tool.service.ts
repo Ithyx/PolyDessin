@@ -196,6 +196,11 @@ export class EraserToolService implements ToolInterface {
   }
 
   clear(): void {
+    for (const element of this.svgStockage.getCompleteSVG()) {
+      element.erasingEvidence = false;
+      element.draw();
+      element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
+    }
     this.commands.drawingInProgress = false;
     if (!this.removeCommand.isEmpty()) {
       this.commands.execute(this.removeCommand);

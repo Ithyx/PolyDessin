@@ -20,6 +20,7 @@ export class TraceSprayService implements DrawElement {
   points: Point[] = [];
 
   primaryColor: Color;
+  erasingColor: Color;
 
   pointMin: Point;
   pointMax: Point;

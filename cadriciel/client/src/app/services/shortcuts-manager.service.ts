@@ -8,6 +8,7 @@ import { CommandManagerService } from './command/command-manager.service';
 import { GridService } from './grid/grid.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { EllipseToolService } from './tools/ellipse-tool.service';
+import { EraserToolService } from './tools/eraser-tool.service';
 import { LineToolService, Point } from './tools/line-tool.service';
 import { RectangleToolService } from './tools/rectangle-tool.service';
 import { SelectionService } from './tools/selection/selection.service';
@@ -45,7 +46,8 @@ export class ShortcutsManagerService {
               private selection: SelectionService,
               private stockageSVG: SVGStockageService,
               private grid: GridService,
-              private dialog: MatDialog
+              private dialog: MatDialog,
+              private eraser: EraserToolService
               ) {
                 this.focusOnInput = false;
                 this.counter100ms = 0;
@@ -137,6 +139,7 @@ export class ShortcutsManagerService {
     this.selection.deleteBoundingBox();
     this.rectangleTool.clear();
     this.lineTool.clear();
+    this.eraser.clear();
   }
 
   // SHORTCUT FUNCTIONS

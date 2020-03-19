@@ -16,6 +16,7 @@ export class LineService implements DrawElement {
   erasingEvidence: boolean;
 
   primaryColor: Color;
+  erasingColor: Color;
 
   thicknessLine: number;
   thicknessPoint: number;

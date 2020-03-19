@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Color, G, B, R, A } from '../stockage-svg/draw-element';
+import { A, B, Color, G, R,  } from '../stockage-svg/draw-element';
 
 const INIT_OPACITY = 100;
+const RGB_MAX = 255;
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class ColorParameterService {
   lastColors: Color[];
 
@@ -22,7 +24,7 @@ export class ColorParameterService {
     this.primaryColor = {
       RGBAString: 'rgba(0, 0, 0, 1)',
       RGBA: [0, 0, 0, 1]
-    }
+    };
     this.secondaryColor = {
       RGBAString: 'rgba(0, 0, 0, 1)',
       RGBA: [0, 0, 0, 1]
@@ -31,7 +33,7 @@ export class ColorParameterService {
     this.secondaryOpacityDisplayed = INIT_OPACITY;
     this.temporaryBackgroundColor = {
       RGBAString: 'rgba(255, 255, 255, 1)',
-      RGBA: [255, 255, 255, 1]
+      RGBA: [RGB_MAX, RGB_MAX, RGB_MAX, 1]
     };
   }
 

@@ -18,6 +18,7 @@ export class EllipseService implements DrawElement {
 
   primaryColor: Color;
   secondaryColor: Color;
+  erasingColor: Color;
 
   thickness: number;
   chosenOption: string;

@@ -15,10 +15,12 @@ export class TraceBrushService implements DrawElement {
   isSelected: boolean;
   erasingEvidence: boolean;
 
+  primaryColor: Color;
+  erasingColor: Color;
+
   isAPoint: boolean;
   thickness: number;
   chosenOption: string;
-  primaryColor: Color;
 
   pointMin: Point;
   pointMax: Point;

@@ -23,7 +23,7 @@ export interface DrawElement {
 
   primaryColor?: Color;
   secondaryColor?: Color;
-  erasingColor?: Color;
+  erasingColor: Color;
 
   texture?: string;
   thickness?: number;
