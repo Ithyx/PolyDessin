@@ -7,6 +7,9 @@ import { CommandManagerService } from 'src/app/services/command/command-manager.
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { ColorPickerComponent } from './color-picker.component';
 
+// tslint:disable: no-magic-numbers
+// tslint:disable: no-string-literal
+
 describe('color-picker', () => {
   let component: ColorPickerComponent;
   let fixture: ComponentFixture<ColorPickerComponent>;
@@ -74,14 +77,15 @@ describe('color-picker', () => {
     component.colorManager.hue = 'rgba(50, 50, 50,';
     component.draw();
     component.colorPosition(249, 0);
-    expect(component.colorManager.color).toBe('rgba(49,49,49,');
+    expect(component.colorManager.color.RGBAString).toBe('rgba(49,49,49,');
   });
 
   it('#colorPosition devrait actualiser le RGB du service gestionnaireCouleur', () => {
     component.colorManager.hue = 'rgba(50, 50, 50,';
     component.draw();
     component.colorPosition(249, 0);
-    expect(component.colorManager.RGB).toEqual([49, 49, 49]);
+    // expect(component.colorManager.RGB).toEqual([49, 49, 49]);
+    expect(component.colorManager.color.RGBA).toEqual([49, 49, 49]);  // À vérifier
   });
 
   // TEST couleurEmise

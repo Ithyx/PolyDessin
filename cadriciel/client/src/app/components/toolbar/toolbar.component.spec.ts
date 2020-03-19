@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Scope } from 'src/app/services/color/color-manager.service';
+import { Color } from 'src/app/services/stockage-svg/draw-element';
 import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { ColorChoiceComponent } from '../color-choice/color-choice.component';
 import { ColorInputComponent } from '../color-choice/color-input/color-input.component';
@@ -17,6 +18,10 @@ import { GuidePageComponent } from '../guide-page/guide-page.component';
 import { GuideSubjectComponent } from '../guide-subject/guide-subject.component';
 import { NewDrawingWarningComponent } from '../new-drawing-warning/new-drawing-warning.component';
 import { ToolbarComponent } from './toolbar.component';
+
+// tslint:disable: no-magic-numbers
+// tslint:disable: no-string-literal
+// tslint:disable: max-file-line-count
 
 /* Service stub pour réduire les dépendances */
 const outilTestActif: DrawingTool = {
@@ -252,23 +257,35 @@ describe('ToolbarComponent', () => {
   // TESTS selectPreviousPrimaryColor
 
   it('#selectPreviousPrimaryColor devrait assigner sa couleur en paramètre à couleurPrincipale', () => {
-    component.colorParameter.primaryColor = 'rgba(0, 0, 0, ';
-    component.selectPreviousPrimaryColor('rgba(1, 1, 1, ');
-    expect(component.colorParameter.primaryColor).toEqual('rgba(1, 1, 1, ');
+    component.colorParameter.primaryColor.RGBAString = 'rgba(0, 0, 0, ';
+    const test: Color = {
+      RGBAString : 'rgba(1, 1, 1, 1',
+      RGBA: [1, 1, 1, 1]
+    };
+    component.selectPreviousPrimaryColor(test);
+    expect(component.colorParameter.primaryColor).toEqual(test);
   });
 
   // TESTS selectPreviousSecondaryColor
 
   it('#selectPreviousSecondaryColor devrait assigner sa couleur en paramètre à couleurSecondaire', () => {
-    component.colorParameter.secondaryColor = 'rgba(0, 0, 0, ';
-    component.selectPreviousSecondaryColor('rgba(1, 1, 1, ', new MouseEvent ('click'));
-    expect(component.colorParameter.secondaryColor).toEqual('rgba(1, 1, 1, ');
+    component.colorParameter.secondaryColor.RGBAString = 'rgba(0, 0, 0, ';
+    const test: Color = {
+      RGBAString : 'rgba(1, 1, 1, 1',
+      RGBA: [1, 1, 1, 1]
+    };
+    component.selectPreviousSecondaryColor(test, new MouseEvent ('click'));
+    expect(component.colorParameter.secondaryColor).toEqual(test);
   });
 
   it("#selectPreviousSecondaryColor devrait s'assurer que preventDefault est appelé", () => {
     const evenement = new MouseEvent ('click');
     spyOn(evenement, 'preventDefault');
-    component.selectPreviousSecondaryColor('rgba(1, 1, 1, ', evenement);
+    const test: Color = {
+      RGBAString : 'rgba(1, 1, 1, 1',
+      RGBA: [1, 1, 1, 1]
+    };
+    component.selectPreviousSecondaryColor(test, evenement);
     expect(evenement.preventDefault).toHaveBeenCalled();
   });
 
@@ -279,8 +296,7 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="primary-opacity"]')).nativeElement;
     element.value = 'test';
     element.dispatchEvent(new Event('input')); // applyPrimaryOpacity appelée implicitement
-    // tslint:disable-next-line: no-magic-numbers
-    expect(component.colorParameter.primaryOpacity).toBe(0.5);
+    expect(component.colorParameter.primaryColor.RGBA[3]).toBe(0.5);
   });
 
   it("#applyPrimaryOpacity devrait changer l'opacité si l'évènement "
@@ -288,8 +304,7 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="primary-opacity"]')).nativeElement;
     element.value = '0.1';
     element.dispatchEvent(new Event('input')); // applyPrimaryOpacity appelée implicitement
-    // tslint:disable-next-line: no-magic-numbers
-    expect(component.colorParameter.primaryOpacity).toBe(0.1);
+    expect(component.colorParameter.primaryColor.RGBA[3]).toBe(0.1);
   });
 
   it("#applyPrimaryOpacity devrait changer l'opacité à 0 si la valeur "
@@ -297,15 +312,14 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="primary-opacity"]')).nativeElement;
     element.value = '-0.1';
     element.dispatchEvent(new Event('input')); // applyPrimaryOpacity appelée implicitement
-    expect(component.colorParameter.primaryOpacity).toBe(0);
+    expect(component.colorParameter.primaryColor.RGBA[3]).toBe(0);
   });
 
-  it("#applyPrimaryOpacity devrait changer l'opacité à 1 si la valeur "
-    + 'qui lui est donnée est supérieure à 1', () => {
+  it('#applyPrimaryOpacity devrait changer l\'opacité à 1 si la valeur qui lui est donnée est supérieure à 1', () => {
     const element = fixture.debugElement.query(By.css('input[name="primary-opacity"]')).nativeElement;
     element.value = '1.1';
     element.dispatchEvent(new Event('input')); // applyPrimaryOpacity appelée implicitement
-    expect(component.colorParameter.primaryOpacity).toBe(1);
+    expect(component.colorParameter.primaryColor.RGBA[3]).toBe(1);
   });
 
   it('#applyPrimaryOpacity devrait changer l\'opacité d\'affichage '
@@ -313,7 +327,6 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="primary-opacity"]')).nativeElement;
     element.value = '0.75';
     element.dispatchEvent(new Event('input')); // applyPrimaryOpacity appelée implicitement
-    // tslint:disable-next-line: no-magic-numbers
     expect(component.colorParameter.primaryOpacityDisplayed).toBe(75);
   });
 
@@ -324,8 +337,7 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="secondary-opacity"]')).nativeElement;
     element.value = 'test';
     element.dispatchEvent(new Event('input')); // applySecondaryOpacity appelée implicitement
-    // tslint:disable-next-line: no-magic-numbers
-    expect(component.colorParameter.secondaryOpacity).toBe(0.5);
+    expect(component.colorParameter.secondaryColor.RGBA[3]).toBe(0.5);
   });
 
   it("#applySecondaryOpacity devrait changer l'opacité si l'évènement "
@@ -333,8 +345,7 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="secondary-opacity"]')).nativeElement;
     element.value = '0.1';
     element.dispatchEvent(new Event('input')); // applySecondaryOpacity appelée implicitement
-    // tslint:disable-next-line: no-magic-numbers
-    expect(component.colorParameter.secondaryOpacity).toBe(0.1);
+    expect(component.colorParameter.secondaryColor.RGBA[3]).toBe(0.1);
   });
 
   it("#applySecondaryOpacity devrait changer l'opacité à 0 si la valeur "
@@ -342,7 +353,7 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="secondary-opacity"]')).nativeElement;
     element.value = '-0.1';
     element.dispatchEvent(new Event('input')); // applySecondaryOpacity appelée implicitement
-    expect(component.colorParameter.secondaryOpacity).toBe(0);
+    expect(component.colorParameter.secondaryColor.RGBA[3]).toBe(0);
   });
 
   it("#applySecondaryOpacity devrait changer l'opacité à 1 si la valeur "
@@ -350,7 +361,7 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="secondary-opacity"]')).nativeElement;
     element.value = '1.1';
     element.dispatchEvent(new Event('input')); // applySecondaryOpacity appelée implicitement
-    expect(component.colorParameter.secondaryOpacity).toBe(1);
+    expect(component.colorParameter.secondaryColor.RGBA[3]).toBe(1);
   });
 
   it('#applySecondaryOpacity devrait changer l\'opacité d\'affichage '
@@ -358,7 +369,6 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="secondary-opacity"]')).nativeElement;
     element.value = '0.75';
     element.dispatchEvent(new Event('input')); // applySecondaryOpacity appelée implicitement
-    // tslint:disable-next-line: no-magic-numbers
     expect(component.colorParameter.secondaryOpacityDisplayed).toBe(75);
   });
 });
