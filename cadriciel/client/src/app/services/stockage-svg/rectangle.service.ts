@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { Color, DrawElement, EVIDENCE_COLOR } from './draw-element';
+import { Color, DrawElement, ERASING_COLOR_STRING_INIT, ERASING_COLOR_VALUES_INIT } from './draw-element';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +38,10 @@ export class RectangleService implements DrawElement {
       RGBAString: '',
       RGBA: [0, 0, 0, 0]
     };
+    this.erasingColor = {
+      RGBAString: ERASING_COLOR_STRING_INIT,
+      RGBA: ERASING_COLOR_VALUES_INIT
+    };
     this.points = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
                    {x: 0, y: 0}];   // points[1], coin bas droite
     this.isSelected = false;
@@ -65,7 +69,7 @@ export class RectangleService implements DrawElement {
   drawLine(): void {
     this.svg = '<line stroke-linecap="square'
       + '" transform=" translate(' + this.translate.x + ' ' + this.translate.y
-      + ')" stroke="' + ((this.erasingEvidence) ? EVIDENCE_COLOR :  this.secondaryColor.RGBAString)
+      + ')" stroke="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString :  this.secondaryColor.RGBAString)
       + '" stroke-width="' + this.thickness
       + (this.isDotted ? '"stroke-dasharray="2, 8"'  : '')
       + '" x1="' + this.points[0].x + '" y1="' + this.points[0].y
@@ -76,8 +80,8 @@ export class RectangleService implements DrawElement {
   drawRectangle(): void {
     const choosedOption = this.chosenOption;
     this.svg = '<rect transform=" translate(' + this.translate.x + ' ' + this.translate.y +
-      ')" fill="' + ((choosedOption !== 'Contour') ? this.primaryColor.RGBAString : 'none')
-      + '" stroke="' + ((choosedOption !== 'Plein') ? (this.erasingEvidence) ? EVIDENCE_COLOR :  this.secondaryColor.RGBAString : 'none')
+      ')" fill="' + ((choosedOption !== 'Contour') ? this.primaryColor.RGBAString : 'none') + '" stroke="'
+      + ((choosedOption !== 'Plein') ? (this.erasingEvidence) ? this.erasingColor.RGBAString :  this.secondaryColor.RGBAString : 'none')
       + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')
       + '" stroke-width="' + this.thickness
       + '" x="' + this.points[0].x + '" y="' + this.points[0].y

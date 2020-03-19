@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { Color, DrawElement, EVIDENCE_COLOR } from './draw-element';
+import { Color, DrawElement, ERASING_COLOR_STRING_INIT, ERASING_COLOR_VALUES_INIT } from './draw-element';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +38,10 @@ export class LineService implements DrawElement {
       RGBAString: 'rgba(0,0,0,1)',
       RGBA: [0, 0, 0, 0]
     };
+    this.erasingColor = {
+      RGBAString: ERASING_COLOR_STRING_INIT,
+      RGBA: ERASING_COLOR_VALUES_INIT
+    };
     this.isAPolygon = false;
     this.mousePosition = {x: 0, y: 0};
     this.translate = { x: 0, y: 0};
@@ -46,7 +50,7 @@ export class LineService implements DrawElement {
   draw(): void {
     this.svg = (this.isAPolygon) ? '<polygon ' : '<polyline ';
     this.svg += 'transform="translate(' + this.translate.x + ' ' + this.translate.y + ')" ';
-    this.svg += 'fill="none" stroke="' + ((this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor.RGBAString);
+    this.svg += 'fill="none" stroke="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString);
     this.svg += '" stroke-width="' + this.thicknessLine;
     this.svg += '" points="';
     for (const point of this.points) {
@@ -72,7 +76,7 @@ export class LineService implements DrawElement {
     for (const point of this.points) {
       this.svg += '<circle transform="translate(' + this.translate.x + ' ' + this.translate.y
       + ')" cx="' + point.x + '" cy="' + point.y + '" r="' + this.thicknessPoint
-      + '" fill="' + ((this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor.RGBAString) + '"></circle>';
+      + '" fill="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString) + '"></circle>';
     }
   }
 

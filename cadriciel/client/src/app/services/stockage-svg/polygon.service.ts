@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { Color, DrawElement, EVIDENCE_COLOR } from './draw-element';
+import { Color, DrawElement, ERASING_COLOR_STRING_INIT, ERASING_COLOR_VALUES_INIT } from './draw-element';
 
 const MIN_SIDES = 4;
 
@@ -42,6 +42,10 @@ export class PolygonService implements DrawElement {
       RGBAString: '',
       RGBA: [0, 0, 0, 0]
     };
+    this.erasingColor = {
+      RGBAString: ERASING_COLOR_STRING_INIT,
+      RGBA: ERASING_COLOR_VALUES_INIT
+    };
     this.pointMin = {x: 0, y: 0};
     this.pointMax = {x: 0, y: 0};
     this.isSelected = false;
@@ -64,9 +68,8 @@ export class PolygonService implements DrawElement {
 
   drawPolygon(): void {
     this.svg = '<polygon transform=" translate(' + this.translate.x + ' ' + this.translate.y +
-      ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor.RGBAString : 'none')
-      + '" stroke="' + ((this.chosenOption !== 'Plein') ? (this.erasingEvidence) ? EVIDENCE_COLOR :  this.secondaryColor.RGBAString
-        : 'none')
+      ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor.RGBAString : 'none') + '" stroke="'
+      + ((this.chosenOption !== 'Plein') ? (this.erasingEvidence) ? this.erasingColor.RGBAString :  this.secondaryColor.RGBAString : 'none')
       + '" stroke-width="' + this.thickness
       + '" points="';
     for (const point of this.points) {

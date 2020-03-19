@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { Color, DrawElement, EVIDENCE_COLOR } from './draw-element';
+import { Color, DrawElement, ERASING_COLOR_STRING_INIT, ERASING_COLOR_VALUES_INIT } from './draw-element';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +34,10 @@ export class TraceBrushService implements DrawElement {
       RGBAString: '',
       RGBA: [0, 0, 0, 0]
     };
+    this.erasingColor = {
+      RGBAString: ERASING_COLOR_STRING_INIT,
+      RGBA: ERASING_COLOR_VALUES_INIT
+    };
     this.isAPoint = false;
     this.erasingEvidence = false;
     this.translate = { x: 0, y: 0};
@@ -49,7 +53,7 @@ export class TraceBrushService implements DrawElement {
 
   drawPath(): void {
     this.svg = '<path transform="translate(' + this.translate.x + ' ' + this.translate.y + ')" fill="none" '
-      + `stroke="${(this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor.RGBAString}"`
+      + `stroke="${(this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString}"`
       + ' filter="url(#' + this.chosenOption
       + ')" stroke-linecap="round" stroke-width="' + this.thickness + '" d="';
     for (let i = 0; i < this.points.length; ++i) {
@@ -64,7 +68,7 @@ export class TraceBrushService implements DrawElement {
       + '" transform=" translate(' + this.translate.x + ' ' + this.translate.y
       + ')" filter="url(#' + this.chosenOption
       + ')" r="' + this.thickness / 2
-      + '" fill="' + ((this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor.RGBAString) + '"></circle>';
+      + '" fill="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString) + '"></circle>';
   }
 
   updatePosition(x: number, y: number): void {

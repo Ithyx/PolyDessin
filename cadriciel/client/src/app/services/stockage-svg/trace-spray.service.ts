@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { Color, DrawElement, EVIDENCE_COLOR} from './draw-element';
+import { Color, DrawElement, ERASING_COLOR_STRING_INIT, ERASING_COLOR_VALUES_INIT} from './draw-element';
 
 const MIN_DIAMETER = 5;
 
@@ -33,6 +33,10 @@ export class TraceSprayService implements DrawElement {
       RGBAString: '',
       RGBA: [0, 0, 0, 0]
     };
+    this.erasingColor = {
+      RGBAString: ERASING_COLOR_STRING_INIT,
+      RGBA: ERASING_COLOR_VALUES_INIT
+    };
     this.erasingEvidence = false;
     this.translate = { x: 0, y: 0};
   }
@@ -42,7 +46,7 @@ export class TraceSprayService implements DrawElement {
     for (const point of this.points) {
       this.svg += '<circle transform="translate(' + this.translate.x + ' ' + this.translate.y
       + `)" cx="${point.x}" cy="${point.y}" r="1" `
-      + `fill="${(this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor.RGBAString}"></circle>`;
+      + `fill="${(this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString}"></circle>`;
     }
   }
 
@@ -54,7 +58,7 @@ export class TraceSprayService implements DrawElement {
     this.points.push({x, y});
     this.svg += '<circle transform="translate(' + this.translate.x + ' ' + this.translate.y
       + `)" cx="${x}" cy="${y}" r="1" `
-      + `fill="${(this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor.RGBAString}"></circle>`;
+      + `fill="${(this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString}"></circle>`;
   }
 
   updatePosition(x: number, y: number): void {

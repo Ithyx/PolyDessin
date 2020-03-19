@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { Color, DrawElement, EVIDENCE_COLOR } from './draw-element';
+import { Color, DrawElement, ERASING_COLOR_STRING_INIT, ERASING_COLOR_VALUES_INIT } from './draw-element';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +35,10 @@ export class TracePencilService implements DrawElement {
       RGBAString: '',
       RGBA: [0, 0, 0, 0]
     };
+    this.erasingColor = {
+      RGBAString: ERASING_COLOR_STRING_INIT,
+      RGBA: ERASING_COLOR_VALUES_INIT
+    };
     this.erasingEvidence = false;
     this.isAPoint = false;
     this.pointMin = {x: 0 , y: 0};
@@ -52,7 +56,7 @@ export class TracePencilService implements DrawElement {
 
   drawPath(): void {
     this.svg = '<path transform="translate(' + this.translate.x + ' ' + this.translate.y + ')" fill="none" '
-      + `stroke="${(this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor.RGBAString}"`
+      + `stroke="${(this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString}"`
       + ' stroke-linecap="round" stroke-width="' + this.thickness + '" d="';
     for (let i = 0; i < this.points.length; ++i) {
       this.svg += (i === 0) ? 'M ' : 'L ';
@@ -65,7 +69,7 @@ export class TracePencilService implements DrawElement {
     this.svg = '<circle cx="' + this.points[0].x + '" cy="' + this.points[0].y
       + '" transform=" translate(' + this.translate.x + ' ' + this.translate.y
       + ')" r="' + this.thickness / 2
-      + '" fill="' + ((this.erasingEvidence) ? EVIDENCE_COLOR :  this.primaryColor.RGBAString) + '"></circle>';
+      + '" fill="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString) + '"></circle>';
   }
 
   updatePosition(x: number, y: number): void {
