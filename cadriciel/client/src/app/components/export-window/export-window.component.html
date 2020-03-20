@@ -36,7 +36,7 @@
                 </feComponentTransfer>
             </filter>
         </defs>
-        <rect [attr.width]="drawing.width" [attr.height]="drawing.height" [attr.fill]="drawing.backgroundColor" />
+        <rect [attr.width]="drawing.width" [attr.height]="drawing.height" [attr.fill]="drawing.backgroundColor.RGBAString" />
         <g [attr.filter]="getFilter()" *ngFor="let element of drawing.elements" [innerHtml]="sanatize(element.svg)" />
     </svg>
     <button mat-stroked-button (click)="export()">EXPORTER</button>
