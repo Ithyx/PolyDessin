@@ -1,14 +1,18 @@
 import { TestBed } from '@angular/core/testing';
-import { DrawingToolService } from '../tools/pencil-tool.service';
+
+// import { DrawingToolService } from '../tools/pencil-tool.service';
+import { LineToolService } from '../tools/line-tool.service';
 import { LineService } from './line.service';
 
 // tslint:disable:no-magic-numbers
 
 describe('LineService', () => {
   let element: LineService;
-  let service: DrawingToolService;
+  // let service: DrawingToolService;
+  let service: LineToolService;
   beforeEach(() => TestBed.configureTestingModule({}));
-  beforeEach(() => service = TestBed.get(DrawingToolService));
+  // beforeEach(() => service = TestBed.get(DrawingToolService));
+  beforeEach(() => service = TestBed.get(LineService));
 
   beforeEach(() => {
     element = new LineService();

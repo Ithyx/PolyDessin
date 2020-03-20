@@ -11,7 +11,7 @@ import { ToolManagerService } from './tool-manager.service';
   providedIn: 'root'
 })
 
-export class DrawingToolService implements ToolInterface {
+export class PencilToolService implements ToolInterface {
 
   trace: TracePencilService;
   canClick: boolean;

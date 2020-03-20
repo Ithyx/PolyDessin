@@ -7,7 +7,7 @@ import { DrawSprayService } from 'src/app/services/tools/draw-spray.service';
 import { EllipseToolService } from 'src/app/services/tools/ellipse-tool.service';
 import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
 import { LineToolService } from 'src/app/services/tools/line-tool.service';
-import { DrawingToolService } from 'src/app/services/tools/pencil-tool.service';
+import { PencilToolService } from 'src/app/services/tools/pencil-tool.service';
 import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
 import { PolygonToolService } from 'src/app/services/tools/polygon-tool.service';
 import { RectangleToolService } from 'src/app/services/tools/rectangle-tool.service';
@@ -28,7 +28,7 @@ export class DrawingPageComponent {
 
   constructor(
               public tools: ToolManagerService,
-              public pencil: DrawingToolService,
+              public pencil: PencilToolService,
               public rectangle: RectangleToolService,
               public brush: BrushToolService,
               public line: LineToolService,

@@ -40,7 +40,7 @@ import { RoutingManagerService } from './services/routing-manager.service';
 import { ShortcutsManagerService } from './services/shortcuts-manager.service';
 import { SVGStockageService } from './services/stockage-svg/svg-stockage.service';
 import { LineToolService } from './services/tools/line-tool.service';
-import { DrawingToolService } from './services/tools/pencil-tool.service';
+import { PencilToolService } from './services/tools/pencil-tool.service';
 import { RectangleToolService } from './services/tools/rectangle-tool.service';
 import { SelectionService } from './services/tools/selection/selection.service';
 
@@ -56,7 +56,7 @@ import { SelectionService } from './services/tools/selection/selection.service';
         {path: 'dessin', component: DrawingPageComponent},
         {path: 'guide', component : GuidePageComponent}
     ])],
-    providers: [NavigationGuideService, SVGStockageService, DrawingToolService, DrawingManagerService,
+    providers: [NavigationGuideService, SVGStockageService, PencilToolService, DrawingManagerService,
                 ShortcutsManagerService, RectangleToolService, LineToolService,
                 RoutingManagerService, ColorParameterService, MatDialogConfig, SelectionService,
                 CommandManagerService, GridService, CanvasConversionService],
