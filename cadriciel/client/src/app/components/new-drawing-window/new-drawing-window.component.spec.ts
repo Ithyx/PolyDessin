@@ -1,5 +1,7 @@
 // Angular
 // import { Injector } from '@angular/core';
+// tslint:disable: no-string-literal
+// tslint:disable: no-magic-numbers
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { /*MatDialogConfig,*/ MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -43,15 +45,15 @@ describe('NewDrawingWindowComponent', () => {
   // TESTS #closeWindow
 
   it('#closeWindow devrait réactiver les raccourcis avec champDeTexteEstFocus', () => {
-    component.shortcuts.focusOnInput = true;
+    component['shortcuts'].focusOnInput = true;
     component.closeWindow();
-    expect(component.shortcuts.focusOnInput).toBe(false);
+    expect(component['shortcuts'].focusOnInput).toBe(false);
   });
 
   it('#closeWindow devrait appeler la fonction close de dialogRef', () => {
-    spyOn(component.dialogRef, 'close');
+    spyOn(component['dialogRef'], 'close');
     component.closeWindow();
-    expect(component.dialogRef.close).toHaveBeenCalled();
+    expect(component['dialogRef'].close).toHaveBeenCalled();
   });
 
   // TESTS #changeWindowDimensionManually
@@ -93,35 +95,35 @@ describe('NewDrawingWindowComponent', () => {
   // TESTS #createNewDrawing
 
   it('#createNewDrawing doit vider le dessin en cours', () => {
-    spyOn(component.SVGStockage, 'cleanDrawing');
+    spyOn(component['SVGStockage'], 'cleanDrawing');
     component.createNewDrawing();
-    expect(component.SVGStockage.cleanDrawing).toHaveBeenCalled();
+    expect(component['SVGStockage'].cleanDrawing).toHaveBeenCalled();
   });
 
   it('#createNewDrawing doit metter à jour la hauteur de dessin', () => {
     component.newDrawing.value[KEY_FORM_HEIGHT] = 100;
     component.newDrawing.value[KEY_FORM_WIDHT] = 100;
     component.createNewDrawing();
-    expect(component.drawingManager.height).toBe(100);
-    expect(component.drawingManager.width).toBe(100);
+    expect(component['drawingManager'].height).toBe(100);
+    expect(component['drawingManager'].width).toBe(100);
   });
 
   it('#createNewDrawing doit mettre réactiver les raccourcis à l\' aide de "champDeTexteEstFocus"', () => {
-    component.shortcuts.focusOnInput = true;
+    component['shortcuts'].focusOnInput = true;
     component.createNewDrawing();
-    expect(component.shortcuts.focusOnInput).toBe(false);
+    expect(component['shortcuts'].focusOnInput).toBe(false);
   });
 
   it('#createNewDrawing devrait fermer la fenêtre de dialogue', () => {
-    spyOn(component.dialogRef, 'close');
+    spyOn(component['dialogRef'], 'close');
     component.createNewDrawing();
-    expect(component.dialogRef.close).toHaveBeenCalled();
+    expect(component['dialogRef'].close).toHaveBeenCalled();
   });
 
   it('#createNewDrawing devrait changer la page actuelle à l\'aide du router vers celle de dessin', () => {
-    spyOn(component.router, 'navigate');
+    spyOn(component['router'], 'navigate');
     component.createNewDrawing();
-    expect(component.router.navigate).toHaveBeenCalledWith(['dessin']);
+    expect(component['router'].navigate).toHaveBeenCalledWith(['dessin']);
   });
 /*
   // TESTS #selectColor

@@ -61,6 +61,8 @@ export class LineToolService implements ToolInterface {
         this.line.points.pop();
         this.line.isAPolygon = true;
       } else if (this.tools.activeTool.parameters[1].chosenOption === 'Avec points') {
+        this.line.points.pop();
+        this.line.points.pop();
         this.line.points.push({x: this.line.mousePosition.x, y: this.line.mousePosition.y});
       }
       this.line.draw();

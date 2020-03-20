@@ -179,6 +179,7 @@ export class ShortcutsManagerService {
   shortcutKeyE(keyboard: KeyboardEvent): void {
     if (keyboard.ctrlKey) {
       this.focusOnInput = true;
+      this.selection.deleteBoundingBox();
       this.dialog.open(ExportWindowComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
     }
   }
@@ -206,6 +207,7 @@ export class ShortcutsManagerService {
   shortcutKeyS(keyboard: KeyboardEvent): void {
     if (keyboard.ctrlKey) {
       this.focusOnInput = true;
+      this.selection.deleteBoundingBox();
       this.dialog.open(SavePopupComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
     } else {
       this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
@@ -261,6 +263,7 @@ export class ShortcutsManagerService {
   shortcutKeyG(keyboard: KeyboardEvent): void {
     if (keyboard.ctrlKey) {
       this.focusOnInput = true;
+      this.selection.deleteBoundingBox();
       this.dialog.open(GalleryComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
     } else { this.grid.showGrid = !this.grid.showGrid; }
   }

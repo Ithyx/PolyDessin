@@ -10,10 +10,10 @@ import { SubjectGuide } from './subject-guide';
 
 export class GuideSubjectComponent {
 
-  @Input() node: SubjectGuide;
-  @Input() depth: number;
+  @Input() private node: SubjectGuide;
+  @Input() protected depth: number;
 
-  @Output() notification: EventEmitter<SubjectGuide>;
+  @Output() private notification: EventEmitter<SubjectGuide>;
 
   constructor() {
     this.node = EMPTY_SUBJECT;

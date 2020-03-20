@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogConfig, MatDialogModule } from '@angular/material';
+import { MatDialogConfig, MatDialogModule, MatSidenavModule } from '@angular/material';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { RouterModule } from '@angular/router';
@@ -56,7 +56,7 @@ const gestionnaireOutilServiceStub: Partial<ToolManagerService> = {
   }
 };
 
-describe('BarreOutilsComponent', () => {
+describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
   let fixture: ComponentFixture<ToolbarComponent>;
   let service: ToolManagerService;
@@ -66,7 +66,7 @@ describe('BarreOutilsComponent', () => {
       declarations: [ GuidePageComponent, ToolbarComponent, DrawingToolComponent, GuideSubjectComponent, ColorChoiceComponent,
                       ColorPickerComponent, ColorSliderComponent, ColorInputComponent ],
       providers: [ {provide: ToolManagerService, useValue: gestionnaireOutilServiceStub} ],
-      imports: [ RouterModule.forRoot([
+      imports: [MatSidenavModule, RouterModule.forRoot([
         {path: 'guide', component : GuidePageComponent}
     ]), MatDialogModule, BrowserAnimationsModule]
     })

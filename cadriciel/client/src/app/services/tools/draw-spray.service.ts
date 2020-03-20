@@ -45,12 +45,7 @@ export class DrawSprayService implements ToolInterface {
     if (this.intervalSubscription) {
       this.intervalSubscription.unsubscribe();
     }
-    this.intervalSubscription = counter.subscribe(() => {
-      for (let i = 0; i < POINTS_PER_EMISSION; ++i) {
-        this.trace.addPoint(this.mousePosition);
-      }
-      this.stockageSVG.setOngoingSVG(this.trace);
-    });
+    this.intervalSubscription = counter.subscribe(this.onInterval.bind(this));
   }
 
   onMouseRelease(): void {
@@ -68,5 +63,12 @@ export class DrawSprayService implements ToolInterface {
     this.trace = new TraceSprayService();
     this.trace.primaryColor = this.colorParameter.getPrimaryColor();
     this.trace.updateParameters(this.tools.activeTool);
+  }
+
+  onInterval(): void {
+    for (let i = 0; i < POINTS_PER_EMISSION; ++i) {
+        this.trace.addPoint(this.mousePosition);
+      }
+    this.stockageSVG.setOngoingSVG(this.trace);
   }
 }

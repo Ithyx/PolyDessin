@@ -32,13 +32,13 @@ export class SelectionService implements ToolInterface {
              }
 
   handleClick(drawElement: DrawElement): void {
-      for (const element of this.selectedElements) {
-        element.isSelected = false;
-      }
-      drawElement.isSelected = true;
-      this.selectedElements.splice(0, this.selectedElements.length);
-      this.selectedElements.push(drawElement);
-      this.createBoundingBox();
+    for (const element of this.selectedElements) {
+      element.isSelected = false;
+    }
+    drawElement.isSelected = true;
+    this.selectedElements.splice(0, this.selectedElements.length);
+    this.selectedElements.push(drawElement);
+    this.createBoundingBox();
 
   }
 

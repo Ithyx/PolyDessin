@@ -55,7 +55,8 @@ export class EllipseService implements DrawElement {
 
   drawLine(): void {
     this.svg = '<line stroke-linecap="round'
-      + '" stroke="' + this.secondaryColor
+      + '" transform=" translate(' + this.translate.x + ' ' + this.translate.y
+      + ')" stroke="' + this.secondaryColor
       + '" stroke-width="' + this.thickness
       + '" x1="' + this.points[0].x + '" y1="' + this.points[0].y
       + '" x2="' + (this.points[0].x + this.getWidth())
