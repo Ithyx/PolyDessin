@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { DrawElement } from './draw-element';
+import { Color, DrawElement, ERASING_COLOR_INIT } from './draw-element';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +13,13 @@ export class LineService implements DrawElement {
 
   points: Point[];
   isSelected: boolean;
+  erasingEvidence: boolean;
 
-  primaryColor: string;
+  primaryColor: Color;
+  erasingColor: Color;
 
   thicknessLine: number;
-  thicknessPoint: number;           // REFACTORING
+  thicknessPoint: number;
   thickness: number;
   chosenOption: string;
   isAPolygon: boolean;
@@ -31,7 +33,12 @@ export class LineService implements DrawElement {
     this.svgHtml = '';
     this.points = [];
     this.isSelected = false;
-    this.primaryColor = 'rgba(0,0,0,1)';
+    this.erasingEvidence = false;
+    this.primaryColor = {
+      RGBAString: 'rgba(0,0,0,1)',
+      RGBA: [0, 0, 0, 0]
+    };
+    this.erasingColor = ERASING_COLOR_INIT;
     this.isAPolygon = false;
     this.mousePosition = {x: 0, y: 0};
     this.translate = { x: 0, y: 0};
@@ -39,8 +46,9 @@ export class LineService implements DrawElement {
 
   draw(): void {
     this.svg = (this.isAPolygon) ? '<polygon ' : '<polyline ';
-    this.svg += ' transform ="translate(' + this.translate.x + ' ' + this.translate.y + ')"';
-    this.svg += 'fill="none" stroke="' + this.primaryColor + '" stroke-width="' + this.thicknessLine;
+    this.svg += 'transform="translate(' + this.translate.x + ' ' + this.translate.y + ')" ';
+    this.svg += 'fill="none" stroke="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString);
+    this.svg += '" stroke-width="' + this.thicknessLine;
     this.svg += '" points="';
     for (const point of this.points) {
       this.svg += point.x + ' ' + point.y + ' ';
@@ -48,7 +56,7 @@ export class LineService implements DrawElement {
     if (!this.isAPolygon) {
       this.svg += this.mousePosition.x + ' ' + this.mousePosition.y;
     }
-    this.svg += '" />';
+    this.svg += `"></${(this.isAPolygon) ? 'polygon' : 'polyline'}>`;
     if (this.chosenOption === 'Avec points') {
       this.thickness = this.thicknessLine;
       this.drawPoints();
@@ -63,8 +71,9 @@ export class LineService implements DrawElement {
       this.thicknessPoint = this.thicknessPoint;
     }
     for (const point of this.points) {
-      this.svg += '<circle transform ="translate(' + this.translate.x + ' ' + this.translate.y
-      + ')"cx="' + point.x + '" cy="' + point.y + '" r="' + this.thicknessPoint  + '" fill="' + this.primaryColor + '"/>';
+      this.svg += '<circle transform="translate(' + this.translate.x + ' ' + this.translate.y
+      + ')" cx="' + point.x + '" cy="' + point.y + '" r="' + this.thicknessPoint
+      + '" fill="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString) + '"></circle>';
     }
   }
 

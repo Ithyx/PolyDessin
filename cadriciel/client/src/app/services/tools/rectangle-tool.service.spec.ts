@@ -196,11 +196,11 @@ describe('RectangleToolService', () => {
   });
   it('#refreshSVG devrait appeler getPrimaryColor', () => {
     service.refreshSVG();
-    expect(service.rectangle.primaryColor).toEqual(service.colorParameter.getPrimaryColor());
+    expect(service.rectangle.primaryColor).toEqual(service.colorParameter.secondaryColor);
   });
   it('#refreshSVG devrait appeler getSecondaryColor', () => {
     service.refreshSVG();
-    expect(service.rectangle.secondaryColor).toEqual(service.colorParameter.getSecondaryColor());
+    expect(service.rectangle.secondaryColor).toEqual(service.colorParameter.secondaryColor);
   });
   it('#refreshSVG devrait appeler draw', () => {
     spyOn(service.rectangle, 'draw');
@@ -275,7 +275,6 @@ describe('RectangleToolService', () => {
     service.onMouseRelease();
     // vérifier que la fonction ajouterSVG a été correctement appelée
     const addSVG = new AddSVGService(rectangle, service.stockageSVG);
-    addSVG.svgKey = 0;
     expect(service.commands.execute).toHaveBeenCalledWith(addSVG);
   });
   it('#onMouseRelease devrait reinitialiser le rectangle', () => {

@@ -10,6 +10,7 @@ import { TranslateSvgService } from './command/translate-svg.service';
 import { GridService } from './grid/grid.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { EllipseToolService } from './tools/ellipse-tool.service';
+import { EraserToolService } from './tools/eraser-tool.service';
 import { LineToolService, Point } from './tools/line-tool.service';
 import { RectangleToolService } from './tools/rectangle-tool.service';
 import { SelectionService } from './tools/selection/selection.service';
@@ -49,7 +50,8 @@ export class ShortcutsManagerService {
               private stockageSVG: SVGStockageService,
               private grid: GridService,
               private dialog: MatDialog,
-              private sanitizer: DomSanitizer
+              private sanitizer: DomSanitizer,
+              private eraser: EraserToolService
               ) {
                 this.focusOnInput = false;
                 this.counter100ms = 0;
@@ -147,6 +149,7 @@ export class ShortcutsManagerService {
     this.selection.deleteBoundingBox();
     this.rectangleTool.clear();
     this.lineTool.clear();
+    this.eraser.clear();
   }
 
   // SHORTCUT FUNCTIONS
@@ -189,7 +192,11 @@ export class ShortcutsManagerService {
   shortcutKeyE(keyboard: KeyboardEvent): void {
     if (keyboard.ctrlKey) {
       this.focusOnInput = true;
+      this.selection.deleteBoundingBox();
       this.dialog.open(ExportWindowComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
+    } else {
+      this.tools.changeActiveTool(TOOL_INDEX.ERASER);
+      this.clearOngoingSVG();
     }
   }
 
@@ -216,6 +223,7 @@ export class ShortcutsManagerService {
   shortcutKeyS(keyboard: KeyboardEvent): void {
     if (keyboard.ctrlKey) {
       this.focusOnInput = true;
+      this.selection.deleteBoundingBox();
       this.dialog.open(SavePopupComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
     } else {
       this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
@@ -271,6 +279,7 @@ export class ShortcutsManagerService {
   shortcutKeyG(keyboard: KeyboardEvent): void {
     if (keyboard.ctrlKey) {
       this.focusOnInput = true;
+      this.selection.deleteBoundingBox();
       this.dialog.open(GalleryComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
     } else { this.grid.showGrid = !this.grid.showGrid; }
   }

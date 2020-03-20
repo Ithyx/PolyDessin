@@ -31,14 +31,14 @@ export class NewDrawingWindowComponent {
   heightValid: boolean;
   widthValid: boolean;
 
-  constructor(public dialogRef: MatDialogRef<NewDrawingWindowComponent>,
-              public shortcuts: ShortcutsManagerService,
-              public drawingManager: DrawingManagerService,
-              public router: Router,
-              public SVGStockage: SVGStockageService,
-              public dialog: MatDialog,
-              public colorParameter: ColorParameterService,
-              public commands: CommandManagerService,
+  constructor(private dialogRef: MatDialogRef<NewDrawingWindowComponent>,
+              private shortcuts: ShortcutsManagerService,
+              private drawingManager: DrawingManagerService,
+              private router: Router,
+              private SVGStockage: SVGStockageService,
+              private dialog: MatDialog,
+              private colorParameter: ColorParameterService,
+              private commands: CommandManagerService,
               private ngZone: NgZone ) {
     this.windowHeight = window.innerHeight - BUFFER_HEIGHT;
     this.windowWidth = window.innerWidth - BUFFER_WIDTH;
@@ -56,8 +56,8 @@ export class NewDrawingWindowComponent {
   }
 
   areDimensionsValid(): boolean {
-    this.heightValid = this.newDrawing.value[KEY_FORM_HEIGHT];
-    this.widthValid = this.newDrawing.value[KEY_FORM_WIDHT];
+    this.heightValid = this.newDrawing.value[KEY_FORM_HEIGHT] > 0;
+    this.widthValid = this.newDrawing.value[KEY_FORM_WIDHT] > 0;
     return this.heightValid && this.widthValid;
   }
 
@@ -84,8 +84,8 @@ export class NewDrawingWindowComponent {
     if (!this.areDimensionsValid()) { return; }
     this.SVGStockage.cleanDrawing();
     this.commands.clearCommand();
-    this.drawingManager.height = this.newDrawing.value[KEY_FORM_HEIGHT];
-    this.drawingManager.width = this.newDrawing.value[KEY_FORM_WIDHT];
+    this.drawingManager.height = Math.min(this.newDrawing.value[KEY_FORM_HEIGHT], this.windowHeight);
+    this.drawingManager.width = Math.min(this.newDrawing.value[KEY_FORM_WIDHT], this.windowWidth);
     this.drawingManager.name = '';
     this.drawingManager.id = 0;
     this.drawingManager.backgroundColor = this.colorParameter.temporaryBackgroundColor;
@@ -100,6 +100,6 @@ export class NewDrawingWindowComponent {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '30%';
-    this.dialog.open(ColorChoiceComponent, dialogConfig).componentInstance.portee = Scope.BackgroundNewDrawing;
+    this.dialog.open(ColorChoiceComponent, dialogConfig).componentInstance.scope = Scope.BackgroundNewDrawing;
   }
 }

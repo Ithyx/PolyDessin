@@ -34,9 +34,9 @@ export class ColorInputComponent {
     }
 
     // Vérification qu'on essaie d'accéder à un index possible
-    if (index <= this.colorManager.RGB.length) {
-      this.colorManager.RGB[index] = Math.min(value, RGB_MAX_VALUE);
-      this.colorManager.editRGB();
+    if (index <= this.colorManager.color.RGBA.length) {
+      this.colorManager.color.RGBA[index] = Math.min(value, RGB_MAX_VALUE);
+      this.colorManager.updateColor();
     }
   }
 

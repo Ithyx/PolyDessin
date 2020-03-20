@@ -90,12 +90,13 @@ export class ColorSliderComponent implements AfterViewInit, ToolInterface {
 
   colorPosition(x: number, y: number): void {
     const imageData = this.context2D.getImageData(x, y, 1, 1).data;
-    const rgbaCouleur = 'rgba(' + imageData[0] + ',' + imageData[1] + ',' +
+    const rgbaColor = 'rgba(' + imageData[0] + ',' + imageData[1] + ',' +
       imageData[2] + ',';
 
-    this.colorManager.color = rgbaCouleur;
-    this.colorManager.hue = rgbaCouleur;
-    this.colorManager.RGB = [imageData[0], imageData[1], imageData[2]];
+    this.colorManager.color.RGBAString = rgbaColor;
+    this.colorManager.color.RGBA = [imageData[0], imageData[1], imageData[2], 1];
+    this.colorManager.hue = rgbaColor;
+    this.colorManager.color.RGBA = [imageData[0], imageData[1], imageData[2], 1];
   }
 
 }

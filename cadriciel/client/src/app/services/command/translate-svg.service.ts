@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DrawElement } from '../stockage-svg/draw-element';
 import { Point } from '../tools/line-tool.service';
-// import { SelectionService } from '../tools/selection/selection.service';
 import { SelectionBoxService } from '../tools/selection/selection-box.service';
 import { Command } from './command';
 

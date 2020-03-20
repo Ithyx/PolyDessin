@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { DrawElement } from '../stockage-svg/draw-element';
 import { LineService } from '../stockage-svg/line.service';
-import { RectangleService } from '../stockage-svg/rectangle.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { AddSVGService } from './add-svg.service';
 
@@ -29,9 +28,9 @@ describe('AddSVGService', () =>  {
     expect(stockageService.addSVG).toHaveBeenCalledWith(element);
   });
 
-  it('#constructor devrait changer le svgKey pour l\'index du stockage SVG', () => {
+  it('#constructor devrait changer l\'élément', () => {
     service = new AddSVGService(element, stockageService);
-    expect(service.svgKey).toBe(stockageService.size - 1);
+    expect(service.element).toEqual(element);
   });
 
   // TESTS undo
@@ -39,21 +38,7 @@ describe('AddSVGService', () =>  {
   it('#undo devrait retirer l\'élément du stockage SVG', () => {
     spyOn(stockageService, 'removeSVG');
     service.undo();
-    expect(stockageService.removeSVG).toHaveBeenCalledWith(service.svgKey);
-  });
-
-  it('#undo devrait garder en mémoire l\'élément retiré s\'il existe', () => {
-    service.element = new RectangleService();
-    service.undo();
-    expect(service.element).toEqual(element);
-  });
-
-  it('#undo ne devrait pas garder en mémoire l\'élément retiré s\'il n\'existe pas', () => {
-    stockageService.removeLastSVG();
-    stockageService.removeLastSVG();
-    service.element = new RectangleService();
-    service.undo();
-    expect(service.element).toEqual(new RectangleService());
+    expect(stockageService.removeSVG).toHaveBeenCalledWith(element);
   });
 
   // TESTS redo
@@ -62,10 +47,5 @@ describe('AddSVGService', () =>  {
     spyOn(stockageService, 'addSVG');
     service.redo();
     expect(stockageService.addSVG).toHaveBeenCalledWith(element);
-  });
-
-  it('#redo devrait changer svgKey pour le nouvel id dans le stockage SVG', () => {
-    service.redo();
-    expect(service.svgKey).toBe(stockageService.size - 1);
   });
 });

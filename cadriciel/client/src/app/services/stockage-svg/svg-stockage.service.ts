@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { TOOL_INDEX, ToolManagerService } from '../tools/tool-manager.service';
 import { DrawElement } from './draw-element';
 
 @Injectable({
@@ -12,7 +13,8 @@ export class SVGStockageService {
   private ongoingPerimeter: SafeHtml;       // refactoring: plus utile en public ?
   private completeSVG: DrawElement[];
 
-  constructor(private sanitizer: DomSanitizer) {
+  constructor(private sanitizer: DomSanitizer,
+              private tools: ToolManagerService) {
     this.size = 0;
     this.completeSVG = [];
   }
@@ -20,15 +22,15 @@ export class SVGStockageService {
   addSVG(element: DrawElement): void {
     element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
     this.completeSVG[this.size++] = element;
-    this.ongoingSVG = '';
+    if (this.tools.activeTool.ID !== TOOL_INDEX.ERASER) {
+      this.ongoingSVG = '';
+    }
     this.ongoingPerimeter = '';
   }
 
-  removeSVG(id: number): DrawElement | undefined {
-    const element = this.completeSVG[id];
-    this.completeSVG.splice(id, 1);
+  removeSVG(element: DrawElement): void {
+    this.completeSVG.splice(this.completeSVG.indexOf(element), 1);
     this.size--;
-    return element;
   }
 
   removeLastSVG(): void {
@@ -55,26 +57,6 @@ export class SVGStockageService {
 
   getCompleteSVG(): DrawElement[] {
     return this.completeSVG;
-  }
-
-  changePrimaryColor(id: number, color: string): string | undefined {
-    const oldColor = this.completeSVG[id].primaryColor;
-    if (oldColor) {
-      this.completeSVG[id].primaryColor = color;
-      this.completeSVG[id].draw();
-      this.completeSVG[id].svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.completeSVG[id].svg);
-    }
-    return oldColor;
-  }
-
-  changeSecondaryColor(id: number, color: string): string | undefined {
-    const oldColor = this.completeSVG[id].secondaryColor;
-    if (oldColor) {
-      this.completeSVG[id].secondaryColor = color;
-      this.completeSVG[id].draw();
-      this.completeSVG[id].svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.completeSVG[id].svg);
-    }
-    return oldColor;
   }
 
   cleanDrawing(): void {

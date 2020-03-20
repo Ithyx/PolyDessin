@@ -43,6 +43,7 @@ export class SelectionService implements ToolInterface {
     this.selectedElements.push(drawElement);
     this.createBoundingBox();
 
+    console.log(drawElement);
   }
 
   handleRightClick(element: DrawElement): void {
