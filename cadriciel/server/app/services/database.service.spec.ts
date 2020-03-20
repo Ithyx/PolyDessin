@@ -1,7 +1,7 @@
 import * as assert from 'assert';
-import {DatabaseService} from './databse.service';
+import {DatabaseService} from './database.service';
 
-describe('Test constructeur', () => {
+describe('Test constructeur database.service', () => {
     it('constructeur doit etre bien defini', (done: Mocha.Done) => {
         assert.ok(new DatabaseService());
         done();
