@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Drawing } from '../../../../common/communication/DrawingInterface';
 import { DrawingManagerService } from './drawing-manager/drawing-manager.service';
-import { DrawElement, Color } from './stockage-svg/draw-element';
+import { Color, DrawElement } from './stockage-svg/draw-element';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { TraceBrushService } from './stockage-svg/trace-brush.service';
 import { TracePencilService } from './stockage-svg/trace-pencil.service';
 
-const MAX_COLOR_VALUE = 256;
+const MAX_COLOR_VALUE = 255;
 const INDEX_INCREASE = 4;
 const TIME_BEFORE_UPDATE = 20;
 
@@ -31,7 +31,7 @@ export class CanvasConversionService {
       width: this.drawingParams.width,
       backgroundColor: {
         RGBAString: 'rgba(255, 255, 255, 1)',
-        RGBA: [255, 255, 255, 1]
+        RGBA: [MAX_COLOR_VALUE, MAX_COLOR_VALUE, MAX_COLOR_VALUE, 1]
       },
       tags: this.drawingParams.tags,
       elements: []
@@ -39,9 +39,12 @@ export class CanvasConversionService {
     this.coloredElements = new Map<string, DrawElement>();
   }
 
+  /* Conversion de svg vers canvas basée sur
+     http://bl.ocks.org/biovisualize/8187844?fbclid=IwAR3_VuqkefCECFbFJ_0nQJuYe0qIx9NFzE0uY9W0UDytZDsPsEpB4QvnTYk */
   convertToCanvas(): void {
     const element = document.querySelector('.canvas-conversion');
     this.canvas = (document.querySelector('.canvas') as HTMLCanvasElement);
+    if (!this.canvas) { return; }
     const context = this.canvas.getContext('2d');
     if (element && context) {
       this.context = context;
@@ -63,10 +66,10 @@ export class CanvasConversionService {
     const rgb: number[] = [0, 0, 0];
     for (const element of this.svgStockage.getCompleteSVG()) {
       rgb[0]++;
-      if (rgb[1] > 0 || rgb[0] === MAX_COLOR_VALUE) {
+      if (rgb[1] > 0 || rgb[0] < MAX_COLOR_VALUE) {
         rgb[0] = 0;
         rgb[1]++;
-        if (rgb[2] > 0 || rgb[1] === MAX_COLOR_VALUE) {
+        if (rgb[2] > 0 || rgb[1] < MAX_COLOR_VALUE) {
           rgb[1] = 0;
           rgb[2]++;
         }

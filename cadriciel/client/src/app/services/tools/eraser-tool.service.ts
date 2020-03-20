@@ -159,10 +159,12 @@ export class EraserToolService implements ToolInterface {
   }
 
   onMousePress(): void {
+    this.removeCommand = new RemoveSVGService(this.svgStockage);
     this.commands.drawingInProgress = true;
   }
 
   onMouseClick(mouse: MouseEvent): void {
+    this.removeCommand = new RemoveSVGService(this.svgStockage);
     this.commands.drawingInProgress = true;
     this.thickness = (this.tools.activeTool.parameters[0].value) ? this.tools.activeTool.parameters[0].value : DEFAULT_THICKNESS;
     this.mousePosition = {x: mouse.offsetX, y: mouse.offsetY};
@@ -225,7 +227,6 @@ export class EraserToolService implements ToolInterface {
       element.erasingColor.RGBA[G] = 0;
       element.erasingColor.RGBA[B] = 0;
       this.updateErasingColor(element);
-      console.log('hello there');
     } else if (element.primaryColor && element.primaryColor.RGBA[R] >= 230 && element.primaryColor.RGBA[G] <= 200
       && element.primaryColor.RGBA[B] <= 200) {
         element.erasingColor.RGBA[R] = 170;

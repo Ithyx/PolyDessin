@@ -7,31 +7,35 @@ import { Command } from './command';
   providedIn: 'root'
 })
 export class RemoveSVGService implements Command {
-  elements: DrawElement[];
+  private elementsKeys: number[];
+  private elementsBeforeRemove: DrawElement[];
   constructor(public svgStockage: SVGStockageService) {
-    this.elements = [];
+    this.elementsKeys = [];
+    this.elementsBeforeRemove = [...svgStockage.getCompleteSVG()];
   }
 
   undo(): void {
-    for (const element of this.elements) {
-      this.svgStockage.addSVG(element);
+    this.elementsKeys.sort();
+    for (const key of this.elementsKeys) {
+      this.svgStockage.addSVG(this.elementsBeforeRemove[key]);
     }
   }
 
   redo(): void {
-    for (const element of this.elements) {
-      this.svgStockage.removeSVG(element);
+    for (const key of this.elementsKeys) {
+      this.svgStockage.removeSVG(this.elementsBeforeRemove[key]);
     }
   }
 
   addElements(elements: DrawElement[]): void {
     for (const element of elements) {
       this.svgStockage.removeSVG(element);
-      this.elements.push(element);
+      const key = this.elementsBeforeRemove.indexOf(element);
+      this.elementsKeys.push(key);
     }
   }
 
   isEmpty(): boolean {
-    return this.elements.length === 0;
+    return this.elementsKeys.length === 0;
   }
 }
