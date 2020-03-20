@@ -44,6 +44,7 @@ export class CanvasConversionService {
   convertToCanvas(): void {
     const element = document.querySelector('.canvas-conversion');
     this.canvas = (document.querySelector('.canvas') as HTMLCanvasElement);
+    if (!this.canvas) { return; }
     const context = this.canvas.getContext('2d');
     if (element && context) {
       this.context = context;
