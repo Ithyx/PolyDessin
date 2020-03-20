@@ -1,6 +1,6 @@
 <div [className]="isSelected ? 'selected' : 'element-container'">
     <svg width="100" height="100" [attr.viewBox]="'0 0 ' + drawing.width.toString() + ' ' + drawing.height.toString()">
-        <rect [attr.width]="drawing.width" [attr.height]="drawing.height" [attr.fill]="drawing.backgroundColor" />
+        <rect [attr.width]="drawing.width" [attr.height]="drawing.height" [attr.fill]="drawing.backgroundColor.RGBAString" />
         <g *ngFor="let element of drawing.elements" [innerHtml]="sanatize(element.svg)" />
     </svg>
     <div class="informations">
