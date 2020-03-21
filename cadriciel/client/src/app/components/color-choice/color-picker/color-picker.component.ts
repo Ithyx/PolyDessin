@@ -4,6 +4,7 @@ import { AfterViewInit, Component, ElementRef,  HostListener, Input, OnChanges,
          SimpleChanges, ViewChild, } from '@angular/core';
 import { ColorManagerService } from 'src/app/services/color/color-manager.service';
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
+import { A } from 'src/app/services/stockage-svg/draw-element';
 
 const HUE_OPACITY = '1)';
 
@@ -53,7 +54,7 @@ export class ColorPickerComponent implements AfterViewInit, OnChanges, ToolInter
 
   colorPosition(x: number, y: number): void {
     const imageData = this.context2D.getImageData(x, y, 1, 1).data;
-    this.colorManager.color.RGBA = [imageData[0], imageData[1], imageData[2], 1];
+    this.colorManager.color.RGBA = [imageData[0], imageData[1], imageData[2], this.colorManager.color.RGBA[A]];
     this.colorManager.updateColor();
   }
 
