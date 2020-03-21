@@ -17,6 +17,7 @@ export const MAX_COLORS = 10;
 @Injectable({
   providedIn: 'root'
 })
+
 export class ColorManagerService {
   color: Color;
   hue: string;
