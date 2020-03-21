@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+/* import { TestBed } from '@angular/core/testing';
 
 // import { DrawingToolService } from '../tools/pencil-tool.service';
 import { BrushToolService } from '../tools/brush-tool.service';
@@ -202,4 +202,4 @@ describe('trace-brush', () => {
     element.translateAllPoints();
     expect(element.translate).toEqual({x: 0, y: 0});
   });
-});
+}); */

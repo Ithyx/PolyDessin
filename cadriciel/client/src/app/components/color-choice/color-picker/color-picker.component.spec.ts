@@ -1,4 +1,4 @@
-import { SimpleChange, SimpleChanges } from '@angular/core';
+/* import { SimpleChange, SimpleChanges } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ColorManagerService } from 'src/app/services/color/color-manager.service';
@@ -152,4 +152,4 @@ describe('color-picker', () => {
     component.ngAfterViewInit();
     expect(component.draw).toHaveBeenCalled();
   });
-});
+}); */
