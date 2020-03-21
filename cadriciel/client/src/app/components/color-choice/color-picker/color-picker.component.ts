@@ -5,11 +5,27 @@ import { AfterViewInit, Component, ElementRef,  HostListener, Input, OnChanges,
 import { ColorManagerService } from 'src/app/services/color/color-manager.service';
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
 
+const HUE_OPACITY = '1)';
+
+const WHITE_GRAD_POSITION_0 = 'rgba(255,255,255,1)';
+const WHITE_GRAD_POSITION_1 = 'rgba(255,255,255,0)';
+
+const BLACK_GRAD_POSITION_0 = 'rgba(0,0,0,0)';
+const BLACK_GRAD_POSITION_1 = 'rgba(0,0,0,1)';
+
+const CONTEXT_2D_STROKE_STYLE = 'white';
+const CONTEXT_2D_FILL_STYLE = 'white';
+const CONTEXT_2D_ARC_RADIUS = 10;
+const CONTEXT_2D_ARC_START_ANGLE = 0;
+const CONTEXT_2D_ARC_END_ANGLE = 2 * Math.PI;
+const CONTEXT_2D_LINE_WIDTH = 5;
+
 @Component({
   selector: 'app-color-picker',
   templateUrl: './color-picker.component.html',
   styleUrls: ['./color-picker.component.scss']
 })
+
 export class ColorPickerComponent implements AfterViewInit, OnChanges, ToolInterface {
 
   @Input() colorManager: ColorManagerService;
@@ -76,35 +92,35 @@ export class ColorPickerComponent implements AfterViewInit, OnChanges, ToolInter
     const width = this.canvas.nativeElement.width;
     const height = this.canvas.nativeElement.height;
 
-    this.context2D.fillStyle = this.colorManager.hue + '1)';
+    this.context2D.fillStyle = this.colorManager.hue + HUE_OPACITY;
     this.context2D.fillRect(0, 0, width, height);
 
     const whiteGrad = this.context2D.createLinearGradient(0, 0, width, 0);
-    whiteGrad.addColorStop(0, 'rgba(255,255,255,1)');
-    whiteGrad.addColorStop(1, 'rgba(255,255,255,0)');
+    whiteGrad.addColorStop(0, WHITE_GRAD_POSITION_0);
+    whiteGrad.addColorStop(1, WHITE_GRAD_POSITION_1);
 
     this.context2D.fillStyle = whiteGrad;
     this.context2D.fillRect(0, 0, width, height);
 
     const blackGrad = this.context2D.createLinearGradient(0, 0, 0, height);
-    blackGrad.addColorStop(0, 'rgba(0,0,0,0)');
-    blackGrad.addColorStop(1, 'rgba(0,0,0,1)');
+    blackGrad.addColorStop(0, BLACK_GRAD_POSITION_0);
+    blackGrad.addColorStop(1, BLACK_GRAD_POSITION_1);
 
     this.context2D.fillStyle = blackGrad;
     this.context2D.fillRect(0, 0, width, height);
 
     if (this.chosenHeight) {
-      this.context2D.strokeStyle = 'white';
-      this.context2D.fillStyle = 'white';
+      this.context2D.strokeStyle = CONTEXT_2D_STROKE_STYLE;
+      this.context2D.fillStyle = CONTEXT_2D_FILL_STYLE;
       this.context2D.beginPath();
       this.context2D.arc(
         this.chosenHeight.x,
         this.chosenHeight.y,
-        10,
-        0,
-        2 * Math.PI
+        CONTEXT_2D_ARC_RADIUS,
+        CONTEXT_2D_ARC_START_ANGLE,
+        CONTEXT_2D_ARC_END_ANGLE
       );
-      this.context2D.lineWidth = 5;
+      this.context2D.lineWidth = CONTEXT_2D_LINE_WIDTH;
       this.context2D.stroke();
     }
   }
