@@ -4,6 +4,7 @@ import { AfterViewInit, Component, ElementRef, HostListener, Input,
          ViewChild } from '@angular/core';
 import { ColorManagerService } from 'src/app/services/color/color-manager.service';
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
+import { A } from 'src/app/services/stockage-svg/draw-element';
 
 @Component({
   selector: 'app-color-slider',
@@ -90,13 +91,10 @@ export class ColorSliderComponent implements AfterViewInit, ToolInterface {
 
   colorPosition(x: number, y: number): void {
     const imageData = this.context2D.getImageData(x, y, 1, 1).data;
-    const rgbaColor = 'rgba(' + imageData[0] + ',' + imageData[1] + ',' +
-      imageData[2] + ',';
 
-    this.colorManager.color.RGBAString = rgbaColor;
-    this.colorManager.color.RGBA = [imageData[0], imageData[1], imageData[2], 1];
-    this.colorManager.hue = rgbaColor;
-    this.colorManager.color.RGBA = [imageData[0], imageData[1], imageData[2], 1];
+    this.colorManager.color.RGBA = [imageData[0], imageData[1], imageData[2], this.colorManager.color.RGBA[A]];
+    this.colorManager.updateColor();
+    this.colorManager.hue = this.colorManager.color.RGBAString;
   }
 
 }
