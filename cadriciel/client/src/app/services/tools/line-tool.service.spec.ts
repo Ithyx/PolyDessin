@@ -6,6 +6,8 @@ import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { LineToolService } from './line-tool.service';
 import { TOOL_INDEX } from './tool-manager.service';
 
+// tslint:disable: no-magic-numbers
+
 describe('LineToolService', () => {
   let service: LineToolService;
   let stockageService: SVGStockageService;
@@ -18,6 +20,7 @@ describe('LineToolService', () => {
     // service.estClicSimple = true;
     service.cursor = ({x: 0, y: 0});
     service.line.mousePosition = ({x: 0, y: 0});
+    service.line.points = [];
     service.line.points.push({x: 0, y: 0});
     service.line.updateParameters(service.tools.toolList[TOOL_INDEX.LINE]);
     element = service.line;
@@ -127,12 +130,10 @@ describe('LineToolService', () => {
   it('#onDoubleClick devrait ajouter le point à la mousePosition si "Avec Points" est choisi', () => {
     service.tools.activeTool.parameters[1].chosenOption = 'Avec points';
     service.line.mousePosition = {x: 25, y: 25};
-    spyOn(service.commands, 'execute');
+    const test = spyOn(service.line.points, 'push');
     service.onDoubleClick(new MouseEvent('dblClick', {clientX: 100, clientY: 100}));
     element.points.push({x: 25, y: 25});
-    element.draw();
-    const ajout = new AddSVGService(element, stockageService);
-    expect(service.commands.execute).toHaveBeenCalledWith(ajout);
+    expect(test).toHaveBeenCalledWith({x: 25, y: 25});
   });
 
   it('#onDoubleClick devrait simplement ajouter la ligne au stockageSVG si "Sans Points"'
@@ -140,7 +141,6 @@ describe('LineToolService', () => {
     service.line.points.push({x: 0, y: 0});
     spyOn(service.commands, 'execute');
     service.onDoubleClick(new MouseEvent('dblClick', {clientX: 100, clientY: 100}));
-    element.draw();
     const addSVG = new AddSVGService(element, stockageService);
     expect(service.commands.execute).toHaveBeenCalledWith(addSVG);
   });
