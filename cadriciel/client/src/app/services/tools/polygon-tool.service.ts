@@ -19,6 +19,8 @@ export class PolygonToolService implements ToolInterface {
   polygon: PolygonService;
   // Coordonnées du clic initial de souris
   initial: Point;
+  // Point avec la coordonnée en x minimale
+  minPoint: Point;
 
   calculatedCenter: Point;
   calculatedRadius: number;
@@ -50,19 +52,10 @@ export class PolygonToolService implements ToolInterface {
       this.calculatedRadius = Math.min(calculatedWidth, calculatedHeight) / 2;
       this.calculatedCenter.x = this.initial.x + ((mouse.offsetX < this.initial.x) ? -1 : 1) * this.calculatedRadius;
       this.calculatedCenter.y = this.initial.y + ((mouse.offsetY < this.initial.y) ? -1 : 1) * this.calculatedRadius;
-      this.polygon.points = [];
-      const minPoint: Point = { x: this.calculatedCenter.x + this.calculatedRadius * Math.cos(STARTING_ANGLE), y: 0};
+      this.minPoint = { x: this.calculatedCenter.x + this.calculatedRadius * Math.cos(STARTING_ANGLE), y: 0};
       const sides = (this.tools.activeTool.parameters[2].value) ? this.tools.activeTool.parameters[2].value : DEFAULT_SIDES;
 
-      for (let angle = STARTING_ANGLE; angle < ENDING_ANGLE; angle += (2 * Math.PI / sides)) {
-        const x = this.calculatedCenter.x + this.calculatedRadius * Math.cos(angle);
-        const y = this.calculatedCenter.y + this.calculatedRadius * Math.sin(angle);
-        this.polygon.points.push({x, y});
-        if (x < minPoint.x) {
-          minPoint.x = x;
-          minPoint.y = y;
-        }
-      }
+      this.calculatePoints(sides);
       this.polygon.pointMin = {
         x: this.calculatedCenter.x - this.calculatedRadius,
         y: this.calculatedCenter.y - this.calculatedRadius
@@ -72,34 +65,53 @@ export class PolygonToolService implements ToolInterface {
         y: this.calculatedCenter.y + this.calculatedRadius
       };
       if (sides % 2 === 1) {
-        this.calculateNewCircle(minPoint, sides);
+        this.calculateNewCircle();
+        if (!isNaN(this.calculatedCenter.y)) {
+          this.calculatePoints(sides);
+        }
       }
       this.refreshSVG();
     }
   }
 
-  calculateNewCircle(minPoint: Point, sides: number): void {
-    // TODO : refactoring (essayer de rendre ça moins affreux)
-    const firstPoint = this.polygon.points[0];
-    const newMinPoint: Point = {
-      x: this.polygon.pointMin.x,
-      y: firstPoint.y + ((this.polygon.pointMin.x - firstPoint.x) / (minPoint.x - firstPoint.x)) * (minPoint.y - firstPoint.y)
-    };
-    const x = newMinPoint.x;
-    const y = newMinPoint.y;
-    const a = this.calculatedCenter.x;
-    const c = firstPoint.x;
-    const d = firstPoint.y;
-    this.calculatedRadius = (Math.sqrt((c * c) - (2 * c * x) + (d * d) - (2 * d * y) + (x * x) + (y * y))
-      * (Math.sqrt((4 * a * a) - (4 * a * c) - (4 * a * x) + (c * c) + (2 * c * x) + (d * d) - (2 * d * y) + (x * x) + (y * y)))
-      / (Math.sqrt((4 * d * d) - (8 * d * y) + (4 * y * y))));
-    this.calculatedCenter.y = firstPoint.y + Math.sqrt(Math.pow(this.calculatedRadius, 2) - Math.pow((c - a), 2));
+  calculatePoints(sides: number): void {
     this.polygon.points = [];
     for (let angle = STARTING_ANGLE; angle < ENDING_ANGLE; angle += (2 * Math.PI / sides)) {
       const x = this.calculatedCenter.x + this.calculatedRadius * Math.cos(angle);
       const y = this.calculatedCenter.y + this.calculatedRadius * Math.sin(angle);
       this.polygon.points.push({x, y});
+      if (x < this.minPoint.x) {
+        this.minPoint.x = x;
+        this.minPoint.y = y;
+      }
     }
+  }
+
+  calculateNewCircle(): void {
+    const firstPoint = this.polygon.points[0];
+    // Interpolation linéaire pour rapporter le point avec un x minimal directement sur la boîte de sélection
+    const newMinPoint: Point = {
+      x: this.polygon.pointMin.x,
+      y: firstPoint.y + ((this.polygon.pointMin.x - firstPoint.x) / (this.minPoint.x - firstPoint.x)) * (this.minPoint.y - firstPoint.y)
+    };
+    this.calculatedRadius = this.calculateRadius(this.calculatedCenter.x, firstPoint.x, firstPoint.y, newMinPoint.x, newMinPoint.y);
+    // Calculer la coordonnée en y du centre en l'isolant de l'équation du cercle
+    this.calculatedCenter.y = firstPoint.y +
+      Math.sqrt(Math.pow(this.calculatedRadius, 2) - Math.pow((firstPoint.x - this.calculatedCenter.x), 2));
+  }
+
+  // Calcul du nouveau rayon du cercle avec un centre (a,b), où b est inconnu, en résolvant l'équation
+  // du cercle (x-a)^2 + (y-b)^2 = r^2 pour (x0,y0), le premier point du polygone
+  // et (x,y), le nouveau point minimum en x, ce qui donne l'équation (x-a)^2 + (y-(y0-sqrt(r^2 - (x0-a)^2)))^2 = r^2
+  // qui est résolue en isolant r avec l'aide de WolframAlpha :
+  // https://www.wolframalpha.com/input/?i=solve+%28x-a%29%5E2+%2B+%28y-%28y_0-sqrt%28r%5E2+-+%28x_0-a%29%5E2%29%29%29%5E2+%3D+r%5E2+for+r
+  // L'utilisation de constantes dans l'équation nous oblige à désactiver tslint pour les nombres magiques
+  calculateRadius(a: number, x0: number, y0: number, x: number, y: number): number {
+    // tslint:disable: no-magic-numbers
+    return (Math.sqrt((x0 * x0) - (2 * x0 * x) + (y0 * y0) - (2 * y0 * y) + (x * x) + (y * y))
+      * (Math.sqrt((4 * a * a) - (4 * a * x0) - (4 * a * x) + (x0 * x0) + (2 * x0 * x) + (y0 * y0) - (2 * y0 * y) + (x * x) + (y * y)))
+      / (Math.sqrt((4 * y0 * y0) - (8 * y0 * y) + (4 * y * y))));
+    // tslint:enable: no-magic-numbers
   }
 
   onMousePress(mouse: MouseEvent): void {
@@ -114,7 +126,6 @@ export class PolygonToolService implements ToolInterface {
     // On évite de créer des formes vides
     if (this.polygon.getWidth() !== 0 || this.polygon.getHeight() !== 0) {
       this.commands.execute(new AddSVGService(this.polygon, this.stockageSVG));
-      console.log(this.polygon);
     }
     this.calculatedCenter = {x: 0, y: 0};
     this.calculatedRadius = 0;
