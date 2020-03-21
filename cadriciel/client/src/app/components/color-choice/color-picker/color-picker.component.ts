@@ -1,10 +1,9 @@
 /*Component de couleur inspire de https://malcoded.com/posts/angular-color-picker/*/
 
-import { AfterViewInit, Component, ElementRef,  HostListener, Input, OnChanges,
-         SimpleChanges, ViewChild, } from '@angular/core';
+import { AfterViewInit, Component, ElementRef,  HostListener, Input, OnChanges, SimpleChanges, ViewChild, } from '@angular/core';
 import { ColorManagerService } from 'src/app/services/color/color-manager.service';
-import { ToolInterface } from 'src/app/services/tools/tool-interface';
 import { A } from 'src/app/services/stockage-svg/draw-element';
+import { ToolInterface } from 'src/app/services/tools/tool-interface';
 
 const HUE_OPACITY = '1)';
 
@@ -28,15 +27,14 @@ const CONTEXT_2D_LINE_WIDTH = 5;
 })
 
 export class ColorPickerComponent implements AfterViewInit, OnChanges, ToolInterface {
-
-  @Input() colorManager: ColorManagerService;
-
   @ViewChild('canvas' , {static: false} )
-  canvas: ElementRef<HTMLCanvasElement>;
+  private canvas: ElementRef<HTMLCanvasElement>;
+
+  @Input() private colorManager: ColorManagerService;
 
   private context2D: CanvasRenderingContext2D;
   private mouseDown: boolean;
-  chosenHeight: { x: number; y: number};
+  private chosenHeight: { x: number; y: number};
 
   constructor() {
     this.mouseDown = false;
