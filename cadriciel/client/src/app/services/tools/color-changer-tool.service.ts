@@ -14,8 +14,8 @@ export class ColorChangerToolService implements ToolInterface {
 
   activeElement: DrawElement | undefined;
 
-  constructor(public colorParameter: ColorParameterService,
-              public commands: CommandManagerService,
+  constructor(private colorParameter: ColorParameterService,
+              private commands: CommandManagerService,
               private sanitizer: DomSanitizer
               ) {}
 
