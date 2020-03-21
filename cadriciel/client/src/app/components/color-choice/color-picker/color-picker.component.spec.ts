@@ -27,7 +27,7 @@ describe('ColorPickerComponent', () => {
     component = fixture.componentInstance;
     commandes = TestBed.get(CommandManagerService);
     const drawingManager = TestBed.get(DrawingManagerService);
-    component.colorManager = new ColorManagerService(new ColorParameterService(),
+    component['colorManager'] = new ColorManagerService(new ColorParameterService(),
                                                      commandes,
                                                      drawingManager);
     fixture.detectChanges();
@@ -40,7 +40,7 @@ describe('ColorPickerComponent', () => {
   // TESTS ngOnChanges
 
   it('#ngOnChanges devrait dessiner la palette si la teinte est modifiée', () => {
-    component.colorManager.hue = 'testHue';
+    component['colorManager'].hue = 'testHue';
     const change: SimpleChanges = {testHue: new SimpleChange('before', 'after', true)};
     spyOn(component, 'draw');
     component.ngOnChanges(change);
@@ -48,12 +48,12 @@ describe('ColorPickerComponent', () => {
   });
 
   it('#ngOnChanges devrait appeler colorPosition si chosenHeight n\'est pas nulle', () => {
-    component.colorManager.hue = 'testHue';
+    component['colorManager'].hue = 'testHue';
     const change: SimpleChanges = {testHue: new SimpleChange('before', 'after', true)};
     const height = {x: 500, y: 500};
 
     spyOn(component, 'colorPosition');
-    component.chosenHeight = height;
+    component['chosenHeight'] = height;
     component.ngOnChanges(change);
     expect(component.colorPosition).toHaveBeenCalledWith(500, 500);
   });
@@ -67,7 +67,7 @@ describe('ColorPickerComponent', () => {
   });
 
   it('#ngOnChanges ne devrait rien faire si la hue n\'est pas modifiée', () => {
-    component.colorManager.hue = 'testHue';
+    component['colorManager'].hue = 'testHue';
     spyOn(component, 'draw');
     spyOn(component, 'colorPosition');
     component.ngOnChanges({});
@@ -78,18 +78,17 @@ describe('ColorPickerComponent', () => {
   // TESTS colorPosition
 
   it('#colorPosition devrait actualiser la couleur du colorManager', () => {
-    component.colorManager.hue = 'rgba(50, 50, 50,';
+    component['colorManager'].hue = 'rgba(50, 50, 50,';
     component.draw();
     component.colorPosition(249, 0);
-    expect(component.colorManager.color.RGBAString).toBe('rgba(49, 49, 49, 1)');
+    expect(component['colorManager'].color.RGBAString).toBe('rgba(49, 49, 49, 1)');
   });
 
   it('#colorPosition devrait actualiser le RGB du colorManager', () => {
-    component.colorManager.hue = 'rgba(50, 50, 50,';
+    component['colorManager'].hue = 'rgba(50, 50, 50,';
     component.draw();
     component.colorPosition(249, 0);
-    // expect(component.colorManager.RGB).toEqual([49, 49, 49]);
-    expect(component.colorManager.color.RGBA).toEqual([49, 49, 49, 1]);
+    expect(component['colorManager'].color.RGBA).toEqual([49, 49, 49, 1]);
   });
 
   // TEST emittedColor
@@ -120,7 +119,7 @@ describe('ColorPickerComponent', () => {
 
   it('#onMousePress devrait changer la hauteur choisie', () => {
     component.onMousePress(new MouseEvent('mousedown', {clientX: 50, clientY: 50}));
-    expect(component.chosenHeight).toEqual({x: 50, y: 50});
+    expect(component['chosenHeight']).toEqual({x: 50, y: 50});
   });
 
   it('#onMousePress devrait dessiner la palette de couleur', () => {
@@ -139,7 +138,7 @@ describe('ColorPickerComponent', () => {
   it('#onMouseMove devrait changer la hauteurChoisie si mouseDown est vraie', () => {
     component.onMousePress(new MouseEvent('mousedown')); // mouseDown = true;
     component.onMouseMove(new MouseEvent('mousemove', {clientX: 25, clientY: 25}));
-    expect(component.chosenHeight).toEqual({x: 25, y: 25});
+    expect(component['chosenHeight']).toEqual({x: 25, y: 25});
   });
 
   it(`#onMouseMove devrait appeler emittedColor avec les coordonnées de
