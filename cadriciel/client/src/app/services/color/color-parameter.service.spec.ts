@@ -16,16 +16,37 @@ describe('ColorParameterService', () => {
     expect(testService).toBeTruthy();
   });
 
-  // TEST intervertirCouleur
+  // TEST intervertColors
 
-  it('#intervetirCouleur devrait échanger la couleur principale et la couleur secondaire', () => {
-    const primaryColorCopy = service.primaryColor;
-    const secondaryColorCopy = service.secondaryColor;
+  it('#intervertColors devrait échanger la couleur principale et la couleur secondaire', () => {
+    service.primaryColor = {RGBAString: 'rgba(1, 2, 3, 1)', RGBA: [1, 2, 3, 1]};
+    service.secondaryColor = {RGBAString: 'rgba(3, 2, 1, 1)', RGBA: [3, 2, 1, 1]};
+
+    const primaryColorCopy = {...service.primaryColor};
+    const secondaryColorCopy = {...service.secondaryColor};
 
     service.intervertColors();
 
-    expect(service.primaryColor).toBe(secondaryColorCopy);
-    expect(service.secondaryColor).toBe(primaryColorCopy);
+    expect(service.primaryColor).toEqual(secondaryColorCopy);
+    expect(service.secondaryColor).toEqual(primaryColorCopy);
+  });
+
+  // TEST updateColors
+
+  it('#updateColors devrait modifier le string de la couleur principale', () => {
+    service.primaryColor = {RGBAString: 'rgba(0, 0, 0, 0)', RGBA: [1, 2, 3, 1]};
+
+    service.updateColors();
+    expect(service.primaryColor.RGBAString).toBe(`rgba(${service.primaryColor.RGBA[0]}, ${service.primaryColor.RGBA[1]},
+      ${service.primaryColor.RGBA[2]}, ${service.primaryColor.RGBA[3]})`);
+  });
+
+  it('#updateColors devrait modifier le string de la couleur secondaire', () => {
+    service.secondaryColor = {RGBAString: 'rgba(0, 0, 0, 0)', RGBA: [3, 2, 1, 1]};
+
+    service.updateColors();
+    expect(service.secondaryColor.RGBAString).toBe(`rgba(${service.secondaryColor.RGBA[0]}, ${service.secondaryColor.RGBA[1]},
+      ${service.secondaryColor.RGBA[2]}, ${service.secondaryColor.RGBA[3]})`);
   });
 
 });
