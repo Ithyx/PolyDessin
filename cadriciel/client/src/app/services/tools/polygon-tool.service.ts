@@ -19,9 +19,8 @@ export class PolygonToolService implements ToolInterface {
   polygon: PolygonService;
   // Coordonnées du clic initial de souris
   initial: Point;
-  // Coordonnées du point inférieur gauche
+
   calculatedCenter: Point;
-  // Dimensions du rectangle
   calculatedRadius: number;
 
   constructor(public stockageSVG: SVGStockageService,
@@ -45,18 +44,24 @@ export class PolygonToolService implements ToolInterface {
 
   onMouseMove(mouse: MouseEvent): void {
     if (this.commands.drawingInProgress) {
-      // Calcule des valeurs pour former un polygone
+      // Calcul des valeurs pour former un polygone
       const calculatedWidth = Math.abs(this.initial.x - mouse.offsetX);
       const calculatedHeight = Math.abs(this.initial.y - mouse.offsetY);
       this.calculatedRadius = Math.min(calculatedWidth, calculatedHeight) / 2;
       this.calculatedCenter.x = this.initial.x + ((mouse.offsetX < this.initial.x) ? -1 : 1) * this.calculatedRadius;
       this.calculatedCenter.y = this.initial.y + ((mouse.offsetY < this.initial.y) ? -1 : 1) * this.calculatedRadius;
-      const sides = (this.tools.activeTool.parameters[2].value) ? this.tools.activeTool.parameters[2].value : DEFAULT_SIDES;
       this.polygon.points = [];
+      const minPoint: Point = { x: this.calculatedCenter.x + this.calculatedRadius * Math.cos(STARTING_ANGLE), y: 0};
+      const sides = (this.tools.activeTool.parameters[2].value) ? this.tools.activeTool.parameters[2].value : DEFAULT_SIDES;
+
       for (let angle = STARTING_ANGLE; angle < ENDING_ANGLE; angle += (2 * Math.PI / sides)) {
         const x = this.calculatedCenter.x + this.calculatedRadius * Math.cos(angle);
         const y = this.calculatedCenter.y + this.calculatedRadius * Math.sin(angle);
         this.polygon.points.push({x, y});
+        if (x < minPoint.x) {
+          minPoint.x = x;
+          minPoint.y = y;
+        }
       }
       this.polygon.pointMin = {
         x: this.calculatedCenter.x - this.calculatedRadius,
@@ -66,7 +71,34 @@ export class PolygonToolService implements ToolInterface {
         x: this.calculatedCenter.x + this.calculatedRadius,
         y: this.calculatedCenter.y + this.calculatedRadius
       };
+      if (sides % 2 === 1) {
+        this.calculateNewCircle(minPoint, sides);
+      }
       this.refreshSVG();
+    }
+  }
+
+  calculateNewCircle(minPoint: Point, sides: number): void {
+    // TODO : refactoring (essayer de rendre ça moins affreux)
+    const firstPoint = this.polygon.points[0];
+    const newMinPoint: Point = {
+      x: this.polygon.pointMin.x,
+      y: firstPoint.y + ((this.polygon.pointMin.x - firstPoint.x) / (minPoint.x - firstPoint.x)) * (minPoint.y - firstPoint.y)
+    };
+    const x = newMinPoint.x;
+    const y = newMinPoint.y;
+    const a = this.calculatedCenter.x;
+    const c = firstPoint.x;
+    const d = firstPoint.y;
+    this.calculatedRadius = (Math.sqrt((c * c) - (2 * c * x) + (d * d) - (2 * d * y) + (x * x) + (y * y))
+      * (Math.sqrt((4 * a * a) - (4 * a * c) - (4 * a * x) + (c * c) + (2 * c * x) + (d * d) - (2 * d * y) + (x * x) + (y * y)))
+      / (Math.sqrt((4 * d * d) - (8 * d * y) + (4 * y * y))));
+    this.calculatedCenter.y = firstPoint.y + Math.sqrt(Math.pow(this.calculatedRadius, 2) - Math.pow((c - a), 2));
+    this.polygon.points = [];
+    for (let angle = STARTING_ANGLE; angle < ENDING_ANGLE; angle += (2 * Math.PI / sides)) {
+      const x = this.calculatedCenter.x + this.calculatedRadius * Math.cos(angle);
+      const y = this.calculatedCenter.y + this.calculatedRadius * Math.sin(angle);
+      this.polygon.points.push({x, y});
     }
   }
 
