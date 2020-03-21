@@ -16,19 +16,19 @@ export const ENDING_ANGLE = 2 * Math.PI + STARTING_ANGLE;
   providedIn: 'root'
 })
 export class PolygonToolService implements ToolInterface {
-  polygon: PolygonService;
+  private polygon: PolygonService;
   // Coordonnées du clic initial de souris
-  initial: Point;
+  private initial: Point;
   // Point avec la coordonnée en x minimale
-  minPoint: Point;
+  private minPoint: Point;
 
-  calculatedCenter: Point;
-  calculatedRadius: number;
+  private calculatedCenter: Point;
+  private calculatedRadius: number;
 
-  constructor(public stockageSVG: SVGStockageService,
-              public tools: ToolManagerService,
-              public colorParameter: ColorParameterService,
-              public commands: CommandManagerService
+  constructor(private stockageSVG: SVGStockageService,
+              private tools: ToolManagerService,
+              private colorParameter: ColorParameterService,
+              private commands: CommandManagerService
               ) {
                 this.polygon = new PolygonService();
                 this.initial = {x: 0, y: 0};
