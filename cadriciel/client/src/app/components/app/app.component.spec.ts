@@ -45,13 +45,6 @@ describe('AppComponent', () => {
 
     //  Tests filterFunction
 
-    it('#filterFunction devrait refuser un paramètre qui n\'est pas une RouteRecognized', () => {
-        expect(app.filterFunction(0)).toBe(false);
-        expect(app.filterFunction('test')).toBe(false);
-        expect(app.filterFunction(true)).toBe(false);
-        expect(app.filterFunction([123, 'test'])).toBe(false);
-    });
-
     it('#filterFunction devrait accepter un paramètre de type RouteRecognized', () => {
         const evt: RoutesRecognized = injecteur.get(RoutesRecognized);
         expect(app.filterFunction(evt)).toBe(true);

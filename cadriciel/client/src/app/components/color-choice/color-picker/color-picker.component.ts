@@ -37,9 +37,8 @@ export class ColorPickerComponent implements AfterViewInit, OnChanges, ToolInter
 
   colorPosition(x: number, y: number): void {
     const imageData = this.context2D.getImageData(x, y, 1, 1).data;
-    this.colorManager.color = 'rgba(' + imageData[0] + ',' + imageData[1] + ','
-      + imageData[2] + ',';
-    this.colorManager.RGB = [imageData[0], imageData[1], imageData[2]];
+    this.colorManager.color.RGBA = [imageData[0], imageData[1], imageData[2], 1];
+    this.colorManager.updateColor();
   }
 
   emittedColor(x: number, y: number): void {

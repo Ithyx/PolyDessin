@@ -10,7 +10,7 @@ import { ColorManagerService, Scope } from 'src/app/services/color/color-manager
 })
 export class ColorChoiceComponent  {
 
-  portee: Scope = Scope.Primary;
+  scope: Scope = Scope.Primary;
 
   constructor(public colorManager: ColorManagerService,
               public dialogRef: MatDialogRef<ColorChoiceComponent>) {}
@@ -20,7 +20,7 @@ export class ColorChoiceComponent  {
   }
 
   applyColor(): void {
-    this.colorManager.applyColor(this.portee);
+    this.colorManager.applyColor(this.scope);
     this.dialogRef.close();
   }
 

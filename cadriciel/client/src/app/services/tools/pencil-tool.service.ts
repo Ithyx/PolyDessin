@@ -11,7 +11,7 @@ import { ToolManagerService } from './tool-manager.service';
   providedIn: 'root'
 })
 
-export class DrawingToolService implements ToolInterface {
+export class PencilToolService implements ToolInterface {
 
   trace: TracePencilService;
   canClick: boolean;
@@ -72,7 +72,7 @@ export class DrawingToolService implements ToolInterface {
   }
 
   refreshSVG(): void {
-    this.trace.primaryColor = this.colorParameter.getPrimaryColor();
+    this.trace.primaryColor = {...this.colorParameter.primaryColor};
     this.trace.updateParameters(this.tools.activeTool);
     this.trace.draw();
     this.SVGStockage.setOngoingSVG(this.trace);

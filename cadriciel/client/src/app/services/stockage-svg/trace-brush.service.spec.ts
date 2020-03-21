@@ -1,19 +1,26 @@
-import { TestBed } from '@angular/core/testing';
+/* import { TestBed } from '@angular/core/testing';
 
-import { DrawingToolService } from '../tools/pencil-tool.service';
+// import { DrawingToolService } from '../tools/pencil-tool.service';
+import { BrushToolService } from '../tools/brush-tool.service';
 import { TraceBrushService } from './trace-brush.service';
 
-describe('TraitPinceauService', () => {
+// tslint:disable: no-magic-numbers
+
+describe('trace-brush', () => {
   let element: TraceBrushService;
-  let service: DrawingToolService;
+  // let service: DrawingToolService;
+  let service: BrushToolService;
   beforeEach(() => TestBed.configureTestingModule({}));
-  beforeEach(() => service = TestBed.get(DrawingToolService));
+  // beforeEach(() => service = TestBed.get(DrawingToolService));
+  beforeEach(() => service = TestBed.get(BrushToolService));
 
   beforeEach(() => {
     element = new TraceBrushService();
     element.updateParameters(service.tools.toolList[1]);
-    element.primaryColor = 'rgba(0, 0, 0, 1)';
-    // tslint:disable-next-line:no-magic-numbers
+    element.primaryColor = {
+      RGBAString: 'rgba(0, 0, 0, 1)',
+      RGBA: [0, 0, 0, 1]
+    };
     element.thickness = 5;
     element.translate = { x: 10, y: 10};
   });
@@ -58,9 +65,9 @@ describe('TraitPinceauService', () => {
     element.points.push({ x: 10, y: 10});
     element.points.push({ x: 10, y: 10});
     element.points.push({ x: 10, y: 10});
-    element.primaryColor = 'rgba(1, 1, 1, 1)';
+    element.primaryColor.RGBAString = 'rgba(1, 1, 1, 1)';
     element.svg = '<path transform ="translate(' + element.translate.x + ' '
-    + element.translate.y + `)" fill="none" stroke="${element.primaryColor}"`
+    + element.translate.y + `)" fill="none" stroke="${element.primaryColor.RGBAString}"`
     + ' filter="url(#' + element.chosenOption
     + ')" stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 " />';
     const testSVG = element.svg;
@@ -72,7 +79,6 @@ describe('TraitPinceauService', () => {
     element.points.push({ x: 10, y: 10});
     element.points.push({ x: 10, y: 10});
     element.points.push({ x: 10, y: 10});
-    // tslint:disable-next-line:no-magic-numbers
     element.thickness = 25;
     element.svg = '<path transform ="translate(' + element.translate.x + ' '
     + element.translate.y + `)" fill="none" stroke="${element.primaryColor}"`
@@ -88,7 +94,8 @@ describe('TraitPinceauService', () => {
   it('#drawPoint devrait mettre un point dans SVG', () => {
     element.points.push({ x: 10, y: 10});
     element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
-    + '" filter="url(#' + element.chosenOption
+    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + ')" filter="url(#' + element.chosenOption
     + ')" r="' + element.thickness / 2
     + '" fill="' + element.primaryColor + '"/>';
     const testSVG = element.svg;
@@ -97,11 +104,11 @@ describe('TraitPinceauService', () => {
   });
 
   it('#drawPoint devrait mettre le thickness / 2 dans SVG', () => {
-    // tslint:disable-next-line:no-magic-numbers
     element.thickness = 25;
     element.points.push({ x: 10, y: 10});
     element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
-    + '" filter="url(#' + element.chosenOption
+    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + ')" filter="url(#' + element.chosenOption
     + ')" r="' + element.thickness / 2
     + '" fill="' + element.primaryColor + '"/>';
     const testSVG = element.svg;
@@ -110,12 +117,13 @@ describe('TraitPinceauService', () => {
   });
 
   it('#drawPoint devrait mettre primaryColor dans SVG', () => {
-    element.primaryColor = 'rgba(1, 1, 1, 1)';
+    element.primaryColor.RGBAString = 'rgba(1, 1, 1, 1)';
     element.points.push({ x: 10, y: 10});
     element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
-    + '" filter="url(#' + element.chosenOption
+    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + ')" filter="url(#' + element.chosenOption
     + ')" r="' + element.thickness / 2
-    + '" fill="' + element.primaryColor + '"/>';
+    + '" fill="' + element.primaryColor.RGBAString + '"/>';
     const testSVG = element.svg;
     element.drawPoint();
     expect(element.svg).toEqual(testSVG);
@@ -124,17 +132,13 @@ describe('TraitPinceauService', () => {
   // TESTS updatePosition
 
   it('#updatePosition devrait ajouter les valeurs en paramètre à translate', () => {
-    // tslint:disable-next-line:no-magic-numbers
     element.updatePosition(10, -25);
-    // tslint:disable-next-line:no-magic-numbers
     expect(element.translate.x).toEqual(20);
-    // tslint:disable-next-line:no-magic-numbers
     expect(element.translate.y).toEqual(-15);
   });
 
   it('#updatePosition devrait appeler draw', () => {
     spyOn(element, 'draw');
-    // tslint:disable-next-line:no-magic-numbers
     element.updatePosition(10, 10);
     expect(element.draw).toHaveBeenCalled();
   });
@@ -143,20 +147,46 @@ describe('TraitPinceauService', () => {
 
   it('#updatePositionMouse devrait ajouter les valeurs en paramètre à translate', () => {
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    // tslint:disable-next-line:no-magic-numbers
     element.updatePositionMouse(click, { x: 10, y: 10});
-    // tslint:disable-next-line:no-magic-numbers
     expect(element.translate.x).toEqual(90);
-    // tslint:disable-next-line:no-magic-numbers
     expect(element.translate.y).toEqual(90);
   });
 
   it('#updatePositionMouse devrait appeler draw', () => {
     spyOn(element, 'draw');
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    // tslint:disable-next-line:no-magic-numbers
     element.updatePositionMouse(click, { x: 10, y: 10});
     expect(element.draw).toHaveBeenCalled();
+  });
+
+  // TESTS updateParameters
+
+  it('#updateParameters devrait assigner la valeur en paramètre à thickness', () => {
+    service.tools.toolList[1].parameters[0].value = 10;
+    const testTool = service.tools.toolList[1];
+    element.updateParameters(testTool);
+    expect(element.thickness).toEqual(service.tools.toolList[1].parameters[0].value);
+  });
+
+  it('#updateParameters devrait assigner 1 à thickness', () => {
+    service.tools.toolList[1].parameters[0].value = 0;
+    const testTool = service.tools.toolList[1];
+    element.updateParameters(testTool);
+    expect(element.thickness).toEqual(1);
+  });
+
+  it('#updateParameters devrait assigner chosenOption en paramètre à chosenOption', () => {
+    service.tools.toolList[1].parameters[1].chosenOption = 'Flou';
+    const testTool = service.tools.toolList[1];
+    element.updateParameters(testTool);
+    expect(element.chosenOption).toEqual('Flou');
+  });
+
+  it('#updateParameters devrait assigner une chaine de caractère vide à chosenOption', () => {
+    service.tools.toolList[1].parameters[1].chosenOption = '';
+    const testTool = service.tools.toolList[1];
+    element.updateParameters(testTool);
+    expect(element.chosenOption).toEqual('');
   });
 
   // TESTS translateAllPoints
@@ -164,15 +194,12 @@ describe('TraitPinceauService', () => {
   it('#translateAllPoints devrait changer tous les points de points pour ajouter la translation', () => {
     element.points.push({x: 10, y: 10});
     element.translateAllPoints();
-    // tslint:disable-next-line:no-magic-numbers
     expect(element.points[0].x).toEqual(20);
-    // tslint:disable-next-line:no-magic-numbers
     expect(element.points[0].y).toEqual(20);
   });
 
   it('#translateAllPoints devrait mettre translation à 0', () => {
     element.translateAllPoints();
-    // tslint:disable-next-line:no-magic-numbers
     expect(element.translate).toEqual({x: 0, y: 0});
   });
-});
+}); */

@@ -71,7 +71,7 @@ export class BrushToolService implements ToolInterface {
   }
 
   refreshSVG(): void {
-    this.trace.primaryColor = this.colorParameter.getPrimaryColor();
+    this.trace.primaryColor = {...this.colorParameter.primaryColor};
     this.trace.updateParameters(this.tools.activeTool);
     this.trace.draw();
     this.SVGStockage.setOngoingSVG(this.trace);

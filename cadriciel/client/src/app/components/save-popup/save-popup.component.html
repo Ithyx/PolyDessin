@@ -1,19 +1,29 @@
 <h1>Voulez-vous sauvegarder le dessin sur le serveur ?</h1>
+<p *ngIf="saveFailed" class="error-message">Erreur: Le dessin n'a pas pu être sauvegardé sur le serveur</p>
+<br><br>
 <form>
     <label>Nom du dessin:
-        <input type="text" maxlength="15" [formControl]="name" [className]="isNameValid ? '' : 'invalid'">
+        <input type="text" maxlength="15" [formControl]="name" (change)="checkName()" [className]="isNameValid ? '' : 'invalid-name'">
         <label *ngIf="!isNameValid"> Le nom ne peut pas être vide !</label>
     </label>
 </form>
 <form>
-    <label>Entrez une étiquette:
-        <input type="text" maxlength="15" [formControl]="tag" [className]="isTagValid ? '' : 'invalid'">
+    <label>Entrez une étiquette personalisée:
+        <input type="text" maxlength="15" [formControl]="tag" (change)="checkTag()" [className]="isTagValid ? '' : 'invalid-tag'">
         <label *ngIf="!isTagValid"> L'étiquette ne peut pas être vide !</label>
     </label>
-    <button mat-stroked-button (click)="addTag()" style="float: right;">Ajouter étiquette</button>
+    <button mat-stroked-button (click)="addTag()" [disabled]="!isTagValid" class="tag-button">Ajouter étiquette</button>
+    <br>
+    <label>Ou choisissez une des étiquettes suivantes:
+        <select [formControl]="predefinedTag">
+            <option *ngFor="let tag of PREDEFINED_TAGS;" value="{{tag}}">{{tag}}</option>
+        </select>
+    </label>
+    <button mat-stroked-button (click)="addPredefinedTag()" class="tag-button">Ajouter étiquette</button>
 </form>
 <div *ngFor="let tag of drawingParams.tags">
-    <span>{{tag}}, </span> <i class="material-icons delete-button" (click)="deleteTag(tag)">cancel</i>
+    <span>{{tag}}</span> <i class="material-icons delete-button" (click)="deleteTag(tag)">cancel</i>
 </div>
+<br>
 <button mat-raised-button [disabled]="isSaving" (click)="confirmSave()">Confirmer</button>
-<button mat-stroked-button (click)="closeDialogue()">Annuler</button>
+<button mat-stroked-button [disabled]="isSaving" (click)="closeDialogue()">Annuler</button>

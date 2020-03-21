@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RoutesRecognized } from '@angular/router';
+import { NavigationStart, Router, RoutesRecognized } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { filter, pairwise } from 'rxjs/operators';
 import { RoutingManagerService } from 'src/app/services/routing-manager.service';
@@ -23,13 +23,11 @@ export class AppComponent {
                 this.message = new BehaviorSubject<string>('');
             }
 
-    filterFunction(event: any): boolean {
-        console.log('filterFunction', event);
+    filterFunction(event: NavigationStart): boolean {
         return event instanceof RoutesRecognized;
     }
 
-    updateURL(event: [any, any]): void {
-        console.log('updateURL', event);
+    updateURL(event: [ RoutesRecognized,  RoutesRecognized]): void {
         this.routingManager.previousPage = event[0].url;
         this.routingManager.currentPage = event[1].url;
     }

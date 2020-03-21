@@ -6,11 +6,15 @@ import { ColorParameterService } from 'src/app/services/color/color-parameter.se
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
+import { A, Color } from 'src/app/services/stockage-svg/draw-element';
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { ColorChoiceComponent } from '../color-choice/color-choice.component';
+import { ExportWindowComponent } from '../export-window/export-window.component';
+import { GalleryComponent } from '../gallery/gallery.component';
 import { GridOptionsComponent } from '../grid-options/grid-options.component';
 import { NewDrawingWarningComponent } from '../new-drawing-warning/new-drawing-warning.component';
+import { SavePopupComponent } from '../save-popup/save-popup.component';
 
 const PERCENTAGE = 100;
 
@@ -86,6 +90,24 @@ export class ToolbarComponent implements OnDestroy {
     this.dialog.open(NewDrawingWarningComponent, dialogConfig);
   }
 
+  openGallery(): void {
+    this.disableShortcuts();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    this.dialog.open(GalleryComponent, dialogConfig).afterClosed().subscribe(this.enableShortcuts.bind(this));
+  }
+
+  openSavePopup(): void {
+    this.disableShortcuts();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    this.dialog.open(SavePopupComponent, dialogConfig).afterClosed().subscribe(this.enableShortcuts.bind(this));
+  }
+
   selectColor(scope: string): void {
     this.disableShortcuts();
     const dialogConfig = new MatDialogConfig();
@@ -95,14 +117,23 @@ export class ToolbarComponent implements OnDestroy {
     dialogConfig.panelClass = 'fenetre-couleur';
     this.colorPickerPopup = this.dialog.open(ColorChoiceComponent, dialogConfig).componentInstance;
     if (scope === 'primary') {
-      this.colorPickerPopup.portee = Scope.Primary;
+      this.colorPickerPopup.scope = Scope.Primary;
     }
     if (scope === 'secondary') {
-      this.colorPickerPopup.portee = Scope.Secondary;
+      this.colorPickerPopup.scope = Scope.Secondary;
     }
     if (scope === 'background') {
-      this.colorPickerPopup.portee = Scope.BackgroundToolBar;
+      this.colorPickerPopup.scope = Scope.BackgroundToolBar;
     }
+  }
+
+  openExportWindow(): void {
+    this.disableShortcuts();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    this.dialog.open(ExportWindowComponent, dialogConfig).afterClosed().subscribe(this.enableShortcuts.bind(this));
   }
 
   openGridWindow(): void {
@@ -114,24 +145,25 @@ export class ToolbarComponent implements OnDestroy {
     this.dialog.open(GridOptionsComponent, dialogConfig);
   }
 
-  selectPreviousPrimaryColor(chosenColor: string): void {
-    this.colorParameter.primaryColor = chosenColor;
+  selectPreviousPrimaryColor(chosenColor: Color): void {
+    this.colorParameter.primaryColor = {...chosenColor};
   }
 
-  selectPreviousSecondaryColor(chosenColor: string, event: MouseEvent): void {
-    this.colorParameter.secondaryColor = chosenColor;
+  selectPreviousSecondaryColor(chosenColor: Color, event: MouseEvent): void {
+    this.colorParameter.secondaryColor = {...chosenColor};
     event.preventDefault();
   }
 
   applyPrimaryOpacity(event: Event): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
-    this.colorParameter.primaryOpacity = Math.max(Math.min(Number(eventCast.value), 1), 0);
-    this.colorParameter.primaryOpacityDisplayed = Math.round(PERCENTAGE * this.colorParameter.primaryOpacity);
+    this.colorParameter.primaryColor.RGBA[A] = Math.max(Math.min(Number(eventCast.value), 1), 0);
+    this.colorParameter.updateColors();
+    this.colorParameter.primaryOpacityDisplayed = Math.round(PERCENTAGE * this.colorParameter.primaryColor.RGBA[A]);
   }
 
   applySecondaryOpacity(event: Event): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
-    this.colorParameter.secondaryOpacity = Math.max(Math.min(Number(eventCast.value), 1), 0);
-    this.colorParameter.secondaryOpacityDisplayed = Math.round(PERCENTAGE * this.colorParameter.secondaryOpacity);
+    this.colorParameter.secondaryColor.RGBA[A] = Math.max(Math.min(Number(eventCast.value), 1), 0);
+    this.colorParameter.secondaryOpacityDisplayed = Math.round(PERCENTAGE * this.colorParameter.secondaryColor.RGBA[A]);
   }
 }

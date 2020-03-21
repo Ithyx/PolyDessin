@@ -2,6 +2,9 @@ import { TestBed } from '@angular/core/testing';
 
 import { ColorParameterService } from './color-parameter.service';
 
+// tslint:disable: no-magic-numbers
+// tslint:disable: no-string-literal
+
 describe('ColorParameterService', () => {
   let service: ColorParameterService;
 
@@ -13,28 +16,37 @@ describe('ColorParameterService', () => {
     expect(testService).toBeTruthy();
   });
 
-  // TEST intervertirCouleur
+  // TEST intervertColors
 
-  it('#intervetirCouleur devrait échanger la couleur principale et la couleur secondaire', () => {
-    const copieCouleurPrincipal = service.primaryColor;
-    const copieCouleurSecondaire = service.secondaryColor;
+  it('#intervertColors devrait échanger la couleur principale et la couleur secondaire', () => {
+    service.primaryColor = {RGBAString: 'rgba(1, 2, 3, 1)', RGBA: [1, 2, 3, 1]};
+    service.secondaryColor = {RGBAString: 'rgba(3, 2, 1, 1)', RGBA: [3, 2, 1, 1]};
+
+    const primaryColorCopy = {...service.primaryColor};
+    const secondaryColorCopy = {...service.secondaryColor};
 
     service.intervertColors();
 
-    expect(service.primaryColor).toBe(copieCouleurSecondaire);
-    expect(service.secondaryColor).toBe(copieCouleurPrincipal);
+    expect(service.primaryColor).toEqual(secondaryColorCopy);
+    expect(service.secondaryColor).toEqual(primaryColorCopy);
   });
 
-  // TEST getPrimaryColor
+  // TEST updateColors
 
-  it('#getPrimaryColor devrait retourner la couleur principale avec une opacité de 1', () => {
-    expect(service.getPrimaryColor()).toBe('rgba(0, 0, 0, 1)');
+  it('#updateColors devrait modifier le string de la couleur principale', () => {
+    service.primaryColor = {RGBAString: 'rgba(0, 0, 0, 0)', RGBA: [1, 2, 3, 1]};
+
+    service.updateColors();
+    expect(service.primaryColor.RGBAString).toBe(`rgba(${service.primaryColor.RGBA[0]}, ${service.primaryColor.RGBA[1]},
+      ${service.primaryColor.RGBA[2]}, ${service.primaryColor.RGBA[3]})`);
   });
 
-  // TEST getCouleurSecondaire
+  it('#updateColors devrait modifier le string de la couleur secondaire', () => {
+    service.secondaryColor = {RGBAString: 'rgba(0, 0, 0, 0)', RGBA: [3, 2, 1, 1]};
 
-  it('#getCouleurSecondaire devrait retourner la couleur secondaire avec une opacité de 1', () => {
-    expect(service.getSecondaryColor()).toBe('rgba(0, 0, 0, 1)');
+    service.updateColors();
+    expect(service.secondaryColor.RGBAString).toBe(`rgba(${service.secondaryColor.RGBA[0]}, ${service.secondaryColor.RGBA[1]},
+      ${service.secondaryColor.RGBA[2]}, ${service.secondaryColor.RGBA[3]})`);
   });
 
 });

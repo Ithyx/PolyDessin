@@ -1,17 +1,19 @@
 import { Component, HostListener } from '@angular/core';
+import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { BrushToolService } from 'src/app/services/tools/brush-tool.service';
 import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
 import { DrawSprayService } from 'src/app/services/tools/draw-spray.service';
 import { EllipseToolService } from 'src/app/services/tools/ellipse-tool.service';
+import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
 import { LineToolService } from 'src/app/services/tools/line-tool.service';
-import { DrawingToolService } from 'src/app/services/tools/pencil-tool.service';
+import { PencilToolService } from 'src/app/services/tools/pencil-tool.service';
 import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
 import { PolygonToolService } from 'src/app/services/tools/polygon-tool.service';
 import { RectangleToolService } from 'src/app/services/tools/rectangle-tool.service';
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
-import { ToolManagerService } from 'src/app/services/tools/tool-manager.service';
+import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 
 const LEFT_CLICK = 0;
 
@@ -26,7 +28,7 @@ export class DrawingPageComponent {
 
   constructor(
               public tools: ToolManagerService,
-              public pencil: DrawingToolService,
+              public pencil: PencilToolService,
               public rectangle: RectangleToolService,
               public brush: BrushToolService,
               public line: LineToolService,
@@ -36,7 +38,9 @@ export class DrawingPageComponent {
               public pipette: PipetteToolService,
               public colorChanger: ColorChangerToolService,
               public ellipse: EllipseToolService,
-              public polygon: PolygonToolService
+              public polygon: PolygonToolService,
+              public eraser: EraserToolService,
+              public canvas: CanvasConversionService
               ) {
               this.toolMap.set('Crayon', pencil)
                           .set('Rectangle', rectangle)
@@ -47,7 +51,8 @@ export class DrawingPageComponent {
                           .set('Pipette', pipette)
                           .set('Applicateur Couleur', colorChanger)
                           .set('Ellipse', ellipse)
-                          .set('Polygone', polygon);
+                          .set('Polygone', polygon)
+                          .set('Efface', eraser);
                 }
 
   @HostListener('document:keydown', ['$event'])
@@ -122,6 +127,10 @@ export class DrawingPageComponent {
       tool.onRightClick(mouse);
       mouse.preventDefault();
     }
+  }
+
+  getDrawingSurfaceClass(): string {
+    return (this.tools.activeTool.ID === TOOL_INDEX.ERASER) ? 'hide-cursor' : '';
   }
 
 }

@@ -1,4 +1,4 @@
-<svg class="drawing" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" version="1.1" xlmns="http://www.w3.org/2000/svg">
+<svg #drawing class="drawing" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" version="1.1" xlmns="http://www.w3.org/2000/svg">
     <style>
         .selectionBox :hover{ cursor: move;}
     </style>
@@ -20,7 +20,7 @@
             </feMerge>
         </filter>
 
-        <!-- https://codepen.io/clovisneto/pen/MbBZEX-->
+        <!-- https://codepen.io/clovisneto/pen/MbBZEX -->
         <filter id="Tremblant" filterUnits="userSpaceOnUse">
             <feTurbulence baseFrequency="0.07" numOctaves="1" type="fractalNoise" seed="1" result="fractalNoise"></feTurbulence>
 			<feDisplacementMap scale="20" in="SourceGraphic" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
@@ -39,18 +39,19 @@
     </defs>
 
     
-    <rect x="0" y="0" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" [attr.fill]="drawingManager.backgroundColor" (click)="handleBackgroundClick()" (contextmenu)="handleBackgroundRightClick()"  />
+    <rect x="0" y="0" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" [attr.fill]="drawingManager.backgroundColor.RGBAString"
+    (contextmenu)="handleBackgroundRightClick()" (mousedown)="handleMouseDownBackground($event)"  (mouseup)="handleMouseUpBackground()" />
 
     <g *ngFor="let element of SVGStockage.getCompleteSVG()" [innerHTML]="element.svgHtml" (click)="handleElementClick(element)" (contextmenu)="handleElementRightClick(element)"></g>
     <g *ngIf="this.selection.selectionRectangle.rectangle"  [innerHTML]="this.selection.selectionRectangle.rectangle.svgHtml"></g>
-    <g  class = "selectionBox" *ngIf="this.selection.selectionBox.selectionBox" [innerHTML]="this.selection.selectionBox.selectionBox.svgHtml"  (mousedown)="handleMouseDown($event)"  (mouseup)="handleMouseUp($event)"></g>
+    <g  class = "selectionBox" *ngIf="this.selection.selectionBox.selectionBox" [innerHTML]="this.selection.selectionBox.selectionBox.svgHtml"  (mousedown)="handleMouseDownBox($event)"  (mouseup)="handleMouseUpBox()"></g>
     <g *ngFor="let controlPoint of this.selection.selectionBox.controlPointBox" [innerHTML]="controlPoint.svgHtml" ></g>
     <g [innerHTML]="SVGStockage.getOngoingSVGHTML()"></g>
     <g [innerHTML]="SVGStockage.getOngoingPerimeterHTML()"></g>
 
     <g class="grid" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" version="1.1" xlmns="http://www.w3.org/2000/svg">
         <g *ngFor="let line of grid.getLines()">
-            <line [attr.stroke]="grid.getColor()" stroke-width="1"
+            <line class="grid" [attr.stroke]="grid.getColor()" stroke-width="1"
                 [attr.x1.px]="line.x1" [attr.x2.px]="line.x2"
                 [attr.y1.px]="line.y1" [attr.y2.px]="line.y2" />
         </g>

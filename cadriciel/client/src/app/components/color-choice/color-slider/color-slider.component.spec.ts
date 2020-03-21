@@ -6,6 +6,9 @@ import { CommandManagerService } from 'src/app/services/command/command-manager.
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { ColorSliderComponent } from './color-slider.component';
 
+// tslint:disable: no-magic-numbers
+// tslint:disable: no-string-literal
+
 describe('GlissiereCouleurComponent', () => {
   let component: ColorSliderComponent;
   let fixture: ComponentFixture<ColorSliderComponent>;
@@ -108,14 +111,14 @@ describe('GlissiereCouleurComponent', () => {
     component.colorManager.hue = 'rgba(50, 50, 50,';
     component.draw();
     component.colorPosition(0, 0);
-    expect(component.colorManager.color).toBe('rgba(255,3,0,');
+    expect(component.colorManager.color.RGBAString).toBe('rgba(255,3,0,');
   });
 
   it('#colorPosition devrait actualiser le RGB du service gestionnaireCouleur', () => {
     component.colorManager.hue = 'rgba(50, 50, 50,';
     component.draw();
     component.colorPosition(0, 0);
-    expect(component.colorManager.RGB).toEqual([255, 3, 0]);
+    expect(component.colorManager.color.RGBA).toEqual([255, 3, 0]);
   });
 
 });

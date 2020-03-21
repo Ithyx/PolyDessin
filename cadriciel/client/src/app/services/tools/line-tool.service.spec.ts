@@ -108,7 +108,6 @@ describe('LineToolService', () => {
     element.points.pop();
     element.draw();
     const ajout = new AddSVGService(element, stockageService);
-    ajout.svgKey = 0;
     expect(service.commands.execute).toHaveBeenCalledWith(ajout);
   });
 
@@ -122,7 +121,6 @@ describe('LineToolService', () => {
     service.onDoubleClick(new MouseEvent('dblClick', {clientX: 1, clientY: 1}));
     element.draw();
     const ajout = new AddSVGService(element, stockageService);
-    ajout.svgKey = 0;
     expect(service.commands.execute).toHaveBeenCalledWith(ajout);
   });
 
@@ -134,7 +132,6 @@ describe('LineToolService', () => {
     element.points.push({x: 25, y: 25});
     element.draw();
     const ajout = new AddSVGService(element, stockageService);
-    ajout.svgKey = 0;
     expect(service.commands.execute).toHaveBeenCalledWith(ajout);
   });
 
@@ -145,7 +142,6 @@ describe('LineToolService', () => {
     service.onDoubleClick(new MouseEvent('dblClick', {clientX: 100, clientY: 100}));
     element.draw();
     const addSVG = new AddSVGService(element, stockageService);
-    addSVG.svgKey = 0;
     expect(service.commands.execute).toHaveBeenCalledWith(addSVG);
   });
 

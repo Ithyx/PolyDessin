@@ -16,7 +16,7 @@ export class SelectionBoxService {
   mouseClick: Point;
   controlPointBox: RectangleService[];
 
-  constructor(public tools: ToolManagerService,
+  constructor(private tools: ToolManagerService,
               private sanitizer: DomSanitizer,
               ) {}
 
@@ -33,7 +33,7 @@ export class SelectionBoxService {
 
     this.selectionBox.points[0] = pointMin;
     this.selectionBox.points[1] = pointMax;
-    this.selectionBox.secondaryColor =  'rgba(0, 80, 150, 1)';
+    this.selectionBox.secondaryColor.RGBAString =  'rgba(0, 80, 150, 1)';
     this.selectionBox.thickness = 4;
 
     this.selectionBox.drawRectangle();
@@ -69,7 +69,9 @@ export class SelectionBoxService {
     for (const controlPoint of this.controlPointBox) {
       controlPoint.isSelected = true;
       controlPoint.updateParameters(this.tools.activeTool);
-      controlPoint.secondaryColor =  'rgba(173, 255, 47, 1)';
+      controlPoint.chosenOption = 'Plein avec contour';
+      controlPoint.primaryColor.RGBAString =  'rgba(0, 0, 0, 1)';
+      controlPoint.secondaryColor.RGBAString = 'rgba(0, 255, 0, 1)';
       controlPoint.thickness = 4;
       controlPoint.drawRectangle();
 

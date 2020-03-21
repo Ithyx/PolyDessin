@@ -1,20 +1,31 @@
 <h1 style="text-align: center;">GALERIE :</h1>
 <br>
 <div class="tag-search">
-    <input type="text" maxlength="15" [formControl]="tagSearch">
-    <button mat-stroked-button (click)="filter()">filtrer</button>
+    <input type="text" maxlength="15" [formControl]="tagInput">
+    <button mat-stroked-button (click)="filter()">ajouter filtre</button>
+    <div *ngFor="let tag of searchTags">
+        <span>{{tag}}</span> <i class="material-icons delete-button" (click)="removeTag(tag)">cancel</i>
+    </div>
 </div>
-<div class="content">
-    <div *ngIf="isLoading; else notLoading" class="loadingUI">
+<mat-dialog-content [ngSwitch]="status" class="content">
+    <br>
+    <div *ngSwitchCase="0" class="loadingUI">
         <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
     </div>
-    <ng-template #notLoading>
+    <div *ngSwitchCase="1">
         <div *ngFor="let element of drawings; let i = index" class="drawings">
             <app-gallery-element [drawing]="element" [isSelected]="i === selected" (click)="selected = i;"></app-gallery-element>
         </div>
-    </ng-template>
+        <h3 *ngIf="drawings.length === 0" class="no-results">
+            Aucun dessin trouvé !
+        </h3>
+    </div>
+    <div *ngSwitchCase="2" class="error">
+        Erreur: la gallerie n'a pas pu être chargée
+    </div>
+    <br>
     <div class="clear"></div>
-</div>
+</mat-dialog-content>
 <button mat-stroked-button (click)="close()" class="close-button" style="float: left;">fermer</button>
 <button mat-raised-button (click)="loadDrawing(drawings[selected])" color="primary" [disabled]="selected === null" style="float: right;">Charger</button>
 <button mat-raised-button (click)="deleteDrawing(drawings[selected])" color="warn" [disabled]="selected === null" style="float: right;">Supprimer</button>

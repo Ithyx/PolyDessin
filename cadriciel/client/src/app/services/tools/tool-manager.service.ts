@@ -10,7 +10,8 @@ export enum TOOL_INDEX {
   SELECTION,      // 6
   PIPETTE,        // 7
   ELLIPSE,        // 8
-  COLOR_CHANGER   // 9
+  COLOR_CHANGER,  // 9
+  ERASER          // 10
 }
 
 export interface ToolParameter {
@@ -155,5 +156,12 @@ export const TOOL_LIST: DrawingTool[] = [
     ID: 9,
     iconName: 'fas fa-tint',
     parameters: []
+  },
+  {
+    name: 'Efface',
+    isActive: false,
+    ID: 10,
+    iconName: 'fas fa-eraser',
+    parameters: [{type: 'number', name: 'Épaisseur de l\'efface', value: 10, min: 3, max: 50}]
   }
 ];

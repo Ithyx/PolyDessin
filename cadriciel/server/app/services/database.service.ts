@@ -38,12 +38,22 @@ export class DatabaseService {
 
     async getDrawingWithTags(tagList: string[]): Promise<Drawing[]> {
         if (!this.collection) { return []; }
-        return await this.collection.find({tags: tagList}).toArray();
+        const result = new Map<number, Drawing>();
+        for (const tag of tagList) {
+            if (tag === '') { continue; }
+            const query = await this.collection.find({tags: tag}).toArray();
+            console.log(query);
+            for (const drawing of query) {
+                if (!result.has(drawing._id)) { result.set(drawing._id, drawing); }
+            }
+        }
+        return Array<Drawing>(...result.values());
     }
 
-    async updateData(drawing: Drawing): Promise<void> {
-        if (!this.collection) { return; }
+    async updateData(drawing: Drawing): Promise<boolean> {
+        if (!this.collection || drawing.name === '') { return false; }
         await this.collection.replaceOne({_id: drawing._id}, drawing, {upsert: true});
+        return true;
     }
 
     async deleteData(id: number): Promise<void> {
