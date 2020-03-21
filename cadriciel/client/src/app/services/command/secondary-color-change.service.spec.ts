@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ColorParameterService } from '../color/color-parameter.service';
-import { LineService } from '../stockage-svg/line.service';
-import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
-import { SecondaryColorChangeService } from './secondary-color-change.service';
 import { Color } from '../stockage-svg/draw-element';
+import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
+import { TracePencilService } from '../stockage-svg/trace-pencil.service';
+import { SecondaryColorChangeService } from './secondary-color-change.service';
 
 describe('SecondaryColorChangeService', () => {
   let stockageService: SVGStockageService;
@@ -13,9 +13,9 @@ describe('SecondaryColorChangeService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => {
     stockageService = TestBed.get(SVGStockageService);
-    stockageService.addSVG(new LineService());
+    stockageService.addSVG(new TracePencilService());
     colorParameter = TestBed.get(ColorParameterService);
-    service = new SecondaryColorChangeService(new LineService(), colorParameter, TestBed.get(DomSanitizer));
+    service = new SecondaryColorChangeService(new TracePencilService(), colorParameter, TestBed.get(DomSanitizer));
     service.oldColor = {
       RGBAString: 'rgba(0, 0, 0, 1)',
       RGBA: [0, 0, 0, 1]
@@ -30,7 +30,7 @@ describe('SecondaryColorChangeService', () => {
 
   it('Le constructeur devrait appeler la fonction changeColor', () => {
     const test = spyOn(SecondaryColorChangeService.prototype, 'changeColor');
-    service = new SecondaryColorChangeService(new LineService(), colorParameter, TestBed.get(DomSanitizer));
+    service = new SecondaryColorChangeService(new TracePencilService(), colorParameter, TestBed.get(DomSanitizer));
     expect(test).toHaveBeenCalledWith(colorParameter.secondaryColor);
   });
 
@@ -52,11 +52,8 @@ describe('SecondaryColorChangeService', () => {
 
   // TESTS changeColor
 
-  it('#changeColor ne devrait pas modifier oldColor si primaryColor est une chaine vide', () => {
-    service.element.secondaryColor = {
-      RGBAString: '',
-      RGBA: [0, 0, 0, 1]
-    };
+  it('#changeColor ne devrait pas modifier oldColor si secondaryColor est une chaine vide', () => {
+    service.element.secondaryColor = undefined;
     service.oldColor = {
       RGBAString: 'test',
       RGBA: [0, 0, 0, 1]
@@ -69,7 +66,7 @@ describe('SecondaryColorChangeService', () => {
     expect(service.oldColor).toEqual(color);
   });
 
-  it('#changeColor devrait modifier oldColor si primaryColor n\'est pas une chaine vide', () => {
+  it('#changeColor devrait modifier oldColor si secondaryColor n\'est pas une chaine vide', () => {
     service.element.secondaryColor = {
       RGBAString: 'Plein',
       RGBA: [0, 0, 0, 1]
@@ -86,7 +83,7 @@ describe('SecondaryColorChangeService', () => {
     expect(service.oldColor.RGBAString).toEqual('Plein');
   });
 
-  it('#changeColor devrait modifier primaryColor pour lui attribuer celui en paramètre', () => {
+  it('#changeColor devrait modifier secondaryColor pour lui attribuer celui en paramètre', () => {
     service.element.secondaryColor = {
       RGBAString: 'test',
       RGBA: [0, 0, 0, 1]
