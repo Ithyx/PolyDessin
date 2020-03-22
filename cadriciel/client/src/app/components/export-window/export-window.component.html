@@ -1,5 +1,5 @@
 <mat-dialog-content>
-    <svg [attr.filter]="getFilter()" class="drawing-preview" [attr.width]="200" [attr.height]="200"
+    <svg #drawingPreview [attr.filter]="getFilter()" class="drawing-preview" [attr.width]="200" [attr.height]="200"
         [attr.viewBox]="'0 0 ' + drawing.width.toString() + ' ' + drawing.height.toString()">
         <defs>
             <!-- Texture libre de droit-->
@@ -55,5 +55,6 @@
         <label for="name">Choisissez un nom de fichier :</label>
             <input id="name" type="text" (change)="updateFileName($event)" [value]="selectedFileName" />
     </div>
+    <a #link class="no-display"></a>
 
 </mat-dialog-content>
