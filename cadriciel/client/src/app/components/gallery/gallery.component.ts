@@ -99,7 +99,7 @@ export class GalleryComponent implements OnInit {
     this.drawingManager.width = drawing.width;
     this.drawingManager.backgroundColor = drawing.backgroundColor;
     this.drawingManager.name = drawing.name;
-    if (drawing.tags) { this.drawingManager.tags = drawing.tags; }
+    if (drawing.tags) { this.drawingManager.tags = drawing.tags; } else { this.drawingManager.tags = []; }
     if (drawing.elements) { drawing.elements.forEach(this.addElement.bind(this)); }
     this.ngZone.run(() => this.router.navigate(['dessin']));
     this.close();

@@ -1,8 +1,10 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
+import { Injector } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule, MatDialogRef, MatProgressSpinnerModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
+import { Observable } from 'rxjs';
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
 import { Drawing } from '../../../../../common/communication/DrawingInterface';
 import { GalleryLoadWarningComponent } from '../gallery-load-warning/gallery-load-warning.component';
@@ -13,21 +15,25 @@ import { GalleryComponent, Status } from './gallery.component';
 // tslint:disable: no-string-literal
 // tslint:disable: max-file-line-count
 
+const injector = Injector.create({providers: [{provide: MatDialogRef, useValue: {afterClosed: () => new Observable<boolean>()}}]});
+
 describe('GalleryComponent', () => {
   let component: GalleryComponent;
   let fixture: ComponentFixture<GalleryComponent>;
   const drawing: Drawing = {
     _id: 0,
-    name: 'test',
+    name: 'post change name',
     height: 800,
     width: 800,
-    backgroundColor: {RGBA: [0, 0, 0, 1], RGBAString: ''}
-  }
+    backgroundColor: {RGBA: [255, 255, 255, 1], RGBAString: 'tets string'},
+    tags: ['tag 1', 'tag 2']
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ GalleryComponent, GalleryElementComponent ],
-      imports: [ MatProgressSpinnerModule, MatDialogModule, FormsModule, ReactiveFormsModule, RouterModule.forRoot([]) ],
+      imports: [ MatProgressSpinnerModule, MatDialogModule, FormsModule, ReactiveFormsModule,
+        RouterModule.forRoot([{path: 'dessin', component: GalleryComponent}]) ],
       providers: [ { provide: MatDialogRef, useValue: {close: () => { return; }}}, HttpClient, HttpHandler ]
     })
     .compileComponents();
@@ -183,8 +189,44 @@ describe('GalleryComponent', () => {
   // TESTS loadDrawing
   it('#loadDrawing devrait ouvrir l\'avertissement si le desisn n\'est pas vide', () => {
     component['stockageSVG'].size = 1;
-    const spy = spyOn(component['dialog'], 'open').and.returnValue({});
+    const spy = spyOn(component['dialog'], 'open').and.returnValue(injector.get(MatDialogRef));
     component.loadDrawing(drawing);
     expect(spy).toHaveBeenCalledWith(GalleryLoadWarningComponent, component['dialogConfig']);
-  })
+  });
+  it('#loadDrawing ne devrait pas ouvrir l\'avertissement si le desisn est vide', () => {
+    component['stockageSVG'].size = 0;
+    const spy = spyOn(component['dialog'], 'open').and.returnValue(injector.get(MatDialogRef));
+    component.loadDrawing(drawing);
+    expect(spy).not.toHaveBeenCalledWith(GalleryLoadWarningComponent, component['dialogConfig']);
+  });
+  it('#loadDrawing devrait changer complètement le dessin en cours', () => {
+    const spy = spyOn(component['stockageSVG'], 'cleanDrawing');
+    const drawingManager = component['drawingManager'];
+    drawingManager.id = 123;
+    drawingManager.height = 200;
+    drawingManager.width = 200;
+    drawingManager.backgroundColor = {
+      RGBA: [0, 0, 0, 1],
+      RGBAString: ''
+    };
+    drawingManager.name = 'pre change name';
+    drawingManager.tags = [];
+
+    component.loadDrawing(drawing);
+
+    expect(spy).toHaveBeenCalled();
+    expect(drawingManager.id).toBe(drawing._id);
+    expect(drawingManager.height).toBe(drawing.height),
+    expect(drawingManager.width).toBe(drawing.width),
+    expect(drawingManager.backgroundColor).toEqual(drawing.backgroundColor);
+    expect(drawingManager.name).toBe(drawing.name);
+    expect(drawingManager.tags).toEqual(['tag 1', 'tag 2']);
+  });
+  it('#loadDrawing devrait remttre les tags à 0 même si le nouveau dessin n\'en a pas', () => {
+    component['drawingManager'].tags = ['tag1'];
+    drawing.tags = undefined;
+    component.loadDrawing(drawing);
+    drawing.tags = ['tag 1', 'tag 2'];
+    expect(component['drawingManager'].tags).toEqual([]);
+  });
 });
