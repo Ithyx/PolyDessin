@@ -10,8 +10,8 @@ import { Command } from './command';
 })
 export class TranslateSvgService implements Command {
 
-  translation: Point;
-  commandElements: DrawElement[];
+  private translation: Point;
+  private commandElements: DrawElement[];
 
   constructor( private selectedElements: DrawElement[],
                private selectionBox: SelectionBoxService,
