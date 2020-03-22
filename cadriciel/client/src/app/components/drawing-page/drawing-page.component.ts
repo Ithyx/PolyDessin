@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild, AfterViewInit } from '@angular/core';
 import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { BrushToolService } from 'src/app/services/tools/brush-tool.service';
@@ -22,7 +22,10 @@ const LEFT_CLICK = 0;
   templateUrl: './drawing-page.component.html',
   styleUrls: ['./drawing-page.component.scss']
 })
-export class DrawingPageComponent {
+export class DrawingPageComponent implements AfterViewInit {
+
+  @ViewChild('canvasConversion', {static: false})
+  coloredDrawing: ElementRef<SVGElement>;
 
   toolMap: Map<string, ToolInterface> = new Map<string, ToolInterface>();
 
@@ -54,6 +57,10 @@ export class DrawingPageComponent {
                           .set('Polygone', polygon)
                           .set('Efface', eraser);
                 }
+
+  ngAfterViewInit(): void {
+    this.canvas.coloredDrawing = this.coloredDrawing.nativeElement;
+  }
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent): void {
