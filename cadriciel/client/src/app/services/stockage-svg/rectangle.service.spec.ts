@@ -1,17 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-
-// import { DrawingToolService } from '../tools/pencil-tool.service';
 import { RectangleToolService } from '../tools/rectangle-tool.service';
 import { RectangleService } from './rectangle.service';
 
 // tslint:disable:no-magic-numbers
 
 describe('RectangleService', () => {
-  // let service: DrawingToolService;
   let service: RectangleToolService;
   let element: RectangleService;
   beforeEach(() => TestBed.configureTestingModule({}));
-  // beforeEach(() => service = TestBed.get(DrawingToolService));
   beforeEach(() => service = TestBed.get(RectangleToolService));
 
   beforeEach(() => {
