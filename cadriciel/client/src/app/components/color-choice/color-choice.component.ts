@@ -10,10 +10,13 @@ import { ColorManagerService, Scope } from 'src/app/services/color/color-manager
 })
 export class ColorChoiceComponent  {
 
-  scope: Scope = Scope.Primary;
+  scope: Scope;
 
-  constructor(public colorManager: ColorManagerService,
-              public dialogRef: MatDialogRef<ColorChoiceComponent>) {}
+  constructor(private colorManager: ColorManagerService,
+              public dialogRef: MatDialogRef<ColorChoiceComponent>
+             ) {
+               this.scope = Scope.Primary;
+             }
 
   closeWindow(): void {
     this.dialogRef.close();
