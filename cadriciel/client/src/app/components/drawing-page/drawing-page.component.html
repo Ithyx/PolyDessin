@@ -13,7 +13,7 @@
     </app-drawing-surface>
 </div>
 
-<svg class="canvas-conversion" [attr.width]="canvas.drawing.width" [attr.height]="canvas.drawing.height"
+<svg #canvasConversion class="canvas-conversion" [attr.width]="canvas.drawing.width" [attr.height]="canvas.drawing.height"
     [attr.viewBox]="'0 0 ' + canvas.drawing.width.toString() + ' ' + canvas.drawing.height.toString()">
     <defs>
         <!-- Texture libre de droit-->
@@ -50,6 +50,6 @@
             </feComponentTransfer>
         </filter>
     </defs>
-    <rect [attr.width]="canvas.drawing.width" [attr.height]="canvas.drawing.height" [attr.fill]="canvas.drawing.backgroundColor" />
+    <rect [attr.width]="canvas.drawing.width" [attr.height]="canvas.drawing.height" [attr.fill]="canvas.drawing.backgroundColor.RGBAString" />
     <g *ngFor="let element of canvas.drawing.elements" [innerHtml]="element.svgHtml" />
 </svg>
