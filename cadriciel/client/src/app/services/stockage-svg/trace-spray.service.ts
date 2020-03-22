@@ -4,7 +4,7 @@ import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
 import { Color, DrawElement, ERASING_COLOR_INIT} from './draw-element';
 
-const MIN_DIAMETER = 5;
+export const MIN_DIAMETER = 5;
 
 @Injectable({
   providedIn: 'root'
