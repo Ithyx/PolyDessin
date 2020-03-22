@@ -43,7 +43,7 @@ describe('ColorInputComponent', () => {
 
   // TESTS editRGB
   it('#editRGB devrait modifier le RGB si on entre une valeur hexadécimal', () => {
-    const element = fixture.debugElement.query(By.css('input[class="redHex"]')).nativeElement;
+    const element = fixture.debugElement.query(By.css('input[class="hexRed"]')).nativeElement;
     element.value = 0xff;
 
     spyOn(component['colorManager'], 'updateColor');
@@ -54,7 +54,7 @@ describe('ColorInputComponent', () => {
   });
 
   it('#editRGB ne devrait pas modifier le RGB si on entre un string non reconnu', () => {
-    const element = fixture.debugElement.query(By.css('input[class="blueHex"]')).nativeElement;
+    const element = fixture.debugElement.query(By.css('input[class="hexBlue"]')).nativeElement;
     element.value = 'test';
 
     spyOn(component['colorManager'], 'updateColor');
@@ -67,7 +67,7 @@ describe('ColorInputComponent', () => {
 
   it('#editRGB ne devrait pas modifier le RGB si l\'index est non recconu', () => {
     component['BLUE_INDEX'] = 5;
-    const element = fixture.debugElement.query(By.css('input[class="blueHex"]')).nativeElement;
+    const element = fixture.debugElement.query(By.css('input[class="hexBlue"]')).nativeElement;
     element.value = 0xff;
 
     spyOn(component['colorManager'], 'updateColor');
