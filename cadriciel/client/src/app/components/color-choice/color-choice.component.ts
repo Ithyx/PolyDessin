@@ -13,7 +13,7 @@ export class ColorChoiceComponent  {
   scope: Scope;
 
   constructor(private colorManager: ColorManagerService,
-              public dialogRef: MatDialogRef<ColorChoiceComponent>
+              private dialogRef: MatDialogRef<ColorChoiceComponent>
              ) {
                this.scope = Scope.Primary;
              }

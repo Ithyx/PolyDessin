@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogRef, MatDialogModule } from '@angular/material';
+import { MatDialogModule, MatDialogRef } from '@angular/material';
 
-// import { Scope } from 'src/app/services/color/color-manager.service';
 import { ColorChoiceComponent } from './color-choice.component';
 import { ColorInputComponent } from './color-input/color-input.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
@@ -14,16 +13,12 @@ describe('ColorChoiceComponent', () => {
   let component: ColorChoiceComponent;
   let fixture: ComponentFixture<ColorChoiceComponent>;
 
-  const matDialogRefStub: Partial<MatDialogRef<ColorChoiceComponent>> = {
-    close(): void { /* NE RIEN FAIRE */ }
-  };
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ColorChoiceComponent, ColorPickerComponent, ColorSliderComponent,
         ColorInputComponent ],
       imports: [MatDialogModule],
-      providers: [ { provide: MatDialogRef, useValue: { matDialogRefStub} } ]
+      providers: [ { provide: MatDialogRef, useValue: {close: () => { return; }} } ]
     })
     .compileComponents();
   }));
@@ -41,9 +36,9 @@ describe('ColorChoiceComponent', () => {
   // TEST closeWindow
 
   it('#closeWindow devrait fermer le popup', () => {
-    const test = spyOn(ColorChoiceComponent.prototype['dialogRef'], 'close');
+    spyOn(component['dialogRef'], 'close');
     component.closeWindow();
-    expect(test).toHaveBeenCalled();
+    expect(component['dialogRef'].close).toHaveBeenCalled();
   });
 
   // TESTS applyColor
@@ -55,9 +50,9 @@ describe('ColorChoiceComponent', () => {
   });
 
   it('#applyColor devrait fermer le popup', () => {
-    const test = spyOn(ColorChoiceComponent.prototype['dialogRef'], 'close');
+    spyOn(component['dialogRef'], 'close');
     component.applyColor();
-    expect(test).toHaveBeenCalled();
+    expect(component['dialogRef'].close).toHaveBeenCalled();
   });
 
 });
