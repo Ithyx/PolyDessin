@@ -2,19 +2,20 @@ import { async, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material';
 import { ShortcutsManagerService } from './shortcuts-manager.service';
 import { TOOL_INDEX } from './tools/tool-manager.service';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
 
-describe('shortcuts-manager', () => {
+describe('ShortcutsManagerService', () => {
 
   let service: ShortcutsManagerService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        imports: [MatDialogModule],
+        imports: [MatDialogModule, BrowserAnimationsModule, NoopAnimationsModule],
     });
-}));
+  }));
 
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(ShortcutsManagerService));
@@ -131,6 +132,42 @@ describe('shortcuts-manager', () => {
     service.shortcutKeyC();
     expect(service.clearOngoingSVG).toHaveBeenCalled();
   });
+
+  // TESTS shortcutKeyE
+
+  /* it('#shortcutKeyE devrait mettre focusOnInput à vrai si CRTL est appuyé', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'e' , ctrlKey: true});
+    service.shortcutKeyE(keyboard);
+    expect(service.focusOnInput).toEqual(true);
+  });
+
+  it('#shortcutKeyE devrait supprimer la boite de selection si CRTL est appuyé', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'e' , ctrlKey: true});
+    spyOn(service['selection'], 'deleteBoundingBox');
+    service.shortcutKeyE(keyboard);
+    expect(service['selection'].deleteBoundingBox).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyE devrait ouvrir le pop-up d\'exportation si CRTL est appuyé', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'e' , ctrlKey: true});
+    spyOn(service['dialog'], 'open');
+    service.shortcutKeyE(keyboard);
+    expect(service['dialog'].open)
+      .toHaveBeenCalledWith(ExportWindowComponent, service['dialogConfig']);
+  });
+
+  it('#shortcutKeyE devrait changer l\'outil actif pour l\'efface si CTRL n\'est pas appuyé', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'e' , ctrlKey: false});
+    service.shortcutKeyE(keyboard);
+    expect(service['tools'].activeTool.ID).toEqual(TOOL_INDEX.ERASER);
+  });
+
+  it('#shortcutKeyE devrait supprimer le SVG en cours si CTRL n\'est pas appuyé', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'e' , ctrlKey: false});
+    spyOn(service, 'clearOngoingSVG');
+    service.shortcutKeyE(keyboard);
+    expect(service.clearOngoingSVG).toHaveBeenCalled();
+  }); */
 
   // TESTS shortcutKeyI
 
