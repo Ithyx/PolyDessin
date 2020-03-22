@@ -12,6 +12,9 @@ import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 
+const LEFT_CLICK = 0;
+const RIGHT_CLICK = 2;
+
 @Component({
   selector: 'app-drawing-surface',
   templateUrl: './drawing-surface.component.html',
@@ -20,6 +23,8 @@ import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-mana
 export class DrawingSurfaceComponent implements AfterViewInit {
   @ViewChild('drawing', {static: false})
   drawing: ElementRef<SVGElement>;
+  mousePositionX: number;
+  mousePositionY: number;
 
   constructor(public SVGStockage: SVGStockageService,
               private tools: ToolManagerService,
@@ -32,6 +37,8 @@ export class DrawingSurfaceComponent implements AfterViewInit {
               public colorChanger: ColorChangerToolService,
               public commands: CommandManagerService,
               public eraser: EraserToolService) {
+                 this.mousePositionX = 0;
+                 this.mousePositionY = 0;
   }
 
   ngAfterViewInit(): void {
@@ -48,9 +55,45 @@ export class DrawingSurfaceComponent implements AfterViewInit {
     return belongInX && belongInY;
   }
 
-  handleBackgroundRightClick(): boolean {
-    this.colorChanger.activeElement = undefined;
-    return false;
+  handleElementMouseDown(element: DrawElement, mouse: MouseEvent): void {
+    this.mousePositionX = mouse.screenX;
+    this.mousePositionY = mouse.screenY;
+    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
+      if (mouse.button === LEFT_CLICK) {
+        if (!this.selection.selectedElements.includes(element)) {
+          for (const elements of this.selection.selectedElements) {
+            elements.isSelected = false;
+          }
+          this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
+          this.selection.selectedElements.push(element);
+          element.isSelected = true;
+          this.selection.createBoundingBox();
+        }
+        this.selection.selectionBox.mouseClick = {x: mouse.offsetX , y: mouse.offsetY };
+        delete this.selection.selectionRectangle.rectangle;
+        this.selection.clickInSelectionBox = true;
+      } else if (mouse.button === RIGHT_CLICK) {
+
+      }
+    }
+  }
+
+  handleElementMouseUp(element: DrawElement, mouse: MouseEvent): void {
+    if (mouse.button === LEFT_CLICK) {
+      if (this.mousePositionX === mouse.screenX && this.mousePositionY === mouse.screenY) {
+        for (const elements of this.selection.selectedElements) {
+          elements.isSelected = false;
+        }
+        this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
+        this.selection.selectedElements.push(element);
+        element.isSelected = true;
+        this.selection.createBoundingBox();
+      }
+    } else if (mouse.button === RIGHT_CLICK) {
+      if (this.mousePositionX === mouse.screenX && this.mousePositionY === mouse.screenY) {
+        this.handleElementRightClick(element);
+      }
+    }
   }
 
   handleElementClick(element: DrawElement): void {
@@ -62,14 +105,13 @@ export class DrawingSurfaceComponent implements AfterViewInit {
     }
   }
 
-  handleElementRightClick(element: DrawElement): boolean {
+  handleElementRightClick(element: DrawElement): void {
     this.colorChanger.activeElement = element;
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       this.selection.handleRightClick(element);
       this.selection.clickOnSelectionBox = false;
       this.selection.clickInSelectionBox = false;
     }
-    return false;
   }
 
   handleMouseDownBox(mouse: MouseEvent): void {
@@ -89,35 +131,55 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   }
 
   handleMouseDownBackground(mouse: MouseEvent): void {
+    this.mousePositionX = mouse.screenX;
+    this.mousePositionY = mouse.screenY;
     this.colorChanger.activeElement = undefined;
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
-      // si on clique dans la boite de selection d'un element SVG
-      if (this.selection.selectionBox.selectionBox && this.clickBelongToSelectionBox(mouse)) {
-        this.selection.selectionBox.mouseClick = {x: mouse.offsetX , y: mouse.offsetY };
-        this.selection.clickInSelectionBox = true;
-        delete this.selection.selectionRectangle.rectangle;
+      if (mouse.button === LEFT_CLICK) {
+        // si on clique dans la boite de selection d'un element SVG
+        if (this.selection.selectionBox.selectionBox && this.clickBelongToSelectionBox(mouse)) {
+          this.selection.selectionBox.mouseClick = {x: mouse.offsetX , y: mouse.offsetY };
+          this.selection.clickInSelectionBox = true;
+          delete this.selection.selectionRectangle.rectangle;
 
-      } else {  // sinon on clique sur fond
-        this.selection.deleteBoundingBox();
-        this.selection.clickOnSelectionBox = false;
-        this.selection.clickInSelectionBox = false;
-        for (const element of this.selection.selectedElements) {
-          element.isSelected = false;
+        } else {  // sinon on clique sur fond
+          this.handleBackgroundLeftClick();
         }
-        this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
+      } else if (mouse.button === RIGHT_CLICK) {
+
+        this.selection.selectionRectangle.mouseDown(mouse);
       }
     }
   }
 
-  handleMouseUpBackground(): void {
-    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
-      if (this.selection.selectedElements.length !== 0) {
-        this.selection.selectionBox.selectionBox.translateAllPoints();
-        for (const controlPoint of this.selection.selectionBox.controlPointBox) {
-          controlPoint.translateAllPoints();
+  handleMouseUpBackground(mouse: MouseEvent): void {
+    if (mouse.button === LEFT_CLICK) {
+      if (this.mousePositionX === mouse.screenX && this.mousePositionY === mouse.screenY) {
+        this.handleBackgroundLeftClick();
+      }
+      if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
+        if (this.selection.selectedElements.length !== 0) {
+          this.selection.selectionBox.selectionBox.translateAllPoints();
+          for (const controlPoint of this.selection.selectionBox.controlPointBox) {
+            controlPoint.translateAllPoints();
+          }
         }
       }
     }
+    else if (mouse.button === RIGHT_CLICK) {
+      
+    }
+   }
+
+   handleBackgroundLeftClick(): void {
+    this.selection.deleteBoundingBox();
+    this.selection.clickOnSelectionBox = false;
+    this.selection.clickInSelectionBox = false;
+    for (const element of this.selection.selectedElements) {
+      element.isSelected = false;
+    }
+    this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
+
    }
 
 }
