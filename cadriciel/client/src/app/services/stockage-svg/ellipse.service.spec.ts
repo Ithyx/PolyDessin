@@ -1,17 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-
-// import { DrawingToolService } from '../tools/pencil-tool.service';
 import { EllipseToolService } from '../tools/ellipse-tool.service';
 import { EllipseService } from './ellipse.service';
 
 // tslint:disable:no-magic-numbers
 
 describe('EllipseService', () => {
-  // let service: DrawingToolService;
   let service: EllipseToolService;
   let element: EllipseService;
   beforeEach(() => TestBed.configureTestingModule({}));
-  // beforeEach(() => service = TestBed.get(DrawingToolService));
   beforeEach(() => service = TestBed.get(EllipseToolService));
 
   beforeEach(() => {
