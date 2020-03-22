@@ -154,6 +154,7 @@ describe('LineToolService', () => {
 
   it('#onDoubleClick ne devrait pas appeler execute s\'il n\'y a qu\'un point '
     + 'et que l\'option choisie est sans points', () => {
+    service.tools.activeTool.parameters[1].chosenOption = 'Sans points';
     spyOn(service.commands, 'execute');
     service.onDoubleClick(new MouseEvent('dblClick', {clientX: 100, clientY: 100}));
     expect(service.commands.execute).not.toHaveBeenCalled();
