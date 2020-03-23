@@ -153,21 +153,16 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   }
 
   handleMouseUpBackground(mouse: MouseEvent): void {
-    if (mouse.button === LEFT_CLICK) {
-      if (this.mousePositionX === mouse.screenX && this.mousePositionY === mouse.screenY) {
-        this.handleBackgroundLeftClick();
-      }
-      if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
-        if (this.selection.selectedElements.length !== 0) {
-          this.selection.selectionBox.selectionBox.translateAllPoints();
-          for (const controlPoint of this.selection.selectionBox.controlPointBox) {
-            controlPoint.translateAllPoints();
-          }
+    if (this.mousePositionX === mouse.screenX && this.mousePositionY === mouse.screenY) {
+      this.handleBackgroundLeftClick();
+    }
+    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
+      if (this.selection.selectedElements.length !== 0) {
+        this.selection.selectionBox.selectionBox.translateAllPoints();
+        for (const controlPoint of this.selection.selectionBox.controlPointBox) {
+          controlPoint.translateAllPoints();
         }
       }
-    }
-    else if (mouse.button === RIGHT_CLICK) {
-      // TODO : Utile de spécifié le click ?
     }
    }
 

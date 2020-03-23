@@ -22,6 +22,7 @@ const RIGHT_CLICK = 2;
 
 export class SelectionService implements ToolInterface {
   selectedElements: DrawElement[] = [];
+  modifiedElement: Set<DrawElement>;
   clickOnSelectionBox: boolean;
   clickInSelectionBox: boolean;
 
@@ -32,6 +33,7 @@ export class SelectionService implements ToolInterface {
               private sanitizer: DomSanitizer,
               private command: CommandManagerService
              ) {
+              this.modifiedElement = new Set<DrawElement>();
               this.clickOnSelectionBox = false;
               this.clickInSelectionBox = false;
              }
@@ -72,6 +74,7 @@ export class SelectionService implements ToolInterface {
         if (this.selectionRectangle.ongoingSelection) {
           // Éviter de créer une boite de sélection si on effectue un simple clic
           if (this.selectionRectangle.rectangleInverted.getWidth() !== 0 || this.selectionRectangle.rectangleInverted.getHeight() !== 0) {
+            this.selectionBox.deleteSelectionBox();
             this.isInRectangleSelection(this.selectionRectangle.rectangleInverted);
             this.createBoundingBox();
           }
@@ -119,6 +122,7 @@ export class SelectionService implements ToolInterface {
         this.selectionRectangle.mouseUp();
         this.selectionRectangle.rectangle = new RectangleService();
         this.selectionRectangle.rectangleInverted = new RectangleService();
+        this.modifiedElement.clear();
     }
   }
 
@@ -180,9 +184,9 @@ export class SelectionService implements ToolInterface {
           this.selectedElements.push(element);
         }
       } else if (this.selectionRectangle.rectangleInverted) {
-        if (this.belongToRectangle(element, this.selectionRectangle.rectangleInverted)) {
-          console.log('REVERSE CALL');
+        if (this.belongToRectangle(element, this.selectionRectangle.rectangleInverted) && !this.modifiedElement.has(element)) {
           this.reverseElementSelectionStatus(element);
+          this.modifiedElement.add(element);
         }
       }
 
