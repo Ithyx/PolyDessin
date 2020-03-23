@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, ViewChild, AfterViewInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { BrushToolService } from 'src/app/services/tools/brush-tool.service';
@@ -25,25 +25,24 @@ const LEFT_CLICK = 0;
 export class DrawingPageComponent implements AfterViewInit {
 
   @ViewChild('canvasConversion', {static: false})
-  coloredDrawing: ElementRef<SVGElement>;
+  private coloredDrawing: ElementRef<SVGElement>;
 
-  toolMap: Map<string, ToolInterface> = new Map<string, ToolInterface>();
+  private toolMap: Map<string, ToolInterface> = new Map<string, ToolInterface>();
 
-  constructor(
-              public tools: ToolManagerService,
-              public pencil: PencilToolService,
-              public rectangle: RectangleToolService,
-              public brush: BrushToolService,
-              public line: LineToolService,
-              public shortcuts: ShortcutsManagerService,
-              public selection: SelectionService,
-              public spray: DrawSprayService,
-              public pipette: PipetteToolService,
-              public colorChanger: ColorChangerToolService,
-              public ellipse: EllipseToolService,
-              public polygon: PolygonToolService,
-              public eraser: EraserToolService,
-              public canvas: CanvasConversionService
+  constructor(private tools: ToolManagerService,
+              protected pencil: PencilToolService,
+              protected rectangle: RectangleToolService,
+              protected brush: BrushToolService,
+              protected line: LineToolService,
+              private shortcuts: ShortcutsManagerService,
+              protected selection: SelectionService,
+              protected spray: DrawSprayService,
+              protected pipette: PipetteToolService,
+              protected colorChanger: ColorChangerToolService,
+              protected ellipse: EllipseToolService,
+              protected polygon: PolygonToolService,
+              protected eraser: EraserToolService,
+              private canvas: CanvasConversionService
               ) {
               this.toolMap.set('Crayon', pencil)
                           .set('Rectangle', rectangle)

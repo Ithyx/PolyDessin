@@ -3,8 +3,9 @@ import { Injector } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule, MatDialogRef, MatProgressSpinnerModule } from '@angular/material';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { Observable } from 'rxjs';
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
 import { Drawing } from '../../../../../common/communication/DrawingInterface';
 import { GalleryLoadWarningComponent } from '../gallery-load-warning/gallery-load-warning.component';
@@ -15,7 +16,9 @@ import { GalleryComponent, Status } from './gallery.component';
 // tslint:disable: no-string-literal
 // tslint:disable: max-file-line-count
 
-const injector = Injector.create({providers: [{provide: MatDialogRef, useValue: {afterClosed: () => new Observable<boolean>()}}]});
+const injector = Injector.create(
+  {providers: [{provide: MatDialogRef, useValue: {afterClosed: () => { return {toPromise: () => {}} }}}]
+});
 
 describe('GalleryComponent', () => {
   let component: GalleryComponent;
@@ -48,10 +51,16 @@ describe('GalleryComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GalleryComponent, GalleryElementComponent ],
+      declarations: [ GalleryComponent, GalleryElementComponent, GalleryLoadWarningComponent ],
       imports: [ MatProgressSpinnerModule, MatDialogModule, FormsModule, ReactiveFormsModule,
-        RouterModule.forRoot([{path: 'dessin', component: GalleryComponent}]) ],
-      providers: [ { provide: MatDialogRef, useValue: {close: () => { return; }}}, HttpClient, HttpHandler ]
+        RouterModule.forRoot([{path: 'dessin', component: GalleryComponent}]), BrowserAnimationsModule ],
+      providers: [ { provide: MatDialogRef, useValue: {close: () => { return; }}},
+                     HttpClient, HttpHandler ],
+    })
+    .overrideModule(BrowserDynamicTestingModule, {
+      set: {
+        entryComponents: [ GalleryLoadWarningComponent ],
+      }
     })
     .compileComponents();
   }));
@@ -187,18 +196,32 @@ describe('GalleryComponent', () => {
     expect(spy).toHaveBeenCalledWith(element);
   });
 
-  // TESTS loadDrawing
-  it('#loadDrawing devrait ouvrir l\'avertissement si le desisn n\'est pas vide', () => {
-    component['stockageSVG'].size = 1;
+  // TESTS openWarning
+  it('#openWarning devrait ouvrir l\'avertissement avec les bon paramètres', () => {
     const spy = spyOn(component['dialog'], 'open').and.returnValue(injector.get(MatDialogRef));
-    component.loadDrawing(drawing);
+    component.openWarning();
     expect(spy).toHaveBeenCalledWith(GalleryLoadWarningComponent, component['dialogConfig']);
   });
-  it('#loadDrawing ne devrait pas ouvrir l\'avertissement si le desisn est vide', () => {
-    component['stockageSVG'].size = 0;
-    const spy = spyOn(component['dialog'], 'open').and.returnValue(injector.get(MatDialogRef));
+
+  // TESTS loadDrawing
+  it('#loadDrawing devrait ouvrir l\'avertissement si le dessin n\'est pas vide', () => {
+    component['stockageSVG'].size = 1;
+    const spy = spyOn(component, 'openWarning');
     component.loadDrawing(drawing);
-    expect(spy).not.toHaveBeenCalledWith(GalleryLoadWarningComponent, component['dialogConfig']);
+    expect(spy).toHaveBeenCalled();
+  });
+  it('#loadDrawing ne devrait pas ouvrir l\'avertissement si le dessin est vide', () => {
+    component['stockageSVG'].size = 0;
+    const spy = spyOn(component, 'openWarning');
+    component.loadDrawing(drawing);
+    expect(spy).not.toHaveBeenCalled();
+  });
+  it('#loadDrawing ne devrait pas vider le dessin si l\'utilisateur annule', () => {
+    component['stockageSVG'].size = 1;
+    spyOn(component, 'openWarning').and.returnValue(Promise.resolve(true));
+    const spy = spyOn(component['stockageSVG'], 'cleanDrawing');
+    component.loadDrawing(drawing);
+    expect(spy).not.toHaveBeenCalled();
   });
   it('#loadDrawing devrait changer complètement le dessin en cours', () => {
     const cleanSpy = spyOn(component['stockageSVG'], 'cleanDrawing');
