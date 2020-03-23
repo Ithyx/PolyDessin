@@ -102,6 +102,7 @@ export class SelectionService implements ToolInterface {
       }
     } else {
       // Éviter de créer une boite de sélection si on effectue un simple clic
+      if (!this.selectionRectangle.rectangle) { return; }
       if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
         this.isInRectangleSelection(this.selectionRectangle.rectangle);
         this.createBoundingBox();
