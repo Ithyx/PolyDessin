@@ -10,10 +10,12 @@ import { ToolInterface } from './tool-interface';
 })
 export class PipetteToolService implements ToolInterface {
 
-  image: HTMLImageElement;
-  context: CanvasRenderingContext2D;
-  mousePosition: Point;
-  colorScope: Scope;
+  private image: HTMLImageElement;
+  private context: CanvasRenderingContext2D;
+  private mousePosition: Point;
+  private colorScope: Scope;
+  drawing: SVGElement;
+  canvas: HTMLCanvasElement;
 
   constructor(public colorParameter: ColorParameterService,
                ) {}
@@ -33,11 +35,10 @@ export class PipetteToolService implements ToolInterface {
   /* Conversion de svg vers canvas basée sur
      http://bl.ocks.org/biovisualize/8187844?fbclid=IwAR3_VuqkefCECFbFJ_0nQJuYe0qIx9NFzE0uY9W0UDytZDsPsEpB4QvnTYk */
   createCanvas(): void {
-    const element = document.querySelector('.drawing');
-    const context = (document.querySelector('.canvas') as HTMLCanvasElement).getContext('2d');
-    if (element && context) {
+    const context = this.canvas.getContext('2d');
+    if (this.drawing && context) {
       this.context = context;
-      const svgString = new XMLSerializer().serializeToString(element);
+      const svgString = new XMLSerializer().serializeToString(this.drawing);
       const svg = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
       this.image = new Image();
       this.image.onload = this.pickColor.bind(this);
