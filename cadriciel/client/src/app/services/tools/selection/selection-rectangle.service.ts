@@ -4,6 +4,9 @@ import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { Point } from '../line-tool.service';
 import { DrawingTool } from '../tool-manager.service';
 
+const LEFT_CLICK = 0;
+const RIGHT_CLICK = 2;
+
 const rectangleSelectionTool: DrawingTool = {name: '',
                                              isActive: true,
                                              ID: -1,
@@ -47,7 +50,7 @@ export class SelectionRectangleService {
 
   refreshSVGInvertedSelection(): void {
     this.rectangleInverted.updateParameters(rectangleSelectionTool);
-    this.rectangleInverted.primaryColor.RGBAString = 'rgba(200, 80, 130, 0.35)';
+    this.rectangleInverted.primaryColor.RGBAString = 'rgba(190, 70, 70, 0.35)';
     this.rectangleInverted.secondaryColor.RGBAString = 'rgba(80, 80, 80, 0.45)';
     this.rectangleInverted.draw();
     this.rectangleInverted.svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.rectangleInverted.svg);
@@ -60,27 +63,29 @@ export class SelectionRectangleService {
       this.heightCalculated = Math.abs(this.initialPoint.y - mouse.offsetY);
 
       this.basisPoint = {x: Math.min(this.initialPoint.x, mouse.offsetX), y: Math.min(this.initialPoint.y, mouse.offsetY)};
-      if (mouse.button === 0) {
-        this.rectangle.points[0] = this.basisPoint;
-        this.rectangle.points[1] = {x: this.basisPoint.x + this.widthCalculated, y: this.basisPoint.y + this.heightCalculated};
-        this.refreshSVGNormalSelection();
-      } else if (mouse.button === 2) {
+      if (mouse.buttons === RIGHT_CLICK) {
+        console.log('Inverted');
         this.rectangleInverted.points[0] = this.basisPoint;
         this.rectangleInverted.points[1] = {x: this.basisPoint.x + this.widthCalculated, y: this.basisPoint.y + this.heightCalculated};
         this.refreshSVGInvertedSelection();
+      } else if (mouse.button === LEFT_CLICK) {
+        console.log('Normal');
+        this.rectangle.points[0] = this.basisPoint;
+        this.rectangle.points[1] = {x: this.basisPoint.x + this.widthCalculated, y: this.basisPoint.y + this.heightCalculated};
+        this.refreshSVGNormalSelection();
       }
     }
   }
 
   mouseDown(mouse: MouseEvent): void {
-    if (mouse.button === 0) {
-      this.rectangle = new RectangleService();
-      this.rectangle.isDotted = true;
-      this.initialPoint = {x: mouse.offsetX, y: mouse.offsetY};
-      this.ongoingSelection = true;
-    } else if (mouse.button === 2) {
+    if (mouse.buttons === RIGHT_CLICK) {
       this.rectangleInverted = new RectangleService();
       this.rectangleInverted.isDotted = true;
+      this.initialPoint = {x: mouse.offsetX, y: mouse.offsetY};
+      this.ongoingSelection = true;
+    } else if (mouse.button === LEFT_CLICK) {
+      this.rectangle = new RectangleService();
+      this.rectangle.isDotted = true;
       this.initialPoint = {x: mouse.offsetX, y: mouse.offsetY};
       this.ongoingSelection = true;
     }

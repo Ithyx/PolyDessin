@@ -13,6 +13,8 @@ import { SelectionRectangleService } from './selection-rectangle.service';
 
 const HALF_DRAW_ELEMENT = 0.5 ;
 const COLLISIONS_NEEDED = 4;
+const LEFT_CLICK = 0;
+// const RIGHT_CLICK = 2;
 
 @Injectable({
   providedIn: 'root'
@@ -65,7 +67,7 @@ export class SelectionService implements ToolInterface {
     if (this.clickOnSelectionBox || this.clickInSelectionBox) {
       this.updatePositionMouse(mouse);
     } else {
-      if(mouse.button === 0){}
+      if(mouse.button === LEFT_CLICK ){}
       this.selectionRectangle.mouseMove(mouse);
       if (this.selectionRectangle.ongoingSelection) {
         this.deleteBoundingBox();
@@ -88,9 +90,6 @@ export class SelectionService implements ToolInterface {
     if (this.clickOnSelectionBox || this.clickInSelectionBox) {
       this.clickOnSelectionBox = false;
       this.clickInSelectionBox = false;
-      /* for (const element of this.selectedElements) {
-          element.translateAllPoints();
-      }*/
       if (this.hasMoved()) {
         this.command.execute(new TranslateSvgService(
           this.selectedElements,
@@ -104,6 +103,7 @@ export class SelectionService implements ToolInterface {
         this.createBoundingBox();
         this.selectionRectangle.mouseUp();
         this.selectionRectangle.rectangle = new RectangleService();
+        this.selectionRectangle.rectangleInverted = new RectangleService();
     }
   }
 
@@ -225,14 +225,9 @@ export class SelectionService implements ToolInterface {
 
   updatePosition(x: number, y: number): void {
     if (this.selectionBox.selectionBox) {
-      // for (const element of this.SVGStockage.getCompleteSVG()) {
       for (const element of this.selectedElements) {
-        // if (element.isSelected) {
-          // this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePosition(x, y);
           element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
-          // this.selectedElements.push(element);
-        // }
       }
       this.selectionBox.updatePosition(x, y);
     }
@@ -240,14 +235,9 @@ export class SelectionService implements ToolInterface {
 
   updatePositionMouse(mouse: MouseEvent): void {
     if (this.selectionBox.selectionBox) {
-      // for (const element of this.SVGStockage.getCompleteSVG()) {
       for (const element of this.selectedElements) {
-        // if (element.isSelected) {
-          // this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePositionMouse(mouse, this.selectionBox.mouseClick);
           element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
-          // this.selectedElements.push(element);
-        // }
       }
       this.selectionBox.updatePositionMouse(mouse);
     }
