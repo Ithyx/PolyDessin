@@ -65,10 +65,10 @@ export class CanvasConversionService {
     const rgb: number[] = [0, 0, 0];
     for (const element of this.svgStockage.getCompleteSVG()) {
       rgb[0]++;
-      if (rgb[1] > 0 || rgb[0] > MAX_COLOR_VALUE) {
+      if (rgb[0] > MAX_COLOR_VALUE) {
         rgb[0] = 0;
         rgb[1]++;
-        if (rgb[2] > 0 || rgb[1] > MAX_COLOR_VALUE) {
+        if (rgb[1] > MAX_COLOR_VALUE) {
           rgb[1] = 0;
           rgb[2]++;
         }
@@ -81,7 +81,9 @@ export class CanvasConversionService {
       const oldPrimary = element.primaryColor;
       const oldSecondary = element.secondaryColor;
       element.primaryColor = color;
-      element.secondaryColor = color;
+      if (element.secondaryColor) {
+        element.secondaryColor = color;
+      }
 
       // Créer un clone et l'utiliser dans le canvas
       const cloneElement = {...element};
@@ -93,12 +95,15 @@ export class CanvasConversionService {
         tracePencil.primaryColor = element.primaryColor;
         tracePencil.thickness = element.thickness;
         tracePencil.translate = element.translate;
+        tracePencil.isAPoint = element.isAPoint;
         tracePencil.draw();
-        cloneElement.svgHtml = this.sanatize(tracePencil.svg);
+        cloneElement.svgHtml = this.sanitize(tracePencil.svg);
       } else {
         element.draw();
-        cloneElement.svgHtml = this.sanatize(element.svg);
-        element.secondaryColor = oldSecondary;
+        cloneElement.svgHtml = this.sanitize(element.svg);
+        if (element.secondaryColor) {
+          element.secondaryColor = oldSecondary;
+        }
       }
       this.drawing.elements.push(cloneElement);
 
@@ -126,7 +131,7 @@ export class CanvasConversionService {
     return elements;
   }
 
-  sanatize(svg: string): SafeHtml {
+  sanitize(svg: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(svg);
   }
 }

@@ -20,13 +20,30 @@ const injector = Injector.create({providers: [{provide: MatDialogRef, useValue: 
 describe('GalleryComponent', () => {
   let component: GalleryComponent;
   let fixture: ComponentFixture<GalleryComponent>;
+  const element: DrawElement = {
+    svg: '',
+    svgHtml: '',
+    points: [],
+    isSelected: false,
+    erasingEvidence: false,
+    erasingColor: {RGBA: [0, 0, 0, 1], RGBAString: ''},
+    pointMin: {x: 0, y: 0},
+    pointMax: {x: 0, y: 0},
+    translate: {x: 0, y: 0},
+    draw: () => { return; },
+    updatePosition: () => { return; },
+    updatePositionMouse: () => { return; },
+    updateParameters: () => { return; },
+    translateAllPoints: () => { return; }
+  };
   const drawing: Drawing = {
     _id: 0,
     name: 'post change name',
     height: 800,
     width: 800,
     backgroundColor: {RGBA: [255, 255, 255, 1], RGBAString: 'tets string'},
-    tags: ['tag 1', 'tag 2']
+    tags: ['tag 1', 'tag 2'],
+    elements: [element, element]
   };
 
   beforeEach(async(() => {
@@ -165,22 +182,6 @@ describe('GalleryComponent', () => {
 
   // TESTS addElement
   it('#addElement devrait appeller stockageSVG.addSVG avec le bon paramètre', () => {
-    const element: DrawElement = {
-      svg: '',
-      svgHtml: '',
-      points: [],
-      isSelected: false,
-      erasingEvidence: false,
-      erasingColor: {RGBA: [0, 0, 0, 1], RGBAString: ''},
-      pointMin: {x: 0, y: 0},
-      pointMax: {x: 0, y: 0},
-      translate: {x: 0, y: 0},
-      draw: () => { return; },
-      updatePosition: () => { return; },
-      updatePositionMouse: () => { return; },
-      updateParameters: () => { return; },
-      translateAllPoints: () => { return; }
-    }
     const spy = spyOn(component['stockageSVG'], 'addSVG');
     component.addElement(element);
     expect(spy).toHaveBeenCalledWith(element);
@@ -200,7 +201,8 @@ describe('GalleryComponent', () => {
     expect(spy).not.toHaveBeenCalledWith(GalleryLoadWarningComponent, component['dialogConfig']);
   });
   it('#loadDrawing devrait changer complètement le dessin en cours', () => {
-    const spy = spyOn(component['stockageSVG'], 'cleanDrawing');
+    const cleanSpy = spyOn(component['stockageSVG'], 'cleanDrawing');
+    const addSpy = spyOn(component, 'addElement');
     const drawingManager = component['drawingManager'];
     drawingManager.id = 123;
     drawingManager.height = 200;
@@ -214,13 +216,21 @@ describe('GalleryComponent', () => {
 
     component.loadDrawing(drawing);
 
-    expect(spy).toHaveBeenCalled();
+    expect(cleanSpy).toHaveBeenCalled();
     expect(drawingManager.id).toBe(drawing._id);
     expect(drawingManager.height).toBe(drawing.height),
     expect(drawingManager.width).toBe(drawing.width),
     expect(drawingManager.backgroundColor).toEqual(drawing.backgroundColor);
     expect(drawingManager.name).toBe(drawing.name);
     expect(drawingManager.tags).toEqual(['tag 1', 'tag 2']);
+    expect(addSpy).toHaveBeenCalledTimes(2);
+  });
+  it('#loadDrawing devrait remttre les éléments à 0 même si le nouveau dessin n\'en a pas', () => {
+    drawing.elements = undefined;
+    const spy = spyOn(component, 'addElement');
+    component.loadDrawing(drawing);
+    drawing.elements = [element, element];
+    expect(spy).not.toHaveBeenCalled();
   });
   it('#loadDrawing devrait remttre les tags à 0 même si le nouveau dessin n\'en a pas', () => {
     component['drawingManager'].tags = ['tag1'];
@@ -228,5 +238,26 @@ describe('GalleryComponent', () => {
     component.loadDrawing(drawing);
     drawing.tags = ['tag 1', 'tag 2'];
     expect(component['drawingManager'].tags).toEqual([]);
+  });
+  it('#loadDrawing devrait naviguer vers la page de dessin et fermer le popup', () => {
+    const navigSpy = spyOn(component['router'], 'navigate');
+    const closeSpy = spyOn(component, 'close');
+    component.loadDrawing(drawing);
+    expect(navigSpy).toHaveBeenCalledWith(['dessin']);
+    expect(closeSpy).toHaveBeenCalled();
+  });
+
+  // TESTS deleteDrawing
+  it('#deleteDrawing devrait appeler la méthode db.delete', () => {
+    const spy = spyOn(component['db'], 'deleteDrawing');
+    component.deleteDrawing(drawing);
+    expect(spy).toHaveBeenCalledWith(drawing._id);
+  });
+  it('#deleteDrawing remettre la sélection à null', () => {
+    component['selected'] = 1;
+    spyOn(component['db'], 'deleteDrawing').and.stub();
+    expect(component.deleteDrawing(drawing).then(() => {
+      expect(component['selected']).toBeNull();
+    })).toBeTruthy();
   });
 });
