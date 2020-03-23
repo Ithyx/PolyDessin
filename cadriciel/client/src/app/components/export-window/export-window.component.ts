@@ -6,6 +6,8 @@ import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { Drawing } from '../../../../../common/communication/DrawingInterface';
 
+export const PREVIEW_SIZE = '200';
+
 @Component({
   selector: 'app-export-window',
   templateUrl: './export-window.component.html',
@@ -68,8 +70,8 @@ export class ExportWindowComponent {
       this.image.onload = this.downloadImage.bind(this);
       this.image.src = URL.createObjectURL(svg);
 
-      element.setAttribute('width', '200');
-      element.setAttribute('height', '200');
+      element.setAttribute('width', PREVIEW_SIZE);
+      element.setAttribute('height', PREVIEW_SIZE);
     }
   }
 
@@ -103,7 +105,7 @@ export class ExportWindowComponent {
     this.selectedFileName = eventCast.value;
   }
 
-  sanatize(svg: string): SafeHtml {
+  sanitize(svg: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(svg);
   }
 
