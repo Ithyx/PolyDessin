@@ -17,7 +17,8 @@ import { GalleryComponent, Status } from './gallery.component';
 // tslint:disable: max-file-line-count
 
 const injector = Injector.create(
-  {providers: [{provide: MatDialogRef, useValue: {afterClosed: () => { return {toPromise: () => {}} }}}]
+  // tslint:disable-next-line: arrow-return-shorthand
+  {providers: [{provide: MatDialogRef, useValue: {afterClosed: () => { return {toPromise: () => { return; }}; }}}]
 });
 
 describe('GalleryComponent', () => {
