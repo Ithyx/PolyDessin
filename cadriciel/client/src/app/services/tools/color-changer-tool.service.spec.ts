@@ -1,11 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
-// import { ColorParameterService } from '../color/color-parameter.service';
 import { PrimaryColorChangeService } from '../command/primary-color-change.service';
 import { SecondaryColorChangeService } from '../command/secondary-color-change.service';
 import { Color, DrawElement } from '../stockage-svg/draw-element';
 import { ColorChangerToolService } from './color-changer-tool.service';
-// import { ColorParameterService } from '../color/color-parameter.service';
+import { ColorParameterService } from '../color/color-parameter.service';
 
 // tslint:disable: no-string-literal
 
@@ -39,6 +38,7 @@ describe('ColorChangerToolService', () => {
 
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(ColorChangerToolService));
+  beforeEach(() => service['colorParameter'] = TestBed.get(ColorParameterService));
 
   it('should be created', () => {
     const testService: ColorChangerToolService = TestBed.get(ColorChangerToolService);
@@ -54,7 +54,7 @@ describe('ColorChangerToolService', () => {
   });
 
   it('#onMouseClick ne devrait rien faire si la couleur principal de l\'element actif est la même que celle choisi', () => {
-    service.activeElement = element; // new TracePencilService();
+    service.activeElement = element;
     service.activeElement.primaryColor = testingBlackColor;
     service['colorParameter'].primaryColor = testingBlackColor;
 
@@ -65,14 +65,14 @@ describe('ColorChangerToolService', () => {
 
   it(`#onMouseClick devrait executer la commande de changement de couleur si la couleur principal de l\'element actif est
       différente de celle choisi`, () => {
-    service.activeElement = element; // new TracePencilService();
+    service.activeElement = {...element};
     service.activeElement.primaryColor = testingBlackColor;
     service['colorParameter'].primaryColor = testingWhiteColor;
 
     spyOn(service['commands'], 'execute');
     service.onMouseClick();
     expect(service['commands'].execute)
-        .toHaveBeenCalledWith(new PrimaryColorChangeService(service.activeElement, service['colorParameter'], service['sanitizer']));
+        .toHaveBeenCalledWith(new PrimaryColorChangeService(element, service['colorParameter'], service['sanitizer']));
   });
 
   // TESTS onRightClick
@@ -84,7 +84,7 @@ describe('ColorChangerToolService', () => {
   });
 
   it('#onRightClick ne devrait rien faire si la couleur secondaire de l\'element actif est la même que celle choisi', () => {
-    service.activeElement = element; // new RectangleService();
+    service.activeElement = element;
     service.activeElement.secondaryColor = testingBlackColor;
     service['colorParameter'].secondaryColor = testingBlackColor;
 
@@ -93,16 +93,16 @@ describe('ColorChangerToolService', () => {
     expect(service['commands'].execute).not.toHaveBeenCalled();
   });
 
-  it(`#onRightClick devrait executer la commande de changement de couleur si la couleur principal de l\'element actif est
+  it(`#onRightClick devrait executer la commande de changement de couleur si la couleur secondaire de l\'element actif est
       différente de celle choisi`, () => {
-    service.activeElement = element; // new RectangleService();
+    service.activeElement = {...element};
     service.activeElement.secondaryColor = testingBlackColor;
     service['colorParameter'].secondaryColor = testingWhiteColor;
 
     spyOn(service['commands'], 'execute');
     service.onRightClick();
     expect(service['commands'].execute)
-       .toHaveBeenCalledWith(new SecondaryColorChangeService(service.activeElement, service['colorParameter'], service['sanitizer']));
+        .toHaveBeenCalledWith(new SecondaryColorChangeService(element, service['colorParameter'], service['sanitizer']));
   });
 
 });
