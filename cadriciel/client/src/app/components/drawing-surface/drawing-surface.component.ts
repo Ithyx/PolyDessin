@@ -146,8 +146,8 @@ export class DrawingSurfaceComponent implements AfterViewInit {
           this.handleBackgroundLeftClick();
         }
       } else if (mouse.button === RIGHT_CLICK) {
-
         this.selection.selectionRectangle.mouseDown(mouse);
+        delete this.selection.selectionRectangle.rectangle;
       }
     }
   }
@@ -167,7 +167,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
       }
     }
     else if (mouse.button === RIGHT_CLICK) {
-      
+      // TODO : Utile de spécifié le click ?
     }
    }
 

@@ -14,7 +14,7 @@ import { SelectionRectangleService } from './selection-rectangle.service';
 const HALF_DRAW_ELEMENT = 0.5 ;
 const COLLISIONS_NEEDED = 4;
 const LEFT_CLICK = 0;
-// const RIGHT_CLICK = 2;
+const RIGHT_CLICK = 2;
 
 @Injectable({
   providedIn: 'root'
@@ -67,14 +67,25 @@ export class SelectionService implements ToolInterface {
     if (this.clickOnSelectionBox || this.clickInSelectionBox) {
       this.updatePositionMouse(mouse);
     } else {
-      if(mouse.button === LEFT_CLICK ){}
-      this.selectionRectangle.mouseMove(mouse);
-      if (this.selectionRectangle.ongoingSelection) {
-        this.deleteBoundingBox();
-        // Éviter de créer une boite de sélection si on effectue un simple clic
-        if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
-          this.isInRectangleSelection(this.selectionRectangle.rectangle);
-          this.createBoundingBox();
+      if (mouse.buttons === RIGHT_CLICK) {
+        this.selectionRectangle.mouseMove(mouse);
+        if (this.selectionRectangle.ongoingSelection) {
+          // Éviter de créer une boite de sélection si on effectue un simple clic
+          if (this.selectionRectangle.rectangleInverted.getWidth() !== 0 || this.selectionRectangle.rectangleInverted.getHeight() !== 0) {
+            this.isInRectangleSelection(this.selectionRectangle.rectangleInverted);
+            this.createBoundingBox();
+          }
+        }
+
+      } else if (mouse.button === LEFT_CLICK ) {
+        this.selectionRectangle.mouseMove(mouse);
+        if (this.selectionRectangle.ongoingSelection) {
+          this.deleteBoundingBox();
+          // Éviter de créer une boite de sélection si on effectue un simple clic
+          if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
+            this.isInRectangleSelection(this.selectionRectangle.rectangle);
+            this.createBoundingBox();
+          }
         }
       }
     }
@@ -99,7 +110,11 @@ export class SelectionService implements ToolInterface {
         ));
       }
     } else {
-        this.isInRectangleSelection(this.selectionRectangle.rectangle);
+        if (this.selectionRectangle.rectangle) {
+          this.isInRectangleSelection(this.selectionRectangle.rectangle);
+        } else if (this.selectionRectangle.rectangleInverted) {
+          this.isInRectangleSelection(this.selectionRectangle.rectangleInverted);
+        }
         this.createBoundingBox();
         this.selectionRectangle.mouseUp();
         this.selectionRectangle.rectangle = new RectangleService();
@@ -158,10 +173,19 @@ export class SelectionService implements ToolInterface {
 
     for (const element of this.SVGStockage.getCompleteSVG()) {
       this.findPointMinAndMax(element);
-      if (this.belongToRectangle(element, this.selectionRectangle.rectangle) && !this.selectedElements.includes(element)) {
-        element.isSelected = true;
-        this.selectedElements.push(element);
+
+      if (this.selectionRectangle.rectangle) {
+        if (this.belongToRectangle(element, this.selectionRectangle.rectangle) && !this.selectedElements.includes(element)) {
+          element.isSelected = true;
+          this.selectedElements.push(element);
+        }
+      } else if (this.selectionRectangle.rectangleInverted) {
+        if (this.belongToRectangle(element, this.selectionRectangle.rectangleInverted)) {
+          console.log('REVERSE CALL');
+          this.reverseElementSelectionStatus(element);
+        }
       }
+
     }
   }
 
@@ -247,6 +271,16 @@ export class SelectionService implements ToolInterface {
     const xTranslation = this.selectedElements[0].translate.x !== 0;
     const yTranslation = this.selectedElements[0].translate.y !== 0;
     return xTranslation || yTranslation;
+  }
+
+  reverseElementSelectionStatus(element: DrawElement): void {
+    element.isSelected = !element.isSelected;
+    if (element.isSelected) {
+      this.selectedElements.push(element);
+    } else {
+      const index = this.selectedElements.indexOf(element, 0);
+      this.selectedElements.splice(index, 1);
+    }
   }
 
 }
