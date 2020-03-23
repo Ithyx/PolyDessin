@@ -3,7 +3,7 @@ import { MatDialogModule, MatSidenavModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
-import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
+import { DrawingTool, TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 import { DrawingToolComponent } from '../drawing-tool/drawing-tool.component';
 import { GuidePageComponent } from '../guide-page/guide-page.component';
@@ -274,13 +274,31 @@ describe('DrawingPageComponent', () => {
   it("#onRightClick devrait appeler onRightClick de l'outil actif si cette fonction existe", () => {
     spyOn(stubOutilActif, 'onRightClick');
     const event = new MouseEvent('contextmenu', { clientX: 0, clientY: 0 });
-    component.onDblClick(event);
+    component.onRightClick(event);
     expect(stubOutilActif.onRightClick).toHaveBeenCalledWith(event);
   });
   it('#onRightClick ne devrait rien faire si la fonction onRightClick de l\'outil actif n\'existe pas', () => {
     spyOn(stubOutilActif, 'onRightClick');
     service.activeTool = service.toolList[2];
-    component.onDblClick(new MouseEvent('contextmenu'));
+    component.onRightClick(new MouseEvent('contextmenu'));
     expect(stubOutilActif.onRightClick).not.toHaveBeenCalled();
+  });
+  it('#onRightClick ne devrait rien faire si l\'outil actif n\'exsite pas dans le lexique d\'outils', () => {
+    spyOn(stubOutilActif, 'onRightClick');
+    service.activeTool = service.toolList[2];
+    component.onRightClick(new MouseEvent('contextmenu'));
+    expect(stubOutilActif.onRightClick).not.toHaveBeenCalled();
+  });
+
+  // TESTS getDrawingSurfaceClass
+
+  it('#getDrawingSurfaceClass devrait renvoyer hide-cursor si l\'outil sélection est l\'efface', () => {
+    component['tools'].activeTool.ID = TOOL_INDEX.ERASER;
+    expect(component.getDrawingSurfaceClass()).toEqual('hide-cursor');
+  });
+
+  it('#getDrawingSurfaceClass devrait renvoyer \'\' si l\'outil sélection n\'est pas l\'efface', () => {
+    component['tools'].activeTool.ID = TOOL_INDEX.SELECTION;
+    expect(component.getDrawingSurfaceClass()).toEqual('');
   });
 });
