@@ -23,19 +23,19 @@ export const BUFFER_HEIGHT = 15;
 })
 
 export class NewDrawingWindowComponent {
-  windowHeight: number;
-  windowWidth: number;
-  dimensionManuallyChange: boolean;
+  private windowHeight: number;
+  private windowWidth: number;
+  private dimensionManuallyChange: boolean;
   newDrawing: FormGroup;
 
-  heightValid: boolean;
-  widthValid: boolean;
+  private heightValid: boolean;
+  private widthValid: boolean;
 
   constructor(private dialogRef: MatDialogRef<NewDrawingWindowComponent>,
               private shortcuts: ShortcutsManagerService,
               private drawingManager: DrawingManagerService,
               private router: Router,
-              private SVGStockage: SVGStockageService,
+              private svgStockage: SVGStockageService,
               private dialog: MatDialog,
               private colorParameter: ColorParameterService,
               private commands: CommandManagerService,
@@ -82,7 +82,7 @@ export class NewDrawingWindowComponent {
 
   createNewDrawing(): void {
     if (!this.areDimensionsValid()) { return; }
-    this.SVGStockage.cleanDrawing();
+    this.svgStockage.cleanDrawing();
     this.commands.clearCommand();
     this.drawingManager.height = Math.min(this.newDrawing.value[KEY_FORM_HEIGHT], this.windowHeight);
     this.drawingManager.width = Math.min(this.newDrawing.value[KEY_FORM_WIDHT], this.windowWidth);
@@ -101,5 +101,13 @@ export class NewDrawingWindowComponent {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '30%';
     this.dialog.open(ColorChoiceComponent, dialogConfig).componentInstance.scope = Scope.BackgroundNewDrawing;
+  }
+
+  getHeightClass(): string {
+    return this.heightValid ? '' : 'invalid';
+  }
+
+  getWidthClass(): string {
+    return this.widthValid ? '' : 'invalid';
   }
 }
