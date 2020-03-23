@@ -55,7 +55,7 @@ export class PipetteToolService implements ToolInterface {
         this.colorParameter.updateColors();
         break;
       case Scope.Secondary:
-        this.colorParameter.primaryColor.RGBA = [color[R], color[G], color[B], this.colorParameter.secondaryColor.RGBA[A]];
+        this.colorParameter.secondaryColor.RGBA = [color[R], color[G], color[B], this.colorParameter.secondaryColor.RGBA[A]];
         this.colorParameter.updateColors();
         break;
     }
