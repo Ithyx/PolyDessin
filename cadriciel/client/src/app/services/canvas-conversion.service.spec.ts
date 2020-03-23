@@ -144,9 +144,9 @@ describe('CanvasConversionService', () => {
   });
 
   it('#convertToCanvas devrait charger l\'URL de l\'image du SVG dans le src de l\'image', () => {
-    spyOn(URL, 'createObjectURL').and.callFake(() => 'svgURL');
+    spyOn(URL, 'createObjectURL').and.callFake(() => 'http://localhost:9876/fakeURL');
     service.convertToCanvas();
-    expect(service['image'].src).not.toEqual('svgURL');
+    expect(service['image'].src).toEqual('http://localhost:9876/fakeURL');
   });
 
   // TEST loadImage
