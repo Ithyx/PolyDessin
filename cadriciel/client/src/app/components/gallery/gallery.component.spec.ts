@@ -1,4 +1,5 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
+import { Injector } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule, MatDialogRef, MatProgressSpinnerModule } from '@angular/material';
@@ -14,6 +15,10 @@ import { GalleryComponent, Status } from './gallery.component';
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
 // tslint:disable: max-file-line-count
+
+const injector = Injector.create(
+  {providers: [{provide: MatDialogRef, useValue: {afterClosed: () => { return {toPromise: () => {}} }}}]
+});
 
 describe('GalleryComponent', () => {
   let component: GalleryComponent;
@@ -193,7 +198,7 @@ describe('GalleryComponent', () => {
 
   // TESTS openWarning
   it('#openWarning devrait ouvrir l\'avertissement avec les bon paramètres', () => {
-    const spy = spyOn(component['dialog'], 'open');
+    const spy = spyOn(component['dialog'], 'open').and.returnValue(injector.get(MatDialogRef));
     component.openWarning();
     expect(spy).toHaveBeenCalledWith(GalleryLoadWarningComponent, component['dialogConfig']);
   });
