@@ -59,29 +59,29 @@ describe('NewDrawingWindowComponent', () => {
   // TESTS #changeWindowDimensionManually
 
   it('#changeWindowDimensionManually devrait mettre le booléen dimensionManuallyChange a true', () => {
-    component.dimensionManuallyChange = false;
+    component['dimensionManuallyChange'] = false;
     component.changeWindowDimensionManually();
-    expect(component.dimensionManuallyChange).toBe(true);
+    expect(component['dimensionManuallyChange']).toBe(true);
   });
 
   // TESTS #changeWindowDimension
 
   it('#changeWindowDimension ne devrait rien faire si les dimensions ont déjà été changées manuellement', () => {
     // valeurs normalement inatteignables
-    component.windowWidth = -100;
-    component.windowHeight = -100;
-    component.dimensionManuallyChange = true;
+    component['windowWidth'] = -100;
+    component['windowHeight'] = -100;
+    component['dimensionManuallyChange'] = true;
     component.changeWindowDimension();
-    expect(component.windowWidth).toBe(-100);
-    expect(component.windowHeight).toBe(-100);
+    expect(component['windowWidth']).toBe(-100);
+    expect(component['windowHeight']).toBe(-100);
   });
 
   it('#changeWindowDimension devrait changer la hauteur et largeur stockée', () => {
     spyOnProperty(window, 'innerHeight').and.returnValue(100 + BUFFER_HEIGHT);
     spyOnProperty(window, 'innerWidth').and.returnValue(100 + BUFFER_WIDTH);
     component.changeWindowDimension();
-    expect(component.windowHeight).toBe(100);
-    expect(component.windowWidth).toBe(100);
+    expect(component['windowHeight']).toBe(100);
+    expect(component['windowWidth']).toBe(100);
   });
 
   it('#changeWindowDimension appelle patchValue avec les bonnes valeurs', () => {
@@ -95,9 +95,9 @@ describe('NewDrawingWindowComponent', () => {
   // TESTS #createNewDrawing
 
   it('#createNewDrawing doit vider le dessin en cours', () => {
-    spyOn(component['SVGStockage'], 'cleanDrawing');
+    spyOn(component['svgStockage'], 'cleanDrawing');
     component.createNewDrawing();
-    expect(component['SVGStockage'].cleanDrawing).toHaveBeenCalled();
+    expect(component['svgStockage'].cleanDrawing).toHaveBeenCalled();
   });
 
   it('#createNewDrawing doit metter à jour la hauteur de dessin', () => {
