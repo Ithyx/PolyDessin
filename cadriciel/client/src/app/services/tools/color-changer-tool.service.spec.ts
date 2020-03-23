@@ -4,7 +4,6 @@ import { PrimaryColorChangeService } from '../command/primary-color-change.servi
 import { SecondaryColorChangeService } from '../command/secondary-color-change.service';
 import { Color, DrawElement } from '../stockage-svg/draw-element';
 import { ColorChangerToolService } from './color-changer-tool.service';
-import { ColorParameterService } from '../color/color-parameter.service';
 
 // tslint:disable: no-string-literal
 
@@ -38,7 +37,6 @@ describe('ColorChangerToolService', () => {
 
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(ColorChangerToolService));
-  beforeEach(() => service['colorParameter'] = TestBed.get(ColorParameterService));
 
   it('should be created', () => {
     const testService: ColorChangerToolService = TestBed.get(ColorChangerToolService);
@@ -95,9 +93,9 @@ describe('ColorChangerToolService', () => {
 
   it(`#onRightClick devrait executer la commande de changement de couleur si la couleur secondaire de l\'element actif est
       différente de celle choisi`, () => {
-    service.activeElement = {...element};
-    service.activeElement.secondaryColor = testingBlackColor;
-    service['colorParameter'].secondaryColor = testingWhiteColor;
+    service.activeElement = element;
+    service.activeElement.primaryColor = testingBlackColor;
+    service['colorParameter'].primaryColor = testingWhiteColor;
 
     spyOn(service['commands'], 'execute');
     service.onRightClick();
