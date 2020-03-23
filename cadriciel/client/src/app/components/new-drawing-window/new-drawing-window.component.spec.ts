@@ -1,15 +1,16 @@
 // Angular
-// import { Injector } from '@angular/core';
+import { Injector } from '@angular/core';
 // tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { /*MatDialogConfig,*/ MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
 
 // Component
-// import { ColorChoiceComponent } from '../color-choice/color-choice.component';
-import { BUFFER_HEIGHT, BUFFER_WIDTH, KEY_FORM_HEIGHT, KEY_FORM_WIDHT , NewDrawingWindowComponent } from './new-drawing-window.component';
+import { Scope } from 'src/app/services/color/color-manager.service';
+import { ColorChoiceComponent } from '../color-choice/color-choice.component';
+import { BUFFER_HEIGHT, BUFFER_WIDTH, KEY_FORM_HEIGHT, KEY_FORM_WIDTH , NewDrawingWindowComponent } from './new-drawing-window.component';
 
 describe('NewDrawingWindowComponent', () => {
   let component: NewDrawingWindowComponent;
@@ -19,9 +20,9 @@ describe('NewDrawingWindowComponent', () => {
     close(): void { /* NE RIEN FAIRE */ }
   };
 
-  /*const injecteur = Injector.create(
+  const injector = Injector.create(
     {providers: [{provide: MatDialogRef, useValue: {componentInstance: ColorChoiceComponent}}]
-  });*/
+  });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -40,6 +41,26 @@ describe('NewDrawingWindowComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  // TESTS areDimensionsValid
+
+  it('#areDimensionsValid devrait retourner true si la largeur et la hauteur sont strictement positives', () => {
+    component['newDrawing'].value[KEY_FORM_HEIGHT] = 200;
+    component['newDrawing'].value[KEY_FORM_WIDTH] = 200;
+    expect(component.areDimensionsValid()).toBe(true);
+  });
+
+  it('#areDimensionsValid devrait retourner false si la largeur est négative', () => {
+    component['newDrawing'].value[KEY_FORM_HEIGHT] = 200;
+    component['newDrawing'].value[KEY_FORM_WIDTH] = -5;
+    expect(component.areDimensionsValid()).toBe(false);
+  });
+
+  it('#areDimensionsValid devrait retourner false si la hauteur est négative', () => {
+    component['newDrawing'].value[KEY_FORM_HEIGHT] = -5;
+    component['newDrawing'].value[KEY_FORM_WIDTH] = 200;
+    expect(component.areDimensionsValid()).toBe(false);
   });
 
   // TESTS #closeWindow
@@ -102,7 +123,7 @@ describe('NewDrawingWindowComponent', () => {
 
   it('#createNewDrawing doit metter à jour la hauteur de dessin', () => {
     component.newDrawing.value[KEY_FORM_HEIGHT] = 100;
-    component.newDrawing.value[KEY_FORM_WIDHT] = 100;
+    component.newDrawing.value[KEY_FORM_WIDTH] = 100;
     component.createNewDrawing();
     expect(component['drawingManager'].height).toBe(100);
     expect(component['drawingManager'].width).toBe(100);
@@ -125,20 +146,54 @@ describe('NewDrawingWindowComponent', () => {
     component.createNewDrawing();
     expect(component['router'].navigate).toHaveBeenCalledWith(['dessin']);
   });
-/*
+
+  it('#createNewDrawing ne devrait rien faire si areDimensionsValid retourne false', () => {
+    spyOn(component, 'areDimensionsValid').and.returnValue(false);
+    const spy = spyOn(component['svgStockage'], 'cleanDrawing');
+    component.createNewDrawing();
+    expect(spy).not.toHaveBeenCalled();
+  });
+
   // TESTS #selectColor
 
   it('#selectColor devrait appeler dialog.open avec les bons paramètres', () => {
-    spyOn(component.dialog, 'open').and.returnValue(injecteur.get(MatDialogRef));
+    spyOn(component['dialog'], 'open').and.returnValue(injector.get(MatDialogRef));
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '30%';
-    dialogConfig.panelClass = 'fenetre-couleur';
     component.selectColor();
 
-    expect(component.dialog.open).toHaveBeenCalledWith(ColorChoiceComponent, dialogConfig);
+    expect(component['dialog'].open).toHaveBeenCalledWith(ColorChoiceComponent, dialogConfig);
   });
-*/
+
+  it('#selectColor devrait assigner BackgroundNewDrawing à la portée du ColorChoiceComponent', () => {
+    spyOn(component['dialog'], 'open').and.returnValue(injector.get(MatDialogRef));
+    component.selectColor();
+    expect(component['colorWindow'].scope).toEqual(Scope.BackgroundNewDrawing);
+  });
+
+  // TESTS getHeightClass
+
+  it('#getHeightClass devrait retourner un string vide si heightValid est true', () => {
+    component['heightValid'] = true;
+    expect(component.getHeightClass()).toBe('');
+  });
+
+  it('#getHeightClass devrait retourner invalid si heightValid est false', () => {
+    component['heightValid'] = false;
+    expect(component.getHeightClass()).toBe('invalid');
+  });
+
+  it('#getWidthClass devrait retourner un string vide si widthValid est true', () => {
+    component['widthValid'] = true;
+    expect(component.getWidthClass()).toBe('');
+  });
+
+  it('#getWidthClass devrait retourner invalid si widthValid est false', () => {
+    component['widthValid'] = false;
+    expect(component.getWidthClass()).toBe('invalid');
+  });
+
 });
