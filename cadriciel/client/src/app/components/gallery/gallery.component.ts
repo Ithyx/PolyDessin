@@ -9,7 +9,7 @@ import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.s
 import { Drawing } from '../../../../../common/communication/DrawingInterface';
 import { GalleryLoadWarningComponent } from '../gallery-load-warning/gallery-load-warning.component';
 
-enum Status {
+export enum Status {
   Loading = 0,
   Loaded = 1,
   Failed = 2
@@ -60,6 +60,7 @@ export class GalleryComponent implements OnInit {
   }
 
   async filter(): Promise<void> {
+    this.status = Status.Loading;
     if (this.searchTags.indexOf(this.tagInput.value) === -1) { this.searchTags.push(this.tagInput.value); }
     try {
       this.drawings = await this.db.getDataWithTags(this.searchTags);
@@ -70,6 +71,7 @@ export class GalleryComponent implements OnInit {
   }
 
   async removeTag(tag: string): Promise<void> {
+    this.status = Status.Loading;
     this.searchTags = this.searchTags.filter((value) => value !== tag);
     try {
       this.drawings = await this.db.getDataWithTags(this.searchTags);
@@ -87,9 +89,13 @@ export class GalleryComponent implements OnInit {
     this.stockageSVG.addSVG(element);
   }
 
+  async openWarning(): Promise<boolean> {
+    return !(await this.dialog.open(GalleryLoadWarningComponent, this.dialogConfig).afterClosed().toPromise());
+  }
+
   async loadDrawing(drawing: Drawing): Promise<void> {
     if (this.stockageSVG.size !== 0) {
-      if (!(await this.dialog.open(GalleryLoadWarningComponent, this.dialogConfig).afterClosed().toPromise())) { return; }
+      if (await this.openWarning()) { return; }
     }
     this.stockageSVG.cleanDrawing();
     this.drawingManager.id = drawing._id;
@@ -97,7 +103,7 @@ export class GalleryComponent implements OnInit {
     this.drawingManager.width = drawing.width;
     this.drawingManager.backgroundColor = drawing.backgroundColor;
     this.drawingManager.name = drawing.name;
-    if (drawing.tags) { this.drawingManager.tags = drawing.tags; }
+    if (drawing.tags) { this.drawingManager.tags = drawing.tags; } else { this.drawingManager.tags = []; }
     if (drawing.elements) { drawing.elements.forEach(this.addElement.bind(this)); }
     this.ngZone.run(() => this.router.navigate(['dessin']));
     this.close();

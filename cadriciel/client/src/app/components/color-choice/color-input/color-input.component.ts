@@ -12,13 +12,13 @@ const ACCEPTED_LETTERS = new Set(['a', 'b', 'c', 'd', 'e', 'f']);
 })
 
 export class ColorInputComponent {
-  @Input() colorManager: ColorManagerService;
+  @Input() private colorManager: ColorManagerService;
 
-  RED_INDEX: number;
-  GREEN_INDEX: number;
-  BLUE_INDEX: number;
+  protected RED_INDEX: number;
+  protected GREEN_INDEX: number;
+  protected BLUE_INDEX: number;
 
-  constructor(public shortcuts: ShortcutsManagerService
+  constructor(private shortcuts: ShortcutsManagerService
               ) {
                 this.RED_INDEX = 0;
                 this.GREEN_INDEX = 1;
@@ -34,9 +34,9 @@ export class ColorInputComponent {
     }
 
     // Vérification qu'on essaie d'accéder à un index possible
-    if (index <= this.colorManager.RGB.length) {
-      this.colorManager.RGB[index] = Math.min(value, RGB_MAX_VALUE);
-      this.colorManager.editRGB();
+    if (index <= this.colorManager.color.RGBA.length) {
+      this.colorManager.color.RGBA[index] = Math.min(value, RGB_MAX_VALUE);
+      this.colorManager.updateColor();
     }
   }
 

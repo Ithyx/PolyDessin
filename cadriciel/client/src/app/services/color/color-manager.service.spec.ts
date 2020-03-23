@@ -2,6 +2,9 @@ import { TestBed } from '@angular/core/testing';
 
 import { ColorManagerService, Scope } from './color-manager.service';
 
+// tslint:disable: no-magic-numbers
+// tslint:disable: no-string-literal
+
 describe('ColorManagerService', () => {
   let service: ColorManagerService;
   let scope: Scope;
@@ -15,16 +18,7 @@ describe('ColorManagerService', () => {
   });
 
   it('#getCouleur devrait retourner la couleur actuel avec une opacité de 1', () => {
-    expect(service.getColor()).toBe('rgba(0, 0, 0,1)');
-  });
-
-  // TEST editRGB
-
-  it('#editRGB devrait modifier la couleur avec le nouveau RGB', () => {
-    service.RGB = [1, 2, 3];
-    service.editRGB();
-
-    expect(service.color).toBe('rgba(1, 2, 3, ');
+    expect(service.getColor().RGBAString).toBe('rgba(0, 0, 0, 1)');
   });
 
   // TESTS applyColor
@@ -33,7 +27,7 @@ describe('ColorManagerService', () => {
     scope = Scope.Primary;
     service.applyColor(scope);
 
-    expect(service.colorParameter.primaryColor).toBe('rgba(0, 0, 0,');
+    expect(service.colorParameter.primaryColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
   });
 
   it('#applyColor devrait ajouter la couleur au tableau derniereCouleur si la Scope est Principale', () => {
@@ -48,7 +42,7 @@ describe('ColorManagerService', () => {
     scope = Scope.Secondary;
     service.applyColor(scope);
 
-    expect(service.colorParameter.secondaryColor).toBe('rgba(0, 0, 0,');
+    expect(service.colorParameter.secondaryColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
   });
 
   it('#applyColor devrait ajouter la couleur au tableau derniereCouleur si la Scope est Secondaire', () => {
@@ -59,21 +53,21 @@ describe('ColorManagerService', () => {
     expect(service.addLastColor).toHaveBeenCalled();
   });
 
-  it('#applyColor devrait changer la couleur de fond temporaire lors de la creation de nouveau dessin '
-    + 'si le Scope est BackgroundNewDrawing', () => {
+  it(`#applyColor devrait changer la couleur de fond temporaire lors de la creation de nouveau dessin
+      si le Scope est BackgroundNewDrawing`, () => {
     scope = Scope.BackgroundNewDrawing;
     service.applyColor(scope);
 
-    expect(service.colorParameter.temporaryBackgroundColor).toBe('rgba(0, 0, 0,1)');
+    expect(service.colorParameter.temporaryBackgroundColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
   });
 
-  it('#applyColor devrait changer la couleur de fond sur la barre d\'outils '
-    + 'si le Scope est BackgroundToolBar', () => {
+  it(`#applyColor devrait changer la couleur de fond sur la barre d\'outils 
+      si le Scope est BackgroundToolBar`, () => {
     scope = Scope.BackgroundToolBar;
     service.applyColor(scope);
 
-    expect(service.colorParameter.temporaryBackgroundColor).toBe('rgba(0, 0, 0,1)');
-    expect(service.drawingManager.backgroundColor).toBe('rgba(0, 0, 0,1)');
+    expect(service.colorParameter.temporaryBackgroundColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
+    expect(service.drawingManager.backgroundColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
   });
 
   it('#applyColor ne devrait rien faire si la Scope est non reconnue', () => {
@@ -93,19 +87,58 @@ describe('ColorManagerService', () => {
 
   it('#addLastColor devrait retirer des couleurs du tableau derniereCouleur si celui-ci en contient plus de 10', () => {
     service.colorParameter.lastColors = [
-      'rgba(0, 0, 0, ',
-      'rgba(0, 0, 1, ',
-      'rgba(0, 0, 2, ',
-      'rgba(0, 0, 3, ',
-      'rgba(0, 0, 4, ',
-      'rgba(0, 0, 5, ',
-      'rgba(0, 0, 6, ',
-      'rgba(0, 0, 7, ',
-      'rgba(0, 0, 8, ',
-      'rgba(0, 0, 9, ',
-      'rgba(0, 0, 10, ',
-      'rgba(0, 0, 11, ',
-      'rgba(0, 0, 12, ',
+      {
+        RGBAString: 'rgba(0, 0, 0, 1',
+        RGBA: [0, 0, 0, 1]
+      },
+      {
+        RGBAString: 'rgba(0, 0, 1, 1',
+        RGBA: [0, 0, 1, 1]
+      },
+      {
+        RGBAString: 'rgba(0, 0, 2, 1',
+        RGBA: [0, 0, 2, 1]
+      },
+      {
+        RGBAString: 'rgba(0, 0, 3, 1',
+        RGBA: [0, 0, 3, 1]
+      },
+      {
+        RGBAString: 'rgba(0, 0, 4, 1',
+        RGBA: [0, 0, 4, 1]
+      },
+      {
+        RGBAString: 'rgba(0, 0, 5, 1',
+        RGBA: [0, 0, 5, 1]
+      },
+      {
+        RGBAString: 'rgba(0, 0, 6, 1',
+        RGBA: [0, 0, 6, 1]
+      },
+      {
+        RGBAString: 'rgba(0, 0, 7, 1',
+        RGBA: [0, 0, 7, 1]
+      },
+      {
+        RGBAString: 'rgba(0, 0, 8, 1',
+        RGBA: [0, 0, 8, 1]
+      },
+      {
+        RGBAString: 'rgba(0, 0, 9, 1',
+        RGBA: [0, 0, 9, 1]
+      },
+      {
+        RGBAString: 'rgba(0, 0, 10, 1',
+        RGBA: [0, 0, 10, 1]
+      },
+      {
+        RGBAString: 'rgba(0, 0, 11, 1',
+        RGBA: [0, 0, 11, 1]
+      },
+      {
+        RGBAString: 'rgba(0, 0, 12, 1',
+        RGBA: [0, 0, 12, 1]
+      }
     ]; // taille de 13
     service.addLastColor();
     expect(service.colorParameter.lastColors.length).toBe(10);

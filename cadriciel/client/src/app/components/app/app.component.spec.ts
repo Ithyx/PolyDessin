@@ -5,7 +5,7 @@ import { RouterStateSnapshot, RoutesRecognized } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
-const injecteur = Injector.create(
+const injector = Injector.create(
     { providers: [{provide: RouterStateSnapshot, useValue: {}}, {provide: RoutesRecognized, deps: [RouterStateSnapshot]}] }
 );
 
@@ -46,7 +46,7 @@ describe('AppComponent', () => {
     //  Tests filterFunction
 
     it('#filterFunction devrait accepter un paramètre de type RouteRecognized', () => {
-        const evt: RoutesRecognized = injecteur.get(RoutesRecognized);
+        const evt: RoutesRecognized = injector.get(RoutesRecognized);
         expect(app.filterFunction(evt)).toBe(true);
     });
 });

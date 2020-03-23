@@ -1,19 +1,23 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DrawingToolService } from '../tools/pencil-tool.service';
+import { PencilToolService } from '../tools/pencil-tool.service';
 import { TracePencilService } from './trace-pencil.service';
+
+// tslint:disable:no-magic-numbers
 
 describe('TracePencilService', () => {
   let element: TracePencilService;
-  let service: DrawingToolService;
+  let service: PencilToolService;
   beforeEach(() => TestBed.configureTestingModule({}));
-  beforeEach(() => service = TestBed.get(DrawingToolService));
+  beforeEach(() => service = TestBed.get(PencilToolService));
 
   beforeEach(() => {
     element = new TracePencilService();
     element.updateParameters(service.tools.toolList[0]);
-    element.primaryColor = 'rgba(0, 0, 0, 1)';
-    // tslint:disable-next-line:no-magic-numbers
+    element.primaryColor = {
+      RGBAString: 'rgba(0, 0, 0, 1)',
+      RGBA: [0, 0, 0, 1]
+    };
     element.thickness = 5;
     element.translate = { x: 10, y: 10};
   });
@@ -45,22 +49,37 @@ describe('TracePencilService', () => {
     element.points.push({ x: 10, y: 10});
     element.points.push({ x: 10, y: 10});
     element.translate = { x: 20, y: 20};
-    element.svg = '<path transform ="translate(' + element.translate.x + ' '
-    + element.translate.y + `)" fill="none" stroke="${element.primaryColor}"`
-    + 'stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 " />';
+    element.svg = '<path transform="translate(' + element.translate.x + ' ' + element.translate.y + ')" fill="none" '
+    + `stroke="${(element.erasingEvidence) ? element.erasingColor.RGBAString :  element.primaryColor.RGBAString}"`
+    + ' stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 "></path>';
     const testSVG = element.svg;
     element.drawPath();
     expect(element.svg).toEqual(testSVG);
   });
 
-  it('#drawPath devrait  mettre la primaryColor dans SVG', () => {
+  it('#drawPath devrait  mettre la primaryColor dans SVG si erasingEvidence est faux', () => {
+    element.erasingEvidence = false;
     element.points.push({ x: 10, y: 10});
     element.points.push({ x: 10, y: 10});
     element.points.push({ x: 10, y: 10});
-    element.primaryColor = 'rgba(1, 1, 1, 1)';
-    element.svg = '<path transform ="translate(' + element.translate.x + ' '
-    + element.translate.y + `)" fill="none" stroke="${element.primaryColor}"`
-    + 'stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 " />';
+    element.primaryColor.RGBAString = '"rgba(1, 1, 1, 1)"';
+    element.svg = '<path transform="translate(' + element.translate.x + ' ' + element.translate.y + ')" fill="none" '
+    + 'stroke="' + element.primaryColor.RGBAString
+    + '" stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 "></path>';
+    const testSVG = element.svg;
+    element.drawPath();
+    expect(element.svg).toEqual(testSVG);
+  });
+
+  it('#drawPath devrait  mettre la erasingColor dans SVG si erasingEvidence est vrai', () => {
+    element.erasingEvidence = true;
+    element.points.push({ x: 10, y: 10});
+    element.points.push({ x: 10, y: 10});
+    element.points.push({ x: 10, y: 10});
+    element.primaryColor.RGBAString = 'rgba(1, 1, 1, 1)';
+    element.svg = '<path transform="translate(' + element.translate.x + ' ' + element.translate.y + ')" fill="none" '
+    + 'stroke="' + element.erasingColor.RGBAString
+    + '" stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 "></path>';
     const testSVG = element.svg;
     element.drawPath();
     expect(element.svg).toEqual(testSVG);
@@ -70,11 +89,10 @@ describe('TracePencilService', () => {
     element.points.push({ x: 10, y: 10});
     element.points.push({ x: 10, y: 10});
     element.points.push({ x: 10, y: 10});
-    // tslint:disable-next-line:no-magic-numbers
     element.thickness = 25;
-    element.svg = '<path transform ="translate(' + element.translate.x + ' '
-    + element.translate.y + `)" fill="none" stroke="${element.primaryColor}"`
-    + 'stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 " />';
+    element.svg = '<path transform="translate(' + element.translate.x + ' ' + element.translate.y + ')" fill="none" '
+    + `stroke="${(element.erasingEvidence) ? element.erasingColor.RGBAString :  element.primaryColor.RGBAString}"`
+    + ' stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 "></path>';
     const testSVG = element.svg;
     element.drawPath();
     expect(element.svg).toEqual(testSVG);
@@ -85,31 +103,46 @@ describe('TracePencilService', () => {
   it('#drawPoint devrait mettre un point dans SVG', () => {
     element.points.push({ x: 10, y: 10});
     element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
-    + '" r="' + element.thickness / 2
-    + '" fill="' + element.primaryColor + '"/>';
+    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + ')" r="' + element.thickness / 2
+    + '" fill="' + ((element.erasingEvidence) ? element.erasingColor.RGBAString :  element.primaryColor.RGBAString) + '"></circle>';
     const testSVG = element.svg;
     element.drawPoint();
     expect(element.svg).toEqual(testSVG);
   });
 
   it('#drawPoint devrait mettre le thickness / 2 dans SVG', () => {
-    // tslint:disable-next-line:no-magic-numbers
-    element.thickness = 25;
+    element.thickness = 20;
     element.points.push({ x: 10, y: 10});
     element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
-    + '" r="' + element.thickness / 2
-    + '" fill="' + element.primaryColor + '"/>';
+    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + ')" r="' + 10
+    + '" fill="' + ((element.erasingEvidence) ? element.erasingColor.RGBAString :  element.primaryColor.RGBAString) + '"></circle>';
     const testSVG = element.svg;
     element.drawPoint();
     expect(element.svg).toEqual(testSVG);
   });
 
-  it('#drawPoint devrait mettre primaryColor dans SVG', () => {
-    element.primaryColor = 'rgba(1, 1, 1, 1)';
+  it('#drawPoint devrait mettre primaryColor dans SVG si erasingEvidence est faux', () => {
+    element.primaryColor.RGBAString = 'rgba(1, 1, 1, 1)';
     element.points.push({ x: 10, y: 10});
     element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
-    + '" r="' + element.thickness / 2
-    + '" fill="' + element.primaryColor + '"/>';
+    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + ')" r="' + element.thickness / 2
+    + '" fill="' + element.primaryColor.RGBAString + '"></circle>';
+    const testSVG = element.svg;
+    element.drawPoint();
+    expect(element.svg).toEqual(testSVG);
+  });
+
+  it('#drawPoint devrait mettre erasingColor dans SVG si erasingEvidence est vrai', () => {
+    element.erasingEvidence = true;
+    element.primaryColor.RGBAString = 'rgba(1, 1, 1, 1)';
+    element.points.push({ x: 10, y: 10});
+    element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
+    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + ')" r="' + element.thickness / 2
+    + '" fill="' + element.erasingColor.RGBAString + '"></circle>';
     const testSVG = element.svg;
     element.drawPoint();
     expect(element.svg).toEqual(testSVG);
@@ -118,17 +151,13 @@ describe('TracePencilService', () => {
   // TESTS updatePosition
 
   it('#updatePosition devrait ajouter les valeurs en paramètre à translate', () => {
-    // tslint:disable-next-line:no-magic-numbers
     element.updatePosition(10, -25);
-    // tslint:disable-next-line:no-magic-numbers
     expect(element.translate.x).toEqual(20);
-    // tslint:disable-next-line:no-magic-numbers
     expect(element.translate.y).toEqual(-15);
   });
 
   it('#updatePosition devrait appeler draw', () => {
     spyOn(element, 'draw');
-    // tslint:disable-next-line:no-magic-numbers
     element.updatePosition(10, 10);
     expect(element.draw).toHaveBeenCalled();
   });
@@ -137,18 +166,14 @@ describe('TracePencilService', () => {
 
   it('#updatePositionMouse devrait ajouter les valeurs en paramètre à translate', () => {
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    // tslint:disable-next-line:no-magic-numbers
     element.updatePositionMouse(click, { x: 10, y: 10});
-    // tslint:disable-next-line:no-magic-numbers
     expect(element.translate.x).toEqual(90);
-    // tslint:disable-next-line:no-magic-numbers
     expect(element.translate.y).toEqual(90);
   });
 
   it('#updatePositionMouse devrait appeler draw', () => {
     spyOn(element, 'draw');
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    // tslint:disable-next-line:no-magic-numbers
     element.updatePositionMouse(click, { x: 10, y: 10});
     expect(element.draw).toHaveBeenCalled();
   });
@@ -156,7 +181,6 @@ describe('TracePencilService', () => {
   // TESTS updateParameters
 
   it('#updateParameters devrait assigner la valeur en paramètre à thickness', () => {
-    // tslint:disable-next-line: no-magic-numbers
     service.tools.toolList[0].parameters[0].value = 10;
     const testTool = service.tools.toolList[0];
     element.updateParameters(testTool);
@@ -175,15 +199,12 @@ describe('TracePencilService', () => {
   it('#translateAllPoints devrait changer tous les points de points pour ajouter la translation', () => {
     element.points.push({x: 10, y: 10});
     element.translateAllPoints();
-    // tslint:disable-next-line:no-magic-numbers
     expect(element.points[0].x).toEqual(20);
-    // tslint:disable-next-line:no-magic-numbers
     expect(element.points[0].y).toEqual(20);
   });
 
   it('#translateAllPoints devrait mettre translation à 0', () => {
     element.translateAllPoints();
-    // tslint:disable-next-line:no-magic-numbers
     expect(element.translate).toEqual({x: 0, y: 0});
   });
 });

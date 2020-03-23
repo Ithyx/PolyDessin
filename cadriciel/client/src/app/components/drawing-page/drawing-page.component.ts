@@ -1,17 +1,19 @@
-import { Component, HostListener } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { BrushToolService } from 'src/app/services/tools/brush-tool.service';
 import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
 import { DrawSprayService } from 'src/app/services/tools/draw-spray.service';
 import { EllipseToolService } from 'src/app/services/tools/ellipse-tool.service';
+import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
 import { LineToolService } from 'src/app/services/tools/line-tool.service';
-import { DrawingToolService } from 'src/app/services/tools/pencil-tool.service';
+import { PencilToolService } from 'src/app/services/tools/pencil-tool.service';
 import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
 import { PolygonToolService } from 'src/app/services/tools/polygon-tool.service';
 import { RectangleToolService } from 'src/app/services/tools/rectangle-tool.service';
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
-import { ToolManagerService } from 'src/app/services/tools/tool-manager.service';
+import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 
 const LEFT_CLICK = 0;
 
@@ -20,23 +22,27 @@ const LEFT_CLICK = 0;
   templateUrl: './drawing-page.component.html',
   styleUrls: ['./drawing-page.component.scss']
 })
-export class DrawingPageComponent {
+export class DrawingPageComponent implements AfterViewInit {
 
-  toolMap: Map<string, ToolInterface> = new Map<string, ToolInterface>();
+  @ViewChild('canvasConversion', {static: false})
+  private coloredDrawing: ElementRef<SVGElement>;
 
-  constructor(
-              public tools: ToolManagerService,
-              public pencil: DrawingToolService,
-              public rectangle: RectangleToolService,
-              public brush: BrushToolService,
-              public line: LineToolService,
-              public shortcuts: ShortcutsManagerService,
-              public selection: SelectionService,
-              public spray: DrawSprayService,
-              public pipette: PipetteToolService,
-              public colorChanger: ColorChangerToolService,
-              public ellipse: EllipseToolService,
-              public polygon: PolygonToolService
+  private toolMap: Map<string, ToolInterface> = new Map<string, ToolInterface>();
+
+  constructor(private tools: ToolManagerService,
+              protected pencil: PencilToolService,
+              protected rectangle: RectangleToolService,
+              protected brush: BrushToolService,
+              protected line: LineToolService,
+              private shortcuts: ShortcutsManagerService,
+              protected selection: SelectionService,
+              protected spray: DrawSprayService,
+              protected pipette: PipetteToolService,
+              protected colorChanger: ColorChangerToolService,
+              protected ellipse: EllipseToolService,
+              protected polygon: PolygonToolService,
+              protected eraser: EraserToolService,
+              private canvas: CanvasConversionService
               ) {
               this.toolMap.set('Crayon', pencil)
                           .set('Rectangle', rectangle)
@@ -47,8 +53,13 @@ export class DrawingPageComponent {
                           .set('Pipette', pipette)
                           .set('Applicateur Couleur', colorChanger)
                           .set('Ellipse', ellipse)
-                          .set('Polygone', polygon);
+                          .set('Polygone', polygon)
+                          .set('Efface', eraser);
                 }
+
+  ngAfterViewInit(): void {
+    this.canvas.coloredDrawing = this.coloredDrawing.nativeElement;
+  }
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent): void {
@@ -122,6 +133,10 @@ export class DrawingPageComponent {
       tool.onRightClick(mouse);
       mouse.preventDefault();
     }
+  }
+
+  getDrawingSurfaceClass(): string {
+    return (this.tools.activeTool.ID === TOOL_INDEX.ERASER) ? 'hide-cursor' : '';
   }
 
 }

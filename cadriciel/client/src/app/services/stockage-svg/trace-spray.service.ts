@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { DrawElement } from './draw-element';
+import { Color, DrawElement, ERASING_COLOR_INIT} from './draw-element';
 
-const MIN_DIAMETER = 5;
+export const MIN_DIAMETER = 5;
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +14,13 @@ export class TraceSprayService implements DrawElement {
   svg: string;
   svgHtml: SafeHtml;
   isSelected: boolean;
+  erasingEvidence: boolean;
 
   diameter: number;
   points: Point[] = [];
 
-  primaryColor: string;
+  primaryColor: Color;
+  erasingColor: Color;
 
   pointMin: Point;
   pointMax: Point;
@@ -27,14 +29,21 @@ export class TraceSprayService implements DrawElement {
   constructor() {
     this.svgHtml = '';
     this.isSelected = false;
+    this.primaryColor = {
+      RGBAString: '',
+      RGBA: [0, 0, 0, 0]
+    };
+    this.erasingColor = ERASING_COLOR_INIT;
+    this.erasingEvidence = false;
     this.translate = { x: 0, y: 0};
   }
 
   draw(): void {
     this.svg = '';
     for (const point of this.points) {
-      this.svg += '<circle transform ="translate(' + this.translate.x + ' ' + this.translate.y
-      + `)"cx="${point.x}" cy="${point.y}" r="1" fill="${this.primaryColor}" />`;
+      this.svg += '<circle transform="translate(' + this.translate.x + ' ' + this.translate.y
+      + `)" cx="${point.x}" cy="${point.y}" r="1" `
+      + `fill="${(this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString}"></circle>`;
     }
   }
 
@@ -44,8 +53,9 @@ export class TraceSprayService implements DrawElement {
     const x = mousePosition.x + position * Math.cos(angle);
     const y = mousePosition.y + position * Math.sin(angle);
     this.points.push({x, y});
-    this.svg += '<circle transform ="translate(' + this.translate.x + ' ' + this.translate.y
-      + `)"cx="${x}" cy="${y}" r="1" fill="${this.primaryColor}" />`;
+    this.svg += '<circle transform="translate(' + this.translate.x + ' ' + this.translate.y
+      + `)" cx="${x}" cy="${y}" r="1" `
+      + `fill="${(this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString}"></circle>`;
   }
 
   updatePosition(x: number, y: number): void {

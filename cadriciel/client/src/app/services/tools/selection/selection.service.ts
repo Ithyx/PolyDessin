@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { CommandManagerService } from '../../command/command-manager.service';
+import { TranslateSvgService } from '../../command/translate-svg.service';
 import { DrawingManagerService } from '../../drawing-manager/drawing-manager.service';
 import { DrawElement } from '../../stockage-svg/draw-element';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
@@ -25,21 +27,23 @@ export class SelectionService implements ToolInterface {
               public selectionBox: SelectionBoxService,
               public selectionRectangle: SelectionRectangleService,
               private drawingManager: DrawingManagerService,
-              private sanitizer: DomSanitizer
+              private sanitizer: DomSanitizer,
+              private command: CommandManagerService
              ) {
               this.clickOnSelectionBox = false;
               this.clickInSelectionBox = false;
              }
 
   handleClick(drawElement: DrawElement): void {
-      for (const element of this.selectedElements) {
-        element.isSelected = false;
-      }
-      drawElement.isSelected = true;
-      this.selectedElements.splice(0, this.selectedElements.length);
-      this.selectedElements.push(drawElement);
-      this.createBoundingBox();
+    for (const element of this.selectedElements) {
+      element.isSelected = false;
+    }
+    drawElement.isSelected = true;
+    this.selectedElements.splice(0, this.selectedElements.length);
+    this.selectedElements.push(drawElement);
+    this.createBoundingBox();
 
+    console.log(drawElement);
   }
 
   handleRightClick(element: DrawElement): void {
@@ -85,8 +89,16 @@ export class SelectionService implements ToolInterface {
     if (this.clickOnSelectionBox || this.clickInSelectionBox) {
       this.clickOnSelectionBox = false;
       this.clickInSelectionBox = false;
-      for (const element of this.selectedElements) {
+      /* for (const element of this.selectedElements) {
           element.translateAllPoints();
+      }*/
+      if (this.hasMoved()) {
+        this.command.execute(new TranslateSvgService(
+          this.selectedElements,
+          this.selectionBox,
+          this.sanitizer,
+          this.deleteBoundingBox
+        ));
       }
     } else {
       // Éviter de créer une boite de sélection si on effectue un simple clic
@@ -139,11 +151,15 @@ export class SelectionService implements ToolInterface {
   deleteBoundingBox(): void {
     this.selectionBox.deleteSelectionBox();
     this.selectedElements.splice(0, this.selectedElements.length);
-    for (const element of this.SVGStockage.getCompleteSVG()) {
+    /*for (const element of this.SVGStockage.getCompleteSVG()) {
       if (element.isSelected) {
         element.isSelected = false;
       }
+    }*/
+    for (const element of this.selectedElements) {
+      element.isSelected = false;
     }
+    this.selectedElements = [];
   }
 
   isInRectangleSelection(rectangleSelection: RectangleService): void {
@@ -151,7 +167,7 @@ export class SelectionService implements ToolInterface {
 
     for (const element of this.SVGStockage.getCompleteSVG()) {
       this.findPointMinAndMax(element);
-      if (this.belongToRectangle(element, this.selectionRectangle.rectangle)) {
+      if (this.belongToRectangle(element, this.selectionRectangle.rectangle) && !this.selectedElements.includes(element)) {
         element.isSelected = true;
         this.selectedElements.push(element);
       }
@@ -218,13 +234,14 @@ export class SelectionService implements ToolInterface {
 
   updatePosition(x: number, y: number): void {
     if (this.selectionBox.selectionBox) {
-      for (const element of this.SVGStockage.getCompleteSVG()) {
-        if (element.isSelected) {
-          this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
+      // for (const element of this.SVGStockage.getCompleteSVG()) {
+      for (const element of this.selectedElements) {
+        // if (element.isSelected) {
+          // this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePosition(x, y);
           element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
-          this.selectedElements.push(element);
-        }
+          // this.selectedElements.push(element);
+        // }
       }
       this.selectionBox.updatePosition(x, y);
     }
@@ -232,16 +249,23 @@ export class SelectionService implements ToolInterface {
 
   updatePositionMouse(mouse: MouseEvent): void {
     if (this.selectionBox.selectionBox) {
-      for (const element of this.SVGStockage.getCompleteSVG()) {
-        if (element.isSelected) {
-          this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
+      // for (const element of this.SVGStockage.getCompleteSVG()) {
+      for (const element of this.selectedElements) {
+        // if (element.isSelected) {
+          // this.selectedElements.splice(this.selectedElements.indexOf(element), 1);
           element.updatePositionMouse(mouse, this.selectionBox.mouseClick);
           element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
-          this.selectedElements.push(element);
-        }
+          // this.selectedElements.push(element);
+        // }
       }
       this.selectionBox.updatePositionMouse(mouse);
     }
+  }
+
+  hasMoved(): boolean {
+    const xTranslation = this.selectedElements[0].translate.x !== 0;
+    const yTranslation = this.selectedElements[0].translate.y !== 0;
+    return xTranslation || yTranslation;
   }
 
 }

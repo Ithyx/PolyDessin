@@ -1,5 +1,5 @@
 <mat-dialog-content>
-    <svg [attr.filter]="getFilter()" class="drawing-preview" [attr.width]="200" [attr.height]="200"
+    <svg #drawingPreview [attr.filter]="getFilter()" class="drawing-preview" [attr.width]="200" [attr.height]="200"
         [attr.viewBox]="'0 0 ' + drawing.width.toString() + ' ' + drawing.height.toString()">
         <defs>
             <!-- Texture libre de droit-->
@@ -36,8 +36,8 @@
                 </feComponentTransfer>
             </filter>
         </defs>
-        <rect [attr.width]="drawing.width" [attr.height]="drawing.height" [attr.fill]="drawing.backgroundColor" />
-        <g [attr.filter]="getFilter()" *ngFor="let element of drawing.elements" [innerHtml]="sanatize(element.svg)" />
+        <rect [attr.width]="drawing.width" [attr.height]="drawing.height" [attr.fill]="drawing.backgroundColor.RGBAString" />
+        <g [attr.filter]="getFilter()" *ngFor="let element of drawing.elements" [innerHtml]="sanitize(element.svg)" />
     </svg>
     <button mat-stroked-button (click)="export()">EXPORTER</button>
     <button mat-button (click)="close()">fermer</button>
@@ -55,5 +55,6 @@
         <label for="name">Choisissez un nom de fichier :</label>
             <input id="name" type="text" (change)="updateFileName($event)" [value]="selectedFileName" />
     </div>
+    <a #link class="no-display"></a>
 
 </mat-dialog-content>

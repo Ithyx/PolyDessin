@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 import * as HttpStatus from 'http-status-codes';
 import { inject, injectable } from 'inversify';
-import { DatabaseService } from '../services/databse.service';
+import { DatabaseService } from '../services/database.service';
 import Types from '../types';
 
 @injectable()

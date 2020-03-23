@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ColorParameterService } from '../color/color-parameter.service';
-import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
+import { Color, DrawElement } from '../stockage-svg/draw-element';
 import { Command } from './command';
 
 @Injectable({
@@ -8,12 +9,12 @@ import { Command } from './command';
 })
 export class SecondaryColorChangeService implements Command {
 
-  oldColor: string;
+  oldColor: Color;
 
-  constructor(public svgKey: number,
-              public svgStockage: SVGStockageService,
-              public colorParameter: ColorParameterService) {
-    this.changeColor(colorParameter.getSecondaryColor());
+  constructor(public element: DrawElement,
+              public colorParameter: ColorParameterService,
+              private sanitizer: DomSanitizer) {
+    this.changeColor(colorParameter.secondaryColor);
   }
 
   undo(): void {
@@ -24,10 +25,12 @@ export class SecondaryColorChangeService implements Command {
     this.changeColor(this.oldColor);
   }
 
-  changeColor(color: string): void {
-    const oldColor = this.svgStockage.changeSecondaryColor(this.svgKey, color);
-    if (oldColor) {
-      this.oldColor = oldColor;
+  changeColor(color: Color): void {
+    if (this.element.secondaryColor) {
+      this.oldColor = this.element.secondaryColor;
     }
+    this.element.secondaryColor = color;
+    this.element.draw();
+    this.element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.element.svg);
   }
 }

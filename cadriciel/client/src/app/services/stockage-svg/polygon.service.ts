@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { DrawElement } from './draw-element';
+import { Color, DrawElement, ERASING_COLOR_INIT } from './draw-element';
 
 const MIN_SIDES = 4;
 
@@ -15,9 +15,11 @@ export class PolygonService implements DrawElement {
 
   points: Point[];
   isSelected: boolean;
+  erasingEvidence: boolean;
 
-  primaryColor: string;
-  secondaryColor: string;
+  primaryColor: Color;
+  secondaryColor: Color;
+  erasingColor: Color;
 
   thickness: number;
   chosenOption: string;
@@ -32,9 +34,19 @@ export class PolygonService implements DrawElement {
   constructor() {
     this.svgHtml = '';
     this.points = [];
+    this.primaryColor = {
+      RGBAString: '',
+      RGBA: [0, 0, 0, 0]
+    };
+    this.secondaryColor = {
+      RGBAString: '',
+      RGBA: [0, 0, 0, 0]
+    };
+    this.erasingColor = ERASING_COLOR_INIT;
     this.pointMin = {x: 0, y: 0};
     this.pointMax = {x: 0, y: 0};
     this.isSelected = false;
+    this.erasingEvidence = false;
     this.translate = { x: 0, y: 0};
   }
 
@@ -53,14 +65,15 @@ export class PolygonService implements DrawElement {
 
   drawPolygon(): void {
     this.svg = '<polygon transform=" translate(' + this.translate.x + ' ' + this.translate.y +
-      ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor : 'none')
-      + '" stroke="' + ((this.chosenOption !== 'Plein') ? this.secondaryColor : 'none')
+      ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor.RGBAString : 'none') + '" stroke="'
+      + ((this.erasingEvidence) ? this.erasingColor.RGBAString :
+        ((this.chosenOption !== 'Plein') ? this.secondaryColor.RGBAString : 'none'))
       + '" stroke-width="' + this.thickness
       + '" points="';
     for (const point of this.points) {
       this.svg += point.x + ' ' + point.y + ' ';
     }
-    this.svg += '"/>';
+    this.svg += '"></polygon>';
   }
 
   drawPerimeter(): void {

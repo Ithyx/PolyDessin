@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { Drawing } from '../../../../../common/communication/DrawingInterface';
+
+export const PREVIEW_SIZE = '200';
 
 @Component({
   selector: 'app-export-window',
@@ -12,6 +15,10 @@ import { Drawing } from '../../../../../common/communication/DrawingInterface';
 })
 
 export class ExportWindowComponent {
+  @ViewChild('drawingPreview', {static: false})
+  drawingPreview: ElementRef<SVGElement>;
+  @ViewChild('link', {static: false})
+  link: ElementRef<HTMLAnchorElement>;
 
   EXPORT_FORMAT: string[] = ['png', 'jpeg', 'svg'];
   EXPORT_FILTER: string[] = ['', 'Noir-et-blanc', 'Sepia', 'Flou', 'Tremblant', 'Tache'];
@@ -27,7 +34,8 @@ export class ExportWindowComponent {
   constructor(private dialogRef: MatDialogRef<ExportWindowComponent>,
               private stockageSVG: SVGStockageService,
               private drawingParams: DrawingManagerService,
-              private sanitizer: DomSanitizer
+              private sanitizer: DomSanitizer,
+              private canvasConversion: CanvasConversionService
               ) {
     this.selectedExportFormat = this.EXPORT_FORMAT[0];
     this.selectedExportFilter = this.EXPORT_FILTER[0];
@@ -41,6 +49,7 @@ export class ExportWindowComponent {
       tags: this.drawingParams.tags,
       elements: this.stockageSVG.getCompleteSVG()
     };
+    this.canvas = this.canvasConversion.canvas;
   }
 
   close(): void {
@@ -48,8 +57,7 @@ export class ExportWindowComponent {
   }
 
   export(): void {
-    const element = document.querySelector('.drawing-preview');
-    this.canvas = (document.querySelector('.canvas') as HTMLCanvasElement);
+    const element = this.drawingPreview.nativeElement;
     const context = this.canvas.getContext('2d');
     if (element && context) {
       element.setAttribute('width', this.drawingParams.width.toString());
@@ -62,8 +70,8 @@ export class ExportWindowComponent {
       this.image.onload = this.downloadImage.bind(this);
       this.image.src = URL.createObjectURL(svg);
 
-      element.setAttribute('width', '200');
-      element.setAttribute('height', '200');
+      element.setAttribute('width', PREVIEW_SIZE);
+      element.setAttribute('height', PREVIEW_SIZE);
     }
   }
 
@@ -75,7 +83,7 @@ export class ExportWindowComponent {
     } else {
       imageSrc = this.canvas.toDataURL('image/' + this.selectedExportFormat);
     }
-    const container = document.createElement('a');
+    const container = this.link.nativeElement;
     container.href = imageSrc;
     container.download = this.selectedFileName;
     container.click();
@@ -85,22 +93,19 @@ export class ExportWindowComponent {
   updateSelectedFormat(event: Event): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.selectedExportFormat = eventCast.value;
-    console.log('format: ', this.selectedExportFormat);
   }
 
   updateSelectedFilter(event: Event): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.selectedExportFilter = eventCast.value;
-    console.log('filter: ', this.selectedExportFilter);
   }
 
   updateFileName(event: Event): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.selectedFileName = eventCast.value;
-    console.log('file name: ', this.selectedFileName);
   }
 
-  sanatize(svg: string): SafeHtml {
+  sanitize(svg: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(svg);
   }
 

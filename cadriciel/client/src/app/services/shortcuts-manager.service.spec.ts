@@ -1,17 +1,40 @@
 import { async, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material';
 import { ShortcutsManagerService } from './shortcuts-manager.service';
+import { DrawElement } from './stockage-svg/draw-element';
 import { TOOL_INDEX } from './tools/tool-manager.service';
 
-describe('shortcuts-manager', () => {
+// tslint:disable: no-magic-numbers
+// tslint:disable: no-string-literal
+// tslint:disable: max-file-line-count
+
+describe('ShortcutsManagerService', () => {
 
   let service: ShortcutsManagerService;
+
+  const element: DrawElement = {
+    svg: '',
+    svgHtml: '',
+    points: [],
+    isSelected: false,
+    erasingEvidence: false,
+    erasingColor: {RGBA: [0, 0, 0, 1], RGBAString: ''},
+    pointMin: {x: 0, y: 0},
+    pointMax: {x: 0, y: 0},
+    translate: {x: 0, y: 0},
+    draw: () => { return; },
+    updatePosition: () => { return; },
+    updatePositionMouse: () => { return; },
+    updateParameters: () => { return; },
+    translateAllPoints: () => { return; }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
         imports: [MatDialogModule],
-    });
-}));
+    })
+    .compileComponents();
+  }));
 
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(ShortcutsManagerService));
@@ -25,7 +48,45 @@ describe('shortcuts-manager', () => {
     // TODO
 
   // TESTS treatInput
-    // TODO
+
+  it('#treatInput ne devrait rien faire si on a un focus sur les entrées', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'a' , ctrlKey: false});
+    service.focusOnInput = true;
+
+    spyOn(service, 'updatePositionTimer');
+    spyOn(keyboard, 'preventDefault');
+
+    service.treatInput(keyboard);
+    expect(service.updatePositionTimer).not.toHaveBeenCalled();
+    expect(keyboard.preventDefault).not.toHaveBeenCalled();
+  });
+
+  it('#treatInput devrait appeler updatePositionTimer si la touche est reconnue', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'a' , ctrlKey: false});
+
+    spyOn(service, 'updatePositionTimer');
+
+    service.treatInput(keyboard);
+    expect(service.updatePositionTimer).toHaveBeenCalled();
+  });
+
+  it('#treatInput devrait appeler updatePositionTimer si la touche est non reconnue', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'test' , ctrlKey: false});
+
+    spyOn(service, 'updatePositionTimer');
+
+    service.treatInput(keyboard);
+    expect(service.updatePositionTimer).toHaveBeenCalled();
+  });
+
+  it('#treatInput devrait si la touche est reconnue, bloquer les raccourcis', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'a' , ctrlKey: false});
+
+    spyOn(keyboard, 'preventDefault');
+
+    service.treatInput(keyboard);
+    expect(keyboard.preventDefault).toHaveBeenCalled();
+  });
 
   // TESTS clearOngoingSVG
 
@@ -114,7 +175,27 @@ describe('shortcuts-manager', () => {
     expect(service['selection'].createBoundingBox).not.toHaveBeenCalled();
   });
 
-  // TODO : ShortcutKeyA dans le cas de plusieurs SVG
+  it('#shortcutKeyA devrait créer une boite de sélection si le nombre d\'SVG est non-nul', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'a' , ctrlKey: true});
+    service['stockageSVG'].addSVG(element);
+    service.shortcutKeyA(keyboard);
+    expect(service['selection'].selectedElements[0]).toEqual(service['stockageSVG'].getCompleteSVG()[0]);
+  });
+
+  it('#shortcutKeyA devrait créer une boite de sélection si le nombre d\'SVG est non-nul', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'a' , ctrlKey: true});
+    service['stockageSVG'].addSVG(element);
+    service.shortcutKeyA(keyboard);
+    expect(service['stockageSVG'].getCompleteSVG()[0].isSelected).toEqual(true);
+  });
+
+  it('#shortcutKeyA devrait mettre les éléments sélectionné du stockageSVG si le nombre d\'SVG est non-nul', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'a' , ctrlKey: true});
+    service['stockageSVG'].addSVG(element);
+    spyOn(service['selection'], 'createBoundingBox');
+    service.shortcutKeyA(keyboard);
+    expect(service['selection'].createBoundingBox).toHaveBeenCalled();
+  });
 
   // TESTS shortcutKeyC
 
@@ -126,6 +207,42 @@ describe('shortcuts-manager', () => {
   it('#shortcutKeyC devrait supprimer le SVG en cours', () => {
     spyOn(service, 'clearOngoingSVG');
     service.shortcutKeyC();
+    expect(service.clearOngoingSVG).toHaveBeenCalled();
+  });
+
+  // TESTS shortcutKeyE
+
+  /* it('#shortcutKeyE devrait mettre focusOnInput à vrai si CRTL est appuyé', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'e' , ctrlKey: true});
+    service.shortcutKeyE(keyboard);
+    expect(service.focusOnInput).toEqual(true);
+  });
+
+  it('#shortcutKeyE devrait supprimer la boite de selection si CRTL est appuyé', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'e' , ctrlKey: true});
+    spyOn(service['selection'], 'deleteBoundingBox');
+    service.shortcutKeyE(keyboard);
+    expect(service['selection'].deleteBoundingBox).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyE devrait ouvrir le pop-up d\'exportation si CRTL est appuyé', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'e' , ctrlKey: true});
+    spyOn(service['dialog'], 'open');
+    service.shortcutKeyE(keyboard);
+    expect(service['dialog'].open)
+      .toHaveBeenCalledWith(ExportWindowComponent, service['dialogConfig']);
+  }); */
+
+  it('#shortcutKeyE devrait changer l\'outil actif pour l\'efface si CTRL n\'est pas appuyé', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'e' , ctrlKey: false});
+    service.shortcutKeyE(keyboard);
+    expect(service['tools'].activeTool.ID).toEqual(TOOL_INDEX.ERASER);
+  });
+
+  it('#shortcutKeyE devrait supprimer le SVG en cours si CTRL n\'est pas appuyé', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'e' , ctrlKey: false});
+    spyOn(service, 'clearOngoingSVG');
+    service.shortcutKeyE(keyboard);
     expect(service.clearOngoingSVG).toHaveBeenCalled();
   });
 
@@ -183,7 +300,6 @@ describe('shortcuts-manager', () => {
     expect(service.clearOngoingSVG).toHaveBeenCalled();
   });
 
-  
   // TESTS shortcutKeyZ
 
   it('#shortcutKeyZ devrait annuler la dernier commande si CTRL est actif et qu\'il n\'y a pas de dessin en cours', () => {
@@ -349,7 +465,6 @@ describe('shortcuts-manager', () => {
 
   it('#shortcutKeyArrowLeft devrait mettre leftArrow à vrai', () => {
     service.shortcutKeyArrowLeft();
-    // tslint:disable-next-line:no-string-literal
     expect(service['leftArrow']).toBe(true);
   });
 
@@ -357,7 +472,6 @@ describe('shortcuts-manager', () => {
 
   it('#shortcutKeyArrowRight devrait mettre RightArrow à vrai', () => {
     service.shortcutKeyArrowRight();
-    // tslint:disable-next-line:no-string-literal
     expect(service['rightArrow']).toBe(true);
   });
 
@@ -365,7 +479,6 @@ describe('shortcuts-manager', () => {
 
   it('#shortcutKeyArrowDown devrait mettre DownArrow à vrai', () => {
     service.shortcutKeyArrowDown();
-    // tslint:disable-next-line:no-string-literal
     expect(service['downArrow']).toBe(true);
   });
 
@@ -373,13 +486,12 @@ describe('shortcuts-manager', () => {
 
   it('#shortcutKeyArrowUp devrait mettre UpArrow à vrai', () => {
     service.shortcutKeyArrowUp();
-    // tslint:disable-next-line:no-string-literal
     expect(service['upArrow']).toBe(true);
   });
 
   // TESTS treatReleaseKey
 
-  it('#treatReleaseKey devrait appeler shiftRelache de l\'outil rectangle si il reçoit Shift', () => {
+  it('#treatReleaseKey devrait appeler shiftRelache de l\'outil rectangle si il reçoit Shift et l\'outil rectangle est sélectionné', () => {
     const keyboard = new KeyboardEvent('keypress', { key: 'Shift'});
     service['tools'].changeActiveTool(TOOL_INDEX.RECTANGLE);
     spyOn(service['rectangleTool'], 'shiftRelease');
@@ -389,7 +501,7 @@ describe('shortcuts-manager', () => {
     expect(service['rectangleTool'].shiftRelease).toHaveBeenCalled();
   });
 
-  it('#treatReleaseKey devrait appeler shiftRelache de l\'outil ligne si il reçoit Shift', () => {
+  it('#treatReleaseKey devrait appeler shiftRelache de l\'outil ligne si il reçoit Shift et l\'outil ligne est sélectionné', () => {
     const keyboard = new KeyboardEvent('keypress', { key: 'Shift'});
     service['tools'].changeActiveTool(TOOL_INDEX.LINE);
     spyOn(service['lineTool'], 'shiftRelease');
@@ -399,31 +511,37 @@ describe('shortcuts-manager', () => {
     expect(service['lineTool'].shiftRelease).toHaveBeenCalled();
   });
 
+  it('#treatReleaseKey devrait appeler shiftRelache de l\'outil ellipse si il reçoit Shift et l\'outil ellipse est sélectionné', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'Shift'});
+    service['tools'].changeActiveTool(TOOL_INDEX.ELLIPSE);
+    spyOn(service['ellipseTool'], 'shiftRelease');
+
+    service.treatReleaseKey(keyboard);
+
+    expect(service['ellipseTool'].shiftRelease).toHaveBeenCalled();
+  });
+
   it('#treatReleaseKey devrait mettre leftArrow a false si il reçoit ArrowLeft', () => {
     const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowLeft'});
     service.treatReleaseKey(keyboard);
-    // tslint:disable-next-line:no-string-literal
     expect(service['leftArrow']).toBe(false);
   });
 
   it('#treatReleaseKey devrait mettre rightArrow a false si il reçoit ArrowRight', () => {
     const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowRight'});
     service.treatReleaseKey(keyboard);
-    // tslint:disable-next-line:no-string-literal
     expect(service['rightArrow']).toBe(false);
   });
 
   it('#treatReleaseKey devrait mettre upArrow a false si il reçoit ArrowUp', () => {
     const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowUp'});
     service.treatReleaseKey(keyboard);
-    // tslint:disable-next-line:no-string-literal
     expect(service['upArrow']).toBe(false);
   });
 
   it('#treatReleaseKey devrait mettre downArrow a false si il reçoit ArrowDown', () => {
     const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowDown'});
     service.treatReleaseKey(keyboard);
-    // tslint:disable-next-line:no-string-literal
     expect(service['downArrow']).toBe(false);
   });
 
@@ -442,7 +560,12 @@ describe('shortcuts-manager', () => {
     service.treatReleaseKey(keyboard);
     expect(service['rectangleTool'].shiftRelease).not.toHaveBeenCalled();
 
+    // Dans le cas de l'ellipse
+    service['tools'].changeActiveTool(TOOL_INDEX.RECTANGLE);
+    spyOn(service['ellipseTool'], 'shiftRelease');
+    service.treatReleaseKey(keyboard);
+    expect(service['ellipseTool'].shiftRelease).not.toHaveBeenCalled();
+
   });
 
-  // TODO: Désactiver limite fichier avec TSLINT
 });
