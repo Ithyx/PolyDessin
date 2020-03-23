@@ -89,9 +89,13 @@ export class GalleryComponent implements OnInit {
     this.stockageSVG.addSVG(element);
   }
 
+  async openWarning(): Promise<boolean> {
+    return !(await this.dialog.open(GalleryLoadWarningComponent, this.dialogConfig).afterClosed().toPromise());
+  }
+
   async loadDrawing(drawing: Drawing): Promise<void> {
     if (this.stockageSVG.size !== 0) {
-      if (!(await this.dialog.open(GalleryLoadWarningComponent, this.dialogConfig).afterClosed().toPromise())) { return; }
+      if (await this.openWarning()) { return; }
     }
     this.stockageSVG.cleanDrawing();
     this.drawingManager.id = drawing._id;
