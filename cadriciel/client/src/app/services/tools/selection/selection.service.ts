@@ -91,6 +91,7 @@ export class SelectionService implements ToolInterface {
           }
         }
       }
+      // console.log(this.modifiedElement);
     }
   }
 
@@ -182,7 +183,7 @@ export class SelectionService implements ToolInterface {
         if (this.belongToRectangle(element, this.selectionRectangle.rectangle) && !this.selectedElements.includes(element)) {
           element.isSelected = true;
           this.selectedElements.push(element);
-        }
+        } else { element.isSelected = false; }
       } else if (this.selectionRectangle.rectangleInverted) {
         if (this.belongToRectangle(element, this.selectionRectangle.rectangleInverted) && !this.modifiedElement.has(element)) {
           this.reverseElementSelectionStatus(element);
