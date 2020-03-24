@@ -1,5 +1,17 @@
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { Injector } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
-import { MatDialogModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule, MatDialogRef, MatProgressSpinnerModule } from '@angular/material';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ExportWindowComponent } from '../components/export-window/export-window.component';
+import { GalleryLoadWarningComponent } from '../components/gallery-load-warning/gallery-load-warning.component';
+import { GalleryElementComponent } from '../components/gallery/gallery-element/gallery-element.component';
+import { GalleryComponent } from '../components/gallery/gallery.component';
+import { SavePopupComponent } from '../components/save-popup/save-popup.component';
 import { ShortcutsManagerService } from './shortcuts-manager.service';
 import { DrawElement } from './stockage-svg/draw-element';
 import { TOOL_INDEX } from './tools/tool-manager.service';
@@ -9,6 +21,10 @@ import { TOOL_INDEX } from './tools/tool-manager.service';
 // tslint:disable: max-file-line-count
 
 describe('ShortcutsManagerService', () => {
+  const injector = Injector.create(
+    // tslint:disable-next-line: arrow-return-shorthand
+    {providers: [{provide: MatDialogRef, useValue: {afterClosed: () => { return {subscribe: () => { service.focusOnInput = false; }}; }}}]
+  });
 
   let service: ShortcutsManagerService;
 
@@ -31,8 +47,13 @@ describe('ShortcutsManagerService', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        imports: [MatDialogModule],
+        declarations: [ ExportWindowComponent, SavePopupComponent, GalleryComponent, GalleryElementComponent, GalleryLoadWarningComponent],
+        imports: [ MatProgressSpinnerModule, MatDialogModule, BrowserAnimationsModule,  ReactiveFormsModule,
+                   FormsModule, RouterModule.forRoot([{path: 'dessin', component: GalleryComponent}]), RouterTestingModule],
+        providers: [HttpClient, HttpHandler]
     })
+    .overrideModule(BrowserDynamicTestingModule, {set: { entryComponents: [ ExportWindowComponent,
+                                                                                SavePopupComponent, GalleryComponent ] }})
     .compileComponents();
   }));
 
@@ -212,7 +233,7 @@ describe('ShortcutsManagerService', () => {
 
   // TESTS shortcutKeyE
 
-  /* it('#shortcutKeyE devrait mettre focusOnInput à vrai si CRTL est appuyé', () => {
+  it('#shortcutKeyE devrait mettre focusOnInput à vrai si CRTL est appuyé', () => {
     const keyboard = new KeyboardEvent('keypress', { key: 'e' , ctrlKey: true});
     service.shortcutKeyE(keyboard);
     expect(service.focusOnInput).toEqual(true);
@@ -227,11 +248,11 @@ describe('ShortcutsManagerService', () => {
 
   it('#shortcutKeyE devrait ouvrir le pop-up d\'exportation si CRTL est appuyé', () => {
     const keyboard = new KeyboardEvent('keypress', { key: 'e' , ctrlKey: true});
-    spyOn(service['dialog'], 'open');
+    spyOn(service['dialog'], 'open').and.returnValue(injector.get(MatDialogRef));
     service.shortcutKeyE(keyboard);
     expect(service['dialog'].open)
       .toHaveBeenCalledWith(ExportWindowComponent, service['dialogConfig']);
-  }); */
+  });
 
   it('#shortcutKeyE devrait changer l\'outil actif pour l\'efface si CTRL n\'est pas appuyé', () => {
     const keyboard = new KeyboardEvent('keypress', { key: 'e' , ctrlKey: false});
@@ -285,7 +306,41 @@ describe('ShortcutsManagerService', () => {
     expect(service.clearOngoingSVG).toHaveBeenCalled();
   });
 
+  // TESTS shortcutKeyR
+
+  it('#shortcutKeyR devrait changer l\'outil actif pour l\'Applicateur de Couleur', () => {
+    service.shortcutKeyR();
+    expect(service['tools'].activeTool.ID).toEqual(TOOL_INDEX.COLOR_CHANGER);
+  });
+
+  it('#shortcutKeyR devrait supprimer le SVG en cours', () => {
+    spyOn(service, 'clearOngoingSVG');
+    service.shortcutKeyR();
+    expect(service.clearOngoingSVG).toHaveBeenCalled();
+  });
+
   // TESTS shortcutKeyS
+
+  it('#shortcutKeyS devrait mettre focusOnInput à vrai si CRTL est appuyé', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 's' , ctrlKey: true});
+    service.shortcutKeyS(keyboard);
+    expect(service.focusOnInput).toEqual(true);
+  });
+
+  it('#shortcutKeyS devrait supprimer la boite de selection si CRTL est appuyé', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 's' , ctrlKey: true});
+    spyOn(service['selection'], 'deleteBoundingBox');
+    service.shortcutKeyS(keyboard);
+    expect(service['selection'].deleteBoundingBox).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyS devrait ouvrir le pop-up de sauvegarde si CRTL est appuyé', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 's' , ctrlKey: true});
+    spyOn(service['dialog'], 'open').and.returnValue(injector.get(MatDialogRef));
+    service.shortcutKeyS(keyboard);
+    expect(service['dialog'].open)
+      .toHaveBeenCalledWith(SavePopupComponent, service['dialogConfig']);
+  });
 
   it('#shortcutKeyS devrait changer l\'outil actif pour la ligne', () => {
     const keyboard = new KeyboardEvent('keypress', { key: 's' , ctrlKey: false});
@@ -368,13 +423,22 @@ describe('ShortcutsManagerService', () => {
     expect(service['lineTool'].memorizeCursor).toHaveBeenCalled();
   });
 
+  it('#shortcutKeyShift devrait appeler shiftPress si l\'outil actif est l\'ellipse', () => {
+    service['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.ELLIPSE];
+    spyOn(service['ellipseTool'], 'shiftPress');
+    service.shortcutKeyShift();
+    expect(service['ellipseTool'].shiftPress).toHaveBeenCalled();
+  });
+
   it('#shortcutKeyShift ne devrait rien faire si l\'outil actif n\'est ni la ligne ou le rectangle', () => {
     service['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.PENCIL];
     spyOn(service['lineTool'], 'memorizeCursor');
+    spyOn(service['ellipseTool'], 'shiftPress');
     spyOn(service['rectangleTool'], 'shiftPress');
     service.shortcutKeyShift();
     expect(service['lineTool'].memorizeCursor).not.toHaveBeenCalled();
     expect(service['rectangleTool'].shiftPress).not.toHaveBeenCalled();
+    expect(service['ellipseTool'].shiftPress).not.toHaveBeenCalled();
   });
 
   // TESTS shortcutKeyO
@@ -436,7 +500,28 @@ describe('ShortcutsManagerService', () => {
     expect(service['lineTool'].clear).not.toHaveBeenCalled();
   });
 
-  // TESTS shortcutG
+  // TESTS shortcutKeyG
+
+  it('#shortcutKeyG devrait mettre focusOnInput à vrai si CRTL est appuyé', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'g' , ctrlKey: true});
+    service.shortcutKeyG(keyboard);
+    expect(service.focusOnInput).toEqual(true);
+  });
+
+  it('#shortcutKeyG devrait supprimer la boite de selection si CRTL est appuyé', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'g' , ctrlKey: true});
+    spyOn(service['selection'], 'deleteBoundingBox');
+    service.shortcutKeyG(keyboard);
+    expect(service['selection'].deleteBoundingBox).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyG devrait ouvrir le pop-up d\'exportation si CRTL est appuyé', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'g' , ctrlKey: true});
+    spyOn(service['dialog'], 'open').and.returnValue(injector.get(MatDialogRef));
+    service.shortcutKeyG(keyboard);
+    expect(service['dialog'].open)
+      .toHaveBeenCalledWith(GalleryComponent, service['dialogConfig']);
+  });
 
   it('#shortcutKeyG devrait inverser l\'etat d\'affichage de la grille', () => {
     service['grid'].showGrid = false;
