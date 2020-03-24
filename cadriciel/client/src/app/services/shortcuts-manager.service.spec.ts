@@ -39,7 +39,6 @@ describe('ShortcutsManagerService', () => {
     pointMin: {x: 0, y: 0},
     pointMax: {x: 0, y: 0},
     translate: {x: 0, y: 0},
-    chosenOption: '',
     draw: () => { return; },
     updatePosition: () => { return; },
     updatePositionMouse: () => { return; },
@@ -101,6 +100,7 @@ describe('ShortcutsManagerService', () => {
   it('#updatePositionTimer ne devrait pas executer de commande de translastion si le SVG n\' a pas bougé et '
     + 'qu\'aucune flèche n\'est appuyé', () => {
     service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
+    element.translate = {x: 0, y: 0};
     service['selection'].handleClick(element);    // création de la boite de sélection
     spyOn(service['commands'], 'execute');
     service.updatePositionTimer();

@@ -241,9 +241,7 @@ export class EraserToolService implements ToolInterface {
   }
 
   updateErasingColor(element: DrawElement): void {
-    element.erasingColor.RGBAString = `rgba(${element.erasingColor.RGBA[R]},
-                                            ${element.erasingColor.RGBA[G]},
-                                            ${element.erasingColor.RGBA[B]},
-                                            1)`;
+    element.erasingColor.RGBAString = 'rgba(' + element.erasingColor.RGBA[R] + ', ' + element.erasingColor.RGBA[G]
+                                      + ', ' + element.erasingColor.RGBA[B] + ', 1)';
   }
 }

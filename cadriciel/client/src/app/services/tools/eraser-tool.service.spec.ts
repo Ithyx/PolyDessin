@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
+import { RemoveSVGService } from '../command/remove-svg.service';
+import { DrawElement } from '../stockage-svg/draw-element';
 import { RectangleService } from '../stockage-svg/rectangle.service';
 import { EraserToolService } from './eraser-tool.service';
 
@@ -9,6 +11,24 @@ import { EraserToolService } from './eraser-tool.service';
 
 describe('EraserToolService', () => {
   let service: EraserToolService;
+
+  const element: DrawElement = {
+    svg: '',
+    svgHtml: '',
+    points: [{x: 90, y: 90}, {x: 76, y: 89 }],
+    isSelected: false,
+    erasingEvidence: false,
+    erasingColor: {RGBA: [0, 0, 0, 1], RGBAString: ''},
+    pointMin: {x: 0, y: 0},
+    pointMax: {x: 0, y: 0},
+    translate: {x: 0, y: 0},
+    draw: () => { return; },
+    updatePosition: () => { return; },
+    updatePositionMouse: () => { return; },
+    updateParameters: () => { return; },
+    translateAllPoints: () => { return; }
+  };
+
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => {
     service = TestBed.get(EraserToolService);
@@ -83,5 +103,33 @@ describe('EraserToolService', () => {
 
   it('#belongsToSquare devrait retourner true si le point se trouve à l\'intérieur du carré', () => {
     expect(service.belongsToSquare({x: 15, y: 15})).toBe(true);
+  });
+
+  // TESTS onMousePress
+
+  it('#onMousePress devrait créer une nouvelle commande RemoveSVGService', () => {
+    service.onMousePress();
+    expect(service['removeCommand']).toEqual(new RemoveSVGService(service['svgStockage']));
+  });
+
+  it('#onMousePress devrait créer une nouvelle commande RemoveSVGService', () => {
+    service.onMousePress();
+    expect(service['commands'].drawingInProgress).toEqual(true);
+  });
+
+  // TEST onMouseLeave
+
+  it('#onMouseLeave devrait appeler la méthode clear()', () => {
+    spyOn(service, 'clear');
+    service.onMouseLeave();
+    expect(service.clear).toHaveBeenCalled();
+  });
+
+  // TEST updateErasingColor
+
+  it('#updateErasingColor devrait mettre à jours le RGBAString de \'element avec une opacité de 1', () => {
+    element.erasingColor = {RGBA: [49, 71, 102, 0], RGBAString: ''};
+    service.updateErasingColor(element);
+    expect(element.erasingColor.RGBAString).toEqual('rgba(49, 71, 102, 1)');
   });
 });
