@@ -4,7 +4,8 @@ import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { Point } from '../line-tool.service';
 import { ToolManagerService} from '../tool-manager.service';
 
-const NUMBER_OF_CONTROL_POINT = 4;
+export const NUMBER_OF_CONTROL_POINT = 4;
+export const SELECTION_BOX_THICKNESS = 4;
 
 @Injectable({
   providedIn: 'root'
@@ -33,8 +34,8 @@ export class SelectionBoxService {
 
     this.selectionBox.points[0] = pointMin;
     this.selectionBox.points[1] = pointMax;
-    this.selectionBox.secondaryColor =  'rgba(0, 80, 150, 1)';
-    this.selectionBox.thickness = 4;
+    this.selectionBox.secondaryColor.RGBAString =  'rgba(0, 80, 150, 1)';
+    this.selectionBox.thickness = SELECTION_BOX_THICKNESS;
 
     this.selectionBox.drawRectangle();
 
@@ -54,7 +55,7 @@ export class SelectionBoxService {
     this.controlPointBox[1].points[1].x = ((this.selectionBox.points[0].x + this.selectionBox.points[1].x) / 2) + 4;
     this.controlPointBox[1].points[1].y = (this.selectionBox.points[1].y + 4);
     // LEFT
-    this.controlPointBox[2].points[0].x = (this.selectionBox.points[0].x - 4); 
+    this.controlPointBox[2].points[0].x = (this.selectionBox.points[0].x - 4);
     this.controlPointBox[2].points[0].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y) / 2) - 4;
     this.controlPointBox[2].points[1].x = (this.selectionBox.points[0].x + 4);
     this.controlPointBox[2].points[1].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y) / 2) + 4;
@@ -70,8 +71,8 @@ export class SelectionBoxService {
       controlPoint.isSelected = true;
       controlPoint.updateParameters(this.tools.activeTool);
       controlPoint.chosenOption = 'Plein avec contour';
-      controlPoint.primaryColor =  'rgba(0, 0, 0, 1)';
-      controlPoint.secondaryColor = 'rgba(0, 255, 0, 1)';
+      controlPoint.primaryColor.RGBAString =  'rgba(0, 0, 0, 1)';
+      controlPoint.secondaryColor.RGBAString = 'rgba(0, 255, 0, 1)';
       controlPoint.thickness = 4;
       controlPoint.drawRectangle();
 
@@ -83,9 +84,6 @@ export class SelectionBoxService {
   deleteSelectionBox(): void {
     delete this.selectionBox;
     if (this.controlPointBox) {
-      for (let index = 0; index < this.controlPointBox.length; index++) {
-        delete this.controlPointBox[index];
-      }
       delete this.controlPointBox;
     }
   }

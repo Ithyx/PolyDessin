@@ -1,22 +1,26 @@
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
+import { ExportWindowComponent } from '../components/export-window/export-window.component';
 import { GalleryComponent } from '../components/gallery/gallery.component';
 import { SavePopupComponent } from '../components/save-popup/save-popup.component';
 import { CommandManagerService } from './command/command-manager.service';
+import { TranslateSvgService } from './command/translate-svg.service';
 import { GridService } from './grid/grid.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { EllipseToolService } from './tools/ellipse-tool.service';
+import { EraserToolService } from './tools/eraser-tool.service';
 import { LineToolService, Point } from './tools/line-tool.service';
 import { RectangleToolService } from './tools/rectangle-tool.service';
 import { SelectionService } from './tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
-import { ExportWindowComponent } from '../components/export-window/export-window.component';
 
 type FunctionShortcut = (keyboard?: KeyboardEvent ) => void;
 
 const SELECTION_MOVEMENT_PIXEL = 3;
 const MOVEMENT_DELAY_MS = 100;
+const CONTINUOUS_MOVEMENT = 5;
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +49,9 @@ export class ShortcutsManagerService {
               private selection: SelectionService,
               private stockageSVG: SVGStockageService,
               private grid: GridService,
-              private dialog: MatDialog
+              private dialog: MatDialog,
+              private sanitizer: DomSanitizer,
+              private eraser: EraserToolService
               ) {
                 this.focusOnInput = false;
                 this.counter100ms = 0;
@@ -90,11 +96,14 @@ export class ShortcutsManagerService {
         window.clearInterval(this.clearTimeout);
         this.counter100ms = 0;
         this.clearTimeout = 0;
-        for (const element of this.stockageSVG.getCompleteSVG()) {
-          if (element.isSelected) {
-            element.translateAllPoints();
-          }
+        if (this.selection.hasMoved()) {
+          this.commands.execute(new TranslateSvgService(
+            this.selection.selectedElements,
+            this.selection.selectionBox,
+            this.sanitizer,
+            this.selection.deleteBoundingBox));
         }
+
       } else if (this.clearTimeout === 0) {
         this.clearTimeout = window.setInterval(() => {
           const translate: Point = {x: 0 , y: 0};
@@ -116,8 +125,11 @@ export class ShortcutsManagerService {
           }
 
           this.counter100ms++;
-          if (this.counter100ms > 5) {
-              this.selection.updatePosition(translate.x , translate.y);
+          if (this.counter100ms <= 1) {
+            this.selection.updatePosition(translate.x , translate.y);
+          }
+          if (this.counter100ms > CONTINUOUS_MOVEMENT) {
+            this.selection.updatePosition(translate.x , translate.y);
           }
         }, MOVEMENT_DELAY_MS);
       }
@@ -137,6 +149,7 @@ export class ShortcutsManagerService {
     this.selection.deleteBoundingBox();
     this.rectangleTool.clear();
     this.lineTool.clear();
+    this.eraser.clear();
   }
 
   // SHORTCUT FUNCTIONS
@@ -181,6 +194,9 @@ export class ShortcutsManagerService {
       this.focusOnInput = true;
       this.selection.deleteBoundingBox();
       this.dialog.open(ExportWindowComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
+    } else {
+      this.tools.changeActiveTool(TOOL_INDEX.ERASER);
+      this.clearOngoingSVG();
     }
   }
 

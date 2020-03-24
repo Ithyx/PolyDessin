@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
-import { DrawElement } from './draw-element';
+import { Color, DrawElement, ERASING_COLOR_INIT } from './draw-element';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +14,11 @@ export class EllipseService implements DrawElement {
 
   points: Point[];
   isSelected: boolean;
+  erasingEvidence: boolean;
 
-  primaryColor: string;
-  secondaryColor: string;
+  primaryColor: Color;
+  secondaryColor: Color;
+  erasingColor: Color;
 
   thickness: number;
   chosenOption: string;
@@ -28,11 +30,21 @@ export class EllipseService implements DrawElement {
 
   constructor() {
     this.svgHtml = '';
+    this.primaryColor = {
+      RGBAString: '',
+      RGBA: [0, 0, 0, 0]
+    };
+    this.secondaryColor = {
+      RGBAString: '',
+      RGBA: [0, 0, 0, 0]
+    };
+    this.erasingColor = ERASING_COLOR_INIT;
     this.points = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
                    {x: 0, y: 0}];   // points[1], coin bas droite
     this.pointMin = {x: 0, y: 0};
     this.pointMax = {x: 0, y: 0};
     this.isSelected = false;
+    this.erasingEvidence = false;
     this.translate = { x: 0, y: 0};
   }
 
@@ -56,20 +68,22 @@ export class EllipseService implements DrawElement {
   drawLine(): void {
     this.svg = '<line stroke-linecap="round'
       + '" transform=" translate(' + this.translate.x + ' ' + this.translate.y
-      + ')" stroke="' + this.secondaryColor
+      + ')" stroke="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString :  this.secondaryColor.RGBAString)
       + '" stroke-width="' + this.thickness
       + '" x1="' + this.points[0].x + '" y1="' + this.points[0].y
       + '" x2="' + (this.points[0].x + this.getWidth())
-      + '" y2="' + (this.points[0].y + this.getHeight()) + '"/>';
+      + '" y2="' + (this.points[0].y + this.getHeight()) + '"></line>';
   }
 
   drawEllipse(): void {
     this.svg = '<ellipse transform=" translate(' + this.translate.x + ' ' + this.translate.y +
-      ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor : 'none')
-      + '" stroke="' + ((this.chosenOption !== 'Plein') ? this.secondaryColor : 'none')
+      ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor.RGBAString : 'none')
+      + '" stroke="'
+      + ((this.erasingEvidence) ? this.erasingColor.RGBAString :
+        ((this.chosenOption !== 'Plein') ? this.secondaryColor.RGBAString : 'none'))
       + '" stroke-width="' + this.thickness
       + '" cx="' + (this.points[0].x + this.points[1].x) / 2 + '" cy="' + (this.points[0].y + this.points[1].y) / 2
-      + '" rx="' + this.getWidth() / 2 + '" ry="' + this.getHeight() / 2 + '"/>';
+      + '" rx="' + this.getWidth() / 2 + '" ry="' + this.getHeight() / 2 + '"></ellipse>';
   }
 
   drawPerimeter(): void {

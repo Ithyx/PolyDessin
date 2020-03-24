@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Color } from '../stockage-svg/draw-element';
 
 const BUFFER_WIDTH = 535;
 const BUFFER_HEIGHT = 4;
@@ -14,7 +15,7 @@ export class DrawingManagerService {
   width: number;
   id: number;
   name: string;
-  backgroundColor: string;
+  backgroundColor: Color;
   tags: string[];
 
   constructor() {
@@ -22,7 +23,10 @@ export class DrawingManagerService {
     this.width = INITIAL_WIDTH;
     this.id = 0;
     this.name = '';
-    this.backgroundColor = 'rgba(255, 255, 255, 1)';
+    this.backgroundColor = {
+      RGBAString: 'rgba(255, 255, 255, 1)',
+      RGBA: [255, 255, 255, 1]
+    };
     this.tags = [];
   }
 }

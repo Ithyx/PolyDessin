@@ -3,14 +3,14 @@
 
 <form [formGroup]="newDrawing">
 <label>Hauteur: (pixels)
-<input type="number" min = "0" (input)="changeWindowDimensionManually()" formControlName="formHeight" [className]="heightValid ? '' : 'invalid'">
+<input type="number" min = "0" (input)="changeWindowDimensionManually()" formControlName="formHeight" [className]="getHeightClass()">
 </label>
 <label>Largeur: (pixels)
-<input type="number" min = "0" (input)="changeWindowDimensionManually()" formControlName="formWidth" [className]="widthValid  ? '' : 'invalid'">
+<input type="number" min = "0" (input)="changeWindowDimensionManually()" formControlName="formWidth" [className]="getWidthClass()">
 </label>
 
 <h2>Couleur d'Arrière-Plan</h2>
-<button [ngStyle]= "{'background-color': colorParameter.temporaryBackgroundColor || 'white'}" 
+<button [ngStyle]= "{'background-color': colorParameter.temporaryBackgroundColor.RGBAString || 'white'}" 
     (click)="selectColor()" class="select-color"></button>
 </form>
 

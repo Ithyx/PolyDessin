@@ -14,21 +14,21 @@ export class ColorChangerToolService implements ToolInterface {
 
   activeElement: DrawElement | undefined;
 
-  constructor(public colorParameter: ColorParameterService,
-              public commands: CommandManagerService,
+  constructor(private colorParameter: ColorParameterService,
+              private commands: CommandManagerService,
               private sanitizer: DomSanitizer
               ) {}
 
   onMouseClick(): void {
     if (!this.activeElement) { return; }
-    if (this.activeElement.primaryColor !== this.colorParameter.getPrimaryColor()) {
+    if (this.activeElement.primaryColor !== this.colorParameter.primaryColor) {
       this.commands.execute(new PrimaryColorChangeService(this.activeElement, this.colorParameter, this.sanitizer));
     }
   }
 
   onRightClick(): void {
     if (!this.activeElement) { return; }
-    if (this.activeElement.secondaryColor !== this.colorParameter.getSecondaryColor()) {
+    if (this.activeElement.secondaryColor !== this.colorParameter.secondaryColor) {
       this.commands.execute(new SecondaryColorChangeService(this.activeElement, this.colorParameter, this.sanitizer));
     }
   }

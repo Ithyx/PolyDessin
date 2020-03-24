@@ -30,6 +30,7 @@ import { SavePopupComponent } from './components/save-popup/save-popup.component
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 
 // Service
+import { CanvasConversionService } from './services/canvas-conversion.service';
 import { ColorParameterService } from './services/color/color-parameter.service';
 import { CommandManagerService } from './services/command/command-manager.service';
 import { DrawingManagerService } from './services/drawing-manager/drawing-manager.service';
@@ -39,7 +40,7 @@ import { RoutingManagerService } from './services/routing-manager.service';
 import { ShortcutsManagerService } from './services/shortcuts-manager.service';
 import { SVGStockageService } from './services/stockage-svg/svg-stockage.service';
 import { LineToolService } from './services/tools/line-tool.service';
-import { DrawingToolService } from './services/tools/pencil-tool.service';
+import { PencilToolService } from './services/tools/pencil-tool.service';
 import { RectangleToolService } from './services/tools/rectangle-tool.service';
 import { SelectionService } from './services/tools/selection/selection.service';
 
@@ -55,10 +56,10 @@ import { SelectionService } from './services/tools/selection/selection.service';
         {path: 'dessin', component: DrawingPageComponent},
         {path: 'guide', component : GuidePageComponent}
     ])],
-    providers: [NavigationGuideService, SVGStockageService, DrawingToolService, DrawingManagerService,
+    providers: [NavigationGuideService, SVGStockageService, PencilToolService, DrawingManagerService,
                 ShortcutsManagerService, RectangleToolService, LineToolService,
                 RoutingManagerService, ColorParameterService, MatDialogConfig, SelectionService,
-                CommandManagerService, GridService],
+                CommandManagerService, GridService, CanvasConversionService],
 
     entryComponents: [NewDrawingWindowComponent, NewDrawingWarningComponent,
                       ColorChoiceComponent, GridOptionsComponent, SavePopupComponent, GalleryComponent,

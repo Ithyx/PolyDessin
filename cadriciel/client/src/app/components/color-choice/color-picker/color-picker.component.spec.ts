@@ -7,12 +7,13 @@ import { CommandManagerService } from 'src/app/services/command/command-manager.
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { ColorPickerComponent } from './color-picker.component';
 
-describe('color-picker', () => {
+// tslint:disable: no-magic-numbers
+// tslint:disable: no-string-literal
+
+describe('ColorPickerComponent', () => {
   let component: ColorPickerComponent;
   let fixture: ComponentFixture<ColorPickerComponent>;
   let commandes: CommandManagerService;
-  const changementsTeinte: SimpleChanges = {testTeinte: new SimpleChange('avant', 'après', true)};
-  const hauteurTest = {x: 500, y: 500};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -26,7 +27,7 @@ describe('color-picker', () => {
     component = fixture.componentInstance;
     commandes = TestBed.get(CommandManagerService);
     const drawingManager = TestBed.get(DrawingManagerService);
-    component.colorManager = new ColorManagerService(new ColorParameterService(),
+    component['colorManager'] = new ColorManagerService(new ColorParameterService(),
                                                      commandes,
                                                      drawingManager);
     fixture.detectChanges();
@@ -39,28 +40,34 @@ describe('color-picker', () => {
   // TESTS ngOnChanges
 
   it('#ngOnChanges devrait dessiner la palette si la teinte est modifiée', () => {
-    component.colorManager.hue = 'testTeinte';
+    component['colorManager'].hue = 'testHue';
+    const change: SimpleChanges = {testHue: new SimpleChange('before', 'after', true)};
     spyOn(component, 'draw');
-    component.ngOnChanges(changementsTeinte);
+    component.ngOnChanges(change);
     expect(component.draw).toHaveBeenCalled();
   });
 
-  it('#ngOnChanges devrait appeler colorPosition si hauteurChoisie n\'est pas nulle', () => {
-    component.colorManager.hue = 'testTeinte';
+  it('#ngOnChanges devrait appeler colorPosition si chosenHeight n\'est pas nulle', () => {
+    component['colorManager'].hue = 'testHue';
+    const change: SimpleChanges = {testHue: new SimpleChange('before', 'after', true)};
+    const height = {x: 500, y: 500};
+
     spyOn(component, 'colorPosition');
-    component.chosenHeight = hauteurTest;
-    component.ngOnChanges(changementsTeinte);
+    component['chosenHeight'] = height;
+    component.ngOnChanges(change);
     expect(component.colorPosition).toHaveBeenCalledWith(500, 500);
   });
 
-  it('#ngOnChanges ne devrait pas appeler colorPosition si hauteurChoisie est undefined', () => {
+  it('#ngOnChanges ne devrait pas appeler colorPosition si chosenHeight est undefined', () => {
+    const change: SimpleChanges = {testTeinte: new SimpleChange('before', 'after', true)};
+
     spyOn(component, 'colorPosition');
-    component.ngOnChanges(changementsTeinte);
+    component.ngOnChanges(change);
     expect(component.colorPosition).not.toHaveBeenCalled();
   });
 
-  it('#ngOnChanges ne devrait rien faire si la teinte n\'est pas modifiée', () => {
-    component.colorManager.hue = 'testTeinte';
+  it('#ngOnChanges ne devrait rien faire si la hue n\'est pas modifiée', () => {
+    component['colorManager'].hue = 'testHue';
     spyOn(component, 'draw');
     spyOn(component, 'colorPosition');
     component.ngOnChanges({});
@@ -68,76 +75,76 @@ describe('color-picker', () => {
     expect(component.colorPosition).not.toHaveBeenCalled();
   });
 
-  // TESTS colorPosition / dessin
+  // TESTS colorPosition
 
-  it('#colorPosition devrait actualiser la couleur du service gestionnaireCouleur', () => {
-    component.colorManager.hue = 'rgba(50, 50, 50,';
+  it('#colorPosition devrait actualiser la couleur du colorManager', () => {
+    component['colorManager'].hue = 'rgba(50, 50, 50,';
     component.draw();
     component.colorPosition(249, 0);
-    expect(component.colorManager.color).toBe('rgba(49,49,49,');
+    expect(component['colorManager'].color.RGBAString).toBe('rgba(49, 49, 49, 1)');
   });
 
-  it('#colorPosition devrait actualiser le RGB du service gestionnaireCouleur', () => {
-    component.colorManager.hue = 'rgba(50, 50, 50,';
+  it('#colorPosition devrait actualiser le RGB du colorManager', () => {
+    component['colorManager'].hue = 'rgba(50, 50, 50,';
     component.draw();
     component.colorPosition(249, 0);
-    expect(component.colorManager.RGB).toEqual([49, 49, 49]);
+    expect(component['colorManager'].color.RGBA).toEqual([49, 49, 49, 1]);
   });
 
-  // TEST couleurEmise
+  // TEST emittedColor
 
-  it('#couleurEmise devrait appeler colorPosition sur les points donnés en paramètres', () => {
+  it('#emittedColor devrait appeler colorPosition sur les points donnés en paramètres', () => {
     spyOn(component, 'colorPosition');
     component.emittedColor(63, 27);
     expect(component.colorPosition).toHaveBeenCalledWith(63, 27);
   });
 
-  // TEST sourisRelachee
+  // TEST onMouseRelease
 
-  it('#sourisRelachee devrait mettre la variable booléenne sourisBas à false', () => {
+  it('#onMouseRelease devrait mettre la variable booléenne mouseDown à false', () => {
     spyOn(component, 'draw');
     component.onMouseRelease(new MouseEvent('mousedown'));
-    component.onMouseMove(new MouseEvent('mousemove')); // teste la valeur de sourisBas
+    component.onMouseMove(new MouseEvent('mousemove')); // teste la valeur de mouseDown
     expect(component.draw).not.toHaveBeenCalled();
   });
 
-  // TESTS sourisEnfoncee
+  // TESTS onMousePress
 
-  it('#sourisEnfoncee devrait mettre la variable booléenne sourisBas à true', () => {
+  it('#onMousePress devrait mettre la variable booléenne mouseDown à true', () => {
     component.onMousePress(new MouseEvent('mousedown'));
     spyOn(component, 'draw');
-    component.onMouseMove(new MouseEvent('mousemove')); // teste la valeur de sourisBas
+    component.onMouseMove(new MouseEvent('mousemove')); // teste la valeur de mouseDown
     expect(component.draw).toHaveBeenCalled();
   });
 
-  it('#sourisEnfoncee devrait changer la hauteur choisie', () => {
+  it('#onMousePress devrait changer la hauteur choisie', () => {
     component.onMousePress(new MouseEvent('mousedown', {clientX: 50, clientY: 50}));
-    expect(component.chosenHeight).toEqual({x: 50, y: 50});
+    expect(component['chosenHeight']).toEqual({x: 50, y: 50});
   });
 
-  it('#sourisEnfoncee devrait dessiner la palette de couleur', () => {
+  it('#onMousePress devrait dessiner la palette de couleur', () => {
     spyOn(component, 'draw');
     component.onMousePress(new MouseEvent('mousedown'));
     expect(component.draw).toHaveBeenCalled();
   });
 
-  it('#sourisEnfoncee devrait appeler colorPosition sur les coordonnées du clic', () => {
+  it('#onMousePress devrait appeler colorPosition sur les coordonnées du clic', () => {
     spyOn(component, 'colorPosition');
     component.onMousePress(new MouseEvent('mousedown', {clientX: 35, clientY: 35}));
     expect(component.colorPosition).toHaveBeenCalledWith(35, 35);
   });
 
-  // TESTS sourisDeplacee
-  it('#sourisDeplacee devrait changer la hauteurChoisie si sourisBas est vraie', () => {
-    component.onMousePress(new MouseEvent('mousedown')); // sourisBas = true;
+  // TESTS onMouseMove
+  it('#onMouseMove devrait changer la hauteurChoisie si mouseDown est vraie', () => {
+    component.onMousePress(new MouseEvent('mousedown')); // mouseDown = true;
     component.onMouseMove(new MouseEvent('mousemove', {clientX: 25, clientY: 25}));
-    expect(component.chosenHeight).toEqual({x: 25, y: 25});
+    expect(component['chosenHeight']).toEqual({x: 25, y: 25});
   });
 
-  it('#sourisDeplacee devrait appeler couleurEmise avec les coordonnées de ' +
-    'la souris si sourisBas est vraie', () => {
+  it(`#onMouseMove devrait appeler emittedColor avec les coordonnées de
+      la souris si moudeDown est vraie`, () => {
     spyOn(component, 'emittedColor');
-    component.onMousePress(new MouseEvent('mousedown')); // sourisBas = true;
+    component.onMousePress(new MouseEvent('mousedown')); // mouseDown = true;
     component.onMouseMove(new MouseEvent('mousemove', {clientX: 15, clientY: 15}));
     expect(component.emittedColor).toHaveBeenCalledWith(15, 15);
   });

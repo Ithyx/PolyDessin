@@ -61,7 +61,7 @@ export class DrawSprayService implements ToolInterface {
 
   resetTrace(): void {
     this.trace = new TraceSprayService();
-    this.trace.primaryColor = this.colorParameter.getPrimaryColor();
+    this.trace.primaryColor = {...this.colorParameter.primaryColor};
     this.trace.updateParameters(this.tools.activeTool);
   }
 

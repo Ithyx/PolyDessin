@@ -1,7 +1,8 @@
 <app-toolbar></app-toolbar>
 
 <div class="drawing-surface">
-    <app-drawing-surface (click)="onClick($event)"
+    <app-drawing-surface [class]="getDrawingSurfaceClass()"
+                        (click)="onClick($event)"
                         (dblclick)="onDblClick($event)"
                         (mousemove)="onMouseMove($event)"
                         (mouseup)="onMouseUp($event)"
@@ -11,3 +12,44 @@
                         (contextmenu)="onRightClick($event)">
     </app-drawing-surface>
 </div>
+
+<svg #canvasConversion class="canvas-conversion" [attr.width]="canvas.drawing.width" [attr.height]="canvas.drawing.height"
+    [attr.viewBox]="'0 0 ' + canvas.drawing.width.toString() + ' ' + canvas.drawing.height.toString()">
+    <defs>
+        <!-- Texture libre de droit-->
+
+        <!-- https://developer.mozilla.org/fr/docs/Web/SVG/Element/feGaussianBlur -->
+        <filter id="Flou" filterUnits="userSpaceOnUse">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+        </filter>
+
+        <!-- https://codepen.io/clovisneto/pen/MbBZEX -->
+        <filter id="Tremblant" filterUnits="userSpaceOnUse">
+            <feTurbulence baseFrequency="0.07" numOctaves="1" type="fractalNoise" seed="1" result="fractalNoise"></feTurbulence>
+            <feDisplacementMap scale="20" in="SourceGraphic" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+        </filter>
+        
+        <!-- https://developer.mozilla.org/fr/docs/Web/SVG/Element/feTurbulence -->
+        <filter id="Tache" filterUnits="userSpaceOnUse">
+            <feTurbulence baseFrequency="0.18" numOctaves="5" type="turbulence" seed="3" result="turbulence"/>
+            <feDisplacementMap in="SourceGraphic" scale="8" xChannelSelector="G" yChannelSelector="R"/>
+        </filter>
+
+        <!-- https://developer.mozilla.org/fr/docs/Web/SVG/Element/feColorMatrix -->
+        <filter id="Noir-et-blanc" filterUnits="userSpaceOnUse">
+            <feColorMatrix in="SourceGraphic" type="saturate" values="0" />
+        </filter>
+
+        <!-- https://developer.mozilla.org/fr/docs/Web/SVG/Element/feComponentTransfer -->
+        <filter id="Sepia" filterUnits="userSpaceOnUse">
+            <feColorMatrix in="SourceGraphic" type="saturate" values="0.1" />
+            <feComponentTransfer>
+                <feFuncR type="linear" slope="0.5" intercept="0.5"></feFuncR>
+                <feFuncG type="linear" slope="0.5" intercept="0.2"></feFuncG>
+                <feFuncB type="linear" slope="0.5" intercept="0"></feFuncB>
+            </feComponentTransfer>
+        </filter>
+    </defs>
+    <rect [attr.width]="canvas.drawing.width" [attr.height]="canvas.drawing.height" [attr.fill]="canvas.drawing.backgroundColor.RGBAString" />
+    <g *ngFor="let element of canvas.drawing.elements" [innerHtml]="element.svgHtml" />
+</svg>

@@ -1,4 +1,5 @@
-/*import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule, MatDialogRef } from '@angular/material';
 import { By } from '@angular/platform-browser';
 import { ColorManagerService } from 'src/app/services/color/color-manager.service';
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
@@ -6,14 +7,19 @@ import { CommandManagerService } from 'src/app/services/command/command-manager.
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { ColorInputComponent } from './color-input.component';
 
-describe('color-input', () => {
+// tslint:disable: no-magic-numbers
+// tslint:disable: no-string-literal
+
+describe('ColorInputComponent', () => {
   let component: ColorInputComponent;
   let fixture: ComponentFixture<ColorInputComponent>;
   let commandes: CommandManagerService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ColorInputComponent ]
+      declarations: [ ColorInputComponent ],
+      imports: [MatDialogModule],
+      providers: [ { provide: MatDialogRef, useValue: {}}]
     })
     .compileComponents();
   }));
@@ -23,7 +29,7 @@ describe('color-input', () => {
     component = fixture.componentInstance;
     commandes = TestBed.get(CommandManagerService);
     const drawingManager = TestBed.get(DrawingManagerService);
-    component.colorManager = new ColorManagerService(new ColorParameterService(),
+    component['colorManager'] = new ColorManagerService(new ColorParameterService(),
                                                      commandes,
                                                      drawingManager);
 
@@ -35,79 +41,78 @@ describe('color-input', () => {
     expect(component).toBeTruthy();
   });
 
-  // TESTS modificationRGB
-  it('#modificationRGB devrait modifier le RGB si on entre une valeur hexadécimal', () => {
-    const element = fixture.debugElement.query(By.css('input[class="hexRouge"]')).nativeElement;
+  // TESTS editRGB
+  it('#editRGB devrait modifier le RGB si on entre une valeur hexadécimal', () => {
+    const element = fixture.debugElement.query(By.css('input[class="hexRed"]')).nativeElement;
     element.value = 0xff;
 
-    spyOn(component.colorManager, 'editRGB');
+    spyOn(component['colorManager'], 'updateColor');
 
     element.dispatchEvent(new Event('change'));
 
-    expect(component.colorManager.editRGB).toHaveBeenCalled();
-    expect(component.colorManager.RGB[component.RED_INDEX]).toBe(255);
+    expect(component['colorManager'].updateColor).toHaveBeenCalled();
   });
 
-  it('#modificationRGB devrait modifier le RGB si on entre un string non reconnu', () => {
-    const element = fixture.debugElement.query(By.css('input[class="hexBleu"]')).nativeElement;
+  it('#editRGB ne devrait pas modifier le RGB si on entre un string non reconnu', () => {
+    const element = fixture.debugElement.query(By.css('input[class="hexBlue"]')).nativeElement;
     element.value = 'test';
 
-    spyOn(component.colorManager, 'editRGB');
+    spyOn(component['colorManager'], 'updateColor');
 
     element.dispatchEvent(new Event('change'));
 
-    expect(component.colorManager.editRGB).toHaveBeenCalled();
-    expect(component.colorManager.RGB[component.BLUE_INDEX]).toBe(0);
+    expect(component['colorManager'].updateColor).toHaveBeenCalled();
+    expect(component['colorManager'].color.RGBA[component['BLUE_INDEX']]).toBe(0);
   });
 
-  it('#modificationRGB ne devrait pas modifier le RGB si l\'index est non recconu', () => {
-    component.BLUE_INDEX = 5;
-    const element = fixture.debugElement.query(By.css('input[class="hexBleu"]')).nativeElement;
+  it('#editRGB ne devrait pas modifier le RGB si l\'index est non recconu', () => {
+    component['BLUE_INDEX'] = 5;
+    const element = fixture.debugElement.query(By.css('input[class="hexBlue"]')).nativeElement;
     element.value = 0xff;
 
-    spyOn(component.colorManager, 'editRGB');
+    spyOn(component['colorManager'], 'updateColor');
 
     element.dispatchEvent(new Event('change'));
 
-    expect(component.colorManager.editRGB).not.toHaveBeenCalled();
+    expect(component['colorManager'].updateColor).not.toHaveBeenCalled();
   });
 
-  // TESTS verifierEntree
-  it('#verifierEntree devrait renvoyer vrai, si on appuie sur une touche avec une lettre acceptee', () => {
+  // TESTS checkInput
+  it('#checkInput devrait renvoyer vrai, si on appuie sur une touche avec une lettre acceptee', () => {
     const clavier = new KeyboardEvent('keypress', { key: 'a'});
     expect(component.checkInput(clavier)).toBe(true);
   });
 
-  it('#verifierEntree devrait renvoyer vrai, si on appuie sur backspace', () => {
+  it('#checkInput devrait renvoyer vrai, si on appuie sur backspace', () => {
     const clavier = new KeyboardEvent('keypress', { key: 'Backspace'});
     expect(component.checkInput(clavier)).toBe(true);
   });
 
-  it('#verifierEntree devrait renvoyer vrai, si on appuie sur une touche avec un nombre acceptee', () => {
+  it('#checkInput devrait renvoyer vrai, si on appuie sur une touche avec un nombre acceptee', () => {
     const clavier = new KeyboardEvent('keypress', { key: '7'});
     expect(component.checkInput(clavier)).toBe(true);
   });
 
-  it('#verifierEntree devrait renvoyer faux, si on appuie sur une touche avec une lettre non-acceptee', () => {
+  it('#checkInput devrait renvoyer faux, si on appuie sur une touche avec une lettre non-acceptee', () => {
     const clavier = new KeyboardEvent('keypress', { key: 'v'});
     expect(component.checkInput(clavier)).toBe(false);
   });
 
-  it('#verifierEntree devrait renvoyer faux, si on appuie sur une touche non reconnue', () => {
+  it('#checkInput devrait renvoyer faux, si on appuie sur une touche non reconnue', () => {
     const clavier = new KeyboardEvent('keypress', { key: '#'});
     expect(component.checkInput(clavier)).toBe(false);
   });
 
-  // TEST desactiverRaccourcis
-  it('#activerRaccourcis devrait activer le focus sur le champ d\'entree', () => {
+  // TEST disableShortcuts
+  it('#disableShortcuts devrait activer le focus sur le champ d\'entree', () => {
     component.disableShortcuts();
-    expect(component.shortcuts.focusOnInput).toBe(true);
+    expect(component['shortcuts'].focusOnInput).toBe(true);
   });
 
-  // TEST activerRaccourcis
-  it('#activerRaccourcis devrait desactiver le focus sur le champ d\'entree', () => {
+  // TEST enableShortcuts
+  it('#enableShortcuts devrait desactiver le focus sur le champ d\'entree', () => {
     component.enableShortcuts();
-    expect(component.shortcuts.focusOnInput).toBe(false);
+    expect(component['shortcuts'].focusOnInput).toBe(false);
   });
 
-});*/
+});

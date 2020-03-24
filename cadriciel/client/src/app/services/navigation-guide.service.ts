@@ -33,6 +33,15 @@ export class NavigationGuideService {
       }
     });
   }
+
+  closeCategories(category: SubjectGuide[]): void {
+    category.forEach((element) => {
+      if (element.subSubjects) {
+        element.openCategory = false;
+        this.closeCategories(element.subSubjects);
+      }
+    });
+  }
 }
 
 export const EMPTY_SUBJECT: SubjectGuide = {

@@ -7,22 +7,16 @@ import { Command } from './command';
   providedIn: 'root'
 })
 export class AddSVGService implements Command {
-  svgKey: number;
   constructor(public element: DrawElement,
               public svgStockage: SVGStockageService) {
     this.svgStockage.addSVG(this.element);
-    this.svgKey = this.svgStockage.size - 1;
   }
 
   undo(): void {
-    const element = this.svgStockage.removeSVG(this.svgKey);
-    if (element) {
-      this.element = element;
-    }
+    this.svgStockage.removeSVG(this.element);
   }
 
   redo(): void {
     this.svgStockage.addSVG(this.element);
-    this.svgKey = this.svgStockage.size - 1;
   }
 }

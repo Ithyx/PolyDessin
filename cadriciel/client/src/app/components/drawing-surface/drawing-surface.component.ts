@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
+import { CommandManagerService } from 'src/app/services/command/command-manager.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { GridService } from 'src/app/services/grid/grid.service';
 import { RoutingManagerService } from 'src/app/services/routing-manager.service';
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
+import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
+import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 
@@ -15,7 +19,12 @@ import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-mana
   templateUrl: './drawing-surface.component.html',
   styleUrls: ['./drawing-surface.component.scss']
 })
-export class DrawingSurfaceComponent {
+export class DrawingSurfaceComponent implements AfterViewInit {
+  @ViewChild('drawing', {static: false})
+  drawing: ElementRef<SVGElement>;
+  @ViewChild('canvas', {static: false})
+  canvas: ElementRef<HTMLCanvasElement>;
+
   constructor(public SVGStockage: SVGStockageService,
               private tools: ToolManagerService,
               public drawingManager: DrawingManagerService,
@@ -24,7 +33,18 @@ export class DrawingSurfaceComponent {
               public colorParameter: ColorParameterService,
               private selection: SelectionService,
               public grid: GridService,
-              private colorChanger: ColorChangerToolService) {
+              public colorChanger: ColorChangerToolService,
+              public commands: CommandManagerService,
+              public eraser: EraserToolService,
+              private canvasConversion: CanvasConversionService,
+              private pipette: PipetteToolService) {
+  }
+
+  ngAfterViewInit(): void {
+    this.eraser.drawing = this.drawing.nativeElement;
+    this.pipette.drawing = this.drawing.nativeElement;
+    this.canvasConversion.canvas = this.canvas.nativeElement;
+    this.pipette.canvas = this.canvas.nativeElement;
   }
 
   clickBelongToSelectionBox(mouse: MouseEvent): boolean {
