@@ -60,6 +60,18 @@ export class EraserToolService implements ToolInterface {
   }
 
   isInEraser(): void {
+    this.findIntersectionElements();
+    this.findDrawElements();
+
+    if (this.commands.drawingInProgress) {
+      this.removeElements();
+    } else {
+      this.selectedDrawElement = [];
+      this.selectedSVGElement = [];
+    }
+  }
+
+  findIntersectionElements(): void {
     // On regarde quels elements ont une boundingBox en intersection avec l'efface
     const intersectionElements = (this.drawing as SVGSVGElement).getIntersectionList(this.square, this.drawing);
 
@@ -75,14 +87,13 @@ export class EraserToolService implements ToolInterface {
           const domPoint = (element as SVGPathElement).getPointAtLength(index);
           if (this.belongsToSquare({x: domPoint.x, y: domPoint.y })) {    // On vérifie si le point appartient à l'efface
             this.selectedSVGElement.push(element);
-
-            // TODO: Possible gain de performance avec l'association SVGElement à DrawElement en déplaçant la boucle for ligne 71 ici
-
           }
         }
       }
     });
+  }
 
+  findDrawElements(): void {
     const elementsInArea = this.canvas.getElementsInArea(this.square.x, this.square.y, this.thickness, this.thickness);
     for (const element of this.svgStockage.getCompleteSVG()) {
       element.erasingEvidence = false;
@@ -103,13 +114,6 @@ export class EraserToolService implements ToolInterface {
       }
       element.draw();
       element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
-    }
-
-    if (this.commands.drawingInProgress) {
-      this.removeElements();
-    } else {
-      this.selectedDrawElement = [];
-      this.selectedSVGElement = [];
     }
   }
 
