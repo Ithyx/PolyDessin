@@ -7,7 +7,7 @@ import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { TraceBrushService } from './stockage-svg/trace-brush.service';
 import { TracePencilService } from './stockage-svg/trace-pencil.service';
 
-const MAX_COLOR_VALUE = 255;
+export const MAX_COLOR_VALUE = 255;
 const INDEX_INCREASE = 4;
 const TIME_BEFORE_UPDATE = 20;
 
