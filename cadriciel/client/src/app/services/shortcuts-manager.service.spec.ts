@@ -31,13 +31,14 @@ describe('ShortcutsManagerService', () => {
   const element: DrawElement = {
     svg: '',
     svgHtml: '',
-    points: [],
+    points: [{x: 90, y: 90}, {x: 76, y: 89 }],
     isSelected: false,
     erasingEvidence: false,
     erasingColor: {RGBA: [0, 0, 0, 1], RGBAString: ''},
     pointMin: {x: 0, y: 0},
     pointMax: {x: 0, y: 0},
     translate: {x: 0, y: 0},
+    chosenOption: '',
     draw: () => { return; },
     updatePosition: () => { return; },
     updatePositionMouse: () => { return; },
@@ -66,7 +67,31 @@ describe('ShortcutsManagerService', () => {
   });
 
   // TESTS updatePositionTimer
+
+  it('#updatePositionTimer ne devrait rien faire s\'il n\'y a pas de boite de selection', () => {
+    spyOn(window, 'clearInterval');
+    spyOn(window, 'setInterval');
+    spyOn(service['selection'], 'updatePosition');
+    spyOn(service['commands'], 'execute');
+
+    service.updatePositionTimer();
+    expect(window.clearInterval).not.toHaveBeenCalled();
+    expect(window.setInterval).not.toHaveBeenCalled();
+    expect(service['selection'].updatePosition).not.toHaveBeenCalled();
+    expect(service['commands'].execute).not.toHaveBeenCalled();
+  });
+
+  it('#updatePositionTimer devrait remettre le compteur à 0 si aucune flèche n\'est appuyé', () => {
     // TODO
+  });
+
+  it('#updatePositionTimer devrait appeler clearInterval de la fenêtre si aucune flèche n\'est appuyé', () => {
+    // TODO
+  });
+
+  it('#updatePositionTimer devrait executer une commande translastion si le SVG a été bougé et qu\'aucune flèche n\'est appuyé', () => {
+    // TODO
+  });
 
   // TESTS treatInput
 
