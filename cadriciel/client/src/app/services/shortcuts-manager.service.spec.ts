@@ -12,6 +12,7 @@ import { GalleryLoadWarningComponent } from '../components/gallery-load-warning/
 import { GalleryElementComponent } from '../components/gallery/gallery-element/gallery-element.component';
 import { GalleryComponent } from '../components/gallery/gallery.component';
 import { SavePopupComponent } from '../components/save-popup/save-popup.component';
+import { TranslateSvgService } from './command/translate-svg.service';
 import { ShortcutsManagerService } from './shortcuts-manager.service';
 import { DrawElement } from './stockage-svg/draw-element';
 import { TOOL_INDEX } from './tools/tool-manager.service';
@@ -82,15 +83,42 @@ describe('ShortcutsManagerService', () => {
   });
 
   it('#updatePositionTimer devrait remettre le compteur à 0 si aucune flèche n\'est appuyé', () => {
-    // TODO
+    service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
+    service['selection'].handleClick(element);    // création de la boite de sélection
+    service.updatePositionTimer();
+    expect(service['counter100ms']).toEqual(0);
+    expect(service['clearTimeout']).toEqual(0);
   });
 
   it('#updatePositionTimer devrait appeler clearInterval de la fenêtre si aucune flèche n\'est appuyé', () => {
-    // TODO
+    service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
+    service['selection'].handleClick(element);    // création de la boite de sélection
+    spyOn(window, 'clearInterval');
+    service.updatePositionTimer();
+    expect(window.clearInterval).toHaveBeenCalledWith(service['clearTimeout']);
+  });
+
+  it('#updatePositionTimer ne devrait pas executer de commande de translastion si le SVG n\' a pas bougé et '
+    + 'qu\'aucune flèche n\'est appuyé', () => {
+    service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
+    service['selection'].handleClick(element);    // création de la boite de sélection
+    spyOn(service['commands'], 'execute');
+    service.updatePositionTimer();
+    expect(service['commands'].execute).not.toHaveBeenCalled();
   });
 
   it('#updatePositionTimer devrait executer une commande translastion si le SVG a été bougé et qu\'aucune flèche n\'est appuyé', () => {
-    // TODO
+    service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
+    element.translate = {x: 10, y: 10};
+    service['selection'].handleClick(element);    // création de la boite de sélection
+    spyOn(service['commands'], 'execute');
+    service.updatePositionTimer();
+    expect(service['commands'].execute).toHaveBeenCalledWith(new TranslateSvgService(
+                                service['selection'].selectedElements,
+                                service['selection'].selectionBox,
+                                service['sanitizer'],
+                                service['selection'].deleteBoundingBox
+    ));
   });
 
   // TESTS treatInput
