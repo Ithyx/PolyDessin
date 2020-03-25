@@ -55,6 +55,28 @@ describe('EraserToolService', () => {
     expect(spy).toHaveBeenCalledWith(eraser);
   });
 
+  // TESTS isInEraser
+  it('#isInEraser devrait appeler la fonction findDrawElements', () => {
+    isInEraserSpy.and.callThrough();
+    const spy = spyOn(service, 'findDrawElements');
+    service.isInEraser();
+    expect(spy).toHaveBeenCalled();
+  });
+  it('#isInEraser devrait appeler la fonction #removeElements si l\'utilisateur est en mode brosse', () => {
+    isInEraserSpy.and.callThrough();
+    const spy = spyOn(service, 'removeElements');
+    service['commands'].drawingInProgress = true;
+    service.isInEraser();
+    expect(spy).toHaveBeenCalled();
+  });
+  it('#isInEraser ne devrait pas appeler la fonction #removeElements si l\'utilisateur n\'est pas en mode brosse', () => {
+    isInEraserSpy.and.callThrough();
+    const spy = spyOn(service, 'removeElements');
+    service['commands'].drawingInProgress = false;
+    service.isInEraser();
+    expect(spy).not.toHaveBeenCalled();
+  });
+
   // TESTS onMouseMove
   it('#onMouseMove devrait mettre à jour l\'épaisseur du trait si une valeur est entrée', () => {
     service['thickness'] = 18;
