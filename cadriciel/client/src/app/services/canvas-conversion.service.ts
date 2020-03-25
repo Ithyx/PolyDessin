@@ -12,8 +12,8 @@ import { TraceSprayService } from './stockage-svg/trace-spray.service';
 export const MAX_COLOR_VALUE = 255;
 const INDEX_INCREASE = 4;
 const TIME_BEFORE_UPDATE = 1;
-const COLOR_INCREASE_LINE = 2;
-const COLOR_INCREASE_SPRAY = 5;
+export const COLOR_INCREASE_LINE = 2;
+export const COLOR_INCREASE_SPRAY = 5;
 
 @Injectable({
   providedIn: 'root'
