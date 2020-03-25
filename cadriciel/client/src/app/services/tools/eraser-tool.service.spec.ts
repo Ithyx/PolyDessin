@@ -35,9 +35,7 @@ describe('EraserToolService', () => {
     service = TestBed.get(EraserToolService);
     service['drawing'] = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     service['thickness'] = 10;
-    service['square'] = new DOMRect();
-    service['square'].x = 10;
-    service['square'].y = 10;
+    service['initialPoint'] = {x: 50, y: 50};
     isInEraserSpy = spyOn(service, 'isInEraser').and.callFake(() => { return; });
   });
 
@@ -47,64 +45,14 @@ describe('EraserToolService', () => {
 
   // TESTS makeSquare
 
-  it('#makeSquare devrait appeler createSVGRect de SVGSVGElement pour créer le carré de l\'efface', () => {
-    const spy = spyOn(SVGSVGElement.prototype, 'createSVGRect').and.returnValue(new DOMRect());
-    service.makeSquare(new MouseEvent('click'));
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('#makeSquare devrait assigner la coordonnée en x du point supérieur gauche à square.x', () => {
-    service.makeSquare(new MouseEvent('click', {clientX: 100, clientY: 100}));
-    expect(service['square'].x).toBe(95);
-  });
-
-  it('#makeSquare devrait assigner la coordonnée en y du point supérieur gauche à square.y', () => {
-    service.makeSquare(new MouseEvent('click', {clientX: 100, clientY: 100}));
-    expect(service['square'].y).toBe(95);
-  });
-
-  it('#makeSquare devrait assigner thickness à square.width', () => {
-    service['thickness'] = 35;
-    service.makeSquare(new MouseEvent('click'));
-    expect(service['square'].width).toBe(35);
-  });
-
-  it('#makeSquare devrait assigner thickness à square.height', () => {
-    service['thickness'] = 45;
-    service.makeSquare(new MouseEvent('click'));
-    expect(service['square'].height).toBe(45);
-  });
-
   it('#makeSquare devrait appeler setOngoingSVG de svgStockage avec l\'efface', () => {
     const spy = spyOn(service['svgStockage'], 'setOngoingSVG');
-    service.makeSquare(new MouseEvent('click', {clientX: 50, clientY: 60}));
+    service.makeSquare();
     const eraser = new RectangleService();
     eraser.svg =
-      '<rect class="eraser" x="45" y="55" width="10" height="10" stroke="rgba(0, 0, 0, 1)" fill="white" stroke-width="1"></rect>';
+      '<rect class="eraser" x="50" y="50" width="10" height="10" stroke="rgba(0, 0, 0, 1)" fill="white" stroke-width="1"></rect>';
     eraser.svgHtml = service['sanitizer'].bypassSecurityTrustHtml(eraser.svg);
     expect(spy).toHaveBeenCalledWith(eraser);
-  });
-
-  // TESTS belongsToSquare
-
-  it('#belongsToSquare devrait retourner false si le point en x est inférieur au x du carré', () => {
-    expect(service.belongsToSquare({x: 5, y: 15})).toBe(false);
-  });
-
-  it('#belongsToSquare devrait retourner false si le point en y est inférieur au y du carré', () => {
-    expect(service.belongsToSquare({x: 15, y: 5})).toBe(false);
-  });
-
-  it('#belongsToSquare devrait retourner false si le point en x est supérieur au x du carré plus l\'épaisseur', () => {
-    expect(service.belongsToSquare({x: 25, y: 15})).toBe(false);
-  });
-
-  it('#belongsToSquare devrait retourner false si le point en y est supérieur au y du carré plus l\'épaisseur', () => {
-    expect(service.belongsToSquare({x: 15, y: 25})).toBe(false);
-  });
-
-  it('#belongsToSquare devrait retourner true si le point se trouve à l\'intérieur du carré', () => {
-    expect(service.belongsToSquare({x: 15, y: 15})).toBe(true);
   });
 
   // TESTS onMouseMove
@@ -120,17 +68,17 @@ describe('EraserToolService', () => {
     service.onMouseMove(new MouseEvent('move'));
     expect(service['thickness']).toBe(DEFAULT_THICKNESS);
   });
-  it('#onMouseMove devrait mettre à jour la position de la souris', () => {
-    service['mousePosition'] = {x: 0, y: 0};
-    const event = new MouseEvent('move', {clientX: 1000, clientY: 1000});
+  it('#onMouseMove devrait mettre à jour le point initial', () => {
+    service['initialPoint'] = {x: 0, y: 0};
+    const event = new MouseEvent('move', {clientX: 1005, clientY: 1005});
     service.onMouseMove(event);
-    expect(service['mousePosition']).toEqual({x: 1000, y: 1000});
+    expect(service['initialPoint']).toEqual({x: 1000, y: 1000});
   });
-  it('#onMouseMove devrait appeller #makeSquare avec les bons paramètres', () => {
+  it('#onMouseMove devrait appeller #makeSquare', () => {
     const event = new MouseEvent('move', {clientX: 1000, clientY: 1000});
     const spy = spyOn(service, 'makeSquare');
     service.onMouseMove(event);
-    expect(spy).toHaveBeenCalledWith(event);
+    expect(spy).toHaveBeenCalled();
   });
   it('#onMouseMove devrait appeller #isInEraser', () => {
     service.onMouseMove(new MouseEvent('mouve'));

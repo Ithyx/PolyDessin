@@ -36,7 +36,7 @@ export class EraserToolService implements ToolInterface {
     this.removeCommand = new RemoveSVGService(svgStockage);
   }
 
-  makeSquare(mouse: MouseEvent): void {
+  makeSquare(): void {
     const eraser = new RectangleService();
     eraser.svg = '<rect class="eraser" x="' + this.initialPoint.x + '" y="' + this.initialPoint.y +
     '" width="' + this.thickness + '" height="' + this.thickness +
@@ -72,7 +72,7 @@ export class EraserToolService implements ToolInterface {
   onMouseMove(mouse: MouseEvent): void {
     this.initialPoint = {x: mouse.offsetX - this.thickness / 2, y: mouse.offsetY - this.thickness / 2};
     this.thickness = (this.tools.activeTool.parameters[0].value) ? this.tools.activeTool.parameters[0].value : DEFAULT_THICKNESS;
-    this.makeSquare(mouse);
+    this.makeSquare();
     this.isInEraser();
   }
 
