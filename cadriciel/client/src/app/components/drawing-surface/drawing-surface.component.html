@@ -51,7 +51,7 @@
     <g  class = "selectionBox" *ngIf="this.selection.selectionBox.selectionBox" [innerHTML]="this.selection.selectionBox.selectionBox.svgHtml"  (mousedown)="handleMouseDownBox($event)"  (mouseup)="handleMouseUpBox()"></g>
     
     <!--Points de controle de le boite de selection-->
-    <g *ngFor="let controlPoint of this.selection.selectionBox.controlPointBox" [innerHTML]="controlPoint.svgHtml" oncontextmenu="return false;" ></g>
+    <g *ngFor="let controlPoint of this.selection.selectionBox.controlPointBox" [innerHTML]="controlPoint.svgHtml" oncontextmenu="return false;" (mousedown)="handleControlPointMouseDown($event)" ></g>
    
     <g [innerHTML]="SVGStockage.getOngoingSVGHTML()"></g>
     <g [innerHTML]="SVGStockage.getOngoingPerimeterHTML()"></g>

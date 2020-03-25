@@ -73,7 +73,8 @@ export class DrawingSurfaceComponent implements AfterViewInit {
         delete this.selection.selectionRectangle.rectangle;
         this.selection.clickInSelectionBox = true;
       } else if (mouse.button === RIGHT_CLICK) {
-
+        this.selection.selectionRectangle.mouseDown(mouse);
+        delete this.selection.selectionRectangle.rectangle;
       }
     }
   }
@@ -174,6 +175,16 @@ export class DrawingSurfaceComponent implements AfterViewInit {
       element.isSelected = false;
     }
     this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
+
+   }
+
+   handleControlPointMouseDown(mouse: MouseEvent): void {
+    this.mousePositionX = mouse.screenX;
+    this.mousePositionY = mouse.screenY;
+    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION && mouse.button === RIGHT_CLICK){
+      this.selection.selectionRectangle.mouseDown(mouse);
+      delete this.selection.selectionRectangle.rectangle;
+    }
 
    }
 

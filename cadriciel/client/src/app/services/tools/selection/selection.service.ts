@@ -188,6 +188,8 @@ export class SelectionService implements ToolInterface {
         if (this.belongToRectangle(element, this.selectionRectangle.rectangleInverted) && !this.modifiedElement.has(element)) {
           this.reverseElementSelectionStatus(element);
           this.modifiedElement.add(element);
+        } else if (!this.belongToRectangle(element, this.selectionRectangle.rectangleInverted) && this.modifiedElement.has(element) ) {
+          this.modifiedElement.delete(element);
         }
       }
 
@@ -279,12 +281,13 @@ export class SelectionService implements ToolInterface {
   }
 
   reverseElementSelectionStatus(element: DrawElement): void {
-    element.isSelected = !element.isSelected;
-    if (element.isSelected) {
+    if (!this.selectedElements.includes(element)) {
       this.selectedElements.push(element);
+      element.isSelected = true;
     } else {
       const index = this.selectedElements.indexOf(element, 0);
       this.selectedElements.splice(index, 1);
+      element.isSelected = false;
     }
   }
 
