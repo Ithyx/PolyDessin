@@ -10,7 +10,7 @@ import { Point } from './line-tool.service';
 import { ToolInterface } from './tool-interface';
 import { ToolManagerService } from './tool-manager.service';
 
-const DEFAULT_THICKNESS = 10;
+export const DEFAULT_THICKNESS = 10;
 const DARK_RED = 170;
 const MIN_RED_EVIDENCE = 230;
 const MAX_BLUE_EVIDENCE = 200;
@@ -37,7 +37,6 @@ export class EraserToolService implements ToolInterface {
   }
 
   makeSquare(mouse: MouseEvent): void {
-    this.initialPoint = {x: mouse.offsetX - this.thickness / 2, y: mouse.offsetY - this.thickness / 2};
     const eraser = new RectangleService();
     eraser.svg = '<rect class="eraser" x="' + this.initialPoint.x + '" y="' + this.initialPoint.y +
     '" width="' + this.thickness + '" height="' + this.thickness +
@@ -71,6 +70,7 @@ export class EraserToolService implements ToolInterface {
   }
 
   onMouseMove(mouse: MouseEvent): void {
+    this.initialPoint = {x: mouse.offsetX - this.thickness / 2, y: mouse.offsetY - this.thickness / 2};
     this.thickness = (this.tools.activeTool.parameters[0].value) ? this.tools.activeTool.parameters[0].value : DEFAULT_THICKNESS;
     this.makeSquare(mouse);
     this.isInEraser();
@@ -84,14 +84,11 @@ export class EraserToolService implements ToolInterface {
   onMouseClick(mouse: MouseEvent): void {
     this.removeCommand = new RemoveSVGService(this.svgStockage);
     this.commands.drawingInProgress = true;
-    this.thickness = (this.tools.activeTool.parameters[0].value) ? this.tools.activeTool.parameters[0].value : DEFAULT_THICKNESS;
-    this.makeSquare(mouse);
-    this.isInEraser();
+    this.onMouseMove(mouse);
     this.commands.drawingInProgress = false;
     if (!this.removeCommand.isEmpty()) {
       this.commands.execute(this.removeCommand);
     }
-    this.removeCommand = new RemoveSVGService(this.svgStockage);
   }
 
   onMouseRelease(): void {

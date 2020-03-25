@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { RemoveSVGService } from '../command/remove-svg.service';
 import { DrawElement } from '../stockage-svg/draw-element';
 import { RectangleService } from '../stockage-svg/rectangle.service';
-import { EraserToolService } from './eraser-tool.service';
+import { DEFAULT_THICKNESS, EraserToolService } from './eraser-tool.service';
 
 // tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers
@@ -11,6 +11,7 @@ import { EraserToolService } from './eraser-tool.service';
 
 describe('EraserToolService', () => {
   let service: EraserToolService;
+  let isInEraserSpy: jasmine.Spy<() => void>;
 
   const element: DrawElement = {
     svg: '',
@@ -37,6 +38,7 @@ describe('EraserToolService', () => {
     service['square'] = new DOMRect();
     service['square'].x = 10;
     service['square'].y = 10;
+    isInEraserSpy = spyOn(service, 'isInEraser').and.callFake(() => { return; });
   });
 
   it('should be created', () => {
@@ -103,6 +105,56 @@ describe('EraserToolService', () => {
 
   it('#belongsToSquare devrait retourner true si le point se trouve à l\'intérieur du carré', () => {
     expect(service.belongsToSquare({x: 15, y: 15})).toBe(true);
+  });
+
+  // TESTS onMouseMove
+  it('#onMouseMove devrait mettre à jour l\'épaisseur du trait si une valeur est entrée', () => {
+    service['thickness'] = 18;
+    service['tools'].activeTool.parameters[0].value = 5;
+    service.onMouseMove(new MouseEvent('move'));
+    expect(service['thickness']).toBe(5);
+  });
+  it('#onMouseMove devrait s\'ajuster à l\'épaisseur par défault si la valeur n\'est pas définie', () => {
+    service['thickness'] = 18;
+    service['tools'].activeTool.parameters[0].value = undefined;
+    service.onMouseMove(new MouseEvent('move'));
+    expect(service['thickness']).toBe(DEFAULT_THICKNESS);
+  });
+  it('#onMouseMove devrait mettre à jour la position de la souris', () => {
+    service['mousePosition'] = {x: 0, y: 0};
+    const event = new MouseEvent('move', {clientX: 1000, clientY: 1000});
+    service.onMouseMove(event);
+    expect(service['mousePosition']).toEqual({x: 1000, y: 1000});
+  });
+  it('#onMouseMove devrait appeller #makeSquare avec les bons paramètres', () => {
+    const event = new MouseEvent('move', {clientX: 1000, clientY: 1000});
+    const spy = spyOn(service, 'makeSquare');
+    service.onMouseMove(event);
+    expect(spy).toHaveBeenCalledWith(event);
+  });
+  it('#onMouseMove devrait appeller #isInEraser', () => {
+    service.onMouseMove(new MouseEvent('mouve'));
+    expect(isInEraserSpy).toHaveBeenCalled();
+  });
+
+  // TESTS onMouseClick
+  it('#onMouseClick devrait appeller onMouseMove avec les bons paramètres', () => {
+    const spy = spyOn(service, 'onMouseMove');
+    const event = new MouseEvent('click');
+    service.onMouseClick(event);
+    expect(spy).toHaveBeenCalledWith(event);
+  });
+  it('#onMouseClick devrait appeller commands.execute si la commande n\'est pas vide', () => {
+    spyOn(RemoveSVGService.prototype, 'isEmpty').and.callFake(() => false);
+    const spy = spyOn(service['commands'], 'execute');
+    service.onMouseClick(new MouseEvent('click'));
+    expect(spy).toHaveBeenCalledWith(service['removeCommand']);
+  });
+  it('#onMouseClick devrait appeller commands.execute si la commande n\'est pas vide', () => {
+    spyOn(RemoveSVGService.prototype, 'isEmpty').and.callFake(() => true);
+    const spy = spyOn(service['commands'], 'execute');
+    service.onMouseClick(new MouseEvent('click'));
+    expect(spy).not.toHaveBeenCalled();
   });
 
   // TESTS onMousePress
