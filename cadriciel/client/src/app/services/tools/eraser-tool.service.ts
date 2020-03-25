@@ -13,7 +13,7 @@ import { ENDING_ANGLE, STARTING_ANGLE } from './polygon-tool.service';
 import { ToolInterface } from './tool-interface';
 import { ToolManagerService } from './tool-manager.service';
 
-const DEFAULT_THICKNESS = 10;
+export const DEFAULT_THICKNESS = 10;
 const ANGLE_PRECISION = 8;
 const IS_IN_ERASER_INDEX_INCREMENT = 3 ;
 const DARK_RED = 170;
@@ -172,15 +172,11 @@ export class EraserToolService implements ToolInterface {
   onMouseClick(mouse: MouseEvent): void {
     this.removeCommand = new RemoveSVGService(this.svgStockage);
     this.commands.drawingInProgress = true;
-    this.thickness = (this.tools.activeTool.parameters[0].value) ? this.tools.activeTool.parameters[0].value : DEFAULT_THICKNESS;
-    this.mousePosition = {x: mouse.offsetX, y: mouse.offsetY};
-    this.makeSquare(mouse);
-    this.isInEraser();
+    this.onMouseMove(mouse);
     this.commands.drawingInProgress = false;
     if (!this.removeCommand.isEmpty()) {
       this.commands.execute(this.removeCommand);
     }
-    this.removeCommand = new RemoveSVGService(this.svgStockage);
   }
 
   onMouseRelease(): void {
