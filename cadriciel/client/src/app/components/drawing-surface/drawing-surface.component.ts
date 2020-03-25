@@ -1,11 +1,7 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
-import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
-import { CommandManagerService } from 'src/app/services/command/command-manager.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { GridService } from 'src/app/services/grid/grid.service';
-import { RoutingManagerService } from 'src/app/services/routing-manager.service';
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
@@ -24,28 +20,25 @@ const RIGHT_CLICK = 2;
 })
 export class DrawingSurfaceComponent implements AfterViewInit {
   @ViewChild('drawing', {static: false})
-  drawing: ElementRef<SVGElement>;
-  mousePositionX: number;
-  mousePositionY: number;
+  private drawing: ElementRef<SVGElement>;
+  private mousePositionX: number;
+  private mousePositionY: number;
   @ViewChild('canvas', {static: false})
-  canvas: ElementRef<HTMLCanvasElement>;
+  private canvas: ElementRef<HTMLCanvasElement>;
 
-  constructor(public SVGStockage: SVGStockageService,
+  constructor(public svgStockage: SVGStockageService,
               private tools: ToolManagerService,
-              public drawingManager: DrawingManagerService,
-              public routingManager: RoutingManagerService,
-              public routing: Router,
-              public colorParameter: ColorParameterService,
+              protected drawingManager: DrawingManagerService,
               private selection: SelectionService,
-              public grid: GridService,
-              public colorChanger: ColorChangerToolService,
-              public commands: CommandManagerService,
-              public eraser: EraserToolService,
+              protected grid: GridService,
+              private colorChanger: ColorChangerToolService,
+              private eraser: EraserToolService,
               private canvasConversion: CanvasConversionService,
-              private pipette: PipetteToolService) {
+              private pipette: PipetteToolService
+              ) {
                  this.mousePositionX = 0;
                  this.mousePositionY = 0;
-  }
+                }
 
   ngAfterViewInit(): void {
     this.eraser.drawing = this.drawing.nativeElement;

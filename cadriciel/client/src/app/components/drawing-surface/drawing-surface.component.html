@@ -40,7 +40,7 @@
     (mousedown)="handleMouseDownBackground($event)"  (mouseup)="handleMouseUpBackground($event)" oncontextmenu="return false;" />
 
     <!--Tous les elements de dessin sur la surface-->
-    <g *ngFor="let element of SVGStockage.getCompleteSVG()" [innerHTML]="element.svgHtml" (mousedown)="handleElementMouseDown(element, $event)" 
+    <g *ngFor="let element of svgStockage.getCompleteSVG()" [innerHTML]="element.svgHtml" (mousedown)="handleElementMouseDown(element, $event)" 
     (mouseup)="handleElementMouseUp(element, $event)"  oncontextmenu="return false;" ></g>
 
     <!--Rectangles de selection-->
@@ -53,8 +53,8 @@
     <!--Points de controle de le boite de selection-->
     <g *ngFor="let controlPoint of this.selection.selectionBox.controlPointBox" [innerHTML]="controlPoint.svgHtml" oncontextmenu="return false;" (mousedown)="handleControlPointMouseDown($event)" ></g>
    
-    <g [innerHTML]="SVGStockage.getOngoingSVGHTML()"></g>
-    <g [innerHTML]="SVGStockage.getOngoingPerimeterHTML()"></g>
+    <g [innerHTML]="svgStockage.getOngoingSVGHTML()"></g>
+    <g [innerHTML]="svgStockage.getOngoingPerimeterHTML()"></g>
     
     <!--Grille-->
     <g class="grid" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" version="1.1" xlmns="http://www.w3.org/2000/svg">
