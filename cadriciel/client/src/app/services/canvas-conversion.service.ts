@@ -2,14 +2,18 @@ import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Drawing } from '../../../../common/communication/DrawingInterface';
 import { DrawingManagerService } from './drawing-manager/drawing-manager.service';
-import { Color, DrawElement } from './stockage-svg/draw-element';
+import { B, Color, DrawElement, G, R } from './stockage-svg/draw-element';
+import { LineService } from './stockage-svg/line.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { TraceBrushService } from './stockage-svg/trace-brush.service';
 import { TracePencilService } from './stockage-svg/trace-pencil.service';
+import { TraceSprayService } from './stockage-svg/trace-spray.service';
 
 export const MAX_COLOR_VALUE = 255;
 const INDEX_INCREASE = 4;
-const TIME_BEFORE_UPDATE = 20;
+const TIME_BEFORE_UPDATE = 1;
+const COLOR_INCREASE_LINE = 2;
+const COLOR_INCREASE_SPRAY = 5;
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +25,7 @@ export class CanvasConversionService {
   private image: HTMLImageElement;
   private drawing: Drawing;
   private coloredElements: Map<string, DrawElement>;
+  private isValid: boolean;
 
   constructor(private drawingParams: DrawingManagerService,
               private svgStockage: SVGStockageService,
@@ -57,20 +62,29 @@ export class CanvasConversionService {
 
   loadImage(): void {
     this.context.drawImage(this.image, 0, 0);
+    this.isValid = true;
   }
 
   updateDrawing(): void {
+    this.isValid = false;
     this.drawing.elements = [];
     this.coloredElements = new Map<string, DrawElement>();
     const rgb: number[] = [0, 0, 0];
-    for (const element of this.svgStockage.getCompleteSVG()) {
-      rgb[0]++;
-      if (rgb[0] > MAX_COLOR_VALUE) {
-        rgb[0] = 0;
-        rgb[1]++;
-        if (rgb[1] > MAX_COLOR_VALUE) {
-          rgb[1] = 0;
-          rgb[2]++;
+    for (let element of this.svgStockage.getCompleteSVG()) {
+      let increase = 1;
+      if (element instanceof TraceSprayService) {
+        increase = COLOR_INCREASE_SPRAY;
+      } else if (element instanceof LineService) {
+        increase = COLOR_INCREASE_LINE;
+      }
+      element = element as DrawElement;
+      rgb[R] += increase;
+      if (rgb[R] > MAX_COLOR_VALUE) {
+        rgb[R] = 0;
+        rgb[G] += increase;
+        if (rgb[G] > MAX_COLOR_VALUE) {
+          rgb[G] = 0;
+          rgb[B] += increase;
         }
       }
       // Redessiner l'élement avec une couleur qui le distingue des autres élements
@@ -119,6 +133,7 @@ export class CanvasConversionService {
   }
 
   getElementsInArea(x: number, y: number, width: number, height: number): DrawElement[] {
+    if (!this.isValid) { return []; }
     const elements: DrawElement[] = [];
     const data = this.context.getImageData(x, y, width, height).data;
     for (let index = 0; index < data.length; index += INDEX_INCREASE) {
