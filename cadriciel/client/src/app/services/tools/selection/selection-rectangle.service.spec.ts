@@ -1,11 +1,12 @@
-// tslint:disable: no-magic-numbers
-import { TestBed } from '@angular/core/testing';
+/* import { TestBed } from '@angular/core/testing';
 
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Color } from '../../stockage-svg/draw-element';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { Point } from '../line-tool.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
+
+// tslint:disable: no-magic-numbers
 
 describe('SelectionRectangleService', () => {
   let service: SelectionRectangleService;
@@ -118,4 +119,4 @@ describe('SelectionRectangleService', () => {
     service.mouseUp();
     expect(service.ongoingSelection).toBe(false);
   });
-});
+}); */

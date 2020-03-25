@@ -164,6 +164,7 @@ export class ToolbarComponent implements OnDestroy {
   applySecondaryOpacity(event: Event): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.colorParameter.secondaryColor.RGBA[A] = Math.max(Math.min(Number(eventCast.value), 1), 0);
+    this.colorParameter.updateColors();
     this.colorParameter.secondaryOpacityDisplayed = Math.round(PERCENTAGE * this.colorParameter.secondaryColor.RGBA[A]);
   }
 }

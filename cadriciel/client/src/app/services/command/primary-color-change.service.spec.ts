@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ColorParameterService } from '../color/color-parameter.service';
 import { Color } from '../stockage-svg/draw-element';
-import { LineService } from '../stockage-svg/line.service';
 import { RectangleService } from '../stockage-svg/rectangle.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { PrimaryColorChangeService } from './primary-color-change.service';
@@ -20,7 +19,7 @@ describe('PrimaryColorChangeService', () => {
     stockageService = TestBed.get(SVGStockageService);
     stockageService.addSVG(new RectangleService());
     colorParameter = TestBed.get(ColorParameterService);
-    service = new PrimaryColorChangeService(new LineService(), colorParameter, TestBed.get(DomSanitizer));
+    service = new PrimaryColorChangeService(new RectangleService(), colorParameter, TestBed.get(DomSanitizer));
     service.oldColor = {
       RGBAString: 'rgba(0, 0, 0, 1)',
       RGBA: [0, 0, 0, 1]
@@ -50,10 +49,7 @@ describe('PrimaryColorChangeService', () => {
   // TESTS changeColor
 
   it('#changeColor ne devrait pas modifier oldColor si primaryColor est une chaine vide', () => {
-    service.element.primaryColor = {
-      RGBAString: '',
-      RGBA: [0, 0, 0, 1]
-    };
+    service.element.primaryColor = undefined;
     service.oldColor = {
       RGBAString: 'test',
       RGBA: [0, 0, 0, 1]

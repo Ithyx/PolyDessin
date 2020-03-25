@@ -1,9 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { ToolManagerService } from '../tools/tool-manager.service';
+import { ToolManagerService, TOOL_INDEX } from '../tools/tool-manager.service';
 import { DrawElement } from './draw-element';
 import { LineService } from './line.service';
 import { SVGStockageService } from './svg-stockage.service';
+
+// tslint:disable: no-string-literal
 
 describe('StockageSvgService', () => {
   let SVGHTML: SafeHtml;
@@ -45,9 +47,8 @@ describe('StockageSvgService', () => {
   } );
 
   it('should be created', () => {
-    // tslint:disable-next-line:variable-name
-    const Testservice: SVGStockageService = TestBed.get(SVGStockageService);
-    expect(Testservice).toBeTruthy();
+    const testService: SVGStockageService = TestBed.get(SVGStockageService);
+    expect(testService).toBeTruthy();
   });
 
   // TESTS addSVG
@@ -60,23 +61,25 @@ describe('StockageSvgService', () => {
 
   it('#addSVG devrait ajouter drawElement en paramètre à completeSVG', () => {
     service.addSVG(drawElement);
-    // tslint:disable-next-line:no-string-literal
     expect(service['completeSVG'][service.size - 1]).toEqual(drawElement);
   });
 
-  it('#addSVG devrait mettre ongoingSVG vide', () => {
-    // tslint:disable-next-line:no-string-literal
-    service['ongoingSVG'] = 'donnee';
+  it('#addSVG devrait mettre ongoingSVG vide si l\'outil actif n\'est pas l\'efface', () => {
+    service['ongoingSVG'] = 'test';
     service.addSVG(drawElement);
-    // tslint:disable-next-line:no-string-literal
     expect(service['ongoingSVG']).toEqual('');
   });
 
-  it('#addSVG devrait mettre ongoingPerimeter vide', () => {
-    // tslint:disable-next-line:no-string-literal
-    service['ongoingPerimeter'] = 'donnee';
+  it('#addSVG devrait mettre garder ongoingSVG  si l\'outil actif est l\'efface', () => {
+    service['tools'].activeTool.ID = TOOL_INDEX.ERASER;
+    service['ongoingSVG'] = 'test';
     service.addSVG(drawElement);
-    // tslint:disable-next-line:no-string-literal
+    expect(service['ongoingSVG']).toEqual('test');
+  });
+
+  it('#addSVG devrait mettre ongoingPerimeter vide', () => {
+    service['ongoingPerimeter'] = 'test';
+    service.addSVG(drawElement);
     expect(service['ongoingPerimeter']).toEqual('');
   });
 
@@ -85,10 +88,8 @@ describe('StockageSvgService', () => {
   it('#removeSVG devrait appeler la fonction splice avec id et 1 en paramètre', () => {
     const idTest = service.size;
     service.addSVG(lineElement);
-    // tslint:disable-next-line:no-string-literal
     spyOn(service['completeSVG'], 'splice');
     service.removeSVG(lineElement);
-    // tslint:disable-next-line:no-string-literal
     expect(service['completeSVG'].splice).toHaveBeenCalledWith(idTest, 1);
   });
 
@@ -103,10 +104,8 @@ describe('StockageSvgService', () => {
 
   it('#removeLastSVG devrait retirer le dernier élément de completeSVG', () => {
     service.addSVG(lineElement);
-    // tslint:disable-next-line:no-string-literal
     const object = service['completeSVG'][service.size - 1];
     service.removeLastSVG();
-    // tslint:disable-next-line:no-string-literal
     expect(service['completeSVG'][service.size - 1]).not.toEqual(object);
   });
 
@@ -120,14 +119,12 @@ describe('StockageSvgService', () => {
   // TESTS getOngoingSVGHTML
 
   it('#getOngoingSVGHTML devrait retourner ongoingSVG', () => {
-    // tslint:disable-next-line:no-string-literal
     expect(service.getOngoingSVGHTML()).toEqual(service['ongoingSVG']);
   });
 
   // TESTS getOngoingPerimeterHTML
 
   it('#getOngoingPerimeterHTML devrait retourner ongoingPerimeter', () => {
-    // tslint:disable-next-line:no-string-literal
     expect(service.getOngoingPerimeterHTML()).toEqual(service['ongoingPerimeter']);
   });
 
@@ -136,14 +133,12 @@ describe('StockageSvgService', () => {
   it('#setOngoingSVG devrait assigner SVG à setOngoingSVG', () => {
     drawElement.svg = 'test';
     service.setOngoingSVG(drawElement);
-    // tslint:disable-next-line:no-string-literal
     expect(service['ongoingSVG']).toEqual(service['sanitizer'].bypassSecurityTrustHtml(drawElement.svg));
   });
 
   it('#setOngoingSVG devrait modifier ongoingPerimeter si perimeter est défini', () => {
     drawElement.perimeter = 'test';
     service.setOngoingSVG(drawElement);
-    // tslint:disable-next-line:no-string-literal
     expect(service['ongoingPerimeter']).toEqual(service['sanitizer'].bypassSecurityTrustHtml(drawElement.perimeter));
   });
 
@@ -153,7 +148,6 @@ describe('StockageSvgService', () => {
     service.addSVG(drawElement);
     service.addSVG(drawElement);
     const SVG_TEST = service.getCompleteSVG();
-    // tslint:disable-next-line:no-string-literal
     expect(service['completeSVG']).toEqual(SVG_TEST);
   });
 
@@ -163,7 +157,6 @@ describe('StockageSvgService', () => {
     service.addSVG(drawElement);
     service.addSVG(drawElement);
     service.cleanDrawing();
-    // tslint:disable-next-line:no-string-literal
     expect(service['completeSVG']).toEqual([]);
   });
 

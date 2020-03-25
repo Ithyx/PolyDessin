@@ -1,9 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogConfig, MatDialogModule, MatSidenavModule } from '@angular/material';
+import { MatDialogConfig, MatDialogModule, MatDialogRef, MatSidenavModule } from '@angular/material';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { RouterModule } from '@angular/router';
 
+import { Injector } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Scope } from 'src/app/services/color/color-manager.service';
 import { Color } from 'src/app/services/stockage-svg/draw-element';
@@ -13,18 +14,23 @@ import { ColorInputComponent } from '../color-choice/color-input/color-input.com
 import { ColorPickerComponent } from '../color-choice/color-picker/color-picker.component';
 import { ColorSliderComponent } from '../color-choice/color-slider/color-slider.component';
 import { DrawingToolComponent } from '../drawing-tool/drawing-tool.component';
+import { ExportWindowComponent } from '../export-window/export-window.component';
+import { GalleryComponent } from '../gallery/gallery.component';
 import { GridOptionsComponent } from '../grid-options/grid-options.component';
 import { GuidePageComponent } from '../guide-page/guide-page.component';
 import { GuideSubjectComponent } from '../guide-subject/guide-subject.component';
 import { NewDrawingWarningComponent } from '../new-drawing-warning/new-drawing-warning.component';
+import { SavePopupComponent } from '../save-popup/save-popup.component';
 import { ToolbarComponent } from './toolbar.component';
+import { SelectionBoxService } from 'src/app/services/tools/selection/selection-box.service';
 
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
 // tslint:disable: max-file-line-count
+// tslint:disable: max-classes-per-file
 
 /* Service stub pour réduire les dépendances */
-const outilTestActif: DrawingTool = {
+const activeToolTest: DrawingTool = {
   name: 'stubActif',
   isActive: true,
   ID: 0,
@@ -33,7 +39,7 @@ const outilTestActif: DrawingTool = {
   iconName: ''
 };
 
-const outilTestInactif: DrawingTool = {
+const inactiveToolTest: DrawingTool = {
   name: 'stubInactif',
   isActive: false,
   ID: 1,
@@ -51,17 +57,22 @@ const rectangle: DrawingTool = {
 
 const gestionnaireOutilServiceStub: Partial<ToolManagerService> = {
   toolList: [
-    outilTestActif,
-    outilTestInactif,
+    activeToolTest,
+    inactiveToolTest,
     rectangle
   ],
-  activeTool: outilTestActif,
+  activeTool: activeToolTest,
   findParameterIndex(nomParametre: string): number {
     return (nomParametre === 'Épaisseur') ? 0 : 1;
   }
 };
 
 describe('ToolbarComponent', () => {
+  const injector = Injector.create(
+    // tslint:disable-next-line: arrow-return-shorthand
+    {providers: [{provide: MatDialogRef, useValue: {afterClosed: () => { return {subscribe: () => { return; }}; }}}]
+  });
+
   let component: ToolbarComponent;
   let fixture: ComponentFixture<ToolbarComponent>;
   let service: ToolManagerService;
@@ -145,6 +156,14 @@ describe('ToolbarComponent', () => {
     spyOn(component.shortcuts, 'clearOngoingSVG');
     component.onClick(service.toolList[2]); // on sélectionne l'outil 2 (rectangle)
     expect(component.shortcuts.clearOngoingSVG).toHaveBeenCalled();
+  });
+
+  it('#onClick devrait appeler deleteBoundingBox si l\'outil actif est la sélection et elle possède une selectionBox', () => {
+    activeToolTest.name = 'Selection';
+    component['selection'].selectionBox = TestBed.get(SelectionBoxService);
+    const spy = spyOn(component['selection'], 'deleteBoundingBox');
+    component.onClick(service.toolList[0]);
+    expect(spy).toHaveBeenCalled();
   });
 
   // TESTS onChange
@@ -233,6 +252,63 @@ describe('ToolbarComponent', () => {
   it('#selectColor devrait assignee portee à Portee.fond si le paramètre de la fonction contient fond', () => {
     component.selectColor('background');
     expect(component.colorPickerPopup.scope).toEqual(Scope.BackgroundToolBar);
+  });
+
+  // TESTS openSavePopup
+
+  it('#openSavePopup devrait appeler disableShortcuts', () => {
+    spyOn(component.dialog, 'open').and.returnValue(injector.get(MatDialogRef));
+    spyOn(component, 'disableShortcuts');
+    component.openSavePopup();
+    expect(component.disableShortcuts).toHaveBeenCalled();
+  });
+
+  it('#openSavePopup devrait appeler open avec SavePopupComponent et dialogConfig comme paramètres', () => {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    spyOn(component.dialog, 'open').and.returnValue(injector.get(MatDialogRef));
+    component.openSavePopup();
+    expect(component.dialog.open).toHaveBeenCalledWith(SavePopupComponent, dialogConfig);
+  });
+
+  // TESTS openGallery
+
+  it('#openGallery devrait appeler disableShortcuts', () => {
+    spyOn(component.dialog, 'open').and.returnValue(injector.get(MatDialogRef));
+    spyOn(component, 'disableShortcuts');
+    component.openGallery();
+    expect(component.disableShortcuts).toHaveBeenCalled();
+  });
+
+  it('#openGallery devrait appeler open avec GalleryComponent et dialogConfig comme paramètres', () => {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    spyOn(component.dialog, 'open').and.returnValue(injector.get(MatDialogRef));
+    component.openGallery();
+    expect(component.dialog.open).toHaveBeenCalledWith(GalleryComponent, dialogConfig);
+  });
+
+  // TESTS openExportWindow
+
+  it('#openExportWindow devrait appeler disableShortcuts', () => {
+    spyOn(component.dialog, 'open').and.returnValue(injector.get(MatDialogRef));
+    spyOn(component, 'disableShortcuts');
+    component.openExportWindow();
+    expect(component.disableShortcuts).toHaveBeenCalled();
+  });
+
+  it('#openExportWindow devrait appeler open avec ExportWindowComponent et dialogConfig comme paramètres', () => {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    spyOn(component.dialog, 'open').and.returnValue(injector.get(MatDialogRef));
+    component.openExportWindow();
+    expect(component.dialog.open).toHaveBeenCalledWith(ExportWindowComponent, dialogConfig);
   });
 
   // TESTS openGridWindow

@@ -7,7 +7,7 @@ import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { TraceBrushService } from './stockage-svg/trace-brush.service';
 import { TracePencilService } from './stockage-svg/trace-pencil.service';
 
-const MAX_COLOR_VALUE = 255;
+export const MAX_COLOR_VALUE = 255;
 const INDEX_INCREASE = 4;
 const TIME_BEFORE_UPDATE = 20;
 
@@ -15,7 +15,8 @@ const TIME_BEFORE_UPDATE = 20;
   providedIn: 'root'
 })
 export class CanvasConversionService {
-  private canvas: HTMLCanvasElement;
+  canvas: HTMLCanvasElement;
+  coloredDrawing: SVGElement;
   private context: CanvasRenderingContext2D;
   private image: HTMLImageElement;
   private drawing: Drawing;
@@ -42,13 +43,11 @@ export class CanvasConversionService {
   /* Conversion de svg vers canvas basée sur
      http://bl.ocks.org/biovisualize/8187844?fbclid=IwAR3_VuqkefCECFbFJ_0nQJuYe0qIx9NFzE0uY9W0UDytZDsPsEpB4QvnTYk */
   convertToCanvas(): void {
-    const element = document.querySelector('.canvas-conversion');
-    this.canvas = (document.querySelector('.canvas') as HTMLCanvasElement);
     if (!this.canvas) { return; }
     const context = this.canvas.getContext('2d');
-    if (element && context) {
+    if (this.coloredDrawing && context) {
       this.context = context;
-      const svgString = new XMLSerializer().serializeToString(element);
+      const svgString = new XMLSerializer().serializeToString(this.coloredDrawing);
       const svg = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
       this.image = new Image();
       this.image.onload = this.loadImage.bind(this);
@@ -66,10 +65,10 @@ export class CanvasConversionService {
     const rgb: number[] = [0, 0, 0];
     for (const element of this.svgStockage.getCompleteSVG()) {
       rgb[0]++;
-      if (rgb[1] > 0 || rgb[0] < MAX_COLOR_VALUE) {
+      if (rgb[0] > MAX_COLOR_VALUE) {
         rgb[0] = 0;
         rgb[1]++;
-        if (rgb[2] > 0 || rgb[1] < MAX_COLOR_VALUE) {
+        if (rgb[1] > MAX_COLOR_VALUE) {
           rgb[1] = 0;
           rgb[2]++;
         }
@@ -82,7 +81,9 @@ export class CanvasConversionService {
       const oldPrimary = element.primaryColor;
       const oldSecondary = element.secondaryColor;
       element.primaryColor = color;
-      element.secondaryColor = color;
+      if (element.secondaryColor) {
+        element.secondaryColor = color;
+      }
 
       // Créer un clone et l'utiliser dans le canvas
       const cloneElement = {...element};
@@ -94,12 +95,15 @@ export class CanvasConversionService {
         tracePencil.primaryColor = element.primaryColor;
         tracePencil.thickness = element.thickness;
         tracePencil.translate = element.translate;
+        tracePencil.isAPoint = element.isAPoint;
         tracePencil.draw();
-        cloneElement.svgHtml = this.sanatize(tracePencil.svg);
+        cloneElement.svgHtml = this.sanitize(tracePencil.svg);
       } else {
         element.draw();
-        cloneElement.svgHtml = this.sanatize(element.svg);
-        element.secondaryColor = oldSecondary;
+        cloneElement.svgHtml = this.sanitize(element.svg);
+        if (element.secondaryColor) {
+          element.secondaryColor = oldSecondary;
+        }
       }
       this.drawing.elements.push(cloneElement);
 
@@ -127,7 +131,7 @@ export class CanvasConversionService {
     return elements;
   }
 
-  sanatize(svg: string): SafeHtml {
+  sanitize(svg: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(svg);
   }
 }

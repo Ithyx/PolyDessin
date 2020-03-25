@@ -23,7 +23,7 @@ export class SavePopupComponent {
               private db: DatabaseService,
               private drawingParams: DrawingManagerService) {
     this.name = new FormControl(drawingParams.name);
-    this.tag = new FormControl();
+    this.tag = new FormControl('');
     this.predefinedTag = new FormControl('Portrait');
     this.isSaving = false;
     this.isNameValid = (drawingParams.name !== '');
@@ -53,7 +53,7 @@ export class SavePopupComponent {
       this.saveFailed = true;
     }
     this.isSaving = false;
-    if (!this.saveFailed) { this.dialogRef.close(); }
+    if (!this.saveFailed) { this.closeDialogue(); }
   }
 
   addTag(): void {

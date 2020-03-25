@@ -18,7 +18,7 @@ describe('ColorManagerService', () => {
   });
 
   it('#getCouleur devrait retourner la couleur actuel avec une opacité de 1', () => {
-    expect(service.getColor().RGBAString).toBe('rgba(0, 0, 0,1)');
+    expect(service.getColor().RGBAString).toBe('rgba(0, 0, 0, 1)');
   });
 
   // TESTS applyColor
@@ -27,7 +27,7 @@ describe('ColorManagerService', () => {
     scope = Scope.Primary;
     service.applyColor(scope);
 
-    expect(service.colorParameter.primaryColor.RGBAString).toBe('rgba(0, 0, 0,');
+    expect(service.colorParameter.primaryColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
   });
 
   it('#applyColor devrait ajouter la couleur au tableau derniereCouleur si la Scope est Principale', () => {
@@ -42,7 +42,7 @@ describe('ColorManagerService', () => {
     scope = Scope.Secondary;
     service.applyColor(scope);
 
-    expect(service.colorParameter.secondaryColor.RGBAString).toBe('rgba(0, 0, 0,');
+    expect(service.colorParameter.secondaryColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
   });
 
   it('#applyColor devrait ajouter la couleur au tableau derniereCouleur si la Scope est Secondaire', () => {
@@ -53,21 +53,21 @@ describe('ColorManagerService', () => {
     expect(service.addLastColor).toHaveBeenCalled();
   });
 
-  it('#applyColor devrait changer la couleur de fond temporaire lors de la creation de nouveau dessin '
-    + 'si le Scope est BackgroundNewDrawing', () => {
+  it(`#applyColor devrait changer la couleur de fond temporaire lors de la creation de nouveau dessin
+      si le Scope est BackgroundNewDrawing`, () => {
     scope = Scope.BackgroundNewDrawing;
     service.applyColor(scope);
 
-    expect(service.colorParameter.temporaryBackgroundColor.RGBAString).toBe('rgba(0, 0, 0,1)');
+    expect(service.colorParameter.temporaryBackgroundColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
   });
 
-  it('#applyColor devrait changer la couleur de fond sur la barre d\'outils '
-    + 'si le Scope est BackgroundToolBar', () => {
+  it(`#applyColor devrait changer la couleur de fond sur la barre d\'outils 
+      si le Scope est BackgroundToolBar`, () => {
     scope = Scope.BackgroundToolBar;
     service.applyColor(scope);
 
-    expect(service.colorParameter.temporaryBackgroundColor.RGBAString).toBe('rgba(0, 0, 0,1)');
-    expect(service.drawingManager.backgroundColor.RGBAString).toBe('rgba(0, 0, 0,1)');
+    expect(service.colorParameter.temporaryBackgroundColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
+    expect(service.drawingManager.backgroundColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
   });
 
   it('#applyColor ne devrait rien faire si la Scope est non reconnue', () => {

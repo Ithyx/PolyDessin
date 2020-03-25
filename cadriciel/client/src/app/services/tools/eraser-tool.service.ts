@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { CanvasConversionService } from '../canvas-conversion.service';
+import { CanvasConversionService, MAX_COLOR_VALUE } from '../canvas-conversion.service';
 import { CommandManagerService } from '../command/command-manager.service';
 import { RemoveSVGService } from '../command/remove-svg.service';
 import { B, DrawElement, G, R } from '../stockage-svg/draw-element';
@@ -10,31 +10,33 @@ import { RectangleService } from '../stockage-svg/rectangle.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { Point } from './line-tool.service';
 import { ENDING_ANGLE, STARTING_ANGLE } from './polygon-tool.service';
-import { SelectionService } from './selection/selection.service';
 import { ToolInterface } from './tool-interface';
 import { ToolManagerService } from './tool-manager.service';
 
 const DEFAULT_THICKNESS = 10;
 const ANGLE_PRECISION = 8;
 const IS_IN_ERASER_INDEX_INCREMENT = 3 ;
+const DARK_RED = 170;
+const MIN_RED_EVIDENCE = 230;
+const MAX_BLUE_EVIDENCE = 200;
+const MAX_GREEN_EVIDENCE = 200;
 
 @Injectable({
   providedIn: 'root'
 })
 export class EraserToolService implements ToolInterface {
-  selectedDrawElement: DrawElement[];
-  selectedSVGElement: SVGElement[];
-  square: SVGRect;
-  mousePosition: Point = {x: 0, y: 0};
-  thickness: number;
+  private selectedDrawElement: DrawElement[];
+  private selectedSVGElement: SVGElement[];
+  private square: SVGRect;
+  private mousePosition: Point = {x: 0, y: 0};
+  private thickness: number;
+  private removeCommand: RemoveSVGService;
   drawing: SVGElement;
-  removeCommand: RemoveSVGService;
 
-  constructor(public tools: ToolManagerService,
+  constructor(private tools: ToolManagerService,
               private sanitizer: DomSanitizer,
-              public commands: CommandManagerService,
-              public svgStockage: SVGStockageService,
-              public selection: SelectionService,
+              private commands: CommandManagerService,
+              private svgStockage: SVGStockageService,
               private canvas: CanvasConversionService) {
     this.selectedDrawElement = [];
     this.selectedSVGElement = [];
@@ -58,6 +60,18 @@ export class EraserToolService implements ToolInterface {
   }
 
   isInEraser(): void {
+    this.findIntersectionElements();
+    this.findDrawElements();
+
+    if (this.commands.drawingInProgress) {
+      this.removeElements();
+    } else {
+      this.selectedDrawElement = [];
+      this.selectedSVGElement = [];
+    }
+  }
+
+  findIntersectionElements(): void {
     // On regarde quels elements ont une boundingBox en intersection avec l'efface
     const intersectionElements = (this.drawing as SVGSVGElement).getIntersectionList(this.square, this.drawing);
 
@@ -73,14 +87,13 @@ export class EraserToolService implements ToolInterface {
           const domPoint = (element as SVGPathElement).getPointAtLength(index);
           if (this.belongsToSquare({x: domPoint.x, y: domPoint.y })) {    // On vérifie si le point appartient à l'efface
             this.selectedSVGElement.push(element);
-
-            // TODO: Possible gain de performance avec l'association SVGElement à DrawElement en déplaçant la boucle for ligne 71 ici
-
           }
         }
       }
     });
+  }
 
+  findDrawElements(): void {
     const elementsInArea = this.canvas.getElementsInArea(this.square.x, this.square.y, this.thickness, this.thickness);
     for (const element of this.svgStockage.getCompleteSVG()) {
       element.erasingEvidence = false;
@@ -101,13 +114,6 @@ export class EraserToolService implements ToolInterface {
       }
       element.draw();
       element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
-    }
-
-    if (this.commands.drawingInProgress) {
-      this.removeElements();
-    } else {
-      this.selectedDrawElement = [];
-      this.selectedSVGElement = [];
     }
   }
 
@@ -220,29 +226,26 @@ export class EraserToolService implements ToolInterface {
   }
 
   adaptRedEvidence(element: DrawElement): void {
-    if (element.secondaryColor && element.secondaryColor.RGBA[R] >= 230 && element.secondaryColor.RGBA[G] <= 200
-        && element.secondaryColor.RGBA[B] <= 200) {
-      // element.erasingColor.RGBA = [140, 21, 21, 1];
-      element.erasingColor.RGBA[R] = 170;
+    if (element.secondaryColor && element.secondaryColor.RGBA[R] >= MIN_RED_EVIDENCE
+        && element.secondaryColor.RGBA[G] <= MAX_GREEN_EVIDENCE && element.secondaryColor.RGBA[B] <= MAX_BLUE_EVIDENCE) {
+      element.erasingColor.RGBA[R] = DARK_RED;
       element.erasingColor.RGBA[G] = 0;
       element.erasingColor.RGBA[B] = 0;
       this.updateErasingColor(element);
-    } else if (element.primaryColor && element.primaryColor.RGBA[R] >= 230 && element.primaryColor.RGBA[G] <= 200
-      && element.primaryColor.RGBA[B] <= 200) {
-        element.erasingColor.RGBA[R] = 170;
-        element.erasingColor.RGBA[G] = 0;
-        element.erasingColor.RGBA[B] = 0;
-        this.updateErasingColor(element);
+    } else if (!element.secondaryColor && element.primaryColor && element.primaryColor.RGBA[R] >= MIN_RED_EVIDENCE
+        && element.primaryColor.RGBA[G] <= MAX_GREEN_EVIDENCE && element.primaryColor.RGBA[B] <= MAX_BLUE_EVIDENCE) {
+      element.erasingColor.RGBA[R] = DARK_RED;
+      element.erasingColor.RGBA[G] = 0;
+      element.erasingColor.RGBA[B] = 0;
+      this.updateErasingColor(element);
     } else {
-      element.erasingColor.RGBA = [255, 0, 0, 1];
+      element.erasingColor.RGBA = [MAX_COLOR_VALUE, 0, 0, 1];
       this.updateErasingColor(element);
     }
   }
 
   updateErasingColor(element: DrawElement): void {
-    element.erasingColor.RGBAString = `rgba(${element.erasingColor.RGBA[R]},
-                                            ${element.erasingColor.RGBA[G]},
-                                            ${element.erasingColor.RGBA[B]},
-                                            1)`;
+    element.erasingColor.RGBAString = 'rgba(' + element.erasingColor.RGBA[R] + ', ' + element.erasingColor.RGBA[G]
+                                      + ', ' + element.erasingColor.RGBA[B] + ', 1)';
   }
 }

@@ -3,6 +3,8 @@ import { GUIDE_CONTENTS } from '../components/guide-page/guide-contents';
 import { SubjectGuide } from '../components/guide-subject/subject-guide';
 import { EMPTY_SUBJECT, NavigationGuideService } from './navigation-guide.service';
 
+// tslint:disable: no-magic-numbers
+
 describe('NavigationGuideService', () => {
   let subjects: SubjectGuide[];
   let service: NavigationGuideService;
@@ -30,18 +32,23 @@ describe('NavigationGuideService', () => {
     expect(service.browseSubjects(4, subjects).id).toBe(4);
   });
 
-  // TESTS ouvrirCaterogie
+  // TESTS openCategories
 
-  it('#ouvrirCategorie devrait ouvrir toutes les catégories', () => {
+  it('#openCategories devrait ouvrir toutes les catégories', () => {
     service.openCategories(subjects);
     expect(subjects[1].openCategory).toBe(true);
     /* TODO: Ajouter les catégories qui doivent etre ouvertes pour sprint 2 et sprint 3. */
   });
 
-  it('#ouvrirCategorie ne devrait pas affecter les objets purs', () => {
+  it('#openCategories ne devrait pas affecter les objets purs', () => {
     const sujetVideCopy: SubjectGuide = EMPTY_SUBJECT;
     service.openCategories([EMPTY_SUBJECT]);
     expect(EMPTY_SUBJECT).toBe(sujetVideCopy);
+  });
+
+  it('#closeCategories devrait fermer toutes les catégories', () => {
+    service.closeCategories(subjects);
+    expect(subjects[1].openCategory).toBe(false);
   });
 
 });

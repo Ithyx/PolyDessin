@@ -189,6 +189,7 @@ export class SelectionService implements ToolInterface {
           this.reverseElementSelectionStatus(element);
           this.modifiedElement.add(element);
         } else if (!this.belongToRectangle(element, this.selectionRectangle.rectangleInverted) && this.modifiedElement.has(element) ) {
+          this.reverseElementSelectionStatus(element);
           this.modifiedElement.delete(element);
         }
       }

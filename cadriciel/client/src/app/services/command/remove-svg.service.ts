@@ -9,7 +9,7 @@ import { Command } from './command';
 export class RemoveSVGService implements Command {
   private elementsKeys: number[];
   private elementsBeforeRemove: DrawElement[];
-  constructor(public svgStockage: SVGStockageService) {
+  constructor(private svgStockage: SVGStockageService) {
     this.elementsKeys = [];
     this.elementsBeforeRemove = [...svgStockage.getCompleteSVG()];
   }
