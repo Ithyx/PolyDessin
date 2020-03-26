@@ -57,6 +57,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   }
 
   handleElementMouseDown(element: DrawElement, mouse: MouseEvent): void {
+    this.colorChanger.activeElement = element;
     this.mousePosition = {x: mouse.screenX, y: mouse.screenY};
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       if (mouse.button === LEFT_CLICK) {
