@@ -26,6 +26,23 @@ describe('SelectionService', () => {
     translateAllPoints: () => { return; }
   };
 
+  const element2: DrawElement = {
+    svg: '',
+    svgHtml: '',
+    points: [{x: 10, y: 0}, {x: 56, y: 12 }],
+    isSelected: false,
+    erasingEvidence: false,
+    erasingColor: {RGBA: [0, 0, 0, 1], RGBAString: ''},
+    pointMin: {x: 0, y: 0},
+    pointMax: {x: 0, y: 0},
+    translate: {x: 0, y: 0},
+    draw: () => { return; },
+    updatePosition: () => { return; },
+    updatePositionMouse: () => { return; },
+    updateParameters: () => { return; },
+    translateAllPoints: () => { return; }
+  };
+
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(SelectionService));
   beforeEach(() => service.selectionBox['tools'].activeTool = service.selectionBox['tools'].toolList[TOOL_INDEX.SELECTION]);
@@ -36,6 +53,38 @@ describe('SelectionService', () => {
   });
 
   // TESTS handleClick
+
+  it('#handleClick devrait mettre isSelected des éléments déjà sélectionnés à false', () => {
+    service.selectedElements.push(element);
+    service.handleClick(element2);
+    expect(element.isSelected).toBe(false);
+  });
+
+  it('#handleClick devrait mettre isSelected de l\'element cliqué à true', () => {
+    service.selectedElements.push(element);
+    service.handleClick(element2);
+    expect(element2.isSelected).toBe(true);
+  });
+
+  it('#handleClick devrait vider le tableau selectedElements', () => {
+    service.selectedElements.push(element);
+    const spy = spyOn(service.selectedElements, 'splice');
+    service.handleClick(element2);
+    expect(spy).toHaveBeenCalledWith(0, 1);
+  });
+
+  it('#handleClick devrait ajouter l\'element cliqué au tableau selectedElements', () => {
+    service.selectedElements.push(element);
+    const spy = spyOn(service.selectedElements, 'push');
+    service.handleClick(element2);
+    expect(spy).toHaveBeenCalledWith(element2);
+  });
+
+  it('#handleClick devrait créer une nouvelle boite de sélection', () => {
+    const spy = spyOn(service, 'createBoundingBox');
+    service.handleClick(element2);
+    expect(spy).toHaveBeenCalled();
+  });
 
   // TESTS handleRightClick
 
@@ -72,7 +121,38 @@ describe('SelectionService', () => {
 
   // TESTS createBoundingBox
 
+  it('#createBoundingBox ne devrait pas créer de nouvelle boite si aucun élément est sélectionné', () => {
+    const spy = spyOn(service.selectionBox, 'createSelectionBox');
+    service.createBoundingBox();
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('#createBoundingBox devrait créer une nouvelle boite en se basant sur les points des éléments', () => {
+    service.selectedElements.push(element, element2);
+    const spy = spyOn(service.selectionBox, 'createSelectionBox');
+    service.createBoundingBox();
+    expect(spy).toHaveBeenCalledWith({x: 10 , y: 0}, {x: 90, y: 90});
+  });
+
   // TESTS deleteBoundingBox
+
+  it('#deleteBoundingBox devrait supprimer la selectionBox', () => {
+    const spy = spyOn(service.selectionBox, 'deleteSelectionBox');
+    service.deleteBoundingBox();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#deleteBoundingBox devrait mettre isSelected des éléments de selectedElement à false', () => {
+    service.selectedElements.push(element);
+    service.deleteBoundingBox();
+    expect(element.isSelected).toBe(false);
+  });
+
+  it('#deleteBoundingBox devrait vider le tableau selectedElement', () => {
+    service.selectedElements.push(element);
+    service.deleteBoundingBox();
+    expect(service.selectedElements).toEqual([]);
+  });
 
   // TESTS isInRectangleSelection
 
