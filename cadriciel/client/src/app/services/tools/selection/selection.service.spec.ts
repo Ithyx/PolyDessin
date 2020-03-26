@@ -131,7 +131,7 @@ describe('SelectionService', () => {
     service.selectedElements.push(element, element2);
     const spy = spyOn(service.selectionBox, 'createSelectionBox');
     service.createBoundingBox();
-    expect(spy).toHaveBeenCalledWith({x: 10 , y: 0}, {x: 90, y: 90});
+    expect(spy).toHaveBeenCalledWith({x: 10 , y: 0}, {x: 100, y: 90});
   });
 
   // TESTS deleteBoundingBox
