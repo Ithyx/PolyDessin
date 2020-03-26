@@ -150,6 +150,11 @@ describe('SurfaceDessinComponent', () => {
 
   // TESTS handleElementMouseDown
 
+  it('#handleElementMouseDown devrait assigner l\'élément en paramètre à activeElement de colorChanger', () => {
+    component.handleElementMouseDown(element, new MouseEvent('down'));
+    expect(component['colorChanger'].activeElement).toEqual(element);
+  });
+
   it('#handleElementMouseDown devrait assigner mouse.screenX et mouse.screenY à mousePosition', () => {
     component.handleElementMouseDown(element, new MouseEvent('down', {screenX: 45, screenY: 65}));
     expect(component['mousePosition']).toEqual({x: 45, y: 65});
