@@ -5,11 +5,19 @@ import { TOOL_INDEX } from '../tool-manager.service';
 import { SelectionService } from './selection.service';
 
 // tslint:disable: no-string-literal
+// tslint:disable: no-magic-numbers
 
 describe('SelectionService', () => {
   let service: SelectionService;
 
-  const element: DrawElement = {
+  let element: DrawElement;
+
+  let element2: DrawElement;
+
+  beforeEach(() => TestBed.configureTestingModule({}));
+  beforeEach(() => service = TestBed.get(SelectionService));
+  beforeEach(() => service.selectionBox['tools'].activeTool = service.selectionBox['tools'].toolList[TOOL_INDEX.SELECTION]);
+  beforeEach(() => element = {
     svg: '',
     svgHtml: '',
     points: [{x: 90, y: 90}, {x: 76, y: 89 }],
@@ -24,9 +32,9 @@ describe('SelectionService', () => {
     updatePositionMouse: () => { return; },
     updateParameters: () => { return; },
     translateAllPoints: () => { return; }
-  };
-
-  const element2: DrawElement = {
+  }
+  );
+  beforeEach(() => element2 = {
     svg: '',
     svgHtml: '',
     points: [{x: 10, y: 0}, {x: 56, y: 12 }],
@@ -41,11 +49,7 @@ describe('SelectionService', () => {
     updatePositionMouse: () => { return; },
     updateParameters: () => { return; },
     translateAllPoints: () => { return; }
-  };
-
-  beforeEach(() => TestBed.configureTestingModule({}));
-  beforeEach(() => service = TestBed.get(SelectionService));
-  beforeEach(() => service.selectionBox['tools'].activeTool = service.selectionBox['tools'].toolList[TOOL_INDEX.SELECTION]);
+  });
 
   it('should be created', () => {
     const testService: SelectionService = TestBed.get(SelectionService);
@@ -131,7 +135,7 @@ describe('SelectionService', () => {
     service.selectedElements.push(element, element2);
     const spy = spyOn(service.selectionBox, 'createSelectionBox');
     service.createBoundingBox();
-    expect(spy).toHaveBeenCalledWith({x: 10 , y: 0}, {x: 100, y: 90});
+    expect(spy).toHaveBeenCalledWith({x: 10 , y: 0}, {x: 90, y: 90});
   });
 
   // TESTS deleteBoundingBox
@@ -160,9 +164,107 @@ describe('SelectionService', () => {
 
   // TESTS findPointMinAndMax
 
+  it('#findPointMinAndMax devrait mettre à jour pointMin de l\'element donné', () => {
+    service.findPointMinAndMax(element);
+    expect(element.pointMin).toEqual({x: 76, y: 89 });
+  });
+
+  it('#findPointMinAndMax devrait mettre à jour pointMax de l\'element donné', () => {
+    service.findPointMinAndMax(element);
+    expect(element.pointMax).toEqual({x: 90, y: 90 });
+  });
+
   // TESTS updatePosition
 
+  it('#updatePosition ne devrait rien faire si il n\'y a pas de boite de selection', () => {
+    const spy1 = spyOn(service['sanitizer'], 'bypassSecurityTrustHtml');
+    const spy2 = spyOn(service.selectionBox, 'updatePosition');
+    const spy3 = spyOn(element, 'updatePosition');
+
+    service.selectedElements.push(element);
+    service.updatePosition(15, 15);
+
+    expect(spy1).not.toHaveBeenCalled();
+    expect(spy2).not.toHaveBeenCalled();
+    expect(spy3).not.toHaveBeenCalled();
+  });
+
+  it('#updatePosition devrait mettre à jours l\'HTML des elements sélectionnés', () => {
+    element.svg = 'test';
+    service.selectionBox.mouseClick = {x: 20, y: 20};
+
+    service.selectedElements.push(element);
+    service.createBoundingBox();
+    service.updatePosition(15, 15);
+    expect(element.svgHtml).toEqual(service['sanitizer'].bypassSecurityTrustHtml('test'));
+  });
+
+  it('#updatePosition devrait appeler la méthode updatePosition des elements sélectionnés', () => {
+    const spy = spyOn(element, 'updatePosition');
+    service.selectionBox.mouseClick = {x: 20, y: 20};
+
+    service.selectedElements.push(element);
+    service.createBoundingBox();
+    service.updatePosition(15, 15);
+    expect(spy).toHaveBeenCalledWith(15, 15);
+  });
+
+  it('#updatePosition devrait appeler la méthode updatePosition de la boite de sélection', () => {
+    const spy = spyOn(service.selectionBox, 'updatePosition');
+    service.selectionBox.mouseClick = {x: 20, y: 20};
+
+    service.selectedElements.push(element);
+    service.createBoundingBox();
+    service.updatePosition(15, 15);
+    expect(spy).toHaveBeenCalledWith(15, 15);
+  });
+
   // TESTS updatePositionMouse
+
+  it('#updatePositionMouse ne devrait rien faire si il n\'y a pas de boite de selection', () => {
+    const spy1 = spyOn(service['sanitizer'], 'bypassSecurityTrustHtml');
+    const spy2 = spyOn(service.selectionBox, 'updatePositionMouse');
+    const spy3 = spyOn(element, 'updatePositionMouse');
+
+    service.selectedElements.push(element);
+    service.updatePositionMouse(new MouseEvent('mousedown', {clientX: 15, clientY: 15}));
+
+    expect(spy1).not.toHaveBeenCalled();
+    expect(spy2).not.toHaveBeenCalled();
+    expect(spy3).not.toHaveBeenCalled();
+  });
+
+  it('#updatePositionMouse devrait mettre à jours l\'HTML des elements sélectionnés', () => {
+    element.svg = 'test';
+    service.selectionBox.mouseClick = {x: 20, y: 20};
+
+    service.selectedElements.push(element);
+    service.createBoundingBox();
+    service.updatePositionMouse(new MouseEvent('mousedown', {clientX: 15, clientY: 15}));
+    expect(element.svgHtml).toEqual(service['sanitizer'].bypassSecurityTrustHtml('test'));
+  });
+
+  it('#updatePositionMouse devrait appeler la méthode updatePositionMouse des elements sélectionnés', () => {
+    const spy = spyOn(element, 'updatePositionMouse');
+    const mouse = new MouseEvent('mousedown', {clientX: 15, clientY: 15});
+    service.selectionBox.mouseClick = {x: 20, y: 20};
+
+    service.selectedElements.push(element);
+    service.createBoundingBox();
+    service.updatePositionMouse(mouse);
+    expect(spy).toHaveBeenCalledWith(mouse, {x: 20, y: 20});
+  });
+
+  it('#updatePositionMouse devrait appeler la méthode updatePositionMouse de la boite de sélection', () => {
+    const spy = spyOn(service.selectionBox, 'updatePositionMouse');
+    const mouse = new MouseEvent('mousedown', {clientX: 15, clientY: 15});
+    service.selectionBox.mouseClick = {x: 20, y: 20};
+
+    service.selectedElements.push(element);
+    service.createBoundingBox();
+    service.updatePositionMouse(mouse);
+    expect(spy).toHaveBeenCalledWith(mouse);
+  });
 
   // TESTS hasMoved
 
