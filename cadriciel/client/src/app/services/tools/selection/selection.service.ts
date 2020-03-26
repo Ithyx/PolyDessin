@@ -163,7 +163,6 @@ export class SelectionService implements ToolInterface {
 
   deleteBoundingBox(): void {
     this.selectionBox.deleteSelectionBox();
-    this.selectedElements.splice(0, this.selectedElements.length);
     for (const element of this.selectedElements) {
       element.isSelected = false;
     }
