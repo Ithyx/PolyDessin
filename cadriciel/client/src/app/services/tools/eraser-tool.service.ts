@@ -103,11 +103,15 @@ export class EraserToolService implements ToolInterface {
     this.clear();
   }
 
+  updateElement(element: DrawElement): void {
+    element.erasingEvidence = false;
+    element.draw();
+    element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
+  }
+
   removeElements(): void {
     for (const element of this.selectedDrawElement) {
-      element.erasingEvidence = false;
-      element.draw();
-      element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
+      this.updateElement(element);
     }
     if (this.selectedDrawElement.length !== 0) {
       this.removeCommand.addElements(this.selectedDrawElement);
@@ -118,9 +122,7 @@ export class EraserToolService implements ToolInterface {
 
   clear(): void {
     for (const element of this.svgStockage.getCompleteSVG()) {
-      element.erasingEvidence = false;
-      element.draw();
-      element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
+      this.updateElement(element);
     }
     this.commands.drawingInProgress = false;
     if (!this.removeCommand.isEmpty()) {
@@ -131,23 +133,16 @@ export class EraserToolService implements ToolInterface {
     this.selectedDrawElement = [];
   }
 
+  shouldBeDarkRed(element: DrawElement): boolean | undefined {
+    return (element.secondaryColor && element.secondaryColor.RGBA[R] >= MIN_RED_EVIDENCE
+      && element.secondaryColor.RGBA[G] <= MAX_GREEN_EVIDENCE && element.secondaryColor.RGBA[B] <= MAX_BLUE_EVIDENCE) ||
+      (!element.secondaryColor && element.primaryColor && element.primaryColor.RGBA[R] >= MIN_RED_EVIDENCE
+        && element.primaryColor.RGBA[G] <= MAX_GREEN_EVIDENCE && element.primaryColor.RGBA[B] <= MAX_BLUE_EVIDENCE);
+  }
+
   adaptRedEvidence(element: DrawElement): void {
-    if (element.secondaryColor && element.secondaryColor.RGBA[R] >= MIN_RED_EVIDENCE
-        && element.secondaryColor.RGBA[G] <= MAX_GREEN_EVIDENCE && element.secondaryColor.RGBA[B] <= MAX_BLUE_EVIDENCE) {
-      element.erasingColor.RGBA[R] = DARK_RED;
-      element.erasingColor.RGBA[G] = 0;
-      element.erasingColor.RGBA[B] = 0;
-      this.updateErasingColor(element);
-    } else if (!element.secondaryColor && element.primaryColor && element.primaryColor.RGBA[R] >= MIN_RED_EVIDENCE
-        && element.primaryColor.RGBA[G] <= MAX_GREEN_EVIDENCE && element.primaryColor.RGBA[B] <= MAX_BLUE_EVIDENCE) {
-      element.erasingColor.RGBA[R] = DARK_RED;
-      element.erasingColor.RGBA[G] = 0;
-      element.erasingColor.RGBA[B] = 0;
-      this.updateErasingColor(element);
-    } else {
-      element.erasingColor.RGBA = [MAX_COLOR_VALUE, 0, 0, 1];
-      this.updateErasingColor(element);
-    }
+    element.erasingColor.RGBA = (this.shouldBeDarkRed(element) ? [DARK_RED, 0, 0, 1] : [MAX_COLOR_VALUE, 0, 0, 1]);
+    this.updateErasingColor(element);
   }
 
   updateErasingColor(element: DrawElement): void {
