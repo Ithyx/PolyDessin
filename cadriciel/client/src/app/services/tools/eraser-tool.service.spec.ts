@@ -208,6 +208,151 @@ describe('EraserToolService', () => {
     expect(service.clear).toHaveBeenCalled();
   });
 
+  // TESTS updateElement
+  it('#updateElement devrait mettre l\'attribut erasingEvidence à false', () => {
+    element.erasingEvidence = true;
+    service.updateElement(element);
+    expect(element.erasingEvidence).toBe(false);
+    element.erasingEvidence = false;
+  });
+  it('#updateElement devrait mettre à jour le svg de l\'élément', () => {
+    const spy = spyOn(service['sanitizer'], 'bypassSecurityTrustHtml');
+    const svgCopy = element.svg;
+    service.updateElement(element);
+    expect(spy).toHaveBeenCalledWith(svgCopy);
+  });
+
+  // TESTS removeElements
+  it('#removeElements ne devrait pas changer le svg d\'aucun élément si son attribut selectedDrawElement est vide', () => {
+    const spy = spyOn(service, 'updateElement');
+    service['selectedDrawElement'] = [];
+    service.removeElements();
+    expect(spy).not.toHaveBeenCalled();
+  });
+  it('#removeElements devrait changer le svg de chacun des éléments de son attribut selectedDrawElement', () => {
+    const spy = spyOn(service, 'updateElement');
+    service['selectedDrawElement'] = [element, element, element, element];
+    service.removeElements();
+    expect(spy).toHaveBeenCalledTimes(4);
+  });
+  it('#removeElements ne devrait pas mettre à jour le dessin si la sélection est vide', () => {
+    const spy = spyOn(service['canvas'], 'updateDrawing');
+    service['selectedDrawElement'] = [];
+    service.removeElements();
+    expect(spy).not.toHaveBeenCalled();
+  });
+  it('#removeElements devrait remettre les éléments sélectionés à 0', () => {
+    service['selectedDrawElement'] = [element, element, element, element];
+    service.removeElements();
+    expect(service['selectedDrawElement']).toEqual([]);
+  });
+
+  // TESTS clear
+  it('#clear ne devrait changer le svg d\'aucun élément si le dessin est vide', () => {
+    const spy = spyOn(service, 'updateElement');
+    spyOn(service['svgStockage'], 'getCompleteSVG').and.returnValue([]);
+    service.clear();
+    expect(spy).not.toHaveBeenCalled();
+  });
+  it('#clear devrait changer le svg de chacun des éléments du dessin', () => {
+    const spy = spyOn(service, 'updateElement');
+    spyOn(service['svgStockage'], 'getCompleteSVG').and.returnValue([element, element, element, element]);
+    service.clear();
+    expect(spy).toHaveBeenCalledTimes(4);
+  });
+  it('#clear devrait mettre drawingInProgress à false', () => {
+    service['commands'].drawingInProgress = true;
+    service.clear();
+    expect(service['commands'].drawingInProgress).toBe(false);
+  });
+  it('#clear devrait éxécuter la commande si elle n\'est pas vide', () => {
+    spyOn(service['removeCommand'], 'isEmpty').and.returnValue(false);
+    const spy = spyOn(service['commands'], 'execute');
+    const commandCopy = service['removeCommand'];
+    service.clear();
+    expect(spy).toHaveBeenCalledWith(commandCopy);
+  });
+  it('#clear ne devrait pas éxécuter la commande si elle est vide', () => {
+    spyOn(service['removeCommand'], 'isEmpty').and.returnValue(true);
+    const spy = spyOn(service['commands'], 'execute');
+    service.clear();
+    expect(spy).not.toHaveBeenCalled();
+  });
+  it('#clear devrait créer une nouvelle RemoveCommand', () => {
+    service.clear();
+    expect(service['removeCommand']).toEqual(new RemoveSVGService(service['svgStockage']));
+  });
+  it('#clear devrait créer appeler setOngoingSVG avec les bons paramètres', () => {
+    const spy = spyOn(service['svgStockage'], 'setOngoingSVG');
+    service.clear();
+    expect(spy).toHaveBeenCalledWith(new RectangleService());
+  });
+  it('#clear devrait remettre les éléments sélectionnés à 0', () => {
+    service['selectedDrawElement'] = [element, element, element, element];
+    service.clear();
+    expect(service['selectedDrawElement']).toEqual([]);
+  });
+
+  // TESTS shouldBeDarkRed
+  it('#shouldBeDarkRed devrait renvoyer true si l\'élément à une couleur secondaire suffisamment rouge', () => {
+    const colorBackup = element.secondaryColor;
+    element.secondaryColor =  {RGBAString: '', RGBA: [250, 100, 100, 1]};
+    expect(service.shouldBeDarkRed(element)).toBe(true);
+    element.secondaryColor = colorBackup;
+  });
+  it('#shouldBeDarkRed devrait renvoyer true si l\'élément à une couleur primaire suffisamment rouge sans couleur secondaire', () => {
+    const primaryColorBackup = element.primaryColor;
+    const secondaryColorBackup = element.secondaryColor;
+    element.secondaryColor = undefined;
+    element.primaryColor =  {RGBAString: '', RGBA: [250, 100, 100, 1]};
+    expect(service.shouldBeDarkRed(element)).toBe(true);
+    element.primaryColor = primaryColorBackup;
+    element.secondaryColor = secondaryColorBackup;
+  });
+  it('#shouldBeDarkRed devrait renvoyer false si l\'élément à une couleur secondaire non rouge', () => {
+    const colorBackup = element.secondaryColor;
+    element.secondaryColor =  {RGBAString: '', RGBA: [200, 100, 100, 1]};
+    expect(service.shouldBeDarkRed(element)).toBe(false);
+    element.secondaryColor = colorBackup;
+  });
+  it('#shouldBeDarkRed devrait renvoyer true si l\'élément à une couleur primaire non rouge sans couleur secondaire', () => {
+    const primaryColorBackup = element.primaryColor;
+    const secondaryColorBackup = element.secondaryColor;
+    element.secondaryColor = undefined;
+    element.primaryColor =  {RGBAString: '', RGBA: [200, 100, 100, 1]};
+    expect(service.shouldBeDarkRed(element)).toBe(false);
+    element.primaryColor = primaryColorBackup;
+    element.secondaryColor = secondaryColorBackup;
+  });
+
+  // TESTS adaptRedEvidence
+  it('#adaptRedEvidence devrait mettre le la couleur à rouge si l\'élément ne l\'est pas déjà', () => {
+    const backup = element.erasingEvidence;
+    spyOn(service, 'shouldBeDarkRed').and.returnValue(false);
+    service.adaptRedEvidence(element);
+    expect(element.erasingColor.RGBA).toEqual([255, 0, 0, 1]);
+    element.erasingEvidence = backup;
+  });
+  it('#adaptRedEvidence devrait mettre le la couleur à rouge foncé si l\'élément ne est suffisamment rouge', () => {
+    const backup = element.erasingEvidence;
+    spyOn(service, 'shouldBeDarkRed').and.returnValue(true);
+    service.adaptRedEvidence(element);
+    expect(element.erasingColor.RGBA).toEqual([170, 0, 0, 1]);
+    element.erasingEvidence = backup;
+  });
+  it('#adaptRedEvidence devrait mettre à jour le string de la couleur peu importe son niveau de rouge', () => {
+    const backup = element.erasingEvidence;
+    const spy = spyOn(service, 'updateErasingColor');
+    const shouldBeRedSpy = spyOn(service, 'shouldBeDarkRed').and.returnValue(false);
+    service.adaptRedEvidence(element);
+    expect(spy).toHaveBeenCalled();
+    spy.calls.reset();
+    shouldBeRedSpy.and.returnValue(true);
+    service.adaptRedEvidence(element);
+    expect(spy).toHaveBeenCalled();
+    element.erasingEvidence = backup;
+  });
+
   // TEST updateErasingColor
   it('#updateErasingColor devrait mettre à jours le RGBAString de \'element avec une opacité de 1', () => {
     element.erasingColor = {RGBA: [49, 71, 102, 0], RGBAString: ''};
