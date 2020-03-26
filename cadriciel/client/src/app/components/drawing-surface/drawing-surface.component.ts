@@ -82,7 +82,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
 
   handleElementMouseUp(element: DrawElement, mouse: MouseEvent): void {
     if (mouse.button === LEFT_CLICK) {
-      if (this.mousePosition === {x: mouse.screenX, y: mouse.screenY}) {
+      if (this.mousePosition.x === mouse.screenX && this.mousePosition.y === mouse.screenY) {
         for (const elements of this.selection.selectedElements) {
           elements.isSelected = false;
         }
@@ -92,7 +92,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
         this.selection.createBoundingBox();
       }
     } else if (mouse.button === RIGHT_CLICK) {
-      if (this.mousePosition === {x: mouse.screenX, y: mouse.screenY}) {
+      if (this.mousePosition.x === mouse.screenX && this.mousePosition.y === mouse.screenY) {
         this.handleElementRightClick(element);
       }
     }
@@ -154,7 +154,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   }
 
   handleMouseUpBackground(mouse: MouseEvent): void {
-    if (this.mousePosition === {x: mouse.screenX, y: mouse.screenY}) {
+    if (this.mousePosition.x === mouse.screenX && this.mousePosition.y === mouse.screenY) {
       this.handleBackgroundLeftClick();
     }
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
