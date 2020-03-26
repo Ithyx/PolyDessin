@@ -4,8 +4,6 @@ import { Point } from '../tools/line-tool.service';
 import { DrawingTool } from '../tools/tool-manager.service';
 import { Color, DrawElement, ERASING_COLOR_INIT } from './draw-element';
 
-const MIN_SIDES = 4;
-
 @Injectable({
   providedIn: 'root'
 })
@@ -23,7 +21,6 @@ export class PolygonService implements DrawElement {
 
   thickness: number;
   chosenOption: string;
-  sides: number;
   perimeter: string;
 
   pointMin: Point;
@@ -77,16 +74,15 @@ export class PolygonService implements DrawElement {
   }
 
   drawPerimeter(): void {
-    const thickness = (this.chosenOption === 'Plein') ? 0 : this.thickness;
     this.perimeter = '<rect stroke="gray" fill="none" stroke-width="2';
     if (this.chosenOption === 'Plein') {
       this.perimeter += '" x="' + this.pointMin.x + '" y="' + this.pointMin.y
         + '" height="' + this.getHeight() + '" width="' + this.getWidth() + '"/>';
     } else {
-      this.perimeter += '" x="' + (this.pointMin.x - thickness / 2)
-        + '" y="' + (this.pointMin.y - thickness / 2);
-      this.perimeter += '" height="' + ((this.getHeight() === 0) ? thickness : (this.getHeight() + thickness))
-        + '" width="' + ((this.getWidth() === 0) ? thickness : (this.getWidth() + thickness)) + '"/>';
+      this.perimeter += '" x="' + (this.pointMin.x - this.thickness / 2)
+        + '" y="' + (this.pointMin.y - this.thickness / 2);
+      this.perimeter += '" height="' + (this.getHeight() + this.thickness)
+        + '" width="' + (this.getWidth() + this.thickness) + '"/>';
     }
   }
 
@@ -105,7 +101,6 @@ export class PolygonService implements DrawElement {
   updateParameters(tool: DrawingTool): void {
     this.thickness = (tool.parameters[0].value) ? tool.parameters[0].value : 1;
     this.chosenOption = (tool.parameters[1].chosenOption) ? tool.parameters[1].chosenOption : '';
-    this.sides = (tool.parameters[2].value) ? tool.parameters[2].value : MIN_SIDES;
   }
 
   translateAllPoints(): void {
