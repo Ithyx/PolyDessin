@@ -21,18 +21,20 @@ const RIGHT_CLICK = 2;
 })
 
 export class SelectionService implements ToolInterface {
-  selectedElements: DrawElement[] = [];
-  modifiedElement: Set<DrawElement>;
+  selectedElements: DrawElement[];
   clickOnSelectionBox: boolean;
   clickInSelectionBox: boolean;
 
-  constructor(public SVGStockage: SVGStockageService,
+  private modifiedElement: Set<DrawElement>;
+
+  constructor(private svgStockage: SVGStockageService,
               public selectionBox: SelectionBoxService,
               public selectionRectangle: SelectionRectangleService,
               private drawingManager: DrawingManagerService,
               private sanitizer: DomSanitizer,
               private command: CommandManagerService
              ) {
+              this.selectedElements = [];
               this.modifiedElement = new Set<DrawElement>();
               this.clickOnSelectionBox = false;
               this.clickInSelectionBox = false;
@@ -69,29 +71,24 @@ export class SelectionService implements ToolInterface {
     if (this.clickOnSelectionBox || this.clickInSelectionBox) {
       this.updatePositionMouse(mouse);
     } else {
-      if (mouse.buttons === RIGHT_CLICK) {
-        this.selectionRectangle.mouseMove(mouse);
-        if (this.selectionRectangle.ongoingSelection) {
-          // Éviter de créer une boite de sélection si on effectue un simple clic
-          if (this.selectionRectangle.rectangleInverted.getWidth() !== 0 || this.selectionRectangle.rectangleInverted.getHeight() !== 0) {
-            this.selectionBox.deleteSelectionBox();
-            this.isInRectangleSelection(this.selectionRectangle.rectangleInverted);
-            this.createBoundingBox();
-          }
-        }
-
-      } else if (mouse.button === LEFT_CLICK ) {
-        this.selectionRectangle.mouseMove(mouse);
-        if (this.selectionRectangle.ongoingSelection) {
-          this.deleteBoundingBox();
-          // Éviter de créer une boite de sélection si on effectue un simple clic
-          if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
-            this.isInRectangleSelection(this.selectionRectangle.rectangle);
-            this.createBoundingBox();
-          }
+      this.selectionRectangle.mouseMove(mouse);
+      if (this.selectionRectangle.ongoingSelection) {
+        if (mouse.buttons === RIGHT_CLICK) {
+            // Éviter de créer une boite de sélection si on effectue un simple clic
+            if (this.selectionRectangle.rectangleInverted.getWidth() !== 0 || this.selectionRectangle.rectangleInverted.getHeight() !== 0) {
+              this.selectionBox.deleteSelectionBox();
+              this.isInRectangleSelection(this.selectionRectangle.rectangleInverted);
+              this.createBoundingBox();
+            }
+        } else if (mouse.button === LEFT_CLICK ) {
+            // Éviter de créer une boite de sélection si on effectue un simple clic
+            if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
+              this.deleteBoundingBox();
+              this.isInRectangleSelection(this.selectionRectangle.rectangle);
+              this.createBoundingBox();
+            }
         }
       }
-      // console.log(this.modifiedElement);
     }
   }
 
@@ -101,7 +98,7 @@ export class SelectionService implements ToolInterface {
     }
   }
 
-  onMouseRelease(mouse: MouseEvent): void {
+  onMouseRelease(): void {
     if (this.clickOnSelectionBox || this.clickInSelectionBox) {
       this.clickOnSelectionBox = false;
       this.clickInSelectionBox = false;
@@ -176,7 +173,7 @@ export class SelectionService implements ToolInterface {
   isInRectangleSelection(rectangleSelection: RectangleService): void {
     this.findPointMinAndMax(rectangleSelection);
 
-    for (const element of this.SVGStockage.getCompleteSVG()) {
+    for (const element of this.svgStockage.getCompleteSVG()) {
       this.findPointMinAndMax(element);
 
       if (this.selectionRectangle.rectangle) {
