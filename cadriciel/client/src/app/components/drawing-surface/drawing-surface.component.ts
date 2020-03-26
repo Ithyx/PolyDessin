@@ -6,6 +6,7 @@ import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
 import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
+import { Point } from 'src/app/services/tools/line-tool.service';
 import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
@@ -21,8 +22,7 @@ const RIGHT_CLICK = 2;
 export class DrawingSurfaceComponent implements AfterViewInit {
   @ViewChild('drawing', {static: false})
   private drawing: ElementRef<SVGElement>;
-  private mousePositionX: number;
-  private mousePositionY: number;
+  private mousePosition: Point;
   @ViewChild('canvas', {static: false})
   private canvas: ElementRef<HTMLCanvasElement>;
 
@@ -36,8 +36,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
               private canvasConversion: CanvasConversionService,
               private pipette: PipetteToolService
               ) {
-                 this.mousePositionX = 0;
-                 this.mousePositionY = 0;
+                 this.mousePosition = {x: 0, y: 0};
                 }
 
   ngAfterViewInit(): void {
@@ -58,8 +57,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   }
 
   handleElementMouseDown(element: DrawElement, mouse: MouseEvent): void {
-    this.mousePositionX = mouse.screenX;
-    this.mousePositionY = mouse.screenY;
+    this.mousePosition = {x: mouse.screenX, y: mouse.screenY};
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       if (mouse.button === LEFT_CLICK) {
         if (!this.selection.selectedElements.includes(element)) {
@@ -83,7 +81,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
 
   handleElementMouseUp(element: DrawElement, mouse: MouseEvent): void {
     if (mouse.button === LEFT_CLICK) {
-      if (this.mousePositionX === mouse.screenX && this.mousePositionY === mouse.screenY) {
+      if (this.mousePosition === {x: mouse.screenX, y: mouse.screenY}) {
         for (const elements of this.selection.selectedElements) {
           elements.isSelected = false;
         }
@@ -93,7 +91,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
         this.selection.createBoundingBox();
       }
     } else if (mouse.button === RIGHT_CLICK) {
-      if (this.mousePositionX === mouse.screenX && this.mousePositionY === mouse.screenY) {
+      if (this.mousePosition === {x: mouse.screenX, y: mouse.screenY}) {
         this.handleElementRightClick(element);
       }
     }
@@ -134,8 +132,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   }
 
   handleMouseDownBackground(mouse: MouseEvent): void {
-    this.mousePositionX = mouse.screenX;
-    this.mousePositionY = mouse.screenY;
+    this.mousePosition = {x: mouse.screenX, y: mouse.screenY};
     this.colorChanger.activeElement = undefined;
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       if (mouse.button === LEFT_CLICK) {
@@ -156,7 +153,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   }
 
   handleMouseUpBackground(mouse: MouseEvent): void {
-    if (this.mousePositionX === mouse.screenX && this.mousePositionY === mouse.screenY) {
+    if (this.mousePosition === {x: mouse.screenX, y: mouse.screenY}) {
       this.handleBackgroundLeftClick();
     }
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
@@ -181,9 +178,8 @@ export class DrawingSurfaceComponent implements AfterViewInit {
    }
 
    handleControlPointMouseDown(mouse: MouseEvent): void {
-    this.mousePositionX = mouse.screenX;
-    this.mousePositionY = mouse.screenY;
-    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION && mouse.button === RIGHT_CLICK){
+    this.mousePosition = {x: mouse.screenX, y: mouse.screenY};
+    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION && mouse.button === RIGHT_CLICK) {
       this.selection.selectionRectangle.mouseDown(mouse);
       delete this.selection.selectionRectangle.rectangle;
     }
