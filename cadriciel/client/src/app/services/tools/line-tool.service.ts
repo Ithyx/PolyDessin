@@ -46,9 +46,11 @@ export class LineToolService implements ToolInterface {
     this.commands.drawingInProgress = true;
     this.isSimpleClick = true;
     this.line.points.push({x: this.line.mousePosition.x, y: this.line.mousePosition.y});
-    window.setTimeout(() => {
-      if (this.isSimpleClick) { this.refreshSVG(); }
-    }, CLICK_DELAY);
+    window.setTimeout(this.mouseClickCallback.bind(this), CLICK_DELAY);
+  }
+
+  mouseClickCallback(): void {
+    if (this.isSimpleClick) { this.refreshSVG(); }
   }
 
   onDoubleClick(mouse: MouseEvent): void {

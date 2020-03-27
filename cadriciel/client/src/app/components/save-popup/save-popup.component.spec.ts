@@ -91,21 +91,48 @@ describe('SavePopupComponent', () => {
     expect(component.confirmSave().then(() => {
       expect(spy).not.toHaveBeenCalled();
     })).toBeTruthy();
-  }); /*
-  it('#confirmSave ne devrait pas fermer le popup si une erreur est détectée', () => {
-    component['name'].setValue('non empty string');
-    spyOn(component['db'], 'saveDrawing').and.throwError('error');
-    const spy = spyOn(component, 'closeDialogue');
-    expect(component.confirmSave().then(() => {
-      expect(spy).not.toHaveBeenCalled();
-    })).toBeTruthy();
   });
-  it('#confirmSave devrait fermer le popup si aucune erreur n\'est détectée', () => {
-    component['name'].setValue('non empty string');
-    spyOn(component['db'], 'saveDrawing').and.stub();
-    const spy = spyOn(component, 'closeDialogue');
-    expect(component.confirmSave().then(() => {
-      expect(spy).toHaveBeenCalled();
-    })).toBeTruthy();
-  }); */
+
+  // TESTS addTag
+  it('#addTag devrait ajouter un tag valide à la liste', () => {
+    component['drawingParams'].tags = ['tag1', 'tag2'];
+    component['tag'].setValue('tag3');
+    spyOn(component, 'checkTag').and.returnValue(true);
+    component.addTag();
+    expect(component['drawingParams'].tags).toEqual(['tag1', 'tag2', 'tag3']);
+  });
+  it('#addTag ne devrait pas ajouter un tag si celui-ci n\'est pas valide (vide)', () => {
+    component['drawingParams'].tags = ['tag1', 'tag2'];
+    spyOn(component, 'checkTag').and.returnValue(false);
+    component.addTag();
+    expect(component['drawingParams'].tags).toEqual(['tag1', 'tag2']);
+  });
+  it('#addTag ne devrait pas ajouter un tag si celui-ci est déjà dans la liste', () => {
+    component['drawingParams'].tags = ['tag1', 'tag2'];
+    component['tag'].setValue('tag2');
+    spyOn(component, 'checkTag').and.returnValue(true);
+    component.addTag();
+    expect(component['drawingParams'].tags).toEqual(['tag1', 'tag2']);
+  });
+
+  // TESTS addPredefinedTag
+  it('#addPredefinedTag devrait ajouter un tag valide à la liste', () => {
+    component['drawingParams'].tags = ['tag1', 'tag2'];
+    component['predefinedTag'].setValue('tag3');
+    component.addPredefinedTag();
+    expect(component['drawingParams'].tags).toEqual(['tag1', 'tag2', 'tag3']);
+  });
+  it('#addPredefinedTag ne devrait pas ajouter un tag si celui-ci est déjà dans la liste', () => {
+    component['drawingParams'].tags = ['tag1', 'tag2'];
+    component['predefinedTag'].setValue('tag2');
+    component.addPredefinedTag();
+    expect(component['drawingParams'].tags).toEqual(['tag1', 'tag2']);
+  });
+
+  // TESTS deleteTag
+  it('#deleteTag devrait supprimer toutes les instances du tag (normalement une seule) dans la liste', () => {
+    component['drawingParams'].tags = ['tag1', 'tag2', 'tag2', 'tag2', 'tag2', 'tag3'];
+    component.deleteTag('tag2');
+    expect(component['drawingParams'].tags).toEqual(['tag1', 'tag3']);
+  });
 });
