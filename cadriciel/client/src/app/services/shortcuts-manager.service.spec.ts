@@ -61,6 +61,7 @@ describe('ShortcutsManagerService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(ShortcutsManagerService));
 
+  // TESTS constructor
   it('should be created', () => {
     const testService: ShortcutsManagerService = TestBed.get(ShortcutsManagerService);
     expect(testService).toBeTruthy();
@@ -232,6 +233,13 @@ describe('ShortcutsManagerService', () => {
     service.treatInput(keyboard);
     expect(keyboard.preventDefault).toHaveBeenCalled();
   });
+
+  // TESTS enableShortcuts
+  it('#enableShortcuts devrait mettre l\'attribut focusOnInput à false', () => {
+    service['focusOnInput'] = true;
+    service.enableShortcuts();
+    expect(service['focusOnInput']).toBe(false);
+  })
 
   // TESTS clearOngoingSVG
 
