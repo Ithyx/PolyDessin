@@ -121,6 +121,77 @@ describe('ShortcutsManagerService', () => {
     ));
   });
 
+  it('#updatePositionTimer devrait appeler translateSelection si aucune flèche n\'est appuyé et que clearTimeout est à 0', () => {
+    service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
+    service['selection'].handleClick(element);    // création de la boite de sélection
+    const spy = spyOn(service, 'translateSelection');
+    service['leftArrow'] = true;
+    service['clearTimeout'] = 0;
+    service.updatePositionTimer();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#updatePositionTimer ne devrait pas appeler translateSelection si aucune flèche n\'est appuyé et ' +
+  'que clearTimeout est différent de 0', () => {
+    service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
+    service['selection'].handleClick(element);    // création de la boite de sélection
+    const spy = spyOn(service, 'translateSelection');
+    service['leftArrow'] = true;
+    service['clearTimeout'] = 25;
+    service.updatePositionTimer();
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  // TESTS translateSelection
+
+  it('#translateSelection devrait appeler updatePosition de la selection si counter100ms est inférieur ou égal à 1', () => {
+    const spy = spyOn(service['selection'], 'updatePosition');
+    service.translateSelection();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#translateSelection devrait appeler updatePosition de la selection si counter100ms est supérieur ou égal à 5', () => {
+    service['counter100ms'] = 6;
+    const spy = spyOn(service['selection'], 'updatePosition');
+    service.translateSelection();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#translateSelection ne devrait rien faire si counter100ms est entre 2 et 4', () => {
+    service['counter100ms'] = 3;
+    const spy = spyOn(service['selection'], 'updatePosition');
+    service.translateSelection();
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('#translateSelection devrait déplacer de 3 pixel sur l\'axe des x si rightArrow est true', () => {
+    service['rightArrow'] = true;
+    const spy = spyOn(service['selection'], 'updatePosition');
+    service.translateSelection();
+    expect(spy).toHaveBeenCalledWith(3, 0);
+  });
+
+  it('#translateSelection devrait déplacer de -3 pixel sur l\'axe des x si leftArrow est true', () => {
+    service['leftArrow'] = true;
+    const spy = spyOn(service['selection'], 'updatePosition');
+    service.translateSelection();
+    expect(spy).toHaveBeenCalledWith(-3, 0);
+  });
+
+  it('#translateSelection devrait déplacer de 3 pixel sur l\'axe des y si downArrow est true', () => {
+    service['downArrow'] = true;
+    const spy = spyOn(service['selection'], 'updatePosition');
+    service.translateSelection();
+    expect(spy).toHaveBeenCalledWith(0, 3);
+  });
+
+  it('#translateSelection devrait déplacer de -3 pixel sur l\'axe des y si upArrow est true', () => {
+    service['upArrow'] = true;
+    const spy = spyOn(service['selection'], 'updatePosition');
+    service.translateSelection();
+    expect(spy).toHaveBeenCalledWith(0, -3);
+  });
+
   // TESTS treatInput
 
   it('#treatInput ne devrait rien faire si on a un focus sur les entrées', () => {
@@ -681,6 +752,13 @@ describe('ShortcutsManagerService', () => {
     const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowDown'});
     service.treatReleaseKey(keyboard);
     expect(service['downArrow']).toBe(false);
+  });
+
+  it('#treatReleaseKey devrait appeler updatePositionTimer', () => {
+    const keyboard = new KeyboardEvent('keyrelease', { key: 'u'});
+    const spy = spyOn(service, 'updatePositionTimer');
+    service.treatReleaseKey(keyboard);
+    expect(spy).toHaveBeenCalled();
   });
 
   it('#treatReleaseKey ne fait rien dans le cas d\'une touche non programmée', () => {
