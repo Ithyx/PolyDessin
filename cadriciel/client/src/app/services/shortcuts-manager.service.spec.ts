@@ -239,7 +239,7 @@ describe('ShortcutsManagerService', () => {
     service['focusOnInput'] = true;
     service.enableShortcuts();
     expect(service['focusOnInput']).toBe(false);
-  })
+  });
 
   // TESTS clearOngoingSVG
 
