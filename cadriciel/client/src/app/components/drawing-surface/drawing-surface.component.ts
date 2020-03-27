@@ -81,19 +81,21 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   }
 
   handleElementMouseUp(element: DrawElement, mouse: MouseEvent): void {
-    if (mouse.button === LEFT_CLICK) {
-      if (this.mousePosition.x === mouse.screenX && this.mousePosition.y === mouse.screenY) {
-        for (const elements of this.selection.selectedElements) {
-          elements.isSelected = false;
+    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
+      if (mouse.button === LEFT_CLICK) {
+        if (this.mousePosition.x === mouse.screenX && this.mousePosition.y === mouse.screenY) {
+          for (const elements of this.selection.selectedElements) {
+            elements.isSelected = false;
+          }
+          this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
+          this.selection.selectedElements.push(element);
+          element.isSelected = true;
+          this.selection.createBoundingBox();
         }
-        this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
-        this.selection.selectedElements.push(element);
-        element.isSelected = true;
-        this.selection.createBoundingBox();
-      }
-    } else if (mouse.button === RIGHT_CLICK) {
-      if (this.mousePosition.x === mouse.screenX && this.mousePosition.y === mouse.screenY) {
-        this.handleElementRightClick(element);
+      } else if (mouse.button === RIGHT_CLICK) {
+        if (this.mousePosition.x === mouse.screenX && this.mousePosition.y === mouse.screenY) {
+          this.handleElementRightClick(element);
+        }
       }
     }
   }

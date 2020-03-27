@@ -10,10 +10,11 @@ import { TracePencilService } from './stockage-svg/trace-pencil.service';
 import { TraceSprayService } from './stockage-svg/trace-spray.service';
 
 export const MAX_COLOR_VALUE = 255;
-const INDEX_INCREASE = 4;
-const TIME_BEFORE_UPDATE = 1;
 export const COLOR_INCREASE_LINE = 2;
 export const COLOR_INCREASE_SPRAY = 5;
+const INDEX_INCREASE = 4;
+const TIME_BEFORE_UPDATE = 1;
+const MIN_OCCURRENCES = 12;
 
 @Injectable({
   providedIn: 'root'
@@ -134,16 +135,37 @@ export class CanvasConversionService {
 
   getElementsInArea(x: number, y: number, width: number, height: number): DrawElement[] {
     if (!this.isValid) { return []; }
+    const occurrences = new Map<string, number>();
     const elements: DrawElement[] = [];
     const data = this.context.getImageData(x, y, width, height).data;
     for (let index = 0; index < data.length; index += INDEX_INCREASE) {
       const color = `rgba(${data[index]}, ${data[index + 1]}, ${data[index + 2]}, 1)`;
-      const element = this.coloredElements.get(color);
-      if (element && !elements.includes(element)) {
-        elements.push(element);
+      if (this.coloredElements.has(color)) {
+        const colorOccurrences = occurrences.get(color);
+        occurrences.set(color, (colorOccurrences ? colorOccurrences + 1 : 1));
+      }
+    }
+    const colors = Array.from(occurrences.keys());
+    colors.sort();
+    for (const color of colors) {
+      const index = colors.indexOf(color);
+      // s'assurer de ne pas prendre en compte le 'blending' entre plusieurs éléments
+      if (!this.canBeBlending(occurrences, occurrences.get(color), index)) {
+        const element = this.coloredElements.get(color);
+        if (element && !elements.includes(element)) {
+          elements.push(element);
+        }
       }
     }
     return elements;
+  }
+
+  canBeBlending(occurrences: Map<string, number>, value: number | undefined, index: number): boolean {
+    const isOnlyElement = occurrences.size === 1;
+    const isFirstElement = index === 0;
+    const isLastElement = index === occurrences.size - 1;
+    const hasFewOccurrences = (value && value < MIN_OCCURRENCES) as boolean;
+    return !isOnlyElement && (!isFirstElement && !isLastElement || hasFewOccurrences);
   }
 
   sanitize(svg: string): SafeHtml {

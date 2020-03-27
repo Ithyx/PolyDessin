@@ -145,6 +145,10 @@ export class ShortcutsManagerService {
     this.updatePositionTimer();
   }
 
+  enableShortcuts(): void {
+    this.focusOnInput = false;
+  }
+
   clearOngoingSVG(): void {
     this.selection.deleteBoundingBox();
     this.rectangleTool.clear();
@@ -193,7 +197,7 @@ export class ShortcutsManagerService {
     if (keyboard.ctrlKey) {
       this.focusOnInput = true;
       this.selection.deleteBoundingBox();
-      this.dialog.open(ExportWindowComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
+      this.dialog.open(ExportWindowComponent, this.dialogConfig).afterClosed().subscribe(this.enableShortcuts.bind(this));
     } else {
       this.tools.changeActiveTool(TOOL_INDEX.ERASER);
       this.clearOngoingSVG();
@@ -224,7 +228,7 @@ export class ShortcutsManagerService {
     if (keyboard.ctrlKey) {
       this.focusOnInput = true;
       this.selection.deleteBoundingBox();
-      this.dialog.open(SavePopupComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
+      this.dialog.open(SavePopupComponent, this.dialogConfig).afterClosed().subscribe(this.enableShortcuts.bind(this));
     } else {
       this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
       this.clearOngoingSVG();
@@ -280,7 +284,7 @@ export class ShortcutsManagerService {
     if (keyboard.ctrlKey) {
       this.focusOnInput = true;
       this.selection.deleteBoundingBox();
-      this.dialog.open(GalleryComponent, this.dialogConfig).afterClosed().subscribe(() => { this.focusOnInput = false; });
+      this.dialog.open(GalleryComponent, this.dialogConfig).afterClosed().subscribe(this.enableShortcuts.bind(this));
     } else { this.grid.showGrid = !this.grid.showGrid; }
   }
 
