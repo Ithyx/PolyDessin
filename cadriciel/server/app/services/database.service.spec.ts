@@ -1,4 +1,5 @@
-import * as assert from 'assert';
+import {assert, expect } from 'chai';
+import {Drawing} from '../../../common/communication/DrawingInterface';
 import {DatabaseService} from './database.service';
 
 describe('Test constructeur database.service', () => {
@@ -8,9 +9,22 @@ describe('Test constructeur database.service', () => {
     });
 });
 
-/*describe('#updateData()', function() {
-    context('sans nom et doit exister', function(){
-        it('doit retourner faux', function(){
-        })
-    })
-}) */
+/*describe('#updateData devrait retourner false, si le nom de la du dessin est vide ou collection non existant', () => {
+
+    context('nom du dessin est vide', () => {
+        it('Doit retourner faux', () => { 
+
+         });
+    });
+
+    context('collection nexiste pas', () => {
+        it('Doit retourner faux', () => {
+        });
+    });
+
+    context('nom du dessin nest pas vide', () =>{
+        it('Doit retourner vrai', () =>{
+
+        });
+    });
+}); */
