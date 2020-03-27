@@ -1,12 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
 import { DomSanitizer } from '@angular/platform-browser';
-import { CanvasConversionService } from './canvas-conversion.service';
+import { CanvasConversionService, COLOR_INCREASE_LINE, COLOR_INCREASE_SPRAY } from './canvas-conversion.service';
 import { Color, DrawElement } from './stockage-svg/draw-element';
+import { LineService } from './stockage-svg/line.service';
 import { RectangleService } from './stockage-svg/rectangle.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { TraceBrushService } from './stockage-svg/trace-brush.service';
 import { TracePencilService } from './stockage-svg/trace-pencil.service';
+import { TraceSprayService } from './stockage-svg/trace-spray.service';
 
 // tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers
@@ -51,6 +53,7 @@ describe('CanvasConversionService', () => {
       service['context'] = context;
     }
     service['image'] = new Image();
+    service['isValid'] = true;
 
     firstElement = new TracePencilService();
     firstElement.points = [{x: 0, y: 0}, {x: 1, y: 2}, {x: 0, y: 3}];
@@ -159,6 +162,11 @@ describe('CanvasConversionService', () => {
 
   // TESTS updateDrawing
 
+  it('#updateDrawing devrait mettre isValid à false', () => {
+    service.updateDrawing();
+    expect(service['isValid']).toBe(false);
+  });
+
   it('#updateDrawing devrait appeler getCompleteSVG de SVGStockage', () => {
     service.updateDrawing();
     expect(stockage.getCompleteSVG).toHaveBeenCalled();
@@ -188,6 +196,22 @@ describe('CanvasConversionService', () => {
     service.updateDrawing();
     if (service['drawing'].elements && service['drawing'].elements[65535].primaryColor) {
       expect(service['drawing'].elements[65535].primaryColor.RGBAString).toEqual('rgba(0, 0, 1, 1)');
+    }
+  });
+
+  it('#updateDrawing devrait incrémenter la couleur de COLOR_INCREASE_SPRAY pour un trait d\'aérosol', () => {
+    completeElements[0] = new TraceSprayService();
+    service.updateDrawing();
+    if (service['drawing'].elements && service['drawing'].elements[0].primaryColor) {
+      expect(service['drawing'].elements[0].primaryColor.RGBAString).toEqual(`rgba(${COLOR_INCREASE_SPRAY}, 0, 0, 1)`);
+    }
+  });
+
+  it('#updateDrawing devrait incrémenter la couleur de COLOR_INCREASE_LINE pour une ligne', () => {
+    completeElements[0] = new LineService();
+    service.updateDrawing();
+    if (service['drawing'].elements && service['drawing'].elements[0].primaryColor) {
+      expect(service['drawing'].elements[0].primaryColor.RGBAString).toEqual(`rgba(${COLOR_INCREASE_LINE}, 0, 0, 1)`);
     }
   });
 
@@ -267,11 +291,17 @@ describe('CanvasConversionService', () => {
   it('#updateDrawing devrait appeler convertToCanvas après le délai', () => {
     spyOn(service, 'convertToCanvas');
     service.updateDrawing();
-    jasmine.clock().tick(50);
+    jasmine.clock().tick(5);
     expect(service.convertToCanvas).toHaveBeenCalled();
   });
 
   // TESTS getElementsInArea
+
+  it('#getElementsInArea ne devrait rien faire si isValid est false', () => {
+    service['isValid'] = false;
+    service.getElementsInArea(1, 1, 1, 1);
+    expect(context.getImageData).not.toHaveBeenCalled();
+  });
 
   it('#getElementsInArea devrait appeler getImageData avec les coordonnées, la hauteur et la largeur en paramètres', () => {
     service.getElementsInArea(1, 2, 15, 28);

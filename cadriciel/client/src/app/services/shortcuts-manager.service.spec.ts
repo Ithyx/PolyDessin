@@ -12,6 +12,7 @@ import { GalleryLoadWarningComponent } from '../components/gallery-load-warning/
 import { GalleryElementComponent } from '../components/gallery/gallery-element/gallery-element.component';
 import { GalleryComponent } from '../components/gallery/gallery.component';
 import { SavePopupComponent } from '../components/save-popup/save-popup.component';
+import { TranslateSvgService } from './command/translate-svg.service';
 import { ShortcutsManagerService } from './shortcuts-manager.service';
 import { DrawElement } from './stockage-svg/draw-element';
 import { TOOL_INDEX } from './tools/tool-manager.service';
@@ -31,7 +32,7 @@ describe('ShortcutsManagerService', () => {
   const element: DrawElement = {
     svg: '',
     svgHtml: '',
-    points: [],
+    points: [{x: 90, y: 90}, {x: 76, y: 89 }],
     isSelected: false,
     erasingEvidence: false,
     erasingColor: {RGBA: [0, 0, 0, 1], RGBAString: ''},
@@ -66,7 +67,130 @@ describe('ShortcutsManagerService', () => {
   });
 
   // TESTS updatePositionTimer
-    // TODO
+
+  it('#updatePositionTimer ne devrait rien faire s\'il n\'y a pas de boite de selection', () => {
+    spyOn(window, 'clearInterval');
+    spyOn(window, 'setInterval');
+    spyOn(service['selection'], 'updatePosition');
+    spyOn(service['commands'], 'execute');
+
+    service.updatePositionTimer();
+    expect(window.clearInterval).not.toHaveBeenCalled();
+    expect(window.setInterval).not.toHaveBeenCalled();
+    expect(service['selection'].updatePosition).not.toHaveBeenCalled();
+    expect(service['commands'].execute).not.toHaveBeenCalled();
+  });
+
+  it('#updatePositionTimer devrait remettre le compteur à 0 si aucune flèche n\'est appuyé', () => {
+    service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
+    service['selection'].handleClick(element);    // création de la boite de sélection
+    service.updatePositionTimer();
+    expect(service['counter100ms']).toEqual(0);
+    expect(service['clearTimeout']).toEqual(0);
+  });
+
+  it('#updatePositionTimer devrait appeler clearInterval de la fenêtre si aucune flèche n\'est appuyé', () => {
+    service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
+    service['selection'].handleClick(element);    // création de la boite de sélection
+    spyOn(window, 'clearInterval');
+    service.updatePositionTimer();
+    expect(window.clearInterval).toHaveBeenCalledWith(service['clearTimeout']);
+  });
+
+  it('#updatePositionTimer ne devrait pas executer de commande de translastion si le SVG n\' a pas bougé et '
+    + 'qu\'aucune flèche n\'est appuyé', () => {
+    service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
+    element.translate = {x: 0, y: 0};
+    service['selection'].handleClick(element);    // création de la boite de sélection
+    spyOn(service['commands'], 'execute');
+    service.updatePositionTimer();
+    expect(service['commands'].execute).not.toHaveBeenCalled();
+  });
+
+  it('#updatePositionTimer devrait executer une commande translastion si le SVG a été bougé et qu\'aucune flèche n\'est appuyé', () => {
+    service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
+    element.translate = {x: 10, y: 10};
+    service['selection'].handleClick(element);    // création de la boite de sélection
+    spyOn(service['commands'], 'execute');
+    service.updatePositionTimer();
+    expect(service['commands'].execute).toHaveBeenCalledWith(new TranslateSvgService(
+                                service['selection'].selectedElements,
+                                service['selection'].selectionBox,
+                                service['sanitizer'],
+                                service['selection'].deleteBoundingBox
+    ));
+  });
+
+  it('#updatePositionTimer devrait appeler translateSelection si aucune flèche n\'est appuyé et que clearTimeout est à 0', () => {
+    service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
+    service['selection'].handleClick(element);    // création de la boite de sélection
+    const spy = spyOn(service, 'translateSelection');
+    service['leftArrow'] = true;
+    service['clearTimeout'] = 0;
+    service.updatePositionTimer();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#updatePositionTimer ne devrait pas appeler translateSelection si aucune flèche n\'est appuyé et ' +
+  'que clearTimeout est différent de 0', () => {
+    service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
+    service['selection'].handleClick(element);    // création de la boite de sélection
+    const spy = spyOn(service, 'translateSelection');
+    service['leftArrow'] = true;
+    service['clearTimeout'] = 25;
+    service.updatePositionTimer();
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  // TESTS translateSelection
+
+  it('#translateSelection devrait appeler updatePosition de la selection si counter100ms est inférieur ou égal à 1', () => {
+    const spy = spyOn(service['selection'], 'updatePosition');
+    service.translateSelection();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#translateSelection devrait appeler updatePosition de la selection si counter100ms est supérieur ou égal à 5', () => {
+    service['counter100ms'] = 6;
+    const spy = spyOn(service['selection'], 'updatePosition');
+    service.translateSelection();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#translateSelection ne devrait rien faire si counter100ms est entre 2 et 4', () => {
+    service['counter100ms'] = 3;
+    const spy = spyOn(service['selection'], 'updatePosition');
+    service.translateSelection();
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('#translateSelection devrait déplacer de 3 pixel sur l\'axe des x si rightArrow est true', () => {
+    service['rightArrow'] = true;
+    const spy = spyOn(service['selection'], 'updatePosition');
+    service.translateSelection();
+    expect(spy).toHaveBeenCalledWith(3, 0);
+  });
+
+  it('#translateSelection devrait déplacer de -3 pixel sur l\'axe des x si leftArrow est true', () => {
+    service['leftArrow'] = true;
+    const spy = spyOn(service['selection'], 'updatePosition');
+    service.translateSelection();
+    expect(spy).toHaveBeenCalledWith(-3, 0);
+  });
+
+  it('#translateSelection devrait déplacer de 3 pixel sur l\'axe des y si downArrow est true', () => {
+    service['downArrow'] = true;
+    const spy = spyOn(service['selection'], 'updatePosition');
+    service.translateSelection();
+    expect(spy).toHaveBeenCalledWith(0, 3);
+  });
+
+  it('#translateSelection devrait déplacer de -3 pixel sur l\'axe des y si upArrow est true', () => {
+    service['upArrow'] = true;
+    const spy = spyOn(service['selection'], 'updatePosition');
+    service.translateSelection();
+    expect(spy).toHaveBeenCalledWith(0, -3);
+  });
 
   // TESTS treatInput
 
@@ -628,6 +752,13 @@ describe('ShortcutsManagerService', () => {
     const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowDown'});
     service.treatReleaseKey(keyboard);
     expect(service['downArrow']).toBe(false);
+  });
+
+  it('#treatReleaseKey devrait appeler updatePositionTimer', () => {
+    const keyboard = new KeyboardEvent('keyrelease', { key: 'u'});
+    const spy = spyOn(service, 'updatePositionTimer');
+    service.treatReleaseKey(keyboard);
+    expect(spy).toHaveBeenCalled();
   });
 
   it('#treatReleaseKey ne fait rien dans le cas d\'une touche non programmée', () => {

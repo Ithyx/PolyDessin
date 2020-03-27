@@ -1,18 +1,18 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
-import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
-import { CommandManagerService } from 'src/app/services/command/command-manager.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { GridService } from 'src/app/services/grid/grid.service';
-import { RoutingManagerService } from 'src/app/services/routing-manager.service';
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
 import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
+import { Point } from 'src/app/services/tools/line-tool.service';
 import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
+
+const LEFT_CLICK = 0;
+const RIGHT_CLICK = 2;
 
 @Component({
   selector: 'app-drawing-surface',
@@ -21,24 +21,23 @@ import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-mana
 })
 export class DrawingSurfaceComponent implements AfterViewInit {
   @ViewChild('drawing', {static: false})
-  drawing: ElementRef<SVGElement>;
+  private drawing: ElementRef<SVGElement>;
+  private mousePosition: Point;
   @ViewChild('canvas', {static: false})
-  canvas: ElementRef<HTMLCanvasElement>;
+  private canvas: ElementRef<HTMLCanvasElement>;
 
-  constructor(public SVGStockage: SVGStockageService,
+  constructor(public svgStockage: SVGStockageService,
               private tools: ToolManagerService,
-              public drawingManager: DrawingManagerService,
-              public routingManager: RoutingManagerService,
-              public routing: Router,
-              public colorParameter: ColorParameterService,
+              protected drawingManager: DrawingManagerService,
               private selection: SelectionService,
-              public grid: GridService,
-              public colorChanger: ColorChangerToolService,
-              public commands: CommandManagerService,
-              public eraser: EraserToolService,
+              protected grid: GridService,
+              private colorChanger: ColorChangerToolService,
+              private eraser: EraserToolService,
               private canvasConversion: CanvasConversionService,
-              private pipette: PipetteToolService) {
-  }
+              private pipette: PipetteToolService
+              ) {
+                 this.mousePosition = {x: 0, y: 0};
+                }
 
   ngAfterViewInit(): void {
     this.eraser.drawing = this.drawing.nativeElement;
@@ -57,9 +56,46 @@ export class DrawingSurfaceComponent implements AfterViewInit {
     return belongInX && belongInY;
   }
 
-  handleBackgroundRightClick(): boolean {
-    this.colorChanger.activeElement = undefined;
-    return false;
+  handleElementMouseDown(element: DrawElement, mouse: MouseEvent): void {
+    this.colorChanger.activeElement = element;
+    this.mousePosition = {x: mouse.screenX, y: mouse.screenY};
+    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
+      if (mouse.button === LEFT_CLICK) {
+        if (!this.selection.selectedElements.includes(element)) {
+          for (const elements of this.selection.selectedElements) {
+            elements.isSelected = false;
+          }
+          this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
+          this.selection.selectedElements.push(element);
+          element.isSelected = true;
+          this.selection.createBoundingBox();
+        }
+        this.selection.selectionBox.mouseClick = {x: mouse.offsetX , y: mouse.offsetY };
+        delete this.selection.selectionRectangle.rectangle;
+        this.selection.clickInSelectionBox = true;
+      } else if (mouse.button === RIGHT_CLICK) {
+        this.selection.selectionRectangle.mouseDown(mouse);
+        delete this.selection.selectionRectangle.rectangle;
+      }
+    }
+  }
+
+  handleElementMouseUp(element: DrawElement, mouse: MouseEvent): void {
+    if (mouse.button === LEFT_CLICK) {
+      if (this.mousePosition.x === mouse.screenX && this.mousePosition.y === mouse.screenY) {
+        for (const elements of this.selection.selectedElements) {
+          elements.isSelected = false;
+        }
+        this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
+        this.selection.selectedElements.push(element);
+        element.isSelected = true;
+        this.selection.createBoundingBox();
+      }
+    } else if (mouse.button === RIGHT_CLICK) {
+      if (this.mousePosition.x === mouse.screenX && this.mousePosition.y === mouse.screenY) {
+        this.handleElementRightClick(element);
+      }
+    }
   }
 
   handleElementClick(element: DrawElement): void {
@@ -71,14 +107,13 @@ export class DrawingSurfaceComponent implements AfterViewInit {
     }
   }
 
-  handleElementRightClick(element: DrawElement): boolean {
+  handleElementRightClick(element: DrawElement): void {
     this.colorChanger.activeElement = element;
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       this.selection.handleRightClick(element);
       this.selection.clickOnSelectionBox = false;
       this.selection.clickInSelectionBox = false;
     }
-    return false;
   }
 
   handleMouseDownBox(mouse: MouseEvent): void {
@@ -98,27 +133,30 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   }
 
   handleMouseDownBackground(mouse: MouseEvent): void {
+    this.mousePosition = {x: mouse.screenX, y: mouse.screenY};
     this.colorChanger.activeElement = undefined;
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
-      // si on clique dans la boite de selection d'un element SVG
-      if (this.selection.selectionBox.selectionBox && this.clickBelongToSelectionBox(mouse)) {
-        this.selection.selectionBox.mouseClick = {x: mouse.offsetX , y: mouse.offsetY };
-        this.selection.clickInSelectionBox = true;
-        delete this.selection.selectionRectangle.rectangle;
+      if (mouse.button === LEFT_CLICK) {
+        // si on clique dans la boite de selection d'un element SVG
+        if (this.selection.selectionBox.selectionBox && this.clickBelongToSelectionBox(mouse)) {
+          this.selection.selectionBox.mouseClick = {x: mouse.offsetX , y: mouse.offsetY };
+          this.selection.clickInSelectionBox = true;
+          delete this.selection.selectionRectangle.rectangle;
 
-      } else {  // sinon on clique sur fond
-        this.selection.deleteBoundingBox();
-        this.selection.clickOnSelectionBox = false;
-        this.selection.clickInSelectionBox = false;
-        for (const element of this.selection.selectedElements) {
-          element.isSelected = false;
+        } else {  // sinon on clique sur fond
+          this.handleBackgroundLeftClick();
         }
-        this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
+      } else if (mouse.button === RIGHT_CLICK) {
+        this.selection.selectionRectangle.mouseDown(mouse);
+        delete this.selection.selectionRectangle.rectangle;
       }
     }
   }
 
-  handleMouseUpBackground(): void {
+  handleMouseUpBackground(mouse: MouseEvent): void {
+    if (this.mousePosition.x === mouse.screenX && this.mousePosition.y === mouse.screenY) {
+      this.handleBackgroundLeftClick();
+    }
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       if (this.selection.selectedElements.length !== 0) {
         this.selection.selectionBox.selectionBox.translateAllPoints();
@@ -127,6 +165,26 @@ export class DrawingSurfaceComponent implements AfterViewInit {
         }
       }
     }
+   }
+
+   handleBackgroundLeftClick(): void {
+    this.selection.deleteBoundingBox();
+    this.selection.clickOnSelectionBox = false;
+    this.selection.clickInSelectionBox = false;
+    for (const element of this.selection.selectedElements) {
+      element.isSelected = false;
+    }
+    this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
+
+   }
+
+   handleControlPointMouseDown(mouse: MouseEvent): void {
+    this.mousePosition = {x: mouse.screenX, y: mouse.screenY};
+    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION && mouse.button === RIGHT_CLICK) {
+      this.selection.selectionRectangle.mouseDown(mouse);
+      delete this.selection.selectionRectangle.rectangle;
+    }
+
    }
 
 }

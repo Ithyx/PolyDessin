@@ -105,34 +105,34 @@ export class ShortcutsManagerService {
         }
 
       } else if (this.clearTimeout === 0) {
-        this.clearTimeout = window.setInterval(() => {
-          const translate: Point = {x: 0 , y: 0};
-
-          if (this.leftArrow) {
-            translate.x = -SELECTION_MOVEMENT_PIXEL;
-          }
-
-          if (this.rightArrow) {
-            translate.x = SELECTION_MOVEMENT_PIXEL;
-          }
-
-          if (this.upArrow) {
-            translate.y = -SELECTION_MOVEMENT_PIXEL;
-          }
-
-          if (this.downArrow) {
-            translate.y = SELECTION_MOVEMENT_PIXEL;
-          }
-
-          this.counter100ms++;
-          if (this.counter100ms <= 1) {
-            this.selection.updatePosition(translate.x , translate.y);
-          }
-          if (this.counter100ms > CONTINUOUS_MOVEMENT) {
-            this.selection.updatePosition(translate.x , translate.y);
-          }
-        }, MOVEMENT_DELAY_MS);
+        this.translateSelection();
+        this.clearTimeout = window.setInterval(this.translateSelection.bind(this), MOVEMENT_DELAY_MS);
       }
+    }
+  }
+
+  translateSelection(): void {
+    const translate: Point = {x: 0 , y: 0};
+
+    if (this.leftArrow) {
+      translate.x = -SELECTION_MOVEMENT_PIXEL;
+    }
+
+    if (this.rightArrow) {
+      translate.x = SELECTION_MOVEMENT_PIXEL;
+    }
+
+    if (this.upArrow) {
+      translate.y = -SELECTION_MOVEMENT_PIXEL;
+    }
+
+    if (this.downArrow) {
+      translate.y = SELECTION_MOVEMENT_PIXEL;
+    }
+
+    this.counter100ms++;
+    if (this.counter100ms >= CONTINUOUS_MOVEMENT || this.counter100ms <= 1) {
+      this.selection.updatePosition(translate.x , translate.y);
     }
   }
 

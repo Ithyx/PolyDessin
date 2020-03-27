@@ -1,7 +1,4 @@
 <svg #drawing class="drawing" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" version="1.1" xlmns="http://www.w3.org/2000/svg">
-    <style>
-        .selectionBox :hover{ cursor: move;}
-    </style>
     <defs>
         <!-- Texture libre de droit-->
 
@@ -38,17 +35,28 @@
         </filter>
     </defs>
 
-    
+    <!--Rectangle de fond-->
     <rect x="0" y="0" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" [attr.fill]="drawingManager.backgroundColor.RGBAString"
-    (contextmenu)="handleBackgroundRightClick()" (mousedown)="handleMouseDownBackground($event)"  (mouseup)="handleMouseUpBackground()" />
+    (mousedown)="handleMouseDownBackground($event)"  (mouseup)="handleMouseUpBackground($event)" oncontextmenu="return false;" />
 
-    <g *ngFor="let element of SVGStockage.getCompleteSVG()" [innerHTML]="element.svgHtml" (click)="handleElementClick(element)" (contextmenu)="handleElementRightClick(element)"></g>
+    <!--Tous les elements de dessin sur la surface-->
+    <g *ngFor="let element of svgStockage.getCompleteSVG()" [innerHTML]="element.svgHtml" (mousedown)="handleElementMouseDown(element, $event)" 
+    (mouseup)="handleElementMouseUp(element, $event)"  oncontextmenu="return false;" ></g>
+
+    <!--Rectangles de selection-->
     <g *ngIf="this.selection.selectionRectangle.rectangle"  [innerHTML]="this.selection.selectionRectangle.rectangle.svgHtml"></g>
-    <g  class = "selectionBox" *ngIf="this.selection.selectionBox.selectionBox" [innerHTML]="this.selection.selectionBox.selectionBox.svgHtml"  (mousedown)="handleMouseDownBox($event)"  (mouseup)="handleMouseUpBox()"></g>
-    <g *ngFor="let controlPoint of this.selection.selectionBox.controlPointBox" [innerHTML]="controlPoint.svgHtml" ></g>
-    <g [innerHTML]="SVGStockage.getOngoingSVGHTML()"></g>
-    <g [innerHTML]="SVGStockage.getOngoingPerimeterHTML()"></g>
+    <g *ngIf="this.selection.selectionRectangle.rectangleInverted"  [innerHTML]="this.selection.selectionRectangle.rectangleInverted.svgHtml"></g>
 
+    <!--Boite de selection-->
+    <g  class = "selectionBox" *ngIf="this.selection.selectionBox.selectionBox" [innerHTML]="this.selection.selectionBox.selectionBox.svgHtml"  (mousedown)="handleMouseDownBox($event)"  (mouseup)="handleMouseUpBox()"></g>
+    
+    <!--Points de controle de le boite de selection-->
+    <g *ngFor="let controlPoint of this.selection.selectionBox.controlPointBox" [innerHTML]="controlPoint.svgHtml" oncontextmenu="return false;" (mousedown)="handleControlPointMouseDown($event)" ></g>
+   
+    <g [innerHTML]="svgStockage.getOngoingSVGHTML()"></g>
+    <g [innerHTML]="svgStockage.getOngoingPerimeterHTML()"></g>
+    
+    <!--Grille-->
     <g class="grid" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" version="1.1" xlmns="http://www.w3.org/2000/svg">
         <g *ngFor="let line of grid.getLines()">
             <line class="grid" [attr.stroke]="grid.getColor()" stroke-width="1"
