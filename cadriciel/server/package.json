@@ -20,7 +20,11 @@
             ".ts"
         ],
         "exclude": [
-            "**/*.spec.ts"
+            "**/*.spec.ts",
+            "app/inversify.config.ts",
+            "app/www.ts",
+            "app/server.ts",
+            "app/app.ts"
         ],
         "require": [
             "ts-node/register"
