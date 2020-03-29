@@ -329,7 +329,7 @@ describe('CanvasConversionService', () => {
     const occurrences = new Map<string, number>();
     occurrences.set('rgba(1, 0, 0, 1)', 2);
     service.getElementsInArea(0, 0, 2, 2);
-    expect(spy).toHaveBeenCalledWith(occurrences, 2, 0);
+    expect(spy).toHaveBeenCalledWith(occurrences, 2, 2);
   });
 
   it('#getElementsInArea ne devrait rien faire si canBeBlending retourne vrai', () => {
@@ -373,34 +373,16 @@ describe('CanvasConversionService', () => {
     expect(service.canBeBlending(occurrences, 6, 42)).toBe(false);
   });
 
-  it('#canBeBlending devrait retourner faux si on teste le premier élément trouvé et qu\'il a beaucoup d\'occurrences', () => {
+  it('#canBeBlending devrait retourner faux s\'il a plus d\'occurrences que la valeur de thickness', () => {
     const occurrences = new Map<string, number>();
-    occurrences.set('rgba(1, 0, 0, 1)', 50).set('rgba(2, 0, 0, 1)', 3).set('rgba(3, 0, 0, 1)', 50);
-    expect(service.canBeBlending(occurrences, 50, 0)).toBe(false);
-  });
-
-  it('#canBeBlending devrait retourner faux si on teste le dernier élément trouvé et qu\'il a beaucoup d\'occurrences', () => {
-    const occurrences = new Map<string, number>();
-    occurrences.set('rgba(1, 0, 0, 1)', 50).set('rgba(2, 0, 0, 1)', 3).set('rgba(3, 0, 0, 1)', 50);
-    expect(service.canBeBlending(occurrences, 50, 2)).toBe(false);
-  });
-
-  it('#canBeBlending devrait retourner faux si on teste le premier élément trouvé et qu\'il a beaucoup d\'occurrences', () => {
-    const occurrences = new Map<string, number>();
-    occurrences.set('rgba(1, 0, 0, 1)', 50).set('rgba(2, 0, 0, 1)', 3).set('rgba(3, 0, 0, 1)', 50);
-    expect(service.canBeBlending(occurrences, 50, 0)).toBe(false);
-  });
-
-  it('#canBeBlending devrait retourner vrai si ce n\'est pas le seul ni le premier ni le dernier élément', () => {
-    const occurrences = new Map<string, number>();
-    occurrences.set('rgba(1, 0, 0, 1)', 50).set('rgba(2, 0, 0, 1)', 50).set('rgba(3, 0, 0, 1)', 50);
-    expect(service.canBeBlending(occurrences, 50, 1)).toBe(true);
+    occurrences.set('rgba(1, 0, 0, 1)', 6).set('rgba(2, 0, 0, 1)', 3);
+    expect(service.canBeBlending(occurrences, 6, 5)).toBe(false);
   });
 
   it('#canBeBlending devrait retourner vrai si ce n\'est pas le seul élément et qu\'il a peu d\'occurrences', () => {
     const occurrences = new Map<string, number>();
-    occurrences.set('rgba(1, 0, 0, 1)', 3).set('rgba(2, 0, 0, 1)', 3).set('rgba(3, 0, 0, 1)', 50);
-    expect(service.canBeBlending(occurrences, 3, 0)).toBe(true);
+    occurrences.set('rgba(1, 0, 0, 1)', 3).set('rgba(2, 0, 0, 1)', 3);
+    expect(service.canBeBlending(occurrences, 3, 5)).toBe(true);
   });
 
   // TEST sanitize

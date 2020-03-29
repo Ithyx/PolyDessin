@@ -162,6 +162,6 @@ export const TOOL_LIST: DrawingTool[] = [
     isActive: false,
     ID: 10,
     iconName: 'fas fa-eraser',
-    parameters: [{type: 'number', name: 'Épaisseur de l\'efface', value: 10, min: 3, max: 50}]
+    parameters: [{type: 'number', name: 'Épaisseur de l\'efface', value: 20, min: 3, max: 50}]
   }
 ];
