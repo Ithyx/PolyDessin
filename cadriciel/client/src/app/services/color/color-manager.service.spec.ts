@@ -61,7 +61,7 @@ describe('ColorManagerService', () => {
     expect(service.colorParameter.temporaryBackgroundColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
   });
 
-  it(`#applyColor devrait changer la couleur de fond sur la barre d\'outils 
+  it(`#applyColor devrait changer la couleur de fond sur la barre d\'outils
       si le Scope est BackgroundToolBar`, () => {
     scope = Scope.BackgroundToolBar;
     service.applyColor(scope);

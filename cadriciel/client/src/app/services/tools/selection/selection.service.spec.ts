@@ -112,7 +112,7 @@ describe('SelectionService', () => {
     expect(service.selectionRectangle.mouseDown).not.toHaveBeenCalledWith(mouse);
   });
 
-  it('#onMousePress ne devrait pas appeler mouseDown de selectionRectangle si il y a un click à l\'intérieur de ' + 
+  it('#onMousePress ne devrait pas appeler mouseDown de selectionRectangle si il y a un click à l\'intérieur de ' +
   'la boite de selection', () => {
     service.clickInSelectionBox = true;
     const mouse = new MouseEvent('click');

@@ -26,7 +26,7 @@ export class SelectionRectangleService {
   rectangleInverted: RectangleService;
 
   initialPoint: Point;   // Coordonnées du clic initial de souris
-  basisPoint: Point;     // Coordonnées du point inférieur 
+  basisPoint: Point;     // Coordonnées du point inférieur
 
   // Dimensions du rectangle
   widthCalculated: number;
@@ -64,13 +64,11 @@ export class SelectionRectangleService {
 
       this.basisPoint = {x: Math.min(this.initialPoint.x, mouse.offsetX), y: Math.min(this.initialPoint.y, mouse.offsetY)};
       if (mouse.buttons === RIGHT_CLICK) {
-        // console.log('Inverted');
         this.rectangleInverted.points[0] = {x: this.basisPoint.x, y: this.basisPoint.y};
         this.rectangleInverted.points[1] = {x: this.basisPoint.x + this.widthCalculated, y: this.basisPoint.y + this.heightCalculated};
         this.refreshSVGInvertedSelection();
       } else if (mouse.button === LEFT_CLICK) {
-        // console.log('Normal');
-        this.rectangle.points[0] = {x: this.basisPoint.x, y: this.basisPoint.y}
+        this.rectangle.points[0] = {x: this.basisPoint.x, y: this.basisPoint.y};
         this.rectangle.points[1] = {x: this.basisPoint.x + this.widthCalculated, y: this.basisPoint.y + this.heightCalculated};
         this.refreshSVGNormalSelection();
       }
