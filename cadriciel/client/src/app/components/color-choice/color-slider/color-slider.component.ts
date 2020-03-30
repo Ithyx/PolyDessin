@@ -99,19 +99,15 @@ export class ColorSliderComponent implements AfterViewInit, ToolInterface {
     this.mouseDown = true;
     this.chosenHeight = evt.offsetY;
     this.draw();
-    this.emittedColor(evt.offsetX, evt.offsetY);
+    this.colorPosition(evt.offsetX, evt.offsetY);
   }
 
   onMouseMove(evt: MouseEvent): void {
     if (this.mouseDown) {
       this.chosenHeight = evt.offsetY;
       this.draw();
-      this.emittedColor(evt.offsetX, evt.offsetY);
+      this.colorPosition(evt.offsetX, evt.offsetY);
     }
-  }
-
-  emittedColor(x: number, y: number): void {
-    this.colorPosition(x, y);
   }
 
   colorPosition(x: number, y: number): void {

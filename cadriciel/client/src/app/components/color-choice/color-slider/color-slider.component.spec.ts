@@ -43,13 +43,6 @@ describe('ColorSliderComponent', () => {
       expect(component.draw).toHaveBeenCalled();
   });
 
-  // Test emittedColor
-  it('#emittedColor devrait emettre la bonne couleur', () => {
-    spyOn(component, 'colorPosition');
-    component.emittedColor(25, 25);
-    expect(component.colorPosition).toHaveBeenCalledWith(25, 25);
-  });
-
   // Test onMouseRelease
 
   it('#onMouseRelease devrait mettre a jour la variable sourisbas a faux', () => {
