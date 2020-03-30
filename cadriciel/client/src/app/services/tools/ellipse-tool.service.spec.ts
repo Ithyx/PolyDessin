@@ -98,12 +98,12 @@ describe('EllipseToolService', () => {
   it('#shiftRelease devrait actualiser la height du rectangle si commandes.drawingInProgress est vrai', () => {
     service.calculatedHeight = 1;
     service.shiftRelease();
-    expect(service.ellipse.getHeight()).toEqual(1);
+    expect(service.shape.getHeight()).toEqual(1);
   });
   it('#shiftRelease devrait actualiser la width du rectangle si commandes.drawingInProgress est vrai', () => {
     service.calculatedWidth = 2;
     service.shiftRelease();
-    expect(service.ellipse.getWidth()).toEqual(2);
+    expect(service.shape.getWidth()).toEqual(2);
   });
 
   it('#shiftRelease devrait actualise le SVG si commandes.drawingInProgress est vrai', () => {
@@ -130,42 +130,42 @@ describe('EllipseToolService', () => {
     service.calculatedWidth = 100;
     service.calculatedHeight = 50;
     service.shiftPress();
-    expect(service.ellipse.getWidth()).toBe(50);
+    expect(service.shape.getWidth()).toBe(50);
   });
   it('#shiftPress ne devrait pas corriger la width si elle est plus petite '
     + 'que la height', () => {
     service.calculatedWidth = 50;
     service.calculatedHeight = 100;
     service.shiftPress();
-    expect(service.ellipse.getWidth()).toBe(50);
+    expect(service.shape.getWidth()).toBe(50);
   });
   it('#shiftPress devrait corriger la height si elle est plus grande '
     + 'que la width', () => {
     service.calculatedWidth = 50;
     service.calculatedHeight = 100;
     service.shiftPress();
-    expect(service.ellipse.getHeight()).toBe(50);
+    expect(service.shape.getHeight()).toBe(50);
   });
   it('#shiftPress ne devrait pas corriger la height si elle est plus petite '
     + 'que la width', () => {
     service.calculatedWidth = 100;
     service.calculatedHeight = 50;
     service.shiftPress();
-    expect(service.ellipse.getHeight()).toBe(50);
+    expect(service.shape.getHeight()).toBe(50);
   });
   it('#shiftPress devrait assigner calculatedBase.y au point intial en y du rectangle '
     + 'si calculatedBase.y égal au point initial du clic en y', () => {
     service.initial.y = 10;
     service.calculatedBase.y = service.initial.y;
     service.shiftPress();
-    expect(service.ellipse.points[0].y).toBe(10);
+    expect(service.shape.points[0].y).toBe(10);
   });
   it('#shiftPress devrait assigner calculatedBase.x au point intial en x du rectangle '
     + 'si calculatedBase.x égal au point initial du clic en x', () => {
     service.initial.x = 10;
     service.calculatedBase.x = service.initial.x;
     service.shiftPress();
-    expect(service.ellipse.points[0].x).toBe(10);
+    expect(service.shape.points[0].x).toBe(10);
   });
   it('#shiftPress devrait calculer le point en y au point intial en y du rectangle '
     + 'si calculatedBase.y n\'égal pas au point initial du clic en y', () => {
@@ -175,7 +175,7 @@ describe('EllipseToolService', () => {
     service.calculatedWidth = 25;
     const calculated = service.initial.y - service.calculatedWidth;
     service.shiftPress();
-    expect(service.ellipse.points[0].y).toEqual(calculated);
+    expect(service.shape.points[0].y).toEqual(calculated);
   });
   it('#shiftPress devrait calculer le point en x au point intial en x du rectangle '
     + 'si calculatedBase.x n\'égal pas au point initial du clic en x', () => {
@@ -185,32 +185,32 @@ describe('EllipseToolService', () => {
       service.calculatedWidth = 50;
       const calculated = service.initial.x - service.calculatedHeight;
       service.shiftPress();
-      expect(service.ellipse.points[0].x).toEqual(calculated);
+      expect(service.shape.points[0].x).toEqual(calculated);
   });
 
   // TESTS refreshSVG
   it('#refreshSVG devrait appeler updateParameters avec l\'outil en cours', () => {
-    spyOn(service.ellipse, 'updateParameters');
+    spyOn(service.shape, 'updateParameters');
     service.refreshSVG();
-    expect(service.ellipse.updateParameters).toHaveBeenCalledWith(service.tools.activeTool);
+    expect(service.shape.updateParameters).toHaveBeenCalledWith(service.tools.activeTool);
   });
   it('#refreshSVG devrait appeler getPrimaryColor', () => {
     service.refreshSVG();
-    expect(service.ellipse.primaryColor).toEqual(service.colorParameter.primaryColor);
+    expect(service.shape.primaryColor).toEqual(service.colorParameter.primaryColor);
   });
   it('#refreshSVG devrait appeler getSecondaryColor', () => {
     service.refreshSVG();
-    expect(service.ellipse.secondaryColor).toEqual(service.colorParameter.secondaryColor);
+    expect(service.shape.secondaryColor).toEqual(service.colorParameter.secondaryColor);
   });
   it('#refreshSVG devrait appeler draw', () => {
-    spyOn(service.ellipse, 'draw');
+    spyOn(service.shape, 'draw');
     service.refreshSVG();
-    expect(service.ellipse.draw).toHaveBeenCalled();
+    expect(service.shape.draw).toHaveBeenCalled();
   });
   it('#refreshSVG devrait appeler setOngoingSVG', () => {
     spyOn(service.stockageSVG, 'setOngoingSVG');
     service.refreshSVG();
-    expect(service.stockageSVG.setOngoingSVG).toHaveBeenCalledWith(service.ellipse);
+    expect(service.stockageSVG.setOngoingSVG).toHaveBeenCalledWith(service.shape);
   });
 
   // TESTS onMousePress
@@ -246,8 +246,8 @@ describe('EllipseToolService', () => {
     const clic = new MouseEvent('click', { clientX: 100, clientY: 50 });
     service.onMousePress(clic);
     // on vérifie que la fonction contient la width et longueur à 0
-    expect(service.ellipse.getHeight()).toBe(0);
-    expect(service.ellipse.getWidth()).toBe(0);
+    expect(service.shape.getHeight()).toBe(0);
+    expect(service.shape.getWidth()).toBe(0);
   });
 
   // TESTS onMouseRelease
@@ -270,7 +270,7 @@ describe('EllipseToolService', () => {
     // la height et la width sont non nulles
     const rectangle = new EllipseService();
     rectangle.points = [{x: 0, y: 0}, {x: 10, y: 10}];
-    service.ellipse = rectangle;
+    service.shape = rectangle;
     spyOn(service.commands, 'execute');
     service.onMouseRelease();
     // vérifier que la fonction ajouterSVG a été correctement appelée
@@ -280,10 +280,10 @@ describe('EllipseToolService', () => {
   });
   it('#onMouseRelease devrait reinitialiser le rectangle', () => {
     const rectangle = new EllipseService();
-    service.ellipse = rectangle;
+    service.shape = rectangle;
     service.onMouseRelease();
     // vérifier que le SVG est vide
-    expect(service.ellipse).toEqual(new EllipseService());
+    expect(service.shape).toEqual(new EllipseService());
   });
   it('#onMouseRelease devrait reinitialiser la base calculee', () => {
     service.calculatedBase = {x: 100, y: 100};
@@ -311,9 +311,9 @@ describe('EllipseToolService', () => {
   it('#clear devrait reinitialiser le rectangle', () => {
     const rectangle = new EllipseService();
     rectangle.points = [{x: 0, y: 0}, {x: 10, y: 10}];
-    service.ellipse = rectangle;
+    service.shape = rectangle;
     service.clear();
     // vérifier que le SVG est vide
-    expect(service.ellipse).toEqual(new EllipseService());
+    expect(service.shape).toEqual(new EllipseService());
   });
 });

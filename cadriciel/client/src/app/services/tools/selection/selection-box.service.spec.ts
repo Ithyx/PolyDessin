@@ -18,7 +18,7 @@ describe('SelectionBoxService', () => {
     for (let index = 0; index < service.controlPointBox.length; index++) {
       service.controlPointBox[index] = new RectangleService();
     }
-    service.selectionBox.drawRectangle();
+    service.selectionBox.drawShape();
     service.mouseClick = {x: 10, y: 10};
   });
 
@@ -249,7 +249,7 @@ describe('SelectionBoxService', () => {
     }
     service.updatePosition(100, 100);
     for (const controlPoint of service.controlPointBox) {
-      expect(controlPoint.drawRectangle).toHaveBeenCalled();
+      expect(controlPoint.drawShape).toHaveBeenCalled();
     }
   });
 
@@ -305,7 +305,7 @@ describe('SelectionBoxService', () => {
     }
     service.updatePositionMouse(click);
     for (const controlPoint of service.controlPointBox) {
-      expect(controlPoint.drawRectangle).toHaveBeenCalled();
+      expect(controlPoint.drawShape).toHaveBeenCalled();
     }
   });
 

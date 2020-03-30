@@ -84,7 +84,7 @@ describe('RectangleService', () => {
     element.chosenOption = 'Plein';
     spyOn(element, 'drawRectangle');
     element.draw();
-    expect(element.drawRectangle).toHaveBeenCalled();
+    expect(element.drawShape).toHaveBeenCalled();
   });
 
   it('#draw devrait appeler drawPerimeter', () => {
@@ -167,7 +167,7 @@ describe('RectangleService', () => {
     + '" x="' + element.points[0].x + '" y="' + element.points[0].y
     + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"></rect>';
 
-    element.drawRectangle();
+    element.drawShape();
     expect(element.svg).toEqual(test);
   });
 
@@ -182,7 +182,7 @@ describe('RectangleService', () => {
     + '" x="' + element.points[0].x + '" y="' + element.points[0].y
     + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"></rect>';
 
-    element.drawRectangle();
+    element.drawShape();
     expect(element.svg).toEqual(test);
   });
 
@@ -196,7 +196,7 @@ describe('RectangleService', () => {
     + '" x="' + element.points[0].x + '" y="' + element.points[0].y
     + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"></rect>';
 
-    element.drawRectangle();
+    element.drawShape();
     expect(element.svg).toEqual(test);
   });
 
@@ -210,7 +210,7 @@ describe('RectangleService', () => {
     + '" x="' + element.points[0].x + '" y="' + element.points[0].y
     + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"></rect>';
 
-    element.drawRectangle();
+    element.drawShape();
     expect(element.svg).toEqual(test);
   });
 
@@ -224,7 +224,7 @@ describe('RectangleService', () => {
     + '" x="' + element.points[0].x + '" y="' + element.points[0].y
     + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"></rect>';
 
-    element.drawRectangle();
+    element.drawShape();
     expect(element.svg).toEqual(test);
   });
 
@@ -238,7 +238,7 @@ describe('RectangleService', () => {
     + '" x="' + element.points[0].x + '" y="' + element.points[0].y
     + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"></rect>';
 
-    element.drawRectangle();
+    element.drawShape();
     expect(element.svg).toEqual(test);
   });
 
@@ -253,7 +253,7 @@ describe('RectangleService', () => {
     + '" x="' + element.points[0].x + '" y="' + element.points[0].y
     + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"></rect>';
 
-    element.drawRectangle();
+    element.drawShape();
     expect(element.svg).toEqual(test);
   });
 

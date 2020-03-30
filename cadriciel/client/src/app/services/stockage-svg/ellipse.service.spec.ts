@@ -83,7 +83,7 @@ describe('EllipseService', () => {
     element.chosenOption = 'Plein';
     spyOn(element, 'drawEllipse');
     element.draw();
-    expect(element.drawEllipse).toHaveBeenCalled();
+    expect(element.drawShape).toHaveBeenCalled();
   });
 
   it('#draw devrait appeler drawPerimeter', () => {
@@ -135,7 +135,7 @@ describe('EllipseService', () => {
     + '" cx="' + (element.points[0].x + element.points[1].x) / 2 + '" cy="' + (element.points[0].y + element.points[1].y) / 2
     + '" rx="' + element.getWidth() / 2 + '" ry="' + element.getHeight() / 2 + '"></ellipse>';
 
-    element.drawEllipse();
+    element.drawShape();
     expect(element.svg).toEqual(test);
   });
 
@@ -150,7 +150,7 @@ describe('EllipseService', () => {
     + '" cx="' + (element.points[0].x + element.points[1].x) / 2 + '" cy="' + (element.points[0].y + element.points[1].y) / 2
     + '" rx="' + element.getWidth() / 2 + '" ry="' + element.getHeight() / 2 + '"></ellipse>';
 
-    element.drawEllipse();
+    element.drawShape();
     expect(element.svg).toEqual(test);
   });
 
@@ -165,7 +165,7 @@ describe('EllipseService', () => {
     + '" cx="' + (element.points[0].x + element.points[1].x) / 2 + '" cy="' + (element.points[0].y + element.points[1].y) / 2
     + '" rx="' + element.getWidth() / 2 + '" ry="' + element.getHeight() / 2 + '"></ellipse>';
 
-    element.drawEllipse();
+    element.drawShape();
     expect(element.svg).toEqual(test);
   });
 
@@ -180,7 +180,7 @@ describe('EllipseService', () => {
     + '" cx="' + (element.points[0].x + element.points[1].x) / 2 + '" cy="' + (element.points[0].y + element.points[1].y) / 2
     + '" rx="' + element.getWidth() / 2 + '" ry="' + element.getHeight() / 2 + '"></ellipse>';
 
-    element.drawEllipse();
+    element.drawShape();
     expect(element.svg).toEqual(test);
   });
 
@@ -195,7 +195,7 @@ describe('EllipseService', () => {
     + '" cx="' + (element.points[0].x + element.points[1].x) / 2 + '" cy="' + (element.points[0].y + element.points[1].y) / 2
     + '" rx="' + element.getWidth() / 2 + '" ry="' + element.getHeight() / 2 + '"></ellipse>';
 
-    element.drawEllipse();
+    element.drawShape();
     expect(element.svg).toEqual(test);
   });
 
