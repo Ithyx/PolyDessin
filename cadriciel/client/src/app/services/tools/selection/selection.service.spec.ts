@@ -177,7 +177,7 @@ describe('SelectionService', () => {
   it('#onMouseMove devrait appeler selectionBox.deleteSelectionBox si rectangleInverted a des dimensions non nuls' +
     ' lors d\'un clic droit', () => {
     const spy1 = spyOn(service.selectionBox, 'deleteSelectionBox');
-    const mouse = new MouseEvent('mousemove', {buttons: RIGHT_CLICK});
+    const mouse = new MouseEvent('mousemove', {clientX: 100, clientY: 100, buttons: RIGHT_CLICK});
     service.selectionRectangle.ongoingSelection = true;
     service.selectionRectangle.rectangleInverted = new RectangleService();
     service.selectionRectangle.rectangleInverted.points[0] = {x: 80, y: 100};
@@ -189,7 +189,7 @@ describe('SelectionService', () => {
   it('#onMouseMove devrait appeler isInRectangleSelection si rectangleInverted a des dimensions non nuls' +
     ' lors d\'un clic droit', () => {
     const spy1 = spyOn(service, 'isInRectangleSelection');
-    const mouse = new MouseEvent('mousemove', {buttons: RIGHT_CLICK});
+    const mouse = new MouseEvent('mousemove', {clientX: 100, clientY: 100, buttons: RIGHT_CLICK});
     service.selectionRectangle.ongoingSelection = true;
     service.selectionRectangle.rectangleInverted = new RectangleService();
     service.selectionRectangle.rectangleInverted.points[0] = {x: 80, y: 100};
@@ -201,11 +201,23 @@ describe('SelectionService', () => {
   it('#onMouseMove devrait appeler createBoundingBox si rectangleInverted a des dimensions non nuls' +
     ' lors d\'un clic droit', () => {
     const spy1 = spyOn(service, 'createBoundingBox');
-    const mouse = new MouseEvent('mousemove', {buttons: RIGHT_CLICK});
+    const mouse = new MouseEvent('mousemove', {clientX: 100, clientY: 100, buttons: RIGHT_CLICK});
     service.selectionRectangle.ongoingSelection = true;
     service.selectionRectangle.rectangleInverted = new RectangleService();
     service.selectionRectangle.rectangleInverted.points[0] = {x: 80, y: 100};
     service.selectionRectangle.rectangleInverted.points[1] = {x: 100, y: 300};
+    service.onMouseMove(mouse);
+    expect(spy1).toHaveBeenCalled();
+  });
+
+  it('#onMouseMove devrait appeler deleteBoundingBox si rectangle a des dimensions non nuls' +
+    ' lors d\'un clic gauche', () => {
+    const spy1 = spyOn(service, 'deleteBoundingBox');
+    const mouse = new MouseEvent('mousemove', {clientX: 100, clientY: 100, buttons: LEFT_CLICK});
+    service.selectionRectangle.ongoingSelection = true;
+    service.selectionRectangle.rectangle = new RectangleService();
+    service.selectionRectangle.rectangle.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangle.points[1] = {x: 100, y: 300};
     service.onMouseMove(mouse);
     expect(spy1).toHaveBeenCalled();
   });
