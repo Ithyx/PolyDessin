@@ -14,7 +14,6 @@ export const COLOR_INCREASE_LINE = 2;
 export const COLOR_INCREASE_SPRAY = 5;
 const INDEX_INCREASE = 4;
 const TIME_BEFORE_UPDATE = 1;
-const MIN_OCCURRENCES = 12;
 
 @Injectable({
   providedIn: 'root'
@@ -145,27 +144,22 @@ export class CanvasConversionService {
         occurrences.set(color, (colorOccurrences ? colorOccurrences + 1 : 1));
       }
     }
-    const colors = Array.from(occurrences.keys());
-    colors.sort();
-    for (const color of colors) {
-      const index = colors.indexOf(color);
+    occurrences.forEach((value, color) => {
       // s'assurer de ne pas prendre en compte le 'blending' entre plusieurs éléments
-      if (!this.canBeBlending(occurrences, occurrences.get(color), index)) {
+      if (!this.canBeBlending(occurrences, value, width)) {
         const element = this.coloredElements.get(color);
         if (element && !elements.includes(element)) {
           elements.push(element);
         }
       }
-    }
+    });
     return elements;
   }
 
-  canBeBlending(occurrences: Map<string, number>, value: number | undefined, index: number): boolean {
+  canBeBlending(occurrences: Map<string, number>, value: number, thickness: number): boolean {
     const isOnlyElement = occurrences.size === 1;
-    const isFirstElement = index === 0;
-    const isLastElement = index === occurrences.size - 1;
-    const hasFewOccurrences = (value && value < MIN_OCCURRENCES) as boolean;
-    return !isOnlyElement && (!isFirstElement && !isLastElement || hasFewOccurrences);
+    const hasFewOccurrences = value <= thickness;
+    return !isOnlyElement && hasFewOccurrences;
   }
 
   sanitize(svg: string): SafeHtml {

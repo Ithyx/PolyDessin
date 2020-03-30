@@ -230,6 +230,13 @@ describe('SurfaceDessinComponent', () => {
   });
 
   // TESTS handleElementMouseUp
+  it('#handleElementMouseUp ne devrait rien faire si l\'outil actif n\'est pas la sélection', () => {
+    component['tools'].activeTool.ID = TOOL_INDEX.COLOR_CHANGER;
+    const spy = spyOn(component, 'handleElementRightClick');
+    component.handleElementMouseUp(element, new MouseEvent('up'));
+    expect(component['selection'].selectedElements).toEqual([selectedElement]);
+    expect(spy).not.toHaveBeenCalled();
+  });
   it('#handleElementMouseUp ne devrait rien faire si le bouton de la souris est left click '
     + 'et que mousePosition n\'est pas égal à screenX, screenY du MouseEvent', () => {
     component.handleElementMouseUp(element, new MouseEvent('up', {button: 0, screenX: 25, screenY: 25}));

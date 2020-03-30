@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-
 import { TOOL_INDEX, TOOL_LIST, ToolManagerService } from './tool-manager.service';
+
+// tslint:disable: no-magic-numbers
 
 describe('GestionnaireOutilsService', () => {
   let service: ToolManagerService;

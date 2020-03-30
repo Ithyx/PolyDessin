@@ -1,5 +1,8 @@
 import { SubjectGuide } from '../guide-subject/subject-guide';
 
+// Ce fichier contient les informations du guide, on estime que la limite de ligne n'est pas pertinente pour ce fichier.
+// tslint:disable: max-file-line-count
+
 export const GUIDE_CONTENTS: SubjectGuide[] = [
     // Sujet 1
     {

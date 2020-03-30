@@ -12,6 +12,7 @@ import { TraceSprayService } from './stockage-svg/trace-spray.service';
 
 // tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers
+// tslint:disable: max-file-line-count
 
 let firstElement: DrawElement;
 let secondElement: DrawElement;
@@ -79,6 +80,7 @@ describe('CanvasConversionService', () => {
       3, 0, 2, 1
     ]);
     spyOn(context, 'getImageData').and.callFake(() => imageData);
+    service['coloredElements'].set(firstColor.RGBAString, firstElement);
   });
 
   beforeAll(() => {
@@ -308,29 +310,79 @@ describe('CanvasConversionService', () => {
     expect(context.getImageData).toHaveBeenCalledWith(1, 2, 15, 28);
   });
 
-  it('#getElementsInArea devrait appeler get sur coloredElements pour toutes les couleurs sur la surface', () => {
-    spyOn(service['coloredElements'], 'get');
+  it('#getElementsInArea devrait appeler has sur coloredElements pour toutes les couleurs sur la surface', () => {
+    spyOn(service['coloredElements'], 'has');
     service.getElementsInArea(0, 0, 2, 2);
-    expect(service['coloredElements'].get).toHaveBeenCalledWith('rgba(1, 0, 0, 1)');
-    expect(service['coloredElements'].get).toHaveBeenCalledWith('rgba(1, 0, 0, 1)');
-    expect(service['coloredElements'].get).toHaveBeenCalledWith('rgba(9, 0, 0, 1)');
-    expect(service['coloredElements'].get).toHaveBeenCalledWith('rgba(3, 0, 2, 1)');
+    expect(service['coloredElements'].has).toHaveBeenCalledWith('rgba(1, 0, 0, 1)');
+    expect(service['coloredElements'].has).toHaveBeenCalledWith('rgba(1, 0, 0, 1)');
+    expect(service['coloredElements'].has).toHaveBeenCalledWith('rgba(9, 0, 0, 1)');
+    expect(service['coloredElements'].has).toHaveBeenCalledWith('rgba(3, 0, 2, 1)');
+  });
+
+  it('#getElementsInArea ne devrait rien faire si has retourne faux à chaque élément', () => {
+    spyOn(service['coloredElements'], 'has').and.returnValue(false);
+    expect(service.getElementsInArea(0, 0, 2, 2)).toEqual([]);
+  });
+
+  it('#getElementsInArea devrait appeler canBeBlending sur tous les éléments', () => {
+    const spy = spyOn(service, 'canBeBlending');
+    const occurrences = new Map<string, number>();
+    occurrences.set('rgba(1, 0, 0, 1)', 2);
+    service.getElementsInArea(0, 0, 2, 2);
+    expect(spy).toHaveBeenCalledWith(occurrences, 2, 2);
+  });
+
+  it('#getElementsInArea ne devrait rien faire si canBeBlending retourne vrai', () => {
+    spyOn(service, 'canBeBlending').and.returnValue(true);
+    const spy = spyOn(service['coloredElements'], 'get');
+    service.getElementsInArea(0, 0, 2, 2);
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('#getElementsInArea devrait appeler get de coloredElements avec la couleur si canBeBlending retourne faux', () => {
+    spyOn(service, 'canBeBlending').and.returnValue(false);
+    const spy = spyOn(service['coloredElements'], 'get');
+    service.getElementsInArea(0, 0, 2, 2);
+    expect(spy).toHaveBeenCalledWith('rgba(1, 0, 0, 1)');
   });
 
   it('#getElementsInArea ne devrait pas ajouter d\'élément qui n\'est pas contenu dans coloredElements', () => {
+    spyOn(service, 'canBeBlending').and.returnValue(false);
     service['coloredElements'] = new Map<string, DrawElement>();
     expect(service.getElementsInArea(0, 0, 2, 2)).toEqual([]);
   });
 
   it('#getElementsInArea devrait ajouter les éléments qu\'il trouve dans la valeur de retour', () => {
+    spyOn(service, 'canBeBlending').and.returnValue(false);
     service['coloredElements'].set('rgba(3, 0, 2, 1)', thirdElement).set('rgba(9, 0, 0, 1)', secondElement);
     expect(service.getElementsInArea(0, 0, 2, 2)).toContain(secondElement);
     expect(service.getElementsInArea(0, 0, 2, 2)).toContain(thirdElement);
   });
 
   it('#getElementsInArea ne devrait pas ajouter plusieurs fois le même élément dans la valeur de retour', () => {
+    spyOn(service, 'canBeBlending').and.returnValue(false);
     service['coloredElements'].set('rgba(1, 0, 0, 1)', firstElement);
     expect(service.getElementsInArea(0, 0, 2, 2)).toEqual([firstElement]);
+  });
+
+  // TESTS canBeBlending
+
+  it('#canBeBlending devrait retourner faux si une seule couleur a été trouvée', () => {
+    const occurrences = new Map<string, number>();
+    occurrences.set('rgba(1, 0, 0, 1)', 6);
+    expect(service.canBeBlending(occurrences, 6, 42)).toBe(false);
+  });
+
+  it('#canBeBlending devrait retourner faux s\'il a plus d\'occurrences que la valeur de thickness', () => {
+    const occurrences = new Map<string, number>();
+    occurrences.set('rgba(1, 0, 0, 1)', 6).set('rgba(2, 0, 0, 1)', 3);
+    expect(service.canBeBlending(occurrences, 6, 5)).toBe(false);
+  });
+
+  it('#canBeBlending devrait retourner vrai si ce n\'est pas le seul élément et qu\'il a peu d\'occurrences', () => {
+    const occurrences = new Map<string, number>();
+    occurrences.set('rgba(1, 0, 0, 1)', 3).set('rgba(2, 0, 0, 1)', 3);
+    expect(service.canBeBlending(occurrences, 3, 5)).toBe(true);
   });
 
   // TEST sanitize
