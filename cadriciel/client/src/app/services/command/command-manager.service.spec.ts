@@ -15,7 +15,7 @@ import { CommandManagerService } from './command-manager.service';
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
 
-describe('GestionnaireCommandesService', () => {
+describe('CommandManagerService', () => {
   let service: CommandManagerService;
   let stockageService: SVGStockageService;
   let command: Command;
@@ -32,16 +32,16 @@ describe('GestionnaireCommandesService', () => {
 
   beforeEach(() => {
     lastCancelledCommand = new AddSVGService(new EllipseService(), stockageService);
-    service.cancelledCommands.push(new AddSVGService(new PolygonService(), stockageService));
-    service.cancelledCommands.push(new AddSVGService(new RectangleService(), stockageService));
-    service.cancelledCommands.push(lastCancelledCommand);
+    service['cancelledCommands'].push(new AddSVGService(new PolygonService(), stockageService));
+    service['cancelledCommands'].push(new AddSVGService(new RectangleService(), stockageService));
+    service['cancelledCommands'].push(lastCancelledCommand);
   });
 
   beforeEach(() => {
     lastCommand = new AddSVGService(new TraceSprayService(), stockageService);
-    service.executedCommands.push(new AddSVGService(new TracePencilService(), stockageService));
-    service.executedCommands.push(new AddSVGService(new TraceBrushService(), stockageService));
-    service.executedCommands.push(lastCommand);
+    service['executedCommands'].push(new AddSVGService(new TracePencilService(), stockageService));
+    service['executedCommands'].push(new AddSVGService(new TraceBrushService(), stockageService));
+    service['executedCommands'].push(lastCommand);
   });
 
   it('should be created', () => {
@@ -56,19 +56,19 @@ describe('GestionnaireCommandesService', () => {
 
   it('#execute devrait ajouter la commande dans executedCommands', () => {
     service.execute(command);
-    expect(service.executedCommands).toContain(command);
+    expect(service['executedCommands']).toContain(command);
   });
 
   it('#execute devrait vider cancelledCommands', () => {
     service.execute(command);
-    expect(service.cancelledCommands).toEqual([]);
+    expect(service['cancelledCommands']).toEqual([]);
   });
 
   // TESTS cancelCommand
 
   it('#cancelCommand devrait retirer la dernière commande de executedCommands', () => {
     service.cancelCommand();
-    expect(service.executedCommands.length).toBe(2);
+    expect(service['executedCommands'].length).toBe(2);
   });
 
   it('#cancelCommand devrait appeler undo de la dernière commande si celle-ci existe', () => {
@@ -79,21 +79,21 @@ describe('GestionnaireCommandesService', () => {
 
   it('#cancelCommand devrait ajouter la dernière commande à cancelledCommands si celle-ci existe', () => {
     service.cancelCommand();
-    expect(service.cancelledCommands).toContain(lastCommand);
+    expect(service['cancelledCommands']).toContain(lastCommand);
   });
 
   it('#cancelCommand ne devrait rien faire si executedCommands est vide', () => {
-    service.executedCommands = [];
-    spyOn(service.cancelledCommands, 'push');
+    service['executedCommands'] = [];
+    spyOn(service['cancelledCommands'], 'push');
     service.cancelCommand();
-    expect(service.cancelledCommands.push).not.toHaveBeenCalled();
+    expect(service['cancelledCommands'].push).not.toHaveBeenCalled();
   });
 
   // TESTS redoCommand
 
   it('#redoCommand devrait retirer la dernière commande de cancelledCommands', () => {
     service.redoCommand();
-    expect(service.cancelledCommands.length).toBe(2);
+    expect(service['cancelledCommands'].length).toBe(2);
   });
 
   it('#redoCommand devrait appeler redo de la dernière commande si celle-ci existe', () => {
@@ -104,26 +104,26 @@ describe('GestionnaireCommandesService', () => {
 
   it('#redoCommand devrait ajouter la dernière commande à executedCommands si celle-ci existe', () => {
     service.redoCommand();
-    expect(service.executedCommands).toContain(lastCancelledCommand);
+    expect(service['executedCommands']).toContain(lastCancelledCommand);
   });
 
   it('#redoCommand ne devrait rien faire si cancelledCommands est vide', () => {
-    service.cancelledCommands = [];
-    spyOn(service.executedCommands, 'push');
+    service['cancelledCommands'] = [];
+    spyOn(service['executedCommands'], 'push');
     service.redoCommand();
-    expect(service.executedCommands.push).not.toHaveBeenCalled();
+    expect(service['executedCommands'].push).not.toHaveBeenCalled();
   });
 
   // TESTS clearCommand
 
   it('#clearCommand devrait vider executedCommands', () => {
     service.clearCommand();
-    expect(service.executedCommands).toEqual([]);
+    expect(service['executedCommands']).toEqual([]);
   });
 
   it('#clearCommand devrait vider cancelledCommands', () => {
     service.clearCommand();
-    expect(service.cancelledCommands).toEqual([]);
+    expect(service['cancelledCommands']).toEqual([]);
   });
 
   it('#clearCommand devrait mettre drawingInProgress à false', () => {

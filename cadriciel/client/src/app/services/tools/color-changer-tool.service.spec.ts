@@ -1,7 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 
-// import { PrimaryColorChangeService } from '../command/primary-color-change.service';
-// import { SecondaryColorChangeService } from '../command/secondary-color-change.service';
 import { Color, DrawElement } from '../stockage-svg/draw-element';
 import { ColorChangerToolService } from './color-changer-tool.service';
 
@@ -75,9 +73,7 @@ describe('ColorChangerToolService', () => {
     service['colorParameter'].primaryColor = colorTest2;
 
     service.onMouseClick();
-    expect(service['commands'].execute)
-        .toHaveBeenCalled();
-        // .toHaveBeenCalledWith(new PrimaryColorChangeService(service['activeElement'], service['colorParameter'], service['sanitizer']));
+    expect(service['commands'].execute).toHaveBeenCalled();
   });
 
   // TESTS onRightClick
@@ -108,9 +104,7 @@ describe('ColorChangerToolService', () => {
     service['colorParameter'].secondaryColor = colorTest2;
 
     service.onRightClick();
-    expect(service['commands'].execute)
-        .toHaveBeenCalled();
-      // .toHaveBeenCalledWith(new SecondaryColorChangeService(service['activeElement'], service['colorParameter'], service['sanitizer']));
+    expect(service['commands'].execute).toHaveBeenCalled();
   });
 
 });

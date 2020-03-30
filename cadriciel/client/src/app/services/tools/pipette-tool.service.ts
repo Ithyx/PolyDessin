@@ -17,7 +17,7 @@ export class PipetteToolService implements ToolInterface {
   drawing: SVGElement;
   canvas: HTMLCanvasElement;
 
-  constructor(public colorParameter: ColorParameterService,
+  constructor(private colorParameter: ColorParameterService,
                ) {}
 
   onMouseClick(mouse: MouseEvent): void {
