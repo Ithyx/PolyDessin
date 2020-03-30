@@ -273,6 +273,17 @@ describe('SelectionService', () => {
     expect(spy3).not.toHaveBeenCalled();
   });
 
+  it('#onMouseMove ne devrait rien si la nature du click est non reconnue', () => {
+    const spy1 = spyOn(service, 'deleteBoundingBox');
+    const mouse = new MouseEvent('mouseclick', {clientX: 100, clientY: 100, button: 4, buttons: 4});
+    service.selectionRectangle.ongoingSelection = true;
+    service.selectionRectangle.rectangle = new RectangleService();
+    service.selectionRectangle.rectangle.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangle.points[1] = {x: 100, y: 300};
+    service.onMouseMove(mouse);
+    expect(spy1).not.toHaveBeenCalled();
+  });
+
   // TESTS onMousePress
 
   it('#onMousePress devrait appeler mouseDown de selectionRectangle si il n\'y a pas de click sur' +
@@ -510,6 +521,20 @@ describe('SelectionService', () => {
 
     service.isInRectangleSelection(service.selectionRectangle.rectangleInverted);
     expect(service['modifiedElement'].has(element)).toBe(false);
+  });
+
+  it('#isInRectangleSelection 5', () => {
+    service.selectionRectangle.rectangleInverted = new RectangleService();
+    service.selectionRectangle.rectangleInverted.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangleInverted.points[1] = {x: 100, y: 300};
+
+    service['svgStockage'].addSVG(element);
+
+    spyOn(service, 'belongToRectangle').and.returnValue(false);
+    const spy = spyOn(service, 'reverseElementSelectionStatus');
+
+    service.isInRectangleSelection(service.selectionRectangle.rectangleInverted);
+    expect(spy).not.toHaveBeenCalled();
   });
 
   it('#isInRectangleSelection ne devrait rien faire si aucun rectangle de sélection existe', () => {
