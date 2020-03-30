@@ -110,6 +110,8 @@ export class LineService implements DrawElement {
       point.x += this.translate.x;
       point.y += this.translate.y;
     }
+    this.mousePosition.x += this.translate.x;
+    this.mousePosition.y += this.translate.y;
     this.translate = {x: 0, y: 0};
   }
 }
