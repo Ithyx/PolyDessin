@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
-import { DrawingTool } from '../tools/tool-manager.service';
+import { DrawingTool, TOOL_INDEX } from '../tools/tool-manager.service';
 import { Color, DrawElement, ERASING_COLOR_INIT } from './draw-element';
 
 const DEFAULT_COLOR = 'rgba(0,0,0,1)';
@@ -12,6 +12,8 @@ const DEFAULT_COLOR = 'rgba(0,0,0,1)';
 export class LineService implements DrawElement {
   svg: string;
   svgHtml: SafeHtml;
+
+  trueType: TOOL_INDEX;
 
   points: Point[];
   isSelected: boolean;
@@ -33,6 +35,7 @@ export class LineService implements DrawElement {
 
   constructor() {
     this.svgHtml = '';
+    this.trueType = TOOL_INDEX.LINE;
     this.points = [];
     this.isSelected = false;
     this.erasingEvidence = false;
@@ -54,6 +57,7 @@ export class LineService implements DrawElement {
     this.svg += '" points="';
     for (const point of this.points) {
       this.svg += point.x + ' ' + point.y + ' ';
+      console.log(point);
     }
     if (!this.isAPolygon) {
       this.svg += this.mousePosition.x + ' ' + this.mousePosition.y;
