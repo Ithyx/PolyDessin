@@ -7,7 +7,6 @@ import { CommandManagerService } from 'src/app/services/command/command-manager.
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { A, Color } from 'src/app/services/stockage-svg/draw-element';
-import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { ColorChoiceComponent } from '../color-choice/color-choice.component';
 import { ExportWindowComponent } from '../export-window/export-window.component';
@@ -37,7 +36,6 @@ export class ToolbarComponent implements OnDestroy {
               public shortcuts: ShortcutsManagerService,
               public colorParameter: ColorParameterService,
               public commands: CommandManagerService,
-              public selection: SelectionService,
               public drawingManager: DrawingManagerService
              ) {
     this.newDrawingSubscription = shortcuts.newDrawingEmmiter.subscribe((isIgnored: boolean) => {
@@ -53,9 +51,6 @@ export class ToolbarComponent implements OnDestroy {
   }
 
   onClick(tool: DrawingTool): void {
-    if (this.tools.activeTool.name === 'Selection' && this.selection.selectionBox) {
-      this.selection.deleteBoundingBox();
-    }
     this.tools.activeTool.isActive = false;
     this.tools.activeTool = tool;
     this.tools.activeTool.isActive = true;
