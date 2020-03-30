@@ -1,6 +1,5 @@
 import { Component, HostListener } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
-// import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { GalleryComponent } from '../gallery/gallery.component';
 import { NewDrawingWindowComponent } from '../new-drawing-window/new-drawing-window.component';
 
@@ -12,7 +11,6 @@ import { NewDrawingWindowComponent } from '../new-drawing-window/new-drawing-win
 export class HomePageComponent {
 
   constructor(private dialog: MatDialog,
-              // private drawingManager: DrawingManagerService,
               private dialogConfig: MatDialogConfig
               ) {
                 dialogConfig.disableClose = true;

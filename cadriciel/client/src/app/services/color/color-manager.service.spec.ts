@@ -27,7 +27,7 @@ describe('ColorManagerService', () => {
     scope = Scope.Primary;
     service.applyColor(scope);
 
-    expect(service.colorParameter.primaryColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
+    expect(service['colorParameter'].primaryColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
   });
 
   it('#applyColor devrait ajouter la couleur au tableau derniereCouleur si la Scope est Principale', () => {
@@ -42,7 +42,7 @@ describe('ColorManagerService', () => {
     scope = Scope.Secondary;
     service.applyColor(scope);
 
-    expect(service.colorParameter.secondaryColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
+    expect(service['colorParameter'].secondaryColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
   });
 
   it('#applyColor devrait ajouter la couleur au tableau derniereCouleur si la Scope est Secondaire', () => {
@@ -58,7 +58,7 @@ describe('ColorManagerService', () => {
     scope = Scope.BackgroundNewDrawing;
     service.applyColor(scope);
 
-    expect(service.colorParameter.temporaryBackgroundColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
+    expect(service['colorParameter'].temporaryBackgroundColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
   });
 
   it(`#applyColor devrait changer la couleur de fond sur la barre d\'outils
@@ -66,8 +66,8 @@ describe('ColorManagerService', () => {
     scope = Scope.BackgroundToolBar;
     service.applyColor(scope);
 
-    expect(service.colorParameter.temporaryBackgroundColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
-    expect(service.drawingManager.backgroundColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
+    expect(service['colorParameter'].temporaryBackgroundColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
+    expect(service['drawingManager'].backgroundColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
   });
 
   it('#applyColor ne devrait rien faire si la Scope est non reconnue', () => {
@@ -82,11 +82,11 @@ describe('ColorManagerService', () => {
 
   it('#addLastColor devrait ajouter la couleur au début du tableau derniereCouleur ', () => {
     service.addLastColor();
-    expect(service.colorParameter.lastColors[0]).toBe(service.color);
+    expect(service['colorParameter'].lastColors[0]).toBe(service.color);
   });
 
   it('#addLastColor devrait retirer des couleurs du tableau derniereCouleur si celui-ci en contient plus de 10', () => {
-    service.colorParameter.lastColors = [
+    service['colorParameter'].lastColors = [
       {
         RGBAString: 'rgba(0, 0, 0, 1',
         RGBA: [0, 0, 0, 1]
@@ -141,7 +141,7 @@ describe('ColorManagerService', () => {
       }
     ]; // taille de 13
     service.addLastColor();
-    expect(service.colorParameter.lastColors.length).toBe(10);
+    expect(service['colorParameter'].lastColors.length).toBe(10);
   });
 
 });

@@ -17,14 +17,14 @@ const PERCENTAGE = 100;
   styleUrls: ['./grid-options.component.scss']
 })
 export class GridOptionsComponent {
-  cellSizeValue: number;
-  opacitySelected: number;
-  options: FormGroup;
+  private cellSizeValue: number;
+  protected opacitySelected: number;
+  private options: FormGroup;
 
-  constructor(public dialog: MatDialog,
-              public dialogRef: MatDialogRef<NewDrawingWindowComponent>,
-              public shortcuts: ShortcutsManagerService,
-              public grid: GridService
+  constructor(protected dialog: MatDialog,
+              private dialogRef: MatDialogRef<NewDrawingWindowComponent>,
+              private shortcuts: ShortcutsManagerService,
+              private grid: GridService
               ) {
                 this.cellSizeValue = this.grid.cellSize;
                 this.opacitySelected = Math.round(PERCENTAGE * this.grid.opacity);

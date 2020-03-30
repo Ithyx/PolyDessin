@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
 
 import { ElementRef } from '@angular/core';
-import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
 import { LineService } from 'src/app/services/stockage-svg/line.service';
 import { RectangleService } from 'src/app/services/stockage-svg/rectangle.service';
@@ -14,10 +13,6 @@ import { DrawingSurfaceComponent } from './drawing-surface.component';
 
 // tslint:disable: no-string-literal
 // tslint:disable: max-file-line-count
-
-const parametresCouleurStub: Partial<ColorParameterService> = {
-  temporaryBackgroundColor: undefined
-};
 
 describe('SurfaceDessinComponent', () => {
   let component: DrawingSurfaceComponent;
@@ -69,7 +64,7 @@ describe('SurfaceDessinComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ DrawingSurfaceComponent ],
-      providers: [ {provide: ColorParameterService, useValue: parametresCouleurStub},
+      providers: [
                    {provide: SelectionService, useValue: selectionStub},
                    {provide: SelectionBoxService, useValue: selectionBoxStub},
                    {provide: SelectionRectangleService, useValue: selectionRectangleStub},

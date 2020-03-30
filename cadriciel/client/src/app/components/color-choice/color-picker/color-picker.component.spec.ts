@@ -103,7 +103,7 @@ describe('ColorPickerComponent', () => {
 
   it('#onMouseRelease devrait mettre la variable booléenne mouseDown à false', () => {
     spyOn(component, 'draw');
-    component.onMouseRelease(new MouseEvent('mousedown'));
+    component.onMouseRelease();
     component.onMouseMove(new MouseEvent('mousemove')); // teste la valeur de mouseDown
     expect(component.draw).not.toHaveBeenCalled();
   });

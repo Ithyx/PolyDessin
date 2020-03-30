@@ -9,11 +9,13 @@ import { RouterModule } from '@angular/router';
 import { NewDrawingWindowComponent } from '../new-drawing-window/new-drawing-window.component';
 import { NewDrawingWarningComponent } from './new-drawing-warning.component';
 
+// tslint:disable: no-string-literal
+
 describe('NewDrawingWarningComponent', () => {
   let component: NewDrawingWarningComponent;
   let fixture: ComponentFixture<NewDrawingWarningComponent>;
 
-  const injecteur = Injector.create(
+  const injector = Injector.create(
     {providers: [{provide: MatDialogRef, useValue: {componentInstance: NewDrawingWarningComponent}}]
   });
 
@@ -45,27 +47,27 @@ describe('NewDrawingWarningComponent', () => {
   // TESTS cancel
 
   it('#cancel devrait désactiver le focus sur un champ de texte', () => {
-    component.shortcuts.focusOnInput = true;
+    component['shortcuts'].focusOnInput = true;
     component.cancel();
-    expect(component.shortcuts.focusOnInput).toBe(false);
+    expect(component['shortcuts'].focusOnInput).toBe(false);
   });
 
   it('#cancel devrait fermer dialogRef', () => {
-    spyOn(component.dialogRef, 'close');
+    spyOn(component['dialogRef'], 'close');
     component.cancel();
-    expect(component.dialogRef.close).toHaveBeenCalled();
+    expect(component['dialogRef'].close).toHaveBeenCalled();
   });
 
-  // TESTS ouvrirParametre
+  // TESTS openParameter
 
-  it('#ouvrirParametre devrait fermer dialogRef', () => {
-    spyOn(component.dialogRef, 'close');
+  it('#openParameter devrait fermer dialogRef', () => {
+    spyOn(component['dialogRef'], 'close');
     component.openParameter();
-    expect(component.dialogRef.close).toHaveBeenCalled();
+    expect(component['dialogRef'].close).toHaveBeenCalled();
   });
 
-  it('#ouvrirParametre devrait appeler dialog.open avec les bons paramètres', () => {
-    spyOn(component.dialog, 'open').and.returnValue(injecteur.get(MatDialogRef));
+  it('#openParameter devrait appeler dialog.open avec les bons paramètres', () => {
+    spyOn(component['dialog'], 'open').and.returnValue(injector.get(MatDialogRef));
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -73,7 +75,7 @@ describe('NewDrawingWarningComponent', () => {
     dialogConfig.width = '60%';
     component.openParameter();
 
-    expect(component.dialog.open).toHaveBeenCalledWith(NewDrawingWindowComponent, dialogConfig);
+    expect(component['dialog'].open).toHaveBeenCalledWith(NewDrawingWindowComponent, dialogConfig);
   });
 
 });
