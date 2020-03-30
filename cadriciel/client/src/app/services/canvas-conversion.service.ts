@@ -70,9 +70,7 @@ export class CanvasConversionService {
     this.drawing.elements = [];
     this.coloredElements = new Map<string, DrawElement>();
     const rgb: number[] = [0, 0, 0];
-    console.log(this.svgStockage.getCompleteSVG());
     for (let element of this.svgStockage.getCompleteSVG()) {
-      console.log(element);
       let increase = 1;
       if (element instanceof TraceSprayService) {
         increase = COLOR_INCREASE_SPRAY;

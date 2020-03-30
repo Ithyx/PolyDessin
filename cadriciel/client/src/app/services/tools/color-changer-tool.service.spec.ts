@@ -24,6 +24,7 @@ describe('ColorChangerToolService', () => {
   const element: DrawElement = {
     svg: '',
     svgHtml: '',
+    trueType: 0,
     points: [],
     isSelected: false,
     erasingEvidence: false,

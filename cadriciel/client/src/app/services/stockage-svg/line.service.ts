@@ -55,7 +55,6 @@ export class LineService implements DrawElement {
     this.svg += '" points="';
     for (const point of this.points) {
       this.svg += point.x + ' ' + point.y + ' ';
-      console.log(point);
     }
     if (!this.isAPolygon) {
       this.svg += this.mousePosition.x + ' ' + this.mousePosition.y;

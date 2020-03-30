@@ -38,7 +38,6 @@ export class DatabaseService {
       tags: this.drawingParams.tags,
       elements: this.stockageSVG.getCompleteSVG()
     };
-    console.log(drawing.elements);
     await this.http.post(SERVER_POST_URL, drawing).toPromise();
   }
 

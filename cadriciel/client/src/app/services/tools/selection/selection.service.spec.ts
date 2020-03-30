@@ -26,6 +26,7 @@ describe('SelectionService', () => {
   beforeEach(() => element = {
     svg: '',
     svgHtml: '',
+    trueType: 0,
     points: [{x: 90, y: 90}, {x: 76, y: 89 }],
     isSelected: false,
     erasingEvidence: false,
@@ -43,6 +44,7 @@ describe('SelectionService', () => {
   beforeEach(() => element2 = {
     svg: '',
     svgHtml: '',
+    trueType: 0,
     points: [{x: 10, y: 0}, {x: 56, y: 12 }],
     isSelected: false,
     erasingEvidence: false,
