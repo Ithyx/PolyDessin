@@ -3,6 +3,9 @@ import { TestBed } from '@angular/core/testing';
 import { DrawingManagerService } from '../drawing-manager/drawing-manager.service';
 import { GridService, Line, MAX_CELL_SIZE, MIN_CELL_SIZE } from './grid.service';
 
+// tslint:disable: no-string-literal
+// tslint:disable: no-magic-numbers
+
 describe('GridService', () => {
   let service: GridService;
   let drawing: DrawingManagerService;
@@ -24,13 +27,10 @@ describe('GridService', () => {
   // TESTS increaseSize
 
   it('#increaseSize devrait augmenter au plus proche multiple de 5 cellSize à chaque incrémentation', () => {
-    // tslint:disable-next-line:no-magic-numbers
     service.cellSize = 18;
     service.increaseSize();
-    // tslint:disable-next-line:no-magic-numbers
     expect(service.cellSize).toEqual(20);
     service.increaseSize();
-    // tslint:disable-next-line:no-magic-numbers
     expect(service.cellSize).toEqual(25);
   });
 
@@ -45,13 +45,10 @@ describe('GridService', () => {
   // TESTS decreaseSize
 
   it('#decreaseSize devrait augmenter au plus proche multiple de 5 cellSize à chaque appel de la fonction', () => {
-    // tslint:disable-next-line:no-magic-numbers
     service.cellSize = 18;
     service.decreaseSize();
-    // tslint:disable-next-line:no-magic-numbers
     expect(service.cellSize).toEqual(15);
     service.decreaseSize();
-    // tslint:disable-next-line:no-magic-numbers
     expect(service.cellSize).toEqual(10);
   });
 
@@ -80,11 +77,11 @@ describe('GridService', () => {
 
   it('#getLines devrait créer des lignes verticales pour toute la largeur du dessin '
     + 'et horizontales pour toute la hauteur du dessin', () => {
-    for (let x = service.cellSize; x < service.drawing.width; x += service.cellSize) {
-      line.push({x1: x, x2: x, y1: 0, y2: service.drawing.height});
+    for (let x = service.cellSize; x < service['drawing'].width; x += service.cellSize) {
+      line.push({x1: x, x2: x, y1: 0, y2: service['drawing'].height});
     }
-    for (let y = service.cellSize; y < service.drawing.height; y += service.cellSize) {
-      line.push({x1: 0, x2: service.drawing.width, y1: y, y2: y});
+    for (let y = service.cellSize; y < service['drawing'].height; y += service.cellSize) {
+      line.push({x1: 0, x2: service['drawing'].width, y1: y, y2: y});
     }
 
     const test = service.getLines();
