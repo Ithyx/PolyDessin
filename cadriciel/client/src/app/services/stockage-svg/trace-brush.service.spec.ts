@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { BrushToolService } from '../tools/brush-tool.service';
 import { TraceBrushService } from './trace-brush.service';
 
+// tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers
 
 describe('trace-brush', () => {
@@ -12,7 +13,7 @@ describe('trace-brush', () => {
 
   beforeEach(() => {
     element = new TraceBrushService();
-    element.updateParameters(service.tools.toolList[1]);
+    element.updateParameters(service['tools'].toolList[1]);
     element.primaryColor = {
       RGBAString: 'rgba(0, 0, 0, 1)',
       RGBA: [0, 0, 0, 1]
@@ -24,21 +25,6 @@ describe('trace-brush', () => {
   it('should be created', () => {
     const testService: TraceBrushService = TestBed.get(TraceBrushService);
     expect(testService).toBeTruthy();
-  });
-
-  // TESTS draw
-
-  it('#draw devrait appeler drawPoint si isAPoint est vrai', () => {
-    spyOn(element, 'drawPoint');
-    element.isAPoint = true;
-    element.draw();
-    expect(element.drawPoint).toHaveBeenCalled();
-  });
-
-  it('#draw devrait appeler drawPath si isAPoint est faux', () => {
-    spyOn(element, 'drawPath');
-    element.draw();
-    expect(element.drawPath).toHaveBeenCalled();
   });
 
   // TESTS drawPath
@@ -156,77 +142,33 @@ describe('trace-brush', () => {
     expect(element.svg).toEqual(testSVG);
   });
 
-  // TESTS updatePosition
-
-  it('#updatePosition devrait ajouter les valeurs en paramètre à translate', () => {
-    element.updatePosition(10, -25);
-    expect(element.translate.x).toEqual(20);
-    expect(element.translate.y).toEqual(-15);
-  });
-
-  it('#updatePosition devrait appeler draw', () => {
-    spyOn(element, 'draw');
-    element.updatePosition(10, 10);
-    expect(element.draw).toHaveBeenCalled();
-  });
-
-  // TESTS updatePositionMouse
-
-  it('#updatePositionMouse devrait ajouter les valeurs en paramètre à translate', () => {
-    const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    element.updatePositionMouse(click, { x: 10, y: 10});
-    expect(element.translate.x).toEqual(90);
-    expect(element.translate.y).toEqual(90);
-  });
-
-  it('#updatePositionMouse devrait appeler draw', () => {
-    spyOn(element, 'draw');
-    const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    element.updatePositionMouse(click, { x: 10, y: 10});
-    expect(element.draw).toHaveBeenCalled();
-  });
-
   // TESTS updateParameters
 
   it('#updateParameters devrait assigner la valeur en paramètre à thickness', () => {
-    service.tools.toolList[1].parameters[0].value = 10;
-    const testTool = service.tools.toolList[1];
+    service['tools'].toolList[1].parameters[0].value = 10;
+    const testTool = service['tools'].toolList[1];
     element.updateParameters(testTool);
-    expect(element.thickness).toEqual(service.tools.toolList[1].parameters[0].value);
+    expect(element.thickness).toEqual(service['tools'].toolList[1].parameters[0].value);
   });
 
   it('#updateParameters devrait assigner 1 à thickness', () => {
-    service.tools.toolList[1].parameters[0].value = 0;
-    const testTool = service.tools.toolList[1];
+    service['tools'].toolList[1].parameters[0].value = 0;
+    const testTool = service['tools'].toolList[1];
     element.updateParameters(testTool);
     expect(element.thickness).toEqual(1);
   });
 
   it('#updateParameters devrait assigner chosenOption en paramètre à chosenOption', () => {
-    service.tools.toolList[1].parameters[1].chosenOption = 'Flou';
-    const testTool = service.tools.toolList[1];
+    service['tools'].toolList[1].parameters[1].chosenOption = 'Flou';
+    const testTool = service['tools'].toolList[1];
     element.updateParameters(testTool);
     expect(element.chosenOption).toEqual('Flou');
   });
 
   it('#updateParameters devrait assigner une chaine de caractère vide à chosenOption', () => {
-    service.tools.toolList[1].parameters[1].chosenOption = '';
-    const testTool = service.tools.toolList[1];
+    service['tools'].toolList[1].parameters[1].chosenOption = '';
+    const testTool = service['tools'].toolList[1];
     element.updateParameters(testTool);
     expect(element.chosenOption).toEqual('');
-  });
-
-  // TESTS translateAllPoints
-
-  it('#translateAllPoints devrait changer tous les points de points pour ajouter la translation', () => {
-    element.points.push({x: 10, y: 10});
-    element.translateAllPoints();
-    expect(element.points[0].x).toEqual(20);
-    expect(element.points[0].y).toEqual(20);
-  });
-
-  it('#translateAllPoints devrait mettre translation à 0', () => {
-    element.translateAllPoints();
-    expect(element.translate).toEqual({x: 0, y: 0});
   });
 });

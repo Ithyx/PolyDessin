@@ -1,55 +1,12 @@
 import { Injectable } from '@angular/core';
-import { SafeHtml } from '@angular/platform-browser';
-import { Point } from '../tools/line-tool.service';
-import { DrawingTool, TOOL_INDEX } from '../tools/tool-manager.service';
-import { Color, DrawElement, ERASING_COLOR_INIT } from './draw-element';
+import { DrawingTool } from '../tools/tool-manager.service';
+import { TraceService } from './trace.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TraceBrushService implements DrawElement {
-  svg: string;
-  svgHtml: SafeHtml;
-
-  trueType: TOOL_INDEX;
-
-  points: Point[];
-  isSelected: boolean;
-  erasingEvidence: boolean;
-
-  primaryColor: Color;
-  erasingColor: Color;
-
-  isAPoint: boolean;
-  thickness: number;
+export class TraceBrushService extends TraceService {
   chosenOption: string;
-
-  pointMin: Point;
-  pointMax: Point;
-  translate: Point;
-
-  constructor() {
-    this.svgHtml = '';
-    this.trueType = TOOL_INDEX.BRUSH;
-    this.points = [];
-    this.isSelected = false;
-    this.primaryColor = {
-      RGBAString: '',
-      RGBA: [0, 0, 0, 0]
-    };
-    this.erasingColor = ERASING_COLOR_INIT;
-    this.isAPoint = false;
-    this.erasingEvidence = false;
-    this.translate = { x: 0, y: 0};
-  }
-
-  draw(): void {
-    if (this.isAPoint) {
-      this.drawPoint();
-    } else {
-      this.drawPath();
-    }
-  }
 
   drawPath(): void {
     this.svg = '<path transform="translate(' + this.translate.x + ' ' + this.translate.y + ')" fill="none" '
@@ -69,26 +26,6 @@ export class TraceBrushService implements DrawElement {
       + ')" filter="url(#' + this.chosenOption
       + ')" r="' + this.thickness / 2
       + '" fill="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString) + '"></circle>';
-  }
-
-  updatePosition(x: number, y: number): void {
-    this.translate.x += x;
-    this.translate.y += y;
-    this.draw();
-  }
-
-  updatePositionMouse(mouse: MouseEvent, mouseClick: Point): void {
-    this.translate.x = mouse.offsetX - mouseClick.x;
-    this.translate.y = mouse.offsetY - mouseClick.y;
-    this.draw();
-  }
-
-  translateAllPoints(): void {
-    for (const point of this.points) {
-      point.x += this.translate.x;
-      point.y += this.translate.y;
-    }
-    this.translate = {x: 0, y: 0};
   }
 
   updateParameters(tool: DrawingTool): void {

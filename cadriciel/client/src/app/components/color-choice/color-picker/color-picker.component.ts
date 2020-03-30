@@ -61,7 +61,7 @@ export class ColorPickerComponent implements AfterViewInit, OnChanges, ToolInter
   }
 
   @HostListener ('window:mouseup', ['$event'] )
-    onMouseRelease(evt: MouseEvent): void {
+    onMouseRelease(): void {
       this.mouseDown = false;
     }
 

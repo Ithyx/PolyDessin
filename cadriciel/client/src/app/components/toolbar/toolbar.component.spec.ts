@@ -8,7 +8,6 @@ import { Injector } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Scope } from 'src/app/services/color/color-manager.service';
 import { Color } from 'src/app/services/stockage-svg/draw-element';
-import { SelectionBoxService } from 'src/app/services/tools/selection/selection-box.service';
 import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { ColorChoiceComponent } from '../color-choice/color-choice.component';
 import { ColorInputComponent } from '../color-choice/color-input/color-input.component';
@@ -55,7 +54,7 @@ const rectangle: DrawingTool = {
   iconName: ''
 };
 
-const gestionnaireOutilServiceStub: Partial<ToolManagerService> = {
+const toolManagerStub: Partial<ToolManagerService> = {
   toolList: [
     activeToolTest,
     inactiveToolTest,
@@ -81,7 +80,7 @@ describe('ToolbarComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ GuidePageComponent, ToolbarComponent, DrawingToolComponent, GuideSubjectComponent, ColorChoiceComponent,
                       ColorPickerComponent, ColorSliderComponent, ColorInputComponent ],
-      providers: [ {provide: ToolManagerService, useValue: gestionnaireOutilServiceStub} ],
+      providers: [ {provide: ToolManagerService, useValue: toolManagerStub} ],
       imports: [MatSidenavModule, RouterModule.forRoot([
         {path: 'guide', component : GuidePageComponent}
     ]), MatDialogModule, BrowserAnimationsModule]
@@ -156,14 +155,6 @@ describe('ToolbarComponent', () => {
     spyOn(component.shortcuts, 'clearOngoingSVG');
     component.onClick(service.toolList[2]); // on sélectionne l'outil 2 (rectangle)
     expect(component.shortcuts.clearOngoingSVG).toHaveBeenCalled();
-  });
-
-  it('#onClick devrait appeler deleteBoundingBox si l\'outil actif est la sélection et elle possède une selectionBox', () => {
-    activeToolTest.name = 'Selection';
-    component['selection'].selectionBox = TestBed.get(SelectionBoxService);
-    const spy = spyOn(component['selection'], 'deleteBoundingBox');
-    component.onClick(service.toolList[0]);
-    expect(spy).toHaveBeenCalled();
   });
 
   // TESTS onChange

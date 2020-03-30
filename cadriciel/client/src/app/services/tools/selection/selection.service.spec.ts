@@ -63,6 +63,11 @@ describe('SelectionService', () => {
   });
 
   // TESTS handleClick
+  it('#handleClick devrait déselectionner les elements déjà sélectionner', () => {
+    service.selectedElements.push(element);
+    service.handleClick(element2);
+    expect(element.isSelected).toBe(false);
+  });
 
   it('#handleClick devrait mettre isSelected des éléments déjà sélectionnés à false', () => {
     service.selectedElements.push(element);
@@ -178,7 +183,7 @@ describe('SelectionService', () => {
   it('#onMouseMove devrait appeler selectionBox.deleteSelectionBox si rectangleInverted a des dimensions non nuls' +
     ' lors d\'un clic droit', () => {
     const spy1 = spyOn(service.selectionBox, 'deleteSelectionBox');
-    const mouse = new MouseEvent('mousemove', {buttons: RIGHT_CLICK});
+    const mouse = new MouseEvent('mousemove', {clientX: 100, clientY: 100, buttons: RIGHT_CLICK});
     service.selectionRectangle.ongoingSelection = true;
     service.selectionRectangle.rectangleInverted = new RectangleService();
     service.selectionRectangle.rectangleInverted.points[0] = {x: 80, y: 100};
@@ -190,7 +195,7 @@ describe('SelectionService', () => {
   it('#onMouseMove devrait appeler isInRectangleSelection si rectangleInverted a des dimensions non nuls' +
     ' lors d\'un clic droit', () => {
     const spy1 = spyOn(service, 'isInRectangleSelection');
-    const mouse = new MouseEvent('mousemove', {buttons: RIGHT_CLICK});
+    const mouse = new MouseEvent('mousemove', {clientX: 100, clientY: 100, buttons: RIGHT_CLICK});
     service.selectionRectangle.ongoingSelection = true;
     service.selectionRectangle.rectangleInverted = new RectangleService();
     service.selectionRectangle.rectangleInverted.points[0] = {x: 80, y: 100};
@@ -202,7 +207,7 @@ describe('SelectionService', () => {
   it('#onMouseMove devrait appeler createBoundingBox si rectangleInverted a des dimensions non nuls' +
     ' lors d\'un clic droit', () => {
     const spy1 = spyOn(service, 'createBoundingBox');
-    const mouse = new MouseEvent('mousemove', {buttons: RIGHT_CLICK});
+    const mouse = new MouseEvent('mousemove', {clientX: 100, clientY: 100, buttons: RIGHT_CLICK});
     service.selectionRectangle.ongoingSelection = true;
     service.selectionRectangle.rectangleInverted = new RectangleService();
     service.selectionRectangle.rectangleInverted.points[0] = {x: 80, y: 100};
@@ -210,6 +215,52 @@ describe('SelectionService', () => {
     service.onMouseMove(mouse);
     expect(spy1).toHaveBeenCalled();
   });
+
+  it('#onMouseMove devrait appeler deleteBoundingBox si rectangle a des dimensions non nuls' +
+    ' lors d\'un clic gauche', () => {
+    const spy1 = spyOn(service, 'deleteBoundingBox');
+    const mouse = new MouseEvent('mousemove', {clientX: 100, clientY: 100, buttons: LEFT_CLICK});
+    service.selectionRectangle.ongoingSelection = true;
+    service.selectionRectangle.rectangle = new RectangleService();
+    service.selectionRectangle.rectangle.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangle.points[1] = {x: 100, y: 300};
+    service.onMouseMove(mouse);
+    expect(spy1).toHaveBeenCalled();
+  });
+
+  it('#onMouseMove devrait appeler isInRectangleSelection si rectangle a des dimensions non nuls' +
+    ' lors d\'un clic gauche', () => {
+    const spy1 = spyOn(service, 'isInRectangleSelection');
+    const mouse = new MouseEvent('mousemove', {clientX: 100, clientY: 100, buttons: LEFT_CLICK});
+    service.selectionRectangle.ongoingSelection = true;
+    service.selectionRectangle.rectangle = new RectangleService();
+    service.selectionRectangle.rectangle.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangle.points[1] = {x: 100, y: 300};
+    service.onMouseMove(mouse);
+    expect(spy1).toHaveBeenCalled();
+  });
+
+  it('#onMouseMove devrait appeler createBoundingBox si rectangle a des dimensions non nuls' +
+    ' lors d\'un clic gauche', () => {
+    const spy1 = spyOn(service, 'createBoundingBox');
+    const mouse = new MouseEvent('mousemove', {clientX: 100, clientY: 100, buttons: LEFT_CLICK});
+    service.selectionRectangle.ongoingSelection = true;
+    service.selectionRectangle.rectangle = new RectangleService();
+    service.selectionRectangle.rectangle.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangle.points[1] = {x: 100, y: 300};
+    service.onMouseMove(mouse);
+    expect(spy1).toHaveBeenCalled();
+  });
+
+  it('#onMouseMove devrait appeler createBoundingBox si rectangle a des dimensions non nuls' +
+  ' lors d\'un clic gauche', () => {
+  const spy1 = spyOn(service, 'createBoundingBox');
+  const spy2 = spyOn(service, 'isInRectangleSelection');
+  const mouse = new MouseEvent('mousemove', {clientX: 100, clientY: 100, buttons: 0});
+  service.onMouseMove(mouse);
+  expect(spy1).not.toHaveBeenCalled();
+  expect(spy2).not.toHaveBeenCalled();
+});
 
   it('#onMouseMove ne devrait rien faire  si rectangle a une dimension nulle lors d\'un clic gauche', () => {
     const spy1 = spyOn(service, 'deleteBoundingBox');
@@ -220,6 +271,17 @@ describe('SelectionService', () => {
     expect(spy1).not.toHaveBeenCalled();
     expect(spy2).not.toHaveBeenCalled();
     expect(spy3).not.toHaveBeenCalled();
+  });
+
+  it('#onMouseMove ne devrait rien si la nature du click est non reconnue', () => {
+    const spy1 = spyOn(service, 'deleteBoundingBox');
+    const mouse = new MouseEvent('mouseclick', {clientX: 100, clientY: 100, button: 4, buttons: 4});
+    service.selectionRectangle.ongoingSelection = true;
+    service.selectionRectangle.rectangle = new RectangleService();
+    service.selectionRectangle.rectangle.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangle.points[1] = {x: 100, y: 300};
+    service.onMouseMove(mouse);
+    expect(spy1).not.toHaveBeenCalled();
   });
 
   // TESTS onMousePress
@@ -339,6 +401,16 @@ describe('SelectionService', () => {
     expect(spy).toHaveBeenCalledWith({x: 10 , y: 0}, {x: 90, y: 90});
   });
 
+  it('#createBoundingBox devrait créer une nouvelle boite en se basant sur les points des éléments' + 
+  'en comptant l\'epaisseur de l\'element', () => {
+    element.thickness = 20;
+    element2.thickness = 65;
+    service.selectedElements.push(element, element2);
+    const spy = spyOn(service.selectionBox, 'createSelectionBox');
+    service.createBoundingBox();
+    expect(spy).toHaveBeenCalledWith({x: -22.5, y: -32.5}, { x: 100, y: 100});
+  });
+
   // TESTS deleteBoundingBox
 
   it('#deleteBoundingBox devrait supprimer la selectionBox', () => {
@@ -361,7 +433,144 @@ describe('SelectionService', () => {
 
   // TESTS isInRectangleSelection
 
+  it('#isInRectangleSelection devrait appeler findPointMinAndMax du parametre rectangleSelection', () => {
+    service.selectionRectangle.rectangle = new RectangleService();
+    service.selectionRectangle.rectangle.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangle.points[1] = {x: 100, y: 300};
+    const spy = spyOn(service, 'isInRectangleSelection');
+    service.isInRectangleSelection(service.selectionRectangle.rectangle);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#isInRectangleSelection devrait sélectionner l\'element si il appartient au rectange de selection', () => {
+    service.selectionRectangle.rectangle = new RectangleService();
+    service.selectionRectangle.rectangle.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangle.points[1] = {x: 100, y: 300};
+
+    service['svgStockage'].addSVG(element);
+
+    spyOn(service, 'belongToRectangle').and.returnValue(true);
+
+    service.isInRectangleSelection(service.selectionRectangle.rectangle);
+    expect(element.isSelected).toBe(true);
+  });
+
+  it('#isInRectangleSelection devrait ajouter l\'element à selectedElement si il appartient au rectange de selection', () => {
+    service.selectionRectangle.rectangle = new RectangleService();
+    service.selectionRectangle.rectangle.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangle.points[1] = {x: 100, y: 300};
+
+    service['svgStockage'].addSVG(element);
+
+    spyOn(service, 'belongToRectangle').and.returnValue(true);
+
+    service.isInRectangleSelection(service.selectionRectangle.rectangle);
+    expect(service.selectedElements.includes(element)).toBe(true);
+  });
+
+  it('#isInRectangleSelection devrait dé-sélectionner l\'element si il n\'appartient pas au rectange de selection', () => {
+    service.selectionRectangle.rectangle = new RectangleService();
+    service.selectionRectangle.rectangle.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangle.points[1] = {x: 100, y: 300};
+
+    service['svgStockage'].addSVG(element);
+
+    spyOn(service, 'belongToRectangle').and.returnValue(false);
+
+    service.isInRectangleSelection(service.selectionRectangle.rectangle);
+    expect(element.isSelected).toBe(false);
+  });
+
+  it('#isInRectangleSelection devrait ajouter les éléments sélectionnés à modifiedElemet', () => {
+    service.selectionRectangle.rectangleInverted = new RectangleService();
+    service.selectionRectangle.rectangleInverted.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangleInverted.points[1] = {x: 100, y: 300};
+
+    service['svgStockage'].addSVG(element);
+
+    spyOn(service, 'belongToRectangle').and.returnValue(true);
+
+    service.isInRectangleSelection(service.selectionRectangle.rectangleInverted);
+    expect(service['modifiedElement'].has(element)).toBe(true);
+  });
+
+  it('#isInRectangleSelection devrait inverser le status de selection de l\'élémet si le rectangle de selection est inversé', () => {
+    service.selectionRectangle.rectangleInverted = new RectangleService();
+    service.selectionRectangle.rectangleInverted.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangleInverted.points[1] = {x: 100, y: 300};
+
+    service['svgStockage'].addSVG(element);
+    service['modifiedElement'].add(element);
+
+    spyOn(service, 'belongToRectangle').and.returnValue(false);
+    const spy = spyOn(service, 'reverseElementSelectionStatus');
+
+    service.isInRectangleSelection(service.selectionRectangle.rectangleInverted);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#isInRectangleSelection 5', () => {
+    service.selectionRectangle.rectangleInverted = new RectangleService();
+    service.selectionRectangle.rectangleInverted.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangleInverted.points[1] = {x: 100, y: 300};
+
+    service['svgStockage'].addSVG(element);
+    service['modifiedElement'].add(element);
+
+    spyOn(service, 'belongToRectangle').and.returnValue(false);
+
+    service.isInRectangleSelection(service.selectionRectangle.rectangleInverted);
+    expect(service['modifiedElement'].has(element)).toBe(false);
+  });
+
+  it('#isInRectangleSelection 5', () => {
+    service.selectionRectangle.rectangleInverted = new RectangleService();
+    service.selectionRectangle.rectangleInverted.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangleInverted.points[1] = {x: 100, y: 300};
+
+    service['svgStockage'].addSVG(element);
+
+    spyOn(service, 'belongToRectangle').and.returnValue(false);
+    const spy = spyOn(service, 'reverseElementSelectionStatus');
+
+    service.isInRectangleSelection(service.selectionRectangle.rectangleInverted);
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('#isInRectangleSelection ne devrait rien faire si aucun rectangle de sélection existe', () => {
+
+    service['svgStockage'].addSVG(element);
+    service['modifiedElement'].add(element);
+
+    const spy = spyOn(service, 'reverseElementSelectionStatus');
+    const spy1 = spyOn(service, 'belongToRectangle');
+
+    service.isInRectangleSelection(new RectangleService());
+    expect(spy).not.toHaveBeenCalled();
+    expect(spy1).not.toHaveBeenCalled();
+  });
+
   // TESTS belongToRectangle
+
+  it('#belongToRectangle devrait renvoyer vrai si les pointMin et pointMax de l\'element et du rectangle sont les mêmes', () => {
+    element.pointMin = {x: 90, y: 90};
+    element.pointMax = {x: 200, y: 200};
+    const rectangle = new RectangleService();
+    rectangle.pointMin = {x: 90, y: 90};
+    rectangle.pointMax = {x: 200, y: 200};
+
+    expect(service.belongToRectangle(element, rectangle)).toBe(true);
+  });
+
+  it('#belongToRectangle devrait renvoyer faux si pointMin et pointMax de l\'element sont plus grand que ceux du rectangle', () => {
+    element.pointMin = {x: 300, y: 300};
+    element.pointMax = {x: 350, y: 350};
+    const rectangle = new RectangleService();
+    rectangle.pointMin = {x: 90, y: 90};
+    rectangle.pointMax = {x: 200, y: 200};
+
+    expect(service.belongToRectangle(element, rectangle)).toBe(false);
+  });
 
   // TESTS findPointMinAndMax
 
