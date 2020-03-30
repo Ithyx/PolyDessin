@@ -16,7 +16,7 @@ export class PencilToolService implements ToolInterface {
   trace: TracePencilService;
   canClick: boolean;
 
-  constructor(public SVGStockage: SVGStockageService,
+  constructor(public stockageSVG: SVGStockageService,
               public tools: ToolManagerService,
               public colorParameter: ColorParameterService,
               public commands: CommandManagerService
@@ -41,7 +41,7 @@ export class PencilToolService implements ToolInterface {
     if (this.commands.drawingInProgress) {
       if (this.trace.svg.includes('L')) {
         // on ne stocke le path que s'il n'y a au moins une ligne
-        this.commands.execute(new AddSVGService(this.trace, this.SVGStockage));
+        this.commands.execute(new AddSVGService(this.trace, this.stockageSVG));
       }
       this.trace = new TracePencilService();
       this.commands.drawingInProgress = false;
@@ -55,7 +55,7 @@ export class PencilToolService implements ToolInterface {
         this.trace.points.push({x: mouse.offsetX, y: mouse.offsetY});
         this.trace.isAPoint = true;
         this.refreshSVG();
-        this.commands.execute(new AddSVGService(this.trace, this.SVGStockage));
+        this.commands.execute(new AddSVGService(this.trace, this.stockageSVG));
         this.trace = new TracePencilService();
       }
       this.commands.drawingInProgress = false;
@@ -64,7 +64,7 @@ export class PencilToolService implements ToolInterface {
 
   onMouseLeave(): void {
     if (this.commands.drawingInProgress) {
-      this.commands.execute(new AddSVGService(this.trace, this.SVGStockage));
+      this.commands.execute(new AddSVGService(this.trace, this.stockageSVG));
       this.trace = new TracePencilService();
       this.commands.drawingInProgress = false;
     }
@@ -75,6 +75,6 @@ export class PencilToolService implements ToolInterface {
     this.trace.primaryColor = {...this.colorParameter.primaryColor};
     this.trace.updateParameters(this.tools.activeTool);
     this.trace.draw();
-    this.SVGStockage.setOngoingSVG(this.trace);
+    this.stockageSVG.setOngoingSVG(this.trace);
   }
 }

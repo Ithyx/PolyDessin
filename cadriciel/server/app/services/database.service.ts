@@ -2,7 +2,7 @@ import { injectable } from 'inversify';
 import { Collection, MongoClient, MongoClientOptions } from 'mongodb';
 import 'reflect-metadata';
 
-import { Drawing } from '../../../common/communication/DrawingInterface';
+import { Drawing } from '../../../common/communication/drawing-interface';
 
 const DATABASE_URL = 'mongodb+srv://PolyDessin:log2990@polydessin-zhlk9.mongodb.net/test?retryWrites=true&w=majority';
 const DATABASE_NAME = 'polydessinDB';

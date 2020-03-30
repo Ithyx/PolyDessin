@@ -6,7 +6,7 @@ import { DatabaseService } from 'src/app/services/database/database.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
-import { Drawing } from '../../../../../common/communication/DrawingInterface';
+import { Drawing } from '../../../../../common/communication/drawing-interface';
 import { GalleryLoadWarningComponent } from '../gallery-load-warning/gallery-load-warning.component';
 
 export enum Status {

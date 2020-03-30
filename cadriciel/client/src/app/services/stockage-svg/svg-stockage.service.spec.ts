@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { ToolManagerService, TOOL_INDEX } from '../tools/tool-manager.service';
+import { TOOL_INDEX, ToolManagerService } from '../tools/tool-manager.service';
 import { DrawElement } from './draw-element';
 import { LineService } from './line.service';
 import { SVGStockageService } from './svg-stockage.service';

@@ -1,13 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
+import { TranslateSvgService } from '../../command/translate-svg.service';
 import { DrawElement } from '../../stockage-svg/draw-element';
+import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { TOOL_INDEX } from '../tool-manager.service';
 import { SelectionService } from './selection.service';
-import { TranslateSvgService } from '../../command/translate-svg.service';
-import { RectangleService } from '../../stockage-svg/rectangle.service';
 
 // tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers
+// tslint:disable: max-file-line-count
 
 describe('SelectionService', () => {
   let service: SelectionService;

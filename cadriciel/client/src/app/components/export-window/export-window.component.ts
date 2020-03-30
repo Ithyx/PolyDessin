@@ -4,7 +4,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
-import { Drawing } from '../../../../../common/communication/DrawingInterface';
+import { Drawing } from '../../../../../common/communication/drawing-interface';
 
 export const PREVIEW_SIZE = '200';
 
