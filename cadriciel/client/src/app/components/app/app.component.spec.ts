@@ -32,12 +32,14 @@ describe('AppComponent', () => {
     //  Tests updateURL
 
     it('#updateURL devrait mettre à jour l\'URL courante', () => {
+        // tslint:disable-next-line: no-any
         const routes: [any, any] = [{url: 'précédante'}, {url: 'actuelle'}];
         app.updateURL(routes);
         expect(app.routingManager.currentPage).toBe('actuelle');
     });
 
     it('#updateURL devrait mettre à jour l\'URL précédante', () => {
+        // tslint:disable-next-line: no-any
         const routes: [any, any] = [{url: 'précédante'}, {url: 'actuelle'}];
         app.updateURL(routes);
         expect(app.routingManager.previousPage).toBe('précédante');

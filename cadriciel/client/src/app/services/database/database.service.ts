@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Drawing } from '../../../../../common/communication/DrawingInterface';
+import { Drawing } from '../../../../../common/communication/drawing-interface';
 import { DrawingManagerService } from '../drawing-manager/drawing-manager.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 

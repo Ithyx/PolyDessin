@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Drawing } from '../../../../common/communication/DrawingInterface';
+import { Drawing } from '../../../../common/communication/drawing-interface';
 import { DrawingManagerService } from './drawing-manager/drawing-manager.service';
 import { B, Color, DrawElement, G, R } from './stockage-svg/draw-element';
 import { LineService } from './stockage-svg/line.service';

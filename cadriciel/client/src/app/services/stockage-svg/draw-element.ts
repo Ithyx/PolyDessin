@@ -32,8 +32,11 @@ export interface DrawElement {
   erasingColor: Color;
 
   thickness?: number;
+  texture?: string;
   perimeter?: string;
   isAPoint?: boolean;     // Peut être retiré
+  isDotted?: boolean;
+  chosenOption?: string;
 
   pointMin: Point;
   pointMax: Point;
