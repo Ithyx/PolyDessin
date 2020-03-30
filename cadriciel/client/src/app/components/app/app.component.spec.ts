@@ -5,6 +5,8 @@ import { RouterStateSnapshot, RoutesRecognized } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
+// tslint:disable: no-string-literal
+
 const injector = Injector.create(
     { providers: [{provide: RouterStateSnapshot, useValue: {}}, {provide: RoutesRecognized, deps: [RouterStateSnapshot]}] }
 );
@@ -25,24 +27,20 @@ describe('AppComponent', () => {
         expect(app).toBeTruthy();
     });
 
-    it("devrait avoir le titre 'LOG2990'", () => {
-        expect(app.title).toEqual('LOG2990');
-    });
-
     //  Tests updateURL
 
     it('#updateURL devrait mettre à jour l\'URL courante', () => {
         // tslint:disable-next-line: no-any
         const routes: [any, any] = [{url: 'précédante'}, {url: 'actuelle'}];
         app.updateURL(routes);
-        expect(app.routingManager.currentPage).toBe('actuelle');
+        expect(app['routingManager'].currentPage).toBe('actuelle');
     });
 
     it('#updateURL devrait mettre à jour l\'URL précédante', () => {
         // tslint:disable-next-line: no-any
         const routes: [any, any] = [{url: 'précédante'}, {url: 'actuelle'}];
         app.updateURL(routes);
-        expect(app.routingManager.previousPage).toBe('précédante');
+        expect(app['routingManager'].previousPage).toBe('précédante');
     });
 
     //  Tests filterFunction

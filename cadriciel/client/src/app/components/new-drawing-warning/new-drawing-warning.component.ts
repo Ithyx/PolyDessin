@@ -10,9 +10,9 @@ import { NewDrawingWindowComponent } from '../new-drawing-window/new-drawing-win
 })
 export class NewDrawingWarningComponent {
 
-  constructor(public dialog: MatDialog,
-              public shortcuts: ShortcutsManagerService,
-              public dialogRef: MatDialogRef<NewDrawingWindowComponent> ) {
+  constructor(private dialog: MatDialog,
+              private shortcuts: ShortcutsManagerService,
+              private dialogRef: MatDialogRef<NewDrawingWindowComponent> ) {
    }
 
   cancel(): void {

@@ -16,6 +16,16 @@ export const rectangleSelectionTool: DrawingTool = {name: '',
                                             ],
                                              iconName: ''};
 
+const enum RECTANGLE_COLOR {
+  PRIMARY = 'rgba(0, 80, 130, 0.35)',
+  SECONDARY = 'rgba(80, 80, 80, 0.45)'
+}
+
+const enum RECTANGLE_INVERTED_COLOR {
+  PRIMARY = 'rgba(190, 70, 70, 0.35)',
+  SECONDARY = 'rgba(80, 80, 80, 0.45)',
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -42,16 +52,16 @@ export class SelectionRectangleService {
 
   refreshSVGNormalSelection(): void {
     this.rectangle.updateParameters(rectangleSelectionTool);
-    this.rectangle.primaryColor.RGBAString = 'rgba(0, 80, 130, 0.35)';
-    this.rectangle.secondaryColor.RGBAString = 'rgba(80, 80, 80, 0.45)';
+    this.rectangle.primaryColor.RGBAString = RECTANGLE_COLOR.PRIMARY;
+    this.rectangle.secondaryColor.RGBAString = RECTANGLE_COLOR.SECONDARY;
     this.rectangle.draw();
     this.rectangle.svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.rectangle.svg);
   }
 
   refreshSVGInvertedSelection(): void {
     this.rectangleInverted.updateParameters(rectangleSelectionTool);
-    this.rectangleInverted.primaryColor.RGBAString = 'rgba(190, 70, 70, 0.35)';
-    this.rectangleInverted.secondaryColor.RGBAString = 'rgba(80, 80, 80, 0.45)';
+    this.rectangleInverted.primaryColor.RGBAString = RECTANGLE_INVERTED_COLOR.PRIMARY;
+    this.rectangleInverted.secondaryColor.RGBAString = RECTANGLE_INVERTED_COLOR.SECONDARY;
     this.rectangleInverted.draw();
     this.rectangleInverted.svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.rectangleInverted.svg);
   }

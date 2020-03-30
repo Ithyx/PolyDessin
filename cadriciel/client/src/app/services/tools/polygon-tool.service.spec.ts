@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ColorParameterService } from '../color/color-parameter.service';
-import { AddSVGService } from '../command/add-svg.service';
 import { Command } from '../command/command';
 import { CommandManagerService } from '../command/command-manager.service';
 import { DrawElement } from '../stockage-svg/draw-element';
@@ -46,8 +45,6 @@ const commandStub: Partial<CommandManagerService> = {
 describe('PolygonToolService', () => {
   let service: PolygonToolService;
   let tools: ToolManagerService;
-  let colorParameter: ColorParameterService;
-  let stockage: SVGStockageService;
   let commands: CommandManagerService;
 
   beforeEach(() => TestBed.configureTestingModule({
@@ -59,52 +56,21 @@ describe('PolygonToolService', () => {
   beforeEach(() => {
     service = TestBed.get(PolygonToolService);
     tools = TestBed.get(ToolManagerService);
-    colorParameter = TestBed.get(ColorParameterService);
-    stockage = TestBed.get(SVGStockageService);
     commands = TestBed.get(CommandManagerService);
-    service['polygon'].primaryColor = {RGBA: [0, 0, 0, 1], RGBAString: 'rgba(0,0,0,1)'};
-    service['polygon'].secondaryColor = {RGBA: [0, 0, 0, 1], RGBAString: 'rgba(0,0,0,1)'};
-    service['polygon'].points = [{x: 50, y: 0}, {x: 90, y: 80}, {x: 10, y: 80}];
-    service['polygon'].pointMin = {x: 0, y: 0};
-    service['polygon'].pointMax = {x: 100, y: 100};
+    service['shape'].primaryColor = {RGBA: [0, 0, 0, 1], RGBAString: 'rgba(0,0,0,1)'};
+    service['shape'].secondaryColor = {RGBA: [0, 0, 0, 1], RGBAString: 'rgba(0,0,0,1)'};
+    service['shape'].points = [{x: 50, y: 0}, {x: 90, y: 80}, {x: 10, y: 80}];
+    service['shape'].pointMin = {x: 0, y: 0};
+    service['shape'].pointMax = {x: 100, y: 100};
     service['initial'] = {x: 100, y: 100};
     service['calculatedCenter'] = {x: 50, y: 50};
     service['calculatedRadius'] = 50;
     service['minPoint'] = {x: 10, y: 80};
+    service['commands'].drawingInProgress = true;
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
-  });
-
-  // TESTS refreshSVG
-
-  it('#refreshSVG devrait appeler updateParameters du polygone avec l\'outil actif', () => {
-    spyOn(service['polygon'], 'updateParameters');
-    service.refreshSVG();
-    expect(service['polygon'].updateParameters).toHaveBeenCalledWith(tools.activeTool);
-  });
-
-  it('#refreshSVG devrait changer la couleur primaire du polygone avec celle de colorParameter', () => {
-    service.refreshSVG();
-    expect(service['polygon'].primaryColor).toEqual(colorParameter.primaryColor);
-  });
-
-  it('#refreshSVG devrait changer la couleur secondaire du polygone avec celle de colorParameter', () => {
-    service.refreshSVG();
-    expect(service['polygon'].secondaryColor).toEqual(colorParameter.secondaryColor);
-  });
-
-  it('#refreshSVG devrait appeler draw du polygone', () => {
-    spyOn(service['polygon'], 'draw');
-    service.refreshSVG();
-    expect(service['polygon'].draw).toHaveBeenCalled();
-  });
-
-  it('#refreshSVG devrait appeler setOngoingSVG de SVGStockage avec le polygone', () => {
-    spyOn(stockage, 'setOngoingSVG');
-    service.refreshSVG();
-    expect(stockage.setOngoingSVG).toHaveBeenCalledWith(service['polygon']);
   });
 
   // TESTS onMouseMove
@@ -168,12 +134,12 @@ describe('PolygonToolService', () => {
 
   it('#onMouseMove devrait calculer le point minimal du polygone pour le périmètre', () => {
     service.onMouseMove(new MouseEvent('move', {clientX: 110, clientY: 115}));
-    expect(service['polygon'].pointMin).toEqual({x: 100, y: 100});
+    expect(service['shape'].pointMin).toEqual({x: 100, y: 100});
   });
 
   it('#onMouseMove devrait calculer le point maximal du polygone pour le périmètre', () => {
     service.onMouseMove(new MouseEvent('move', {clientX: 110, clientY: 115}));
-    expect(service['polygon'].pointMax).toEqual({x: 110, y: 110});
+    expect(service['shape'].pointMax).toEqual({x: 110, y: 110});
   });
 
   it('#onMouseMove ne devrait pas appeler calculateNewCircle si le nombre de côtés est pair', () => {
@@ -211,8 +177,8 @@ describe('PolygonToolService', () => {
     service.calculatePoints(3);
     const x = 50 + 50 * Math.cos(5 * Math.PI / 6);
     const y = 50 + 50 * Math.sin(5 * Math.PI / 6);
-    expect(service['polygon'].points[2].x).toBeCloseTo(x);
-    expect(service['polygon'].points[2].y).toBeCloseTo(y);
+    expect(service['shape'].points[2].x).toBeCloseTo(x);
+    expect(service['shape'].points[2].y).toBeCloseTo(y);
   });
 
   it('#calculatePoints devrait actualiser le point minimal si le point calculé est inférieur en x', () => {
@@ -229,7 +195,7 @@ describe('PolygonToolService', () => {
 
   it('#calculatePoints devrait mettre autant de points dans le polygone que le paramètre sides', () => {
     service.calculatePoints(9);
-    expect(service['polygon'].points.length).toBe(9);
+    expect(service['shape'].points.length).toBe(9);
   });
 
   // TESTS calculateNewCircle
@@ -257,80 +223,37 @@ describe('PolygonToolService', () => {
     expect(service.calculateRadius(1, 2, 3, 4)).toEqual(2);
   });
 
-  // TESTS onMousePress
-
-  it('#onMousePress ne devrait rien faire si commands.drawingInProgress est true', () => {
-    service.onMousePress(new MouseEvent('press', {clientX: 0, clientY: 0}));
-    expect(service['initial']).toEqual({x: 100, y: 100});
-  });
-
-  it('#onMousePress devrait actualiser le point initial aux coordonnées de la souris si commands.drawingInProgress est false', () => {
-    commands.drawingInProgress = false;
-    service.onMousePress(new MouseEvent('press', {clientX: 0, clientY: 0}));
-    expect(service['initial']).toEqual({x: 0, y: 0});
-  });
-
-  it('#onMousePress devrait mettre commands.drawingInProgress à true si sa valeur est false', () => {
-    commands.drawingInProgress = false;
-    service.onMousePress(new MouseEvent('press'));
-    expect(commands.drawingInProgress).toBe(true);
-  });
-
-  // TESTS onMouseRelease
-
-  it('#onMouseRelease devrait mettre commands.drawingInProgress à false', () => {
-    service.onMouseRelease();
-    expect(commands.drawingInProgress).toBe(false);
-  });
-
-  it('#onMouseRelease devrait appeler execute de commands si le polygone a une longueur ou une largeur non nulle', () => {
-    const command = new AddSVGService(service['polygon'], stockage);
-    spyOn(commands, 'execute');
-    service.onMouseRelease();
-    expect(commands.execute).toHaveBeenCalledWith(command);
-  });
-
-  it('#onMouseRelease ne devrait pas appeler execute de commands si le polygone a une longueur et une largeur nulles', () => {
-    service['polygon'].pointMax = {x: 0, y: 0};
-    spyOn(commands, 'execute');
-    service.onMouseRelease();
-    expect(commands.execute).not.toHaveBeenCalled();
-  });
-
-  it('#onMouseRelease devrait remettre le centre à (0, 0)', () => {
-    service.onMouseRelease();
-    expect(service['calculatedCenter']).toEqual({x: 0, y: 0});
-  });
-
-  it('#onMouseRelease devrait remettre le rayon à 0', () => {
-    service.onMouseRelease();
-    expect(service['calculatedRadius']).toBe(0);
-  });
-
-  it('#onMouseRelease devrait réinitialiser le polygone', () => {
-    service.onMouseRelease();
-    expect(service['polygon']).toEqual(new PolygonService());
-  });
-
-  it('#onMouseRelease devrait appeler setOngoingSVG de SVGStockage avec le polygone vide', () => {
-    spyOn(stockage, 'setOngoingSVG');
-    service.onMouseRelease();
-    expect(stockage.setOngoingSVG).toHaveBeenCalledWith(new PolygonService());
-  });
-
   // TESTS clear
 
-  it('#clear devrait mettre drawingInProgress de commands à false', () => {
+  it('#clear devrait mettre commandes.drawingInProgress faux', () => {
+    service['commands'].drawingInProgress = true;
     service.clear();
-    expect(commands.drawingInProgress).toEqual(false);
+    expect(service['commands'].drawingInProgress).toBe(false);
   });
 
   it('#clear devrait reinitialiser le polygone', () => {
-    service['polygon'].points.push({x: 1, y: 1});
-    service['polygon'].points.push({x: 0, y: 2});
-    service['polygon'].points.push({x: 2, y: 2});
-    service['polygon'].draw();
+    service['shape'] = new PolygonService();
+    service['shape'].points = [{x: 0, y: 0}, {x: 10, y: 10}];
     service.clear();
-    expect(service['polygon']).toEqual(new PolygonService());
+    // vérifier que le SVG est vide
+    expect(service['shape']).toEqual(new PolygonService());
+  });
+
+  it('#clear devrait mettre (0,0) à initial', () => {
+    service['initial'] = {x: 15, y: 15};
+    service.clear();
+    expect(service['initial']).toEqual({x: 0, y: 0});
+  });
+
+  it('#clear devrait mettre (0,0) à calculatedCenter', () => {
+    service['calculatedCenter'] = {x: 15, y: 15};
+    service.clear();
+    expect(service['calculatedCenter']).toEqual({x: 0, y: 0});
+  });
+
+  it('#clear devrait mettre 0 à calculatedRadius', () => {
+    service['calculatedRadius'] = 28;
+    service.clear();
+    expect(service['calculatedRadius']).toEqual(0);
   });
 });

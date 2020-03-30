@@ -1,16 +1,15 @@
-// Angular
 import { Injector } from '@angular/core';
-// tslint:disable: no-string-literal
-// tslint:disable: no-magic-numbers
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
 
-// Component
 import { Scope } from 'src/app/services/color/color-manager.service';
 import { ColorChoiceComponent } from '../color-choice/color-choice.component';
 import { BUFFER_HEIGHT, BUFFER_WIDTH, KEY_FORM_HEIGHT, KEY_FORM_WIDTH , NewDrawingWindowComponent } from './new-drawing-window.component';
+
+// tslint:disable: no-string-literal
+// tslint:disable: no-magic-numbers
 
 describe('NewDrawingWindowComponent', () => {
   let component: NewDrawingWindowComponent;
@@ -108,9 +107,9 @@ describe('NewDrawingWindowComponent', () => {
   it('#changeWindowDimension appelle patchValue avec les bonnes valeurs', () => {
     spyOnProperty(window, 'innerHeight').and.returnValue(100 + BUFFER_HEIGHT);
     spyOnProperty(window, 'innerWidth').and.returnValue(100 + BUFFER_WIDTH);
-    spyOn(component.newDrawing, 'patchValue');
+    spyOn(component['newDrawing'], 'patchValue');
     component.changeWindowDimension();
-    expect(component.newDrawing.patchValue).toHaveBeenCalledWith({formHeight: 100, formWidth: 100});
+    expect(component['newDrawing'].patchValue).toHaveBeenCalledWith({formHeight: 100, formWidth: 100});
   });
 
   // TESTS #createNewDrawing
@@ -122,8 +121,8 @@ describe('NewDrawingWindowComponent', () => {
   });
 
   it('#createNewDrawing doit metter à jour la hauteur de dessin', () => {
-    component.newDrawing.value[KEY_FORM_HEIGHT] = 100;
-    component.newDrawing.value[KEY_FORM_WIDTH] = 100;
+    component['newDrawing'].value[KEY_FORM_HEIGHT] = 100;
+    component['newDrawing'].value[KEY_FORM_WIDTH] = 100;
     component.createNewDrawing();
     expect(component['drawingManager'].height).toBe(100);
     expect(component['drawingManager'].width).toBe(100);

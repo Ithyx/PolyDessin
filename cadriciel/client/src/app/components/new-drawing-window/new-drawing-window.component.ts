@@ -27,7 +27,7 @@ export class NewDrawingWindowComponent {
   private windowWidth: number;
   private dimensionManuallyChange: boolean;
   private colorWindow: ColorChoiceComponent;
-  newDrawing: FormGroup;
+  private newDrawing: FormGroup;
 
   private heightValid: boolean;
   private widthValid: boolean;

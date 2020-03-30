@@ -23,7 +23,7 @@ export class GridService {
   cellSize: number;
   opacity: number;
 
-  constructor(public drawing: DrawingManagerService) {
+  constructor(private drawing: DrawingManagerService) {
     this.showGrid = false;
     this.cellSize = INITIAL_CELL_SIZE;
     this.opacity = INITIAL_OPACITY;

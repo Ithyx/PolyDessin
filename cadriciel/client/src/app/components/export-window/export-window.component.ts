@@ -16,12 +16,12 @@ export const PREVIEW_SIZE = '200';
 
 export class ExportWindowComponent {
   @ViewChild('drawingPreview', {static: false})
-  drawingPreview: ElementRef<SVGElement>;
+  private drawingPreview: ElementRef<SVGElement>;
   @ViewChild('link', {static: false})
-  link: ElementRef<HTMLAnchorElement>;
+  private link: ElementRef<HTMLAnchorElement>;
 
-  EXPORT_FORMAT: string[] = ['png', 'jpeg', 'svg'];
-  EXPORT_FILTER: string[] = ['', 'Noir-et-blanc', 'Sepia', 'Flou', 'Tremblant', 'Tache'];
+  private EXPORT_FORMAT: string[] = ['png', 'jpeg', 'svg'];
+  private EXPORT_FILTER: string[] = ['', 'Noir-et-blanc', 'Sepia', 'Flou', 'Tremblant', 'Tache'];
 
   private context: CanvasRenderingContext2D;
   private image: HTMLImageElement;

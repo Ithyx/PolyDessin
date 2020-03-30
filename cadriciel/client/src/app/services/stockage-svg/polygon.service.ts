@@ -1,50 +1,14 @@
 import { Injectable } from '@angular/core';
-import { SafeHtml } from '@angular/platform-browser';
-import { Point } from '../tools/line-tool.service';
-import { DrawingTool } from '../tools/tool-manager.service';
-import { Color, DrawElement, ERASING_COLOR_INIT } from './draw-element';
+import { TOOL_INDEX } from '../tools/tool-manager.service';
+import { BasicShapeService } from './basic-shape.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PolygonService implements DrawElement {
-  svg: string;
-  svgHtml: SafeHtml;
-
-  points: Point[];
-  isSelected: boolean;
-  erasingEvidence: boolean;
-
-  primaryColor: Color;
-  secondaryColor: Color;
-  erasingColor: Color;
-
-  thickness: number;
-  chosenOption: string;
-  perimeter: string;
-
-  pointMin: Point;
-  pointMax: Point;
-
-  translate: Point;
-
+export class PolygonService extends BasicShapeService {
   constructor() {
-    this.svgHtml = '';
-    this.points = [];
-    this.primaryColor = {
-      RGBAString: '',
-      RGBA: [0, 0, 0, 0]
-    };
-    this.secondaryColor = {
-      RGBAString: '',
-      RGBA: [0, 0, 0, 0]
-    };
-    this.erasingColor = ERASING_COLOR_INIT;
-    this.pointMin = {x: 0, y: 0};
-    this.pointMax = {x: 0, y: 0};
-    this.isSelected = false;
-    this.erasingEvidence = false;
-    this.translate = { x: 0, y: 0};
+    super();
+    this.trueType = TOOL_INDEX.POLYGON;
   }
 
   getWidth(): number {
@@ -56,11 +20,13 @@ export class PolygonService implements DrawElement {
   }
 
   draw(): void {
-    this.drawPolygon();
+    this.drawShape();
     this.drawPerimeter();
   }
 
-  drawPolygon(): void {
+  drawLine(): void { /*L'outil ne trace jamais de lignes*/ }
+
+  drawShape(): void {
     this.svg = '<polygon transform=" translate(' + this.translate.x + ' ' + this.translate.y +
       ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor.RGBAString : 'none') + '" stroke="'
       + ((this.erasingEvidence) ? this.erasingColor.RGBAString :
@@ -84,30 +50,5 @@ export class PolygonService implements DrawElement {
       this.perimeter += '" height="' + (this.getHeight() + this.thickness)
         + '" width="' + (this.getWidth() + this.thickness) + '"/>';
     }
-  }
-
-  updatePosition(x: number, y: number): void {
-    this.translate.x += x;
-    this.translate.y += y;
-    this.draw();
-  }
-
-  updatePositionMouse(mouse: MouseEvent, mouseClick: Point): void {
-    this.translate.x = mouse.offsetX - mouseClick.x;
-    this.translate.y = mouse.offsetY - mouseClick.y;
-    this.draw();
-  }
-
-  updateParameters(tool: DrawingTool): void {
-    this.thickness = (tool.parameters[0].value) ? tool.parameters[0].value : 1;
-    this.chosenOption = (tool.parameters[1].chosenOption) ? tool.parameters[1].chosenOption : '';
-  }
-
-  translateAllPoints(): void {
-    for (const point of this.points) {
-      point.x += this.translate.x;
-      point.y += this.translate.y;
-    }
-    this.translate = {x: 0, y: 0};
   }
 }
