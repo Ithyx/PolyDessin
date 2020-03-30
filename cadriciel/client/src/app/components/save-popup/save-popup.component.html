@@ -3,13 +3,13 @@
 <br><br>
 <form>
     <label>Nom du dessin:
-        <input type="text" maxlength="15" [formControl]="name" (change)="checkName()" [className]="isNameValid ? '' : 'invalid-name'">
+        <input type="text" maxlength="15" [formControl]="name" (change)="checkName()" [className]="getNameStatus()">
         <label *ngIf="!isNameValid"> Le nom ne peut pas être vide !</label>
     </label>
 </form>
 <form>
     <label>Entrez une étiquette personalisée:
-        <input type="text" maxlength="15" [formControl]="tag" (change)="checkTag()" [className]="isTagValid ? '' : 'invalid-tag'">
+        <input type="text" maxlength="15" [formControl]="tag" (change)="checkTag()" [className]="getTagStatus()">
         <label *ngIf="!isTagValid"> L'étiquette ne peut pas être vide !</label>
     </label>
     <button mat-stroked-button (click)="addTag()" [disabled]="!isTagValid" class="tag-button">Ajouter étiquette</button>

@@ -74,4 +74,12 @@ export class SavePopupComponent {
     this.dialogRef.close();
   }
 
+  getNameStatus(): string {
+    return this.isNameValid ? '' : 'invalid-name';
+  }
+
+  getTagStatus(): string {
+    return this.isTagValid ? '' : 'invalid-tag';
+  }
+
 }

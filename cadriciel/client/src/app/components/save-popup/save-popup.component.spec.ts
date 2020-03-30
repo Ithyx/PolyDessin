@@ -135,4 +135,24 @@ describe('SavePopupComponent', () => {
     component.deleteTag('tag2');
     expect(component['drawingParams'].tags).toEqual(['tag1', 'tag3']);
   });
+
+  // TESTS getNameStatus
+  it('#getNameStatus devrait retourner un string vide si isNameValid est true', () => {
+    component['isNameValid'] = true;
+    expect(component.getNameStatus()).toEqual('');
+  });
+  it('#getNameStatus devrait retourner "invalid-name" si isNameValid est false', () => {
+    component['isNameValid'] = false;
+    expect(component.getNameStatus()).toEqual('invalid-name');
+  });
+
+  // TESTS getTagStatus
+  it('#getTagStatus devrait retourner un string vide si isTagValid est true', () => {
+    component['isTagValid'] = true;
+    expect(component.getTagStatus()).toEqual('');
+  });
+  it('#getTagStatus devrait retourner "invalid-tag" si isTagValid est false', () => {
+    component['isTagValid'] = false;
+    expect(component.getTagStatus()).toEqual('invalid-tag');
+  });
 });
