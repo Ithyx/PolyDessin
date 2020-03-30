@@ -1,10 +1,17 @@
 import { Injectable } from '@angular/core';
+import { TOOL_INDEX } from '../tools/tool-manager.service';
 import { BasicShapeService } from './basic-shape.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EllipseService extends BasicShapeService {
+
+  constructor() {
+    super();
+    this.trueType = TOOL_INDEX.ELLIPSE;
+  }
+
   drawLine(): void {
     this.svg = '<line stroke-linecap="round'
       + '" transform=" translate(' + this.translate.x + ' ' + this.translate.y
