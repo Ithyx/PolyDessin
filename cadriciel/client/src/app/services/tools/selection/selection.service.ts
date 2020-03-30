@@ -73,15 +73,15 @@ export class SelectionService implements ToolInterface {
       this.selectionRectangle.mouseMove(mouse);
       if (this.selectionRectangle.ongoingSelection) {
         if (mouse.buttons === RIGHT_CLICK) {
-            // Éviter de créer une boite de sélection si on effectue un simple clic
-            this.selectionBox.deleteSelectionBox();
-            this.isInRectangleSelection(this.selectionRectangle.rectangleInverted);
-            this.createBoundingBox();
+          // Éviter de créer une boite de sélection si on effectue un simple clic
+          this.selectionBox.deleteSelectionBox();
+          this.isInRectangleSelection(this.selectionRectangle.rectangleInverted);
+          this.createBoundingBox();
         } else if (mouse.button === LEFT_CLICK ) {
-            // Éviter de créer une boite de sélection si on effectue un simple clic
-            this.deleteBoundingBox();
-            this.isInRectangleSelection(this.selectionRectangle.rectangle);
-            this.createBoundingBox();
+          // Éviter de créer une boite de sélection si on effectue un simple clic
+          this.deleteBoundingBox();
+          this.isInRectangleSelection(this.selectionRectangle.rectangle);
+          this.createBoundingBox();
         }
       }
     }
