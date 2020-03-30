@@ -27,6 +27,7 @@ describe('GalleryComponent', () => {
   const element: DrawElement = {
     svg: '',
     svgHtml: '',
+    trueType: 0,
     points: [],
     isSelected: false,
     erasingEvidence: false,
@@ -190,13 +191,6 @@ describe('GalleryComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  // TESTS addElement
-  it('#addElement devrait appeller stockageSVG.addSVG avec le bon paramètre', () => {
-    const spy = spyOn(component['stockageSVG'], 'addSVG');
-    component.addElement(element);
-    expect(spy).toHaveBeenCalledWith(element);
-  });
-
   // TESTS openWarning
   it('#openWarning devrait ouvrir l\'avertissement avec les bon paramètres', () => {
     const spy = spyOn(component['dialog'], 'open').and.returnValue(injector.get(MatDialogRef));
@@ -226,7 +220,7 @@ describe('GalleryComponent', () => {
   });
   it('#loadDrawing devrait changer complètement le dessin en cours', () => {
     const cleanSpy = spyOn(component['stockageSVG'], 'cleanDrawing');
-    const addSpy = spyOn(component, 'addElement');
+    const addSpy = spyOn(component['db'], 'addElement');
     const drawingManager = component['drawingManager'];
     drawingManager.id = 123;
     drawingManager.height = 200;
@@ -251,7 +245,7 @@ describe('GalleryComponent', () => {
   });
   it('#loadDrawing devrait remttre les éléments à 0 même si le nouveau dessin n\'en a pas', () => {
     drawing.elements = undefined;
-    const spy = spyOn(component, 'addElement');
+    const spy = spyOn(component['db'], 'addElement');
     component.loadDrawing(drawing);
     drawing.elements = [element, element];
     expect(spy).not.toHaveBeenCalled();

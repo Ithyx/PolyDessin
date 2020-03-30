@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
+import { TOOL_INDEX } from '../tools/tool-manager.service';
 import { BasicShapeService } from './basic-shape.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PolygonService extends BasicShapeService {
+  constructor() {
+    super();
+    this.trueType = TOOL_INDEX.POLYGON;
+  }
 
   getWidth(): number {
     return this.pointMax.x - this.pointMin.x;

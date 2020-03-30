@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
-import { DrawingTool } from '../tools/tool-manager.service';
+import { DrawingTool, TOOL_INDEX } from '../tools/tool-manager.service';
 import { TraceService } from './trace.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TracePencilService extends TraceService {
+
+  constructor() {
+    super();
+    this.trueType = TOOL_INDEX.PENCIL;
+  }
+
   drawPath(): void {
     this.svg = '<path transform="translate(' + this.translate.x + ' ' + this.translate.y + ')" fill="none" '
       + `stroke="${(this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString}"`

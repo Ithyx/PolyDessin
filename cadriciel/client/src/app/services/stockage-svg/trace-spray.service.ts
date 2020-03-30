@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
-import { DrawingTool } from '../tools/tool-manager.service';
+import { DrawingTool, TOOL_INDEX } from '../tools/tool-manager.service';
 import { Color, DrawElement, ERASING_COLOR_INIT} from './draw-element';
 
 export const MIN_DIAMETER = 5;
@@ -16,6 +16,8 @@ export class TraceSprayService implements DrawElement {
   isSelected: boolean;
   erasingEvidence: boolean;
 
+  trueType: TOOL_INDEX;
+
   diameter: number;
   points: Point[] = [];
 
@@ -28,6 +30,7 @@ export class TraceSprayService implements DrawElement {
 
   constructor() {
     this.svgHtml = '';
+    this.trueType = TOOL_INDEX.SPRAY;
     this.isSelected = false;
     this.primaryColor = {
       RGBAString: '',

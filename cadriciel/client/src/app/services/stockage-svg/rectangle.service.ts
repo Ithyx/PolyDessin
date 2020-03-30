@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TOOL_INDEX } from '../tools/tool-manager.service';
 import { BasicShapeService } from './basic-shape.service';
 
 @Injectable({
@@ -10,6 +11,7 @@ export class RectangleService extends BasicShapeService {
   constructor() {
     super();
     this.isDotted = false;
+    this.trueType = TOOL_INDEX.RECTANGLE;
   }
 
   drawLine(): void {

@@ -3,7 +3,7 @@ import { CanvasConversionService } from 'src/app/services/canvas-conversion.serv
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { BrushToolService } from 'src/app/services/tools/brush-tool.service';
 import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
-import { DrawSprayService } from 'src/app/services/tools/draw-spray.service';
+import { SprayToolService } from 'src/app/services/tools/spray-tool.service';
 import { EllipseToolService } from 'src/app/services/tools/ellipse-tool.service';
 import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
 import { LineToolService } from 'src/app/services/tools/line-tool.service';
@@ -36,7 +36,7 @@ export class DrawingPageComponent implements AfterViewInit {
               protected line: LineToolService,
               private shortcuts: ShortcutsManagerService,
               protected selection: SelectionService,
-              protected spray: DrawSprayService,
+              protected spray: SprayToolService,
               protected pipette: PipetteToolService,
               protected colorChanger: ColorChangerToolService,
               protected ellipse: EllipseToolService,

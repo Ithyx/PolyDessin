@@ -8,12 +8,12 @@ import { Command } from './command';
 export class CommandManagerService {
   drawingInProgress: boolean;  // Annuler-refaire désactivé si un dessin est en cours
 
+  private executedCommands: Command[] = [];
+  private cancelledCommands: Command[] = [];
+
   constructor(private canvasConversion: CanvasConversionService) {
     this.drawingInProgress = false;
   }
-
-  executedCommands: Command[] = [];
-  cancelledCommands: Command[] = [];
 
   execute(command: Command): void {
     this.executedCommands.push(command);

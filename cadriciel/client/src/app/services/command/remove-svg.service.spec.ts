@@ -17,7 +17,7 @@ const stockageStub: Partial<SVGStockageService> = {
   getCompleteSVG(): DrawElement[] { return [firstElement, secondElement, thirdElement]; }
 };
 
-describe('RetraitSvgService', () => {
+describe('RemoveSVGService', () => {
   let service: RemoveSVGService;
   let stockage: SVGStockageService;
   beforeEach(() => TestBed.configureTestingModule({

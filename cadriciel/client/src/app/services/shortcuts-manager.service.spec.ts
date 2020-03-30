@@ -32,6 +32,7 @@ describe('ShortcutsManagerService', () => {
   const element: DrawElement = {
     svg: '',
     svgHtml: '',
+    trueType: 0,
     points: [{x: 90, y: 90}, {x: 76, y: 89 }],
     isSelected: false,
     erasingEvidence: false,
