@@ -10,12 +10,10 @@ import { RoutingManagerService } from 'src/app/services/routing-manager.service'
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-    readonly title: string = 'LOG2990';
     message: BehaviorSubject<string>;
 
-    constructor(
-                private routing: Router,
-                public routingManager: RoutingManagerService
+    constructor(private routing: Router,
+                private routingManager: RoutingManagerService
             ) {
                 this.routing.events
                     .pipe(filter(this.filterFunction), pairwise())

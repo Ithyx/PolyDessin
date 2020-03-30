@@ -403,7 +403,7 @@ describe('SelectionService', () => {
     expect(spy).toHaveBeenCalledWith({x: 10 , y: 0}, {x: 90, y: 90});
   });
 
-  it('#createBoundingBox devrait créer une nouvelle boite en se basant sur les points des éléments' + 
+  it('#createBoundingBox devrait créer une nouvelle boite en se basant sur les points des éléments' +
   'en comptant l\'epaisseur de l\'element', () => {
     element.thickness = 20;
     element2.thickness = 65;
@@ -511,7 +511,8 @@ describe('SelectionService', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('#isInRectangleSelection 5', () => {
+  it('#isInRectangleSelection devrait retirer l\'element de modifiedElement si \'element n\'appartient pas' +
+  ' au rectangle d\'inversion de sélection', () => {
     service.selectionRectangle.rectangleInverted = new RectangleService();
     service.selectionRectangle.rectangleInverted.points[0] = {x: 80, y: 100};
     service.selectionRectangle.rectangleInverted.points[1] = {x: 100, y: 300};
@@ -525,7 +526,8 @@ describe('SelectionService', () => {
     expect(service['modifiedElement'].has(element)).toBe(false);
   });
 
-  it('#isInRectangleSelection 5', () => {
+  it('#isInRectangleSelection ne devrait pas inverser le status de la selection si l\'element n\'appartient pas' +
+  ' au rectangle d\'inversion de sélection', () => {
     service.selectionRectangle.rectangleInverted = new RectangleService();
     service.selectionRectangle.rectangleInverted.points[0] = {x: 80, y: 100};
     service.selectionRectangle.rectangleInverted.points[1] = {x: 100, y: 300};
