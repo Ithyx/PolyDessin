@@ -31,7 +31,6 @@ describe('BasicShapeService', () => {
     };
     element.thickness = 5;
     element.translate = { x: 10, y: 10};
-    element.isDotted = true;
   });
 
   it('should be created', () => {
