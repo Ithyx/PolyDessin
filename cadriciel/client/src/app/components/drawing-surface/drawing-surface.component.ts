@@ -156,7 +156,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   }
 
   handleMouseUpBackground(mouse: MouseEvent): void {
-    if (this.mousePosition.x === mouse.screenX && this.mousePosition.y === mouse.screenY) {
+    if (this.mousePosition.x === mouse.screenX && this.mousePosition.y === mouse.screenY && mouse.button === LEFT_CLICK) {
       this.handleBackgroundLeftClick();
     }
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {

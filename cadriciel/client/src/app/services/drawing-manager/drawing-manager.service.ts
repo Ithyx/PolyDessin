@@ -5,6 +5,7 @@ const BUFFER_WIDTH = 535;
 const BUFFER_HEIGHT = 4;
 const INITIAL_HEIGHT = window.innerHeight - BUFFER_HEIGHT;
 const INITIAL_WIDTH = window.innerWidth - BUFFER_WIDTH;
+const RGB_MAX = 255;
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,7 @@ export class DrawingManagerService {
     this.name = '';
     this.backgroundColor = {
       RGBAString: 'rgba(255, 255, 255, 1)',
-      RGBA: [255, 255, 255, 1]
+      RGBA: [RGB_MAX, RGB_MAX, RGB_MAX, 1]
     };
     this.tags = [];
   }

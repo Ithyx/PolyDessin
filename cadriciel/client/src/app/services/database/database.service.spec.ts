@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Drawing } from '../../../../../common/communication/DrawingInterface';
+import { Drawing } from '../../../../../common/communication/drawing-interface';
 import { DatabaseService, SERVER_DELETE_URL, SERVER_GET_URL, SERVER_POST_URL } from './database.service';
 
 // tslint:disable: no-magic-numbers

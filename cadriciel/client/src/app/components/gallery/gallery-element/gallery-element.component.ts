@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Drawing } from '../../../../../../common/communication/DrawingInterface';
+import { Drawing } from '../../../../../../common/communication/drawing-interface';
 
 @Component({
   selector: 'app-gallery-element',

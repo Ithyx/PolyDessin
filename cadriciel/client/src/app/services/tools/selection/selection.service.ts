@@ -74,18 +74,14 @@ export class SelectionService implements ToolInterface {
       if (this.selectionRectangle.ongoingSelection) {
         if (mouse.buttons === RIGHT_CLICK) {
             // Éviter de créer une boite de sélection si on effectue un simple clic
-            if (this.selectionRectangle.rectangleInverted.getWidth() !== 0 || this.selectionRectangle.rectangleInverted.getHeight() !== 0) {
-              this.selectionBox.deleteSelectionBox();
-              this.isInRectangleSelection(this.selectionRectangle.rectangleInverted);
-              this.createBoundingBox();
-            }
+            this.selectionBox.deleteSelectionBox();
+            this.isInRectangleSelection(this.selectionRectangle.rectangleInverted);
+            this.createBoundingBox();
         } else if (mouse.button === LEFT_CLICK ) {
             // Éviter de créer une boite de sélection si on effectue un simple clic
-            if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
-              this.deleteBoundingBox();
-              this.isInRectangleSelection(this.selectionRectangle.rectangle);
-              this.createBoundingBox();
-            }
+            this.deleteBoundingBox();
+            this.isInRectangleSelection(this.selectionRectangle.rectangle);
+            this.createBoundingBox();
         }
       }
     }
@@ -172,7 +168,6 @@ export class SelectionService implements ToolInterface {
     this.findPointMinAndMax(rectangleSelection);
 
     for (const element of this.svgStockage.getCompleteSVG()) {
-
       this.findPointMinAndMax(element);
 
       if (this.selectionRectangle.rectangle) {
@@ -189,7 +184,6 @@ export class SelectionService implements ToolInterface {
           this.modifiedElement.delete(element);
         }
       }
-
     }
   }
 
