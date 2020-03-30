@@ -22,7 +22,7 @@ export abstract class BasicShapeToolService implements ToolInterface {
   protected calculatedHeight: number;
 
   constructor(private stockageSVG: SVGStockageService,
-              private tools: ToolManagerService,
+              protected tools: ToolManagerService,
               private colorParameter: ColorParameterService,
               protected commands: CommandManagerService
               ) {

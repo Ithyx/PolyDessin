@@ -71,28 +71,28 @@ describe('PolygonService', () => {
   it('#drawPolygon devrait attribuer le bon svg au polygone', () => {
     let svg = '<polygon transform=" translate(10 10)" fill="rgba(65, 65, 65, 1)" stroke="rgba(35, 0, 35, 1)" ';
     svg += 'stroke-width="10" points="50 0 100 100 0 100 "></polygon>';
-    element.drawPolygon();
+    element.drawShape();
     expect(element.svg).toEqual(svg);
   });
   it('#drawPolygon devrait attribuer le bon svg au polygone si chosenOption est Contour', () => {
     element.chosenOption = 'Contour';
     let svg = '<polygon transform=" translate(10 10)" fill="none" stroke="rgba(35, 0, 35, 1)" ';
     svg += 'stroke-width="10" points="50 0 100 100 0 100 "></polygon>';
-    element.drawPolygon();
+    element.drawShape();
     expect(element.svg).toEqual(svg);
   });
   it('#drawPolygon devrait attribuer le bon svg au polygone si erasingEvidence est vrai', () => {
     element.erasingEvidence = true;
     let svg = '<polygon transform=" translate(10 10)" fill="rgba(65, 65, 65, 1)" stroke="rgba(255, 0, 0, 1)" ';
     svg += 'stroke-width="10" points="50 0 100 100 0 100 "></polygon>';
-    element.drawPolygon();
+    element.drawShape();
     expect(element.svg).toEqual(svg);
   });
   it('#drawPolygon devrait attribuer le bon svg au polygone si chosenOption est Plein', () => {
     element.chosenOption = 'Plein';
     let svg = '<polygon transform=" translate(10 10)" fill="rgba(65, 65, 65, 1)" stroke="none" ';
     svg += 'stroke-width="10" points="50 0 100 100 0 100 "></polygon>';
-    element.drawPolygon();
+    element.drawShape();
     expect(element.svg).toEqual(svg);
   });
 

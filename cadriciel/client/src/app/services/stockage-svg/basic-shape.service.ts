@@ -22,7 +22,6 @@ export abstract class BasicShapeService implements DrawElement {
   thickness: number;
   chosenOption: string;
   perimeter: string;
-  isDotted: boolean;
 
   pointMin: Point;
   pointMax: Point;

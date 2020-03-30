@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ColorParameterService } from '../color/color-parameter.service';
-import { AddSVGService } from '../command/add-svg.service';
-import { CommandManagerService } from '../command/command-manager.service';
 import { PolygonService } from '../stockage-svg/polygon.service';
-import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
+import { BasicShapeToolService } from './basic-shape-tool.service';
 import { Point } from './line-tool.service';
-import { ToolInterface } from './tool-interface';
-import { ToolManagerService } from './tool-manager.service';
 
 export const DEFAULT_SIDES = 6;
 export const STARTING_ANGLE = -Math.PI / 2;
@@ -15,34 +10,12 @@ export const ENDING_ANGLE = 2 * Math.PI + STARTING_ANGLE;
 @Injectable({
   providedIn: 'root'
 })
-export class PolygonToolService implements ToolInterface {
-  private polygon: PolygonService;
-  // Coordonnées du clic initial de souris
-  private initial: Point;
+export class PolygonToolService extends BasicShapeToolService {
   // Point avec la coordonnée en x minimale
   private minPoint: Point;
 
   private calculatedCenter: Point;
   private calculatedRadius: number;
-
-  constructor(private stockageSVG: SVGStockageService,
-              private tools: ToolManagerService,
-              private colorParameter: ColorParameterService,
-              private commands: CommandManagerService
-              ) {
-                this.polygon = new PolygonService();
-                this.initial = {x: 0, y: 0};
-                this.calculatedCenter = {x: 0, y: 0};
-                this.calculatedRadius = 0;
-              }
-
-  refreshSVG(): void {
-    this.polygon.updateParameters(this.tools.activeTool);
-    this.polygon.primaryColor = {...this.colorParameter.primaryColor};
-    this.polygon.secondaryColor = {...this.colorParameter.secondaryColor};
-    this.polygon.draw();
-    this.stockageSVG.setOngoingSVG(this.polygon);
-  }
 
   onMouseMove(mouse: MouseEvent): void {
     if (this.commands.drawingInProgress) {
@@ -56,11 +29,11 @@ export class PolygonToolService implements ToolInterface {
       const sides = (this.tools.activeTool.parameters[2].value) ? this.tools.activeTool.parameters[2].value : DEFAULT_SIDES;
 
       this.calculatePoints(sides);
-      this.polygon.pointMin = {
+      this.shape.pointMin = {
         x: this.calculatedCenter.x - this.calculatedRadius,
         y: this.calculatedCenter.y - this.calculatedRadius
       };
-      this.polygon.pointMax = {
+      this.shape.pointMax = {
         x: this.calculatedCenter.x + this.calculatedRadius,
         y: this.calculatedCenter.y + this.calculatedRadius
       };
@@ -75,11 +48,11 @@ export class PolygonToolService implements ToolInterface {
   }
 
   calculatePoints(sides: number): void {
-    this.polygon.points = [];
+    this.shape.points = [];
     for (let angle = STARTING_ANGLE; angle < ENDING_ANGLE; angle += (2 * Math.PI / sides)) {
       const x = this.calculatedCenter.x + this.calculatedRadius * Math.cos(angle);
       const y = this.calculatedCenter.y + this.calculatedRadius * Math.sin(angle);
-      this.polygon.points.push({x, y});
+      this.shape.points.push({x, y});
       if (x < this.minPoint.x) {
         this.minPoint.x = x;
         this.minPoint.y = y;
@@ -88,11 +61,11 @@ export class PolygonToolService implements ToolInterface {
   }
 
   calculateNewCircle(): void {
-    const firstPoint = this.polygon.points[0];
+    const firstPoint = this.shape.points[0];
     // Interpolation linéaire pour rapporter le point avec un x minimal directement sur la boîte de sélection
     const newMinPoint: Point = {
-      x: this.polygon.pointMin.x,
-      y: firstPoint.y + ((this.polygon.pointMin.x - firstPoint.x) / (this.minPoint.x - firstPoint.x)) * (this.minPoint.y - firstPoint.y)
+      x: this.shape.pointMin.x,
+      y: firstPoint.y + ((this.shape.pointMin.x - firstPoint.x) / (this.minPoint.x - firstPoint.x)) * (this.minPoint.y - firstPoint.y)
     };
     this.calculatedRadius = this.calculateRadius(this.calculatedCenter.x, firstPoint.y, newMinPoint.x, newMinPoint.y);
     this.calculatedCenter.y = firstPoint.y + this.calculatedRadius;
@@ -107,27 +80,11 @@ export class PolygonToolService implements ToolInterface {
     return ((a * a) - (2 * a * x) + (x * x) + (y * y) + (y0 * y0) - (2 * y * y0)) / (2 * (y - y0));
   }
 
-  onMousePress(mouse: MouseEvent): void {
-    if (!this.commands.drawingInProgress) {
-      this.commands.drawingInProgress = true;
-      this.initial = {x: mouse.offsetX, y: mouse.offsetY};
-    }
-  }
-
-  onMouseRelease(): void {
-    this.commands.drawingInProgress = false;
-    // On évite de créer des formes vides
-    if (this.polygon.getWidth() !== 0 || this.polygon.getHeight() !== 0) {
-      this.commands.execute(new AddSVGService(this.polygon, this.stockageSVG));
-    }
-    this.calculatedCenter = {x: 0, y: 0};
-    this.calculatedRadius = 0;
-    this.polygon = new PolygonService();
-    this.stockageSVG.setOngoingSVG(this.polygon);
-  }
-
   clear(): void {
     this.commands.drawingInProgress = false;
-    this.polygon = new PolygonService();
+    this.shape = new PolygonService();
+    this.initial = {x: 0, y: 0};
+    this.calculatedCenter = {x: 0, y: 0};
+    this.calculatedRadius = 0;
   }
 }
