@@ -109,14 +109,14 @@ describe('ToolbarComponent', () => {
   it('#constructor devrait lier le gestionnaire de raccourcis avec la fonction warningNewDrawing, '
     + 'qui est appelée si le paramètre estIgnoree est faux', () => {
     spyOn(component, 'warningNewDrawing');
-    component.shortcuts.newDrawingEmmiter.next(false);
+    component['shortcuts'].newDrawingEmmiter.next(false);
     expect(component.warningNewDrawing).toHaveBeenCalled();
   });
 
   it('#constructor devrait lier le gestionnaire de raccourcis avec la fonction warningNewDrawing, '
     + 'qui n\'est pas appelée si le paramètre estIgnoree est vrai', () => {
     spyOn(component, 'warningNewDrawing');
-    component.shortcuts.newDrawingEmmiter.next(true);
+    component['shortcuts'].newDrawingEmmiter.next(true);
     expect(component.warningNewDrawing).not.toHaveBeenCalled();
   });
 
@@ -127,16 +127,16 @@ describe('ToolbarComponent', () => {
     component.ngOnDestroy();  // unsubscribe est appelée ici
 
     const toucheEnfoncee = new KeyboardEvent('keypress', { key: 'o', ctrlKey: true});
-    component.shortcuts.treatInput(toucheEnfoncee);
+    component['shortcuts'].treatInput(toucheEnfoncee);
 
     // on teste que warningNewDrawing n'est plus lié aux raccourcis
     expect(component.warningNewDrawing).not.toHaveBeenCalled();
   });
 
   it('#ngOnDestroy devrait appeler la fonction next avec un booleen true comme paramètre', () => {
-    spyOn(component.shortcuts.newDrawingEmmiter, 'next');
+    spyOn(component['shortcuts'].newDrawingEmmiter, 'next');
     component.ngOnDestroy();
-    expect(component.shortcuts.newDrawingEmmiter.next).toHaveBeenCalledWith(true);
+    expect(component['shortcuts'].newDrawingEmmiter.next).toHaveBeenCalledWith(true);
   });
 
   // TESTS onClick
@@ -152,9 +152,9 @@ describe('ToolbarComponent', () => {
   });
 
   it('#onClick devrait appeler la fonction viderSVGEnCours', () => {
-    spyOn(component.shortcuts, 'clearOngoingSVG');
+    spyOn(component['shortcuts'], 'clearOngoingSVG');
     component.onClick(service.toolList[2]); // on sélectionne l'outil 2 (rectangle)
-    expect(component.shortcuts.clearOngoingSVG).toHaveBeenCalled();
+    expect(component['shortcuts'].clearOngoingSVG).toHaveBeenCalled();
   });
 
   // TESTS onChange
@@ -162,14 +162,14 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="Épaisseur"]')).nativeElement;
     element.value = '1';
     element.dispatchEvent(new Event('change')); // onChange appelée implicitement
-    expect(component.tools.activeTool.parameters[0].value).toBe(1);
+    expect(component['tools'].activeTool.parameters[0].value).toBe(1);
   });
 
   it('#onChange devrait changer la valeur de l\'épaisseur à 1 si l\'évènement qui lui est donné est inférieur à 1', () => {
     const element = fixture.debugElement.query(By.css('input[name="Épaisseur"]')).nativeElement;
     element.value = '0';
     element.dispatchEvent(new Event('change')); // onChange appelée implicitement
-    expect(component.tools.activeTool.parameters[0].value).toBe(1);
+    expect(component['tools'].activeTool.parameters[0].value).toBe(1);
   });
 
   // TESTS selectChoice
@@ -177,36 +177,36 @@ describe('ToolbarComponent', () => {
   it('#selectChoice ne devrait pas changer la valeur du paramètre si l\'évènement qui lui est donné n\'est pas un string', () => {
     const element = fixture.debugElement.query(By.css('select[name="Type"]')).nativeElement;
     element.dispatchEvent(new Event('change')); // selectChoice appelée implicitement
-    expect(component.tools.activeTool.parameters[1].chosenOption).toBe('A');
+    expect(component['tools'].activeTool.parameters[1].chosenOption).toBe('A');
   });
 
   it('#selectChoice devrait changer la valeur du paramètre si l\'évènement qui lui est donné est un string', () => {
     const element = fixture.debugElement.query(By.css('select[name="Type"]')).nativeElement;
     element.value = 'B';
     element.dispatchEvent(new Event('change')); // selectChoice appelée implicitement
-    expect(component.tools.activeTool.parameters[1].chosenOption).toBe('B');
+    expect(component['tools'].activeTool.parameters[1].chosenOption).toBe('B');
   });
 
   // TESTS disableShortcuts
 
   it('#disableShortcuts devrait assigner vrai à focusOnInput', () => {
-    component.shortcuts.focusOnInput = false;
+    component['shortcuts'].focusOnInput = false;
     component.disableShortcuts();
-    expect(component.shortcuts.focusOnInput).toBe(true);
+    expect(component['shortcuts'].focusOnInput).toBe(true);
   });
 
   // TESTS enableShortcuts
 
   it('#enableShortcuts devrait assigner faux à focusOnInput', () => {
-    component.shortcuts.focusOnInput = true;
+    component['shortcuts'].focusOnInput = true;
     component.enableShortcuts();
-    expect(component.shortcuts.focusOnInput).toBe(false);
+    expect(component['shortcuts'].focusOnInput).toBe(false);
   });
 
   // TESTS warningNewDrawing
 
   it('#warningNewDrawing devrait appeler disableShortcuts', () => {
-    spyOn(component.dialog, 'open');
+    spyOn(component['dialog'], 'open');
     spyOn(component, 'disableShortcuts');
     component.warningNewDrawing();
     expect(component.disableShortcuts).toHaveBeenCalled();
@@ -217,9 +217,9 @@ describe('ToolbarComponent', () => {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
-    spyOn(component.dialog, 'open');
+    spyOn(component['dialog'], 'open');
     component.warningNewDrawing();
-    expect(component.dialog.open).toHaveBeenCalledWith(NewDrawingWarningComponent, dialogConfig);
+    expect(component['dialog'].open).toHaveBeenCalledWith(NewDrawingWarningComponent, dialogConfig);
   });
 
   // TESTS selectColor
@@ -232,23 +232,23 @@ describe('ToolbarComponent', () => {
 
   it('#selectColor devrait assignee portee à Portee.Principale si le paramètre de la fonction contient principale', () => {
     component.selectColor('primary');
-    expect(component.colorPickerPopup.scope).toEqual(component.primaryScope);
+    expect(component['colorPickerPopup'].scope).toEqual(Scope.Primary);
   });
 
   it('#selectColor devrait assignee portee à Portee.Secondaire si le paramètre de la fonction contient secondaire', () => {
     component.selectColor('secondary');
-    expect(component.colorPickerPopup.scope).toEqual(component.secondaryScope);
+    expect(component['colorPickerPopup'].scope).toEqual(Scope.Secondary);
   });
 
   it('#selectColor devrait assignee portee à Portee.fond si le paramètre de la fonction contient fond', () => {
     component.selectColor('background');
-    expect(component.colorPickerPopup.scope).toEqual(Scope.BackgroundToolBar);
+    expect(component['colorPickerPopup'].scope).toEqual(Scope.BackgroundToolBar);
   });
 
   // TESTS openSavePopup
 
   it('#openSavePopup devrait appeler disableShortcuts', () => {
-    spyOn(component.dialog, 'open').and.returnValue(injector.get(MatDialogRef));
+    spyOn(component['dialog'], 'open').and.returnValue(injector.get(MatDialogRef));
     spyOn(component, 'disableShortcuts');
     component.openSavePopup();
     expect(component.disableShortcuts).toHaveBeenCalled();
@@ -259,15 +259,15 @@ describe('ToolbarComponent', () => {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
-    spyOn(component.dialog, 'open').and.returnValue(injector.get(MatDialogRef));
+    spyOn(component['dialog'], 'open').and.returnValue(injector.get(MatDialogRef));
     component.openSavePopup();
-    expect(component.dialog.open).toHaveBeenCalledWith(SavePopupComponent, dialogConfig);
+    expect(component['dialog'].open).toHaveBeenCalledWith(SavePopupComponent, dialogConfig);
   });
 
   // TESTS openGallery
 
   it('#openGallery devrait appeler disableShortcuts', () => {
-    spyOn(component.dialog, 'open').and.returnValue(injector.get(MatDialogRef));
+    spyOn(component['dialog'], 'open').and.returnValue(injector.get(MatDialogRef));
     spyOn(component, 'disableShortcuts');
     component.openGallery();
     expect(component.disableShortcuts).toHaveBeenCalled();
@@ -278,15 +278,15 @@ describe('ToolbarComponent', () => {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '80%';
-    spyOn(component.dialog, 'open').and.returnValue(injector.get(MatDialogRef));
+    spyOn(component['dialog'], 'open').and.returnValue(injector.get(MatDialogRef));
     component.openGallery();
-    expect(component.dialog.open).toHaveBeenCalledWith(GalleryComponent, dialogConfig);
+    expect(component['dialog'].open).toHaveBeenCalledWith(GalleryComponent, dialogConfig);
   });
 
   // TESTS openExportWindow
 
   it('#openExportWindow devrait appeler disableShortcuts', () => {
-    spyOn(component.dialog, 'open').and.returnValue(injector.get(MatDialogRef));
+    spyOn(component['dialog'], 'open').and.returnValue(injector.get(MatDialogRef));
     spyOn(component, 'disableShortcuts');
     component.openExportWindow();
     expect(component.disableShortcuts).toHaveBeenCalled();
@@ -297,15 +297,15 @@ describe('ToolbarComponent', () => {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
-    spyOn(component.dialog, 'open').and.returnValue(injector.get(MatDialogRef));
+    spyOn(component['dialog'], 'open').and.returnValue(injector.get(MatDialogRef));
     component.openExportWindow();
-    expect(component.dialog.open).toHaveBeenCalledWith(ExportWindowComponent, dialogConfig);
+    expect(component['dialog'].open).toHaveBeenCalledWith(ExportWindowComponent, dialogConfig);
   });
 
   // TESTS openGridWindow
 
   it('#openGridWindow devrait appeler disableShortcuts', () => {
-    spyOn(component.dialog, 'open');
+    spyOn(component['dialog'], 'open');
     spyOn(component, 'disableShortcuts');
     component.openGridWindow();
     expect(component.disableShortcuts).toHaveBeenCalled();
@@ -316,33 +316,33 @@ describe('ToolbarComponent', () => {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '50%';
-    spyOn(component.dialog, 'open');
+    spyOn(component['dialog'], 'open');
     component.openGridWindow();
-    expect(component.dialog.open).toHaveBeenCalledWith(GridOptionsComponent, dialogConfig);
+    expect(component['dialog'].open).toHaveBeenCalledWith(GridOptionsComponent, dialogConfig);
   });
 
   // TESTS selectPreviousPrimaryColor
 
   it('#selectPreviousPrimaryColor devrait assigner sa couleur en paramètre à couleurPrincipale', () => {
-    component.colorParameter.primaryColor.RGBAString = 'rgba(0, 0, 0, ';
+    component['colorParameter'].primaryColor.RGBAString = 'rgba(0, 0, 0, ';
     const test: Color = {
       RGBAString : 'rgba(1, 1, 1, 1',
       RGBA: [1, 1, 1, 1]
     };
     component.selectPreviousPrimaryColor(test);
-    expect(component.colorParameter.primaryColor).toEqual(test);
+    expect(component['colorParameter'].primaryColor).toEqual(test);
   });
 
   // TESTS selectPreviousSecondaryColor
 
   it('#selectPreviousSecondaryColor devrait assigner sa couleur en paramètre à couleurSecondaire', () => {
-    component.colorParameter.secondaryColor.RGBAString = 'rgba(0, 0, 0, ';
+    component['colorParameter'].secondaryColor.RGBAString = 'rgba(0, 0, 0, ';
     const test: Color = {
       RGBAString : 'rgba(1, 1, 1, 1',
       RGBA: [1, 1, 1, 1]
     };
     component.selectPreviousSecondaryColor(test, new MouseEvent ('click'));
-    expect(component.colorParameter.secondaryColor).toEqual(test);
+    expect(component['colorParameter'].secondaryColor).toEqual(test);
   });
 
   it("#selectPreviousSecondaryColor devrait s'assurer que preventDefault est appelé", () => {
@@ -363,7 +363,7 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="primary-opacity"]')).nativeElement;
     element.value = 'test';
     element.dispatchEvent(new Event('input')); // applyPrimaryOpacity appelée implicitement
-    expect(component.colorParameter.primaryColor.RGBA[3]).toBe(0.5);
+    expect(component['colorParameter'].primaryColor.RGBA[3]).toBe(0.5);
   });
 
   it("#applyPrimaryOpacity devrait changer l'opacité si l'évènement "
@@ -371,7 +371,7 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="primary-opacity"]')).nativeElement;
     element.value = '0.1';
     element.dispatchEvent(new Event('input')); // applyPrimaryOpacity appelée implicitement
-    expect(component.colorParameter.primaryColor.RGBA[3]).toBe(0.1);
+    expect(component['colorParameter'].primaryColor.RGBA[3]).toBe(0.1);
   });
 
   it("#applyPrimaryOpacity devrait changer l'opacité à 0 si la valeur "
@@ -379,14 +379,14 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="primary-opacity"]')).nativeElement;
     element.value = '-0.1';
     element.dispatchEvent(new Event('input')); // applyPrimaryOpacity appelée implicitement
-    expect(component.colorParameter.primaryColor.RGBA[3]).toBe(0);
+    expect(component['colorParameter'].primaryColor.RGBA[3]).toBe(0);
   });
 
   it('#applyPrimaryOpacity devrait changer l\'opacité à 1 si la valeur qui lui est donnée est supérieure à 1', () => {
     const element = fixture.debugElement.query(By.css('input[name="primary-opacity"]')).nativeElement;
     element.value = '1.1';
     element.dispatchEvent(new Event('input')); // applyPrimaryOpacity appelée implicitement
-    expect(component.colorParameter.primaryColor.RGBA[3]).toBe(1);
+    expect(component['colorParameter'].primaryColor.RGBA[3]).toBe(1);
   });
 
   it('#applyPrimaryOpacity devrait changer l\'opacité d\'affichage '
@@ -394,7 +394,7 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="primary-opacity"]')).nativeElement;
     element.value = '0.75';
     element.dispatchEvent(new Event('input')); // applyPrimaryOpacity appelée implicitement
-    expect(component.colorParameter.primaryOpacityDisplayed).toBe(75);
+    expect(component['colorParameter'].primaryOpacityDisplayed).toBe(75);
   });
 
   // TESTS applySecondaryOpacity
@@ -404,7 +404,7 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="secondary-opacity"]')).nativeElement;
     element.value = 'test';
     element.dispatchEvent(new Event('input')); // applySecondaryOpacity appelée implicitement
-    expect(component.colorParameter.secondaryColor.RGBA[3]).toBe(0.5);
+    expect(component['colorParameter'].secondaryColor.RGBA[3]).toBe(0.5);
   });
 
   it("#applySecondaryOpacity devrait changer l'opacité si l'évènement "
@@ -412,7 +412,7 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="secondary-opacity"]')).nativeElement;
     element.value = '0.1';
     element.dispatchEvent(new Event('input')); // applySecondaryOpacity appelée implicitement
-    expect(component.colorParameter.secondaryColor.RGBA[3]).toBe(0.1);
+    expect(component['colorParameter'].secondaryColor.RGBA[3]).toBe(0.1);
   });
 
   it("#applySecondaryOpacity devrait changer l'opacité à 0 si la valeur "
@@ -420,7 +420,7 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="secondary-opacity"]')).nativeElement;
     element.value = '-0.1';
     element.dispatchEvent(new Event('input')); // applySecondaryOpacity appelée implicitement
-    expect(component.colorParameter.secondaryColor.RGBA[3]).toBe(0);
+    expect(component['colorParameter'].secondaryColor.RGBA[3]).toBe(0);
   });
 
   it("#applySecondaryOpacity devrait changer l'opacité à 1 si la valeur "
@@ -428,7 +428,7 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="secondary-opacity"]')).nativeElement;
     element.value = '1.1';
     element.dispatchEvent(new Event('input')); // applySecondaryOpacity appelée implicitement
-    expect(component.colorParameter.secondaryColor.RGBA[3]).toBe(1);
+    expect(component['colorParameter'].secondaryColor.RGBA[3]).toBe(1);
   });
 
   it('#applySecondaryOpacity devrait changer l\'opacité d\'affichage '
@@ -436,6 +436,6 @@ describe('ToolbarComponent', () => {
     const element = fixture.debugElement.query(By.css('input[name="secondary-opacity"]')).nativeElement;
     element.value = '0.75';
     element.dispatchEvent(new Event('input')); // applySecondaryOpacity appelée implicitement
-    expect(component.colorParameter.secondaryOpacityDisplayed).toBe(75);
+    expect(component['colorParameter'].secondaryOpacityDisplayed).toBe(75);
   });
 });

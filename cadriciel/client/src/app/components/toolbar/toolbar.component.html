@@ -53,13 +53,15 @@
 
         </div>
         <div class="redo-undo">
-            <a *ngIf="commands.executedCommands.length > 0; else undoNotAvailable"
-                    mat-stroked-button (click)="commands.cancelCommand()">Annuler</a>
+            <ng-template [ngIf]="commands.hasExecutedCommands()" [ngIfElse]="undoNotAvailable">
+                <a mat-stroked-button (click)="commands.cancelCommand()">Annuler</a>
+            </ng-template>
             <ng-template #undoNotAvailable>
                 <a mat-stroked-button class="notavailable">Annuler</a>
             </ng-template>
-            <a *ngIf="commands.cancelledCommands.length > 0; else redoNotAvailable"
-                mat-stroked-button (click)="commands.redoCommand()">Refaire</a>
+            <ng-template [ngIf]="commands.hasCancelledCommands()" [ngIfElse]="redoNotAvailable">
+                <a mat-stroked-button (click)="commands.redoCommand()">Refaire</a>
+            </ng-template>
             <ng-template #redoNotAvailable>
                 <a mat-stroked-button class="notavailable">Refaire</a>
             </ng-template>

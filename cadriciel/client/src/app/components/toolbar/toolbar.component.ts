@@ -25,23 +25,18 @@ const PERCENTAGE = 100;
 
 export class ToolbarComponent implements OnDestroy {
 
-  primaryScope: number;
-  secondaryScope: number;
-  colorPickerPopup: ColorChoiceComponent;
-
+  private colorPickerPopup: ColorChoiceComponent;
   private newDrawingSubscription: Subscription;
 
-  constructor(public dialog: MatDialog,
-              public tools: ToolManagerService,
-              public shortcuts: ShortcutsManagerService,
-              public colorParameter: ColorParameterService,
-              public commands: CommandManagerService,
-              public drawingManager: DrawingManagerService
+  constructor(private dialog: MatDialog,
+              private tools: ToolManagerService,
+              private shortcuts: ShortcutsManagerService,
+              private colorParameter: ColorParameterService,
+              protected commands: CommandManagerService,
+              protected drawingManager: DrawingManagerService
              ) {
     this.newDrawingSubscription = shortcuts.newDrawingEmmiter.subscribe((isIgnored: boolean) => {
     if (!isIgnored) { this.warningNewDrawing(); }
-    this.primaryScope = Scope.Primary;
-    this.secondaryScope = Scope.Secondary;
     });
   }
 
