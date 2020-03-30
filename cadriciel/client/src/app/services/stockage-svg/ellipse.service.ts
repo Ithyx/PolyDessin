@@ -35,8 +35,8 @@ export class EllipseService extends BasicShapeService {
     } else {
       this.perimeter += '" x="' + (this.points[0].x - thickness / 2)
         + '" y="' + (this.points[0].y - thickness / 2);
-      this.perimeter += '" height="' + ((this.getHeight() === 0) ? thickness : (this.getHeight() + thickness))
-        + '" width="' + ((this.getWidth() === 0) ? thickness : (this.getWidth() + thickness)) + '"/>';
+      this.perimeter += '" height="' + (this.getHeight() + thickness)
+        + '" width="' + (this.getWidth() + thickness) + '"/>';
     }
   }
 }

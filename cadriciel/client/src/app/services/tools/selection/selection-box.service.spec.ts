@@ -95,9 +95,9 @@ describe('SelectionBoxService', () => {
     expect(service.selectionBox.thickness).toEqual(SELECTION_BOX_THICKNESS);
   });
 
-  it('#createSelectionBox devrait appeler la fonction drawRectangle', () => {
+  it('#createSelectionBox devrait appeler la fonction drawShape', () => {
     spyOn(service, 'createControlPointBox').and.callFake(() => { return; });
-    const test = spyOn(RectangleService.prototype, 'drawRectangle');
+    const test = spyOn(RectangleService.prototype, 'drawShape');
     service.createSelectionBox({x: 10, y: 10}, {x: 100, y: 100});
     expect(test).toHaveBeenCalled();
   });
@@ -179,7 +179,7 @@ describe('SelectionBoxService', () => {
 
   it('#createControlPointBox devrait intialiser chaque point de controlPointBox avec les mêmes attributs', () => {
     const testUpdateParameters = spyOn(RectangleService.prototype, 'updateParameters');
-    const testDrawRectangle = spyOn(RectangleService.prototype, 'drawRectangle');
+    const testdrawShape = spyOn(RectangleService.prototype, 'drawShape');
     service.createControlPointBox();
     for (const controlPoint of service.controlPointBox) {
       expect(controlPoint.isSelected).toBe(true);
@@ -188,7 +188,7 @@ describe('SelectionBoxService', () => {
       expect(controlPoint.primaryColor.RGBAString).toEqual('rgba(0, 0, 0, 1)');
       expect(controlPoint.secondaryColor.RGBAString).toEqual('rgba(0, 255, 0, 1)');
       expect(controlPoint.thickness).toEqual(4);
-      expect(testDrawRectangle).toHaveBeenCalled();
+      expect(testdrawShape).toHaveBeenCalled();
 
       expect(controlPoint.svgHtml).toEqual(service['sanitizer'].bypassSecurityTrustHtml(controlPoint.svg));
     }
@@ -220,8 +220,8 @@ describe('SelectionBoxService', () => {
     expect(service.selectionBox.translate).toEqual({x: 110, y: 110});
   });
 
-  it('#updatePosition devrait appeler la fonction drawRectangle pour selectionBox', () => {
-    const test = spyOn(service.selectionBox, 'drawRectangle');
+  it('#updatePosition devrait appeler la fonction drawShape pour selectionBox', () => {
+    const test = spyOn(service.selectionBox, 'drawShape');
     service.updatePosition(100, 100);
     expect(test).toHaveBeenCalled();
   });
@@ -243,9 +243,9 @@ describe('SelectionBoxService', () => {
     }
   });
 
-  it('#updatePosition devrait appeler la fonction drawRectangle pour chaque point de controlPointBox', () => {
+  it('#updatePosition devrait appeler la fonction drawShape pour chaque point de controlPointBox', () => {
     for (const controlPoint of service.controlPointBox) {
-      spyOn(controlPoint, 'drawRectangle');
+      spyOn(controlPoint, 'drawShape');
     }
     service.updatePosition(100, 100);
     for (const controlPoint of service.controlPointBox) {
@@ -272,9 +272,9 @@ describe('SelectionBoxService', () => {
     expect(service.selectionBox.translate).toEqual({x: 90, y: 90});
   });
 
-  it('#updatePositionMouse devrait appeler la fonction drawRectangle pour selectionBox', () => {
+  it('#updatePositionMouse devrait appeler la fonction drawShape pour selectionBox', () => {
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    const test = spyOn(service.selectionBox, 'drawRectangle');
+    const test = spyOn(service.selectionBox, 'drawShape');
     service.updatePositionMouse(click);
     expect(test).toHaveBeenCalled();
   });
@@ -298,10 +298,10 @@ describe('SelectionBoxService', () => {
     }
   });
 
-  it('#updatePositionMouse devrait appeler la fonction drawRectangle pour chaque point de controlPointBox', () => {
+  it('#updatePositionMouse devrait appeler la fonction drawShape pour chaque point de controlPointBox', () => {
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
     for (const controlPoint of service.controlPointBox) {
-      spyOn(controlPoint, 'drawRectangle');
+      spyOn(controlPoint, 'drawShape');
     }
     service.updatePositionMouse(click);
     for (const controlPoint of service.controlPointBox) {
