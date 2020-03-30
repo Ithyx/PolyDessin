@@ -117,19 +117,15 @@ export class ShortcutsManagerService {
     if (this.leftArrow) {
       translate.x = -SELECTION_MOVEMENT_PIXEL;
     }
-
     if (this.rightArrow) {
       translate.x = SELECTION_MOVEMENT_PIXEL;
     }
-
     if (this.upArrow) {
       translate.y = -SELECTION_MOVEMENT_PIXEL;
     }
-
     if (this.downArrow) {
       translate.y = SELECTION_MOVEMENT_PIXEL;
     }
-
     this.counter100ms++;
     if (this.counter100ms >= CONTINUOUS_MOVEMENT || this.counter100ms <= 1) {
       this.selection.updatePosition(translate.x , translate.y);

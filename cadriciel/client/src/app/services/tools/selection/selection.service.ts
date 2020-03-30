@@ -12,7 +12,6 @@ import { SelectionBoxService } from './selection-box.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
 
 const HALF_DRAW_ELEMENT = 0.5 ;
-const COLLISIONS_NEEDED = 4;
 const LEFT_CLICK = 0;
 const RIGHT_CLICK = 2;
 
@@ -73,21 +72,26 @@ export class SelectionService implements ToolInterface {
     } else {
       this.selectionRectangle.mouseMove(mouse);
       if (this.selectionRectangle.ongoingSelection) {
+        console.log('RIGHT');
         if (mouse.buttons === RIGHT_CLICK) {
             // Éviter de créer une boite de sélection si on effectue un simple clic
-            if (this.selectionRectangle.rectangleInverted.getWidth() !== 0 || this.selectionRectangle.rectangleInverted.getHeight() !== 0) {
+            //if (this.selectionRectangle.rectangleInverted.getWidth() !== 0 || this.selectionRectangle.rectangleInverted.getHeight() !== 0) {
+              console.log('RIGHT2');
               this.selectionBox.deleteSelectionBox();
               this.isInRectangleSelection(this.selectionRectangle.rectangleInverted);
               this.createBoundingBox();
-            }
+            //}
         } else if (mouse.button === LEFT_CLICK ) {
+            console.log('LEFT');
             // Éviter de créer une boite de sélection si on effectue un simple clic
-            if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
+            //if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
+              console.log('LEFT2');
               this.deleteBoundingBox();
               this.isInRectangleSelection(this.selectionRectangle.rectangle);
               this.createBoundingBox();
-            }
+            //}
         }
+        console.log('NONE');
       }
     }
   }
@@ -173,6 +177,7 @@ export class SelectionService implements ToolInterface {
     this.findPointMinAndMax(rectangleSelection);
 
     for (const element of this.svgStockage.getCompleteSVG()) {
+
       this.findPointMinAndMax(element);
 
       if (this.selectionRectangle.rectangle) {
@@ -203,21 +208,7 @@ export class SelectionService implements ToolInterface {
     // TOP RIGHT corner of element with BOTTOM LEFT corner of selection
     const collision4 =  element.pointMax.x >= rectangle.pointMin.x && element.pointMin.y <= rectangle.pointMax.y;
 
-    let nbCollisions = 0;
-
-    if (collision1) {
-      nbCollisions++;
-    }
-    if (collision2) {
-      nbCollisions++;
-    }
-    if (collision3) {
-      nbCollisions++;
-    }
-    if (collision4) {
-      nbCollisions++;
-    }
-    return (nbCollisions === COLLISIONS_NEEDED);
+    return (collision1 && collision2 && collision3 && collision4);
   }
 
   findPointMinAndMax(element: DrawElement): void {

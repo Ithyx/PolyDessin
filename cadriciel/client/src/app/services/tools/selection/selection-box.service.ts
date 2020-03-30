@@ -61,10 +61,10 @@ export class SelectionBoxService {
     this.controlPointBox[2].points[1].y = ((this.selectionBox.points[0].y + this.selectionBox.points[1].y) / 2) + 4;
     // RIGHT
     this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[0].x = (this.selectionBox.points[1].x - 4);
-    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[0].y = ((this.selectionBox.points[0].y 
+    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[0].y = ((this.selectionBox.points[0].y
                                                                   + this.selectionBox.points[1].y) / 2) - 4;
     this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[1].x = (this.selectionBox.points[1].x + 4);
-    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[1].y = ((this.selectionBox.points[0].y 
+    this.controlPointBox[NUMBER_OF_CONTROL_POINT - 1].points[1].y = ((this.selectionBox.points[0].y
                                                                   + this.selectionBox.points[1].y) / 2) + 4;
 
     for (const controlPoint of this.controlPointBox) {
