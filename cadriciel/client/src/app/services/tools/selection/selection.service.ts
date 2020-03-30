@@ -75,21 +75,21 @@ export class SelectionService implements ToolInterface {
         console.log('RIGHT');
         if (mouse.buttons === RIGHT_CLICK) {
             // Éviter de créer une boite de sélection si on effectue un simple clic
-            if (this.selectionRectangle.rectangleInverted.getWidth() !== 0 || this.selectionRectangle.rectangleInverted.getHeight() !== 0) {
+            //if (this.selectionRectangle.rectangleInverted.getWidth() !== 0 || this.selectionRectangle.rectangleInverted.getHeight() !== 0) {
               console.log('RIGHT2');
               this.selectionBox.deleteSelectionBox();
               this.isInRectangleSelection(this.selectionRectangle.rectangleInverted);
               this.createBoundingBox();
-            }
+            //}
         } else if (mouse.button === LEFT_CLICK ) {
             console.log('LEFT');
             // Éviter de créer une boite de sélection si on effectue un simple clic
-            if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
+            //if (this.selectionRectangle.rectangle.getWidth() !== 0 || this.selectionRectangle.rectangle.getHeight() !== 0) {
               console.log('LEFT2');
               this.deleteBoundingBox();
               this.isInRectangleSelection(this.selectionRectangle.rectangle);
               this.createBoundingBox();
-            }
+            //}
         }
         console.log('NONE');
       }

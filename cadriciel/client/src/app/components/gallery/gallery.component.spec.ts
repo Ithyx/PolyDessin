@@ -7,7 +7,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
-import { Drawing } from '../../../../../common/communication/DrawingInterface';
+import { Drawing } from '../../../../../common/communication/drawing-interface';
 import { GalleryLoadWarningComponent } from '../gallery-load-warning/gallery-load-warning.component';
 import { GalleryElementComponent } from './gallery-element/gallery-element.component';
 import { GalleryComponent, Status } from './gallery.component';
