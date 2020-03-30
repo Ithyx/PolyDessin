@@ -81,18 +81,18 @@ export class DatabaseService {
     newElement.points = element.points;
     newElement.isSelected = element.isSelected;
     newElement.erasingEvidence = element.erasingEvidence;
-    if (element.primaryColor) { newElement.primaryColor = element.primaryColor; }
-    if (element.secondaryColor) { newElement.secondaryColor = element.secondaryColor; }
+    if (element.primaryColor !== undefined) { newElement.primaryColor = element.primaryColor; }
+    if (element.secondaryColor !== undefined) { newElement.secondaryColor = element.secondaryColor; }
     newElement.erasingColor = element.erasingColor;
-    if (element.thickness) { newElement.thickness = element.thickness; }
-    if (element.thicknessLine) { newElement.thicknessLine = element.thicknessLine; }
-    if (element.thicknessPoint) { newElement.thicknessPoint = element.thicknessPoint; }
-    if (element.texture) { newElement.texture = element.texture; }
-    if (element.perimeter) { newElement.perimeter = element.perimeter; }
+    if (element.thickness !== undefined) { newElement.thickness = element.thickness; }
+    if (element.thicknessLine !== undefined) { newElement.thicknessLine = element.thicknessLine; }
+    if (element.thicknessPoint !== undefined) { newElement.thicknessPoint = element.thicknessPoint; }
+    if (element.texture !== undefined) { newElement.texture = element.texture; }
+    if (element.perimeter !== undefined) { newElement.perimeter = element.perimeter; }
     if (element.isAPoint !== undefined) { newElement.isAPoint = element.isAPoint; }
     if (element.isDotted !== undefined) { newElement.isDotted = element.isDotted; }
-    if (element.chosenOption) { newElement.chosenOption = element.chosenOption; }
-    if (element.isAPolygon) { newElement.isAPolygon = element.isAPolygon; }
+    if (element.chosenOption !== undefined) { newElement.chosenOption = element.chosenOption; }
+    if (element.isAPolygon !== undefined) { newElement.isAPolygon = element.isAPolygon; }
     newElement.pointMin = element.pointMin;
     newElement.pointMax = element.pointMax;
     newElement.translate = element.translate;
