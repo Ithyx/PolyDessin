@@ -15,16 +15,16 @@ export const POINTS_PER_EMISSION = 20;
 @Injectable({
   providedIn: 'root'
 })
-export class DrawSprayService implements ToolInterface {
+export class SprayToolService implements ToolInterface {
 
   trace: TraceSprayService;
   mousePosition: Point = {x: 0, y: 0};
   intervalSubscription: Subscription;
 
-  constructor(public stockageSVG: SVGStockageService,
-              public tools: ToolManagerService,
-              public colorParameter: ColorParameterService,
-              public commands: CommandManagerService
+  constructor(private stockageSVG: SVGStockageService,
+              private tools: ToolManagerService,
+              private colorParameter: ColorParameterService,
+              private commands: CommandManagerService
              ) {
               this.resetTrace();
             }

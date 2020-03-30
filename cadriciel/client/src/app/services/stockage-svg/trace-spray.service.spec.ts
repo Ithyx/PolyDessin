@@ -1,18 +1,19 @@
 import { TestBed } from '@angular/core/testing';
-import { DrawSprayService } from '../tools/draw-spray.service';
+import { SprayToolService } from '../tools/spray-tool.service';
 import { MIN_DIAMETER, TraceSprayService } from './trace-spray.service';
 
 // tslint:disable: no-magic-numbers
+// tslint:disable: no-string-literal
 
 describe('TraceSprayService', () => {
   let element: TraceSprayService;
-  let service: DrawSprayService;
+  let service: SprayToolService;
   beforeEach(() => TestBed.configureTestingModule({}));
-  beforeEach(() => service = TestBed.get(DrawSprayService));
+  beforeEach(() => service = TestBed.get(SprayToolService));
 
   beforeEach(() => {
     element = new TraceSprayService();
-    element.updateParameters(service.tools.toolList[0]);
+    element.updateParameters(service['tools'].toolList[0]);
     element.primaryColor = {
       RGBAString: 'rgba(0, 0, 0, 1)',
       RGBA: [0, 0, 0, 1]
@@ -151,15 +152,15 @@ describe('TraceSprayService', () => {
   // TESTS updateParameters
 
   it('#updateParameters devrait assigner la valeur en paramètre à diameter', () => {
-    service.tools.toolList[2].parameters[0].value = 10;
-    const testTool = service.tools.toolList[2];
+    service['tools'].toolList[2].parameters[0].value = 10;
+    const testTool = service['tools'].toolList[2];
     element.updateParameters(testTool);
-    expect(element.diameter).toEqual(service.tools.toolList[2].parameters[0].value);
+    expect(element.diameter).toEqual(service['tools'].toolList[2].parameters[0].value);
   });
 
   it('#updateParameters devrait assigner 1 à diameter', () => {
-    service.tools.toolList[2].parameters[0].value = 0;
-    const testTool = service.tools.toolList[2];
+    service['tools'].toolList[2].parameters[0].value = 0;
+    const testTool = service['tools'].toolList[2];
     element.updateParameters(testTool);
     expect(element.diameter).toEqual(MIN_DIAMETER);
   });

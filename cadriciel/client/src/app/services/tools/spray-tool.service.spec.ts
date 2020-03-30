@@ -1,28 +1,28 @@
 import { TestBed } from '@angular/core/testing';
 
-// import { Subscription } from 'rxjs/internal/Subscription';
 import { Observable, Subscription } from 'rxjs';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { TraceSprayService } from '../stockage-svg/trace-spray.service';
-import { DrawSprayService } from './draw-spray.service';
+import { SprayToolService } from './spray-tool.service';
 
 // tslint:disable:no-magic-numbers
+// tslint:disable: no-string-literal
 
 describe('DrawSprayService', () => {
-  let service: DrawSprayService;
+  let service: SprayToolService;
   let stockageService: SVGStockageService;
   let element: TraceSprayService;
   beforeEach(() => TestBed.configureTestingModule({}));
-  beforeEach(() => service = TestBed.get(DrawSprayService));
+  beforeEach(() => service = TestBed.get(SprayToolService));
   beforeEach(() => stockageService = TestBed.get(SVGStockageService));
 
   beforeEach(() => {
-    service.commands.drawingInProgress = true;
-    service.tools.activeTool = service.tools.toolList[2];
-    service.tools.activeTool.parameters[0].value = 5;
+    service['commands'].drawingInProgress = true;
+    service['tools'].activeTool = service['tools'].toolList[2];
+    service['tools'].activeTool.parameters[0].value = 5;
 
     element = new TraceSprayService();
-    element.updateParameters(service.tools.toolList[2]);
+    element.updateParameters(service['tools'].toolList[2]);
     element.primaryColor = {
       RGBAString: 'rgba(0, 0, 0, 1)',
       RGBA: [0, 0, 0, 1]
@@ -34,7 +34,7 @@ describe('DrawSprayService', () => {
   });
 
   it('should be created', () => {
-    const testService: DrawSprayService = TestBed.get(DrawSprayService);
+    const testService: SprayToolService = TestBed.get(SprayToolService);
     expect(testService).toBeTruthy();
   });
 
@@ -48,7 +48,7 @@ describe('DrawSprayService', () => {
 
   it('#onMouseMove ne devrait pas ajouter la position de la souris au tableau de points', () => {
     service.mousePosition = {x: 10, y: 10};
-    service.commands.drawingInProgress = false;
+    service['commands'].drawingInProgress = false;
     service.onMouseMove(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
     expect(service.mousePosition).toEqual({x: 10, y: 10});
   });
@@ -62,10 +62,10 @@ describe('DrawSprayService', () => {
   });
 
   it('#onMousePress devrait mettre drawingInProgress vrai même si frequence est 0', () => {
-    service.tools.activeTool.parameters[1].value = 0;
-    service.commands.drawingInProgress = false;
+    service['tools'].activeTool.parameters[1].value = 0;
+    service['commands'].drawingInProgress = false;
     service.onMousePress(new MouseEvent('onClick', { clientX: 100, clientY: 100 }));
-    expect(service.commands.drawingInProgress).toBe(true);
+    expect(service['commands'].drawingInProgress).toBe(true);
   });
 
   it('#onMousePress devrait assigner la position en paramètre à mousePosition', () => {
@@ -88,7 +88,7 @@ describe('DrawSprayService', () => {
   });
 
   it('#onMousePress devrait appeler la fonction interval avec un paramètre par rapport à la fréquence', () => {
-    service.tools.activeTool.parameters[1].value = 10;
+    service['tools'].activeTool.parameters[1].value = 10;
     const test = spyOn(Observable.prototype, 'subscribe');
     service.onMousePress(new MouseEvent('onClick', { clientX: 100, clientY: 100 }));
     expect(test).toHaveBeenCalled();
@@ -97,24 +97,24 @@ describe('DrawSprayService', () => {
   // TESTS onMouseRelease
 
   it('#onMouseRelease ne devrait pas appeler execute si drawingInProgress est faux', () => {
-    service.commands.drawingInProgress = false;
-    spyOn(service.commands, 'execute');
+    service['commands'].drawingInProgress = false;
+    spyOn(service['commands'], 'execute');
     service.onMouseRelease();
-    expect(service.commands.execute).not.toHaveBeenCalled();
+    expect(service['commands'].execute).not.toHaveBeenCalled();
   });
 
   it('#onMouseRelease ne devrait pas appeler execute si points n\'est pas vide', () => {
     service.trace.points = [];
-    spyOn(service.commands, 'execute');
+    spyOn(service['commands'], 'execute');
     service.onMouseRelease();
-    expect(service.commands.execute).not.toHaveBeenCalled();
+    expect(service['commands'].execute).not.toHaveBeenCalled();
   });
 
   it('#onMouseRelease devrait appeler execute si les conditions sont satisfaites', () => {
     service.trace.points.push({x: 10, y: 10});
-    spyOn(service.commands, 'execute');
+    spyOn(service['commands'], 'execute');
     service.onMouseRelease();
-    expect(service.commands.execute).toHaveBeenCalled();
+    expect(service['commands'].execute).toHaveBeenCalled();
   });
 
   it('#onMouseRelease devrait appeler resetTrace', () => {
@@ -125,7 +125,7 @@ describe('DrawSprayService', () => {
 
   it('#onMouseRelease devrait mettre drawingInProgress false', () => {
     service.onMouseRelease();
-    expect(service.commands.drawingInProgress).toBe(false);
+    expect(service['commands'].drawingInProgress).toBe(false);
   });
 
   it('#onMouseRelease devrait appeler unsubscribe', () => {
@@ -145,13 +145,13 @@ describe('DrawSprayService', () => {
   it('#resetTrace devrait attribuer la couleur principale dans colorParameter à celle trace', () => {
     service.trace.primaryColor.RGBAString = 'rgba(0, 1, 1, 0)';
     service.resetTrace();
-    expect(service.trace.primaryColor).toEqual(service.colorParameter.primaryColor);
+    expect(service.trace.primaryColor).toEqual(service['colorParameter'].primaryColor);
   });
 
   it('#resetTrace devrait appeler la fonction updateParameters', () => {
     const test = spyOn(TraceSprayService.prototype, 'updateParameters');
     service.resetTrace();
-    expect(test).toHaveBeenCalledWith(service.tools.activeTool);
+    expect(test).toHaveBeenCalledWith(service['tools'].activeTool);
   });
 
   // TESTS onInterval
@@ -163,8 +163,8 @@ describe('DrawSprayService', () => {
   });
 
   it('#onInterval devrait appeler la fonction setOngoingSVG', () => {
-    spyOn(service.stockageSVG, 'setOngoingSVG');
+    spyOn(service['stockageSVG'], 'setOngoingSVG');
     service.onInterval();
-    expect(service.stockageSVG.setOngoingSVG).toHaveBeenCalledWith(service.trace);
+    expect(service['stockageSVG'].setOngoingSVG).toHaveBeenCalledWith(service.trace);
   });
 });
