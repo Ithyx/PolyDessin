@@ -10,6 +10,9 @@ import { SelectionService } from './selection.service';
 // tslint:disable: no-magic-numbers
 // tslint:disable: max-file-line-count
 
+const LEFT_CLICK = 0;
+const RIGHT_CLICK = 2;
+
 describe('SelectionService', () => {
   let service: SelectionService;
 
@@ -140,6 +143,84 @@ describe('SelectionService', () => {
   });
 
   // TESTS onMouseMove
+
+  it('#onMouseMove ne devrait pas appeler updatePositionMouse il n\'y a pas de click sur la boite de selection', () => {
+    const spy = spyOn(service, 'updatePositionMouse');
+    service.onMouseMove(new MouseEvent('mousemove'));
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('#onMouseMove devrait appeler updatePositionMouse si il y a un click dans ou sur la boite de slection', () => {
+    service.clickInSelectionBox = true;
+    const spy = spyOn(service, 'updatePositionMouse');
+    service.onMouseMove(new MouseEvent('mousemove'));
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#onMouseMove devrait appeler selectionRectangle.mouseMove si il il n\'y a pas de click sur la boite de selection', () => {
+    const spy = spyOn(service.selectionRectangle, 'mouseMove');
+    const mouse = new MouseEvent('mousemove');
+    service.onMouseMove(mouse);
+    expect(spy).toHaveBeenCalledWith(mouse);
+  });
+
+  it('#onMouseMove ne devrait rien faire  si rectangleInverted a une dimension nulle lors d\'un clic droit', () => {
+    const spy1 = spyOn(service.selectionBox, 'deleteSelectionBox');
+    const spy2 = spyOn(service, 'isInRectangleSelection');
+    const spy3 = spyOn(service, 'createBoundingBox');
+    const mouse = new MouseEvent('mousemove', {button: RIGHT_CLICK});
+    service.onMouseMove(mouse);
+    expect(spy1).not.toHaveBeenCalled();
+    expect(spy2).not.toHaveBeenCalled();
+    expect(spy3).not.toHaveBeenCalled();
+  });
+
+  it('#onMouseMove devrait appeler selectionBox.deleteSelectionBox si rectangleInverted a des dimensions non nuls' +
+    ' lors d\'un clic droit', () => {
+    const spy1 = spyOn(service.selectionBox, 'deleteSelectionBox');
+    const mouse = new MouseEvent('mousemove', {buttons: RIGHT_CLICK});
+    service.selectionRectangle.ongoingSelection = true;
+    service.selectionRectangle.rectangleInverted = new RectangleService();
+    service.selectionRectangle.rectangleInverted.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangleInverted.points[1] = {x: 100, y: 300};
+    service.onMouseMove(mouse);
+    expect(spy1).toHaveBeenCalled();
+  });
+
+  it('#onMouseMove devrait appeler isInRectangleSelection si rectangleInverted a des dimensions non nuls' +
+    ' lors d\'un clic droit', () => {
+    const spy1 = spyOn(service, 'isInRectangleSelection');
+    const mouse = new MouseEvent('mousemove', {buttons: RIGHT_CLICK});
+    service.selectionRectangle.ongoingSelection = true;
+    service.selectionRectangle.rectangleInverted = new RectangleService();
+    service.selectionRectangle.rectangleInverted.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangleInverted.points[1] = {x: 100, y: 300};
+    service.onMouseMove(mouse);
+    expect(spy1).toHaveBeenCalled();
+  });
+
+  it('#onMouseMove devrait appeler createBoundingBox si rectangleInverted a des dimensions non nuls' +
+    ' lors d\'un clic droit', () => {
+    const spy1 = spyOn(service, 'createBoundingBox');
+    const mouse = new MouseEvent('mousemove', {buttons: RIGHT_CLICK});
+    service.selectionRectangle.ongoingSelection = true;
+    service.selectionRectangle.rectangleInverted = new RectangleService();
+    service.selectionRectangle.rectangleInverted.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangleInverted.points[1] = {x: 100, y: 300};
+    service.onMouseMove(mouse);
+    expect(spy1).toHaveBeenCalled();
+  });
+
+  it('#onMouseMove ne devrait rien faire  si rectangle a une dimension nulle lors d\'un clic gauche', () => {
+    const spy1 = spyOn(service, 'deleteBoundingBox');
+    const spy2 = spyOn(service, 'isInRectangleSelection');
+    const spy3 = spyOn(service, 'createBoundingBox');
+    const mouse = new MouseEvent('mousemove', {buttons: LEFT_CLICK});
+    service.onMouseMove(mouse);
+    expect(spy1).not.toHaveBeenCalled();
+    expect(spy2).not.toHaveBeenCalled();
+    expect(spy3).not.toHaveBeenCalled();
+  });
 
   // TESTS onMousePress
 
