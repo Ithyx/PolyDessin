@@ -5,21 +5,25 @@ import { ColorManagerService } from 'src/app/services/color/color-manager.servic
 import { A } from 'src/app/services/stockage-svg/draw-element';
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
 
-const FIRT_GRADIENT_POSITION    = 0;
-const SECOND_GRADIENT_POSITION  = 0.17;
-const THIRD_GRADIENT_POSITION   = 0.34;
-const FOURTH_GRADIENT_POSITION  = 0.51;
-const FIFTH_GRADIENT_POSITION   = 0.68;
-const SIXTH_GRADIENT_POSITION   = 0.85;
-const SEVENT_GRADIENT_POSITION  = 1;
+enum GRADIENT_POSITION {
+  FIRST = 0,
+  SECOND = 0.17,
+  THIRD = 0.34,
+  FOURTH = 0.51,
+  FIFTH = 0.68,
+  SIXTH = 0.85,
+  SEVENTH = 1
+}
 
-const FIRST_GRADIENT_POSITION_COLOR   = 'rgba(255, 0, 0, 1)';
-const SECOND_GRADIENT_POSITION_COLOR  = 'rgba(255, 255, 0, 1)';
-const THIRD_GRADIENT_POSITION_COLOR   = 'rgba(0, 255, 0, 1)';
-const FOURTH_GRADIENT_POSITION_COLOR  = 'rgba(0, 255, 255, 1)';
-const FIFTH_GRADIENT_POSITION_COLOR   = 'rgba(0, 0, 255, 1)';
-const SIXTH_GRADIENT_POSITION_COLOR   = 'rgba(255, 0, 255, 1)';
-const SEVENTH_GRADIENT_POSITION_COLOR = 'rgba(255, 0, 0, 1)';
+enum GRADIENT_POSITION_COLOR {
+  FIRST = 'rgba(255, 0, 0, 1)',
+  SECOND = 'rgba(255, 255, 0, 1)',
+  THIRD = 'rgba(0, 255, 0, 1)',
+  FOURTH = 'rgba(0, 255, 255, 1)',
+  FIFTH = 'rgba(0, 0, 255, 1)',
+  SIXTH = 'rgba(255, 0, 255, 1)',
+  SEVENTH = 'rgba(255, 0, 0, 1)'
+}
 
 const CONTEXT_2D_STROKE_STYLE = 'white';
 const CONTEXT_2D_LINE_WIDTH = 5;
@@ -61,13 +65,13 @@ export class ColorSliderComponent implements AfterViewInit, ToolInterface {
     this.context2D.clearRect(0, 0, width, height);
 
     const gradient = this.context2D.createLinearGradient(0, 0, 0, height);
-    gradient.addColorStop(FIRT_GRADIENT_POSITION  , FIRST_GRADIENT_POSITION_COLOR);
-    gradient.addColorStop(SECOND_GRADIENT_POSITION, SECOND_GRADIENT_POSITION_COLOR);
-    gradient.addColorStop(THIRD_GRADIENT_POSITION , THIRD_GRADIENT_POSITION_COLOR);
-    gradient.addColorStop(FOURTH_GRADIENT_POSITION, FOURTH_GRADIENT_POSITION_COLOR);
-    gradient.addColorStop(FIFTH_GRADIENT_POSITION , FIFTH_GRADIENT_POSITION_COLOR);
-    gradient.addColorStop(SIXTH_GRADIENT_POSITION , SIXTH_GRADIENT_POSITION_COLOR);
-    gradient.addColorStop(SEVENT_GRADIENT_POSITION, SEVENTH_GRADIENT_POSITION_COLOR);
+    gradient.addColorStop(GRADIENT_POSITION.FIRST, GRADIENT_POSITION_COLOR.FIRST);
+    gradient.addColorStop(GRADIENT_POSITION.SECOND, GRADIENT_POSITION_COLOR.SECOND);
+    gradient.addColorStop(GRADIENT_POSITION.THIRD, GRADIENT_POSITION_COLOR.THIRD);
+    gradient.addColorStop(GRADIENT_POSITION.FOURTH, GRADIENT_POSITION_COLOR.FOURTH);
+    gradient.addColorStop(GRADIENT_POSITION.FIFTH, GRADIENT_POSITION_COLOR.FIFTH);
+    gradient.addColorStop(GRADIENT_POSITION.SIXTH, GRADIENT_POSITION_COLOR.SIXTH);
+    gradient.addColorStop(GRADIENT_POSITION.SEVENTH, GRADIENT_POSITION_COLOR.SEVENTH);
 
     this.context2D.beginPath();
     this.context2D.rect(0, 0, width, height);

@@ -26,7 +26,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   @ViewChild('canvas', {static: false})
   private canvas: ElementRef<HTMLCanvasElement>;
 
-  constructor(public svgStockage: SVGStockageService,
+  constructor(protected svgStockage: SVGStockageService,
               private tools: ToolManagerService,
               protected drawingManager: DrawingManagerService,
               private selection: SelectionService,

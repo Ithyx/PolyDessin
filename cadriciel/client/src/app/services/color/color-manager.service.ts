@@ -22,9 +22,9 @@ export class ColorManagerService {
   color: Color;
   hue: string;
 
-  constructor(public colorParameter: ColorParameterService,
-              public commands: CommandManagerService,
-              public drawingManager: DrawingManagerService) {
+  constructor(private colorParameter: ColorParameterService,
+              protected commands: CommandManagerService,
+              private drawingManager: DrawingManagerService) {
     this.color = {
       RGBAString: 'rgba(0, 0, 0, 1)',
       RGBA: [0, 0, 0, 1]
