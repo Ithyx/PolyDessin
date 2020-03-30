@@ -8,13 +8,21 @@ import { Drawing } from '../../../../../../common/communication/drawing-interfac
   styleUrls: ['./gallery-element.component.scss']
 })
 export class GalleryElementComponent {
-  @Input() drawing: Drawing;
-  @Input() isSelected: boolean;
+  @Input() protected drawing: Drawing;
+  @Input() protected isSelected: boolean;
 
   constructor(protected sanitizer: DomSanitizer) {}
 
   sanatize(svg: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(svg);
+  }
+
+  getSelectionStatus(): string {
+    return this.isSelected ? 'selected' : 'element-container';
+  }
+
+  getTags(): string[] {
+    return (this.drawing.tags && this.drawing.tags.length !== 0) ? this.drawing.tags : ['aucune'];
   }
 
 }
