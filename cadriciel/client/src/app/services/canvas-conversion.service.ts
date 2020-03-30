@@ -8,7 +8,6 @@ import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { TraceBrushService } from './stockage-svg/trace-brush.service';
 import { TracePencilService } from './stockage-svg/trace-pencil.service';
 import { TraceSprayService } from './stockage-svg/trace-spray.service';
-import { TOOL_INDEX } from './tools/tool-manager.service';
 
 export const MAX_COLOR_VALUE = 255;
 export const COLOR_INCREASE_LINE = 2;
@@ -66,19 +65,14 @@ export class CanvasConversionService {
     this.isValid = true;
   }
 
-  reinterpretDraw(element: DrawElement): void {
-    switch (element.trueType) {
-      case TOOL_INDEX.PENCIL:
-        (element as TracePencilService).draw();
-    }
-  }
-
   updateDrawing(): void {
     this.isValid = false;
     this.drawing.elements = [];
     this.coloredElements = new Map<string, DrawElement>();
     const rgb: number[] = [0, 0, 0];
+    console.log(this.svgStockage.getCompleteSVG());
     for (let element of this.svgStockage.getCompleteSVG()) {
+      console.log(element);
       let increase = 1;
       if (element instanceof TraceSprayService) {
         increase = COLOR_INCREASE_SPRAY;
@@ -121,7 +115,7 @@ export class CanvasConversionService {
         tracePencil.draw();
         cloneElement.svgHtml = this.sanitize(tracePencil.svg);
       } else {
-        this.reinterpretDraw(element);
+        element.draw();
         cloneElement.svgHtml = this.sanitize(element.svg);
         if (element.secondaryColor) {
           element.secondaryColor = oldSecondary;
@@ -131,7 +125,7 @@ export class CanvasConversionService {
 
       // Remettre l'élement aux bonnes valeurs de couleur
       element.primaryColor = oldPrimary;
-      this.reinterpretDraw(element);
+      element.draw();
       this.coloredElements.set(color.RGBAString, element);
     }
     const timeout = window.setTimeout(() => {

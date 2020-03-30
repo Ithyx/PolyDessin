@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DrawingTool } from '../tools/tool-manager.service';
+import { DrawingTool, TOOL_INDEX } from '../tools/tool-manager.service';
 import { TraceService } from './trace.service';
 
 @Injectable({
@@ -7,6 +7,11 @@ import { TraceService } from './trace.service';
 })
 export class TraceBrushService extends TraceService {
   chosenOption: string;
+
+  constructor() {
+    super();
+    this.trueType = TOOL_INDEX.BRUSH;
+  }
 
   drawPath(): void {
     this.svg = '<path transform="translate(' + this.translate.x + ' ' + this.translate.y + ')" fill="none" '
