@@ -126,8 +126,8 @@ describe('ToolbarComponent', () => {
     spyOn(component, 'warningNewDrawing');
     component.ngOnDestroy();  // unsubscribe est appelée ici
 
-    const toucheEnfoncee = new KeyboardEvent('keypress', { key: 'o', ctrlKey: true});
-    component['shortcuts'].treatInput(toucheEnfoncee);
+    const keyPressed = new KeyboardEvent('keypress', { key: 'o', ctrlKey: true});
+    component['shortcuts'].treatInput(keyPressed);
 
     // on teste que warningNewDrawing n'est plus lié aux raccourcis
     expect(component.warningNewDrawing).not.toHaveBeenCalled();
@@ -346,14 +346,14 @@ describe('ToolbarComponent', () => {
   });
 
   it("#selectPreviousSecondaryColor devrait s'assurer que preventDefault est appelé", () => {
-    const evenement = new MouseEvent ('click');
-    spyOn(evenement, 'preventDefault');
+    const event = new MouseEvent ('click');
+    spyOn(event, 'preventDefault');
     const test: Color = {
       RGBAString : 'rgba(1, 1, 1, 1',
       RGBA: [1, 1, 1, 1]
     };
-    component.selectPreviousSecondaryColor(test, evenement);
-    expect(evenement.preventDefault).toHaveBeenCalled();
+    component.selectPreviousSecondaryColor(test, event);
+    expect(event.preventDefault).toHaveBeenCalled();
   });
 
   // TESTS applyPrimaryOpacity
