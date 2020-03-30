@@ -7,6 +7,7 @@ import { LineToolService } from './line-tool.service';
 import { TOOL_INDEX } from './tool-manager.service';
 
 // tslint:disable: no-magic-numbers
+// tslint:disable: no-string-literal
 
 describe('LineToolService', () => {
   let service: LineToolService;
@@ -70,18 +71,25 @@ describe('LineToolService', () => {
     expect(service.commands.drawingInProgress).toBe(true);
   });
 
-  it("#onMouseClick ne devrait pas appeler refreshSVG si c'est un double clic", () => {
-    spyOn(service, 'refreshSVG');
-    service.onMouseClick();
-    service.onDoubleClick(new MouseEvent('dblclick'));
-    expect(service.refreshSVG).not.toHaveBeenCalled();
-  });
-
   it('#onMouseClick devrait appeler setTimeout', () => {
     spyOn(window, 'setTimeout');
     spyOn(service, 'refreshSVG');
     service.onMouseClick();
     expect(window.setTimeout).toHaveBeenCalled();
+  });
+
+  // TESTS mouseClickCallback
+  it("#mouseClickCallback devrait appeler refreshSVG si c'est un simple clic", () => {
+    spyOn(service, 'refreshSVG');
+    service['isSimpleClick'] = true;
+    service.mouseClickCallback();
+    expect(service.refreshSVG).toHaveBeenCalled();
+  });
+  it("#mouseClickCallback ne devrait pas appeler refreshSVG si c'est un double clic", () => {
+    spyOn(service, 'refreshSVG');
+    service['isSimpleClick'] = false;
+    service.mouseClickCallback();
+    expect(service.refreshSVG).not.toHaveBeenCalled();
   });
 
   // TESTS onDoubleClick
@@ -152,9 +160,8 @@ describe('LineToolService', () => {
     expect(service.commands.execute).toHaveBeenCalled();
   });
 
-  it('#onDoubleClick ne devrait pas appeler execute s\'il n\'y a qu\'un point '
-    + 'et que l\'option choisie est sans points', () => {
-    service.tools.activeTool.parameters[1].chosenOption = 'Sans points';
+  it('#onDoubleClick ne devrait pas appeler execute si isEmpty de line retourne vrai', () => {
+    spyOn(service.line, 'isEmpty').and.returnValue(true);
     spyOn(service.commands, 'execute');
     service.onDoubleClick(new MouseEvent('dblClick', {clientX: 100, clientY: 100}));
     expect(service.commands.execute).not.toHaveBeenCalled();

@@ -4,10 +4,10 @@ import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { Point } from '../line-tool.service';
 import { DrawingTool } from '../tool-manager.service';
 
-const LEFT_CLICK = 0;
-const RIGHT_CLICK = 2;
+export const LEFT_CLICK = 0;
+export const RIGHT_CLICK = 2;
 
-const rectangleSelectionTool: DrawingTool = {name: '',
+export const rectangleSelectionTool: DrawingTool = {name: '',
                                              isActive: true,
                                              ID: -1,
                                              parameters: [
@@ -25,12 +25,12 @@ export class SelectionRectangleService {
   rectangle: RectangleService;
   rectangleInverted: RectangleService;
 
-  initialPoint: Point;   // Coordonnées du clic initial de souris
-  basisPoint: Point;     // Coordonnées du point inférieur
+  private initialPoint: Point;   // Coordonnées du clic initial de souris
+  private basisPoint: Point;     // Coordonnées du point inférieur
 
   // Dimensions du rectangle
-  widthCalculated: number;
-  heightCalculated: number;
+  private widthCalculated: number;
+  private heightCalculated: number;
 
   constructor(private sanitizer: DomSanitizer) {
     this.ongoingSelection = false;

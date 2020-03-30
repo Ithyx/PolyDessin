@@ -3,6 +3,8 @@ import { TestBed } from '@angular/core/testing';
 import { DrawElement } from '../../stockage-svg/draw-element';
 import { TOOL_INDEX } from '../tool-manager.service';
 import { SelectionService } from './selection.service';
+import { TranslateSvgService } from '../../command/translate-svg.service';
+import { RectangleService } from '../../stockage-svg/rectangle.service';
 
 // tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers
@@ -92,6 +94,50 @@ describe('SelectionService', () => {
 
   // TESTS handleRightClick
 
+  it('#handleRightClick devrait dé-sélectionner l\'element si il appartient à selectedElements', () => {
+    service.selectedElements.push(element);
+    service.handleRightClick(element);
+    expect(element.isSelected).toBe(false);
+  });
+
+  it('#handleRightClick devrait retirer l\'element de selectedElement si il appartient à selectedElements', () => {
+    service.selectedElements.push(element);
+    service.handleRightClick(element);
+    expect(service.selectedElements.includes(element)).toBe(false);
+  });
+
+  it('#handleRightClick appeler deleteBoundingBox si l\'element n\'appartient pas' +
+  ' à selectedElements et que selectedElements est vide', () => {
+    const spy = spyOn(service, 'deleteBoundingBox');
+    service.selectedElements.push(element);
+    service.handleRightClick(element);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#handleRightClick appeler createBoundingBox si l\'element n\'appartient pas' +
+  ' à selectedElements et que selectedElements n\'est pas vide', () => {
+    const spy = spyOn(service, 'createBoundingBox');
+    service.selectedElements.push(element, element2);
+    service.handleRightClick(element);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#handleRightClick devrait sélectionner l\'element si il n\'appartient pas à selectedElements', () => {
+    service.handleRightClick(element);
+    expect(element.isSelected).toBe(true);
+  });
+
+  it('#handleRightClick devrait ajouter l\'element à slectedElements si il n\'appartient pas à selectedElements', () => {
+    service.handleRightClick(element);
+    expect(service.selectedElements.includes(element)).toBe(true);
+  });
+
+  it('#handleRightClick appeler createBoundingBox si l\'element n\'appartient pas à selectedElements', () => {
+    const spy = spyOn(service, 'createBoundingBox');
+    service.handleRightClick(element);
+    expect(spy).toHaveBeenCalled();
+  });
+
   // TESTS onMouseMove
 
   // TESTS onMousePress
@@ -122,6 +168,79 @@ describe('SelectionService', () => {
   });
 
   // TESTS onMouseRelease
+
+  it('#onMouseRelease devrait mettre clickOnSelectionBox à false si il y a eu un clic dans ou sur la boite de selection', () => {
+    service.clickOnSelectionBox = true;
+    service.selectedElements.push(element);
+    service.onMouseRelease();
+    expect(service.clickOnSelectionBox).toBe(false);
+  });
+
+  it('#onMouseRelease devrait mettre clickInSelectionBox à false si il y a eu un clic dans ou sur la boite de selection', () => {
+    service.clickInSelectionBox = true;
+    service.selectedElements.push(element);
+    service.onMouseRelease();
+    expect(service.clickInSelectionBox).toBe(false);
+  });
+
+  it('#onMouseRelease devrait exectuer une commande TranslateSvgService si il y a eu un clic dans ou sur la boite de selection' +
+  ' et que la selection a été bougé', () => {
+    const spy = spyOn(service['command'], 'execute');
+    service.clickOnSelectionBox = true;
+    element.translate = {x: 90, y: 90};
+    service.selectedElements.push(element);
+    service.createBoundingBox();
+    service.onMouseRelease();
+    expect(spy)
+        .toHaveBeenCalledWith(new TranslateSvgService(service.selectedElements, service.selectionBox,
+                                                      service['sanitizer'], service.deleteBoundingBox));
+  });
+
+  it('#onMouseRelease devrait appeler createBoundingBox si il n\'y a pas de clic sur ou dans la boite de selection', () => {
+    const spy = spyOn(service, 'createBoundingBox');
+    service.onMouseRelease();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#onMouseRelease devrait appeler mouseUp de selectionRectangle si il n\'y a pas de clic sur ou dans la boite de selection', () => {
+    const spy = spyOn(service.selectionRectangle, 'mouseUp');
+    service.onMouseRelease();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#onMouseRelease devrait appeler isInRectangleSelection si selectionRectangle.rectangle exitste et ' +
+  ' si il n\'y a pas de clic sur ou dans la boite de selection', () => {
+    service.selectionRectangle.rectangle = new RectangleService();
+    const spy = spyOn(service, 'isInRectangleSelection');
+    service.onMouseRelease();
+    expect(spy).toHaveBeenCalledWith(service.selectionRectangle.rectangle);
+  });
+
+  it('#onMouseRelease devrait appeler isInRectangleSelection si selectionRectangle.rectangleInverted exitste et ' +
+  ' si il n\'y a pas de clic sur ou dans la boite de selection', () => {
+    service.selectionRectangle.rectangleInverted = new RectangleService();
+    const spy = spyOn(service, 'isInRectangleSelection');
+    service.onMouseRelease();
+    expect(spy).toHaveBeenCalledWith(service.selectionRectangle.rectangleInverted);
+  });
+
+  it('#onMouseRelease devrait créer un nouveau rectangleService pour selectionRectangle (rectangle)' +
+  ' si il n\'y a pas de clic sur ou dans la boite de selection', () => {
+    service.onMouseRelease();
+    expect(service.selectionRectangle.rectangle).toEqual(new RectangleService());
+  });
+
+  it('#onMouseRelease devrait créer un nouveau rectangleService pour selectionRectangle (rectangleInverted)' +
+  ' si il n\'y a pas de clic sur ou dans la boite de selection', () => {
+    service.onMouseRelease();
+    expect(service.selectionRectangle.rectangleInverted).toEqual(new RectangleService());
+  });
+
+  it('#onMouseRelease devrait vider modifiedElement si il n\'y a pas de clic sur ou dans la boite de selection', () => {
+    const spy = spyOn(service['modifiedElement'], 'clear');
+    service.onMouseRelease();
+    expect(spy).toHaveBeenCalled();
+  });
 
   // TESTS createBoundingBox
 
