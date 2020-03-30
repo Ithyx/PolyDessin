@@ -16,8 +16,8 @@ describe('PipetteToolService', () => {
     svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     canvas = document.createElement('canvas');
     service = TestBed.get(PipetteToolService);
-    service.colorParameter.primaryColor.RGBAString = 'primary';
-    service.colorParameter.secondaryColor.RGBAString = 'secondary';
+    service['colorParameter'].primaryColor.RGBAString = 'primary';
+    service['colorParameter'].secondaryColor.RGBAString = 'secondary';
     const contextCanvas = canvas.getContext('2d');
     if (contextCanvas) {
       context = contextCanvas;
@@ -117,16 +117,16 @@ describe('PipetteToolService', () => {
 
   it('#pickColor devrait changer la couleur principale si le scope est Primary', () => {
     service['colorScope'] = Scope.Primary;
-    service.colorParameter.primaryColor.RGBA = [1, 1, 1, 1];
+    service['colorParameter'].primaryColor.RGBA = [1, 1, 1, 1];
     service.pickColor();
-    expect(service.colorParameter.primaryColor.RGBA).toEqual([0, 0, 0, 1]);
+    expect(service['colorParameter'].primaryColor.RGBA).toEqual([0, 0, 0, 1]);
   });
 
   it('#pickColor devrait changer la couleur secondaire si le scope est Secondary', () => {
     service['colorScope'] = Scope.Secondary;
-    service.colorParameter.secondaryColor.RGBA = [1, 1, 1, 1];
+    service['colorParameter'].secondaryColor.RGBA = [1, 1, 1, 1];
     service.pickColor();
-    expect(service.colorParameter.secondaryColor.RGBA).toEqual([0, 0, 0, 1]);
+    expect(service['colorParameter'].secondaryColor.RGBA).toEqual([0, 0, 0, 1]);
   });
 
   it('#pickColor devrait appeler updateColors de colorParameter', () => {
@@ -140,10 +140,10 @@ describe('PipetteToolService', () => {
 
   it('#pickColor ne devrait rien faire si le scope n\'est pas Primary ou Secondary', () => {
     service['colorScope'] = Scope.Default;
-    service.colorParameter.primaryColor.RGBAString = 'primary';
-    service.colorParameter.secondaryColor.RGBAString = 'secondary';
+    service['colorParameter'].primaryColor.RGBAString = 'primary';
+    service['colorParameter'].secondaryColor.RGBAString = 'secondary';
     service.pickColor();
-    expect(service.colorParameter.primaryColor.RGBAString).toEqual('primary');
-    expect(service.colorParameter.secondaryColor.RGBAString).toEqual('secondary');
+    expect(service['colorParameter'].primaryColor.RGBAString).toEqual('primary');
+    expect(service['colorParameter'].secondaryColor.RGBAString).toEqual('secondary');
   });
 });
