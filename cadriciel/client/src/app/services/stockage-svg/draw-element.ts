@@ -1,6 +1,6 @@
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
-import { DrawingTool } from '../tools/tool-manager.service';
+import { DrawingTool, TOOL_INDEX } from '../tools/tool-manager.service';
 
 const RGB_MAX = 255;
 
@@ -19,9 +19,15 @@ export interface Color {
   RGBA: [number, number, number, number];
 }
 
+export enum Tool {
+
+}
+
 export interface DrawElement {
   svg: string;
   svgHtml: SafeHtml;
+
+  trueType: TOOL_INDEX;
 
   points: Point[];
   isSelected: boolean;
@@ -32,11 +38,14 @@ export interface DrawElement {
   erasingColor: Color;
 
   thickness?: number;
+  thicknessLine?: number;
+  thicknessPoint?: number;
   texture?: string;
   perimeter?: string;
   isAPoint?: boolean;     // Peut être retiré
   isDotted?: boolean;
   chosenOption?: string;
+  isAPolygon?: boolean;
 
   pointMin: Point;
   pointMax: Point;

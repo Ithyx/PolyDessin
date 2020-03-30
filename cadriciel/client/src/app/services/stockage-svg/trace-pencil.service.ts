@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Point } from '../tools/line-tool.service';
-import { DrawingTool } from '../tools/tool-manager.service';
+import { DrawingTool, TOOL_INDEX } from '../tools/tool-manager.service';
 import { Color, DrawElement, ERASING_COLOR_INIT } from './draw-element';
 
 @Injectable({
@@ -10,6 +10,8 @@ import { Color, DrawElement, ERASING_COLOR_INIT } from './draw-element';
 export class TracePencilService implements DrawElement {
   svg: string;
   svgHtml: SafeHtml;
+
+  trueType: TOOL_INDEX;
 
   points: Point[];
   isSelected: boolean;
@@ -29,6 +31,7 @@ export class TracePencilService implements DrawElement {
 
   constructor() {
     this.svgHtml = '';
+    this.trueType = TOOL_INDEX.PENCIL;
     this.points = [];
     this.isSelected = false;
     this.primaryColor = {
