@@ -39,9 +39,9 @@ import { NavigationGuideService } from './services/navigation-guide.service';
 import { RoutingManagerService } from './services/routing-manager.service';
 import { ShortcutsManagerService } from './services/shortcuts-manager.service';
 import { SVGStockageService } from './services/stockage-svg/svg-stockage.service';
+import { RectangleToolService } from './services/tools/basic-shape/rectangle-tool.service';
 import { LineToolService } from './services/tools/line-tool.service';
 import { PencilToolService } from './services/tools/pencil-tool.service';
-import { RectangleToolService } from './services/tools/rectangle-tool.service';
 import { SelectionService } from './services/tools/selection/selection.service';
 
 @NgModule({

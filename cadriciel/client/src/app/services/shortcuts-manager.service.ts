@@ -9,10 +9,10 @@ import { CommandManagerService } from './command/command-manager.service';
 import { TranslateSvgService } from './command/translate-svg.service';
 import { GridService } from './grid/grid.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
-import { EllipseToolService } from './tools/ellipse-tool.service';
+import { EllipseToolService } from './tools/basic-shape/ellipse-tool.service';
+import { RectangleToolService } from './tools/basic-shape/rectangle-tool.service';
 import { EraserToolService } from './tools/eraser-tool.service';
 import { LineToolService, Point } from './tools/line-tool.service';
-import { RectangleToolService } from './tools/rectangle-tool.service';
 import { SelectionService } from './tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
 
