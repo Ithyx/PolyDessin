@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { BrushToolService } from '../tools/brush-tool.service';
+import { BrushToolService } from '../tools/tracing-tool/brush-tool.service';
 import { TraceBrushService } from './trace-brush.service';
 
 // tslint:disable: no-string-literal

@@ -1,19 +1,19 @@
 import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
-import { EllipseToolService } from 'src/app/services/tools/basic-shape/ellipse-tool.service';
-import { PolygonToolService } from 'src/app/services/tools/basic-shape/polygon-tool.service';
-import { RectangleToolService } from 'src/app/services/tools/basic-shape/rectangle-tool.service';
-import { BrushToolService } from 'src/app/services/tools/brush-tool.service';
+import { EllipseToolService } from 'src/app/services/tools/basic-shape-tool/ellipse-tool.service';
+import { PolygonToolService } from 'src/app/services/tools/basic-shape-tool/polygon-tool.service';
+import { RectangleToolService } from 'src/app/services/tools/basic-shape-tool/rectangle-tool.service';
 import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
 import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
 import { LineToolService } from 'src/app/services/tools/line-tool.service';
-import { PencilToolService } from 'src/app/services/tools/pencil-tool.service';
 import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { SprayToolService } from 'src/app/services/tools/spray-tool.service';
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
 import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
+import { BrushToolService } from 'src/app/services/tools/tracing-tool/brush-tool.service';
+import { PencilToolService } from 'src/app/services/tools/tracing-tool/pencil-tool.service';
 
 const LEFT_CLICK = 0;
 
