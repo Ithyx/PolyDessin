@@ -1,7 +1,11 @@
 import { SafeHtml } from '@angular/platform-browser';
 import { Color, RGB_MAX } from '../color/color';
-import { Point } from '../tools/line-tool.service';
 import { DrawingTool, TOOL_INDEX } from '../tools/tool-manager.service';
+
+export interface Point {
+  x: number;
+  y: number;
+}
 
 export const ERASING_COLOR_INIT: Color = {
   RGBAString: 'rgba(255, 0, 0, 1)',

@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Point } from '../../stockage-svg/draw-element';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
-import { Point } from '../line-tool.service';
 import { LEFT_CLICK, rectangleSelectionTool, RIGHT_CLICK, SelectionRectangleService } from './selection-rectangle.service';
 
 // tslint:disable: no-magic-numbers

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Color } from '../color/color';
-import { Point } from '../tools/line-tool.service';
+import { Point } from '../stockage-svg/draw-element';
 import { DrawingTool, TOOL_INDEX } from '../tools/tool-manager.service';
 import { DrawElement, ERASING_COLOR_INIT } from './draw-element';
 

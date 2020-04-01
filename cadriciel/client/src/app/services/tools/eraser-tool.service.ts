@@ -4,10 +4,9 @@ import { CanvasConversionService, MAX_COLOR_VALUE } from '../canvas-conversion.s
 import { B, G, R } from '../color/color';
 import { CommandManagerService } from '../command/command-manager.service';
 import { RemoveSVGService } from '../command/remove-svg.service';
-import { DrawElement } from '../stockage-svg/draw-element';
+import { DrawElement, Point } from '../stockage-svg/draw-element';
 import { RectangleService } from '../stockage-svg/rectangle.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
-import { Point } from './line-tool.service';
 import { ToolInterface } from './tool-interface';
 import { ToolManagerService } from './tool-manager.service';
 

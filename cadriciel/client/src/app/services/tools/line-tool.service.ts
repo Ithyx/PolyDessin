@@ -1,15 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AddSVGService } from '../command/add-svg.service';
 import { CommandManagerService } from '../command/command-manager.service';
+import { Point } from '../stockage-svg/draw-element';
 import { LineService } from '../stockage-svg/line.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { ToolInterface } from './tool-interface';
 import { ToolManagerService } from './tool-manager.service';
-
-export interface Point {
-  x: number;
-  y: number;
-}
 
 const CLICK_DELAY = 250;
 const POLYGON_DISTANCE = 3;

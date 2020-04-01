@@ -8,11 +8,12 @@ import { SavePopupComponent } from '../components/save-popup/save-popup.componen
 import { CommandManagerService } from './command/command-manager.service';
 import { TranslateSvgService } from './command/translate-svg.service';
 import { GridService } from './grid/grid.service';
+import { Point } from './stockage-svg/draw-element';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { EllipseToolService } from './tools/basic-shape-tool/ellipse-tool.service';
 import { RectangleToolService } from './tools/basic-shape-tool/rectangle-tool.service';
 import { EraserToolService } from './tools/eraser-tool.service';
-import { LineToolService, Point } from './tools/line-tool.service';
+import { LineToolService } from './tools/line-tool.service';
 import { SelectionService } from './tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
 
