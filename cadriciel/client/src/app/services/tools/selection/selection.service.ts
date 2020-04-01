@@ -189,15 +189,15 @@ export class SelectionService implements ToolInterface {
 
   belongToRectangle(element: DrawElement, rectangle: RectangleService): boolean {
     // BOTTOM RIGHT corner of element with TOP LEFT corner of selection
-    const collision1 = element.pointMax.x >= rectangle.pointMin.x && element.pointMax.y >= rectangle.pointMin.y;
+    const topLeftCollision = element.pointMax.x >= rectangle.pointMin.x && element.pointMax.y >= rectangle.pointMin.y;
     // BOTTOM LEFT corner of element with TOP RIGHT corner of selection
-    const collision2 = element.pointMin.x <= rectangle.pointMax.x && element.pointMax.y >= rectangle.pointMin.y;
+    const topRightCollision = element.pointMin.x <= rectangle.pointMax.x && element.pointMax.y >= rectangle.pointMin.y;
     // TOP LEFT corner of element with BOTTOM RIGHT corner of selection
-    const collision3 = element.pointMin.x <= rectangle.pointMax.x && element.pointMin.y <= rectangle.pointMax.y;
+    const bottomRightCollision = element.pointMin.x <= rectangle.pointMax.x && element.pointMin.y <= rectangle.pointMax.y;
     // TOP RIGHT corner of element with BOTTOM LEFT corner of selection
-    const collision4 =  element.pointMax.x >= rectangle.pointMin.x && element.pointMin.y <= rectangle.pointMax.y;
+    const bottomLeftCollision =  element.pointMax.x >= rectangle.pointMin.x && element.pointMin.y <= rectangle.pointMax.y;
 
-    return (collision1 && collision2 && collision3 && collision4);
+    return (topLeftCollision && topRightCollision && bottomRightCollision && bottomLeftCollision);
   }
 
   findPointMinAndMax(element: DrawElement): void {
