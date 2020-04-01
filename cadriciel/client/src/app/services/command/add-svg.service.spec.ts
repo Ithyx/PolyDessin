@@ -4,6 +4,8 @@ import { LineService } from '../stockage-svg/line.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { AddSVGService } from './add-svg.service';
 
+// tslint:disable: no-string-literal
+
 describe('AddSVGService', () =>  {
   let service: AddSVGService;
   let stockageService: SVGStockageService;
@@ -30,7 +32,7 @@ describe('AddSVGService', () =>  {
 
   it('#constructor devrait changer l\'élément', () => {
     service = new AddSVGService(element, stockageService);
-    expect(service.element).toEqual(element);
+    expect(service['element']).toEqual(element);
   });
 
   // TESTS undo
