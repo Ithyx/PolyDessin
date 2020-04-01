@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Color } from '../color/color';
 import { ColorParameterService } from '../color/color-parameter.service';
-import { Color } from '../stockage-svg/draw-element';
 import { RectangleService } from '../stockage-svg/rectangle.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { PrimaryColorChangeService } from './primary-color-change.service';

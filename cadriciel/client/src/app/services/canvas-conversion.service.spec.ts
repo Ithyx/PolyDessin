@@ -2,7 +2,8 @@ import { TestBed } from '@angular/core/testing';
 
 import { DomSanitizer } from '@angular/platform-browser';
 import { CanvasConversionService, COLOR_INCREASE_LINE, COLOR_INCREASE_SPRAY } from './canvas-conversion.service';
-import { Color, DrawElement } from './stockage-svg/draw-element';
+import { Color } from './color/color';
+import { DrawElement } from './stockage-svg/draw-element';
 import { LineService } from './stockage-svg/line.service';
 import { RectangleService } from './stockage-svg/rectangle.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
