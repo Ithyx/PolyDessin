@@ -1,8 +1,8 @@
 /*Component de couleur inspire de https://malcoded.com/posts/angular-color-picker/*/
 
 import { AfterViewInit, Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
+import { A } from 'src/app/services/color/color';
 import { ColorManagerService } from 'src/app/services/color/color-manager.service';
-import { A } from 'src/app/services/stockage-svg/draw-element';
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
 
 enum GRADIENT_POSITION {

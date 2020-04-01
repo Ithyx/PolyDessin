@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CommandManagerService } from '../command/command-manager.service';
 import { DrawingManagerService } from '../drawing-manager/drawing-manager.service';
-import { B, Color, G, R } from '../stockage-svg/draw-element';
+import { B, Color, G, R } from './color';
 import { ColorParameterService } from './color-parameter.service';
 
 export enum Scope {

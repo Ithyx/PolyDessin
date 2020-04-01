@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Drawing } from '../../../../common/communication/drawing-interface';
+import { B, Color, G, R } from './color/color';
 import { DrawingManagerService } from './drawing-manager/drawing-manager.service';
-import { B, Color, DrawElement, G, R } from './stockage-svg/draw-element';
+import { DrawElement } from './stockage-svg/draw-element';
 import { LineService } from './stockage-svg/line.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { TraceBrushService } from './stockage-svg/trace-brush.service';

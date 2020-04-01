@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { A, B, G, R } from '../color/color';
 import { Scope } from '../color/color-manager.service';
 import { ColorParameterService } from '../color/color-parameter.service';
-import { A, B, G, R } from '../stockage-svg/draw-element';
 import { Point } from './line-tool.service';
 import { ToolInterface } from './tool-interface';
 

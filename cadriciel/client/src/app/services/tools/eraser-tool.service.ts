@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CanvasConversionService, MAX_COLOR_VALUE } from '../canvas-conversion.service';
+import { B, G, R } from '../color/color';
 import { CommandManagerService } from '../command/command-manager.service';
 import { RemoveSVGService } from '../command/remove-svg.service';
-import { B, DrawElement, G, R } from '../stockage-svg/draw-element';
+import { DrawElement } from '../stockage-svg/draw-element';
 import { RectangleService } from '../stockage-svg/rectangle.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { Point } from './line-tool.service';

@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Color } from '../stockage-svg/draw-element';
+import { Color, RGB_MAX } from '../color/color';
 
 const BUFFER_WIDTH = 535;
 const BUFFER_HEIGHT = 4;
 const INITIAL_HEIGHT = window.innerHeight - BUFFER_HEIGHT;
 const INITIAL_WIDTH = window.innerWidth - BUFFER_WIDTH;
-const RGB_MAX = 255;
 const BACKGROUND_COLOR_DEFAULT: Color = {
   RGBAString: 'rgba(255, 255, 255, 1)',
   RGBA: [RGB_MAX, RGB_MAX, RGB_MAX, 1]
