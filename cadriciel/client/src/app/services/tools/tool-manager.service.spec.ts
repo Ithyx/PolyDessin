@@ -3,7 +3,7 @@ import { TOOL_INDEX, TOOL_LIST, ToolManagerService } from './tool-manager.servic
 
 // tslint:disable: no-magic-numbers
 
-describe('GestionnaireOutilsService', () => {
+describe('ToolManagerService', () => {
   let service: ToolManagerService;
 
   beforeEach(() => TestBed.configureTestingModule({}));
@@ -14,32 +14,32 @@ describe('GestionnaireOutilsService', () => {
     expect(testService).toBeTruthy();
   });
 
-  // TESTS trouverIndexParametre
+  // TESTS findParameterIndex
 
-  it('#trouverIndexParametre devrait retourner 0 si le parametre recherché n\'existe pas', () => {
+  it('#findParameterIndex devrait retourner 0 si le parametre recherché n\'existe pas', () => {
     // L'outil initial du gestionnaire est le crayon
     expect(service.findParameterIndex('parametreTest')).toBe(0);
   });
 
-  it('#trouverIndexParametre devrait renvoyer l\'index du parametre recherché', () => {
+  it('#findParameterIndex devrait renvoyer l\'index du parametre recherché', () => {
     service.activeTool = TOOL_LIST[TOOL_INDEX.LINE];
     expect(service.findParameterIndex('Type de jonction')).toBe(1);
   });
 
-  // TESTS changerOutilActif
+  // TESTS changeActiveTool
 
-  it('#changerOutilActif ne devrait pas changer l\' outil actif si l\'index recherché est invalide', () => {
+  it('#changeActiveTool ne devrait pas changer l\' outil actif si l\'index recherché est invalide', () => {
     service.changeActiveTool(99);
     // L'outil initial du gestionnaire est le crayon
     expect(service.activeTool.name).toBe('Crayon');
   });
 
-  it('#changerOutilActif devrait changer d\' outil pour celui de l\'index spécifié', () => {
+  it('#changeActiveTool devrait changer d\' outil pour celui de l\'index spécifié', () => {
     service.changeActiveTool(TOOL_INDEX.LINE);
     expect(service.activeTool.name).toBe('Ligne');
   });
 
-  it('#changerOutilActif devrait rendre actif le nouvel outil', () => {
+  it('#changeActiveTool devrait rendre actif le nouvel outil', () => {
     service.changeActiveTool(TOOL_INDEX.LINE);
     expect(service.activeTool.isActive).toBe(true);
   });
