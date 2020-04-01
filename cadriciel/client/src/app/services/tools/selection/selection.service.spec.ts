@@ -4,14 +4,11 @@ import { TranslateSvgService } from '../../command/translate-svg.service';
 import { DrawElement } from '../../stockage-svg/draw-element';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { TOOL_INDEX } from '../tool-manager.service';
-import { SelectionService } from './selection.service';
+import { LEFT_CLICK, RIGHT_CLICK, SelectionService } from './selection.service';
 
 // tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers
 // tslint:disable: max-file-line-count
-
-const LEFT_CLICK = 0;
-const RIGHT_CLICK = 2;
 
 describe('SelectionService', () => {
   let service: SelectionService;

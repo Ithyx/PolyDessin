@@ -10,9 +10,10 @@ import { ToolInterface } from '../tool-interface';
 import { SelectionBoxService } from './selection-box.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
 
+export const LEFT_CLICK = 0;
+export const RIGHT_CLICK = 2;
+
 const HALF_DRAW_ELEMENT = 0.5 ;
-const LEFT_CLICK = 0;
-const RIGHT_CLICK = 2;
 
 @Injectable({
   providedIn: 'root'

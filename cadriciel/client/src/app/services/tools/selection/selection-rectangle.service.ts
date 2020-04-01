@@ -3,9 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Point } from '../../stockage-svg/draw-element';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { DrawingTool } from '../tool-manager.service';
-
-export const LEFT_CLICK = 0;
-export const RIGHT_CLICK = 2;
+import { LEFT_CLICK , RIGHT_CLICK } from './selection.service';
 
 export const rectangleSelectionTool: DrawingTool = {name: '',
                                              isActive: true,

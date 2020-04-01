@@ -7,17 +7,15 @@ import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.s
 import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
 import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
 import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
-import { SelectionService } from 'src/app/services/tools/selection/selection.service';
+import { SelectionService, LEFT_CLICK, RIGHT_CLICK } from 'src/app/services/tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
-
-const LEFT_CLICK = 0;
-const RIGHT_CLICK = 2;
 
 @Component({
   selector: 'app-drawing-surface',
   templateUrl: './drawing-surface.component.html',
   styleUrls: ['./drawing-surface.component.scss']
 })
+
 export class DrawingSurfaceComponent implements AfterViewInit {
   @ViewChild('drawing', {static: false})
   private drawing: ElementRef<SVGElement>;
