@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogConfig, MatDialogModule, MatSidenavModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
+import { AttributesPanelComponent } from '../attributes-panel/attributes-panel.component';
 import { DrawingPageComponent } from '../drawing-page/drawing-page.component';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 import { DrawingToolComponent } from '../drawing-tool/drawing-tool.component';
@@ -21,7 +22,7 @@ describe('HomePageComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ DrawingPageComponent, GuidePageComponent, HomePageComponent, ToolbarComponent, GuideSubjectComponent,
-        DrawingToolComponent, DrawingSurfaceComponent ],
+        DrawingToolComponent, DrawingSurfaceComponent, AttributesPanelComponent ],
       imports: [ MatSidenavModule, MatDialogModule, RouterModule.forRoot([
         {path: '', component: HomePageComponent},
         {path: 'dessin', component: DrawingPageComponent},
