@@ -10,12 +10,12 @@ import { Command } from './command';
 })
 export class SecondaryColorChangeService implements Command {
 
-  oldColor: Color;
+  private oldColor: Color;
 
-  constructor(public element: DrawElement,
-              public colorParameter: ColorParameterService,
+  constructor(private element: DrawElement,
+              private colorParameter: ColorParameterService,
               private sanitizer: DomSanitizer) {
-    this.changeColor(colorParameter.secondaryColor);
+    this.changeColor(this.colorParameter.secondaryColor);
   }
 
   undo(): void {
