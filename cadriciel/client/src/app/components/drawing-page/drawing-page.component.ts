@@ -20,6 +20,7 @@ import { PencilToolService } from 'src/app/services/tools/tracing-tool/pencil-to
   templateUrl: './drawing-page.component.html',
   styleUrls: ['./drawing-page.component.scss']
 })
+
 export class DrawingPageComponent implements AfterViewInit {
 
   @ViewChild('canvasConversion', {static: false})

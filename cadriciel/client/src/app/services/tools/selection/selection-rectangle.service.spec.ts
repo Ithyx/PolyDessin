@@ -3,7 +3,8 @@ import { TestBed } from '@angular/core/testing';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Point } from '../../stockage-svg/draw-element';
 import { RectangleService } from '../../stockage-svg/rectangle.service';
-import { LEFT_CLICK, rectangleSelectionTool, RIGHT_CLICK, SelectionRectangleService } from './selection-rectangle.service';
+import { rectangleSelectionTool, SelectionRectangleService } from './selection-rectangle.service';
+import { LEFT_CLICK, RIGHT_CLICK } from './selection.service';
 
 // tslint:disable: no-magic-numbers
 // tslint:disable:no-string-literal
