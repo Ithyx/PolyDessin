@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CommandManagerService } from '../command/command-manager.service';
 import { DrawingManagerService } from '../drawing-manager/drawing-manager.service';
-import { B, Color, G, R } from './color';
+import { A, B, Color, G, R } from './color';
 import { ColorParameterService } from './color-parameter.service';
 
 export enum Scope {
@@ -13,6 +13,7 @@ export enum Scope {
 }
 
 export const MAX_COLORS = 10;
+export const PERCENTAGE = 100;
 
 @Injectable({
   providedIn: 'root'
@@ -43,10 +44,12 @@ export class ColorManagerService {
   applyColor(scope: Scope): void {
     switch (scope) {
       case Scope.Primary:
+        this.color.RGBA[A] = this.colorParameter.primaryOpacityDisplayed / PERCENTAGE;
         this.colorParameter.primaryColor = {...this.color};
         this.addLastColor();
         break;
       case Scope.Secondary:
+        this.color.RGBA[A] = this.colorParameter.secondaryOpacityDisplayed / PERCENTAGE;
         this.colorParameter.secondaryColor = {...this.color};
         this.addLastColor();
         break;
@@ -60,6 +63,7 @@ export class ColorManagerService {
         /* Par mesure de sécurité, ne rien faire. */
         break;
     }
+    this.colorParameter.updateColors();
   }
 
   addLastColor(): void {
