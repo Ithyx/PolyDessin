@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AddSVGService } from '../command/add-svg.service';
-import { RectangleService } from '../stockage-svg/rectangle.service';
+import { AddSVGService } from '../../command/add-svg.service';
+import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { BasicShapeToolService } from './basic-shape-tool.service';
 import { RectangleToolService } from './rectangle-tool.service';
 

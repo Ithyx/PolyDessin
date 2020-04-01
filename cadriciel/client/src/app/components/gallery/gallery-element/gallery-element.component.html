@@ -1,4 +1,4 @@
-<div [className]="isSelected ? 'selected' : 'element-container'">
+<div [className]="getSelectionStatus()">
     <svg width="100" height="100" [attr.viewBox]="'0 0 ' + drawing.width.toString() + ' ' + drawing.height.toString()">
         <rect [attr.width]="drawing.width" [attr.height]="drawing.height" [attr.fill]="drawing.backgroundColor.RGBAString" />
         <g *ngFor="let element of drawing.elements" [innerHtml]="sanatize(element.svg)" />
@@ -6,6 +6,6 @@
     <div class="informations">
         Nom: {{drawing.name}} <br>
         Dimensions: {{drawing.height}}x{{drawing.width}} <br>
-        Étiquettes: {{(drawing.tags.length !== 0) ? drawing.tags : "aucune"}}
+        Étiquettes: {{getTags()}}
     </div>
 </div>

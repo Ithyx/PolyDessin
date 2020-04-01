@@ -44,4 +44,12 @@ export class CommandManagerService {
     this.executedCommands = [];
     this.drawingInProgress = false;
   }
+
+  hasExecutedCommands(): boolean {
+    return this.executedCommands.length > 0;
+  }
+
+  hasCancelledCommands(): boolean {
+    return this.cancelledCommands.length > 0;
+  }
 }

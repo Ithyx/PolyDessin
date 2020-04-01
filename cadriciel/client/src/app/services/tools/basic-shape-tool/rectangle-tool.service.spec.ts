@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EllipseService } from '../stockage-svg/ellipse.service';
-import { EllipseToolService } from './ellipse-tool.service';
+import { RectangleService } from '../../stockage-svg/rectangle.service';
+import { RectangleToolService } from './rectangle-tool.service';
 
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
 
-describe('EllipseToolService', () => {
-  let service: EllipseToolService;
+describe('RectangleToolService', () => {
+  let service: RectangleToolService;
   beforeEach(() => TestBed.configureTestingModule({}));
-  beforeEach(() => service = TestBed.get(EllipseToolService));
+  beforeEach(() => service = TestBed.get(RectangleToolService));
 
   // TESTS clear
 
@@ -20,11 +20,11 @@ describe('EllipseToolService', () => {
   });
 
   it('#clear devrait reinitialiser l\'ellipse', () => {
-    service['shape'] = new EllipseService();
+    service['shape'] = new RectangleService();
     service['shape'].points = [{x: 0, y: 0}, {x: 10, y: 10}];
     service.clear();
     // vérifier que le SVG est vide
-    expect(service['shape']).toEqual(new EllipseService());
+    expect(service['shape']).toEqual(new RectangleService());
   });
 
   it('#clear devrait mettre (0,0) à initial', () => {

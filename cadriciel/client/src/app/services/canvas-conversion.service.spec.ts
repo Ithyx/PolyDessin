@@ -2,7 +2,8 @@ import { TestBed } from '@angular/core/testing';
 
 import { DomSanitizer } from '@angular/platform-browser';
 import { CanvasConversionService, COLOR_INCREASE_LINE, COLOR_INCREASE_SPRAY } from './canvas-conversion.service';
-import { Color, DrawElement } from './stockage-svg/draw-element';
+import { Color } from './color/color';
+import { DrawElement } from './stockage-svg/draw-element';
 import { LineService } from './stockage-svg/line.service';
 import { RectangleService } from './stockage-svg/rectangle.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
@@ -332,15 +333,30 @@ describe('CanvasConversionService', () => {
     expect(spy).toHaveBeenCalledWith(occurrences, 2, 2);
   });
 
-  it('#getElementsInArea ne devrait rien faire si canBeBlending retourne vrai', () => {
+  it('#getElementsInArea devrait appeler isPointInArea si canBeBlending est vrai', () => {
     spyOn(service, 'canBeBlending').and.returnValue(true);
-    const spy = spyOn(service['coloredElements'], 'get');
+    const spy = spyOn(service, 'isPointInArea');
     service.getElementsInArea(0, 0, 2, 2);
-    expect(spy).not.toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(firstElement, 0, 0, 2, 2);
+  });
+
+  it('#getElementsInArea ne devrait rien faire si canBeBlending retourne vrai et isPointInArea retourne faux', () => {
+    spyOn(service, 'canBeBlending').and.returnValue(true);
+    spyOn(service, 'isPointInArea').and.returnValue(false);
+    expect(service.getElementsInArea(0, 0, 2, 2)).toEqual([]);
   });
 
   it('#getElementsInArea devrait appeler get de coloredElements avec la couleur si canBeBlending retourne faux', () => {
     spyOn(service, 'canBeBlending').and.returnValue(false);
+    const spy = spyOn(service['coloredElements'], 'get');
+    service.getElementsInArea(0, 0, 2, 2);
+    expect(spy).toHaveBeenCalledWith('rgba(1, 0, 0, 1)');
+  });
+
+  it('#getElementsInArea devrait appeler get de coloredElements avec la couleur si canBeBlending retourne vrai '
+    + 'et isPointInArea retourne vrai', () => {
+    spyOn(service, 'canBeBlending').and.returnValue(true);
+    spyOn(service, 'isPointInArea').and.returnValue(true);
     const spy = spyOn(service['coloredElements'], 'get');
     service.getElementsInArea(0, 0, 2, 2);
     expect(spy).toHaveBeenCalledWith('rgba(1, 0, 0, 1)');
@@ -383,6 +399,78 @@ describe('CanvasConversionService', () => {
     const occurrences = new Map<string, number>();
     occurrences.set('rgba(1, 0, 0, 1)', 3).set('rgba(2, 0, 0, 1)', 3);
     expect(service.canBeBlending(occurrences, 3, 5)).toBe(true);
+  });
+
+  // TESTS isPointInArea
+
+  it('#isPointInArea devrait retourner faux si l\'élément n\'est pas défini', () => {
+    expect(service.isPointInArea(undefined, 0, 0, 0, 0)).toBe(false);
+  });
+
+  it('#isPointInArea devrait retourner faux si l\'élément n\'est pas un point', () => {
+    const element = new TracePencilService();
+    element.isAPoint = false;
+    expect(service.isPointInArea(element, 0, 0, 0, 0)).toBe(false);
+  });
+
+  it('#isPointInArea devrait retourner faux si l\'élément n\'a pas de thickness', () => {
+    const element = new TracePencilService();
+    element.isAPoint = true;
+    delete element.thickness;
+    expect(service.isPointInArea(element, 0, 0, 0, 0)).toBe(false);
+  });
+
+  it('#isPointInArea devrait retourner faux si le point maximal en x de l\'élément '
+    + 'est inférieur au point minimal en x de la surface', () => {
+    const element = new TracePencilService();
+    element.isAPoint = true;
+    element.thickness = 5;
+    element.points[0] = {x: 0, y: 15};
+    expect(service.isPointInArea(element, 10, 10, 10, 10)).toBe(false);
+  });
+
+  it('#isPointInArea devrait retourner faux si le point minimal en x de l\'élément '
+    + 'est supérieur au point maximal en x de la surface', () => {
+    const element = new TracePencilService();
+    element.isAPoint = true;
+    element.thickness = 5;
+    element.points[0] = {x: 30, y: 15};
+    expect(service.isPointInArea(element, 10, 10, 10, 10)).toBe(false);
+  });
+
+  it('#isPointInArea devrait retourner faux si le point maximal en y de l\'élément '
+    + 'est inférieur au point minimal en y de la surface', () => {
+    const element = new TracePencilService();
+    element.isAPoint = true;
+    element.thickness = 5;
+    element.points[0] = {x: 15, y: 0};
+    expect(service.isPointInArea(element, 10, 10, 10, 10)).toBe(false);
+  });
+
+  it('#isPointInArea devrait retourner faux si le point minimal en y de l\'élément '
+    + 'est supérieur au point maximal en y de la surface', () => {
+    const element = new TracePencilService();
+    element.isAPoint = true;
+    element.thickness = 5;
+    element.points[0] = {x: 15, y: 30};
+    expect(service.isPointInArea(element, 10, 10, 10, 10)).toBe(false);
+  });
+
+  it('#isPointInArea devrait retourner faux si le point maximal en x de l\'élément '
+    + 'est inférieur au point minimal en x de la surface', () => {
+    const element = new TracePencilService();
+    element.isAPoint = true;
+    element.thickness = 5;
+    element.points[0] = {x: 0, y: 15};
+    expect(service.isPointInArea(element, 10, 10, 10, 10)).toBe(false);
+  });
+
+  it('#isPointInArea devrait retourner vrai si le point se trouve dans la surface', () => {
+    const element = new TracePencilService();
+    element.isAPoint = true;
+    element.thickness = 5;
+    element.points[0] = {x: 15, y: 15};
+    expect(service.isPointInArea(element, 10, 10, 10, 10)).toBe(true);
   });
 
   // TEST sanitize

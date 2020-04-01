@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { PolygonService } from '../stockage-svg/polygon.service';
+import { PolygonService } from '../../stockage-svg/polygon.service';
+import { Point } from '../line-tool.service';
 import { BasicShapeToolService } from './basic-shape-tool.service';
-import { Point } from './line-tool.service';
 
 export const DEFAULT_SIDES = 6;
 export const STARTING_ANGLE = -Math.PI / 2;

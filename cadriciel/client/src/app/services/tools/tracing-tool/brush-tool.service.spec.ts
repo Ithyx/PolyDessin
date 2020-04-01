@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { TraceBrushService } from '../stockage-svg/trace-brush.service';
+import { TraceBrushService } from '../../stockage-svg/trace-brush.service';
 import { BrushToolService } from './brush-tool.service';
 
 // tslint:disable: no-magic-numbers

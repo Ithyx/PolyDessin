@@ -130,4 +130,26 @@ describe('CommandManagerService', () => {
     service.clearCommand();
     expect(service.drawingInProgress).toBe(false);
   });
+
+  // TESTS hasExecutedCommands
+
+  it('#hasExecutedCommands devrait retourner vrai si executedCommands n\'est pas vide', () => {
+    expect(service.hasExecutedCommands()).toBe(true);
+  });
+
+  it('#hasExecutedCommands devrait retourner faux si executedCommands est vide', () => {
+    service['executedCommands'] = [];
+    expect(service.hasExecutedCommands()).toBe(false);
+  });
+
+  // TESTS hasCancelledCommands
+
+  it('#hasCancelledCommands devrait retourner vrai si cancelledCommands n\'est pas vide', () => {
+    expect(service.hasCancelledCommands()).toBe(true);
+  });
+
+  it('#hasCancelledCommands devrait retourner faux si cancelledCommands est vide', () => {
+    service['cancelledCommands'] = [];
+    expect(service.hasCancelledCommands()).toBe(false);
+  });
 });

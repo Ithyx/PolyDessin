@@ -55,4 +55,16 @@ describe('GuideSujetComponent', () => {
       expect(component['node'].openCategory).toBe(true);
   });
 
+  // TESTS getNodeStatus
+
+  it('#getNodeStatus devrait retourner "parent-subject" lorsque le node contient des subSubjects', () => {
+    component['node'] = GUIDE_CONTENTS[1];  // Catégorie des outils
+    expect(component.getNodeStatus()).toEqual('parent-subject');
+  });
+
+  it('#getNodeStatus devrait retourner "subject" lorsque le node ne contient pas de subSubjects', () => {
+    component['node'] = GUIDE_CONTENTS[0];  // Sujet de Bienvenue
+    expect(component.getNodeStatus()).toEqual('subject');
+  });
+
 });

@@ -7,8 +7,8 @@ import { Command } from './command';
   providedIn: 'root'
 })
 export class AddSVGService implements Command {
-  constructor(public element: DrawElement,
-              public svgStockage: SVGStockageService) {
+  constructor(private element: DrawElement,
+              private svgStockage: SVGStockageService) {
     this.svgStockage.addSVG(this.element);
   }
 

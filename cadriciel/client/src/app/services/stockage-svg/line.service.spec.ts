@@ -3,6 +3,7 @@ import { LineToolService } from '../tools/line-tool.service';
 import { LineService } from './line.service';
 
 // tslint:disable:no-magic-numbers
+// tslint:disable: no-string-literal
 
 describe('LineService', () => {
   let element: LineService;
@@ -12,7 +13,7 @@ describe('LineService', () => {
 
   beforeEach(() => {
     element = new LineService();
-    element.updateParameters(service.tools.toolList[5]);
+    element.updateParameters(service['tools'].toolList[5]);
     element.primaryColor = {
       RGBAString: 'rgba(0, 0, 0, 1)',
       RGBA: [0, 0, 0, 1]
@@ -191,43 +192,43 @@ describe('LineService', () => {
   // TESTS updateParameters
 
   it('#updateParameters devrait assigner la valeur en paramètre à thicknessLine', () => {
-    service.tools.toolList[5].parameters[0].value = 10;
-    const testTool = service.tools.toolList[5];
+    service['tools'].toolList[5].parameters[0].value = 10;
+    const testTool = service['tools'].toolList[5];
     element.updateParameters(testTool);
-    expect(element.thicknessLine).toEqual(service.tools.toolList[5].parameters[0].value);
+    expect(element.thicknessLine).toEqual(service['tools'].toolList[5].parameters[0].value);
   });
 
   it('#updateParameters devrait assigner 1 à thicknessLine', () => {
-    service.tools.toolList[5].parameters[0].value = 0;
-    const testTool = service.tools.toolList[5];
+    service['tools'].toolList[5].parameters[0].value = 0;
+    const testTool = service['tools'].toolList[5];
     element.updateParameters(testTool);
     expect(element.thicknessLine).toEqual(1);
   });
 
   it('#updateParameters devrait assigner la chaine de caractères en paramètre à thicknessLine', () => {
-    service.tools.toolList[5].parameters[1].chosenOption = 'test';
-    const testTool = service.tools.toolList[5];
+    service['tools'].toolList[5].parameters[1].chosenOption = 'test';
+    const testTool = service['tools'].toolList[5];
     element.updateParameters(testTool);
-    expect(element.chosenOption).toEqual(service.tools.toolList[5].parameters[1].chosenOption);
+    expect(element.chosenOption).toEqual(service['tools'].toolList[5].parameters[1].chosenOption);
   });
 
   it('#updateParameters devrait assigner une chaine de caratères vide à thickness', () => {
-    service.tools.toolList[5].parameters[1].chosenOption = '';
-    const testTool = service.tools.toolList[5];
+    service['tools'].toolList[5].parameters[1].chosenOption = '';
+    const testTool = service['tools'].toolList[5];
     element.updateParameters(testTool);
     expect(element.chosenOption).toEqual('');
   });
 
   it('#updateParameters devrait assigner la valeur en paramètre à thicknessPoint', () => {
-    service.tools.toolList[5].parameters[2].value = 10;
-    const testTool = service.tools.toolList[5];
+    service['tools'].toolList[5].parameters[2].value = 10;
+    const testTool = service['tools'].toolList[5];
     element.updateParameters(testTool);
-    expect(element.thicknessPoint).toEqual(service.tools.toolList[5].parameters[2].value);
+    expect(element.thicknessPoint).toEqual(service['tools'].toolList[5].parameters[2].value);
   });
 
   it('#updateParameters devrait assigner 1 à thicknessPoint', () => {
-    service.tools.toolList[5].parameters[2].value = 0;
-    const testTool = service.tools.toolList[5];
+    service['tools'].toolList[5].parameters[2].value = 0;
+    const testTool = service['tools'].toolList[5];
     element.updateParameters(testTool);
     expect(element.thicknessPoint).toEqual(1);
   });

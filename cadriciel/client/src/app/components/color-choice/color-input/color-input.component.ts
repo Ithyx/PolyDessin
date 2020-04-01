@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
+import { RGB_MAX } from 'src/app/services/color/color';
 import { ColorManagerService } from 'src/app/services/color/color-manager.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 
-const RGB_MAX_VALUE = 255;
 const ACCEPTED_LETTERS = new Set(['a', 'b', 'c', 'd', 'e', 'f']);
 
 @Component({
@@ -35,7 +35,7 @@ export class ColorInputComponent {
 
     // Vérification qu'on essaie d'accéder à un index possible
     if (index <= this.colorManager.color.RGBA.length) {
-      this.colorManager.color.RGBA[index] = Math.min(value, RGB_MAX_VALUE);
+      this.colorManager.color.RGBA[index] = Math.min(value, RGB_MAX);
       this.colorManager.updateColor();
     }
   }

@@ -1,4 +1,4 @@
-<a class="subject" href="javascript:void(0);" [style.font-weight]="node.subSubjects ? 'bold' : 'normal'" (click)="onClick();">
+<a [class]="getNodeStatus()" href="javascript:void(0);" (click)="onClick();">
     <pre class="spacing" *ngFor="let index of getRange(depth)">&emsp;</pre>{{node.name}}
 </a>
 

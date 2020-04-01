@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
+import { Color } from '../color/color';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool, TOOL_INDEX } from '../tools/tool-manager.service';
-import { Color, DrawElement, ERASING_COLOR_INIT } from './draw-element';
+import { DrawElement, ERASING_COLOR_INIT } from './draw-element';
 
 const DEFAULT_COLOR = 'rgba(0,0,0,1)';
 
@@ -110,6 +111,8 @@ export class LineService implements DrawElement {
       point.x += this.translate.x;
       point.y += this.translate.y;
     }
+    this.mousePosition.x += this.translate.x;
+    this.mousePosition.y += this.translate.y;
     this.translate = {x: 0, y: 0};
   }
 }

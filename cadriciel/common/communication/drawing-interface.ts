@@ -1,4 +1,5 @@
-import { Color, DrawElement } from '../../client/src/app/services/stockage-svg/draw-element';
+import { DrawElement } from '../../client/src/app/services/stockage-svg/draw-element';
+import { Color } from '../../client/src/app/services/color/color';
 
 export interface Drawing {
     _id: number;

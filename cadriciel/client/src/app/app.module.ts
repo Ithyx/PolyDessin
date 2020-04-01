@@ -39,17 +39,17 @@ import { NavigationGuideService } from './services/navigation-guide.service';
 import { RoutingManagerService } from './services/routing-manager.service';
 import { ShortcutsManagerService } from './services/shortcuts-manager.service';
 import { SVGStockageService } from './services/stockage-svg/svg-stockage.service';
+import { RectangleToolService } from './services/tools/basic-shape-tool/rectangle-tool.service';
 import { LineToolService } from './services/tools/line-tool.service';
-import { PencilToolService } from './services/tools/pencil-tool.service';
-import { RectangleToolService } from './services/tools/rectangle-tool.service';
 import { SelectionService } from './services/tools/selection/selection.service';
+import { PencilToolService } from './services/tools/tracing-tool/pencil-tool.service';
+import { AttributesPanelComponent } from './components/attributes-panel/attributes-panel.component';
 
 @NgModule({
-
     declarations: [AppComponent, HomePageComponent, NewDrawingWarningComponent, DrawingPageComponent, GuidePageComponent,
         NewDrawingWindowComponent, ToolbarComponent, DrawingToolComponent, GuideSubjectComponent, DrawingSurfaceComponent,
         ColorChoiceComponent, ColorSliderComponent, ColorPickerComponent, ColorInputComponent, GridOptionsComponent,
-        SavePopupComponent, GalleryComponent, GalleryElementComponent, GalleryLoadWarningComponent, ExportWindowComponent],
+        SavePopupComponent, GalleryComponent, GalleryElementComponent, GalleryLoadWarningComponent, ExportWindowComponent, AttributesPanelComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
         MatProgressSpinnerModule, MatDialogModule, MatSidenavModule, BrowserAnimationsModule, RouterModule.forRoot([
         {path: '', component: HomePageComponent},

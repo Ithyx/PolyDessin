@@ -4,8 +4,8 @@ import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { Point } from '../line-tool.service';
 import { ToolManagerService} from '../tool-manager.service';
 
-const NUMBER_OF_CONTROL_POINT = 4;
-const SELECTION_BOX_THICKNESS = 4;
+export const NUMBER_OF_CONTROL_POINT = 4;
+export const SELECTION_BOX_THICKNESS = 4;
 const CONTROL_POINT_THICKNESS = 4;
 
 @Injectable({

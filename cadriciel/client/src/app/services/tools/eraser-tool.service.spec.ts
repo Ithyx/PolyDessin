@@ -255,7 +255,8 @@ describe('EraserToolService', () => {
     service.clear();
     expect(spy).not.toHaveBeenCalled();
   });
-  it('#clear devrait changer le svg de chacun des éléments du dessin', () => {
+  it('#clear devrait changer le svg de chacun des éléments du dessin si drawingInProgress est vrai', () => {
+    service['commands'].drawingInProgress = true;
     const spy = spyOn(service, 'updateElement');
     spyOn(service['svgStockage'], 'getCompleteSVG').and.returnValue([element, element, element, element]);
     service.clear();
@@ -266,15 +267,24 @@ describe('EraserToolService', () => {
     service.clear();
     expect(service['commands'].drawingInProgress).toBe(false);
   });
-  it('#clear devrait éxécuter la commande si elle n\'est pas vide', () => {
+  it('#clear devrait exécuter la commande si elle n\'est pas vide et que drawingInProgress est vrai', () => {
+    service['commands'].drawingInProgress = true;
     spyOn(service['removeCommand'], 'isEmpty').and.returnValue(false);
     const spy = spyOn(service['commands'], 'execute');
     const commandCopy = service['removeCommand'];
     service.clear();
     expect(spy).toHaveBeenCalledWith(commandCopy);
   });
-  it('#clear ne devrait pas éxécuter la commande si elle est vide', () => {
+  it('#clear ne devrait pas exécuter la commande si elle est vide et que drawingInProgress est vrai', () => {
+    service['commands'].drawingInProgress = true;
     spyOn(service['removeCommand'], 'isEmpty').and.returnValue(true);
+    const spy = spyOn(service['commands'], 'execute');
+    service.clear();
+    expect(spy).not.toHaveBeenCalled();
+  });
+  it('#clear ne devrait pas exécuter la commande si drawingInProgress est faux', () => {
+    service['commands'].drawingInProgress = false;
+    spyOn(service['removeCommand'], 'isEmpty').and.returnValue(false);
     const spy = spyOn(service['commands'], 'execute');
     service.clear();
     expect(spy).not.toHaveBeenCalled();

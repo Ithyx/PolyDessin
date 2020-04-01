@@ -13,9 +13,11 @@ import { TracePencilService } from '../stockage-svg/trace-pencil.service';
 import { TraceSprayService } from '../stockage-svg/trace-spray.service';
 import { TOOL_INDEX } from '../tools/tool-manager.service';
 
-export const SERVER_POST_URL = 'http://localhost:3000/api/db/saveDrawing';
-export const SERVER_GET_URL = 'http://localhost:3000/api/db/listDrawings';
-export const SERVER_DELETE_URL = 'http://localhost:3000/api/db/deleteDrawing';
+export enum SERVER_URL {
+  POST = 'http://localhost:3000/api/db/saveDrawing',
+  GET = 'http://localhost:3000/api/db/listDrawings',
+  DELETE = 'http://localhost:3000/api/db/deleteDrawing'
+}
 const ID_MAX = 1000000000;
 
 @Injectable({
@@ -38,7 +40,7 @@ export class DatabaseService {
       tags: this.drawingParams.tags,
       elements: this.stockageSVG.getCompleteSVG()
     };
-    await this.http.post(SERVER_POST_URL, drawing).toPromise();
+    await this.http.post(SERVER_URL.POST, drawing).toPromise();
   }
 
   addElement(element: DrawElement): void {
@@ -81,18 +83,18 @@ export class DatabaseService {
     newElement.points = element.points;
     newElement.isSelected = element.isSelected;
     newElement.erasingEvidence = element.erasingEvidence;
-    if (element.primaryColor) { newElement.primaryColor = element.primaryColor; }
-    if (element.secondaryColor) { newElement.secondaryColor = element.secondaryColor; }
+    if (element.primaryColor !== undefined) { newElement.primaryColor = element.primaryColor; }
+    if (element.secondaryColor !== undefined) { newElement.secondaryColor = element.secondaryColor; }
     newElement.erasingColor = element.erasingColor;
-    if (element.thickness) { newElement.thickness = element.thickness; }
-    if (element.thicknessLine) { newElement.thicknessLine = element.thicknessLine; }
-    if (element.thicknessPoint) { newElement.thicknessPoint = element.thicknessPoint; }
-    if (element.texture) { newElement.texture = element.texture; }
-    if (element.perimeter) { newElement.perimeter = element.perimeter; }
+    if (element.thickness !== undefined) { newElement.thickness = element.thickness; }
+    if (element.thicknessLine !== undefined) { newElement.thicknessLine = element.thicknessLine; }
+    if (element.thicknessPoint !== undefined) { newElement.thicknessPoint = element.thicknessPoint; }
+    if (element.texture !== undefined) { newElement.texture = element.texture; }
+    if (element.perimeter !== undefined) { newElement.perimeter = element.perimeter; }
     if (element.isAPoint !== undefined) { newElement.isAPoint = element.isAPoint; }
     if (element.isDotted !== undefined) { newElement.isDotted = element.isDotted; }
-    if (element.chosenOption) { newElement.chosenOption = element.chosenOption; }
-    if (element.isAPolygon) { newElement.isAPolygon = element.isAPolygon; }
+    if (element.chosenOption !== undefined) { newElement.chosenOption = element.chosenOption; }
+    if (element.isAPolygon !== undefined) { newElement.isAPolygon = element.isAPolygon; }
     newElement.pointMin = element.pointMin;
     newElement.pointMax = element.pointMax;
     newElement.translate = element.translate;
@@ -100,14 +102,14 @@ export class DatabaseService {
   }
 
   async getData(): Promise<Drawing[]> {
-    return await this.http.get<Drawing[]>(SERVER_GET_URL).toPromise();
+    return await this.http.get<Drawing[]>(SERVER_URL.GET).toPromise();
   }
 
   async getDataWithTags(tags: string[]): Promise<Drawing[]> {
-    return await this.http.get<Drawing[]>(SERVER_GET_URL + '?tags=' + encodeURIComponent(JSON.stringify(tags))).toPromise();
+    return await this.http.get<Drawing[]>(SERVER_URL.GET + '?tags=' + encodeURIComponent(JSON.stringify(tags))).toPromise();
   }
 
   async deleteDrawing(id: number): Promise<void> {
-    await this.http.delete(SERVER_DELETE_URL + '?id=' + id.toString()).toPromise();
+    await this.http.delete(SERVER_URL.DELETE + '?id=' + id.toString()).toPromise();
   }
 }

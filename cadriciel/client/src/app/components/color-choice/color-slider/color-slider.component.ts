@@ -1,8 +1,8 @@
 /*Component de couleur inspire de https://malcoded.com/posts/angular-color-picker/*/
 
 import { AfterViewInit, Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
+import { A } from 'src/app/services/color/color';
 import { ColorManagerService } from 'src/app/services/color/color-manager.service';
-import { A } from 'src/app/services/stockage-svg/draw-element';
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
 
 enum GRADIENT_POSITION {
@@ -99,19 +99,15 @@ export class ColorSliderComponent implements AfterViewInit, ToolInterface {
     this.mouseDown = true;
     this.chosenHeight = evt.offsetY;
     this.draw();
-    this.emittedColor(evt.offsetX, evt.offsetY);
+    this.colorPosition(evt.offsetX, evt.offsetY);
   }
 
   onMouseMove(evt: MouseEvent): void {
     if (this.mouseDown) {
       this.chosenHeight = evt.offsetY;
       this.draw();
-      this.emittedColor(evt.offsetX, evt.offsetY);
+      this.colorPosition(evt.offsetX, evt.offsetY);
     }
-  }
-
-  emittedColor(x: number, y: number): void {
-    this.colorPosition(x, y);
   }
 
   colorPosition(x: number, y: number): void {

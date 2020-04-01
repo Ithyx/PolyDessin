@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RectangleService } from '../stockage-svg/rectangle.service';
+import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { BasicShapeToolService } from './basic-shape-tool.service';
 
 @Injectable({

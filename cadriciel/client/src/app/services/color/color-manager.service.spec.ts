@@ -27,7 +27,8 @@ describe('ColorManagerService', () => {
     scope = Scope.Primary;
     service.applyColor(scope);
 
-    expect(service['colorParameter'].primaryColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
+    expect(service['colorParameter'].primaryColor.RGBAString).toBe(`rgba(0, 0,
+      0, 1)`);
   });
 
   it('#applyColor devrait ajouter la couleur au tableau derniereCouleur si la Scope est Principale', () => {
@@ -42,7 +43,8 @@ describe('ColorManagerService', () => {
     scope = Scope.Secondary;
     service.applyColor(scope);
 
-    expect(service['colorParameter'].secondaryColor.RGBAString).toBe('rgba(0, 0, 0, 1)');
+    expect(service['colorParameter'].secondaryColor.RGBAString).toBe(`rgba(0, 0,
+      0, 1)`);
   });
 
   it('#applyColor devrait ajouter la couleur au tableau derniereCouleur si la Scope est Secondaire', () => {
@@ -76,6 +78,12 @@ describe('ColorManagerService', () => {
     spyOn(service, 'addLastColor');
 
     expect(service.addLastColor).not.toHaveBeenCalled();
+  });
+
+  it('#applyColor devrait appeler updateColors de colorParameter', () => {
+    const spy = spyOn(service['colorParameter'], 'updateColors');
+    service.applyColor(Scope.Default);
+    expect(spy).toHaveBeenCalled();
   });
 
   // TESTS addLastColor

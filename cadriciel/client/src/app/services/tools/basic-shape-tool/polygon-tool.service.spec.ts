@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ColorParameterService } from '../color/color-parameter.service';
-import { Command } from '../command/command';
-import { CommandManagerService } from '../command/command-manager.service';
-import { DrawElement } from '../stockage-svg/draw-element';
-import { PolygonService } from '../stockage-svg/polygon.service';
-import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
+import { ColorParameterService } from '../../color/color-parameter.service';
+import { Command } from '../../command/command';
+import { CommandManagerService } from '../../command/command-manager.service';
+import { DrawElement } from '../../stockage-svg/draw-element';
+import { PolygonService } from '../../stockage-svg/polygon.service';
+import { SVGStockageService } from '../../stockage-svg/svg-stockage.service';
+import { DrawingTool, ToolManagerService } from '../tool-manager.service';
 import { DEFAULT_SIDES, PolygonToolService } from './polygon-tool.service';
-import { DrawingTool, ToolManagerService } from './tool-manager.service';
 
 // tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers

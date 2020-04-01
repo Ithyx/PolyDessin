@@ -37,4 +37,8 @@ export class GuideSubjectComponent {
     this.notification.emit(subject);
   }
 
+  getNodeStatus(): string {
+    return this.node.subSubjects ? 'parent-subject' : 'subject';
+  }
+
 }

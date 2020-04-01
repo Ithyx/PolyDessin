@@ -11,4 +11,8 @@ export class DrawingToolComponent {
   // Valeur par défaut pour les unit test
   @Input() tool: DrawingTool = EMPTY_TOOL;
 
+  getActiveStatus(): string {
+    return this.tool.isActive ? 'active' : 'inactive';
+  }
+
 }
