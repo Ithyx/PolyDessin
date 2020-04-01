@@ -13,12 +13,12 @@ describe('SelectionBoxService', () => {
 
   beforeEach(() => {
     service['tools'].activeTool = service['tools'].toolList[6];
-    service.selectionBox = new RectangleService();
+    service.box = new RectangleService();
     service.controlPointBox = new Array<RectangleService>(NUMBER_OF_CONTROL_POINT);
     for (let index = 0; index < service.controlPointBox.length; index++) {
       service.controlPointBox[index] = new RectangleService();
     }
-    service.selectionBox.drawShape();
+    service.box.drawShape();
     service.mouseClick = {x: 10, y: 10};
   });
 
@@ -30,9 +30,9 @@ describe('SelectionBoxService', () => {
   // TESTS createSelectionBox
 
   it('#createSelectionBox devrait initialiser selectionBox', () => {
-    service.selectionBox.erasingEvidence = true;
+    service.box.erasingEvidence = true;
     service.createSelectionBox({x: 10, y: 10}, {x: 100, y: 100});
-    expect(service.selectionBox.erasingEvidence).toBe(false);
+    expect(service.box.erasingEvidence).toBe(false);
   });
 
   it('#createSelectionBox devrait initialiser controlPointBox avec NUMBER_OF_CONTROL_POINT élément', () => {
@@ -55,9 +55,9 @@ describe('SelectionBoxService', () => {
 
   it('#createSelectionBox devrait initialiser isSelected à vrai', () => {
     spyOn(service, 'createControlPointBox').and.callFake(() => { return; });
-    service.selectionBox.isSelected = false;
+    service.box.isSelected = false;
     service.createSelectionBox({x: 10, y: 10}, {x: 100, y: 100});
-    expect(service.selectionBox.isSelected).toBe(true);
+    expect(service.box.isSelected).toBe(true);
   });
 
   it('#createSelectionBox devrait appeler la fonction updateParameters', () => {
@@ -69,30 +69,30 @@ describe('SelectionBoxService', () => {
 
   it('#createSelectionBox devrait assigner le premier point en paramètre au premier élément de points', () => {
     spyOn(service, 'createControlPointBox').and.callFake(() => { return; });
-    service.selectionBox.points = [];
+    service.box.points = [];
     service.createSelectionBox({x: 10, y: 10}, {x: 100, y: 100});
-    expect(service.selectionBox.points[0]).toEqual({x: 10, y: 10});
+    expect(service.box.points[0]).toEqual({x: 10, y: 10});
   });
 
   it('#createSelectionBox devrait assigner le deuxième point en paramètre au deuxième élément de points', () => {
     spyOn(service, 'createControlPointBox').and.callFake(() => { return; });
-    service.selectionBox.points = [];
+    service.box.points = [];
     service.createSelectionBox({x: 10, y: 10}, {x: 100, y: 100});
-    expect(service.selectionBox.points[1]).toEqual({x: 100, y: 100});
+    expect(service.box.points[1]).toEqual({x: 100, y: 100});
   });
 
   it('#createSelectionBox devrait assigner une chaine de caractères à secondaryColor.RGBAString', () => {
     spyOn(service, 'createControlPointBox').and.callFake(() => { return; });
-    service.selectionBox.secondaryColor.RGBAString = 'test';
+    service.box.secondaryColor.RGBAString = 'test';
     service.createSelectionBox({x: 10, y: 10}, {x: 100, y: 100});
-    expect(service.selectionBox.secondaryColor.RGBAString).toEqual('rgba(0, 80, 150, 1)');
+    expect(service.box.secondaryColor.RGBAString).toEqual('rgba(0, 80, 150, 1)');
   });
 
   it('#createSelectionBox devrait assigner la constante SELECTION_BOX_THICKNESS à thickness', () => {
     spyOn(service, 'createControlPointBox').and.callFake(() => { return; });
-    service.selectionBox.thickness = 42;
+    service.box.thickness = 42;
     service.createSelectionBox({x: 10, y: 10}, {x: 100, y: 100});
-    expect(service.selectionBox.thickness).toEqual(SELECTION_BOX_THICKNESS);
+    expect(service.box.thickness).toEqual(SELECTION_BOX_THICKNESS);
   });
 
   it('#createSelectionBox devrait appeler la fonction drawShape', () => {
@@ -104,10 +104,10 @@ describe('SelectionBoxService', () => {
 
   it('#createSelectionBox devrait assigner svg à svgHtml', () => {
     spyOn(service, 'createControlPointBox').and.callFake(() => { return; });
-    service.selectionBox.svgHtml = 'test';
+    service.box.svgHtml = 'test';
     service.createSelectionBox({x: 10, y: 10}, {x: 100, y: 100});
-    const test = service['sanitizer'].bypassSecurityTrustHtml(service.selectionBox.svg);
-    expect(service.selectionBox.svgHtml).toEqual(test);
+    const test = service['sanitizer'].bypassSecurityTrustHtml(service.box.svg);
+    expect(service.box.svgHtml).toEqual(test);
   });
 
   it('#createSelectionBox devrait appeler la fonction createControlPointBox', () => {
@@ -119,60 +119,60 @@ describe('SelectionBoxService', () => {
   // TESTS createControlPointBox
     // TOP
   it('#createControlPointBox devrait intialiser le premier point du premier élément du conteneur controlPointBox', () => {
-    const testX = ((service.selectionBox.points[0].x + service.selectionBox.points[1].x) / 2) - 4;
-    const testY = (service.selectionBox.points[0].y - 4);
+    const testX = ((service.box.points[0].x + service.box.points[1].x) / 2) - 4;
+    const testY = (service.box.points[0].y - 4);
     service.createControlPointBox();
     expect(service.controlPointBox[0].points[0]).toEqual({x: testX, y: testY});
   });
 
   it('#createControlPointBox devrait intialiser le deuxième point du premier élément du conteneur controlPointBox', () => {
-    const testX = ((service.selectionBox.points[0].x + service.selectionBox.points[1].x) / 2) + 4;
-    const testY = (service.selectionBox.points[0].y + 4);
+    const testX = ((service.box.points[0].x + service.box.points[1].x) / 2) + 4;
+    const testY = (service.box.points[0].y + 4);
     service.createControlPointBox();
     expect(service.controlPointBox[0].points[1]).toEqual({x: testX, y: testY});
   });
 
   // BOTTOM
   it('#createControlPointBox devrait intialiser le premier point du deuxième élément du conteneur controlPointBox', () => {
-    const testX = ((service.selectionBox.points[0].x + service.selectionBox.points[1].x) / 2) - 4;
-    const testY = (service.selectionBox.points[1].y - 4);
+    const testX = ((service.box.points[0].x + service.box.points[1].x) / 2) - 4;
+    const testY = (service.box.points[1].y - 4);
     service.createControlPointBox();
     expect(service.controlPointBox[1].points[0]).toEqual({x: testX, y: testY});
   });
 
   it('#createControlPointBox devrait intialiser le deuxième point du deuxième élément du conteneur controlPointBox', () => {
-    const testX = ((service.selectionBox.points[0].x + service.selectionBox.points[1].x) / 2) + 4;
-    const testY = (service.selectionBox.points[1].y + 4);
+    const testX = ((service.box.points[0].x + service.box.points[1].x) / 2) + 4;
+    const testY = (service.box.points[1].y + 4);
     service.createControlPointBox();
     expect(service.controlPointBox[1].points[1]).toEqual({x: testX, y: testY});
   });
 
   // LEFT
   it('#createControlPointBox devrait intialiser le premier point du troisième élément du conteneur controlPointBox', () => {
-    const testX = (service.selectionBox.points[0].x - 4);
-    const testY = ((service.selectionBox.points[0].y + service.selectionBox.points[1].y) / 2) - 4;
+    const testX = (service.box.points[0].x - 4);
+    const testY = ((service.box.points[0].y + service.box.points[1].y) / 2) - 4;
     service.createControlPointBox();
     expect(service.controlPointBox[2].points[0]).toEqual({x: testX, y: testY});
   });
 
   it('#createControlPointBox devrait intialiser le deuxième point du troisième élément du conteneur controlPointBox', () => {
-    const testX = (service.selectionBox.points[0].x + 4);
-    const testY = ((service.selectionBox.points[0].y + service.selectionBox.points[1].y) / 2) + 4;
+    const testX = (service.box.points[0].x + 4);
+    const testY = ((service.box.points[0].y + service.box.points[1].y) / 2) + 4;
     service.createControlPointBox();
     expect(service.controlPointBox[2].points[1]).toEqual({x: testX, y: testY});
   });
 
   // RIGHT
   it('#createControlPointBox devrait intialiser le premier point du quatrième élément du conteneur controlPointBox', () => {
-    const testX = (service.selectionBox.points[1].x - 4);
-    const testY = ((service.selectionBox.points[0].y + service.selectionBox.points[1].y) / 2) - 4;
+    const testX = (service.box.points[1].x - 4);
+    const testY = ((service.box.points[0].y + service.box.points[1].y) / 2) - 4;
     service.createControlPointBox();
     expect(service.controlPointBox[3].points[0]).toEqual({x: testX, y: testY});
   });
 
   it('#createControlPointBox devrait intialiser le deuxième point du quatrième élément du conteneur controlPointBox', () => {
-    const testX = (service.selectionBox.points[1].x + 4);
-    const testY = ((service.selectionBox.points[0].y + service.selectionBox.points[1].y) / 2) + 4;
+    const testX = (service.box.points[1].x + 4);
+    const testY = ((service.box.points[0].y + service.box.points[1].y) / 2) + 4;
     service.createControlPointBox();
     expect(service.controlPointBox[3].points[1]).toEqual({x: testX, y: testY});
   });
@@ -198,7 +198,7 @@ describe('SelectionBoxService', () => {
 
   it('#deleteSelectionBox devrait effacer selectionBox', () => {
     service.deleteSelectionBox();
-    expect(service.selectionBox).toBeUndefined();
+    expect(service.box).toBeUndefined();
   });
 
   it('#deleteSelectionBox devrait effacer controlPointBox s\'il y en a', () => {
@@ -215,22 +215,22 @@ describe('SelectionBoxService', () => {
   // TESTS updatePosition
 
   it('#updatePosition devrait ajouter les nombres en paramètre à translate pour selectionBox', () => {
-    service.selectionBox.translate = {x: 10, y: 10};
+    service.box.translate = {x: 10, y: 10};
     service.updatePosition(100, 100);
-    expect(service.selectionBox.translate).toEqual({x: 110, y: 110});
+    expect(service.box.translate).toEqual({x: 110, y: 110});
   });
 
   it('#updatePosition devrait appeler la fonction drawShape pour selectionBox', () => {
-    const test = spyOn(service.selectionBox, 'drawShape');
+    const test = spyOn(service.box, 'drawShape');
     service.updatePosition(100, 100);
     expect(test).toHaveBeenCalled();
   });
 
   it('#updatePosition devrait assigner svg à svgHtml pour selectionBox', () => {
-    service.selectionBox.svgHtml = 'test';
+    service.box.svgHtml = 'test';
     service.updatePosition(100, 100);
-    const test = service['sanitizer'].bypassSecurityTrustHtml(service.selectionBox.svg);
-    expect(service.selectionBox.svgHtml).toEqual(test);
+    const test = service['sanitizer'].bypassSecurityTrustHtml(service.box.svg);
+    expect(service.box.svgHtml).toEqual(test);
   });
 
   it('#updatePosition devrait ajouter les nombres en paramètre à translate pour chaque point de controlPointBox', () => {
@@ -258,7 +258,7 @@ describe('SelectionBoxService', () => {
       controlPoint.svgHtml = 'test';
     }
     service.updatePosition(100, 100);
-    const test = service['sanitizer'].bypassSecurityTrustHtml(service.selectionBox.svg);
+    const test = service['sanitizer'].bypassSecurityTrustHtml(service.box.svg);
     for (const controlPoint of service.controlPointBox) {
       expect(controlPoint.svgHtml).toEqual(test);
     }
@@ -269,22 +269,22 @@ describe('SelectionBoxService', () => {
   it('#updatePositionMouse devrait ajouter les nombres en paramètre à translate pour selectionBox', () => {
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
     service.updatePositionMouse(click);
-    expect(service.selectionBox.translate).toEqual({x: 90, y: 90});
+    expect(service.box.translate).toEqual({x: 90, y: 90});
   });
 
   it('#updatePositionMouse devrait appeler la fonction drawShape pour selectionBox', () => {
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    const test = spyOn(service.selectionBox, 'drawShape');
+    const test = spyOn(service.box, 'drawShape');
     service.updatePositionMouse(click);
     expect(test).toHaveBeenCalled();
   });
 
   it('#updatePositionMouse devrait assigner svg à svgHtml pour selectionBox', () => {
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    service.selectionBox.svgHtml = 'test';
+    service.box.svgHtml = 'test';
     service.updatePositionMouse(click);
-    const test = service['sanitizer'].bypassSecurityTrustHtml(service.selectionBox.svg);
-    expect(service.selectionBox.svgHtml).toEqual(test);
+    const test = service['sanitizer'].bypassSecurityTrustHtml(service.box.svg);
+    expect(service.box.svgHtml).toEqual(test);
   });
 
   it('#updatePositionMouse devrait ajouter les nombres en paramètre à translate pour chaque point de controlPointBox', () => {
@@ -315,7 +315,7 @@ describe('SelectionBoxService', () => {
       controlPoint.svgHtml = 'test';
     }
     service.updatePositionMouse(click);
-    const test = service['sanitizer'].bypassSecurityTrustHtml(service.selectionBox.svg);
+    const test = service['sanitizer'].bypassSecurityTrustHtml(service.box.svg);
     for (const controlPoint of service.controlPointBox) {
       expect(controlPoint.svgHtml).toEqual(test);
     }

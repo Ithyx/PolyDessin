@@ -7,7 +7,7 @@ import { SVGStockageService } from './svg-stockage.service';
 
 // tslint:disable: no-string-literal
 
-describe('StockageSvgService', () => {
+describe('SVGStockageService', () => {
   let SVGHTML: SafeHtml;
   let lineElement: LineService;
   let drawElement: DrawElement;

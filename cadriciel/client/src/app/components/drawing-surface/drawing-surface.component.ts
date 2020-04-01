@@ -47,11 +47,11 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   }
 
   clickBelongToSelectionBox(mouse: MouseEvent): boolean {
-    const belongInX = mouse.offsetX >= this.selection.selectionBox.selectionBox.points[0].x
-                    && mouse.offsetX <= this.selection.selectionBox.selectionBox.points[1].x;
+    const belongInX = mouse.offsetX >= this.selection.selectionBox.box.points[0].x
+                    && mouse.offsetX <= this.selection.selectionBox.box.points[1].x;
 
-    const belongInY = mouse.offsetY >= this.selection.selectionBox.selectionBox.points[0].y
-                    && mouse.offsetY <= this.selection.selectionBox.selectionBox.points[1].y;
+    const belongInY = mouse.offsetY >= this.selection.selectionBox.box.points[0].y
+                    && mouse.offsetY <= this.selection.selectionBox.box.points[1].y;
 
     return belongInX && belongInY;
   }
@@ -127,7 +127,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
 
   handleMouseUpBox(): void {
    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
-     this.selection.selectionBox.selectionBox.translateAllPoints();
+     this.selection.selectionBox.box.translateAllPoints();
      for (const controlPoint of this.selection.selectionBox.controlPointBox) {
        controlPoint.translateAllPoints();
      }
@@ -140,7 +140,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       if (mouse.button === LEFT_CLICK) {
         // si on clique dans la boite de selection d'un element SVG
-        if (this.selection.selectionBox.selectionBox && this.clickBelongToSelectionBox(mouse)) {
+        if (this.selection.selectionBox.box && this.clickBelongToSelectionBox(mouse)) {
           this.selection.selectionBox.mouseClick = {x: mouse.offsetX , y: mouse.offsetY };
           this.selection.clickInSelectionBox = true;
           delete this.selection.selectionRectangle.rectangle;
@@ -161,7 +161,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
     }
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       if (this.selection.selectedElements.length !== 0) {
-        this.selection.selectionBox.selectionBox.translateAllPoints();
+        this.selection.selectionBox.box.translateAllPoints();
         for (const controlPoint of this.selection.selectionBox.controlPointBox) {
           controlPoint.translateAllPoints();
         }

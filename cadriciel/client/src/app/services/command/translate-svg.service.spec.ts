@@ -15,7 +15,7 @@ const controlPoint3 = new RectangleService();
 const controlPoint4 = new RectangleService();
 
 const selectionBoxStub: Partial<SelectionBoxService> = {
-  selectionBox: new RectangleService(),
+  box: new RectangleService(),
   controlPointBox: [
     controlPoint1,
     controlPoint2,
@@ -90,9 +90,9 @@ describe('TranslateSvgService', () => {
   });
 
   it('#constructor devrait appeler translateAllPoints de selectionBox', () => {
-    spyOn(selectionBox.selectionBox, 'translateAllPoints');
+    spyOn(selectionBox.box, 'translateAllPoints');
     service = new TranslateSvgService(elements, selectionBox, sanitizer, deleteBoundingBoxStub);
-    expect(selectionBox.selectionBox.translateAllPoints).toHaveBeenCalled();
+    expect(selectionBox.box.translateAllPoints).toHaveBeenCalled();
   });
 
   it('#constructor devrait appeler translateAllPoints de tous les controlPointBox de selectionBox', () => {

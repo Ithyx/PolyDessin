@@ -91,7 +91,7 @@ export class ShortcutsManagerService {
               }
 
   updatePositionTimer(): void {
-    if (this.selection.selectionBox.selectionBox) {
+    if (this.selection.selectionBox.box) {
       if (!this.leftArrow && !this.rightArrow && !this.upArrow && !this.downArrow) {
         window.clearInterval(this.clearTimeout);
         this.counter100ms = 0;

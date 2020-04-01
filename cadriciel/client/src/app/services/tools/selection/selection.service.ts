@@ -232,7 +232,7 @@ export class SelectionService implements ToolInterface {
   }
 
   updatePosition(x: number, y: number): void {
-    if (this.selectionBox.selectionBox) {
+    if (this.selectionBox.box) {
       for (const element of this.selectedElements) {
           element.updatePosition(x, y);
           element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
@@ -242,7 +242,7 @@ export class SelectionService implements ToolInterface {
   }
 
   updatePositionMouse(mouse: MouseEvent): void {
-    if (this.selectionBox.selectionBox) {
+    if (this.selectionBox.box) {
       for (const element of this.selectedElements) {
           element.updatePositionMouse(mouse, this.selectionBox.mouseClick);
           element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);

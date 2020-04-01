@@ -23,7 +23,7 @@ describe('SurfaceDessinComponent', () => {
   const selectedElement: DrawElement = new LineService();
 
   const selectionBoxStub: Partial<SelectionBoxService> = {
-    selectionBox: new RectangleService(),
+    box: new RectangleService(),
     mouseClick: {x: 0, y: 0},
     controlPointBox: []
   };
@@ -83,9 +83,9 @@ describe('SurfaceDessinComponent', () => {
     canvas = document.createElement('canvas');
     component['canvas'] = new ElementRef<HTMLCanvasElement>(canvas);
     component['selection'] = TestBed.get(SelectionService);
-    component['selection'].selectionBox.selectionBox = new RectangleService();
-    component['selection'].selectionBox.selectionBox.points[0] = {x: 10, y: 10};
-    component['selection'].selectionBox.selectionBox.points[1] = {x: 20, y: 20};
+    component['selection'].selectionBox.box = new RectangleService();
+    component['selection'].selectionBox.box.points[0] = {x: 10, y: 10};
+    component['selection'].selectionBox.box.points[1] = {x: 20, y: 20};
     component['selection'].selectionRectangle.rectangle = new RectangleService();
     selectedElement.isSelected = true;
     element.isSelected = false;
@@ -371,12 +371,12 @@ describe('SurfaceDessinComponent', () => {
   // TESTS handleMouseUpBox
   it('#handleMouseUpBox ne devrait rien faire si l\'outil actif n\'est pas la sélection', () => {
     component['tools'].activeTool.ID = TOOL_INDEX.COLOR_CHANGER;
-    const spy = spyOn(component['selection'].selectionBox.selectionBox, 'translateAllPoints');
+    const spy = spyOn(component['selection'].selectionBox.box, 'translateAllPoints');
     component.handleMouseUpBox();
     expect(spy).not.toHaveBeenCalled();
   });
   it('#handleMouseUpBox devrait appeler translateAllPoints de selectionBox si l\'outil actif est la sélection', () => {
-    const spy = spyOn(component['selection'].selectionBox.selectionBox, 'translateAllPoints');
+    const spy = spyOn(component['selection'].selectionBox.box, 'translateAllPoints');
     component.handleMouseUpBox();
     expect(spy).toHaveBeenCalled();
   });
@@ -441,7 +441,7 @@ describe('SurfaceDessinComponent', () => {
   });
   it('handleMouseDownBackground devrait appeler handleBackgroundLeftClick '
     + 'lors d\'un left click où selectionBox n\'est pas défini', () => {
-    delete component['selection'].selectionBox.selectionBox;
+    delete component['selection'].selectionBox.box;
     const spy = spyOn(component, 'handleMouseDownBackground');
     component.handleMouseDownBackground(new MouseEvent('down', {button: 0}));
     expect(spy).toHaveBeenCalled();
@@ -483,21 +483,21 @@ describe('SurfaceDessinComponent', () => {
   });
   it('#handleMouseUpBackground ne devrait rien faire avec la sélection si l\'outil actif n\'est pas la sélection', () => {
     component['tools'].activeTool.ID = TOOL_INDEX.COLOR_CHANGER;
-    const spy = spyOn(component['selection'].selectionBox.selectionBox, 'translateAllPoints');
+    const spy = spyOn(component['selection'].selectionBox.box, 'translateAllPoints');
     component.handleMouseUpBackground(new MouseEvent('up'));
     expect(spy).not.toHaveBeenCalled();
   });
   it('#handleMouseUpBackground ne devrait rien faire avec la sélection '
     + 'si l\'outil actif est la sélection et selectedElements est vide', () => {
     component['selection'].selectedElements = [];
-    const spy = spyOn(component['selection'].selectionBox.selectionBox, 'translateAllPoints');
+    const spy = spyOn(component['selection'].selectionBox.box, 'translateAllPoints');
     component.handleMouseUpBackground(new MouseEvent('up'));
     expect(spy).not.toHaveBeenCalled();
   });
   it('#handleMouseUpBackground devrait appeler translateAllPoints de selectionBox '
     + 'si l\'outil actif est la sélection et selectedElements n\'est pas vide', () => {
     spyOn(component, 'handleBackgroundLeftClick').and.returnValue();
-    const spy = spyOn(component['selection'].selectionBox.selectionBox, 'translateAllPoints');
+    const spy = spyOn(component['selection'].selectionBox.box, 'translateAllPoints');
     component.handleMouseUpBackground(new MouseEvent('up'));
     expect(spy).toHaveBeenCalled();
   });

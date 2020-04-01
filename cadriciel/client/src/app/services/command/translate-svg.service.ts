@@ -24,7 +24,7 @@ export class TranslateSvgService implements Command {
                 element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
                 element.translateAllPoints();
                }
-               this.selectionBox.selectionBox.translateAllPoints();
+               this.selectionBox.box.translateAllPoints();
                for (const element of this.selectionBox.controlPointBox) {
                  element.translateAllPoints();
                }
