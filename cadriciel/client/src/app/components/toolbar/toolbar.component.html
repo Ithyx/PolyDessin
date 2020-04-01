@@ -54,16 +54,24 @@
         </div>
         <div class="redo-undo">
             <ng-template [ngIf]="commands.hasExecutedCommands()" [ngIfElse]="undoNotAvailable">
-                <a mat-stroked-button (click)="commands.cancelCommand()">Annuler</a>
+                <a mat-stroked-button (click)="commands.cancelCommand()">
+                    <i class="fas fa-undo"></i> Annuler
+                </a>
             </ng-template>
             <ng-template #undoNotAvailable>
-                <a mat-stroked-button class="notavailable">Annuler</a>
+                <a mat-stroked-button class="notavailable">
+                    <i class="fas fa-undo"></i> Annuler
+                </a>
             </ng-template>
             <ng-template [ngIf]="commands.hasCancelledCommands()" [ngIfElse]="redoNotAvailable">
-                <a mat-stroked-button (click)="commands.redoCommand()">Refaire</a>
+                <a mat-stroked-button (click)="commands.redoCommand()">
+                    <i class="fas fa-redo"></i> Refaire
+                </a>
             </ng-template>
             <ng-template #redoNotAvailable>
-                <a mat-stroked-button class="notavailable">Refaire</a>
+                <a mat-stroked-button class="notavailable">
+                    <i class="fas fa-redo"></i> Refaire
+                </a>
             </ng-template>
         </div>
         <i class="fas fa-palette" style ="margin-top : 10px"></i>
