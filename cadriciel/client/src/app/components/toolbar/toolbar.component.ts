@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig} from '@angular/material';
 import { Subscription } from 'rxjs';
-import { Scope } from 'src/app/services/color/color-manager.service';
+import { PERCENTAGE, Scope } from 'src/app/services/color/color-manager.service';
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
@@ -14,8 +14,6 @@ import { GalleryComponent } from '../gallery/gallery.component';
 import { GridOptionsComponent } from '../grid-options/grid-options.component';
 import { NewDrawingWarningComponent } from '../new-drawing-warning/new-drawing-warning.component';
 import { SavePopupComponent } from '../save-popup/save-popup.component';
-
-const PERCENTAGE = 100;
 
 @Component({
   selector: 'app-toolbar',

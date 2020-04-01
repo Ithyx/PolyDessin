@@ -38,9 +38,12 @@ export class ColorParameterService {
   }
 
   intervertColors(): void {
-    const copy = {...this.primaryColor};
+    const oldPrimaryColor = {...this.primaryColor};
     this.primaryColor = {...this.secondaryColor};
-    this.secondaryColor = copy;
+    this.secondaryColor = oldPrimaryColor;
+    const oldPrimaryOpacity = this.primaryOpacityDisplayed;
+    this.primaryOpacityDisplayed = this.secondaryOpacityDisplayed;
+    this.secondaryOpacityDisplayed = oldPrimaryOpacity;
   }
 
   updateColors(): void {

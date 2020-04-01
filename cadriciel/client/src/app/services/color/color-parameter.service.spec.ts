@@ -16,7 +16,7 @@ describe('ColorParameterService', () => {
     expect(testService).toBeTruthy();
   });
 
-  // TEST intervertColors
+  // TESTS intervertColors
 
   it('#intervertColors devrait échanger la couleur principale et la couleur secondaire', () => {
     service.primaryColor = {RGBAString: 'rgba(1, 2, 3, 1)', RGBA: [1, 2, 3, 1]};
@@ -29,6 +29,14 @@ describe('ColorParameterService', () => {
 
     expect(service.primaryColor).toEqual(secondaryColorCopy);
     expect(service.secondaryColor).toEqual(primaryColorCopy);
+  });
+
+  it('#intervertColors devrait échanger l\'opacité principale et l\'opacité secondaire', () => {
+    service.primaryOpacityDisplayed = 78;
+    service.secondaryOpacityDisplayed = 52;
+    service.intervertColors();
+    expect(service.primaryOpacityDisplayed).toBe(52);
+    expect(service.secondaryOpacityDisplayed).toBe(78);
   });
 
   // TEST updateColors
