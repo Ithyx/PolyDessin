@@ -20,14 +20,14 @@ const ANGLE_DIVIDER = 4;
 })
 export class LineToolService implements ToolInterface {
   private isSimpleClick: boolean;
-  shiftPressPosition: Point;
-  line: LineService;
+  protected shiftPressPosition: Point;
+  private line: LineService;
 
-  cursor: Point = {x: 0, y: 0};
+  private cursor: Point = {x: 0, y: 0};
 
-  constructor(public svgStockage: SVGStockageService,
-              public tools: ToolManagerService,
-              public commands: CommandManagerService
+  constructor(private svgStockage: SVGStockageService,
+              private tools: ToolManagerService,
+              private commands: CommandManagerService
               ) {
                 this.line = new LineService();
                 this.isSimpleClick = true;
