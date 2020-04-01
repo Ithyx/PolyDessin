@@ -2,7 +2,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { Drawing } from '../../../../../common/communication/drawing-interface';
 import { DrawElement } from '../stockage-svg/draw-element';
-import { DatabaseService, SERVER_DELETE_URL, SERVER_GET_URL, SERVER_POST_URL } from './database.service';
+import { DatabaseService, SERVER_URL } from './database.service';
 
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
@@ -49,20 +49,20 @@ describe('DatabaseService', () => {
   it('#saveDrawing devrait remplacer la valeur de l\'id si celui-ci est nul', () => {
     service['drawingParams'].id = 0;
     service.saveDrawing();
-    const req = mock.expectOne(SERVER_POST_URL);
+    const req = mock.expectOne(SERVER_URL.POST);
     req.flush(null);
     expect(service['drawingParams'].id).not.toBe(0);
   });
   it('#saveDrawing ne devrait pas remplacer la valeur de l\'id si celui-ci n\'est pas nul', () => {
     service['drawingParams'].id = 123456;
     service.saveDrawing();
-    const req = mock.expectOne(SERVER_POST_URL);
+    const req = mock.expectOne(SERVER_URL.POST);
     req.flush(null);
     expect(service['drawingParams'].id).toBe(123456);
   });
   it('#saveDrawing devrait faire une requête POST au serveur avec la bonne URL', () => {
     service.saveDrawing().then((res) => expect(res).toEqual());
-    const req = mock.expectOne(SERVER_POST_URL);
+    const req = mock.expectOne(SERVER_URL.POST);
     expect(req.request.method).toBe('POST');
     const drawing: Drawing = {
       _id: service['drawingParams'].id,
@@ -124,7 +124,7 @@ describe('DatabaseService', () => {
   // TESTS getData
   it('#getData devrait faire une requête GET au serveur avec la bonne URL', () => {
     service.getData().then((res) => expect(res).toEqual([]));
-    const req = mock.expectOne(SERVER_GET_URL);
+    const req = mock.expectOne(SERVER_URL.GET);
     expect(req.request.method).toBe('GET');
     req.flush([]);
   });
@@ -132,7 +132,7 @@ describe('DatabaseService', () => {
   // TESTS getDataWithTags
   it('#getDataWithTags devrait faire une requête GET au serveur avec la bonne URL', () => {
     service.getDataWithTags(['tag1', 'tag2']).then((res) => expect(res).toEqual([]));
-    const req = mock.expectOne(SERVER_GET_URL + '?tags=' + encodeURIComponent(JSON.stringify(['tag1', 'tag2'])));
+    const req = mock.expectOne(SERVER_URL.GET + '?tags=' + encodeURIComponent(JSON.stringify(['tag1', 'tag2'])));
     expect(req.request.method).toBe('GET');
     req.flush([]);
   });
@@ -140,7 +140,7 @@ describe('DatabaseService', () => {
   // TESTS deleteDrawing
   it('#deleteDrawing devrait faire une requête DELETE au serveur avec la bonne URL', () => {
     service.deleteDrawing(12345).then((res) => expect(res).toEqual());
-    const req = mock.expectOne(SERVER_DELETE_URL + '?id=' + '12345');
+    const req = mock.expectOne(SERVER_URL.DELETE + '?id=' + '12345');
     expect(req.request.method).toBe('DELETE');
     req.flush(null);
   });

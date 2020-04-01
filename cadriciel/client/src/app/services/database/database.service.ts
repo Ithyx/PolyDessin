@@ -13,9 +13,11 @@ import { TracePencilService } from '../stockage-svg/trace-pencil.service';
 import { TraceSprayService } from '../stockage-svg/trace-spray.service';
 import { TOOL_INDEX } from '../tools/tool-manager.service';
 
-export const SERVER_POST_URL = 'http://localhost:3000/api/db/saveDrawing';
-export const SERVER_GET_URL = 'http://localhost:3000/api/db/listDrawings';
-export const SERVER_DELETE_URL = 'http://localhost:3000/api/db/deleteDrawing';
+export enum SERVER_URL {
+  POST = 'http://localhost:3000/api/db/saveDrawing',
+  GET = 'http://localhost:3000/api/db/listDrawings',
+  DELETE = 'http://localhost:3000/api/db/deleteDrawing'
+}
 const ID_MAX = 1000000000;
 
 @Injectable({
@@ -38,7 +40,7 @@ export class DatabaseService {
       tags: this.drawingParams.tags,
       elements: this.stockageSVG.getCompleteSVG()
     };
-    await this.http.post(SERVER_POST_URL, drawing).toPromise();
+    await this.http.post(SERVER_URL.POST, drawing).toPromise();
   }
 
   addElement(element: DrawElement): void {
@@ -100,14 +102,14 @@ export class DatabaseService {
   }
 
   async getData(): Promise<Drawing[]> {
-    return await this.http.get<Drawing[]>(SERVER_GET_URL).toPromise();
+    return await this.http.get<Drawing[]>(SERVER_URL.GET).toPromise();
   }
 
   async getDataWithTags(tags: string[]): Promise<Drawing[]> {
-    return await this.http.get<Drawing[]>(SERVER_GET_URL + '?tags=' + encodeURIComponent(JSON.stringify(tags))).toPromise();
+    return await this.http.get<Drawing[]>(SERVER_URL.GET + '?tags=' + encodeURIComponent(JSON.stringify(tags))).toPromise();
   }
 
   async deleteDrawing(id: number): Promise<void> {
-    await this.http.delete(SERVER_DELETE_URL + '?id=' + id.toString()).toPromise();
+    await this.http.delete(SERVER_URL.DELETE + '?id=' + id.toString()).toPromise();
   }
 }
