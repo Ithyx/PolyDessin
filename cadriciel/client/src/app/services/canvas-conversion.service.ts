@@ -3,11 +3,10 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Drawing } from '../../../../common/communication/drawing-interface';
 import { DrawingManagerService } from './drawing-manager/drawing-manager.service';
 import { B, Color, DrawElement, G, R } from './stockage-svg/draw-element';
-import { LineService } from './stockage-svg/line.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { TraceBrushService } from './stockage-svg/trace-brush.service';
 import { TracePencilService } from './stockage-svg/trace-pencil.service';
-import { TraceSprayService } from './stockage-svg/trace-spray.service';
+import { TOOL_INDEX } from './tools/tool-manager.service';
 
 export const MAX_COLOR_VALUE = 255;
 export const COLOR_INCREASE_LINE = 2;
@@ -70,14 +69,13 @@ export class CanvasConversionService {
     this.drawing.elements = [];
     this.coloredElements = new Map<string, DrawElement>();
     const rgb: number[] = [0, 0, 0];
-    for (let element of this.svgStockage.getCompleteSVG()) {
+    for (const element of this.svgStockage.getCompleteSVG()) {
       let increase = 1;
-      if (element instanceof TraceSprayService) {
+      if (element.trueType === TOOL_INDEX.SPRAY) {
         increase = COLOR_INCREASE_SPRAY;
-      } else if (element instanceof LineService) {
+      } else if (element.trueType === TOOL_INDEX.LINE) {
         increase = COLOR_INCREASE_LINE;
       }
-      element = element as DrawElement;
       rgb[R] += increase;
       if (rgb[R] > MAX_COLOR_VALUE) {
         rgb[R] = 0;
@@ -146,7 +144,8 @@ export class CanvasConversionService {
     }
     occurrences.forEach((value, color) => {
       // s'assurer de ne pas prendre en compte le 'blending' entre plusieurs éléments
-      if (!this.canBeBlending(occurrences, value, width)) {
+      if (!this.canBeBlending(occurrences, value, width)
+        || this.isPointInArea(this.coloredElements.get(color), x, y, width, height)) {
         const element = this.coloredElements.get(color);
         if (element && !elements.includes(element)) {
           elements.push(element);
@@ -160,6 +159,16 @@ export class CanvasConversionService {
     const isOnlyElement = occurrences.size === 1;
     const hasFewOccurrences = value <= thickness;
     return !isOnlyElement && hasFewOccurrences;
+  }
+
+  // Cas spécifique aux points de crayon et pinceau (souvent faussement considérés comme blending)
+  isPointInArea(element: DrawElement | undefined, x: number, y: number, width: number, height: number): boolean {
+    if (element && element.isAPoint && element.thickness) {
+      const isInEraserX = element.points[0].x + element.thickness >= x && element.points[0].x - element.thickness <= x + width;
+      const isInEraserY = element.points[0].y + element.thickness >= y && element.points[0].y - element.thickness <= y + height;
+      return isInEraserX && isInEraserY;
+    }
+    return false;
   }
 
   sanitize(svg: string): SafeHtml {
