@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { A, B, Color, G, R,  } from '../stockage-svg/draw-element';
+import { A, B, Color, G, R, RGB_MAX } from './color';
 
 const INIT_OPACITY = 100;
-const RGB_MAX = 255;
 
 @Injectable({
   providedIn: 'root'

@@ -1,27 +1,12 @@
 import { SafeHtml } from '@angular/platform-browser';
+import { Color, RGB_MAX } from '../color/color';
 import { Point } from '../tools/line-tool.service';
 import { DrawingTool, TOOL_INDEX } from '../tools/tool-manager.service';
-
-const RGB_MAX = 255;
 
 export const ERASING_COLOR_INIT: Color = {
   RGBAString: 'rgba(255, 0, 0, 1)',
   RGBA: [RGB_MAX, 0, 0, 1]
 };
-
-export const R = 0;
-export const G = 1;
-export const B = 2;
-export const A = 3;
-
-export interface Color {
-  RGBAString: string;
-  RGBA: [number, number, number, number];
-}
-
-export enum Tool {
-
-}
 
 export interface DrawElement {
   svg: string;

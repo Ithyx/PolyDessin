@@ -1,12 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig} from '@angular/material';
 import { Subscription } from 'rxjs';
+import { A, Color } from 'src/app/services/color/color';
 import { PERCENTAGE, Scope } from 'src/app/services/color/color-manager.service';
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
-import { A, Color } from 'src/app/services/stockage-svg/draw-element';
 import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { ColorChoiceComponent } from '../color-choice/color-choice.component';
 import { ExportWindowComponent } from '../export-window/export-window.component';

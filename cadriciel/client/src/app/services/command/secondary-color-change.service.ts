@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Color } from '../color/color';
 import { ColorParameterService } from '../color/color-parameter.service';
-import { Color, DrawElement } from '../stockage-svg/draw-element';
+import { DrawElement } from '../stockage-svg/draw-element';
 import { Command } from './command';
 
 @Injectable({

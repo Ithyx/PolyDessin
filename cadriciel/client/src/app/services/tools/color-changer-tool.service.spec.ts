@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Color, DrawElement } from '../stockage-svg/draw-element';
+import { Color } from '../color/color';
+import { DrawElement } from '../stockage-svg/draw-element';
 import { ColorChangerToolService } from './color-changer-tool.service';
 
 // tslint:disable: no-string-literal

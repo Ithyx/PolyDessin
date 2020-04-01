@@ -6,8 +6,8 @@ import { RouterModule } from '@angular/router';
 
 import { Injector } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Color } from 'src/app/services/color/color';
 import { Scope } from 'src/app/services/color/color-manager.service';
-import { Color } from 'src/app/services/stockage-svg/draw-element';
 import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { ColorChoiceComponent } from '../color-choice/color-choice.component';
 import { ColorInputComponent } from '../color-choice/color-input/color-input.component';
