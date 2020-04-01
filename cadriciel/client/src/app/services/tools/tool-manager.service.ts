@@ -35,9 +35,15 @@ export interface DrawingTool {
 @Injectable({
   providedIn: 'root'
 })
+
 export class ToolManagerService {
-  activeTool: DrawingTool = TOOL_LIST[0];
-  toolList: DrawingTool[] = TOOL_LIST;
+  activeTool: DrawingTool;
+  toolList: DrawingTool[];
+
+  constructor() {
+    this.activeTool = TOOL_LIST[TOOL_INDEX.PENCIL];
+    this.toolList = TOOL_LIST;
+  }
 
   findParameterIndex(name: string): number {
     for (let i = 0; i < this.activeTool.parameters.length; i++) {
