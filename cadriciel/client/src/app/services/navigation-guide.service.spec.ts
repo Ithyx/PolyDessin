@@ -4,6 +4,7 @@ import { SubjectGuide } from '../components/guide-subject/subject-guide';
 import { EMPTY_SUBJECT, NavigationGuideService } from './navigation-guide.service';
 
 // tslint:disable: no-magic-numbers
+// tslint:disable: no-non-null-assertion
 
 describe('NavigationGuideService', () => {
   let subjects: SubjectGuide[];
@@ -37,7 +38,11 @@ describe('NavigationGuideService', () => {
   it('#openCategories devrait ouvrir toutes les catégories', () => {
     service.openCategories(subjects);
     expect(subjects[1].openCategory).toBe(true);
-    /* TODO: Ajouter les catégories qui doivent etre ouvertes pour sprint 2 et sprint 3. */
+    expect(subjects[1].subSubjects![0].openCategory).toBe(true);
+    expect(subjects[1].subSubjects![1].openCategory).toBe(true);
+    expect(subjects[1].subSubjects![2].openCategory).toBe(true);
+    expect(subjects[2].openCategory).toBe(true);
+    /* TODO: Ajouter les catégories qui doivent etre ouvertes pour sprint 3. */
   });
 
   it('#openCategories ne devrait pas affecter les objets purs', () => {
