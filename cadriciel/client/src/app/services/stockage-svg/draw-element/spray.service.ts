@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
-import { Color } from '../color/color';
-import { DrawingTool, TOOL_INDEX } from '../tools/tool-manager.service';
-import { DrawElement, ERASING_COLOR_INIT, Point} from './draw-element';
+import { Color } from '../../color/color';
+import { DrawingTool, TOOL_INDEX } from '../../tools/tool-manager.service';
+import { DrawElement, ERASING_COLOR_INIT, Point} from '../draw-element/draw-element';
 
 export const MIN_DIAMETER = 5;
 

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RectangleService } from '../../stockage-svg/basic-shape/rectangle.service';
+import { RectangleService } from '../../stockage-svg/draw-element/basic-shape/rectangle.service';
 import { RectangleToolService } from './rectangle-tool.service';
 
 // tslint:disable: no-magic-numbers

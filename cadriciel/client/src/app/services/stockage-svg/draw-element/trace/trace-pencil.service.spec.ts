@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { PencilToolService } from '../../tools/tracing-tool/pencil-tool.service';
+import { PencilToolService } from '../../../tools/tracing-tool/pencil-tool.service';
 import { TracePencilService } from './trace-pencil.service';
 
 // tslint:disable: no-string-literal

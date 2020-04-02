@@ -14,7 +14,7 @@ import { GalleryComponent } from '../components/gallery/gallery.component';
 import { SavePopupComponent } from '../components/save-popup/save-popup.component';
 import { TranslateSvgService } from './command/translate-svg.service';
 import { ShortcutsManagerService } from './shortcuts-manager.service';
-import { DrawElement } from './stockage-svg/draw-element';
+import { DrawElement } from './stockage-svg/draw-element/draw-element';
 import { TOOL_INDEX } from './tools/tool-manager.service';
 
 // tslint:disable: no-magic-numbers

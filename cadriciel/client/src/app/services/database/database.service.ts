@@ -2,15 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Drawing } from '../../../../../common/communication/drawing-interface';
 import { DrawingManagerService } from '../drawing-manager/drawing-manager.service';
-import { EllipseService } from '../stockage-svg/basic-shape/ellipse.service';
-import { PolygonService } from '../stockage-svg/basic-shape/polygon.service';
-import { RectangleService } from '../stockage-svg/basic-shape/rectangle.service';
-import { DrawElement } from '../stockage-svg/draw-element';
-import { LineService } from '../stockage-svg/line.service';
-import { SprayService } from '../stockage-svg/spray.service';
+import { EllipseService } from '../stockage-svg/draw-element/basic-shape/ellipse.service';
+import { PolygonService } from '../stockage-svg/draw-element/basic-shape/polygon.service';
+import { RectangleService } from '../stockage-svg/draw-element/basic-shape/rectangle.service';
+import { DrawElement } from '../stockage-svg/draw-element/draw-element';
+import { LineService } from '../stockage-svg/draw-element/line.service';
+import { SprayService } from '../stockage-svg/draw-element/spray.service';
+import { TraceBrushService } from '../stockage-svg/draw-element/trace/trace-brush.service';
+import { TracePencilService } from '../stockage-svg/draw-element/trace/trace-pencil.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
-import { TraceBrushService } from '../stockage-svg/trace/trace-brush.service';
-import { TracePencilService } from '../stockage-svg/trace/trace-pencil.service';
 import { TOOL_INDEX } from '../tools/tool-manager.service';
 
 export enum SERVER_URL {

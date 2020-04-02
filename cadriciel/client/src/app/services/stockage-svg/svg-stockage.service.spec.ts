@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TOOL_INDEX, ToolManagerService } from '../tools/tool-manager.service';
-import { DrawElement } from './draw-element';
-import { LineService } from './line.service';
+import { DrawElement } from './draw-element/draw-element';
+import { LineService } from './draw-element/line.service';
 import { SVGStockageService } from './svg-stockage.service';
 
 // tslint:disable: no-string-literal

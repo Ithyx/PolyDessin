@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { TracePencilService } from '../../stockage-svg/draw-element/trace/trace-pencil.service';
 import { SVGStockageService } from '../../stockage-svg/svg-stockage.service';
-import { TracePencilService } from '../../stockage-svg/trace/trace-pencil.service';
 import { PencilToolService } from './pencil-tool.service';
 import { TracingToolService } from './tracing-tool.service';
 

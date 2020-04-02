@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DrawingTool, TOOL_INDEX } from '../../tools/tool-manager.service';
+import { DrawingTool, TOOL_INDEX } from '../../../tools/tool-manager.service';
 import { TraceService } from './trace.service';
 
 @Injectable({

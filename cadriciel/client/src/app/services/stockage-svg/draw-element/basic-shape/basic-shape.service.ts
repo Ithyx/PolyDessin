@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
-import { Color } from '../../color/color';
-import { DrawingTool, TOOL_INDEX } from '../../tools/tool-manager.service';
-import { DrawElement, ERASING_COLOR_INIT, Point  } from '../draw-element';
+import { Color } from 'src/app/services/color/color';
+import { DrawingTool, TOOL_INDEX } from 'src/app/services/tools/tool-manager.service';
+import { DrawElement, ERASING_COLOR_INIT, Point } from '../../draw-element/draw-element';
 
 @Injectable({
   providedIn: 'root'

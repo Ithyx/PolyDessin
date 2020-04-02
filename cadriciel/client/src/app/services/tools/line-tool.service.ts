@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AddSVGService } from '../command/add-svg.service';
 import { CommandManagerService } from '../command/command-manager.service';
-import { Point } from '../stockage-svg/draw-element';
-import { LineService } from '../stockage-svg/line.service';
+import { Point } from '../stockage-svg/draw-element/draw-element';
+import { LineService } from '../stockage-svg/draw-element/line.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { ToolInterface } from './tool-interface';
 import { ToolManagerService } from './tool-manager.service';

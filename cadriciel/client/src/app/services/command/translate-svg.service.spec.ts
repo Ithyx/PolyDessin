@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
 import { DomSanitizer } from '@angular/platform-browser';
-import { RectangleService } from '../stockage-svg/basic-shape/rectangle.service';
-import { DrawElement } from '../stockage-svg/draw-element';
-import { TracePencilService } from '../stockage-svg/trace/trace-pencil.service';
+import { RectangleService } from '../stockage-svg/draw-element/basic-shape/rectangle.service';
+import { DrawElement } from '../stockage-svg/draw-element/draw-element';
+import { TracePencilService } from '../stockage-svg/draw-element/trace/trace-pencil.service';
 import { SelectionBoxService } from '../tools/selection/selection-box.service';
 import { TranslateSvgService } from './translate-svg.service';
 

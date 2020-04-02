@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Color } from '../color/color';
 import { ColorParameterService } from '../color/color-parameter.service';
+import { TracePencilService } from '../stockage-svg/draw-element/trace/trace-pencil.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
-import { TracePencilService } from '../stockage-svg/trace/trace-pencil.service';
 import { SecondaryColorChangeService } from './secondary-color-change.service';
 
 // tslint:disable: no-string-literal

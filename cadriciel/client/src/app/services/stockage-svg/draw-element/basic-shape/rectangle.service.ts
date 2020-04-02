@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TOOL_INDEX } from '../../tools/tool-manager.service';
+import { TOOL_INDEX } from 'src/app/services/tools/tool-manager.service';
 import { BasicShapeService } from './basic-shape.service';
 
 @Injectable({

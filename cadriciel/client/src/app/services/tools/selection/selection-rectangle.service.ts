@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { RectangleService } from '../../stockage-svg/basic-shape/rectangle.service';
-import { Point } from '../../stockage-svg/draw-element';
+import { RectangleService } from '../../stockage-svg/draw-element/basic-shape/rectangle.service';
+import { Point } from '../../stockage-svg/draw-element/draw-element';
 import { DrawingTool } from '../tool-manager.service';
-// import { LEFT_CLICK , RIGHT_CLICK } from './selection.service';
 
 export const rectangleSelectionTool: DrawingTool = {name: '',
                                              isActive: true,

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { SprayToolService } from '../tools/spray-tool.service';
+import { SprayToolService } from '../../tools/spray-tool.service';
 import { MIN_DIAMETER, SprayService } from './spray.service';
 
 // tslint:disable: no-magic-numbers

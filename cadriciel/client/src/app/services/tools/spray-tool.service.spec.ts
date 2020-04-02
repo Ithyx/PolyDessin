@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Observable, Subscription } from 'rxjs';
-import { SprayService } from '../stockage-svg/spray.service';
+import { SprayService } from '../stockage-svg/draw-element/spray.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { SprayToolService } from './spray-tool.service';
 

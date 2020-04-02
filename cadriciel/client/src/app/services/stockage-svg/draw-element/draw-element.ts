@@ -1,6 +1,6 @@
 import { SafeHtml } from '@angular/platform-browser';
-import { Color, RGB_MAX } from '../color/color';
-import { DrawingTool, TOOL_INDEX } from '../tools/tool-manager.service';
+import { Color, RGB_MAX } from '../../color/color';
+import { DrawingTool, TOOL_INDEX } from '../../tools/tool-manager.service';
 
 export interface Point {
   x: number;

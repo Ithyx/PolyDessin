@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { RectangleService } from '../../stockage-svg/basic-shape/rectangle.service';
-import { Point } from '../../stockage-svg/draw-element';
+import { RectangleService } from '../../stockage-svg/draw-element/basic-shape/rectangle.service';
+import { Point } from '../../stockage-svg/draw-element/draw-element';
 import { ToolManagerService} from '../tool-manager.service';
 
 export const NUMBER_OF_CONTROL_POINT = 4;
