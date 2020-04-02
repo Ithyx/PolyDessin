@@ -1,7 +1,7 @@
 // tslint:disable: no-magic-numbers
 import {assert, expect } from 'chai';
 import {Color} from '../../../client/src/app/services/color/color';
-import {DrawElement} from '../../../client/src/app/services/stockage-svg/draw-element';
+import {DrawElement} from '../../../client/src/app/services/stockage-svg/draw-element/draw-element';
 import {Drawing} from '../../../common/communication/drawing-interface';
 import {DatabaseService} from './database.service';
 
