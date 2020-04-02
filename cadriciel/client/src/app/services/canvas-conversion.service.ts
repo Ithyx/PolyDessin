@@ -26,6 +26,7 @@ export class CanvasConversionService {
   private drawing: Drawing;
   private coloredElements: Map<string, DrawElement>;
   private isValid: boolean;
+  private elementRGB: [number, number, number];
 
   constructor(private drawingParams: DrawingManagerService,
               private svgStockage: SVGStockageService,
@@ -43,6 +44,7 @@ export class CanvasConversionService {
       elements: []
     };
     this.coloredElements = new Map<string, DrawElement>();
+    this.elementRGB = [0, 0, 0];
   }
 
   /* Conversion de svg vers canvas basée sur
@@ -69,28 +71,10 @@ export class CanvasConversionService {
     this.isValid = false;
     this.drawing.elements = [];
     this.coloredElements = new Map<string, DrawElement>();
-    const rgb: number[] = [0, 0, 0];
+    this.elementRGB = [0, 0, 0];
     for (const element of this.svgStockage.getCompleteSVG()) {
-      let increase = 1;
-      if (element.trueType === TOOL_INDEX.SPRAY) {
-        increase = COLOR_INCREASE_SPRAY;
-      } else if (element.trueType === TOOL_INDEX.LINE) {
-        increase = COLOR_INCREASE_LINE;
-      }
-      rgb[R] += increase;
-      if (rgb[R] > MAX_COLOR_VALUE) {
-        rgb[R] = 0;
-        rgb[G] += increase;
-        if (rgb[G] > MAX_COLOR_VALUE) {
-          rgb[G] = 0;
-          rgb[B] += increase;
-        }
-      }
       // Redessiner l'élement avec une couleur qui le distingue des autres élements
-      const color: Color = {
-        RGBAString: `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 1)`,
-        RGBA: [rgb[0], rgb[1], rgb[2], 1]
-      };
+      const color = this.calculateColor(element);
       const oldPrimary = element.primaryColor;
       const oldSecondary = element.secondaryColor;
       element.primaryColor = color;
@@ -99,29 +83,14 @@ export class CanvasConversionService {
       }
 
       // Créer un clone et l'utiliser dans le canvas
-      const cloneElement = {...element};
-      if (element instanceof TraceBrushService) {
-        // Si l'élément est un trait de pinceau, on le convertit en trait de crayon
-        // pour éviter d'avoir un filtre qui modifie les couleurs
-        const tracePencil = new TracePencilService();
-        tracePencil.points = element.points;
-        tracePencil.primaryColor = element.primaryColor;
-        tracePencil.thickness = element.thickness;
-        tracePencil.translate = element.translate;
-        tracePencil.isAPoint = element.isAPoint;
-        tracePencil.draw();
-        cloneElement.svgHtml = this.sanitize(tracePencil.svg);
-      } else {
-        element.draw();
-        cloneElement.svgHtml = this.sanitize(element.svg);
-        if (element.secondaryColor) {
-          element.secondaryColor = oldSecondary;
-        }
-      }
+      const cloneElement = this.createClone(element);
       this.drawing.elements.push(cloneElement);
 
       // Remettre l'élement aux bonnes valeurs de couleur
       element.primaryColor = oldPrimary;
+      if (element.secondaryColor) {
+        element.secondaryColor = oldSecondary;
+      }
       element.draw();
       this.coloredElements.set(color.RGBAString, element);
     }
@@ -131,18 +100,52 @@ export class CanvasConversionService {
     }, TIME_BEFORE_UPDATE);
   }
 
-  getElementsInArea(x: number, y: number, width: number, height: number): DrawElement[] {
-    if (!this.isValid) { return []; }
-    const occurrences = new Map<string, number>();
-    const elements: DrawElement[] = [];
-    const data = this.context.getImageData(x, y, width, height).data;
-    for (let index = 0; index < data.length; index += INDEX_INCREASE) {
-      const color = `rgba(${data[index]}, ${data[index + 1]}, ${data[index + 2]}, 1)`;
-      if (this.coloredElements.has(color)) {
-        const colorOccurrences = occurrences.get(color);
-        occurrences.set(color, (colorOccurrences ? colorOccurrences + 1 : 1));
+  calculateColor(element: DrawElement): Color {
+    let increase = 1;
+    if (element.trueType === TOOL_INDEX.SPRAY) {
+      increase = COLOR_INCREASE_SPRAY;
+    } else if (element.trueType === TOOL_INDEX.LINE) {
+      increase = COLOR_INCREASE_LINE;
+    }
+    this.elementRGB[R] += increase;
+    if (this.elementRGB[R] > MAX_COLOR_VALUE) {
+      this.elementRGB[R] = 0;
+      this.elementRGB[G] += increase;
+      if (this.elementRGB[G] > MAX_COLOR_VALUE) {
+        this.elementRGB[G] = 0;
+        this.elementRGB[B] += increase;
       }
     }
+    return {
+      RGBAString: `rgba(${this.elementRGB[R]}, ${this.elementRGB[G]}, ${this.elementRGB[B]}, 1)`,
+      RGBA: [this.elementRGB[R], this.elementRGB[G], this.elementRGB[B], 1]
+    };
+  }
+
+  createClone(element: DrawElement): DrawElement {
+    const cloneElement = {...element};
+    if (element instanceof TraceBrushService) {
+      // Si l'élément est un trait de pinceau, on le convertit en trait de crayon
+      // pour éviter d'avoir un filtre qui modifie les couleurs
+      const tracePencil = new TracePencilService();
+      tracePencil.points = element.points;
+      tracePencil.primaryColor = element.primaryColor;
+      tracePencil.thickness = element.thickness;
+      tracePencil.translate = element.translate;
+      tracePencil.isAPoint = element.isAPoint;
+      tracePencil.draw();
+      cloneElement.svgHtml = this.sanitize(tracePencil.svg);
+    } else {
+      element.draw();
+      cloneElement.svgHtml = this.sanitize(element.svg);
+    }
+    return cloneElement;
+  }
+
+  getElementsInArea(x: number, y: number, width: number, height: number): DrawElement[] {
+    if (!this.isValid) { return []; }
+    const occurrences = this.getColorOccurrences(x, y, width, height);
+    const elements: DrawElement[] = [];
     occurrences.forEach((value, color) => {
       // s'assurer de ne pas prendre en compte le 'blending' entre plusieurs éléments
       if (!this.canBeBlending(occurrences, value, width)
@@ -154,6 +157,19 @@ export class CanvasConversionService {
       }
     });
     return elements;
+  }
+
+  getColorOccurrences(x: number, y: number, width: number, height: number): Map<string, number> {
+    const occurrences = new Map<string, number>();
+    const data = this.context.getImageData(x, y, width, height).data;
+    for (let index = 0; index < data.length; index += INDEX_INCREASE) {
+      const color = `rgba(${data[index]}, ${data[index + 1]}, ${data[index + 2]}, 1)`;
+      if (this.coloredElements.has(color)) {
+        const colorOccurrences = occurrences.get(color);
+        occurrences.set(color, (colorOccurrences ? colorOccurrences + 1 : 1));
+      }
+    }
+    return occurrences;
   }
 
   canBeBlending(occurrences: Map<string, number>, value: number, thickness: number): boolean {
