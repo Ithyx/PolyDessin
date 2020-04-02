@@ -6,8 +6,8 @@ import { Color } from './color/color';
 import { RectangleService } from './stockage-svg/basic-shape/rectangle.service';
 import { DrawElement } from './stockage-svg/draw-element';
 import { LineService } from './stockage-svg/line.service';
+import { SprayService } from './stockage-svg/spray.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
-import { TraceSprayService } from './stockage-svg/trace-spray.service';
 import { TraceBrushService } from './stockage-svg/trace/trace-brush.service';
 import { TracePencilService } from './stockage-svg/trace/trace-pencil.service';
 
@@ -203,7 +203,7 @@ describe('CanvasConversionService', () => {
   });
 
   it('#updateDrawing devrait incrémenter la couleur de COLOR_INCREASE_SPRAY pour un trait d\'aérosol', () => {
-    completeElements[0] = new TraceSprayService();
+    completeElements[0] = new SprayService();
     service.updateDrawing();
     if (service['drawing'].elements && service['drawing'].elements[0].primaryColor) {
       expect(service['drawing'].elements[0].primaryColor.RGBAString).toEqual(`rgba(${COLOR_INCREASE_SPRAY}, 0, 0, 1)`);

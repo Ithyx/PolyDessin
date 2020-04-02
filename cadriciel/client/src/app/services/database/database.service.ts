@@ -7,8 +7,8 @@ import { PolygonService } from '../stockage-svg/basic-shape/polygon.service';
 import { RectangleService } from '../stockage-svg/basic-shape/rectangle.service';
 import { DrawElement } from '../stockage-svg/draw-element';
 import { LineService } from '../stockage-svg/line.service';
+import { SprayService } from '../stockage-svg/spray.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
-import { TraceSprayService } from '../stockage-svg/trace-spray.service';
 import { TraceBrushService } from '../stockage-svg/trace/trace-brush.service';
 import { TracePencilService } from '../stockage-svg/trace/trace-pencil.service';
 import { TOOL_INDEX } from '../tools/tool-manager.service';
@@ -44,7 +44,7 @@ export class DatabaseService {
   }
 
   addElement(element: DrawElement): void {
-    let newElement: TracePencilService | TraceBrushService | TraceSprayService | RectangleService
+    let newElement: TracePencilService | TraceBrushService | SprayService | RectangleService
                     | PolygonService | LineService | EllipseService;
     switch (element.trueType) {
       case TOOL_INDEX.PENCIL:
@@ -54,7 +54,7 @@ export class DatabaseService {
         newElement = new TraceBrushService();
         break;
       case TOOL_INDEX.SPRAY:
-        newElement = new TraceSprayService();
+        newElement = new SprayService();
         break;
       case TOOL_INDEX.RECTANGLE:
         newElement = new RectangleService();

@@ -4,8 +4,8 @@ import { EllipseService } from '../stockage-svg/basic-shape/ellipse.service';
 import { PolygonService } from '../stockage-svg/basic-shape/polygon.service';
 import { RectangleService } from '../stockage-svg/basic-shape/rectangle.service';
 import { LineService } from '../stockage-svg/line.service';
+import { SprayService } from '../stockage-svg/spray.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
-import { TraceSprayService } from '../stockage-svg/trace-spray.service';
 import { TraceBrushService } from '../stockage-svg/trace/trace-brush.service';
 import { TracePencilService } from '../stockage-svg/trace/trace-pencil.service';
 import { AddSVGService } from './add-svg.service';
@@ -38,7 +38,7 @@ describe('CommandManagerService', () => {
   });
 
   beforeEach(() => {
-    lastCommand = new AddSVGService(new TraceSprayService(), stockageService);
+    lastCommand = new AddSVGService(new SprayService(), stockageService);
     service['executedCommands'].push(new AddSVGService(new TracePencilService(), stockageService));
     service['executedCommands'].push(new AddSVGService(new TraceBrushService(), stockageService));
     service['executedCommands'].push(lastCommand);

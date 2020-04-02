@@ -1,18 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 import { SprayToolService } from '../tools/spray-tool.service';
-import { MIN_DIAMETER, TraceSprayService } from './trace-spray.service';
+import { MIN_DIAMETER, SprayService } from './spray.service';
 
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
 
-describe('TraceSprayService', () => {
-  let element: TraceSprayService;
+describe('SprayService', () => {
+  let element: SprayService;
   let service: SprayToolService;
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(SprayToolService));
 
   beforeEach(() => {
-    element = new TraceSprayService();
+    element = new SprayService();
     element.updateParameters(service['tools'].toolList[0]);
     element.primaryColor = {
       RGBAString: 'rgba(0, 0, 0, 1)',
@@ -26,7 +26,7 @@ describe('TraceSprayService', () => {
   });
 
   it('should be created', () => {
-    const testService: TraceSprayService = TestBed.get(TraceSprayService);
+    const testService: SprayService = TestBed.get(SprayService);
     expect(testService).toBeTruthy();
   });
 

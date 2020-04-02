@@ -9,7 +9,7 @@ export const MIN_DIAMETER = 5;
 @Injectable({
   providedIn: 'root'
 })
-export class TraceSprayService implements DrawElement {
+export class SprayService implements DrawElement {
 
   svg: string;
   svgHtml: SafeHtml;
