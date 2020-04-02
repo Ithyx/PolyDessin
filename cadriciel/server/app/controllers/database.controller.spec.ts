@@ -10,9 +10,10 @@ describe('Test constructeur database.controller', () => {
         done();
     });
 
-    it('constructeur devrait appeler configureRouter', () => {
+    it('constructeur devrait appeler configureRouter', (done: Mocha.Done) => {
         const controller: DatabaseController = new DatabaseController(new DatabaseService());
         assert.call(controller, controller['configureRouter']);
+        done();
     });
 });
 
