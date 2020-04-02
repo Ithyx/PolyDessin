@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ColorParameterService } from '../../color/color-parameter.service';
 import { AddSVGService } from '../../command/add-svg.service';
 import { CommandManagerService } from '../../command/command-manager.service';
-import { BasicShapeService } from '../../stockage-svg/basic-shape.service';
+import { BasicShapeService } from '../../stockage-svg/basic-shape/basic-shape.service';
 import { Point } from '../../stockage-svg/draw-element';
 import { SVGStockageService } from '../../stockage-svg/svg-stockage.service';
 import { ToolInterface } from '../tool-interface';

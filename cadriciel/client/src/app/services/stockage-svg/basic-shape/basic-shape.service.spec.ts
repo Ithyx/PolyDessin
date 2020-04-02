@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { BasicShapeToolService } from '../tools/basic-shape-tool/basic-shape-tool.service';
-import { RectangleToolService } from '../tools/basic-shape-tool/rectangle-tool.service';
+import { BasicShapeToolService } from '../../tools/basic-shape-tool/basic-shape-tool.service';
+import { RectangleToolService } from '../../tools/basic-shape-tool/rectangle-tool.service';
 import { BasicShapeService } from './basic-shape.service';
 import { RectangleService } from './rectangle.service';
 

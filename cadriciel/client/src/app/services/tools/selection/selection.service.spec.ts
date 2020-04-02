@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { TranslateSvgService } from '../../command/translate-svg.service';
+import { RectangleService } from '../../stockage-svg/basic-shape/rectangle.service';
 import { DrawElement } from '../../stockage-svg/draw-element';
-import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { TOOL_INDEX } from '../tool-manager.service';
 import { LEFT_CLICK, RIGHT_CLICK, SelectionService } from './selection.service';
 

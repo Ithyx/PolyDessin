@@ -3,13 +3,13 @@ import { TestBed } from '@angular/core/testing';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CanvasConversionService, COLOR_INCREASE_LINE, COLOR_INCREASE_SPRAY } from './canvas-conversion.service';
 import { Color } from './color/color';
+import { RectangleService } from './stockage-svg/basic-shape/rectangle.service';
 import { DrawElement } from './stockage-svg/draw-element';
 import { LineService } from './stockage-svg/line.service';
-import { RectangleService } from './stockage-svg/rectangle.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
-import { TraceBrushService } from './stockage-svg/trace-brush.service';
-import { TracePencilService } from './stockage-svg/trace-pencil.service';
 import { TraceSprayService } from './stockage-svg/trace-spray.service';
+import { TraceBrushService } from './stockage-svg/trace/trace-brush.service';
+import { TracePencilService } from './stockage-svg/trace/trace-pencil.service';
 
 // tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers

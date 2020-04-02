@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { TracePencilService } from '../../stockage-svg/trace-pencil.service';
+import { TracePencilService } from '../../stockage-svg/trace/trace-pencil.service';
 import { PencilToolService } from './pencil-tool.service';
 
 // tslint:disable:no-magic-numbers

@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { RemoveSVGService } from '../command/remove-svg.service';
+import { RectangleService } from '../stockage-svg/basic-shape/rectangle.service';
 import { DrawElement } from '../stockage-svg/draw-element';
-import { RectangleService } from '../stockage-svg/rectangle.service';
 import { DEFAULT_THICKNESS, EraserToolService } from './eraser-tool.service';
 
 // tslint:disable: no-string-literal

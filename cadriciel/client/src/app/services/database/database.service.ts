@@ -2,15 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Drawing } from '../../../../../common/communication/drawing-interface';
 import { DrawingManagerService } from '../drawing-manager/drawing-manager.service';
+import { EllipseService } from '../stockage-svg/basic-shape/ellipse.service';
+import { PolygonService } from '../stockage-svg/basic-shape/polygon.service';
+import { RectangleService } from '../stockage-svg/basic-shape/rectangle.service';
 import { DrawElement } from '../stockage-svg/draw-element';
-import { EllipseService } from '../stockage-svg/ellipse.service';
 import { LineService } from '../stockage-svg/line.service';
-import { PolygonService } from '../stockage-svg/polygon.service';
-import { RectangleService } from '../stockage-svg/rectangle.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
-import { TraceBrushService } from '../stockage-svg/trace-brush.service';
-import { TracePencilService } from '../stockage-svg/trace-pencil.service';
 import { TraceSprayService } from '../stockage-svg/trace-spray.service';
+import { TraceBrushService } from '../stockage-svg/trace/trace-brush.service';
+import { TracePencilService } from '../stockage-svg/trace/trace-pencil.service';
 import { TOOL_INDEX } from '../tools/tool-manager.service';
 
 export enum SERVER_URL {

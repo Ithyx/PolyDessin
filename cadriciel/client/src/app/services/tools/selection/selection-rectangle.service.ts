@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { RectangleService } from '../../stockage-svg/basic-shape/rectangle.service';
 import { Point } from '../../stockage-svg/draw-element';
-import { RectangleService } from '../../stockage-svg/rectangle.service';
 import { DrawingTool } from '../tool-manager.service';
 import { LEFT_CLICK , RIGHT_CLICK } from './selection.service';
 

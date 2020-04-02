@@ -7,7 +7,7 @@ import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.s
 import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
 import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
 import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
-import { SelectionService, LEFT_CLICK, RIGHT_CLICK } from 'src/app/services/tools/selection/selection.service';
+import { LEFT_CLICK, RIGHT_CLICK, SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 
 @Component({

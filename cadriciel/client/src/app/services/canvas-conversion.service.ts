@@ -5,8 +5,8 @@ import { B, Color, G, R } from './color/color';
 import { DrawingManagerService } from './drawing-manager/drawing-manager.service';
 import { DrawElement } from './stockage-svg/draw-element';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
-import { TraceBrushService } from './stockage-svg/trace-brush.service';
-import { TracePencilService } from './stockage-svg/trace-pencil.service';
+import { TraceBrushService } from './stockage-svg/trace/trace-brush.service';
+import { TracePencilService } from './stockage-svg/trace/trace-pencil.service';
 import { TOOL_INDEX } from './tools/tool-manager.service';
 
 export const MAX_COLOR_VALUE = 255;

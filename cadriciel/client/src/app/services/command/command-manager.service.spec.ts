@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EllipseService } from '../stockage-svg/ellipse.service';
+import { EllipseService } from '../stockage-svg/basic-shape/ellipse.service';
+import { PolygonService } from '../stockage-svg/basic-shape/polygon.service';
+import { RectangleService } from '../stockage-svg/basic-shape/rectangle.service';
 import { LineService } from '../stockage-svg/line.service';
-import { PolygonService } from '../stockage-svg/polygon.service';
-import { RectangleService } from '../stockage-svg/rectangle.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
-import { TraceBrushService } from '../stockage-svg/trace-brush.service';
-import { TracePencilService } from '../stockage-svg/trace-pencil.service';
 import { TraceSprayService } from '../stockage-svg/trace-spray.service';
+import { TraceBrushService } from '../stockage-svg/trace/trace-brush.service';
+import { TracePencilService } from '../stockage-svg/trace/trace-pencil.service';
 import { AddSVGService } from './add-svg.service';
 import { Command } from './command';
 import { CommandManagerService } from './command-manager.service';
