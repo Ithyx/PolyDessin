@@ -250,7 +250,7 @@ export class ShortcutsManagerService {
         this.rectangleTool.shiftPress();
         break;
       case TOOL_INDEX.LINE:
-        this.lineTool.memorizeCursor();
+        this.lineTool.shiftPress();
         break;
       case TOOL_INDEX.ELLIPSE:
         this.ellipseTool.shiftPress();

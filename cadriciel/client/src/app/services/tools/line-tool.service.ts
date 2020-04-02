@@ -16,7 +16,6 @@ const ANGLE_DIVIDER = 4;
 })
 export class LineToolService implements ToolInterface {
   private isSimpleClick: boolean;
-  protected shiftPressPosition: Point;
   private line: LineService;
 
   private cursor: Point = {x: 0, y: 0};
@@ -79,10 +78,6 @@ export class LineToolService implements ToolInterface {
     }
   }
 
-  memorizeCursor(): void {
-    this.shiftPressPosition = {x: this.cursor.x, y: this.cursor.y};
-  }
-
   shiftPress(): void {
     if (this.commands.drawingInProgress) {
       const lastPoint = this.line.points[this.line.points.length - 1];
@@ -109,7 +104,7 @@ export class LineToolService implements ToolInterface {
   }
 
   shiftRelease(): void {
-    this.line.mousePosition = this.cursor;
+    this.line.mousePosition = {x: this.cursor.x, y: this.cursor.y};
     this.refreshSVG();
   }
 
@@ -122,7 +117,6 @@ export class LineToolService implements ToolInterface {
   clear(): void {
     this.line = new LineService();
     this.line.mousePosition = this.cursor;
-    this.shiftPressPosition = {x: 0, y: 0};
     this.cursor = {x: 0, y: 0};
     this.svgStockage.setOngoingSVG(this.line);
   }

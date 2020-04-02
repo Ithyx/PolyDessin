@@ -188,14 +188,6 @@ describe('LineToolService', () => {
     expect(service.refreshSVG).toHaveBeenCalled();
   });
 
-  // TESTS memorizeCursor
-
-  it('#memorizeCursor devrait contenir les informations sur le curseur X et Y', () => {
-    service['shiftPressPosition'] = ({x: 100, y: 100});
-    service.memorizeCursor();
-    expect(service['shiftPressPosition']).toEqual({x: 0, y: 0});
-  });
-
   // TESTS shiftPress
 
   it("#shiftPress devrait changer la position X et Y si l'alignement est 0", () => {
@@ -280,12 +272,6 @@ describe('LineToolService', () => {
   it('#clear devrait mettre le conteneur de points vide', () => {
     service.clear();
     expect(service['line'].points).toEqual([]);
-  });
-
-  it('#clear devrait mettre shiftPressPosition à (x: 0, y: 0)', () => {
-    service['shiftPressPosition'] = {x: 100, y: 100};
-    service.clear();
-    expect(service['shiftPressPosition']).toEqual({x: 0, y: 0});
   });
 
   it('#clear devrait mettre cursor à (x: 0, y: 0)', () => {

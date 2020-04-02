@@ -551,9 +551,9 @@ describe('ShortcutsManagerService', () => {
 
   it('#shortcutKeyShift devrait memoriser la position du curseur si l\'outil actif est la ligne', () => {
     service['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.LINE];
-    spyOn(service['lineTool'], 'memorizeCursor');
+    spyOn(service['lineTool'], 'shiftPress');
     service.shortcutKeyShift();
-    expect(service['lineTool'].memorizeCursor).toHaveBeenCalled();
+    expect(service['lineTool'].shiftPress).toHaveBeenCalled();
   });
 
   it('#shortcutKeyShift devrait appeler shiftPress si l\'outil actif est l\'ellipse', () => {
@@ -565,11 +565,11 @@ describe('ShortcutsManagerService', () => {
 
   it('#shortcutKeyShift ne devrait rien faire si l\'outil actif n\'est ni la ligne ou le rectangle', () => {
     service['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.PENCIL];
-    spyOn(service['lineTool'], 'memorizeCursor');
+    spyOn(service['lineTool'], 'shiftPress');
     spyOn(service['ellipseTool'], 'shiftPress');
     spyOn(service['rectangleTool'], 'shiftPress');
     service.shortcutKeyShift();
-    expect(service['lineTool'].memorizeCursor).not.toHaveBeenCalled();
+    expect(service['lineTool'].shiftPress).not.toHaveBeenCalled();
     expect(service['rectangleTool'].shiftPress).not.toHaveBeenCalled();
     expect(service['ellipseTool'].shiftPress).not.toHaveBeenCalled();
   });
