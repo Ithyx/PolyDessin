@@ -23,21 +23,23 @@ const SELECTION_MOVEMENT_PIXEL = 3;
 const MOVEMENT_DELAY_MS = 100;
 const CONTINUOUS_MOVEMENT = 5;
 
+const enum DIRECTION {
+  LEFT = 0,
+  RIGHT = 1,
+  UP = 2,
+  DOWN = 3
+}
+
 @Injectable({
   providedIn: 'root'
 })
 
 export class ShortcutsManagerService {
   focusOnInput: boolean;
-  private shortcutManager: Map<string, FunctionShortcut > = new Map<string, FunctionShortcut>();
+  private shortcutsList: Map<string, FunctionShortcut > = new Map<string, FunctionShortcut>();
   private counter100ms: number;
   private clearTimeout: number;
-
-  private leftArrow: boolean;
-  private rightArrow: boolean;
-  private upArrow: boolean;
-  private downArrow: boolean;
-
+  private arrowKeys: [boolean, boolean, boolean, boolean];
   private dialogConfig: MatDialogConfig;
 
   newDrawingEmmiter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
@@ -48,7 +50,7 @@ export class ShortcutsManagerService {
               private lineTool: LineToolService,
               private commands: CommandManagerService,
               private selection: SelectionService,
-              private stockageSVG: SVGStockageService,
+              private svgStockage: SVGStockageService,
               private grid: GridService,
               private dialog: MatDialog,
               private sanitizer: DomSanitizer,
@@ -57,15 +59,12 @@ export class ShortcutsManagerService {
                 this.focusOnInput = false;
                 this.counter100ms = 0;
                 this.clearTimeout = 0;
-                this.leftArrow = false;
-                this.rightArrow = false;
-                this.upArrow = false;
-                this.downArrow = false;
+                this.arrowKeys = [false, false, false, false];
                 this.dialogConfig = new MatDialogConfig();
                 this.dialogConfig.disableClose = true;
                 this.dialogConfig.autoFocus = true;
                 this.dialogConfig.width = '80%';
-                this.shortcutManager.set('1', this.shortcutKey1.bind(this))
+                this.shortcutsList.set('1', this.shortcutKey1.bind(this))
                                     .set('2', this.shortcutKey2.bind(this))
                                     .set('3', this.shortcutKey3.bind(this))
                                     .set('a', this.shortcutKeyA.bind(this))
@@ -93,7 +92,8 @@ export class ShortcutsManagerService {
 
   updatePositionTimer(): void {
     if (this.selection.selectionBox.box) {
-      if (!this.leftArrow && !this.rightArrow && !this.upArrow && !this.downArrow) {
+      if (!this.arrowKeys[DIRECTION.LEFT] && !this.arrowKeys[DIRECTION.RIGHT]
+          && !this.arrowKeys[DIRECTION.UP] && !this.arrowKeys[DIRECTION.DOWN]) {
         window.clearInterval(this.clearTimeout);
         this.counter100ms = 0;
         this.clearTimeout = 0;
@@ -115,16 +115,16 @@ export class ShortcutsManagerService {
   translateSelection(): void {
     const translate: Point = {x: 0 , y: 0};
 
-    if (this.leftArrow) {
+    if (this.arrowKeys[DIRECTION.LEFT]) {
       translate.x = -SELECTION_MOVEMENT_PIXEL;
     }
-    if (this.rightArrow) {
+    if (this.arrowKeys[DIRECTION.RIGHT]) {
       translate.x = SELECTION_MOVEMENT_PIXEL;
     }
-    if (this.upArrow) {
+    if (this.arrowKeys[DIRECTION.UP]) {
       translate.y = -SELECTION_MOVEMENT_PIXEL;
     }
-    if (this.downArrow) {
+    if (this.arrowKeys[DIRECTION.DOWN]) {
       translate.y = SELECTION_MOVEMENT_PIXEL;
     }
     this.counter100ms++;
@@ -135,9 +135,9 @@ export class ShortcutsManagerService {
 
   treatInput(keyboard: KeyboardEvent): void {
     if (this.focusOnInput) { return; }
-    if (this.shortcutManager.has(keyboard.key)) {
+    if (this.shortcutsList.has(keyboard.key)) {
       keyboard.preventDefault();
-      (this.shortcutManager.get(keyboard.key) as FunctionShortcut)(keyboard);
+      (this.shortcutsList.get(keyboard.key) as FunctionShortcut)(keyboard);
     }
     this.updatePositionTimer();
   }
@@ -174,8 +174,8 @@ export class ShortcutsManagerService {
     if (keyboard.ctrlKey) {
       this.selection.deleteBoundingBox();
       this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
-      if (this.stockageSVG.getCompleteSVG().length !== 0) {
-        for (const element of this.stockageSVG.getCompleteSVG()) {
+      if (this.svgStockage.getCompleteSVG().length !== 0) {
+        for (const element of this.svgStockage.getCompleteSVG()) {
           element.isSelected = true;
           this.selection.selectedElements.push(element);
         }
@@ -294,19 +294,19 @@ export class ShortcutsManagerService {
   }
 
   shortcutKeyArrowLeft(): void {
-    this.leftArrow = true;
+    this.arrowKeys[DIRECTION.LEFT] = true;
   }
 
   shortcutKeyArrowRight(): void {
-    this.rightArrow = true;
+    this.arrowKeys[DIRECTION.RIGHT] = true;
   }
 
   shortcutKeyArrowUp(): void {
-    this.upArrow = true;
+    this.arrowKeys[DIRECTION.UP] = true;
   }
 
   shortcutKeyArrowDown(): void {
-    this.downArrow = true;
+    this.arrowKeys[DIRECTION.DOWN] = true;
   }
 
   treatReleaseKey(keyboard: KeyboardEvent): void {
@@ -324,19 +324,19 @@ export class ShortcutsManagerService {
         break;
 
       case 'ArrowLeft':
-        this.leftArrow = false;
+        this.arrowKeys[DIRECTION.LEFT] = false;
         break;
 
       case 'ArrowRight':
-        this.rightArrow = false;
+        this.arrowKeys[DIRECTION.RIGHT] = false;
         break;
 
       case 'ArrowDown':
-        this.downArrow = false;
+        this.arrowKeys[DIRECTION.DOWN] = false;
         break;
 
       case 'ArrowUp':
-        this.upArrow = false;
+        this.arrowKeys[DIRECTION.UP] = false;
         break;
 
       default:
