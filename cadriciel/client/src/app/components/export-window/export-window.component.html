@@ -39,22 +39,22 @@
         <rect [attr.width]="drawing.width" [attr.height]="drawing.height" [attr.fill]="drawing.backgroundColor.RGBAString" />
         <g *ngFor="let element of drawing.elements" [innerHtml]="sanitize(element.svg)" />
     </svg>
-    <button mat-stroked-button (click)="export()">EXPORTER</button>
-    <button mat-button (click)="close()">fermer</button>
     <div>
         <label for="format">Choisissez un format d'exporation :</label>
-            <select id="format" (change)="updateSelectedFormat($event)">
-                <option *ngFor="let format of EXPORT_FORMAT" [value]="format"> {{format}} </option>
-            </select>
-        
+        <select id="format" (change)="updateSelectedFormat($event)">
+            <option *ngFor="let format of EXPORT_FORMAT" [value]="format"> {{format}} </option>
+        </select>
+        <br>
         <label for="filter">Choisissez un filtre d'exporation :</label>
-            <select id="filter" (change)="updateSelectedFilter($event)">
-                <option *ngFor="let filter of EXPORT_FILTER" [value]="filter"> {{filter}} </option>
-            </select>
-
+        <select id="filter" (change)="updateSelectedFilter($event)">
+            <option *ngFor="let filter of EXPORT_FILTER" [value]="filter"> {{filter}} </option>
+        </select>
+        <br>
         <label for="name">Choisissez un nom de fichier :</label>
-            <input id="name" type="text" (change)="updateFileName($event)" [value]="selectedFileName" />
+        <input id="name" type="text" (change)="updateFileName($event)" [value]="selectedFileName" />
     </div>
     <a #link class="no-display"></a>
+    <button mat-stroked-button (click)="export()">EXPORTER</button>
+    <button mat-button (click)="close()">fermer</button>
 
 </mat-dialog-content>

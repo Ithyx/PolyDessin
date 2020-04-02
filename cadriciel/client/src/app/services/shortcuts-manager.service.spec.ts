@@ -14,7 +14,7 @@ import { GalleryComponent } from '../components/gallery/gallery.component';
 import { SavePopupComponent } from '../components/save-popup/save-popup.component';
 import { TranslateSvgService } from './command/translate-svg.service';
 import { ShortcutsManagerService } from './shortcuts-manager.service';
-import { DrawElement } from './stockage-svg/draw-element';
+import { DrawElement } from './stockage-svg/draw-element/draw-element';
 import { TOOL_INDEX } from './tools/tool-manager.service';
 
 // tslint:disable: no-magic-numbers
@@ -127,7 +127,7 @@ describe('ShortcutsManagerService', () => {
     service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
     service['selection'].handleClick(element);    // création de la boite de sélection
     const spy = spyOn(service, 'translateSelection');
-    service['leftArrow'] = true;
+    service['arrowKeys'][0] = true;
     service['clearTimeout'] = 0;
     service.updatePositionTimer();
     expect(spy).toHaveBeenCalled();
@@ -138,7 +138,7 @@ describe('ShortcutsManagerService', () => {
     service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
     service['selection'].handleClick(element);    // création de la boite de sélection
     const spy = spyOn(service, 'translateSelection');
-    service['leftArrow'] = true;
+    service['arrowKeys'][0]  = true;
     service['clearTimeout'] = 25;
     service.updatePositionTimer();
     expect(spy).not.toHaveBeenCalled();
@@ -167,28 +167,28 @@ describe('ShortcutsManagerService', () => {
   });
 
   it('#translateSelection devrait déplacer de 3 pixel sur l\'axe des x si rightArrow est true', () => {
-    service['rightArrow'] = true;
+    service['arrowKeys'][1] = true;
     const spy = spyOn(service['selection'], 'updatePosition');
     service.translateSelection();
     expect(spy).toHaveBeenCalledWith(3, 0);
   });
 
   it('#translateSelection devrait déplacer de -3 pixel sur l\'axe des x si leftArrow est true', () => {
-    service['leftArrow'] = true;
+    service['arrowKeys'][0]  = true;
     const spy = spyOn(service['selection'], 'updatePosition');
     service.translateSelection();
     expect(spy).toHaveBeenCalledWith(-3, 0);
   });
 
   it('#translateSelection devrait déplacer de 3 pixel sur l\'axe des y si downArrow est true', () => {
-    service['downArrow'] = true;
+    service['arrowKeys'][3]  = true;
     const spy = spyOn(service['selection'], 'updatePosition');
     service.translateSelection();
     expect(spy).toHaveBeenCalledWith(0, 3);
   });
 
   it('#translateSelection devrait déplacer de -3 pixel sur l\'axe des y si upArrow est true', () => {
-    service['upArrow'] = true;
+    service['arrowKeys'][2]  = true;
     const spy = spyOn(service['selection'], 'updatePosition');
     service.translateSelection();
     expect(spy).toHaveBeenCalledWith(0, -3);
@@ -331,21 +331,21 @@ describe('ShortcutsManagerService', () => {
 
   it('#shortcutKeyA devrait créer une boite de sélection si le nombre d\'SVG est non-nul', () => {
     const keyboard = new KeyboardEvent('keypress', { key: 'a' , ctrlKey: true});
-    service['stockageSVG'].addSVG(element);
+    service['svgStockage'].addSVG(element);
     service.shortcutKeyA(keyboard);
-    expect(service['selection'].selectedElements[0]).toEqual(service['stockageSVG'].getCompleteSVG()[0]);
+    expect(service['selection'].selectedElements[0]).toEqual(service['svgStockage'].getCompleteSVG()[0]);
   });
 
   it('#shortcutKeyA devrait créer une boite de sélection si le nombre d\'SVG est non-nul', () => {
     const keyboard = new KeyboardEvent('keypress', { key: 'a' , ctrlKey: true});
-    service['stockageSVG'].addSVG(element);
+    service['svgStockage'].addSVG(element);
     service.shortcutKeyA(keyboard);
-    expect(service['stockageSVG'].getCompleteSVG()[0].isSelected).toEqual(true);
+    expect(service['svgStockage'].getCompleteSVG()[0].isSelected).toEqual(true);
   });
 
-  it('#shortcutKeyA devrait mettre les éléments sélectionné du stockageSVG si le nombre d\'SVG est non-nul', () => {
+  it('#shortcutKeyA devrait mettre les éléments sélectionné du svgStockage si le nombre d\'SVG est non-nul', () => {
     const keyboard = new KeyboardEvent('keypress', { key: 'a' , ctrlKey: true});
-    service['stockageSVG'].addSVG(element);
+    service['svgStockage'].addSVG(element);
     spyOn(service['selection'], 'createBoundingBox');
     service.shortcutKeyA(keyboard);
     expect(service['selection'].createBoundingBox).toHaveBeenCalled();
@@ -551,9 +551,9 @@ describe('ShortcutsManagerService', () => {
 
   it('#shortcutKeyShift devrait memoriser la position du curseur si l\'outil actif est la ligne', () => {
     service['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.LINE];
-    spyOn(service['lineTool'], 'memorizeCursor');
+    spyOn(service['lineTool'], 'shiftPress');
     service.shortcutKeyShift();
-    expect(service['lineTool'].memorizeCursor).toHaveBeenCalled();
+    expect(service['lineTool'].shiftPress).toHaveBeenCalled();
   });
 
   it('#shortcutKeyShift devrait appeler shiftPress si l\'outil actif est l\'ellipse', () => {
@@ -565,11 +565,11 @@ describe('ShortcutsManagerService', () => {
 
   it('#shortcutKeyShift ne devrait rien faire si l\'outil actif n\'est ni la ligne ou le rectangle', () => {
     service['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.PENCIL];
-    spyOn(service['lineTool'], 'memorizeCursor');
+    spyOn(service['lineTool'], 'shiftPress');
     spyOn(service['ellipseTool'], 'shiftPress');
     spyOn(service['rectangleTool'], 'shiftPress');
     service.shortcutKeyShift();
-    expect(service['lineTool'].memorizeCursor).not.toHaveBeenCalled();
+    expect(service['lineTool'].shiftPress).not.toHaveBeenCalled();
     expect(service['rectangleTool'].shiftPress).not.toHaveBeenCalled();
     expect(service['ellipseTool'].shiftPress).not.toHaveBeenCalled();
   });
@@ -683,28 +683,28 @@ describe('ShortcutsManagerService', () => {
 
   it('#shortcutKeyArrowLeft devrait mettre leftArrow à vrai', () => {
     service.shortcutKeyArrowLeft();
-    expect(service['leftArrow']).toBe(true);
+    expect(service['arrowKeys'][0] ).toBe(true);
   });
 
   // TESTS shortcutArrowRight
 
   it('#shortcutKeyArrowRight devrait mettre RightArrow à vrai', () => {
     service.shortcutKeyArrowRight();
-    expect(service['rightArrow']).toBe(true);
+    expect(service['arrowKeys'][1]).toBe(true);
   });
 
   // TESTS shortcutArrowDown
 
   it('#shortcutKeyArrowDown devrait mettre DownArrow à vrai', () => {
     service.shortcutKeyArrowDown();
-    expect(service['downArrow']).toBe(true);
+    expect(service['arrowKeys'][3] ).toBe(true);
   });
 
   // TESTS shortcutArrowUp
 
   it('#shortcutKeyArrowUp devrait mettre UpArrow à vrai', () => {
     service.shortcutKeyArrowUp();
-    expect(service['upArrow']).toBe(true);
+    expect(service['arrowKeys'][2] ).toBe(true);
   });
 
   // TESTS treatReleaseKey
@@ -742,25 +742,25 @@ describe('ShortcutsManagerService', () => {
   it('#treatReleaseKey devrait mettre leftArrow a false si il reçoit ArrowLeft', () => {
     const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowLeft'});
     service.treatReleaseKey(keyboard);
-    expect(service['leftArrow']).toBe(false);
+    expect(service['arrowKeys'][0] ).toBe(false);
   });
 
   it('#treatReleaseKey devrait mettre rightArrow a false si il reçoit ArrowRight', () => {
     const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowRight'});
     service.treatReleaseKey(keyboard);
-    expect(service['rightArrow']).toBe(false);
+    expect(service['arrowKeys'][1]).toBe(false);
   });
 
   it('#treatReleaseKey devrait mettre upArrow a false si il reçoit ArrowUp', () => {
     const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowUp'});
     service.treatReleaseKey(keyboard);
-    expect(service['upArrow']).toBe(false);
+    expect(service['arrowKeys'][2] ).toBe(false);
   });
 
   it('#treatReleaseKey devrait mettre downArrow a false si il reçoit ArrowDown', () => {
     const keyboard = new KeyboardEvent('keyrelease', { key: 'ArrowDown'});
     service.treatReleaseKey(keyboard);
-    expect(service['downArrow']).toBe(false);
+    expect(service['arrowKeys'][3] ).toBe(false);
   });
 
   it('#treatReleaseKey devrait appeler updatePositionTimer', () => {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TOOL_INDEX, ToolManagerService } from '../tools/tool-manager.service';
-import { DrawElement } from './draw-element';
+import { DrawElement } from './draw-element/draw-element';
 
 @Injectable({
   providedIn: 'root'

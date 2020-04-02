@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { DrawElement } from '../stockage-svg/draw-element';
-import { RectangleService } from '../stockage-svg/rectangle.service';
+import { RectangleService } from '../stockage-svg/draw-element/basic-shape/rectangle.service';
+import { DrawElement } from '../stockage-svg/draw-element/draw-element';
+import { TracePencilService } from '../stockage-svg/draw-element/trace/trace-pencil.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
-import { TracePencilService } from '../stockage-svg/trace-pencil.service';
 import { RemoveSVGService } from './remove-svg.service';
 
 // tslint:disable: no-string-literal

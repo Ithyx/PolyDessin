@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DrawElement } from '../stockage-svg/draw-element';
+import { DrawElement } from '../stockage-svg/draw-element/draw-element';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { Command } from './command';
 

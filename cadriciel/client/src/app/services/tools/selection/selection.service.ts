@@ -3,17 +3,17 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CommandManagerService } from '../../command/command-manager.service';
 import { TranslateSvgService } from '../../command/translate-svg.service';
 import { DrawingManagerService } from '../../drawing-manager/drawing-manager.service';
-import { DrawElement } from '../../stockage-svg/draw-element';
-import { RectangleService } from '../../stockage-svg/rectangle.service';
+import { RectangleService } from '../../stockage-svg/draw-element/basic-shape/rectangle.service';
+import { DrawElement, Point } from '../../stockage-svg/draw-element/draw-element';
 import { SVGStockageService } from '../../stockage-svg/svg-stockage.service';
-import { Point } from '../line-tool.service';
 import { ToolInterface } from '../tool-interface';
 import { SelectionBoxService } from './selection-box.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
 
+export const LEFT_CLICK = 0;
+export const RIGHT_CLICK = 2;
+
 const HALF_DRAW_ELEMENT = 0.5 ;
-const LEFT_CLICK = 0;
-const RIGHT_CLICK = 2;
 
 @Injectable({
   providedIn: 'root'
@@ -189,15 +189,15 @@ export class SelectionService implements ToolInterface {
 
   belongToRectangle(element: DrawElement, rectangle: RectangleService): boolean {
     // BOTTOM RIGHT corner of element with TOP LEFT corner of selection
-    const collision1 = element.pointMax.x >= rectangle.pointMin.x && element.pointMax.y >= rectangle.pointMin.y;
+    const topLeftCollision = element.pointMax.x >= rectangle.pointMin.x && element.pointMax.y >= rectangle.pointMin.y;
     // BOTTOM LEFT corner of element with TOP RIGHT corner of selection
-    const collision2 = element.pointMin.x <= rectangle.pointMax.x && element.pointMax.y >= rectangle.pointMin.y;
+    const topRightCollision = element.pointMin.x <= rectangle.pointMax.x && element.pointMax.y >= rectangle.pointMin.y;
     // TOP LEFT corner of element with BOTTOM RIGHT corner of selection
-    const collision3 = element.pointMin.x <= rectangle.pointMax.x && element.pointMin.y <= rectangle.pointMax.y;
+    const bottomRightCollision = element.pointMin.x <= rectangle.pointMax.x && element.pointMin.y <= rectangle.pointMax.y;
     // TOP RIGHT corner of element with BOTTOM LEFT corner of selection
-    const collision4 =  element.pointMax.x >= rectangle.pointMin.x && element.pointMin.y <= rectangle.pointMax.y;
+    const bottomLeftCollision =  element.pointMax.x >= rectangle.pointMin.x && element.pointMin.y <= rectangle.pointMax.y;
 
-    return (collision1 && collision2 && collision3 && collision4);
+    return (topLeftCollision && topRightCollision && bottomRightCollision && bottomLeftCollision);
   }
 
   findPointMinAndMax(element: DrawElement): void {
@@ -232,7 +232,7 @@ export class SelectionService implements ToolInterface {
   }
 
   updatePosition(x: number, y: number): void {
-    if (this.selectionBox.selectionBox) {
+    if (this.selectionBox.box) {
       for (const element of this.selectedElements) {
           element.updatePosition(x, y);
           element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
@@ -242,7 +242,7 @@ export class SelectionService implements ToolInterface {
   }
 
   updatePositionMouse(mouse: MouseEvent): void {
-    if (this.selectionBox.selectionBox) {
+    if (this.selectionBox.box) {
       for (const element of this.selectedElements) {
           element.updatePositionMouse(mouse, this.selectionBox.mouseClick);
           element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);

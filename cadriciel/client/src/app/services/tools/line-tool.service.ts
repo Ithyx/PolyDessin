@@ -1,15 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AddSVGService } from '../command/add-svg.service';
 import { CommandManagerService } from '../command/command-manager.service';
-import { LineService } from '../stockage-svg/line.service';
+import { Point } from '../stockage-svg/draw-element/draw-element';
+import { LineService } from '../stockage-svg/draw-element/line.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { ToolInterface } from './tool-interface';
 import { ToolManagerService } from './tool-manager.service';
-
-export interface Point {
-  x: number;
-  y: number;
-}
 
 const CLICK_DELAY = 250;
 const POLYGON_DISTANCE = 3;
@@ -20,7 +16,6 @@ const ANGLE_DIVIDER = 4;
 })
 export class LineToolService implements ToolInterface {
   private isSimpleClick: boolean;
-  protected shiftPressPosition: Point;
   private line: LineService;
 
   private cursor: Point = {x: 0, y: 0};
@@ -83,10 +78,6 @@ export class LineToolService implements ToolInterface {
     }
   }
 
-  memorizeCursor(): void {
-    this.shiftPressPosition = {x: this.cursor.x, y: this.cursor.y};
-  }
-
   shiftPress(): void {
     if (this.commands.drawingInProgress) {
       const lastPoint = this.line.points[this.line.points.length - 1];
@@ -113,7 +104,7 @@ export class LineToolService implements ToolInterface {
   }
 
   shiftRelease(): void {
-    this.line.mousePosition = this.cursor;
+    this.line.mousePosition = {x: this.cursor.x, y: this.cursor.y};
     this.refreshSVG();
   }
 
@@ -126,7 +117,6 @@ export class LineToolService implements ToolInterface {
   clear(): void {
     this.line = new LineService();
     this.line.mousePosition = this.cursor;
-    this.shiftPressPosition = {x: 0, y: 0};
     this.cursor = {x: 0, y: 0};
     this.svgStockage.setOngoingSVG(this.line);
   }

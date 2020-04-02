@@ -2,23 +2,20 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { GridService } from 'src/app/services/grid/grid.service';
-import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
+import { DrawElement, Point } from 'src/app/services/stockage-svg/draw-element/draw-element';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
 import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
-import { Point } from 'src/app/services/tools/line-tool.service';
 import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
-import { SelectionService } from 'src/app/services/tools/selection/selection.service';
+import { LEFT_CLICK, RIGHT_CLICK, SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
-
-const LEFT_CLICK = 0;
-const RIGHT_CLICK = 2;
 
 @Component({
   selector: 'app-drawing-surface',
   templateUrl: './drawing-surface.component.html',
   styleUrls: ['./drawing-surface.component.scss']
 })
+
 export class DrawingSurfaceComponent implements AfterViewInit {
   @ViewChild('drawing', {static: false})
   private drawing: ElementRef<SVGElement>;
@@ -47,11 +44,11 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   }
 
   clickBelongToSelectionBox(mouse: MouseEvent): boolean {
-    const belongInX = mouse.offsetX >= this.selection.selectionBox.selectionBox.points[0].x
-                    && mouse.offsetX <= this.selection.selectionBox.selectionBox.points[1].x;
+    const belongInX = mouse.offsetX >= this.selection.selectionBox.box.points[0].x
+                    && mouse.offsetX <= this.selection.selectionBox.box.points[1].x;
 
-    const belongInY = mouse.offsetY >= this.selection.selectionBox.selectionBox.points[0].y
-                    && mouse.offsetY <= this.selection.selectionBox.selectionBox.points[1].y;
+    const belongInY = mouse.offsetY >= this.selection.selectionBox.box.points[0].y
+                    && mouse.offsetY <= this.selection.selectionBox.box.points[1].y;
 
     return belongInX && belongInY;
   }
@@ -127,7 +124,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
 
   handleMouseUpBox(): void {
    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
-     this.selection.selectionBox.selectionBox.translateAllPoints();
+     this.selection.selectionBox.box.translateAllPoints();
      for (const controlPoint of this.selection.selectionBox.controlPointBox) {
        controlPoint.translateAllPoints();
      }
@@ -140,7 +137,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       if (mouse.button === LEFT_CLICK) {
         // si on clique dans la boite de selection d'un element SVG
-        if (this.selection.selectionBox.selectionBox && this.clickBelongToSelectionBox(mouse)) {
+        if (this.selection.selectionBox.box && this.clickBelongToSelectionBox(mouse)) {
           this.selection.selectionBox.mouseClick = {x: mouse.offsetX , y: mouse.offsetY };
           this.selection.clickInSelectionBox = true;
           delete this.selection.selectionRectangle.rectangle;
@@ -161,7 +158,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
     }
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       if (this.selection.selectedElements.length !== 0) {
-        this.selection.selectionBox.selectionBox.translateAllPoints();
+        this.selection.selectionBox.box.translateAllPoints();
         for (const controlPoint of this.selection.selectionBox.controlPointBox) {
           controlPoint.translateAllPoints();
         }

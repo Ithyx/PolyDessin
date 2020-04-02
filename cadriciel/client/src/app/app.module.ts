@@ -30,6 +30,7 @@ import { SavePopupComponent } from './components/save-popup/save-popup.component
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 
 // Service
+import { AttributesPanelComponent } from './components/attributes-panel/attributes-panel.component';
 import { CanvasConversionService } from './services/canvas-conversion.service';
 import { ColorParameterService } from './services/color/color-parameter.service';
 import { CommandManagerService } from './services/command/command-manager.service';
@@ -43,13 +44,13 @@ import { RectangleToolService } from './services/tools/basic-shape-tool/rectangl
 import { LineToolService } from './services/tools/line-tool.service';
 import { SelectionService } from './services/tools/selection/selection.service';
 import { PencilToolService } from './services/tools/tracing-tool/pencil-tool.service';
-import { AttributesPanelComponent } from './components/attributes-panel/attributes-panel.component';
 
 @NgModule({
     declarations: [AppComponent, HomePageComponent, NewDrawingWarningComponent, DrawingPageComponent, GuidePageComponent,
         NewDrawingWindowComponent, ToolbarComponent, DrawingToolComponent, GuideSubjectComponent, DrawingSurfaceComponent,
         ColorChoiceComponent, ColorSliderComponent, ColorPickerComponent, ColorInputComponent, GridOptionsComponent,
-        SavePopupComponent, GalleryComponent, GalleryElementComponent, GalleryLoadWarningComponent, ExportWindowComponent, AttributesPanelComponent],
+        SavePopupComponent, GalleryComponent, GalleryElementComponent, GalleryLoadWarningComponent, ExportWindowComponent,
+        AttributesPanelComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
         MatProgressSpinnerModule, MatDialogModule, MatSidenavModule, BrowserAnimationsModule, RouterModule.forRoot([
         {path: '', component: HomePageComponent},

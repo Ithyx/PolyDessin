@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { DrawElement } from '../stockage-svg/draw-element';
-import { Point } from '../tools/line-tool.service';
+import { DrawElement, Point } from '../stockage-svg/draw-element/draw-element';
 import { SelectionBoxService } from '../tools/selection/selection-box.service';
 import { Command } from './command';
 
@@ -24,7 +23,7 @@ export class TranslateSvgService implements Command {
                 element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
                 element.translateAllPoints();
                }
-               this.selectionBox.selectionBox.translateAllPoints();
+               this.selectionBox.box.translateAllPoints();
                for (const element of this.selectionBox.controlPointBox) {
                  element.translateAllPoints();
                }

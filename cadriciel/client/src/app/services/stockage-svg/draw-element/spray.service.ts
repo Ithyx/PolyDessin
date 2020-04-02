@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
-import { Color } from '../color/color';
-import { Point } from '../tools/line-tool.service';
-import { DrawingTool, TOOL_INDEX } from '../tools/tool-manager.service';
-import { DrawElement, ERASING_COLOR_INIT} from './draw-element';
+import { Color } from '../../color/color';
+import { DrawingTool, TOOL_INDEX } from '../../tools/tool-manager.service';
+import { DrawElement, ERASING_COLOR_INIT, Point} from '../draw-element/draw-element';
 
 export const MIN_DIAMETER = 5;
 
 @Injectable({
   providedIn: 'root'
 })
-export class TraceSprayService implements DrawElement {
+export class SprayService implements DrawElement {
 
   svg: string;
   svgHtml: SafeHtml;

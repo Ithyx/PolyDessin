@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { DrawElement } from '../stockage-svg/draw-element';
-import { LineService } from '../stockage-svg/line.service';
+import { DrawElement } from '../stockage-svg/draw-element/draw-element';
+import { LineService } from '../stockage-svg/draw-element/line.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { AddSVGService } from './add-svg.service';
 

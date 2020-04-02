@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { ColorParameterService } from '../../color/color-parameter.service';
 import { AddSVGService } from '../../command/add-svg.service';
 import { CommandManagerService } from '../../command/command-manager.service';
+import { TraceService } from '../../stockage-svg/draw-element/trace/trace.service';
 import { SVGStockageService } from '../../stockage-svg/svg-stockage.service';
-import { TraceService } from '../../stockage-svg/trace.service';
 import { ToolInterface } from '../tool-interface';
 import { ToolManagerService } from '../tool-manager.service';
 

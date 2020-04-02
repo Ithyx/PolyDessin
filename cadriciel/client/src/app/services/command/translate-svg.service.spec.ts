@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
 import { DomSanitizer } from '@angular/platform-browser';
-import { DrawElement } from '../stockage-svg/draw-element';
-import { RectangleService } from '../stockage-svg/rectangle.service';
-import { TracePencilService } from '../stockage-svg/trace-pencil.service';
+import { RectangleService } from '../stockage-svg/draw-element/basic-shape/rectangle.service';
+import { DrawElement } from '../stockage-svg/draw-element/draw-element';
+import { TracePencilService } from '../stockage-svg/draw-element/trace/trace-pencil.service';
 import { SelectionBoxService } from '../tools/selection/selection-box.service';
 import { TranslateSvgService } from './translate-svg.service';
 
@@ -15,7 +15,7 @@ const controlPoint3 = new RectangleService();
 const controlPoint4 = new RectangleService();
 
 const selectionBoxStub: Partial<SelectionBoxService> = {
-  selectionBox: new RectangleService(),
+  box: new RectangleService(),
   controlPointBox: [
     controlPoint1,
     controlPoint2,
@@ -90,9 +90,9 @@ describe('TranslateSvgService', () => {
   });
 
   it('#constructor devrait appeler translateAllPoints de selectionBox', () => {
-    spyOn(selectionBox.selectionBox, 'translateAllPoints');
+    spyOn(selectionBox.box, 'translateAllPoints');
     service = new TranslateSvgService(elements, selectionBox, sanitizer, deleteBoundingBoxStub);
-    expect(selectionBox.selectionBox.translateAllPoints).toHaveBeenCalled();
+    expect(selectionBox.box.translateAllPoints).toHaveBeenCalled();
   });
 
   it('#constructor devrait appeler translateAllPoints de tous les controlPointBox de selectionBox', () => {

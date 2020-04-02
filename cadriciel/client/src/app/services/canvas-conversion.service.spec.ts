@@ -3,13 +3,13 @@ import { TestBed } from '@angular/core/testing';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CanvasConversionService, COLOR_INCREASE_LINE, COLOR_INCREASE_SPRAY } from './canvas-conversion.service';
 import { Color } from './color/color';
-import { DrawElement } from './stockage-svg/draw-element';
-import { LineService } from './stockage-svg/line.service';
-import { RectangleService } from './stockage-svg/rectangle.service';
+import { RectangleService } from './stockage-svg/draw-element/basic-shape/rectangle.service';
+import { DrawElement } from './stockage-svg/draw-element/draw-element';
+import { LineService } from './stockage-svg/draw-element/line.service';
+import { SprayService } from './stockage-svg/draw-element/spray.service';
+import { TraceBrushService } from './stockage-svg/draw-element/trace/trace-brush.service';
+import { TracePencilService } from './stockage-svg/draw-element/trace/trace-pencil.service';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
-import { TraceBrushService } from './stockage-svg/trace-brush.service';
-import { TracePencilService } from './stockage-svg/trace-pencil.service';
-import { TraceSprayService } from './stockage-svg/trace-spray.service';
 
 // tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers
@@ -175,59 +175,20 @@ describe('CanvasConversionService', () => {
     expect(stockage.getCompleteSVG).toHaveBeenCalled();
   });
 
-  it('#updateDrawing devrait assigner des teintes de rouge aux premiers SVG du stockage', () => {
+  it('#updateDrawing devrait appeler calculateColor avec tous les éléments et le tableau rgb', () => {
+    const spy = spyOn(service, 'calculateColor').and.returnValue({RGBA: [1, 0, 0, 1], RGBAString: 'rgba(1, 0, 0, 1)'});
     service.updateDrawing();
-    if (service['drawing'].elements && service['drawing'].elements[0].primaryColor) {
-      expect(service['drawing'].elements[0].primaryColor.RGBAString).toEqual('rgba(1, 0, 0, 1)');
-    }
+    expect(spy).toHaveBeenCalledWith(firstElement);
+    expect(spy).toHaveBeenCalledWith(secondElement);
+    expect(spy).toHaveBeenCalledWith(thirdElement);
   });
 
-  it('#updateDrawing devrait assigner des teintes de vert lorsque la limite de rouge est atteinte', () => {
-    for (let i = 0; i < 256; ++i) {
-      completeElements[i] = firstElement;
-    }
+  it('#updateDrawing devrait appeler createClone sur tous les elements', () => {
+    const spy = spyOn(service, 'createClone');
     service.updateDrawing();
-    if (service['drawing'].elements && service['drawing'].elements[255].primaryColor) {
-      expect(service['drawing'].elements[255].primaryColor.RGBAString).toEqual('rgba(0, 1, 0, 1)');
-    }
-  });
-
-  it('#updateDrawing devrait assigner des teintes de bleu lorsque la limite de vert est atteinte', () => {
-    for (let i = 0; i < 65536; ++i) {
-      completeElements[i] = firstElement;
-    }
-    service.updateDrawing();
-    if (service['drawing'].elements && service['drawing'].elements[65535].primaryColor) {
-      expect(service['drawing'].elements[65535].primaryColor.RGBAString).toEqual('rgba(0, 0, 1, 1)');
-    }
-  });
-
-  it('#updateDrawing devrait incrémenter la couleur de COLOR_INCREASE_SPRAY pour un trait d\'aérosol', () => {
-    completeElements[0] = new TraceSprayService();
-    service.updateDrawing();
-    if (service['drawing'].elements && service['drawing'].elements[0].primaryColor) {
-      expect(service['drawing'].elements[0].primaryColor.RGBAString).toEqual(`rgba(${COLOR_INCREASE_SPRAY}, 0, 0, 1)`);
-    }
-  });
-
-  it('#updateDrawing devrait incrémenter la couleur de COLOR_INCREASE_LINE pour une ligne', () => {
-    completeElements[0] = new LineService();
-    service.updateDrawing();
-    if (service['drawing'].elements && service['drawing'].elements[0].primaryColor) {
-      expect(service['drawing'].elements[0].primaryColor.RGBAString).toEqual(`rgba(${COLOR_INCREASE_LINE}, 0, 0, 1)`);
-    }
-  });
-
-  it('#updateDrawing devrait appeler draw sur des clones de chacun des éléments du stockage', () => {
-    const spy = spyOn(TracePencilService.prototype, 'draw');
-    service.updateDrawing();
-    expect(spy).toHaveBeenCalledTimes(3);
-  });
-
-  it('#updateDrawing devrait appeler sanitize sur des clones de chacun des éléments du stockage', () => {
-    spyOn(service, 'sanitize');
-    service.updateDrawing();
-    expect(service.sanitize).toHaveBeenCalledTimes(3);
+    expect(spy).toHaveBeenCalledWith(firstElement);
+    expect(spy).toHaveBeenCalledWith(secondElement);
+    expect(spy).toHaveBeenCalledWith(thirdElement);
   });
 
   it('#updateDrawing devrait ajouter un clone de chaque élément avec des couleurs modifiées dans drawing.elements', () => {
@@ -298,6 +259,77 @@ describe('CanvasConversionService', () => {
     expect(service.convertToCanvas).toHaveBeenCalled();
   });
 
+  // TESTS calculateColor
+
+  it('#calculateColor devrait assigner des teintes de rouge aux premiers SVG du stockage', () => {
+    service['elementRGB'] = [0, 0, 0];
+    expect(service.calculateColor(firstElement).RGBA).toEqual([1, 0, 0, 1]);
+  });
+
+  it('#calculateColor devrait assigner des teintes de vert lorsque la limite de rouge est atteinte', () => {
+    service['elementRGB'] = [255, 0, 0];
+    expect(service.calculateColor(firstElement).RGBA).toEqual([0, 1, 0, 1]);
+  });
+
+  it('#calculateColor devrait assigner des teintes de bleu lorsque la limite de vert est atteinte', () => {
+    service['elementRGB'] = [255, 255, 0];
+    expect(service.calculateColor(firstElement).RGBA).toEqual([0, 0, 1, 1]);
+  });
+
+  it('#calculateColor devrait incrémenter la couleur de COLOR_INCREASE_SPRAY pour un trait d\'aérosol', () => {
+    service['elementRGB'] = [0, 0, 0];
+    const spray = new SprayService();
+    expect(service.calculateColor(spray).RGBA).toEqual([COLOR_INCREASE_SPRAY, 0, 0, 1]);
+  });
+
+  it('#calculateColor devrait incrémenter la couleur de COLOR_INCREASE_LINE pour une ligne', () => {
+    service['elementRGB'] = [0, 0, 0];
+    const line = new LineService();
+    expect(service.calculateColor(line).RGBA).toEqual([COLOR_INCREASE_LINE, 0, 0, 1]);
+  });
+
+  // TESTS createClone
+
+  it('#createClone devrait appeler draw sur l\'élément en paramètre s\'il n\'est pas un TraceBrush', () => {
+    const spy = spyOn(firstElement, 'draw');
+    service.createClone(firstElement);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#createClone devrait appeler sanitize sur l\'élément en paramètre s\'il n\'est pas un TraceBrush', () => {
+    spyOn(service, 'sanitize');
+    service.createClone(firstElement);
+    expect(service.sanitize).toHaveBeenCalledWith(firstElement.svg);
+  });
+
+  it('#createClone devrait appeler draw sur un TracePencil si l\'élément en paramètre est un TraceBrush', () => {
+    const spy = spyOn(TracePencilService.prototype, 'draw');
+    service.createClone(thirdElement);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#createClone devrait appeler sanitize sur un TracePencil si l\'élément en paramètre est un TraceBrush', () => {
+    spyOn(service, 'sanitize');
+    service.createClone(thirdElement);
+    const tracePencil = new TracePencilService();
+    if (thirdElement instanceof TraceBrushService) {
+      tracePencil.points = thirdElement.points;
+      tracePencil.primaryColor = thirdElement.primaryColor;
+      tracePencil.thickness = thirdElement.thickness;
+      tracePencil.translate = thirdElement.translate;
+      tracePencil.isAPoint = thirdElement.isAPoint;
+      tracePencil.draw();
+    }
+    expect(service.sanitize).toHaveBeenCalledWith(tracePencil.svg);
+  });
+
+  it('#createClone devrait retourner un clone de l\'élément en paramètre', () => {
+    const element = {...firstElement};
+    firstElement.draw();
+    element.svgHtml = sanitizer.bypassSecurityTrustHtml(firstElement.svg);
+    expect(service.createClone(firstElement)).toEqual(element);
+  });
+
   // TESTS getElementsInArea
 
   it('#getElementsInArea ne devrait rien faire si isValid est false', () => {
@@ -306,23 +338,10 @@ describe('CanvasConversionService', () => {
     expect(context.getImageData).not.toHaveBeenCalled();
   });
 
-  it('#getElementsInArea devrait appeler getImageData avec les coordonnées, la hauteur et la largeur en paramètres', () => {
-    service.getElementsInArea(1, 2, 15, 28);
-    expect(context.getImageData).toHaveBeenCalledWith(1, 2, 15, 28);
-  });
-
-  it('#getElementsInArea devrait appeler has sur coloredElements pour toutes les couleurs sur la surface', () => {
-    spyOn(service['coloredElements'], 'has');
-    service.getElementsInArea(0, 0, 2, 2);
-    expect(service['coloredElements'].has).toHaveBeenCalledWith('rgba(1, 0, 0, 1)');
-    expect(service['coloredElements'].has).toHaveBeenCalledWith('rgba(1, 0, 0, 1)');
-    expect(service['coloredElements'].has).toHaveBeenCalledWith('rgba(9, 0, 0, 1)');
-    expect(service['coloredElements'].has).toHaveBeenCalledWith('rgba(3, 0, 2, 1)');
-  });
-
-  it('#getElementsInArea ne devrait rien faire si has retourne faux à chaque élément', () => {
-    spyOn(service['coloredElements'], 'has').and.returnValue(false);
-    expect(service.getElementsInArea(0, 0, 2, 2)).toEqual([]);
+  it('#getElementsInArea devrait appeler getColorOccurrences', () => {
+    const spy = spyOn(service, 'getColorOccurrences').and.returnValue(new Map<string, number>());
+    service.getElementsInArea(1, 1, 1, 1);
+    expect(spy).toHaveBeenCalledWith(1, 1, 1, 1);
   });
 
   it('#getElementsInArea devrait appeler canBeBlending sur tous les éléments', () => {
@@ -379,6 +398,33 @@ describe('CanvasConversionService', () => {
     spyOn(service, 'canBeBlending').and.returnValue(false);
     service['coloredElements'].set('rgba(1, 0, 0, 1)', firstElement);
     expect(service.getElementsInArea(0, 0, 2, 2)).toEqual([firstElement]);
+  });
+
+  // TESTS getColorOccurrences
+
+  it('#getColorOccurrences devrait appeler getImageData avec les coordonnées, la hauteur et la largeur en paramètres', () => {
+    service.getColorOccurrences(1, 2, 15, 28);
+    expect(context.getImageData).toHaveBeenCalledWith(1, 2, 15, 28);
+  });
+
+  it('#getColorOccurrences devrait appeler has sur coloredElements pour toutes les couleurs sur la surface', () => {
+    spyOn(service['coloredElements'], 'has');
+    service.getColorOccurrences(0, 0, 2, 2);
+    expect(service['coloredElements'].has).toHaveBeenCalledWith('rgba(1, 0, 0, 1)');
+    expect(service['coloredElements'].has).toHaveBeenCalledWith('rgba(1, 0, 0, 1)');
+    expect(service['coloredElements'].has).toHaveBeenCalledWith('rgba(9, 0, 0, 1)');
+    expect(service['coloredElements'].has).toHaveBeenCalledWith('rgba(3, 0, 2, 1)');
+  });
+
+  it('#getColorOccurrences ne devrait rien faire si has retourne faux à chaque élément', () => {
+    spyOn(service['coloredElements'], 'has').and.returnValue(false);
+    expect(service.getColorOccurrences(0, 0, 2, 2)).toEqual(new Map<string, number>());
+  });
+
+  it('#getColorOccurences devrait retourner les occurrences pour chaque couleur trouvée', () => {
+    const occurrences = new Map<string, number>();
+    occurrences.set('rgba(1, 0, 0, 1)', 2);
+    expect(service.getColorOccurrences(0, 0, 2, 2)).toEqual(occurrences);
   });
 
   // TESTS canBeBlending

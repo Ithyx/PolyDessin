@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { RectangleService } from '../../stockage-svg/rectangle.service';
-import { Point } from '../line-tool.service';
+import { RectangleService } from '../../stockage-svg/draw-element/basic-shape/rectangle.service';
+import { Point } from '../../stockage-svg/draw-element/draw-element';
 import { DrawingTool } from '../tool-manager.service';
-
-export const LEFT_CLICK = 0;
-export const RIGHT_CLICK = 2;
 
 export const rectangleSelectionTool: DrawingTool = {name: '',
                                              isActive: true,
@@ -25,6 +22,9 @@ const enum RECTANGLE_INVERTED_COLOR {
   PRIMARY = 'rgba(190, 70, 70, 0.35)',
   SECONDARY = 'rgba(80, 80, 80, 0.45)',
 }
+
+const LEFT_CLICK = 0;
+const RIGHT_CLICK = 2;
 
 @Injectable({
   providedIn: 'root'

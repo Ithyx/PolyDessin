@@ -8,20 +8,19 @@ import { ColorChangerToolService } from 'src/app/services/tools/color-changer-to
 import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
 import { LineToolService } from 'src/app/services/tools/line-tool.service';
 import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
-import { SelectionService } from 'src/app/services/tools/selection/selection.service';
+import { LEFT_CLICK,  SelectionService} from 'src/app/services/tools/selection/selection.service';
 import { SprayToolService } from 'src/app/services/tools/spray-tool.service';
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
 import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { BrushToolService } from 'src/app/services/tools/tracing-tool/brush-tool.service';
 import { PencilToolService } from 'src/app/services/tools/tracing-tool/pencil-tool.service';
 
-const LEFT_CLICK = 0;
-
 @Component({
   selector: 'app-drawing-page',
   templateUrl: './drawing-page.component.html',
   styleUrls: ['./drawing-page.component.scss']
 })
+
 export class DrawingPageComponent implements AfterViewInit {
 
   @ViewChild('canvasConversion', {static: false})

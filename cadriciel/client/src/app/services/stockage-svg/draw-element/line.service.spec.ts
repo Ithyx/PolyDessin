@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { LineToolService } from '../tools/line-tool.service';
+import { LineToolService } from '../../tools/line-tool.service';
 import { LineService } from './line.service';
 
 // tslint:disable:no-magic-numbers

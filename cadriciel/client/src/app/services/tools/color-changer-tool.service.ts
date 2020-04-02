@@ -4,7 +4,7 @@ import { ColorParameterService } from '../color/color-parameter.service';
 import { CommandManagerService } from '../command/command-manager.service';
 import { PrimaryColorChangeService } from '../command/primary-color-change.service';
 import { SecondaryColorChangeService } from '../command/secondary-color-change.service';
-import { DrawElement } from '../stockage-svg/draw-element';
+import { DrawElement } from '../stockage-svg/draw-element/draw-element';
 import { ToolInterface } from './tool-interface';
 
 @Injectable({
