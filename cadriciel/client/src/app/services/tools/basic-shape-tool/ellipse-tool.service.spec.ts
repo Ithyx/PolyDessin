@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EllipseService } from '../../stockage-svg/ellipse.service';
+import { EllipseService } from '../../stockage-svg/draw-element/basic-shape/ellipse.service';
 import { EllipseToolService } from './ellipse-tool.service';
 
 // tslint:disable: no-magic-numbers

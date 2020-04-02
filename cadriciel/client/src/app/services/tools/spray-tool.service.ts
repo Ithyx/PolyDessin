@@ -3,9 +3,9 @@ import { interval, Subscription } from 'rxjs';
 import { ColorParameterService } from '../color/color-parameter.service';
 import { AddSVGService } from '../command/add-svg.service';
 import { CommandManagerService } from '../command/command-manager.service';
-import { Point } from '../stockage-svg/draw-element';
+import { Point } from '../stockage-svg/draw-element/draw-element';
+import { SprayService } from '../stockage-svg/draw-element/spray.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
-import { TraceSprayService } from '../stockage-svg/trace-spray.service';
 import { ToolInterface } from './tool-interface';
 import { ToolManagerService } from './tool-manager.service';
 
@@ -17,7 +17,7 @@ export const POINTS_PER_EMISSION = 20;
 })
 export class SprayToolService implements ToolInterface {
 
-  trace: TraceSprayService;
+  trace: SprayService;
   mousePosition: Point = {x: 0, y: 0};
   intervalSubscription: Subscription;
 
@@ -60,7 +60,7 @@ export class SprayToolService implements ToolInterface {
   }
 
   resetTrace(): void {
-    this.trace = new TraceSprayService();
+    this.trace = new SprayService();
     this.trace.primaryColor = {...this.colorParameter.primaryColor};
     this.trace.updateParameters(this.tools.activeTool);
   }

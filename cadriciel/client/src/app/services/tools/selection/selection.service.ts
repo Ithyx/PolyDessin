@@ -3,16 +3,17 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CommandManagerService } from '../../command/command-manager.service';
 import { TranslateSvgService } from '../../command/translate-svg.service';
 import { DrawingManagerService } from '../../drawing-manager/drawing-manager.service';
-import { DrawElement, Point } from '../../stockage-svg/draw-element';
-import { RectangleService } from '../../stockage-svg/rectangle.service';
+import { RectangleService } from '../../stockage-svg/draw-element/basic-shape/rectangle.service';
+import { DrawElement, Point } from '../../stockage-svg/draw-element/draw-element';
 import { SVGStockageService } from '../../stockage-svg/svg-stockage.service';
 import { ToolInterface } from '../tool-interface';
 import { SelectionBoxService } from './selection-box.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
 
+export const LEFT_CLICK = 0;
+export const RIGHT_CLICK = 2;
+
 const HALF_DRAW_ELEMENT = 0.5 ;
-const LEFT_CLICK = 0;
-const RIGHT_CLICK = 2;
 
 @Injectable({
   providedIn: 'root'

@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Drawing } from '../../../../../common/communication/drawing-interface';
-import { DrawElement } from '../stockage-svg/draw-element';
+import { DrawElement } from '../stockage-svg/draw-element/draw-element';
 import { DatabaseService, SERVER_URL } from './database.service';
 
 // tslint:disable: no-magic-numbers

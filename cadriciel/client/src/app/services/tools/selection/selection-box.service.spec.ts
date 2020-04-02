@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RectangleService } from '../../stockage-svg/rectangle.service';
+import { RectangleService } from '../../stockage-svg/draw-element/basic-shape/rectangle.service';
 import { NUMBER_OF_CONTROL_POINT, SELECTION_BOX_THICKNESS, SelectionBoxService } from './selection-box.service';
 
 // tslint:disable: no-magic-numbers

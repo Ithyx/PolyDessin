@@ -2,9 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
 
 import { ElementRef } from '@angular/core';
-import { DrawElement } from 'src/app/services/stockage-svg/draw-element';
-import { LineService } from 'src/app/services/stockage-svg/line.service';
-import { RectangleService } from 'src/app/services/stockage-svg/rectangle.service';
+import { RectangleService } from 'src/app/services/stockage-svg/draw-element/basic-shape/rectangle.service';
+import { DrawElement } from 'src/app/services/stockage-svg/draw-element/draw-element';
+import { LineService } from 'src/app/services/stockage-svg/draw-element/line.service';
 import { SelectionBoxService } from 'src/app/services/tools/selection/selection-box.service';
 import { SelectionRectangleService } from 'src/app/services/tools/selection/selection-rectangle.service';
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';

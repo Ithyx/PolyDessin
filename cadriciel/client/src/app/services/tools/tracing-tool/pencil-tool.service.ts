@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TracePencilService } from '../../stockage-svg/trace-pencil.service';
+import { TracePencilService } from '../../stockage-svg/draw-element/trace/trace-pencil.service';
 import { TracingToolService } from './tracing-tool.service';
 
 @Injectable({

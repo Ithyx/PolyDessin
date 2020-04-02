@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EllipseService } from '../../stockage-svg/ellipse.service';
+import { EllipseService } from '../../stockage-svg/draw-element/basic-shape/ellipse.service';
 import { BasicShapeToolService } from './basic-shape-tool.service';
 
 @Injectable({

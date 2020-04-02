@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Observable, Subscription } from 'rxjs';
+import { SprayService } from '../stockage-svg/draw-element/spray.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
-import { TraceSprayService } from '../stockage-svg/trace-spray.service';
 import { SprayToolService } from './spray-tool.service';
 
 // tslint:disable:no-magic-numbers
@@ -11,7 +11,7 @@ import { SprayToolService } from './spray-tool.service';
 describe('DrawSprayService', () => {
   let service: SprayToolService;
   let stockageService: SVGStockageService;
-  let element: TraceSprayService;
+  let element: SprayService;
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(SprayToolService));
   beforeEach(() => stockageService = TestBed.get(SVGStockageService));
@@ -21,7 +21,7 @@ describe('DrawSprayService', () => {
     service['tools'].activeTool = service['tools'].toolList[2];
     service['tools'].activeTool.parameters[0].value = 5;
 
-    element = new TraceSprayService();
+    element = new SprayService();
     element.updateParameters(service['tools'].toolList[2]);
     element.primaryColor = {
       RGBAString: 'rgba(0, 0, 0, 1)',
@@ -149,7 +149,7 @@ describe('DrawSprayService', () => {
   });
 
   it('#resetTrace devrait appeler la fonction updateParameters', () => {
-    const test = spyOn(TraceSprayService.prototype, 'updateParameters');
+    const test = spyOn(SprayService.prototype, 'updateParameters');
     service.resetTrace();
     expect(test).toHaveBeenCalledWith(service['tools'].activeTool);
   });

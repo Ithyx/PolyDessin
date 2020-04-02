@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EllipseService } from '../stockage-svg/ellipse.service';
-import { LineService } from '../stockage-svg/line.service';
-import { PolygonService } from '../stockage-svg/polygon.service';
-import { RectangleService } from '../stockage-svg/rectangle.service';
+import { EllipseService } from '../stockage-svg/draw-element/basic-shape/ellipse.service';
+import { PolygonService } from '../stockage-svg/draw-element/basic-shape/polygon.service';
+import { RectangleService } from '../stockage-svg/draw-element/basic-shape/rectangle.service';
+import { LineService } from '../stockage-svg/draw-element/line.service';
+import { SprayService } from '../stockage-svg/draw-element/spray.service';
+import { TraceBrushService } from '../stockage-svg/draw-element/trace/trace-brush.service';
+import { TracePencilService } from '../stockage-svg/draw-element/trace/trace-pencil.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
-import { TraceBrushService } from '../stockage-svg/trace-brush.service';
-import { TracePencilService } from '../stockage-svg/trace-pencil.service';
-import { TraceSprayService } from '../stockage-svg/trace-spray.service';
 import { AddSVGService } from './add-svg.service';
 import { Command } from './command';
 import { CommandManagerService } from './command-manager.service';
@@ -38,7 +38,7 @@ describe('CommandManagerService', () => {
   });
 
   beforeEach(() => {
-    lastCommand = new AddSVGService(new TraceSprayService(), stockageService);
+    lastCommand = new AddSVGService(new SprayService(), stockageService);
     service['executedCommands'].push(new AddSVGService(new TracePencilService(), stockageService));
     service['executedCommands'].push(new AddSVGService(new TraceBrushService(), stockageService));
     service['executedCommands'].push(lastCommand);
