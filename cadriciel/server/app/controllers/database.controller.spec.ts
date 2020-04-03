@@ -1,6 +1,7 @@
 import * as assert from 'assert';
 import { expect } from 'chai';
 import { request, response, /* Router */} from 'express';
+import * as HttpStatus from 'http-status-codes';
 import { DatabaseService } from '../services/database.service';
 import { DatabaseController } from './database.controller';
 
@@ -25,7 +26,7 @@ describe('Tests de database.controller', () => {
     afterEach(() => sinonSandbox.restore());
 
     context('constructor', () => {
-
+        afterEach(() => sinonSandbox.restore());
         it('constructeur devrait appeler configureRouter', (done: Mocha.Done) => {
             assert.call(controller, controller['configureRouter']);
             done();
@@ -33,6 +34,7 @@ describe('Tests de database.controller', () => {
     });
 
     context('listDrawingCallback', async () => {
+        afterEach(() => sinonSandbox.restore());
         it('#listDrawingCallback devrait appeler getDrawingWithTags si la requête possède des tags', () => {
             const spy = sinonSandbox.spy(controller['databaseService'], 'getDrawingWithTags');
             request.query = {tags: encodeURIComponent(JSON.stringify(['tag1']))};
@@ -49,16 +51,29 @@ describe('Tests de database.controller', () => {
 
     context('saveDrawingCallback', async () => {
         // TODO nom du test
-        it('#saveDrawingCallback 1', () => {
+        afterEach(() => sinonSandbox.restore());
+        it('#saveDrawingCallback 1', (done) => {
             const spy = sinonSandbox.spy(controller['databaseService'], 'updateData');
             request.query = {};
-            controller['saveDrawingCallback'](request, response);
-            expect(spy.called).to.equal(true);
+            controller['saveDrawingCallback'](request, response).then(() => {
+                expect(spy.called).to.equal(true);
+            });
+            done();
+        });
+
+        it('#saveDrawingCallback 2', (done) => {
+            sinonSandbox.stub(controller['databaseService'], 'updateData').returns(Promise.resolve(true));
+            request.query = {};
+            controller['saveDrawingCallback'](request, response).then(() => {
+                expect(response.statusCode).to.equal(HttpStatus.OK);
+            });
+            done();
         });
     });
 
     context('deleteDrawingCallback', async () => {
         // TODO nom du test
+        afterEach(() => sinonSandbox.restore());
         it('#deleteDrawingCallback 1', () => {
             const spy = sinonSandbox.spy(controller['databaseService'], 'deleteData');
             request.query = {id: -1};
@@ -69,6 +84,7 @@ describe('Tests de database.controller', () => {
 
     context('configureRouter', () => {
 
+        afterEach(() => sinonSandbox.restore());
         it('#configureRouter devrait bind la route "/listDrawings" à la fonction listDrawingCallback avec la méthode get', () => {
             const spy = sinonSandbox.spy(controller.router, 'get');
             controller['configureRouter']();
