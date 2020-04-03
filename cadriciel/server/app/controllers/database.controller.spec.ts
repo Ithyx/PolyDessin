@@ -50,9 +50,8 @@ describe('Tests de database.controller', () => {
     });
 
     context('saveDrawingCallback', async () => {
-        // TODO nom du test
         afterEach(() => sinonSandbox.restore());
-        it('#saveDrawingCallback 1', (done) => {
+        it('#saveDrawingCallback devrait appeler databaseService.updateData', (done) => {
             const spy = sinonSandbox.spy(controller['databaseService'], 'updateData');
             request.query = {};
             controller['saveDrawingCallback'](request, response).then(() => {
@@ -61,7 +60,7 @@ describe('Tests de database.controller', () => {
             done();
         });
 
-        it('#saveDrawingCallback 2', (done) => {
+        it('#saveDrawingCallback devrait valider databaseService.updateData', (done) => {
             sinonSandbox.stub(controller['databaseService'], 'updateData').returns(Promise.resolve(true));
             request.query = {};
             controller['saveDrawingCallback'](request, response).then(() => {
@@ -72,9 +71,9 @@ describe('Tests de database.controller', () => {
     });
 
     context('deleteDrawingCallback', async () => {
-        // TODO nom du test
+
         afterEach(() => sinonSandbox.restore());
-        it('#deleteDrawingCallback 1', () => {
+        it('#deleteDrawingCallback devrait appeler databaseService.deleteData', () => {
             const spy = sinonSandbox.spy(controller['databaseService'], 'deleteData');
             request.query = {id: -1};
             controller['deleteDrawingCallback'](request, response);
