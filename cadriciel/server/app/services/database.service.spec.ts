@@ -1,5 +1,3 @@
-// tslint:disable: no-magic-numbers
-// tslint:disable: no-string-literal
 import {assert, expect } from 'chai';
 import {Collection, Cursor, MongoClient} from 'mongodb';
 import {Color} from '../../../client/src/app/services/color/color';
@@ -8,6 +6,9 @@ import {Drawing} from '../../../common/communication/drawing-interface';
 import {DatabaseService} from './database.service';
 
 import * as sinon from 'sinon';
+
+// tslint:disable: no-magic-numbers
+// tslint:disable: no-string-literal
 
 describe('Tests de database.service', () => {
     const DATABASE_URL = 'mongodb+srv://PolyDessin:log2990@polydessin-zhlk9.mongodb.net/test?retryWrites=true&w=majority';
