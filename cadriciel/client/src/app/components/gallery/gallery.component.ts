@@ -2,6 +2,7 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
+import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { DatabaseService } from 'src/app/services/database/database.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
@@ -33,7 +34,8 @@ export class GalleryComponent implements OnInit {
               private stockageSVG: SVGStockageService,
               private ngZone: NgZone,
               private router: Router,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private canvas: CanvasConversionService) {
     this.dialogConfig = new MatDialogConfig();
     this.dialogConfig.disableClose = true;
     this.dialogConfig.autoFocus = true;
@@ -101,6 +103,7 @@ export class GalleryComponent implements OnInit {
     if (drawing.tags) { this.drawingManager.tags = drawing.tags; } else { this.drawingManager.tags = []; }
     if (drawing.elements) { drawing.elements.forEach(this.db.addElement.bind(this.db)); }
     this.ngZone.run(() => this.router.navigate(['dessin']));
+    this.canvas.updateDrawing();
     this.close();
   }
 
