@@ -1,0 +1,28 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"> 
+<!-- Barre d'outils -->
+<div class="sidenav">
+    <div *ngFor='let tool of tools.toolList'>
+        <app-drawing-tool [tool]="tool" (click)="onClick(tool)"></app-drawing-tool>
+    </div>
+    <div class="options">
+        <a href="javascript:void(0);"   (click)="warningNewDrawing()">
+            <i class="fas fa-plus"></i> Nouveau Dessin
+        </a>
+        <a href="javascript:void(0);" (click)="openGallery()">
+            <i class="fas fa-images"></i> Ouvrir la galerie
+        </a>
+        <a href="javascript:void(0);" (click)="openSavePopup()">
+            <i class="fas fa-save"></i> Sauvergarder le dessin
+        </a>
+        <a href="javascript:void(0);" (click)="openExportWindow()" >
+           <i class="fas fa-file-download"></i> Exporter le dessin
+        </a>
+        <a  href="javascript:void(0);"   (click)="openGridWindow()">
+            <i class="fas fa-border-all"></i> Options de grille
+        </a>
+        <a [routerLink]="['/guide']">
+            <i class="fas fa-question"></i> Guide d'utilisation
+        </a>
+    </div>
+</div>
+<app-attributes-panel></app-attributes-panel>

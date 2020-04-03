@@ -1,0 +1,18 @@
+<mat-sidenav-container class="sidenav">
+    <div *ngFor = 'let subject of subjects'>
+        <app-guide-subject [node]="subject" (notification)="notificationReceived($event)"></app-guide-subject>
+    </div>
+    <div>
+        <button class="return" [routerLink]="[routingManager.previousPage]" (click)="leaveGuide()" mat-raised-button>Retour</button>
+    </div>
+</mat-sidenav-container>
+
+
+<div class="content">
+    <div *ngIf="activeSubject" [innerHTML]="activeSubject.description"></div>
+    <br>
+    <div *ngIf="activeSubject" class="buttonDiv">
+        <a *ngIf="activeSubject.previous" id="previousButton" class="button" href="javascript:void(0);" (click)="onClick(-1)" >précédent</a>
+        <a *ngIf="activeSubject.next" id="nextButton" class="button" href="javascript:void(0);" (click)="onClick(1)">suivant</a>
+    </div>
+</div> 

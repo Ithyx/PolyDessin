@@ -1,0 +1,65 @@
+.attributs-panel {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
+    text-align: center;
+    font-size: 30px;
+    color: lightcyan;
+    display: block;
+    width: 300px;
+    background-color: rgb(25, 25, 40);
+    left: 210px;
+    padding-bottom: 50px;
+    padding-right: 25px;
+}
+
+.attributs-panel label {
+    text-align: left;
+    font-size: 20px;
+    color: white;
+    padding-right: 25px;
+    padding-bottom: 25px;
+}
+
+.redo-undo {
+    font-size: 15px;
+    color: lightcyan;
+}
+
+.color_button {
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+
+button {
+    height: 30px;
+    width: 30px;
+    margin-top: 5px;
+}
+
+.last_color {
+    display: inline;
+}
+
+.last_color button {
+    width: 20px;
+    height: 20px;
+}
+
+.opacity_selector label {
+    font-size: 15px;
+    vertical-align: text-top;
+}
+
+.background_color {
+    padding-top: 30px;
+}
+
+a.notavailable{
+    opacity: 0.4;
+    cursor: not-allowed;
+}

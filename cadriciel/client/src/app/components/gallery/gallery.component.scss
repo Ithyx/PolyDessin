@@ -1,0 +1,45 @@
+.drawings { float: left; }
+
+.clear {
+    clear: both;
+    float: left;
+    display: block;
+    position: relative;
+}
+
+.selected { background-color: rgba($color: #000000, $alpha: 0.4); }
+
+.loadingUI {
+    margin: 0 auto;
+    width: 10%;
+}
+
+.content { width: 100%; }
+
+.error {
+    width: 95%;
+    left: 2.5%;
+    right: 2.5%;
+    margin: auto;
+    text-align: center;
+    color: darkred;
+    background-color: rgb(223, 136, 136);
+    border: 2px solid #f44336;
+    border-radius: 15px;
+}
+
+.no-results {
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+.option-button {
+    float: right;
+}
+
+.close-button {
+    float: left;
+}

@@ -1,0 +1,69 @@
+<svg #drawing class="drawing" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" version="1.1" xlmns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- Texture libre de droit-->
+
+        <!-- https://developer.mozilla.org/fr/docs/Web/SVG/Element/feGaussianBlur -->
+        <filter id="Flou" filterUnits="userSpaceOnUse">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+        </filter>
+
+        <!-- https://developer.mozilla.org/fr/docs/Web/SVG/Element/feOffset -->
+        <filter id="Surbrillance" filterUnits="userSpaceOnUse">
+            <feOffset in="SourceGraphic" dx="60" dy="60" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="blur1" />
+            <feMerge>
+                <feMergeNode in="blur1" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+
+        <!-- https://codepen.io/clovisneto/pen/MbBZEX -->
+        <filter id="Tremblant" filterUnits="userSpaceOnUse">
+            <feTurbulence baseFrequency="0.07" numOctaves="1" type="fractalNoise" seed="1" result="fractalNoise"></feTurbulence>
+			<feDisplacementMap scale="20" in="SourceGraphic" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+		</filter>
+        
+        <!-- https://developer.mozilla.org/fr/docs/Web/SVG/Element/feTurbulence -->
+        <filter id="Tache" filterUnits="userSpaceOnUse">
+			<feTurbulence baseFrequency="0.18" numOctaves="5" type="turbulence" seed="3" result="turbulence"/>
+            <feDisplacementMap in="SourceGraphic" scale="8" xChannelSelector="G" yChannelSelector="R"/>
+        </filter>
+
+        <!-- https://developer.mozilla.org/fr/docs/Web/SVG/Element/feDropShadow -->
+        <filter id="Ombre" filterUnits="userSpaceOnUse">
+            <feDropShadow dx="1.5" dy="20" stdDeviation="5"/>
+        </filter>
+    </defs>
+
+    <!--Rectangle de fond-->
+    <rect x="0" y="0" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" [attr.fill]="drawingManager.backgroundColor.RGBAString"
+    (mousedown)="handleMouseDownBackground($event)"  (mouseup)="handleMouseUpBackground($event)" oncontextmenu="return false;" />
+
+    <!--Tous les elements de dessin sur la surface-->
+    <g *ngFor="let element of svgStockage.getCompleteSVG()" [innerHTML]="element.svgHtml" (mousedown)="handleElementMouseDown(element, $event)" 
+    (mouseup)="handleElementMouseUp(element, $event)"  oncontextmenu="return false;" ></g>
+
+    <!--Rectangles de selection-->
+    <g *ngIf="this.selection.selectionRectangle.rectangle"  [innerHTML]="this.selection.selectionRectangle.rectangle.svgHtml"></g>
+    <g *ngIf="this.selection.selectionRectangle.rectangleInverted"  [innerHTML]="this.selection.selectionRectangle.rectangleInverted.svgHtml"></g>
+
+    <!--Boite de selection-->
+    <g  class = "selectionBox" *ngIf="this.selection.selectionBox.box" [innerHTML]="this.selection.selectionBox.box.svgHtml"  (mousedown)="handleMouseDownBox($event)"  (mouseup)="handleMouseUpBox()"></g>
+    
+    <!--Points de controle de le boite de selection-->
+    <g *ngFor="let controlPoint of this.selection.selectionBox.controlPointBox" [innerHTML]="controlPoint.svgHtml" oncontextmenu="return false;" (mousedown)="handleControlPointMouseDown($event)" ></g>
+   
+    <g [innerHTML]="svgStockage.getOngoingSVGHTML()"></g>
+    <g [innerHTML]="svgStockage.getOngoingPerimeterHTML()"></g>
+    
+    <!--Grille-->
+    <g class="grid" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" version="1.1" xlmns="http://www.w3.org/2000/svg">
+        <g *ngFor="let line of grid.getLines()">
+            <line class="grid" [attr.stroke]="grid.getColor()" stroke-width="1"
+                [attr.x1.px]="line.x1" [attr.x2.px]="line.x2"
+                [attr.y1.px]="line.y1" [attr.y2.px]="line.y2" />
+        </g>
+    </g>
+</svg>
+
+<canvas #canvas class="canvas" [width]="drawingManager.width" [height]="drawingManager.height"></canvas>

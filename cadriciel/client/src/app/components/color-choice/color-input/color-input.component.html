@@ -1,0 +1,9 @@
+<label>R: </label>
+<input type="text" (change)="editRGB($event, RED_INDEX)"
+    (focus)="disableShortcuts()" (blur)="enableShortcuts()" (keydown)="checkInput($event)" maxlength="2" class="hexRed"/>
+<label>G: </label>
+<input type="text" (change)="editRGB($event, GREEN_INDEX)"
+    (focus)="disableShortcuts()" (blur)="enableShortcuts()" (keydown)="checkInput($event)" maxlength="2" class="hexGreen"/>
+<label>B: </label>
+<input type="text" (change)="editRGB($event, BLUE_INDEX)"
+    (focus)="disableShortcuts()" (blur)="enableShortcuts()" (keydown)="checkInput($event)" maxlength="2" class="hexBlue"/>

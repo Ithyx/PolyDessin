@@ -1,46 +1,59 @@
 import { TestBed } from '@angular/core/testing';
-import { GuideSujet } from '../components/guide-sujet/guide-sujet';
-import { CONTENU_GUIDE } from '../components/page-guide/SujetsGuide';
-import { NavigationGuideService, SUJET_VIDE } from './navigation-guide.service';
+import { GUIDE_CONTENTS } from '../components/guide-page/guide-contents';
+import { SubjectGuide } from '../components/guide-subject/subject-guide';
+import { EMPTY_SUBJECT, NavigationGuideService } from './navigation-guide.service';
+
+// tslint:disable: no-magic-numbers
+// tslint:disable: no-non-null-assertion
 
 describe('NavigationGuideService', () => {
-  let sujets: GuideSujet[];
+  let subjects: SubjectGuide[];
   let service: NavigationGuideService;
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(NavigationGuideService));
-  beforeEach(() => sujets = CONTENU_GUIDE);
+  beforeEach(() => subjects = GUIDE_CONTENTS);
 
   it('should be created', () => {
     const testService: NavigationGuideService = TestBed.get(NavigationGuideService);
     expect(testService).toBeTruthy();
   });
 
-  // TESTS parcourirSujets
+  // TESTS browseSubjects
 
-  it('#parcourirSujets devrait retourner le sujet avec un ID de 1', () => {
-    expect(service.parcourirSujets(1, sujets).id).toBe(1);
+  it('#browseSubjects devrait retourner le sujet avec un ID de 1', () => {
+    expect(service.browseSubjects(1, subjects).id).toBe(1);
   });
 
-  it('#parcourirSujets devrait retourner un sujet vide quand on lui demande un ID nul ou négatif', () => {
-    expect(service.parcourirSujets(-5, sujets)).toBe(SUJET_VIDE);
-    expect(service.parcourirSujets(0, sujets)).toBe(SUJET_VIDE);
-  })
+  it('#browseSubjects devrait retourner un sujet vide quand on lui demande un ID nul ou négatif', () => {
+    expect(service.browseSubjects(-5, subjects)).toBe(EMPTY_SUBJECT);
+    expect(service.browseSubjects(0, subjects)).toBe(EMPTY_SUBJECT);
+  });
 
-  it('#parcourirSujets devrait retourner un sujet dans une catégorie', () => {
-    expect(service.parcourirSujets(4, sujets).id).toBe(4);
-  })
+  it('#browseSubjects devrait retourner un sujet dans une catégorie', () => {
+    expect(service.browseSubjects(4, subjects).id).toBe(4);
+  });
 
-  // TESTS ouvrirCaterogie
+  // TESTS openCategories
 
-  it('#ouvrirCategorie devrait ouvrir toutes les catégories', () => {
-    service.ouvrirCategories(sujets);
-    expect(sujets[1].categorieOuverte).toBe(true);
-    /* TODO: Ajouter les catégories qui doivent etre ouvertes pour sprint 2 et sprint 3. */
-  })
+  it('#openCategories devrait ouvrir toutes les catégories', () => {
+    service.openCategories(subjects);
+    expect(subjects[1].openCategory).toBe(true);
+    expect(subjects[1].subSubjects![0].openCategory).toBe(true);
+    expect(subjects[1].subSubjects![1].openCategory).toBe(true);
+    expect(subjects[1].subSubjects![2].openCategory).toBe(true);
+    expect(subjects[2].openCategory).toBe(true);
+    /* TODO: Ajouter les catégories qui doivent etre ouvertes pour sprint 3. */
+  });
 
-  it('#ouvrirCategorie ne devrait pas affecter les objets purs', () => {
-    const sujetVideCopy: GuideSujet = SUJET_VIDE;
-    service.ouvrirCategories([SUJET_VIDE]);
-    expect(SUJET_VIDE).toBe(sujetVideCopy);
-  })
+  it('#openCategories ne devrait pas affecter les objets purs', () => {
+    const sujetVideCopy: SubjectGuide = EMPTY_SUBJECT;
+    service.openCategories([EMPTY_SUBJECT]);
+    expect(EMPTY_SUBJECT).toBe(sujetVideCopy);
+  });
+
+  it('#closeCategories devrait fermer toutes les catégories', () => {
+    service.closeCategories(subjects);
+    expect(subjects[1].openCategory).toBe(false);
+  });
+
 });

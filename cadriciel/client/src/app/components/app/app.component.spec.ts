@@ -5,12 +5,14 @@ import { RouterStateSnapshot, RoutesRecognized } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
-const injecteur = Injector.create(
+// tslint:disable: no-string-literal
+
+const injector = Injector.create(
     { providers: [{provide: RouterStateSnapshot, useValue: {}}, {provide: RoutesRecognized, deps: [RouterStateSnapshot]}] }
-)
+);
 
 describe('AppComponent', () => {
-    let app: AppComponent
+    let app: AppComponent;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -25,33 +27,26 @@ describe('AppComponent', () => {
         expect(app).toBeTruthy();
     });
 
-    it("devrait avoir le titre 'LOG2990'", () => {
-        expect(app.title).toEqual('LOG2990');
+    //  Tests updateURL
+
+    it('#updateURL devrait mettre à jour l\'URL courante', () => {
+        // tslint:disable-next-line: no-any
+        const routes: [any, any] = [{url: 'précédante'}, {url: 'actuelle'}];
+        app.updateURL(routes);
+        expect(app['routingManager'].currentPage).toBe('actuelle');
     });
 
-    //
-    it('#miseAJourURL devrait mettre à jour l\'URL courante', () => {
+    it('#updateURL devrait mettre à jour l\'URL précédante', () => {
+        // tslint:disable-next-line: no-any
         const routes: [any, any] = [{url: 'précédante'}, {url: 'actuelle'}];
-        app.miseAJourURL(routes)
-        expect(app.gestionnaireRoutes.pageEnCours).toBe('actuelle')
-    })
+        app.updateURL(routes);
+        expect(app['routingManager'].previousPage).toBe('précédante');
+    });
 
-    it('#miseAJourURL devrait mettre à jour l\'URL précédante', () => {
-        const routes: [any, any] = [{url: 'précédante'}, {url: 'actuelle'}];
-        app.miseAJourURL(routes)
-        expect(app.gestionnaireRoutes.pagePrecedante).toBe('précédante')
-    })
+    //  Tests filterFunction
 
-    //
-    it('#fonctionFiltre devrait refuser un paramètre qui n\'est pas une RouteRecognized', () => {
-        expect(app.fonctionFiltre(0)).toBe(false);
-        expect(app.fonctionFiltre('test')).toBe(false);
-        expect(app.fonctionFiltre(true)).toBe(false);
-        expect(app.fonctionFiltre([123, 'test'])).toBe(false);
-    })
-
-    it('#fonctionFiltre devrait accepter un paramètre de type RouteRecognized', () => {
-        const evt: RoutesRecognized = injecteur.get(RoutesRecognized);
-        expect(app.fonctionFiltre(evt)).toBe(true);
-    })
+    it('#filterFunction devrait accepter un paramètre de type RouteRecognized', () => {
+        const evt: RoutesRecognized = injector.get(RoutesRecognized);
+        expect(app.filterFunction(evt)).toBe(true);
+    });
 });

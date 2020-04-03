@@ -1,52 +1,70 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatDialogConfig, MatDialogModule} from '@angular/material';
+import { MatButtonModule, MatDialogConfig, MatDialogModule, MatSidenavModule } from '@angular/material';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 
 // Component
-import { AccueilComponent } from './components/accueil/accueil.component';
 import { AppComponent } from './components/app/app.component';
-import { AvertissementNouveauDessinComponent } from './components/avertissement-nouveau-dessin/avertissement-nouveau-dessin.component';
-import { BarreOutilsComponent } from './components/barre-outils/barre-outils.component';
-import { ChoixCouleurComponent } from './components/choix-couleur/choix-couleur.component'
-import { CouleurPaletteComponent } from './components/choix-couleur/couleur-palette/couleur-palette.component'
-import { GlissiereCouleurComponent } from './components/choix-couleur/glissiere-couleur/glissiere-couleur.component'
-import { ValeurCouleurComponent } from './components/choix-couleur/valeur-couleur/valeur-couleur.component';
-import { FenetreNouveauDessinComponent } from './components/fenetre-nouveau-dessin/fenetre-nouveau-dessin.component';
-import { GuideSujetComponent } from './components/guide-sujet/guide-sujet.component';
-import { OutilDessinComponent } from './components/outil-dessin/outil-dessin.component';
-import { PageDessinComponent } from './components/page-dessin/page-dessin.component';
-import { PageGuideComponent } from './components/page-guide/page-guide.component';
-import { SurfaceDessinComponent } from './components/surface-dessin/surface-dessin.component';
+import { ColorChoiceComponent } from './components/color-choice/color-choice.component';
+import { ColorInputComponent } from './components/color-choice/color-input/color-input.component';
+import { ColorPickerComponent } from './components/color-choice/color-picker/color-picker.component';
+import { ColorSliderComponent } from './components/color-choice/color-slider/color-slider.component';
+import { DrawingPageComponent } from './components/drawing-page/drawing-page.component';
+import { DrawingSurfaceComponent } from './components/drawing-surface/drawing-surface.component';
+import { DrawingToolComponent } from './components/drawing-tool/drawing-tool.component';
+import { ExportWindowComponent } from './components/export-window/export-window.component';
+import { GalleryLoadWarningComponent } from './components/gallery-load-warning/gallery-load-warning.component';
+import { GalleryElementComponent } from './components/gallery/gallery-element/gallery-element.component';
+import { GalleryComponent } from './components/gallery/gallery.component';
+import { GridOptionsComponent } from './components/grid-options/grid-options.component';
+import { GuidePageComponent } from './components/guide-page/guide-page.component';
+import { GuideSubjectComponent } from './components/guide-subject/guide-subject.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
+import { NewDrawingWarningComponent } from './components/new-drawing-warning/new-drawing-warning.component';
+import { NewDrawingWindowComponent } from './components/new-drawing-window/new-drawing-window.component';
+import { SavePopupComponent } from './components/save-popup/save-popup.component';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
 
 // Service
-import { ParametresCouleurService } from './services/couleur/parametres-couleur.service';
-import { GestionnaireDessinService } from './services/gestionnaire-dessin/gestionnaire-dessin.service';
-import { GestionnaireRaccourcisService } from './services/gestionnaire-raccourcis.service';
-import { GestionnaireRoutingService } from './services/gestionnaire-routing.service';
+import { AttributesPanelComponent } from './components/attributes-panel/attributes-panel.component';
+import { CanvasConversionService } from './services/canvas-conversion.service';
+import { ColorParameterService } from './services/color/color-parameter.service';
+import { CommandManagerService } from './services/command/command-manager.service';
+import { DrawingManagerService } from './services/drawing-manager/drawing-manager.service';
+import { GridService } from './services/grid/grid.service';
 import { NavigationGuideService } from './services/navigation-guide.service';
-import { DessinCrayonService } from './services/outils/dessin-crayon.service';
-import { DessinLigneService } from './services/outils/dessin-ligne.service';
-import { DessinRectangleService } from './services/outils/dessin-rectangle.service';
-import { StockageSvgService } from './services/stockage-svg.service';
+import { RoutingManagerService } from './services/routing-manager.service';
+import { ShortcutsManagerService } from './services/shortcuts-manager.service';
+import { SVGStockageService } from './services/stockage-svg/svg-stockage.service';
+import { RectangleToolService } from './services/tools/basic-shape-tool/rectangle-tool.service';
+import { LineToolService } from './services/tools/line-tool.service';
+import { SelectionService } from './services/tools/selection/selection.service';
+import { PencilToolService } from './services/tools/tracing-tool/pencil-tool.service';
 
 @NgModule({
-    declarations: [AppComponent, AccueilComponent, AvertissementNouveauDessinComponent, PageDessinComponent, PageGuideComponent,
-        FenetreNouveauDessinComponent, BarreOutilsComponent, OutilDessinComponent, GuideSujetComponent, SurfaceDessinComponent,
-            ChoixCouleurComponent, GlissiereCouleurComponent, CouleurPaletteComponent, ValeurCouleurComponent],
+    declarations: [AppComponent, HomePageComponent, NewDrawingWarningComponent, DrawingPageComponent, GuidePageComponent,
+        NewDrawingWindowComponent, ToolbarComponent, DrawingToolComponent, GuideSubjectComponent, DrawingSurfaceComponent,
+        ColorChoiceComponent, ColorSliderComponent, ColorPickerComponent, ColorInputComponent, GridOptionsComponent,
+        SavePopupComponent, GalleryComponent, GalleryElementComponent, GalleryLoadWarningComponent, ExportWindowComponent,
+        AttributesPanelComponent],
     imports: [BrowserModule, HttpClientModule, MatButtonModule, FormsModule, ReactiveFormsModule,
-        MatButtonModule, MatDialogModule, BrowserAnimationsModule, RouterModule.forRoot([
-        {path: '', component: AccueilComponent},
-        {path: 'dessin', component: PageDessinComponent},
-        {path: 'guide', component : PageGuideComponent}
+        MatProgressSpinnerModule, MatDialogModule, MatSidenavModule, BrowserAnimationsModule, RouterModule.forRoot([
+        {path: '', component: HomePageComponent},
+        {path: 'dessin', component: DrawingPageComponent},
+        {path: 'guide', component : GuidePageComponent}
     ])],
-    providers: [NavigationGuideService, StockageSvgService, DessinCrayonService, GestionnaireDessinService,
-                GestionnaireRaccourcisService, DessinRectangleService, DessinLigneService,
-                GestionnaireRoutingService, ParametresCouleurService, MatDialogConfig],
-    entryComponents: [FenetreNouveauDessinComponent, AvertissementNouveauDessinComponent, ChoixCouleurComponent],
+    providers: [NavigationGuideService, SVGStockageService, PencilToolService, DrawingManagerService,
+                ShortcutsManagerService, RectangleToolService, LineToolService,
+                RoutingManagerService, ColorParameterService, MatDialogConfig, SelectionService,
+                CommandManagerService, GridService, CanvasConversionService],
+
+    entryComponents: [NewDrawingWindowComponent, NewDrawingWarningComponent,
+                      ColorChoiceComponent, GridOptionsComponent, SavePopupComponent, GalleryComponent,
+                      GalleryLoadWarningComponent, ExportWindowComponent],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

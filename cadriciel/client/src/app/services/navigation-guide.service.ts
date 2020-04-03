@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GuideSujet } from '../components/guide-sujet/guide-sujet';
+import { SubjectGuide } from '../components/guide-subject/subject-guide';
 
 @Injectable({
   providedIn: 'root'
@@ -7,38 +7,47 @@ import { GuideSujet } from '../components/guide-sujet/guide-sujet';
 
 export class NavigationGuideService {
 
-  parcourirSujets(idRecherche: number, sujets: GuideSujet[]): GuideSujet {
-    for (const element of sujets) {
+  browseSubjects(subjectID: number, subjects: SubjectGuide[]): SubjectGuide {
+    for (const element of subjects) {
       // Première vérification
-      if (idRecherche === element.id) {
+      if (subjectID === element.id) {
         return element;
       }
 
-      // Si element possède des sousSujets, on veut les vérifiés aussi
-      if (element.sousSujets) {
-        const tampon: GuideSujet = this.parcourirSujets(idRecherche, element.sousSujets);
-        if (tampon !== SUJET_VIDE) {
-          return tampon;
+      // Si element possède des subSubjects, on veut les vérifiés aussi
+      if (element.subSubjects) {
+        const buffer: SubjectGuide = this.browseSubjects(subjectID, element.subSubjects);
+        if (buffer !== EMPTY_SUBJECT) {
+          return buffer;
         }
       }
     }
-    return SUJET_VIDE;
+    return EMPTY_SUBJECT;
   }
 
-  ouvrirCategories(categorie: GuideSujet[]) {
-    categorie.forEach((element) => {
-      if (element.sousSujets) {
-        element.categorieOuverte = true;
-        this.ouvrirCategories(element.sousSujets);
+  openCategories(category: SubjectGuide[]): void {
+    category.forEach((element) => {
+      if (element.subSubjects) {
+        element.openCategory = true;
+        this.openCategories(element.subSubjects);
       }
     });
-  };
+  }
+
+  closeCategories(category: SubjectGuide[]): void {
+    category.forEach((element) => {
+      if (element.subSubjects) {
+        element.openCategory = false;
+        this.closeCategories(element.subSubjects);
+      }
+    });
+  }
 }
 
-export const SUJET_VIDE: GuideSujet = {
-  nom: '',
+export const EMPTY_SUBJECT: SubjectGuide = {
+  name: '',
   description: '',
-  precedant: false,
-  suivant: false,
+  previous: false,
+  next: false,
   id: 0
-}
+};

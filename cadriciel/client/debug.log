@@ -1,1 +1,6 @@
 [0214/103634.236:ERROR:settings.cc(320)] Settings magic is not 1129342067
+[0309/131152.795:ERROR:process_info.cc(359)] UncheckedAllocate
+[0323/213904.999:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: Le canal de communication a été fermé. (0x6D)
+[0323/213905.009:ERROR:file_io.cc(89)] ReadExactly: expected 40, observed 0
+[0323/213908.682:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: Le canal de communication a été fermé. (0x6D)
+[0323/213908.682:ERROR:file_io.cc(89)] ReadExactly: expected 40, observed 0

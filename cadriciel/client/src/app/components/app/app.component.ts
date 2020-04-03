@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Router, RoutesRecognized } from '@angular/router';
+import { NavigationStart, Router, RoutesRecognized } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { filter, pairwise } from 'rxjs/operators';
-import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routing.service';
+import { RoutingManagerService } from 'src/app/services/routing-manager.service';
 
 @Component({
     selector: 'app-root',
@@ -10,24 +10,24 @@ import { GestionnaireRoutingService } from 'src/app/services/gestionnaire-routin
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-    readonly title: string = 'LOG2990';
-    message = new BehaviorSubject<string>('');
+    message: BehaviorSubject<string>;
 
-    constructor(
-                private routing: Router,
-                public gestionnaireRoutes: GestionnaireRoutingService) {
-        this.routing.events
-            .pipe(filter(this.fonctionFiltre), pairwise())
-            .subscribe({next: this.miseAJourURL});
+    constructor(private routing: Router,
+                private routingManager: RoutingManagerService
+            ) {
+                this.routing.events
+                    .pipe(filter(this.filterFunction), pairwise())
+                    .subscribe({next: this.updateURL.bind(this)});
+                this.message = new BehaviorSubject<string>('');
+            }
+
+    filterFunction(event: NavigationStart): boolean {
+        return event instanceof RoutesRecognized;
     }
 
-    fonctionFiltre(evenement: any) {
-        return evenement instanceof RoutesRecognized
+    updateURL(event: [ RoutesRecognized,  RoutesRecognized]): void {
+        this.routingManager.previousPage = event[0].url;
+        this.routingManager.currentPage = event[1].url;
     }
-
-    miseAJourURL(evenement: [any, any]) {
-        this.gestionnaireRoutes.pagePrecedante = evenement[0].url;
-        this.gestionnaireRoutes.pageEnCours = evenement[1].url;
-    };
 
 }

@@ -1,0 +1,17 @@
+
+.drawing-surface {
+    background-color: darkgray;
+    min-width: 100%;
+    width: auto;
+    display: inline-block;
+    min-height: 100%;
+    height: auto;
+}
+
+.hide-cursor {
+    cursor: none;
+}
+
+.canvas-conversion {
+    display: none;
+}

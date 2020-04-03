@@ -1,0 +1,19 @@
+a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    display: block;
+}
+
+.active {
+    color: white;
+    font-weight: bold;
+}
+
+.inactive {
+    color: #818181;
+}
+
+a:hover {
+    color: #EFE2BA;
+}
