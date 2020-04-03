@@ -16,6 +16,7 @@ import { EraserToolService } from './tools/eraser-tool.service';
 import { LineToolService } from './tools/line-tool.service';
 import { SelectionService } from './tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
+import { ClipboardService } from './clipboard.service';
 
 type FunctionShortcut = (keyboard?: KeyboardEvent ) => void;
 
@@ -54,7 +55,8 @@ export class ShortcutsManagerService {
               private grid: GridService,
               private dialog: MatDialog,
               private sanitizer: DomSanitizer,
-              private eraser: EraserToolService
+              private eraser: EraserToolService,
+              private clipboard: ClipboardService
               ) {
                 this.focusOnInput = false;
                 this.counter100ms = 0;
@@ -73,6 +75,7 @@ export class ShortcutsManagerService {
                                     .set('i', this.shortcutKeyI.bind(this))
                                     .set('l', this.shortcutKeyL.bind(this))
                                     .set('w', this.shortcutKeyW.bind(this))
+                                    .set('v', this.shortcutKeyV.bind(this))
                                     .set('r', this.shortcutKeyR.bind(this))
                                     .set('s', this.shortcutKeyS.bind(this))
                                     .set('z', this.shortcutKeyZ.bind(this))
@@ -185,9 +188,13 @@ export class ShortcutsManagerService {
 
   }
 
-  shortcutKeyC(): void {
-    this.tools.changeActiveTool(TOOL_INDEX.PENCIL);
-    this.clearOngoingSVG();
+  shortcutKeyC(keyboard: KeyboardEvent): void {
+    if (keyboard.ctrlKey && this.selection.selectionBox.box) {
+      this.clipboard.copySelectedElement();
+    } else {
+      this.tools.changeActiveTool(TOOL_INDEX.PENCIL);
+      this.clearOngoingSVG();
+    }
   }
 
   shortcutKeyE(keyboard: KeyboardEvent): void {
@@ -232,6 +239,12 @@ export class ShortcutsManagerService {
     }
   }
 
+  shortcutKeyV(keyboard: KeyboardEvent): void {
+    if (keyboard.ctrlKey && this.selection.selectionBox.box) {
+      this.clipboard.pasteSelectedElement();
+    }
+  }
+
   shortcutKeyZ(keyboard: KeyboardEvent): void {
     if (keyboard.ctrlKey && !this.commands.drawingInProgress) {
       this.commands.cancelCommand();
@@ -268,6 +281,8 @@ export class ShortcutsManagerService {
   shortcutKeyBackSpace(): void {
     if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
       this.lineTool.removePoint();
+    } else if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
+      this.clipboard.deleteSelectedElement();
     }
   }
 
