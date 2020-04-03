@@ -13,7 +13,7 @@ describe('Tests de database.service', () => {
     const DATABASE_URL = 'mongodb+srv://PolyDessin:log2990@polydessin-zhlk9.mongodb.net/test?retryWrites=true&w=majority';
     const DATABASE_NAME = 'polydessinDB';
     const DATABASE_COLLECTION = 'dessin';
-    let sinonSandbox: sinon.SinonSandbox;
+    const sinonSandbox = sinon.createSandbox();
 
     let test: DatabaseService;
     let dbClient: MongoClient;
@@ -29,7 +29,6 @@ describe('Tests de database.service', () => {
         await test.mongoClient.close();
         await dbClient.connect();
         collection = dbClient.db(DATABASE_NAME).collection(DATABASE_COLLECTION);
-        sinonSandbox = sinon.createSandbox();
     });
 
     beforeEach(() => {
