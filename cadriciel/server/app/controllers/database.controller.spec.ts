@@ -4,19 +4,27 @@ import { DatabaseController } from './database.controller';
 
 // tslint:disable: no-string-literal
 
-describe('Test constructeur database.controller', () => {
-    it('constructeur doit etre bien defini', (done: Mocha.Done) => {
-        assert.ok(new DatabaseService());
-        done();
+describe('Tests de database.controller', () => {
+    let controller: DatabaseController;
+
+    before(() => {
+        controller = new DatabaseController(new DatabaseService());
     });
 
-    it('constructeur devrait appeler configureRouter', (done: Mocha.Done) => {
-        const controller: DatabaseController = new DatabaseController(new DatabaseService());
-        assert.call(controller, controller['configureRouter']);
-        done();
+    after(async () => {
+        await controller['databaseService'].mongoClient.close();
     });
-});
 
-describe('Tests configureRouter database.controller', () => {
-    // TODO
+    context('constructor', () => {
+
+        it('constructeur devrait appeler configureRouter', (done: Mocha.Done) => {
+            assert.call(controller, controller['configureRouter']);
+            done();
+        });
+    });
+
+    context('configureRouter', () => {
+        // TODO
+    });
+
 });

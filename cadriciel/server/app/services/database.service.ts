@@ -12,6 +12,7 @@ const DATABASE_COLLECTION = 'dessin';
 export class DatabaseService {
 
     collection: Collection<Drawing>;
+    mongoClient: MongoClient;
 
     private options: MongoClientOptions = {
         useNewUrlParser : true,
@@ -19,7 +20,8 @@ export class DatabaseService {
     };
 
     constructor() {
-        MongoClient.connect(DATABASE_URL, this.options)
+        this.mongoClient = new MongoClient(DATABASE_URL, this.options);
+        this.mongoClient.connect()
         .then((client: MongoClient) => {
             this.collection = client.db(DATABASE_NAME).collection(DATABASE_COLLECTION);
             console.error('connexion établie');
