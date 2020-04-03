@@ -72,6 +72,15 @@ describe('Tests de database.service', () => {
         });
     });
 
+    context('getDrawingWithTags', () => {
+        it('Devrait retourner un groupe de dessin vide si la collection n\'existe pas', async () => {
+            const tagListTest = ['tag1', 'tag2', 'tag3'];
+            delete test.collection;
+            const test1 = await test.getDrawingWithTags(tagListTest);
+            expect(test1).to.deep.equal([]);
+        });
+    });
+
     context('updateData', () => {
 
         it('Devrait retourner faux lorsque nom est vide',  async () => {

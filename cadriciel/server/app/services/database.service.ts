@@ -44,7 +44,6 @@ export class DatabaseService {
         for (const tag of tagList) {
             if (tag === '') { continue; }
             const query = await this.collection.find({tags: tag}).toArray();
-            console.log(query);
             for (const drawing of query) {
                 if (!result.has(drawing._id)) { result.set(drawing._id, drawing); }
             }
