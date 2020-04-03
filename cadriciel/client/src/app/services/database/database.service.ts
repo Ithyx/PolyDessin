@@ -64,7 +64,7 @@ export class DatabaseService {
         break;
       case TOOL_INDEX.LINE:
         newElement = new LineService();
-        newElement.mousePosition = element.points[Math.max(element.points.length - 1, 0)];
+        newElement.mousePosition = (element as LineService).mousePosition;
         break;
       case TOOL_INDEX.ELLIPSE:
         newElement = new EllipseService();

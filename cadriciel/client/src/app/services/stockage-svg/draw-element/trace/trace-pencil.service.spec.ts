@@ -36,7 +36,7 @@ describe('TracePencilService', () => {
     element.translate = { x: 20, y: 20};
     element.svg = '<path transform="translate(' + element.translate.x + ' ' + element.translate.y + ')" fill="none" '
     + `stroke="${(element.erasingEvidence) ? element.erasingColor.RGBAString :  element.primaryColor.RGBAString}"`
-    + ' stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 "></path>';
+    + ' stroke-linejoin="round" stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 "></path>';
     const testSVG = element.svg;
     element.drawPath();
     expect(element.svg).toEqual(testSVG);
@@ -50,7 +50,7 @@ describe('TracePencilService', () => {
     element.primaryColor.RGBAString = '"rgba(1, 1, 1, 1)"';
     element.svg = '<path transform="translate(' + element.translate.x + ' ' + element.translate.y + ')" fill="none" '
     + 'stroke="' + element.primaryColor.RGBAString
-    + '" stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 "></path>';
+    + '" stroke-linejoin="round" stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 "></path>';
     const testSVG = element.svg;
     element.drawPath();
     expect(element.svg).toEqual(testSVG);
@@ -64,7 +64,7 @@ describe('TracePencilService', () => {
     element.primaryColor.RGBAString = 'rgba(1, 1, 1, 1)';
     element.svg = '<path transform="translate(' + element.translate.x + ' ' + element.translate.y + ')" fill="none" '
     + 'stroke="' + element.erasingColor.RGBAString
-    + '" stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 "></path>';
+    + '" stroke-linejoin="round" stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 "></path>';
     const testSVG = element.svg;
     element.drawPath();
     expect(element.svg).toEqual(testSVG);
@@ -77,7 +77,7 @@ describe('TracePencilService', () => {
     element.thickness = 25;
     element.svg = '<path transform="translate(' + element.translate.x + ' ' + element.translate.y + ')" fill="none" '
     + `stroke="${(element.erasingEvidence) ? element.erasingColor.RGBAString :  element.primaryColor.RGBAString}"`
-    + ' stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 "></path>';
+    + ' stroke-linejoin="round" stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 "></path>';
     const testSVG = element.svg;
     element.drawPath();
     expect(element.svg).toEqual(testSVG);

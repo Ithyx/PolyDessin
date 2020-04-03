@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import { expect } from 'chai';
-import { request, response, /* Router */} from 'express';
+import { request, response } from 'express';
 import * as HttpStatus from 'http-status-codes';
 import { DatabaseService } from '../services/database.service';
 import { DatabaseController } from './database.controller';
@@ -49,11 +49,9 @@ describe('Tests de database.controller', () => {
         });
     });
 
-    context('saveDrawingCallback', () => {
-        // TODO nom du test
+    context('saveDrawingCallback', async () => {
         afterEach(() => sinonSandbox.restore());
-        it('#saveDrawingCallback 1', (done) => {
-            controller['configureRouter']();
+        it('#saveDrawingCallback devrait appeler databaseService.updateData', (done) => {
             const spy = sinonSandbox.spy(controller['databaseService'], 'updateData');
             request.query = {};
             controller['saveDrawingCallback'](request, response).then(() => {
@@ -62,8 +60,7 @@ describe('Tests de database.controller', () => {
             done();
         });
 
-        it('#saveDrawingCallback 2', (done) => {
-            controller['configureRouter']();
+        it('#saveDrawingCallback devrait valider databaseService.updateData', (done) => {
             sinonSandbox.stub(controller['databaseService'], 'updateData').returns(Promise.resolve(true));
             request.query = {};
             controller['saveDrawingCallback'](request, response).then(() => {
@@ -73,11 +70,10 @@ describe('Tests de database.controller', () => {
         });
     });
 
-    context('deleteDrawingCallback', () => {
-        // TODO nom du test
+    context('deleteDrawingCallback', async () => {
+
         afterEach(() => sinonSandbox.restore());
-        it('#deleteDrawingCallback 1', () => {
-            controller['configureRouter']();
+        it('#deleteDrawingCallback devrait appeler databaseService.deleteData', () => {
             const spy = sinonSandbox.spy(controller['databaseService'], 'deleteData');
             request.query = {id: -1};
             controller['deleteDrawingCallback'](request, response);
