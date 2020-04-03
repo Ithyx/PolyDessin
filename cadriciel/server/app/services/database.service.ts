@@ -21,14 +21,15 @@ export class DatabaseService {
 
     constructor() {
         this.mongoClient = new MongoClient(DATABASE_URL, this.options);
-        this.mongoClient.connect()
+        this.connect();
+    }
+
+    async connect(): Promise<void> {
+        await this.mongoClient.connect()
         .then((client: MongoClient) => {
             this.collection = client.db(DATABASE_NAME).collection(DATABASE_COLLECTION);
             console.error('connexion établie');
-        })
-        .catch((err) => {
-            console.error('CONNECTION ERROR. EXITING PROCESS');
-            console.error(err);
+        }).catch(() => {
             process.exit(1);
         });
     }
@@ -59,7 +60,6 @@ export class DatabaseService {
 
     async deleteData(id: number): Promise<void> {
         if (!this.collection) { return; }
-        console.error('test');
         await this.collection.deleteOne({_id: Number(id)});
     }
 }

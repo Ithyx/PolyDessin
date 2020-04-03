@@ -82,9 +82,20 @@ describe('Tests de database.service', () => {
             done();
         });
 
-        it('Devrait afficher une erreur dans la console si une erreur survient', () => {
-            sinonSandbox.stub(MongoClient.prototype, 'connect').throwsException('erreur');
+        it('Devrait appeller la fonction connect', (done) => {
+            const spy = sinonSandbox.stub(DatabaseService.prototype, 'connect');
             test = new DatabaseService();
+            expect(spy.called).to.equal(true);
+            done();
+        });
+    });
+
+    context('connect', () => {
+        it('Devrait afficher une erreur dans la console si une erreur survient', async () => {
+            const spy = sinonSandbox.stub(process, 'exit');
+            sinonSandbox.stub(test.mongoClient, 'connect').rejects();
+            await test.connect();
+            sinonSandbox.assert.calledOnce(spy);
         });
     });
 
