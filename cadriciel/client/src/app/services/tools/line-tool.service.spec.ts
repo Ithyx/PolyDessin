@@ -91,6 +91,17 @@ describe('LineToolService', () => {
     expect(service.refreshSVG).not.toHaveBeenCalled();
   });
 
+  // TESTS mouseCloseToFirstPoint
+  it('#mouseCloseToFirstPoint devrait retourner faux si les valeurs en x sont assez loin', () => {
+    expect(service.mouseCloseToFirstPoint(new MouseEvent('click', {clientX: 10, clientY: 1}))).toBe(false);
+  });
+  it('#mouseCloseToFirstPoint devrait retourner faux si les valeurs en y sont assez loin', () => {
+    expect(service.mouseCloseToFirstPoint(new MouseEvent('click', {clientX: 1, clientY: 10}))).toBe(false);
+  });
+  it('#mouseCloseToFirstPoint devrait retourner faux si les valeurs en x et y sont assez proches', () => {
+    expect(service.mouseCloseToFirstPoint(new MouseEvent('click', {clientX: 1, clientY: 1}))).toBe(true);
+  });
+
   // TESTS onDoubleClick
 
   it('#onDoubleClick devrait mettre drawingInProgress à faux', () => {
@@ -105,12 +116,13 @@ describe('LineToolService', () => {
     expect(service['commands'].execute).not.toHaveBeenCalled();
   });
 
-  it('#onDoubleClick devrait considérer la ligne comme un polygone si la distance est moins de 3 pixels', () => {
+  it('#onDoubleClick devrait considérer la ligne comme un polygone si mouseCloseToFirstPoint retourne vrai', () => {
     service['line'].points.push({x: 0, y: 0});
     service['line'].points.push({x: 0, y: 0});
     service['line'].points.push({x: 0, y: 0});
     element = service['line'];
 
+    spyOn(service, 'mouseCloseToFirstPoint').and.returnValue(true);
     spyOn(service['commands'], 'execute');
     service.onDoubleClick(new MouseEvent('dblClick', {clientX: 1, clientY: 1}));
     element.isAPolygon = true;
@@ -121,10 +133,13 @@ describe('LineToolService', () => {
     expect(service['commands'].execute).toHaveBeenCalledWith(ajout);
   });
 
-  it('#onDoubleClick ne devrait pas considérer la ligne comme un polygone si la distance est plus de 3 pixels', () => {
+  it('#onDoubleClick ne devrait pas considérer la ligne comme un polygone si mouseCloseToFirstPoint retourne faux', () => {
     service['line'].points.push({x: 0, y: 0});
     service['line'].points.push({x: 0, y: 0});
     service['line'].points.push({x: 0, y: 0});
+    element = service['line'];
+
+    spyOn(service, 'mouseCloseToFirstPoint').and.returnValue(false);
     element = service['line'];
 
     spyOn(service['commands'], 'execute');

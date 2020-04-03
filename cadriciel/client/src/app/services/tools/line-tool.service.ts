@@ -48,12 +48,17 @@ export class LineToolService implements ToolInterface {
     if (this.isSimpleClick) { this.refreshSVG(); }
   }
 
+  mouseCloseToFirstPoint(mouse: MouseEvent): boolean {
+    const xValuesClose = Math.abs(mouse.offsetX - this.line.points[0].x) <= POLYGON_DISTANCE;
+    const yValuesClose = Math.abs(mouse.offsetY - this.line.points[0].y) <= POLYGON_DISTANCE;
+    return xValuesClose && yValuesClose;
+  }
+
   onDoubleClick(mouse: MouseEvent): void {
     this.commands.drawingInProgress = false;
     this.isSimpleClick = false;
     if (this.line.points.length !== 0) {
-      if (Math.abs(mouse.offsetX - this.line.points[0].x) <= POLYGON_DISTANCE
-          && Math.abs(mouse.offsetY - this.line.points[0].y) <= POLYGON_DISTANCE) {
+      if (this.mouseCloseToFirstPoint(mouse)) {
         this.line.points.pop();
         this.line.points.pop();
         this.line.isAPolygon = true;
