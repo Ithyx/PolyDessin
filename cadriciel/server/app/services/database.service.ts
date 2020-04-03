@@ -60,6 +60,6 @@ export class DatabaseService {
 
     async deleteData(id: number): Promise<void> {
         if (!this.collection) { return; }
-        (await this.collection.deleteOne({_id: Number(id)}));
+        await this.collection.deleteOne({_id: Number(id)});
     }
 }
