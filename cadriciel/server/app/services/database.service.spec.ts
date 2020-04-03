@@ -1,7 +1,6 @@
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
 import {assert, expect } from 'chai';
-import {MongoClient} from 'mongodb';
 import {Color} from '../../../client/src/app/services/color/color';
 import {DrawElement} from '../../../client/src/app/services/stockage-svg/draw-element/draw-element';
 import {Drawing} from '../../../common/communication/drawing-interface';
@@ -17,10 +16,6 @@ describe('Test constructeur database.service', () => {
 describe('updateData', () => {
 
     const test = new DatabaseService();
-
-    const DATABASE_URL = 'mongodb+srv://PolyDessin:log2990@polydessin-zhlk9.mongodb.net/test?retryWrites=true&w=majority';
-    const DATABASE_NAME = 'polydessinDB';
-    const DATABASE_COLLECTION = 'dessin';
 
     let black: Color;
     beforeEach(() => black = {
@@ -70,14 +65,9 @@ describe('updateData', () => {
     });
 
     it('La collection doit passer dans la fonction replaceOne', async () => {
-
-        MongoClient.connect(DATABASE_URL)
-        .then((client: MongoClient) => {
-            test.collection = client.db(DATABASE_NAME).collection(DATABASE_COLLECTION);
-            console.error('connexion établie');
-        });
         const test1 = test.collection;
         test.updateData(drawing);
         assert.call(test1, test1['replaceOne']);
     });
+
 });
