@@ -92,7 +92,7 @@ describe('Tests de database.service', () => {
         });
 
         it('la methode doit bien retrouver larray', () => {
-            const spy = sinonSandbox.stub(collection, 'find');
+            const spy = sinonSandbox.spy(collection, 'find');
             test.getDrawings();
             sinonSandbox.assert.calledOnce(spy);
         });
@@ -117,7 +117,7 @@ describe('Tests de database.service', () => {
 
         it ('Si le taglist nest pas vide elle doit appeler la methode find', async () => {
             const tagList = ['tag1', 'tag2'];
-            const spy = sinonSandbox.stub(collection, 'find');
+            const spy = sinonSandbox.spy(collection, 'find');
             test.getDrawingWithTags(tagList);
             sinonSandbox.assert.calledOnce(spy);
         });
