@@ -15,7 +15,7 @@ export class TracePencilService extends TraceService {
   drawPath(): void {
     this.svg = '<path transform="translate(' + this.translate.x + ' ' + this.translate.y + ')" fill="none" '
       + `stroke="${(this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString}"`
-      + ' stroke-linecap="round" stroke-width="' + this.thickness + '" d="';
+      + ' stroke-linejoin="round" stroke-linecap="round" stroke-width="' + this.thickness + '" d="';
     for (let i = 0; i < this.points.length; ++i) {
       this.svg += (i === 0) ? 'M ' : 'L ';
       this.svg += this.points[i].x + ' ' + this.points[i].y + ' ';
