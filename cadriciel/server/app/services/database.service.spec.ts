@@ -73,6 +73,7 @@ describe('Tests de database.service', () => {
     });
 
     context('getDrawing', () => {
+
         it('Si la collection nexiste pas elle retourne un array vide', async () => {
             delete test.collection;
             const returnArray = await test.getDrawingWithTags(drawing['']);
