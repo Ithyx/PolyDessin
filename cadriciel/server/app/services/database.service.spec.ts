@@ -1,20 +1,23 @@
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
 import {assert, expect } from 'chai';
-import { EventEmitter } from 'events';
-import {MongoClient} from 'mongodb';
+import {Collection, MongoClient} from 'mongodb';
 import {Color} from '../../../client/src/app/services/color/color';
 import {DrawElement} from '../../../client/src/app/services/stockage-svg/draw-element/draw-element';
 import {Drawing} from '../../../common/communication/drawing-interface';
 import {DatabaseService} from './database.service';
 
+import * as sinon from 'sinon';
+
 describe('Tests de database.service', () => {
     const DATABASE_URL = 'mongodb+srv://PolyDessin:log2990@polydessin-zhlk9.mongodb.net/test?retryWrites=true&w=majority';
     const DATABASE_NAME = 'polydessinDB';
     const DATABASE_COLLECTION = 'dessin';
+    let sinonSandbox: sinon.SinonSandbox;
 
     let test: DatabaseService;
     let dbClient: MongoClient;
+    let collection: Collection<Drawing>;
 
     let black: Color;
 
@@ -25,7 +28,12 @@ describe('Tests de database.service', () => {
         dbClient = new MongoClient(DATABASE_URL, {useUnifiedTopology : true});
         await test.mongoClient.close();
         await dbClient.connect();
-        test.collection = dbClient.db(DATABASE_NAME).collection(DATABASE_COLLECTION);
+        collection = dbClient.db(DATABASE_NAME).collection(DATABASE_COLLECTION);
+        sinonSandbox = sinon.createSandbox();
+    });
+
+    beforeEach(() => {
+        sinonSandbox.restore();
     });
 
     beforeEach(() => drawing = {
@@ -36,6 +44,9 @@ describe('Tests de database.service', () => {
         backgroundColor: black,
         tags: [''],
         elements: element[''],
+    });
+    beforeEach(() => {
+        test.collection = collection;
     });
 
     const element: DrawElement = {
@@ -78,6 +89,7 @@ describe('Tests de database.service', () => {
             delete test.collection;
             const returnArray = await test.getDrawingWithTags(drawing['']);
             expect(returnArray).to.deep.equal([]);
+            test.collection = dbClient.db(DATABASE_NAME).collection(DATABASE_COLLECTION);
         });
     });
 
@@ -88,6 +100,7 @@ describe('Tests de database.service', () => {
             delete test.collection;
             const test1 = await test.getDrawingWithTags(tagListTest);
             expect(test1).to.deep.equal([]);
+            test.collection = dbClient.db(DATABASE_NAME).collection(DATABASE_COLLECTION);
         });
     });
 
@@ -106,11 +119,10 @@ describe('Tests de database.service', () => {
             test.collection = dbClient.db(DATABASE_NAME).collection(DATABASE_COLLECTION);
         });
 
-        it('La collection doit passer dans la fonction replaceOne', async (done) => {
-            const emitter = new EventEmitter();
-            emitter.on('test.collection.replaceOne', done);
-            // test.updateData(drawing);
-            emitter.emit('test.collection.replaceOne');
+        it('La collection doit passer dans la fonction replaceOne', () => {
+            const spy = sinonSandbox.stub(collection, 'replaceOne');
+            test.updateData(drawing);
+            sinonSandbox.assert.calledOnce(spy);
         });
 
         it('la fonction doit retourner vrai lorsquelle a passer par la methode replaceOne', async () => {
@@ -126,13 +138,13 @@ describe('Tests de database.service', () => {
             delete test.collection;
             const test1 = await test.deleteData(drawing._id);
             expect(test1).to.equal(undefined);
+            test.collection = dbClient.db(DATABASE_NAME).collection(DATABASE_COLLECTION);
         });
 
-        it('la collection doit bien passer par la methode deleteOne', async (done) => {
-            const emitter = new EventEmitter();
-            emitter.on('test.collection.deleteOne', done);
-            // test.deleteOne(drawing);
-            emitter.emit('test.collection.deleteOne');
+        it('la collection doit bien passer par la methode deleteOne', async () => {
+            const spy = sinonSandbox.stub(collection, 'deleteOne');
+            await test.deleteData(0);
+            expect(spy.called).to.equal(true);
         });
     });
 });

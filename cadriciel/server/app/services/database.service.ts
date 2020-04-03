@@ -59,6 +59,7 @@ export class DatabaseService {
 
     async deleteData(id: number): Promise<void> {
         if (!this.collection) { return; }
+        console.error('test');
         await this.collection.deleteOne({_id: Number(id)});
     }
 }
