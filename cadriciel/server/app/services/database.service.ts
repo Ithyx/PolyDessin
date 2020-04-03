@@ -12,6 +12,7 @@ const DATABASE_COLLECTION = 'dessin';
 export class DatabaseService {
 
     collection: Collection<Drawing>;
+    mongoClient: MongoClient;
 
     private options: MongoClientOptions = {
         useNewUrlParser : true,
@@ -19,14 +20,16 @@ export class DatabaseService {
     };
 
     constructor() {
-        MongoClient.connect(DATABASE_URL, this.options)
+        this.mongoClient = new MongoClient(DATABASE_URL, this.options);
+        this.connect();
+    }
+
+    async connect(): Promise<void> {
+        await this.mongoClient.connect()
         .then((client: MongoClient) => {
             this.collection = client.db(DATABASE_NAME).collection(DATABASE_COLLECTION);
             console.error('connexion établie');
-        })
-        .catch((err) => {
-            console.error('CONNECTION ERROR. EXITING PROCESS');
-            console.error(err);
+        }).catch(() => {
             process.exit(1);
         });
     }
@@ -42,7 +45,6 @@ export class DatabaseService {
         for (const tag of tagList) {
             if (tag === '') { continue; }
             const query = await this.collection.find({tags: tag}).toArray();
-            console.log(query);
             for (const drawing of query) {
                 if (!result.has(drawing._id)) { result.set(drawing._id, drawing); }
             }
@@ -58,6 +60,6 @@ export class DatabaseService {
 
     async deleteData(id: number): Promise<void> {
         if (!this.collection) { return; }
-        (await this.collection.deleteOne({_id: Number(id)}));
+        await this.collection.deleteOne({_id: Number(id)});
     }
 }

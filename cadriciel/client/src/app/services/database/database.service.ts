@@ -106,7 +106,11 @@ export class DatabaseService {
   }
 
   async getDataWithTags(tags: string[]): Promise<Drawing[]> {
-    return await this.http.get<Drawing[]>(SERVER_URL.GET + '?tags=' + encodeURIComponent(JSON.stringify(tags))).toPromise();
+    let URL: string = SERVER_URL.GET;
+    if (tags.length !== 0) {
+      URL += '?tags=' + encodeURIComponent(JSON.stringify(tags));
+    }
+    return await this.http.get<Drawing[]>(URL).toPromise();
   }
 
   async deleteDrawing(id: number): Promise<void> {
