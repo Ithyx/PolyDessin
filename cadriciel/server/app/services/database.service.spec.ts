@@ -9,6 +9,32 @@ import {Drawing} from '../../../common/communication/drawing-interface';
 import {DatabaseService} from './database.service';
 
 describe('Tests de database.service', () => {
+    const DATABASE_URL = 'mongodb+srv://PolyDessin:log2990@polydessin-zhlk9.mongodb.net/test?retryWrites=true&w=majority';
+    const DATABASE_NAME = 'polydessinDB';
+    const DATABASE_COLLECTION = 'dessin';
+
+    let test: DatabaseService;
+    let dbClient: MongoClient;
+
+    let black: Color;
+
+    before(async () => {
+        test = new DatabaseService();
+        dbClient = new MongoClient(DATABASE_URL, {useUnifiedTopology : true});
+        await test.mongoClient.close();
+        await dbClient.connect();
+        test.collection = dbClient.db(DATABASE_NAME).collection(DATABASE_COLLECTION);
+    });
+
+    beforeEach(() => black = {
+        RGBA: [255, 255, 255, 1],
+        RGBAString: ('ffffff'),
+    });
+
+    after(async () => {
+        await dbClient.close();
+    });
+
     context('constructor', () => {
         it('constructeur doit etre bien defini', (done: Mocha.Done) => {
             assert.ok(new DatabaseService());
@@ -17,24 +43,6 @@ describe('Tests de database.service', () => {
     });
 
     context('updateData', () => {
-        const DATABASE_URL = 'mongodb+srv://PolyDessin:log2990@polydessin-zhlk9.mongodb.net/test?retryWrites=true&w=majority';
-        const DATABASE_NAME = 'polydessinDB';
-        const DATABASE_COLLECTION = 'dessin';
-
-        const test = new DatabaseService();
-        const dbClient = new MongoClient(DATABASE_URL, {useUnifiedTopology : true});
-
-        let black: Color;
-
-        beforeEach(() => black = {
-            RGBA: [255, 255, 255, 1],
-            RGBAString: ('ffffff'),
-        });
-
-        after(() => {
-            dbClient.close();
-            test.mongoClient.close();
-        });
 
         const element: DrawElement = {
             svg: '',
@@ -78,11 +86,6 @@ describe('Tests de database.service', () => {
         });
 
         it('La collection doit passer dans la fonction replaceOne', async (done) => {
-            dbClient.connect()
-            .then((client: MongoClient) => {
-                test.collection = client.db(DATABASE_NAME).collection(DATABASE_COLLECTION);
-                console.error('connexion établie');
-            });
             const emitter = new EventEmitter();
             emitter.on('test.collection.replaceOne', done);
             // test.updateData(drawing);
