@@ -1,7 +1,7 @@
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
 import {assert, expect } from 'chai';
-import {Collection, MongoClient} from 'mongodb';
+import {Collection, Cursor, MongoClient} from 'mongodb';
 import {Color} from '../../../client/src/app/services/color/color';
 import {DrawElement} from '../../../client/src/app/services/stockage-svg/draw-element/draw-element';
 import {Drawing} from '../../../common/communication/drawing-interface';
@@ -107,6 +107,35 @@ describe('Tests de database.service', () => {
             const test1 = await test.getDrawingWithTags(tagListTest);
             expect(test1).to.deep.equal([]);
             test.collection = dbClient.db(DATABASE_NAME).collection(DATABASE_COLLECTION);
+        });
+
+        it('Devrait continuer dans le for lorsque le tag est vide', async () => {
+            const tagList = [''];
+            const spy = sinonSandbox.stub(collection, 'find');
+            test.getDrawingWithTags(tagList);
+            sinonSandbox.assert.notCalled(spy);
+        });
+
+        it ('Si le taglist nest pas vide elle doit appeler la methode find', async () => {
+            const tagList = ['tag1', 'tag2'];
+            const spy = sinonSandbox.stub(collection, 'find');
+            test.getDrawingWithTags(tagList);
+            sinonSandbox.assert.calledOnce(spy);
+        });
+
+        it('Devrait trouver un array de drawing', async () => {
+            const tagList = ['tag1', 'tag2'];
+            const spy = sinonSandbox.stub(Cursor.prototype, 'toArray').callsFake(() => [drawing]);
+            test.getDrawingWithTags(tagList);
+            sinonSandbox.assert.calledOnce(spy);
+        });
+
+        it('Doit retourner le Array<Drawing>', async () => {
+            const tagList = ['tag1', 'tag2'];
+            sinonSandbox.stub(Cursor.prototype, 'toArray').callsFake(() => [drawing]);
+            /*const array = new Array<Drawing>();
+            array.push(drawing);*/
+            expect(test.getDrawingWithTags(tagList)).to.equal(drawing['']);
         });
     });
 
