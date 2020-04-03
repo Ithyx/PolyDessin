@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import { expect } from 'chai';
-// import { request, response, Router } from 'express';
+import { request, response, /* Router */} from 'express';
 import { DatabaseService } from '../services/database.service';
 import { DatabaseController } from './database.controller';
 
@@ -33,12 +33,32 @@ describe('Tests de database.controller', () => {
     });
 
     context('listDrawingCallback', async () => {
-        // it('#listDrawingCallback devrait appeler getDrawingWithTags si la requête possède des tags', () => {
-        //     const spy = sinonSandbox.spy(controller['databaseService'], 'getDrawingWithTags');
-        //     request.query = {tags: encodeURIComponent(JSON.stringify(['tag1']))};
-        //     controller['listDrawingCallback'](request, response);
-        //     expect(spy.called).to.equal(true);
-        // });
+        it('#listDrawingCallback devrait appeler getDrawingWithTags si la requête possède des tags', () => {
+            const spy = sinonSandbox.spy(controller['databaseService'], 'getDrawingWithTags');
+            request.query = {tags: encodeURIComponent(JSON.stringify(['tag1']))};
+            controller['listDrawingCallback'](request, response);
+            expect(spy.called).to.equal(true);
+        });
+    });
+
+    context('saveDrawingCallback', async () => {
+        // TODO nom du test
+        it('#saveDrawingCallback 1', () => {
+            const spy = sinonSandbox.spy(controller['databaseService'], 'updateData');
+            request.query = {};
+            controller['saveDrawingCallback'](request, response);
+            expect(spy.called).to.equal(true);
+        });
+    });
+
+    context('deleteDrawingCallback', async () => {
+        // TODO nom du test
+        it('#deleteDrawingCallback 1', () => {
+            const spy = sinonSandbox.spy(controller['databaseService'], 'deleteData');
+            request.query = {id: -1};
+            controller['deleteDrawingCallback'](request, response);
+            expect(spy.called).to.equal(true);
+        });
     });
 
     context('configureRouter', () => {
