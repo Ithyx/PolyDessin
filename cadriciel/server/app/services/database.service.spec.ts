@@ -90,6 +90,12 @@ describe('Tests de database.service', () => {
             expect(returnArray).to.deep.equal([]);
             test.collection = dbClient.db(DATABASE_NAME).collection(DATABASE_COLLECTION);
         });
+
+        it('la methode doit bien retrouver larray', () => {
+            const spy = sinonSandbox.stub(collection, 'find');
+            test.getDrawings();
+            sinonSandbox.assert.calledOnce(spy);
+        });
     });
 
     context('getDrawingWithTags', () => {
