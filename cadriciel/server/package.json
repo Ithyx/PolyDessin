@@ -8,7 +8,7 @@
         "format": "prettier --config ../.prettierrc.yaml --write \"app/**/*\"",
         "lint": "tslint --project tsconfig.json \"./app/**/*.ts\" --format stylish",
         "test": "mocha",
-        "coverage": "nyc mocha"
+        "coverage": "nyc mocha --exit"
     },
     "nyc": {
         "check-coverage": true,

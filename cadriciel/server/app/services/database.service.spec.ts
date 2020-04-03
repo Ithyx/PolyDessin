@@ -81,6 +81,7 @@ describe('Tests de database.service', () => {
         });
 
         it('Devrait retourner faux lorsque la collection nexiste pas', async () => {
+            await test.mongoClient.close();
             delete test.collection;
             const returnfalse = await test.updateData(drawing);
             expect(returnfalse).to.equal(false);
