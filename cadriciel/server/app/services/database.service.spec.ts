@@ -132,9 +132,9 @@ describe('Tests de database.service', () => {
         it('Doit retourner le Array<Drawing>', async () => {
             const tagList = ['tag1', 'tag2'];
             sinonSandbox.stub(Cursor.prototype, 'toArray').callsFake(() => [drawing]);
-            /*const array = new Array<Drawing>();
-            array.push(drawing);*/
-            expect(test.getDrawingWithTags(tagList)).to.equal(drawing['']);
+            const array = new Array<Drawing>();
+            array.push(drawing);
+            expect((await test.getDrawingWithTags(tagList)).toString()).to.equal(array.toString());
         });
     });
 
