@@ -39,6 +39,12 @@ describe('Tests de database.controller', () => {
             controller['listDrawingCallback'](request, response);
             expect(spy.called).to.equal(true);
         });
+        it('#listDrawingCallback devrait appeler getDrawingWithTags si la requête ne possède pas de tags', () => {
+            const spy = sinonSandbox.spy(controller['databaseService'], 'getDrawings');
+            request.query = {};
+            controller['listDrawingCallback'](request, response);
+            expect(spy.called).to.equal(true);
+        });
     });
 
     context('saveDrawingCallback', async () => {

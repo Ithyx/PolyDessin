@@ -14,7 +14,6 @@ export class DatabaseController {
     }
 
     private async listDrawingCallback(req: Request, res: Response): Promise<void> {
-        console.log(req);
         if (req.query.tags) {
             res.send(await this.databaseService.getDrawingWithTags(JSON.parse(decodeURIComponent(req.query.tags))));
         } else {
