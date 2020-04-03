@@ -84,6 +84,7 @@ describe('Tests de database.service', () => {
             delete test.collection;
             const returnfalse = await test.updateData(drawing);
             expect(returnfalse).to.equal(false);
+            test.collection = dbClient.db(DATABASE_NAME).collection(DATABASE_COLLECTION);
         });
 
         it('La collection doit passer dans la fonction replaceOne', async (done) => {
