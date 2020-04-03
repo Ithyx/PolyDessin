@@ -92,6 +92,13 @@ describe('Tests de database.service', () => {
             // test.updateData(drawing);
             emitter.emit('test.collection.replaceOne');
         });
+
+        it('la fonction doit retourner vrai lorsquelle a passer par la methode replaceOne', async () => {
+            // TODO
+            const returntrue = await test.updateData(drawing);
+            expect(returntrue).to.equal(true);
+        });
+
     });
 
     context('deleteData', () => {
