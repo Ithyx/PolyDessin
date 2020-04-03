@@ -80,6 +80,11 @@ describe('Tests de database.service', () => {
             assert.ok(new DatabaseService());
             done();
         });
+
+        it('Devrait afficher une erreur dans la console si une erreur survient', () => {
+            sinonSandbox.stub(MongoClient.prototype, 'connect').throwsException('erreur');
+            test = new DatabaseService();
+        });
     });
 
     context('getDrawing', () => {
