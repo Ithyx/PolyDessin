@@ -151,7 +151,7 @@ describe('Tests de database.service', () => {
             sinonSandbox.stub(Cursor.prototype, 'toArray').callsFake(() => [drawing]);
             const array = new Array<Drawing>();
             array.push(drawing);
-            expect((await test.getDrawingWithTags(tagList)).toString()).to.equal(array.toString());
+            expect((await test.getDrawingWithTags(tagList))).to.deep.equal(array);
         });
     });
 
