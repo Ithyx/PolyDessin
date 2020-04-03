@@ -18,6 +18,8 @@ describe('Tests de database.service', () => {
 
     let black: Color;
 
+    let drawing: Drawing;
+
     before(async () => {
         test = new DatabaseService();
         dbClient = new MongoClient(DATABASE_URL, {useUnifiedTopology : true});
@@ -25,6 +27,34 @@ describe('Tests de database.service', () => {
         await dbClient.connect();
         test.collection = dbClient.db(DATABASE_NAME).collection(DATABASE_COLLECTION);
     });
+
+    beforeEach(() => drawing = {
+        _id: 123,
+        name: '123',
+        height: 25,
+        width: 25,
+        backgroundColor: black,
+        tags: [''],
+        elements: element[''],
+    });
+
+    const element: DrawElement = {
+        svg: '',
+        svgHtml: '',
+        trueType: 0,
+        points: [],
+        isSelected: false,
+        erasingEvidence: false,
+        erasingColor: {RGBA: [0, 0, 0, 0], RGBAString: ''},
+        pointMin: {x: 0, y: 0},
+        pointMax: {x: 0, y: 0},
+        translate: {x: 0, y: 0},
+        draw: () => { return; },
+        updatePosition: () => { return; },
+        updatePositionMouse: () => { return; },
+        updateParameters: () => { return; },
+        translateAllPoints: () => { return; }
+    };
 
     beforeEach(() => black = {
         RGBA: [255, 255, 255, 1],
@@ -43,35 +73,6 @@ describe('Tests de database.service', () => {
     });
 
     context('updateData', () => {
-
-        const element: DrawElement = {
-            svg: '',
-            svgHtml: '',
-            trueType: 0,
-            points: [],
-            isSelected: false,
-            erasingEvidence: false,
-            erasingColor: {RGBA: [0, 0, 0, 0], RGBAString: ''},
-            pointMin: {x: 0, y: 0},
-            pointMax: {x: 0, y: 0},
-            translate: {x: 0, y: 0},
-            draw: () => { return; },
-            updatePosition: () => { return; },
-            updatePositionMouse: () => { return; },
-            updateParameters: () => { return; },
-            translateAllPoints: () => { return; }
-        };
-
-        let drawing: Drawing;
-        beforeEach(() => drawing = {
-            _id: 123,
-            name: '123',
-            height: 25,
-            width: 25,
-            backgroundColor: black,
-            tags: [''],
-            elements: element[''],
-        });
 
         it('Devrait retourner faux lorsque nom est vide',  async () => {
             drawing.name = ('');
@@ -93,4 +94,19 @@ describe('Tests de database.service', () => {
         });
     });
 
+    context('deleteData', () => {
+
+        it('si la collection nexiste pas elle doit sortir de la fonction', async () => {
+            delete test.collection;
+            const test1 = await test.deleteData(drawing._id);
+            expect(test1).to.equal(undefined);
+        });
+
+        it('la collection doit bien passer par la methode deleteOne', async (done) => {
+            const emitter = new EventEmitter();
+            emitter.on('test.collection.deleteOne', done);
+            // test.deleteOne(drawing);
+            emitter.emit('test.collection.deleteOne');
+        });
+    });
 });
