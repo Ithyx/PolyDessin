@@ -23,18 +23,22 @@ const PASTE_OFFSET: Point = {x: 20, y: 20};
 
 export class ClipboardService {
 
-  private selectedElementCopy: DrawElement[];
+  private copiedElements: DrawElement[];
+  private duplicatedElements: DrawElement[];
   private removeCommand: RemoveSVGService;
+  private numberOfPaste: number;
 
   constructor(private selection: SelectionService,
               private commands: CommandManagerService,
               private svgStockage: SVGStockageService
               ) {
-                this.selectedElementCopy = [];
+                this.copiedElements = [];
+                this.duplicatedElements = [];
                 this.removeCommand = new RemoveSVGService(this.svgStockage);
+                this.numberOfPaste = 1;
               }
 
-  createCopyDrawElement(element: DrawElement): void {
+  createCopyDrawElement(element: DrawElement, array: DrawElement[]): void {
     let newElement: TracePencilService | TraceBrushService | SprayService | RectangleService
                     | PolygonService | LineService | EllipseService;
     switch (element.trueType) {
@@ -64,10 +68,10 @@ export class ClipboardService {
         newElement = new TracePencilService();
         break;
     }
-    this.setupCopy(newElement, element);
+    this.setupCopy(newElement, element, array);
   }
 
-  setupCopy(newElement: DrawElement, element: DrawElement): void {
+  setupCopy(newElement: DrawElement, element: DrawElement, array: DrawElement[]): void {
     newElement.svgHtml = element.svgHtml;
     newElement.svg = element.svg;
     newElement.trueType = element.trueType;
@@ -91,13 +95,13 @@ export class ClipboardService {
     newElement.pointMin = {x: element.pointMin.x, y: element.pointMin.y};
     newElement.pointMax = {x: element.pointMax.x, y: element.pointMax.y};
     newElement.translate = {x: element.translate.x, y: element.translate.y};
-    this.selectedElementCopy.push(newElement);
+    array.push(newElement);
   }
 
   copySelectedElement(): void {
-    this.selectedElementCopy = [];
+    this.copiedElements = [];
     for (const element of this.selection.selectedElements) {
-      this.createCopyDrawElement(element);
+      this.createCopyDrawElement(element, this.copiedElements);
     }
     console.log('copy');
   }
@@ -109,8 +113,18 @@ export class ClipboardService {
   }
 
   duplicateSelectedElement(): void {
-    this.copySelectedElement();
-    this.pasteSelectedElement();
+    this.duplicatedElements = [];
+    for (const element of this.selection.selectedElements) {
+      this.createCopyDrawElement(element, this.duplicatedElements);
+    }
+    this.selection.deleteBoundingBox();
+    for (const element of this.duplicatedElements) {
+      element.updatePosition(PASTE_OFFSET.x, PASTE_OFFSET.y);
+      this.svgStockage.addSVG(element);   // TODO : UTILISATION DE LA COMMANDE ADD-SVG
+      this.selection.selectedElements.push(element);
+    }
+
+    this.selection.createBoundingBox();
     console.log('duplicate');
   }
 
@@ -127,13 +141,14 @@ export class ClipboardService {
 
   pasteSelectedElement(): void {
     this.selection.deleteBoundingBox();
-    for (const element of this.selectedElementCopy) {
-      element.updatePosition(PASTE_OFFSET.x, PASTE_OFFSET.y);
+    for (const element of this.copiedElements) {
+      element.updatePosition(PASTE_OFFSET.x * this.numberOfPaste, PASTE_OFFSET.y * this.numberOfPaste);
       this.svgStockage.addSVG(element);   // TODO : UTILISATION DE LA COMMANDE ADD-SVG
       this.selection.selectedElements.push(element);
     }
 
     this.selection.createBoundingBox();
+    this.numberOfPaste++;
     console.log('paste');
   }
 }
