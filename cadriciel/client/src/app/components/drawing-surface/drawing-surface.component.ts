@@ -59,9 +59,9 @@ export class DrawingSurfaceComponent implements AfterViewInit {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       if (mouse.button === LEFT_CLICK) {
         if (!this.selection.selectedElements.includes(element)) {
-          for (const elements of this.selection.selectedElements) {
-            elements.isSelected = false;
-          }
+          // for (const elements of this.selection.selectedElements) {
+           // elements.isSelected = false;
+          // }
           this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
           this.selection.selectedElements.push(element);
           element.isSelected = true;
@@ -81,12 +81,12 @@ export class DrawingSurfaceComponent implements AfterViewInit {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       if (mouse.button === LEFT_CLICK) {
         if (this.mousePosition.x === mouse.screenX && this.mousePosition.y === mouse.screenY) {
-          for (const elements of this.selection.selectedElements) {
-            elements.isSelected = false;
-          }
+          // for (const elements of this.selection.selectedElements) {
+            // elements.isSelected = false;
+          // }
           this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
           this.selection.selectedElements.push(element);
-          element.isSelected = true;
+          // element.isSelected = true;
           this.selection.createBoundingBox();
         }
       } else if (mouse.button === RIGHT_CLICK) {
@@ -170,9 +170,9 @@ export class DrawingSurfaceComponent implements AfterViewInit {
     this.selection.deleteBoundingBox();
     this.selection.clickOnSelectionBox = false;
     this.selection.clickInSelectionBox = false;
-    for (const element of this.selection.selectedElements) {
-      element.isSelected = false;
-    }
+    // for (const element of this.selection.selectedElements) {
+      // element.isSelected = false;
+    // }
     this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
 
    }

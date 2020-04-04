@@ -15,7 +15,7 @@ import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { SelectionService } from './tools/selection/selection.service';
 import { TOOL_INDEX } from './tools/tool-manager.service';
 
-const PASTE_OFFSET: Point = {x: 20, y: 20};
+const PASTE_OFFSET: Point = {x: 15, y: 15};
 
 @Injectable({
   providedIn: 'root'
@@ -103,13 +103,13 @@ export class ClipboardService {
     for (const element of this.selection.selectedElements) {
       this.createCopyDrawElement(element, this.copiedElements);
     }
-    console.log('copy');
+    console.log('copy', this.copiedElements);
   }
 
   cutSelectedElement(): void {
     this.copySelectedElement();
     this.deleteSelectedElement();
-    console.log('cut');
+    console.log('cut', this.copiedElements);
   }
 
   duplicateSelectedElement(): void {
@@ -125,7 +125,7 @@ export class ClipboardService {
     }
 
     this.selection.createBoundingBox();
-    console.log('duplicate');
+    console.log('duplicate', this.duplicateSelectedElement);
   }
 
   deleteSelectedElement(): void {
@@ -149,6 +149,6 @@ export class ClipboardService {
 
     this.selection.createBoundingBox();
     this.numberOfPaste++;
-    console.log('paste');
+    console.log('paste', this.copiedElements);
   }
 }

@@ -163,7 +163,6 @@ export class ShortcutsManagerService {
   shortcutKey1(): void {
     this.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
     this.clearOngoingSVG();
-    console.log(this.svgStockage.getCompleteSVG());
   }
 
   shortcutKey2(): void {
