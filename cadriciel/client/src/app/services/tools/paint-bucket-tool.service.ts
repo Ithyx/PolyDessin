@@ -2,14 +2,16 @@ import { Injectable } from '@angular/core';
 import { ColorParameterService } from '../color/color-parameter.service';
 import { AddSVGService } from '../command/add-svg.service';
 import { CommandManagerService } from '../command/command-manager.service';
-import { PolygonService } from '../stockage-svg/draw-element/basic-shape/polygon.service';
 import { Point } from '../stockage-svg/draw-element/draw-element';
+import { TracePencilService } from '../stockage-svg/draw-element/trace/trace-pencil.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { ToolInterface } from './tool-interface';
 
 // Constantes représentant les possibilités de points contigus au point courant
 const row = [ -1, -1, -1,  0,  0,  1,  1,  1 ];
 const col = [ -1,  0,  1, -1,  1, -1,  0,  1 ];
+
+const PENCIL_THICKNESS = 3;
 
 @Injectable({
   providedIn: 'root'
@@ -21,14 +23,14 @@ export class PaintBucketToolService implements ToolInterface {
   private context: CanvasRenderingContext2D;
   private image: HTMLImageElement;
   private mousePosition: Point;
-  private fill: PolygonService;
+  private fill: TracePencilService;
   private checkedPixels: number[];
   private color: [number, number, number];
 
   constructor(private colorParameter: ColorParameterService,
               private commands: CommandManagerService,
               private svgStockage: SVGStockageService) {
-    this.fill = new PolygonService();
+    this.fill = new TracePencilService();
     this.color = [0, 0, 0];
     this.mousePosition = {x: 0, y: 0};
     this.checkedPixels = [];
@@ -36,10 +38,10 @@ export class PaintBucketToolService implements ToolInterface {
 
   onMouseClick(mouse: MouseEvent): void {
     this.mousePosition = {x: mouse.offsetX, y: mouse.offsetY};
-    this.fill = new PolygonService();
-    this.fill.chosenOption = 'Plein';
+    this.fill = new TracePencilService();
     this.fill.points = [];
     this.fill.primaryColor = this.colorParameter.primaryColor;
+    this.fill.thickness = PENCIL_THICKNESS;
     this.checkedPixels = [];
     this.createCanvas();
   }
