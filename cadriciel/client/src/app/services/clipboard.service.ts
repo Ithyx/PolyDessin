@@ -100,6 +100,7 @@ export class ClipboardService {
 
   copySelectedElement(): void {
     this.copiedElements = [];
+    this.numberOfPaste = 1;
     for (const element of this.selection.selectedElements) {
       this.createCopyDrawElement(element, this.copiedElements);
     }
@@ -141,11 +142,15 @@ export class ClipboardService {
 
   pasteSelectedElement(): void {
     this.selection.deleteBoundingBox();
+    const buffer: DrawElement[] = [];
     for (const element of this.copiedElements) {
       element.updatePosition(PASTE_OFFSET.x * this.numberOfPaste, PASTE_OFFSET.y * this.numberOfPaste);
       this.svgStockage.addSVG(element);   // TODO : UTILISATION DE LA COMMANDE ADD-SVG
       this.selection.selectedElements.push(element);
+      this.createCopyDrawElement(element, buffer);
     }
+
+    this.copiedElements = buffer;
 
     this.selection.createBoundingBox();
     this.numberOfPaste++;
