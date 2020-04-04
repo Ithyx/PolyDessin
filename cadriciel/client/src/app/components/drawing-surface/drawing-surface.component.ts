@@ -6,6 +6,7 @@ import { DrawElement, Point } from 'src/app/services/stockage-svg/draw-element/d
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
 import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
+import { PaintBucketToolService } from 'src/app/services/tools/paint-bucket-tool.service';
 import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
 import { LEFT_CLICK, RIGHT_CLICK, SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
@@ -31,7 +32,8 @@ export class DrawingSurfaceComponent implements AfterViewInit {
               private colorChanger: ColorChangerToolService,
               private eraser: EraserToolService,
               private canvasConversion: CanvasConversionService,
-              private pipette: PipetteToolService
+              private pipette: PipetteToolService,
+              private bucket: PaintBucketToolService
               ) {
                  this.mousePosition = {x: 0, y: 0};
                 }
@@ -39,8 +41,10 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.eraser.drawing = this.drawing.nativeElement;
     this.pipette.drawing = this.drawing.nativeElement;
+    this.bucket.drawing = this.drawing.nativeElement;
     this.canvasConversion.canvas = this.canvas.nativeElement;
     this.pipette.canvas = this.canvas.nativeElement;
+    this.bucket.canvas = this.canvas.nativeElement;
   }
 
   clickBelongToSelectionBox(mouse: MouseEvent): boolean {
