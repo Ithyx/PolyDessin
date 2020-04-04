@@ -92,30 +92,39 @@ export class ClipboardService {
     this.selectedElementCopy.push(newElement);
   }
 
+  copyDrawElementPoint(newElement: DrawElement, element: DrawElement): void {
+    // TODO
+  };
+
   copySelectedElement(): void {
     this.selectedElementCopy = [];
     for (const element of this.selection.selectedElements) {
       this.createCopyDrawElement(element);
     }
+    console.log('copy');
   }
 
   cutSelectedElement(): void {
     this.copySelectedElement();
     this.deleteSelectedElement();
+    console.log('cut');
   }
 
   duplicateSelectedElement(): void {
     this.copySelectedElement();
     this.pasteSelectedElement();
+    console.log('duplicate');
   }
 
   deleteSelectedElement(): void {
+    // TODO : CORRECTION UTILISATION COMMANDE REMOVE SVG
     this.removeCommand.addElements([...this.selection.selectedElements]);
 
     if (!this.removeCommand.isEmpty()) {
       this.commands.execute(this.removeCommand);
       this.selection.deleteBoundingBox();
     }
+    console.log('delete');
   }
 
   pasteSelectedElement(): void {
@@ -127,5 +136,6 @@ export class ClipboardService {
     }
 
     this.selection.createBoundingBox();
+    console.log('paste');
   }
 }

@@ -91,4 +91,24 @@
             </div>
         </div>
     </form>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div>
+        <i class="fas fa-copy"></i>
+        <button (click)="clipboard.copySelectedElement"> Copy </button>
+        <br>
+        <i class="fas fa-paste"></i>
+        <button (click)="clipboard.pasteSelectedElement"> Paste </button>
+        <br>
+        <i class="fas fa-cut"></i>
+        <button (click)="clipboard.cutSelectedElement"> Cut </button>
+        <br>
+        <i class="fas fa-clone"></i>
+        <button (click)="clipboard.duplicateSelectedElement"> Duplicate </button>
+        <br>
+        <i class="fas fa-backspace"></i>
+        <button (click)="clipboard.deleteSelectedElement"> Delete  </button>
+    </div>
 </div>

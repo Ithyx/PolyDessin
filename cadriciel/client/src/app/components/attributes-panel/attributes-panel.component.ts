@@ -8,6 +8,7 @@ import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { ColorChoiceComponent } from '../color-choice/color-choice.component';
+import { ClipboardService } from 'src/app/services/clipboard.service';
 
 @Component({
   selector: 'app-attributes-panel',
@@ -23,7 +24,8 @@ export class AttributesPanelComponent {
               private colorParameter: ColorParameterService,
               protected commands: CommandManagerService,
               private shortcuts: ShortcutsManagerService,
-              protected drawingManager: DrawingManagerService) { }
+              protected drawingManager: DrawingManagerService,
+              protected clipboard: ClipboardService) { }
 
   onChange(event: Event, parameterName: string, min: number, max: number): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
