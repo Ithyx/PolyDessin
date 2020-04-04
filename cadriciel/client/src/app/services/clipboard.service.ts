@@ -71,7 +71,9 @@ export class ClipboardService {
     newElement.svgHtml = element.svgHtml;
     newElement.svg = element.svg;
     newElement.trueType = element.trueType;
-    newElement.points = [...element.points];
+    for (const point of element.points) {
+      newElement.points.push({x: point.x, y: point.y});
+    }
     newElement.isSelected = true;
     newElement.erasingEvidence = element.erasingEvidence;
     if (element.primaryColor !== undefined) { newElement.primaryColor = element.primaryColor; }
@@ -91,10 +93,6 @@ export class ClipboardService {
     newElement.translate = {x: element.translate.x, y: element.translate.y};
     this.selectedElementCopy.push(newElement);
   }
-
-  copyDrawElementPoint(newElement: DrawElement, element: DrawElement): void {
-    // TODO
-  };
 
   copySelectedElement(): void {
     this.selectedElementCopy = [];
