@@ -75,6 +75,7 @@ export class ClipboardService {
     newElement.svgHtml = element.svgHtml;
     newElement.svg = element.svg;
     newElement.trueType = element.trueType;
+    newElement.points = [];
     for (const point of element.points) {
       newElement.points.push({x: point.x, y: point.y});
     }
