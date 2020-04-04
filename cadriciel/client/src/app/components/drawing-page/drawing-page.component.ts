@@ -7,6 +7,7 @@ import { RectangleToolService } from 'src/app/services/tools/basic-shape-tool/re
 import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
 import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
 import { LineToolService } from 'src/app/services/tools/line-tool.service';
+import { PaintBucketToolService } from 'src/app/services/tools/paint-bucket-tool.service';
 import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
 import { LEFT_CLICK,  SelectionService} from 'src/app/services/tools/selection/selection.service';
 import { SprayToolService } from 'src/app/services/tools/spray-tool.service';
@@ -41,7 +42,8 @@ export class DrawingPageComponent implements AfterViewInit {
               protected ellipse: EllipseToolService,
               protected polygon: PolygonToolService,
               protected eraser: EraserToolService,
-              private canvas: CanvasConversionService
+              private canvas: CanvasConversionService,
+              protected bucket: PaintBucketToolService
               ) {
               this.toolMap.set('Crayon', pencil)
                           .set('Rectangle', rectangle)
@@ -53,7 +55,8 @@ export class DrawingPageComponent implements AfterViewInit {
                           .set('Applicateur Couleur', colorChanger)
                           .set('Ellipse', ellipse)
                           .set('Polygone', polygon)
-                          .set('Efface', eraser);
+                          .set('Efface', eraser)
+                          .set('Seau de peinture', bucket);
                 }
 
   ngAfterViewInit(): void {
