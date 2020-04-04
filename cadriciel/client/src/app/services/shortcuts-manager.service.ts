@@ -71,6 +71,7 @@ export class ShortcutsManagerService {
                                     .set('3', this.shortcutKey3.bind(this))
                                     .set('a', this.shortcutKeyA.bind(this))
                                     .set('c', this.shortcutKeyC.bind(this))
+                                    .set('d', this.shortcutKeyD.bind(this))
                                     .set('e', this.shortcutKeyE.bind(this))
                                     .set('i', this.shortcutKeyI.bind(this))
                                     .set('l', this.shortcutKeyL.bind(this))
@@ -78,6 +79,7 @@ export class ShortcutsManagerService {
                                     .set('v', this.shortcutKeyV.bind(this))
                                     .set('r', this.shortcutKeyR.bind(this))
                                     .set('s', this.shortcutKeyS.bind(this))
+                                    .set('x', this.shortcutKeyX.bind(this))
                                     .set('z', this.shortcutKeyZ.bind(this))
                                     .set('Z', this.shortcutKeyUpperZ.bind(this))
                                     .set('Shift', this.shortcutKeyShift.bind(this))
@@ -161,6 +163,7 @@ export class ShortcutsManagerService {
   shortcutKey1(): void {
     this.tools.changeActiveTool(TOOL_INDEX.RECTANGLE);
     this.clearOngoingSVG();
+    console.log(this.svgStockage.getCompleteSVG());
   }
 
   shortcutKey2(): void {
@@ -240,8 +243,20 @@ export class ShortcutsManagerService {
   }
 
   shortcutKeyV(keyboard: KeyboardEvent): void {
-    if (keyboard.ctrlKey && this.selection.selectionBox.box) {
+    if (keyboard.ctrlKey) {
       this.clipboard.pasteSelectedElement();
+    }
+  }
+
+  shortcutKeyD(keyboard: KeyboardEvent): void {
+    if (keyboard.ctrlKey && this.selection.selectionBox.box) {
+      this.clipboard.duplicateSelectedElement();
+    }
+  }
+
+  shortcutKeyX(keyboard: KeyboardEvent): void {
+    if (keyboard.ctrlKey && this.selection.selectionBox.box) {
+      this.clipboard.cutSelectedElement();
     }
   }
 
