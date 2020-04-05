@@ -71,33 +71,27 @@ export class PaintBucketToolService implements ToolInterface {
 
     while (queue.length > 0) {
       const point = queue.pop();
-      // s'assurer de ne pas vérifier le même point deux fois
-      if (point && !this.checkedPixels.includes(this.getIndex(point))) {
-        this.checkedPixels.push(this.getIndex(point));
+      if (point) {
+        // this.checkedPixels.push(this.getIndex(point));
         let x1 = point.x;
-        let color = this.context.getImageData(point.x, point.y, 1, 1).data;
-        while (x1 > 0 && this.checkColor(color)) {
+        while (x1 > 0 && this.checkColor({x: x1, y: point.y})) {
           x1--;
-          color = this.context.getImageData(x1, point.y, 1, 1).data;
         }
         x1++;
         this.fill.points.push({x: x1, y: point.y});
         let spanAbove = false;
         let spanBelow = false;
-        color = this.context.getImageData(x1, point.y, 1, 1).data;
-        while (x1 < this.drawing.clientWidth && this.checkColor(color)) {
-            let testColor = this.context.getImageData(x1, point.y - 1, 1, 1).data;
-            if (!spanAbove && point.y > 0 && this.checkColor(testColor)) {
+        while (x1 < this.drawing.clientWidth && this.checkColor({x: x1, y: point.y})) {
+            if (!spanAbove && point.y > 0 && this.checkColor({x: x1, y: point.y - 1})) {
               queue.push({x: x1, y: point.y - 1});
               spanAbove = true;
             }
-            testColor = this.context.getImageData(x1, point.y + 1, 1, 1).data;
-            if (!spanBelow && point.y < this.drawing.clientHeight - 1 && this.checkColor(testColor)) {
+            if (!spanBelow && point.y < this.drawing.clientHeight - 1 && this.checkColor({x: x1, y: point.y + 1})) {
               queue.push({x: x1, y: point.y + 1});
               spanBelow = true;
             }
+            this.checkedPixels.push(this.getIndex({x: x1, y: point.y}));
             x1++;
-            color = this.context.getImageData(x1, point.y, 1, 1).data;
         }
         this.fill.points.push({x: x1, y: point.y});
       }
@@ -107,7 +101,10 @@ export class PaintBucketToolService implements ToolInterface {
     this.commands.execute(new AddSVGService(this.fill, this.svgStockage));
   }
 
-  checkColor(color: Uint8ClampedArray): boolean {
+  checkColor(point: Point): boolean {
+    // s'assurer de ne pas vérifier le même point deux fois
+    if (this.checkedPixels.includes(this.getIndex(point))) { return false; }
+    const color = this.context.getImageData(point.x, point.y, 1, 1).data;
     const tolerance = (this.tools.activeTool.parameters[0].value) ? (this.tools.activeTool.parameters[0].value) : 0;
     const checkRedValue = Math.abs(this.color[R] - color[R]) <= (RGB_MAX * tolerance / PERCENTAGE);
     const checkGreenValue = Math.abs(this.color[G] - color[G]) <= (RGB_MAX * tolerance / PERCENTAGE);
