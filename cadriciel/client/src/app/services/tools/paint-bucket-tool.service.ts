@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { RGB_MAX, R, G, B } from '../color/color';
+import { PERCENTAGE } from '../color/color-manager.service';
 import { ColorParameterService } from '../color/color-parameter.service';
 import { AddSVGService } from '../command/add-svg.service';
 import { CommandManagerService } from '../command/command-manager.service';
@@ -6,8 +8,9 @@ import { Point } from '../stockage-svg/draw-element/draw-element';
 import { TracePencilService } from '../stockage-svg/draw-element/trace/trace-pencil.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { ToolInterface } from './tool-interface';
+import { ToolManagerService } from './tool-manager.service';
 
-const PENCIL_THICKNESS = 3;
+const PENCIL_THICKNESS = 2;
 
 @Injectable({
   providedIn: 'root'
@@ -20,16 +23,17 @@ export class PaintBucketToolService implements ToolInterface {
   private image: HTMLImageElement;
   private mousePosition: Point;
   private fill: TracePencilService;
-  private checkedPixels: number[]; // Map<number, number[]>;
+  private checkedPixels: number[];
   private color: [number, number, number];
 
   constructor(private colorParameter: ColorParameterService,
               private commands: CommandManagerService,
-              private svgStockage: SVGStockageService) {
+              private svgStockage: SVGStockageService,
+              private tools: ToolManagerService) {
     this.fill = new TracePencilService();
     this.color = [0, 0, 0];
     this.mousePosition = {x: 0, y: 0};
-    this.checkedPixels = []; // new Map<number, number[]>();
+    this.checkedPixels = [];
   }
 
   onMouseClick(mouse: MouseEvent): void {
@@ -38,7 +42,7 @@ export class PaintBucketToolService implements ToolInterface {
     this.fill.points = [];
     this.fill.primaryColor = this.colorParameter.primaryColor;
     this.fill.thickness = PENCIL_THICKNESS;
-    this.checkedPixels = []; // new Map<number, number[]>();
+    this.checkedPixels = [];
     this.createCanvas();
   }
 
@@ -51,13 +55,13 @@ export class PaintBucketToolService implements ToolInterface {
       const svgString = new XMLSerializer().serializeToString(this.drawing);
       const svg = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
       this.image = new Image();
-      this.image.onload = this.fillWithColor2.bind(this);
+      this.image.onload = this.fillWithColor.bind(this);
       this.image.src = URL.createObjectURL(svg);
     }
   }
 
-  // http://www.programmersought.com/article/3670113928/
-  fillWithColor2(): void {
+  // Algorithme basé sur http://www.programmersought.com/article/3670113928/
+  fillWithColor(): void {
     this.context.drawImage(this.image, 0, 0);
     const pixelData = this.context.getImageData(this.mousePosition.x, this.mousePosition.y, 1, 1).data;
     this.color = [pixelData[0], pixelData[1], pixelData[2]];
@@ -67,7 +71,8 @@ export class PaintBucketToolService implements ToolInterface {
 
     while (queue.length > 0) {
       const point = queue.pop();
-      if (point) {
+      // s'assurer de ne pas vérifier le même point deux fois
+      if (point && !this.checkedPixels.includes(this.getIndex(point))) {
         this.checkedPixels.push(this.getIndex(point));
         let x1 = point.x;
         let color = this.context.getImageData(point.x, point.y, 1, 1).data;
@@ -83,16 +88,12 @@ export class PaintBucketToolService implements ToolInterface {
         while (x1 < this.drawing.clientWidth && this.checkColor(color)) {
             let testColor = this.context.getImageData(x1, point.y - 1, 1, 1).data;
             if (!spanAbove && point.y > 0 && this.checkColor(testColor)) {
-              if (!this.checkedPixels.includes(this.getIndex({x: x1, y: point.y - 1}))) {
-                queue.push({x: x1, y: point.y - 1});
-              }
+              queue.push({x: x1, y: point.y - 1});
               spanAbove = true;
             }
             testColor = this.context.getImageData(x1, point.y + 1, 1, 1).data;
-            if (!spanBelow && point.y < this.drawing.clientHeight && this.checkColor(testColor)) {
-              if (!this.checkedPixels.includes(this.getIndex({x: x1, y: point.y + 1}))) {
-                queue.push({x: x1, y: point.y + 1});
-              }
+            if (!spanBelow && point.y < this.drawing.clientHeight - 1 && this.checkColor(testColor)) {
+              queue.push({x: x1, y: point.y + 1});
               spanBelow = true;
             }
             x1++;
@@ -107,14 +108,11 @@ export class PaintBucketToolService implements ToolInterface {
   }
 
   checkColor(color: Uint8ClampedArray): boolean {
-    return color[0] === this.color[0] && color[1] === this.color[1] && color[2] === this.color[2];
-  }
-
-  checkPixel(position: Point): boolean {
-    const pixelData = this.context.getImageData(position.x, position.y, 1, 1).data;
-    return (position.x >= 0 && position.x < this.drawing.clientWidth)
-      && (position.y >= 0 && position.y < this.drawing.clientHeight)
-      && (pixelData[0] === this.color[0] && pixelData[1] === this.color[1] && pixelData[2] === this.color[1]);
+    const tolerance = (this.tools.activeTool.parameters[0].value) ? (this.tools.activeTool.parameters[0].value) : 0;
+    const checkRedValue = Math.abs(this.color[R] - color[R]) <= (RGB_MAX * tolerance / PERCENTAGE);
+    const checkGreenValue = Math.abs(this.color[G] - color[G]) <= (RGB_MAX * tolerance / PERCENTAGE);
+    const checkBlueValue = Math.abs(this.color[B] - color[B]) <= (RGB_MAX * tolerance / PERCENTAGE);
+    return checkRedValue && checkGreenValue && checkBlueValue;
   }
 
   // Attribue un index unique à chaque position du dessin
