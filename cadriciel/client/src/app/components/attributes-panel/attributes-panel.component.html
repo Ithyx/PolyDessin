@@ -95,20 +95,64 @@
     <br>
     <br>
     <br>
-    <div>
-        <i class="fas fa-copy"></i>
-        <button (click)="clipboard.copySelectedElement"> Copy </button>
+    <div class="clipboard">
+        Presse-Papier
         <br>
-        <i class="fas fa-paste"></i>
-        <button (click)="clipboard.pasteSelectedElement"> Paste </button>
+        <ng-template [ngIf]="clipboard.ongoingSelection()" [ngIfElse]="copyNotAvailable">
+            <a mat-stroked-button (click)="clipboard.copySelectedElement()">
+                <i class="fas fa-copy"></i> Copy
+            </a>
+        </ng-template>
+        <ng-template #copyNotAvailable>
+            <a mat-stroked-button class="notavailable">
+                <i class="fas fa-copy"></i> Copy
+            </a>
+        </ng-template>
+
+        <ng-template [ngIf]="clipboard.canPaste()" [ngIfElse]="pasteNotAvailable">
+            <a mat-stroked-button (click)="clipboard.pasteSelectedElement()">
+                <i class="fas fa-paste"></i> Paste
+            </a>
+        </ng-template>
+        <ng-template #pasteNotAvailable>
+            <a mat-stroked-button class="notavailable">
+                <i class="fas fa-paste"></i> Paste
+            </a>
+        </ng-template>
+
+        <ng-template [ngIf]="clipboard.ongoingSelection()" [ngIfElse]="cutNotAvailable">
+            <a mat-stroked-button (click)="clipboard.cutSelectedElement()">
+                <i class="fas fa-cut"></i> Cut
+            </a>
+        </ng-template>
+        <ng-template #cutNotAvailable>
+            <a mat-stroked-button class="notavailable">
+                <i class="fas fa-cut"></i> Cut
+            </a>
+        </ng-template>
+
         <br>
-        <i class="fas fa-cut"></i>
-        <button (click)="clipboard.cutSelectedElement"> Cut </button>
-        <br>
-        <i class="fas fa-clone"></i>
-        <button (click)="clipboard.duplicateSelectedElement"> Duplicate </button>
-        <br>
-        <i class="fas fa-backspace"></i>
-        <button (click)="clipboard.deleteSelectedElement"> Delete  </button>
+
+        <ng-template [ngIf]="clipboard.ongoingSelection()" [ngIfElse]="duplicateNotAvailable">
+            <a mat-stroked-button (click)="clipboard.duplicateSelectedElement()">
+                <i class="fas fa-clone"></i> Duplicate
+            </a>
+        </ng-template>
+        <ng-template #duplicateNotAvailable>
+            <a mat-stroked-button class="notavailable">
+                <i class="fas fa-clone"></i> Duplicate
+            </a>
+        </ng-template>
+
+        <ng-template [ngIf]="clipboard.ongoingSelection()" [ngIfElse]="deleteNotAvailable">
+            <a mat-stroked-button (click)="clipboard.deleteSelectedElement()">
+                <i class="fas fa-backspace"></i> Delete
+            </a>
+        </ng-template>
+        <ng-template #deleteNotAvailable>
+            <a mat-stroked-button class="notavailable">
+                <i class="fas fa-backspace"></i> Delete
+            </a>
+        </ng-template>
     </div>
 </div>

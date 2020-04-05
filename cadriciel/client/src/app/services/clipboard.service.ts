@@ -27,12 +27,14 @@ export class ClipboardService {
   private copiedElements: DrawElement[];
   private duplicatedElements: DrawElement[];
   private removeCommand: RemoveSVGService;
+  private numberOfPaste: number;
 
   constructor(private selection: SelectionService,
               private commands: CommandManagerService,
               private svgStockage: SVGStockageService,
               private drawing: DrawingManagerService
               ) {
+                this.numberOfPaste = 0;
                 this.copiedElements = [];
                 this.duplicatedElements = [];
                 this.removeCommand = new RemoveSVGService(this.svgStockage);
@@ -101,6 +103,7 @@ export class ClipboardService {
 
   copySelectedElement(): void {
     this.copiedElements = [];
+    this.numberOfPaste = 0;
     for (const element of this.selection.selectedElements) {
       this.createCopyDrawElement(element, this.copiedElements);
     }
@@ -147,23 +150,47 @@ export class ClipboardService {
     for (const element of this.copiedElements) {
       element.updatePosition(PASTE_OFFSET.x, PASTE_OFFSET.y);
       element.translateAllPoints();
-      this.selection.selectedElements.push(element);
-      this.createCopyDrawElement(element, buffer);
     }
+
+    if (this.isInDrawing) {
+      for (const element of this.copiedElements) {
+        this.selection.selectedElements.push(element);
+        this.createCopyDrawElement(element, buffer);
+      }
+    } else {
+      for (const element of this.copiedElements) {
+        element.updatePosition(-PASTE_OFFSET.x * this.numberOfPaste, -PASTE_OFFSET.y * this.numberOfPaste);
+        element.translateAllPoints();
+        this.selection.selectedElements.push(element);
+        this.createCopyDrawElement(element, buffer);
+      }
+    }
+
     this.commands.execute(new AddSVGService(this.copiedElements, this.svgStockage));
 
     this.copiedElements = buffer;
 
     this.selection.createBoundingBox();
+    this.numberOfPaste++;
+    console.log(this.numberOfPaste);
     console.log('paste', this.copiedElements);
   }
 
   isInDrawing(elements: DrawElement[]): boolean {
+    let allElementAreVisible = true;
     for (const element of elements) {
-      if (element.pointMin.x > this.drawing.width && element.pointMax.y > this.drawing.height) {
-        return true;
-      }
+      this.selection.findPointMinAndMax(element);
+      const elementIsVisible = element.pointMin.x > this.drawing.width && element.pointMin.y > this.drawing.height;
+      allElementAreVisible = allElementAreVisible && elementIsVisible;
     }
-    return false;
+    return allElementAreVisible;
+  }
+
+  ongoingSelection(): boolean {
+    return this.selection.selectionBox.box as unknown as boolean;
+  }
+
+  canPaste(): boolean {
+    return this.copiedElements.length !== 0;
   }
 }

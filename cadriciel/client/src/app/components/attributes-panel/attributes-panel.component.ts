@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
+import { ClipboardService } from 'src/app/services/clipboard.service';
 import { A, Color } from 'src/app/services/color/color';
 import { PERCENTAGE, Scope } from 'src/app/services/color/color-manager.service';
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
@@ -8,7 +9,6 @@ import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { ColorChoiceComponent } from '../color-choice/color-choice.component';
-import { ClipboardService } from 'src/app/services/clipboard.service';
 
 @Component({
   selector: 'app-attributes-panel',
