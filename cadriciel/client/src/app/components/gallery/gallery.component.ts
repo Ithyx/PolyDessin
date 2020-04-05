@@ -4,6 +4,7 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
+import { LocalSaveManagerService } from 'src/app/services/saving/local/local-save-manager.service';
 import { DatabaseService } from 'src/app/services/saving/remote/database.service';
 import { SavingUtilityService } from 'src/app/services/saving/saving-utility.service';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
@@ -37,7 +38,8 @@ export class GalleryComponent implements OnInit {
               private ngZone: NgZone,
               private router: Router,
               private dialog: MatDialog,
-              private canvas: CanvasConversionService) {
+              private canvas: CanvasConversionService,
+              private localSaving: LocalSaveManagerService) {
     this.dialogConfig = new MatDialogConfig();
     this.dialogConfig.disableClose = true;
     this.dialogConfig.autoFocus = true;
@@ -106,6 +108,7 @@ export class GalleryComponent implements OnInit {
     if (drawing.elements) { drawing.elements.forEach(this.saveUtility.addElement.bind(this.saveUtility)); }
     this.ngZone.run(() => this.router.navigate(['dessin']));
     this.canvas.updateDrawing();
+    this.localSaving.saveState();
     this.close();
   }
 

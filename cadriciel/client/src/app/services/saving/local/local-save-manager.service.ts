@@ -38,11 +38,13 @@ export class LocalSaveManagerService {
     const parsedContent = (JSON.parse(contentCopy) as DrawElement[]);
 
     this.currentDrawingParams.id = parsedParams.id;
-    this.currentDrawingParams.name = parsedParams.name;
     this.currentDrawingParams.height = parsedParams.height;
     this.currentDrawingParams.width = parsedParams.width;
     this.currentDrawingParams.backgroundColor = parsedParams.backgroundColor;
-    this.currentDrawingParams.tags = parsedParams.tags;
+    // le nom est ignoré
+    this.currentDrawingParams.name = '';
+    // les étiquettes sont ignorées
+    this.currentDrawingParams.tags = [];
 
     this.currentDrawingContent.cleanDrawing();
     for (const element of parsedContent) {

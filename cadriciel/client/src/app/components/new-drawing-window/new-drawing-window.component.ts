@@ -7,6 +7,7 @@ import { Scope } from 'src/app/services/color/color-manager.service';
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
+import { LocalSaveManagerService } from 'src/app/services/saving/local/local-save-manager.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 
@@ -40,7 +41,8 @@ export class NewDrawingWindowComponent {
               private dialog: MatDialog,
               private colorParameter: ColorParameterService,
               private commands: CommandManagerService,
-              private ngZone: NgZone ) {
+              private ngZone: NgZone,
+              private localSaving: LocalSaveManagerService ) {
     this.windowHeight = window.innerHeight - BUFFER_HEIGHT;
     this.windowWidth = window.innerWidth - BUFFER_WIDTH;
     this.dimensionManuallyChange = false;
@@ -92,8 +94,9 @@ export class NewDrawingWindowComponent {
     this.drawingManager.backgroundColor = this.colorParameter.temporaryBackgroundColor;
     this.drawingManager.tags = [];
     this.shortcuts.focusOnInput = false;
-    this.dialogRef.close();
     this.ngZone.run(() => this.router.navigate(['dessin']));
+    this.localSaving.saveState();
+    this.dialogRef.close();
   }
 
   selectColor(): void {
