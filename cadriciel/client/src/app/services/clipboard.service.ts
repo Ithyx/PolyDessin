@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-// import { AddSVGService } from './command/add-svg.service';
+import { AddSVGService } from './command/add-svg.service';
 import { CommandManagerService } from './command/command-manager.service';
 import { RemoveSVGService } from './command/remove-svg.service';
 import { EllipseService } from './stockage-svg/draw-element/basic-shape/ellipse.service';
@@ -15,7 +15,7 @@ import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { SelectionService } from './tools/selection/selection.service';
 import { TOOL_INDEX } from './tools/tool-manager.service';
 
-const PASTE_OFFSET: Point = {x: 15, y: 15};
+const PASTE_OFFSET: Point = {x: 20, y: 20};
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,6 @@ export class ClipboardService {
   private copiedElements: DrawElement[];
   private duplicatedElements: DrawElement[];
   private removeCommand: RemoveSVGService;
-  private numberOfPaste: number;
 
   constructor(private selection: SelectionService,
               private commands: CommandManagerService,
@@ -35,7 +34,6 @@ export class ClipboardService {
                 this.copiedElements = [];
                 this.duplicatedElements = [];
                 this.removeCommand = new RemoveSVGService(this.svgStockage);
-                this.numberOfPaste = 1;
               }
 
   createCopyDrawElement(element: DrawElement, array: DrawElement[]): void {
@@ -101,7 +99,6 @@ export class ClipboardService {
 
   copySelectedElement(): void {
     this.copiedElements = [];
-    this.numberOfPaste = 1;
     for (const element of this.selection.selectedElements) {
       this.createCopyDrawElement(element, this.copiedElements);
     }
@@ -122,9 +119,10 @@ export class ClipboardService {
     this.selection.deleteBoundingBox();
     for (const element of this.duplicatedElements) {
       element.updatePosition(PASTE_OFFSET.x, PASTE_OFFSET.y);
-      this.svgStockage.addSVG(element);   // TODO : UTILISATION DE LA COMMANDE ADD-SVG
+      element.translateAllPoints();
       this.selection.selectedElements.push(element);
     }
+    this.commands.execute(new AddSVGService(this.duplicatedElements, this.svgStockage));
 
     this.selection.createBoundingBox();
     console.log('duplicate', this.duplicateSelectedElement);
@@ -145,16 +143,16 @@ export class ClipboardService {
     this.selection.deleteBoundingBox();
     const buffer: DrawElement[] = [];
     for (const element of this.copiedElements) {
-      element.updatePosition(PASTE_OFFSET.x * this.numberOfPaste, PASTE_OFFSET.y * this.numberOfPaste);
-      this.svgStockage.addSVG(element);   // TODO : UTILISATION DE LA COMMANDE ADD-SVG
+      element.updatePosition(PASTE_OFFSET.x, PASTE_OFFSET.y);
+      element.translateAllPoints();
       this.selection.selectedElements.push(element);
       this.createCopyDrawElement(element, buffer);
     }
+    this.commands.execute(new AddSVGService(this.copiedElements, this.svgStockage));
 
-    this.copiedElements = buffer;
+    this.copiedElements = buffer;     // Nouvelle Copie sans référence à l'ancienne
 
     this.selection.createBoundingBox();
-    this.numberOfPaste++;
     console.log('paste', this.copiedElements);
   }
 }

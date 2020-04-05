@@ -69,7 +69,7 @@ export class LineToolService implements ToolInterface {
       }
       this.line.draw();
       if (!this.line.isEmpty()) {
-        this.commands.execute(new AddSVGService(this.line, this.svgStockage));
+        this.commands.execute(new AddSVGService([this.line], this.svgStockage));
       }
       this.line = new LineService();
       this.line.mousePosition = this.cursor;
