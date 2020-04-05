@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { GridService } from 'src/app/services/grid/grid.service';
@@ -185,5 +185,19 @@ export class DrawingSurfaceComponent implements AfterViewInit {
     }
 
    }
+
+   @HostListener('mousewheel', ['$event']) onMousewheel(event: WheelEvent): void {
+    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
+      event.preventDefault();
+      console.log("scroll détecté");
+      if (event.shiftKey) {
+        //Rotation de tous les éléments autour de leur propre point central
+      } else {
+        //Rotation de tous les éléments autour du même point central
+        
+        }
+    }
+   }
+
 
 }
