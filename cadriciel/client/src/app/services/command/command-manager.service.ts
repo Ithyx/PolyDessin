@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanvasConversionService } from '../canvas-conversion.service';
+import { LocalSaveManagerService } from '../saving/local/local-save-manager.service';
 import { Command } from './command';
 
 @Injectable({
@@ -11,7 +12,8 @@ export class CommandManagerService {
   private executedCommands: Command[] = [];
   private cancelledCommands: Command[] = [];
 
-  constructor(private canvasConversion: CanvasConversionService) {
+  constructor(private canvasConversion: CanvasConversionService,
+              private localSaving: LocalSaveManagerService) {
     this.drawingInProgress = false;
   }
 
@@ -19,6 +21,7 @@ export class CommandManagerService {
     this.executedCommands.push(command);
     this.cancelledCommands = [];
     this.canvasConversion.updateDrawing();
+    this.localSaving.saveState();
   }
 
   cancelCommand(): void {
@@ -27,6 +30,7 @@ export class CommandManagerService {
       command.undo();
       this.cancelledCommands.push(command);
       this.canvasConversion.updateDrawing();
+      this.localSaving.saveState();
     }
   }
 
@@ -36,6 +40,7 @@ export class CommandManagerService {
       command.redo();
       this.executedCommands.push(command);
       this.canvasConversion.updateDrawing();
+      this.localSaving.saveState();
     }
   }
 
