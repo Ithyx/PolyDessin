@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RGB_MAX, R, G, B } from '../color/color';
+import { B, G, R, RGB_MAX } from '../color/color';
 import { PERCENTAGE } from '../color/color-manager.service';
 import { ColorParameterService } from '../color/color-parameter.service';
 import { AddSVGService } from '../command/add-svg.service';
@@ -23,7 +23,7 @@ export class PaintBucketToolService implements ToolInterface {
   private image: HTMLImageElement;
   private mousePosition: Point;
   private fill: TracePencilService;
-  private checkedPixels: number[];
+  private checkedPixels: Map<number, number[]>;
   private color: [number, number, number];
 
   constructor(private colorParameter: ColorParameterService,
@@ -33,7 +33,7 @@ export class PaintBucketToolService implements ToolInterface {
     this.fill = new TracePencilService();
     this.color = [0, 0, 0];
     this.mousePosition = {x: 0, y: 0};
-    this.checkedPixels = [];
+    this.checkedPixels = new Map<number, number[]>();
   }
 
   onMouseClick(mouse: MouseEvent): void {
@@ -42,7 +42,7 @@ export class PaintBucketToolService implements ToolInterface {
     this.fill.points = [];
     this.fill.primaryColor = this.colorParameter.primaryColor;
     this.fill.thickness = PENCIL_THICKNESS;
-    this.checkedPixels = [];
+    this.checkedPixels = new Map<number, number[]>();
     this.createCanvas();
   }
 
@@ -90,7 +90,12 @@ export class PaintBucketToolService implements ToolInterface {
               queue.push({x: x1, y: point.y + 1});
               spanBelow = true;
             }
-            this.checkedPixels.push(this.getIndex({x: x1, y: point.y}));
+            const array = this.checkedPixels.get(x1);
+            if (array) {
+              array.push(this.getIndex({x: x1, y: point.y}));
+            } else {
+              this.checkedPixels.set(x1, [point.y]);
+            }
             x1++;
         }
         this.fill.points.push({x: x1, y: point.y});
@@ -103,7 +108,8 @@ export class PaintBucketToolService implements ToolInterface {
 
   checkColor(point: Point): boolean {
     // s'assurer de ne pas vérifier le même point deux fois
-    if (this.checkedPixels.includes(this.getIndex(point))) { return false; }
+    const array = this.checkedPixels.get(point.x);
+    if (array && array.includes(this.getIndex(point))) { return false; }
     const color = this.context.getImageData(point.x, point.y, 1, 1).data;
     const tolerance = (this.tools.activeTool.parameters[0].value) ? (this.tools.activeTool.parameters[0].value) : 0;
     const checkRedValue = Math.abs(this.color[R] - color[R]) <= (RGB_MAX * tolerance / PERCENTAGE);
