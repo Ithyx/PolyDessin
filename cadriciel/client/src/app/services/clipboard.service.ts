@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AddSVGService } from './command/add-svg.service';
 import { CommandManagerService } from './command/command-manager.service';
 import { RemoveSVGService } from './command/remove-svg.service';
+import { DrawingManagerService } from './drawing-manager/drawing-manager.service';
 import { EllipseService } from './stockage-svg/draw-element/basic-shape/ellipse.service';
 import { PolygonService } from './stockage-svg/draw-element/basic-shape/polygon.service';
 import { RectangleService } from './stockage-svg/draw-element/basic-shape/rectangle.service';
@@ -29,7 +30,8 @@ export class ClipboardService {
 
   constructor(private selection: SelectionService,
               private commands: CommandManagerService,
-              private svgStockage: SVGStockageService
+              private svgStockage: SVGStockageService,
+              private drawing: DrawingManagerService
               ) {
                 this.copiedElements = [];
                 this.duplicatedElements = [];
@@ -125,12 +127,12 @@ export class ClipboardService {
     this.commands.execute(new AddSVGService(this.duplicatedElements, this.svgStockage));
 
     this.selection.createBoundingBox();
-    console.log('duplicate', this.duplicateSelectedElement);
+    console.log('duplicate', this.duplicatedElements);
   }
 
   deleteSelectedElement(): void {
     // TODO : CORRECTION UTILISATION COMMANDE REMOVE SVG
-    this.removeCommand.addElements([...this.selection.selectedElements]);
+    this.removeCommand.addElements(this.selection.selectedElements);
 
     if (!this.removeCommand.isEmpty()) {
       this.commands.execute(this.removeCommand);
@@ -150,9 +152,18 @@ export class ClipboardService {
     }
     this.commands.execute(new AddSVGService(this.copiedElements, this.svgStockage));
 
-    this.copiedElements = buffer;     // Nouvelle Copie sans référence à l'ancienne
+    this.copiedElements = buffer;
 
     this.selection.createBoundingBox();
     console.log('paste', this.copiedElements);
+  }
+
+  isInDrawing(elements: DrawElement[]): boolean {
+    for (const element of elements) {
+      if (element.pointMin.x > this.drawing.width && element.pointMax.y > this.drawing.height) {
+        return true;
+      }
+    }
+    return false;
   }
 }
