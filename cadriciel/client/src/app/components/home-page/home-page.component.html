@@ -5,6 +5,6 @@
         <button mat-stroked-button (click)="createDrawing()" >Nouveau dessin</button>
         <button mat-stroked-button (click)="openGallery()">Ouvrir la gallerie</button>
         <button [routerLink]="['/guide']" mat-stroked-button>Afficher le guide d'utilisation</button>
-        <button class="unavailable" mat-stroked-button >Continuer un dessin</button>
+        <button [disabled]="localSaving.isStorageEmpty()" (click)="loadDrawing()" mat-stroked-button >Continuer un dessin</button>
     </div>
 </div>

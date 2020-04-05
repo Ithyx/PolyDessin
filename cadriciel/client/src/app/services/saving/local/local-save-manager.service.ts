@@ -16,6 +16,10 @@ export class LocalSaveManagerService {
               private currentDrawingContent: SVGStockageService,
               private savingUtility: SavingUtilityService) { }
 
+  isStorageEmpty(): boolean {
+    return localStorage.length === 0;
+  }
+
   saveState(): void {
     localStorage.setItem(PARAMETERS_KEY, JSON.stringify(this.currentDrawingParams));
     localStorage.setItem(CONTENT_KEY, JSON.stringify(this.currentDrawingContent.getCompleteSVG()));
@@ -25,7 +29,10 @@ export class LocalSaveManagerService {
   loadState(): boolean {
     const paramsCopy = localStorage.getItem(PARAMETERS_KEY);
     const contentCopy = localStorage.getItem(CONTENT_KEY);
-    if (paramsCopy === null || contentCopy === null) { return false; }
+    if (paramsCopy === null || contentCopy === null) {
+      localStorage.clear(); // on s'assure que nos données sont effacées si elles sont corrumpues
+      return false;
+    }
 
     const parsedParams = (JSON.parse(paramsCopy) as DrawingManagerService);
     const parsedContent = (JSON.parse(contentCopy) as DrawElement[]);
