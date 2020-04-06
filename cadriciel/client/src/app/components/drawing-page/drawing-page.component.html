@@ -1,6 +1,6 @@
 <app-toolbar></app-toolbar>
 
-<div class="drawing-surface">
+<div class="drawing-surface" style="cursor:crosshair">
     <app-drawing-surface [class]="getDrawingSurfaceClass()"
                         (click)="onClick($event)"
                         (dblclick)="onDblClick($event)"
