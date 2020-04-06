@@ -133,6 +133,7 @@ export class ClipboardService {
   }
 
   deleteSelectedElement(): void {
+    this.removeCommand = new RemoveSVGService(this.svgStockage);
     this.removeCommand.addElements(this.selection.selectedElements);
     this.selection.deleteBoundingBox();
     this.commands.execute(this.removeCommand);
