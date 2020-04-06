@@ -69,7 +69,7 @@ export class PaintBucketToolService implements ToolInterface {
     this.fillWithColor();
 
     this.fill.draw();
-    this.commands.execute(new AddSVGService(this.fill, this.svgStockage));
+    this.commands.execute(new AddSVGService([this.fill], this.svgStockage));
   }
 
   // Algorithme basé sur http://www.programmersought.com/article/3670113928/
