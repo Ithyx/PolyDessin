@@ -24,8 +24,8 @@ describe('EraserToolService', () => {
     pointMax: {x: 0, y: 0},
     translate: {x: 0, y: 0},
     draw: () => { return; },
-    updatePosition: () => { return; },
-    updatePositionMouse: () => { return; },
+    updateTranslation: () => { return; },
+    updateTranslationMouse: () => { return; },
     updateParameters: () => { return; },
     translateAllPoints: () => { return; }
   };

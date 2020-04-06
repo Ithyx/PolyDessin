@@ -95,32 +95,32 @@ describe('BasicShapeService', () => {
     expect(element.drawPerimeter).toHaveBeenCalled();
   });
 
-  // TESTS updatePosition
+  // TESTS updateTranslation
 
-  it('#updatePosition devrait attribuer les valeurs en paramètre à translation', () => {
+  it('#updateTranslation devrait attribuer les valeurs en paramètre à translation', () => {
     element.translate = {x: 90, y: 90};
-    element.updatePosition(10, 10);
+    element.updateTranslation(10, 10);
     expect(element.translate).toEqual({x: 100, y: 100});
   });
 
-  it('#updatePosition devrait appeler la fonction draw', () => {
+  it('#updateTranslation devrait appeler la fonction draw', () => {
     spyOn(element, 'draw');
-    element.updatePosition(10, 10);
+    element.updateTranslation(10, 10);
     expect(element.draw).toHaveBeenCalled();
   });
 
-  // TESTS updatePositionMouse
+  // TESTS updateTranslationMouse
 
-  it('#updatePositionMouse devrait attribuer les valeurs en paramètre à translation', () => {
+  it('#updateTranslationMouse devrait attribuer les valeurs en paramètre à translation', () => {
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    element.updatePositionMouse(click, {x: 10, y: 10});
+    element.updateTranslationMouse(click, {x: 10, y: 10});
     expect(element.translate).toEqual({x: 90, y: 90});
   });
 
-  it('#updatePositionMouse devrait appeler la fonction draw', () => {
+  it('#updateTranslationMouse devrait appeler la fonction draw', () => {
     spyOn(element, 'draw');
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    element.updatePositionMouse(click, {x: 10, y: 10});
+    element.updateTranslationMouse(click, {x: 10, y: 10});
     expect(element.draw).toHaveBeenCalled();
   });
 

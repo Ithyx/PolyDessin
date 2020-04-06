@@ -48,7 +48,7 @@
     <g *ngIf="this.selection.selectionRectangle.rectangleInverted"  [innerHTML]="this.selection.selectionRectangle.rectangleInverted.svgHtml"></g>
 
     <!--Boite de selection-->
-    <g  class = "selectionBox" *ngIf="this.selection.selectionBox.box" [innerHTML]="this.selection.selectionBox.box.svgHtml"  (mousedown)="handleMouseDownBox($event)"  (mouseup)="handleMouseUpBox()"></g>
+    <g  class = "selectionBox" *ngIf="this.selection.selectionBox.box" [innerHTML]="this.selection.selectionBox.box.svgHtml"  (mousedown)="handleMouseDownBox($event)" ></g>
     
     <!--Points de controle de le boite de selection-->
     <g *ngFor="let controlPoint of this.selection.selectionBox.controlPointBox" [innerHTML]="controlPoint.svgHtml" oncontextmenu="return false;" (mousedown)="handleControlPointMouseDown($event)" ></g>

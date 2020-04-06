@@ -89,28 +89,20 @@ export class SelectionBoxService {
     }
   }
 
-  updatePosition(x: number, y: number): void {
-    this.box.translate.x += x;
-    this.box.translate.y += y;
-    this.box.drawShape();
+  updateTranslation(x: number, y: number): void {
+    this.box.updateTranslation(x, y);
     this.box.svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.box.svg);
     for (const controlPoint of this.controlPointBox) {
-      controlPoint.translate.x += x;
-      controlPoint.translate.y += y;
-      controlPoint.drawShape();
+      controlPoint.updateTranslation(x, y);
       controlPoint.svgHtml = this.sanitizer.bypassSecurityTrustHtml(controlPoint.svg);
     }
   }
 
-  updatePositionMouse(mouse: MouseEvent): void {
-    this.box.translate.x = mouse.offsetX - this.mouseClick.x;
-    this.box.translate.y = mouse.offsetY - this.mouseClick.y;
-    this.box.drawShape();
+  updateTranslationMouse(mouse: MouseEvent): void {
+    this.box.updateTranslationMouse(mouse, this.mouseClick);
     this.box.svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.box.svg);
     for (const controlPoint of this.controlPointBox) {
-      controlPoint.translate.x = mouse.offsetX - this.mouseClick.x;
-      controlPoint.translate.y = mouse.offsetY - this.mouseClick.y;
-      controlPoint.drawShape();
+      controlPoint.updateTranslationMouse(mouse, this.mouseClick);
       controlPoint.svgHtml = this.sanitizer.bypassSecurityTrustHtml(controlPoint.svg);
     }
   }

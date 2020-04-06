@@ -15,8 +15,9 @@ export class RectangleService extends BasicShapeService {
   }
 
   drawLine(): void {
-    this.svg = '<line stroke-linecap="square'
-      + '" transform=" translate(' + this.translate.x + ' ' + this.translate.y
+    this.svg = '<line #svg stroke-linecap="square'
+      + '" transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
+      + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
       + ')" stroke="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString :  this.secondaryColor.RGBAString)
       + '" stroke-width="' + this.thickness
       + (this.isDotted ? '"stroke-dasharray="2, 8"'  : '')
@@ -27,8 +28,9 @@ export class RectangleService extends BasicShapeService {
 
   drawShape(): void {
     const choosedOption = this.chosenOption;
-    this.svg = '<rect transform=" translate(' + this.translate.x + ' ' + this.translate.y +
-      ')" fill="' + ((choosedOption !== 'Contour') ? this.primaryColor.RGBAString : 'none') + '" stroke="'
+    this.svg = '<rect #svg transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
+                                           + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
+      + ')" fill="' + ((choosedOption !== 'Contour') ? this.primaryColor.RGBAString : 'none') + '" stroke="'
       + ((this.erasingEvidence) ? this.erasingColor.RGBAString :
         ((this.chosenOption !== 'Plein') ? this.secondaryColor.RGBAString : 'none'))
       + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')

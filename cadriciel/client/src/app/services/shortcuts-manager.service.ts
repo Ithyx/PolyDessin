@@ -129,7 +129,7 @@ export class ShortcutsManagerService {
     }
     this.counter100ms++;
     if (this.counter100ms >= CONTINUOUS_MOVEMENT || this.counter100ms <= 1) {
-      this.selection.updatePosition(translate.x , translate.y);
+      this.selection.updateTranslation(translate.x , translate.y);
     }
   }
 

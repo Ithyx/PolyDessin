@@ -97,7 +97,7 @@ export class DatabaseService {
     if (element.isAPolygon !== undefined) { newElement.isAPolygon = element.isAPolygon; }
     newElement.pointMin = element.pointMin;
     newElement.pointMax = element.pointMax;
-    newElement.translate = element.translate;
+    newElement.transform = element.transform;
     this.stockageSVG.addSVG(newElement);
   }
 

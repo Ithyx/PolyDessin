@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { Color } from 'src/app/services/color/color';
 import { DrawingTool, TOOL_INDEX } from 'src/app/services/tools/tool-manager.service';
-import { DrawElement, ERASING_COLOR_INIT, Point } from '../../draw-element/draw-element';
+import { DrawElement, ERASING_COLOR_INIT, Point, TransformMatrix } from '../../draw-element/draw-element';
+import { HALF_CIRCLE } from '../basic-shape/basic-shape.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export abstract class TraceService implements DrawElement {
   points: Point[];
   isSelected: boolean;
   erasingEvidence: boolean;
+  hasMoved: boolean;
 
   primaryColor: Color;
   erasingColor: Color;
@@ -27,7 +29,7 @@ export abstract class TraceService implements DrawElement {
   pointMin: Point;
   pointMax: Point;
 
-  translate: Point;
+  transform: TransformMatrix;
 
   constructor() {
     this.svgHtml = '';
@@ -40,9 +42,10 @@ export abstract class TraceService implements DrawElement {
     this.erasingColor = ERASING_COLOR_INIT;
     this.erasingEvidence = false;
     this.isAPoint = false;
+    this.hasMoved = true;
     this.pointMin = {x: 0 , y: 0};
     this.pointMax = {x: 0 , y: 0};
-    this.translate = { x: 0, y: 0};
+    this.transform = {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0};
   }
 
   draw(): void {
@@ -53,25 +56,43 @@ export abstract class TraceService implements DrawElement {
     }
   }
 
-  updatePosition(x: number, y: number): void {
-    this.translate.x += x;
-    this.translate.y += y;
+  updateTranslation(x: number, y: number): void {
+    const translationMatrix = {a: 1, b: 0, c: 0, d: 1, e: x, f: y};
+    this.updateTransform(translationMatrix);
+    this.hasMoved = true;
+   }
+
+   updateTranslationMouse(mouse: MouseEvent, mouseClick: Point): void {
+    const x = mouse.movementX;
+    const y = mouse.movementY;
+    const translationMatrix = {a: 1, b: 0, c: 0, d: 1, e: x, f: y};
+    this.updateTransform(translationMatrix);
+    this.hasMoved = true;
+  }
+
+  updateRotation(x: number, y: number, angle: number): void {
+    const radianAngle = angle * (Math.PI / HALF_CIRCLE);
+    const aRotation = Math.cos(radianAngle);
+    const bRotation = Math.sin(radianAngle);
+    const cRotation = -Math.sin(radianAngle);
+    const dRotation = Math.cos(radianAngle);
+    const eRotation = (1 - Math.cos(radianAngle)) * x + Math.sin(radianAngle) * y;
+    const fRotation = (1 - Math.cos(radianAngle)) * y - Math.sin(radianAngle) * x;
+    const rotationMatrix = {a: aRotation, b: bRotation, c: cRotation, d: dRotation, e: eRotation, f: fRotation };
+    this.updateTransform(rotationMatrix);
+  }
+
+  updateTransform(matrix: TransformMatrix): void {
+    this.transform.a = this.transform.a * matrix.a + this.transform.b * matrix.c;
+    this.transform.b = this.transform.a * matrix.b + this.transform.b * matrix.d;
+    this.transform.c = this.transform.c * matrix.a + this.transform.d * matrix.c;
+    this.transform.d = this.transform.c * matrix.b + this.transform.d * matrix.d;
+    this.transform.e = this.transform.e * matrix.a + this.transform.f * matrix.c + matrix.e;
+    this.transform.f = this.transform.e * matrix.b + this.transform.f * matrix.d + matrix.f;
     this.draw();
   }
 
-  updatePositionMouse(mouse: MouseEvent, mouseClick: Point): void {
-    this.translate.x = mouse.offsetX - mouseClick.x;
-    this.translate.y = mouse.offsetY - mouseClick.y;
-    this.draw();
-  }
-
-  translateAllPoints(): void {
-    for (const point of this.points) {
-      point.x += this.translate.x;
-      point.y += this.translate.y;
-    }
-    this.translate = {x: 0, y: 0};
-  }
+  translateAllPoints(): void { }
 
   abstract drawPath(): void;
   abstract drawPoint(): void;

@@ -41,8 +41,8 @@ describe('ShortcutsManagerService', () => {
     pointMax: {x: 0, y: 0},
     translate: {x: 0, y: 0},
     draw: () => { return; },
-    updatePosition: () => { return; },
-    updatePositionMouse: () => { return; },
+    updateTranslation: () => { return; },
+    updateTranslationMouse: () => { return; },
     updateParameters: () => { return; },
     translateAllPoints: () => { return; }
   };
@@ -73,13 +73,13 @@ describe('ShortcutsManagerService', () => {
   it('#updatePositionTimer ne devrait rien faire s\'il n\'y a pas de boite de selection', () => {
     spyOn(window, 'clearInterval');
     spyOn(window, 'setInterval');
-    spyOn(service['selection'], 'updatePosition');
+    spyOn(service['selection'], 'updateTranslation');
     spyOn(service['commands'], 'execute');
 
     service.updatePositionTimer();
     expect(window.clearInterval).not.toHaveBeenCalled();
     expect(window.setInterval).not.toHaveBeenCalled();
-    expect(service['selection'].updatePosition).not.toHaveBeenCalled();
+    expect(service['selection'].updateTranslation).not.toHaveBeenCalled();
     expect(service['commands'].execute).not.toHaveBeenCalled();
   });
 
@@ -146,50 +146,50 @@ describe('ShortcutsManagerService', () => {
 
   // TESTS translateSelection
 
-  it('#translateSelection devrait appeler updatePosition de la selection si counter100ms est inférieur ou égal à 1', () => {
-    const spy = spyOn(service['selection'], 'updatePosition');
+  it('#translateSelection devrait appeler updateTranslation de la selection si counter100ms est inférieur ou égal à 1', () => {
+    const spy = spyOn(service['selection'], 'updateTranslation');
     service.translateSelection();
     expect(spy).toHaveBeenCalled();
   });
 
-  it('#translateSelection devrait appeler updatePosition de la selection si counter100ms est supérieur ou égal à 5', () => {
+  it('#translateSelection devrait appeler updateTranslation de la selection si counter100ms est supérieur ou égal à 5', () => {
     service['counter100ms'] = 6;
-    const spy = spyOn(service['selection'], 'updatePosition');
+    const spy = spyOn(service['selection'], 'updateTranslation');
     service.translateSelection();
     expect(spy).toHaveBeenCalled();
   });
 
   it('#translateSelection ne devrait rien faire si counter100ms est entre 2 et 4', () => {
     service['counter100ms'] = 3;
-    const spy = spyOn(service['selection'], 'updatePosition');
+    const spy = spyOn(service['selection'], 'updateTranslation');
     service.translateSelection();
     expect(spy).not.toHaveBeenCalled();
   });
 
   it('#translateSelection devrait déplacer de 3 pixel sur l\'axe des x si rightArrow est true', () => {
     service['arrowKeys'][1] = true;
-    const spy = spyOn(service['selection'], 'updatePosition');
+    const spy = spyOn(service['selection'], 'updateTranslation');
     service.translateSelection();
     expect(spy).toHaveBeenCalledWith(3, 0);
   });
 
   it('#translateSelection devrait déplacer de -3 pixel sur l\'axe des x si leftArrow est true', () => {
     service['arrowKeys'][0]  = true;
-    const spy = spyOn(service['selection'], 'updatePosition');
+    const spy = spyOn(service['selection'], 'updateTranslation');
     service.translateSelection();
     expect(spy).toHaveBeenCalledWith(-3, 0);
   });
 
   it('#translateSelection devrait déplacer de 3 pixel sur l\'axe des y si downArrow est true', () => {
     service['arrowKeys'][3]  = true;
-    const spy = spyOn(service['selection'], 'updatePosition');
+    const spy = spyOn(service['selection'], 'updateTranslation');
     service.translateSelection();
     expect(spy).toHaveBeenCalledWith(0, 3);
   });
 
   it('#translateSelection devrait déplacer de -3 pixel sur l\'axe des y si upArrow est true', () => {
     service['arrowKeys'][2]  = true;
-    const spy = spyOn(service['selection'], 'updatePosition');
+    const spy = spyOn(service['selection'], 'updateTranslation');
     service.translateSelection();
     expect(spy).toHaveBeenCalledWith(0, -3);
   });

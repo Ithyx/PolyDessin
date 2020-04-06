@@ -13,8 +13,9 @@ export class EllipseService extends BasicShapeService {
   }
 
   drawLine(): void {
-    this.svg = '<line stroke-linecap="round'
-      + '" transform=" translate(' + this.translate.x + ' ' + this.translate.y
+    this.svg = '<line #svg stroke-linecap="round'
+      + '" transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
+                                + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
       + ')" stroke="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString :  this.secondaryColor.RGBAString)
       + '" stroke-width="' + this.thickness
       + '" x1="' + this.points[0].x + '" y1="' + this.points[0].y
@@ -23,8 +24,9 @@ export class EllipseService extends BasicShapeService {
   }
 
   drawShape(): void {
-    this.svg = '<ellipse transform=" translate(' + this.translate.x + ' ' + this.translate.y +
-      ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor.RGBAString : 'none')
+    this.svg = '<ellipse #svg transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
+                                              + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
+      + ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor.RGBAString : 'none')
       + '" stroke="'
       + ((this.erasingEvidence) ? this.erasingColor.RGBAString :
         ((this.chosenOption !== 'Plein') ? this.secondaryColor.RGBAString : 'none'))

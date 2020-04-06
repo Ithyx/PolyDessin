@@ -119,33 +119,33 @@ describe('SprayService', () => {
     expect(element.svg).toEqual(test);
   });
 
-  // TESTS updatePosition
+  // TESTS updateTranslation
 
-  it('#updatePosition devrait ajouter les valeurs en paramètre à translate', () => {
-    element.updatePosition(10, -25);
+  it('#updateTranslation devrait ajouter les valeurs en paramètre à translate', () => {
+    element.updateTranslation(10, -25);
     expect(element.translate.x).toEqual(20);
     expect(element.translate.y).toEqual(-15);
   });
 
-  it('#updatePosition devrait appeler draw', () => {
+  it('#updateTranslation devrait appeler draw', () => {
     spyOn(element, 'draw');
-    element.updatePosition(10, 10);
+    element.updateTranslation(10, 10);
     expect(element.draw).toHaveBeenCalled();
   });
 
-  // TESTS updatePositionMouse
+  // TESTS updateTranslationMouse
 
-  it('#updatePositionMouse devrait ajouter les valeurs en paramètre à translate', () => {
+  it('#updateTranslationMouse devrait ajouter les valeurs en paramètre à translate', () => {
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    element.updatePositionMouse(click, { x: 10, y: 10});
+    element.updateTranslationMouse(click, { x: 10, y: 10});
     expect(element.translate.x).toEqual(90);
     expect(element.translate.y).toEqual(90);
   });
 
-  it('#updatePositionMouse devrait appeler draw', () => {
+  it('#updateTranslationMouse devrait appeler draw', () => {
     spyOn(element, 'draw');
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    element.updatePositionMouse(click, { x: 10, y: 10});
+    element.updateTranslationMouse(click, { x: 10, y: 10});
     expect(element.draw).toHaveBeenCalled();
   });
 

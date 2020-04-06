@@ -30,7 +30,7 @@ export class SelectionService implements ToolInterface {
               public selectionBox: SelectionBoxService,
               public selectionRectangle: SelectionRectangleService,
               private drawingManager: DrawingManagerService,
-              private sanitizer: DomSanitizer,
+              public sanitizer: DomSanitizer,
               private command: CommandManagerService
              ) {
               this.selectedElements = [];
@@ -68,7 +68,7 @@ export class SelectionService implements ToolInterface {
 
   onMouseMove(mouse: MouseEvent): void {
     if (this.clickOnSelectionBox || this.clickInSelectionBox) {
-      this.updatePositionMouse(mouse);
+      this.updateTranslationMouse(mouse);
     } else {
       this.selectionRectangle.mouseMove(mouse);
       if (this.selectionRectangle.ongoingSelection) {
@@ -128,23 +128,25 @@ export class SelectionService implements ToolInterface {
 
       for (const element of this.selectedElements) {
         for (const point of element.points) {
-          // Point Min
-          if (pointMin.x > point.x + element.translate.x) {
-            pointMin.x = point.x + element.translate.x;
+              // pointMin
+          const transformedX = element.transform.a * point.x + element.transform.c * point.y + element.transform.e;
+          const transformedY = element.transform.b * point.x + element.transform.d * point.y + element.transform.f;
+          if (transformedX < pointMin.x) {
+            pointMin.x = transformedX;
             epaisseurMin.x = element.thickness ? element.thickness : 0;
           }
-          if (pointMin.y > point.y + element.translate.y) {
-            pointMin.y = point.y + element.translate.y;
+          if (transformedY < pointMin.y) {
+            pointMin.y = transformedY;
             epaisseurMin.y = element.thickness ? element.thickness : 0;
           }
 
-          // Point Max
-          if (pointMax.x < point.x + element.translate.x) {
-            pointMax.x = point.x + element.translate.x;
+          // pointMax
+          if (transformedX > pointMax.x) {
+            pointMax.x = transformedX;
             epaisseurMax.x = element.thickness ? element.thickness : 0;
           }
-          if (pointMax.y < point.y + element.translate.y) {
-            pointMax.y = point.y + element.translate.y;
+          if (transformedY > pointMax.y) {
+            pointMax.y = transformedY;
             epaisseurMax.y = element.thickness ? element.thickness : 0;
           }
         }
@@ -208,22 +210,24 @@ export class SelectionService implements ToolInterface {
 
     for (const point of element.points) {
       // pointMin
-      if (point.x < pointMin.x) {
-        pointMin.x = point.x;
+      const transformedX = element.transform.a * point.x + element.transform.c * point.y + element.transform.e;
+      const transformedY = element.transform.b * point.x + element.transform.d * point.y + element.transform.f;
+      if (transformedX < pointMin.x) {
+        pointMin.x = transformedX;
         epaisseurMin.x = element.thickness ? element.thickness : 0;
       }
-      if (point.y < pointMin.y) {
-        pointMin.y = point.y;
+      if (transformedY < pointMin.y) {
+        pointMin.y = transformedY;
         epaisseurMin.y = element.thickness ? element.thickness : 0;
       }
 
       // pointMax
-      if (point.x > pointMax.x) {
-        pointMax.x = point.x;
+      if (transformedX > pointMax.x) {
+        pointMax.x = transformedX;
         epaisseurMax.x = element.thickness ? element.thickness : 0;
       }
-      if (point.y > pointMax.y) {
-        pointMax.y = point.y;
+      if (transformedY > pointMax.y) {
+        pointMax.y = transformedY;
         epaisseurMax.y = element.thickness ? element.thickness : 0;
       }
     }
@@ -231,30 +235,28 @@ export class SelectionService implements ToolInterface {
     element.pointMax = {x: pointMax.x + HALF_DRAW_ELEMENT * epaisseurMax.x, y: pointMax.y + HALF_DRAW_ELEMENT * epaisseurMax.y };
   }
 
-  updatePosition(x: number, y: number): void {
+  updateTranslation(x: number, y: number): void {
     if (this.selectionBox.box) {
       for (const element of this.selectedElements) {
-          element.updatePosition(x, y);
+          element.updateTranslation(x, y);
           element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
       }
-      this.selectionBox.updatePosition(x, y);
+      this.selectionBox.updateTranslation(x, y);
     }
   }
 
-  updatePositionMouse(mouse: MouseEvent): void {
+  updateTranslationMouse(mouse: MouseEvent): void {
     if (this.selectionBox.box) {
       for (const element of this.selectedElements) {
-          element.updatePositionMouse(mouse, this.selectionBox.mouseClick);
+          element.updateTranslationMouse(mouse, this.selectionBox.mouseClick);
           element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
       }
-      this.selectionBox.updatePositionMouse(mouse);
+      this.selectionBox.updateTranslationMouse(mouse);
     }
   }
 
   hasMoved(): boolean {
-    const xTranslation = this.selectedElements[0].translate.x !== 0;
-    const yTranslation = this.selectedElements[0].translate.y !== 0;
-    return xTranslation || yTranslation;
+    return false;
   }
 
   reverseElementSelectionStatus(element: DrawElement): void {

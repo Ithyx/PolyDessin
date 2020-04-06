@@ -131,7 +131,7 @@ export class CanvasConversionService {
       tracePencil.points = element.points;
       tracePencil.primaryColor = element.primaryColor;
       tracePencil.thickness = element.thickness;
-      tracePencil.translate = element.translate;
+      tracePencil.transform = element.transform;
       tracePencil.isAPoint = element.isAPoint;
       tracePencil.draw();
       cloneElement.svgHtml = this.sanitize(tracePencil.svg);

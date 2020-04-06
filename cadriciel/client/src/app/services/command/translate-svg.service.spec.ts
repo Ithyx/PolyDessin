@@ -135,14 +135,14 @@ describe('TranslateSvgService', () => {
 
   // TESTS applyTranslation
 
-  it('#applyTranslation devrait appeler updatePosition pour tous les éléments avec la translation en x et y', () => {
-    spyOn(firstElement, 'updatePosition');
-    spyOn(secondElement, 'updatePosition');
-    spyOn(thirdElement, 'updatePosition');
+  it('#applyTranslation devrait appeler updateTranslation pour tous les éléments avec la translation en x et y', () => {
+    spyOn(firstElement, 'updateTranslation');
+    spyOn(secondElement, 'updateTranslation');
+    spyOn(thirdElement, 'updateTranslation');
     service.applyTranslation({x: 2, y: 0});
-    expect(firstElement.updatePosition).toHaveBeenCalledWith(2, 0);
-    expect(secondElement.updatePosition).toHaveBeenCalledWith(2, 0);
-    expect(thirdElement.updatePosition).toHaveBeenCalledWith(2, 0);
+    expect(firstElement.updateTranslation).toHaveBeenCalledWith(2, 0);
+    expect(secondElement.updateTranslation).toHaveBeenCalledWith(2, 0);
+    expect(thirdElement.updateTranslation).toHaveBeenCalledWith(2, 0);
   });
 
   it('#applyTranslation devrait actualiser le svgHtml de tous les éléments', () => {

@@ -7,6 +7,21 @@ export interface Point {
   y: number;
 }
 
+// La matrice de transformation est une matrice de dimensions 3x3 structurée ainsi:
+//
+//  | a c e |
+//  | b d f |
+//  | 0 0 1 |
+//
+export interface TransformMatrix {
+  a: number;
+  b: number;
+  c: number;
+  d: number;
+  e: number;
+  f: number;
+}
+
 export const ERASING_COLOR_INIT: Color = {
   RGBAString: 'rgba(255, 0, 0, 1)',
   RGBA: [RGB_MAX, 0, 0, 1]
@@ -21,6 +36,7 @@ export interface DrawElement {
   points: Point[];
   isSelected: boolean;
   erasingEvidence: boolean;
+  hasMoved: boolean;
 
   primaryColor?: Color;
   secondaryColor?: Color;
@@ -39,11 +55,13 @@ export interface DrawElement {
   pointMin: Point;
   pointMax: Point;
 
-  translate: Point;
+  transform: TransformMatrix;
 
   draw(): void;
-  updatePosition(x: number, y: number): void;
-  updatePositionMouse(mouse: MouseEvent, mouseClick: Point): void;
+  updateTranslation(x: number, y: number): void;
+  updateTranslationMouse(mouse: MouseEvent, mouseClick: Point): void;
+  updateRotation(x: number, y: number, angle: number): void;
+  updateTransform(matrix: TransformMatrix): void;
   updateParameters(tool: DrawingTool): void;
   translateAllPoints(): void;
 }

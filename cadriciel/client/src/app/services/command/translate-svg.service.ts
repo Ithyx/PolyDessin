@@ -17,13 +17,12 @@ export class TranslateSvgService implements Command {
                private sanitizer: DomSanitizer,
                private deleteBoundingBoxMethod: () => void
              ) {
-               this.translation = {x: this.selectedElements[0].translate.x, y: this.selectedElements[0].translate.y};
+                // this.translation = {x: this.selectedElements[0].translate.x, y: this.selectedElements[0].translate.y};
                this.commandElements = [...this.selectedElements];
                for (const element of this.selectedElements) {
                 element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
                 element.translateAllPoints();
                }
-               this.selectionBox.box.translateAllPoints();
                for (const element of this.selectionBox.controlPointBox) {
                  element.translateAllPoints();
                }
@@ -42,9 +41,8 @@ export class TranslateSvgService implements Command {
 
   applyTranslation(translation: Point): void {
     for (const element of this.commandElements) {
-      element.updatePosition(translation.x, translation.y);
+      element.updateTranslation(translation.x, translation.y);
       element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
-      element.translateAllPoints();
     }
   }
 

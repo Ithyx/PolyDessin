@@ -212,109 +212,109 @@ describe('SelectionBoxService', () => {
     expect(service.controlPointBox).toBeUndefined();
   });
 
-  // TESTS updatePosition
+  // TESTS updateTranslation
 
-  it('#updatePosition devrait ajouter les nombres en paramètre à translate pour selectionBox', () => {
+  it('#updateTranslation devrait ajouter les nombres en paramètre à translate pour selectionBox', () => {
     service.box.translate = {x: 10, y: 10};
-    service.updatePosition(100, 100);
+    service.updateTranslation(100, 100);
     expect(service.box.translate).toEqual({x: 110, y: 110});
   });
 
-  it('#updatePosition devrait appeler la fonction drawShape pour selectionBox', () => {
+  it('#updateTranslation devrait appeler la fonction drawShape pour selectionBox', () => {
     const test = spyOn(service.box, 'drawShape');
-    service.updatePosition(100, 100);
+    service.updateTranslation(100, 100);
     expect(test).toHaveBeenCalled();
   });
 
-  it('#updatePosition devrait assigner svg à svgHtml pour selectionBox', () => {
+  it('#updateTranslation devrait assigner svg à svgHtml pour selectionBox', () => {
     service.box.svgHtml = 'test';
-    service.updatePosition(100, 100);
+    service.updateTranslation(100, 100);
     const test = service['sanitizer'].bypassSecurityTrustHtml(service.box.svg);
     expect(service.box.svgHtml).toEqual(test);
   });
 
-  it('#updatePosition devrait ajouter les nombres en paramètre à translate pour chaque point de controlPointBox', () => {
+  it('#updateTranslation devrait ajouter les nombres en paramètre à translate pour chaque point de controlPointBox', () => {
     for (const controlPoint of service.controlPointBox) {
       controlPoint.translate = {x: 10, y: 10};
     }
-    service.updatePosition(100, 100);
+    service.updateTranslation(100, 100);
     for (const controlPoint of service.controlPointBox) {
       expect(controlPoint.translate).toEqual({x: 110, y: 110});
     }
   });
 
-  it('#updatePosition devrait appeler la fonction drawShape pour chaque point de controlPointBox', () => {
+  it('#updateTranslation devrait appeler la fonction drawShape pour chaque point de controlPointBox', () => {
     for (const controlPoint of service.controlPointBox) {
       spyOn(controlPoint, 'drawShape');
     }
-    service.updatePosition(100, 100);
+    service.updateTranslation(100, 100);
     for (const controlPoint of service.controlPointBox) {
       expect(controlPoint.drawShape).toHaveBeenCalled();
     }
   });
 
-  it('#updatePosition devrait assigner svg à svgHtml pour chaque point de controlPointBox', () => {
+  it('#updateTranslation devrait assigner svg à svgHtml pour chaque point de controlPointBox', () => {
     for (const controlPoint of service.controlPointBox) {
       controlPoint.svgHtml = 'test';
     }
-    service.updatePosition(100, 100);
+    service.updateTranslation(100, 100);
     const test = service['sanitizer'].bypassSecurityTrustHtml(service.box.svg);
     for (const controlPoint of service.controlPointBox) {
       expect(controlPoint.svgHtml).toEqual(test);
     }
   });
 
-  // TESTS updatePositionMouse
+  // TESTS updateTranslationMouse
 
-  it('#updatePositionMouse devrait ajouter les nombres en paramètre à translate pour selectionBox', () => {
+  it('#updateTranslationMouse devrait ajouter les nombres en paramètre à translate pour selectionBox', () => {
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    service.updatePositionMouse(click);
+    service.updateTranslationMouse(click);
     expect(service.box.translate).toEqual({x: 90, y: 90});
   });
 
-  it('#updatePositionMouse devrait appeler la fonction drawShape pour selectionBox', () => {
+  it('#updateTranslationMouse devrait appeler la fonction drawShape pour selectionBox', () => {
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
     const test = spyOn(service.box, 'drawShape');
-    service.updatePositionMouse(click);
+    service.updateTranslationMouse(click);
     expect(test).toHaveBeenCalled();
   });
 
-  it('#updatePositionMouse devrait assigner svg à svgHtml pour selectionBox', () => {
+  it('#updateTranslationMouse devrait assigner svg à svgHtml pour selectionBox', () => {
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
     service.box.svgHtml = 'test';
-    service.updatePositionMouse(click);
+    service.updateTranslationMouse(click);
     const test = service['sanitizer'].bypassSecurityTrustHtml(service.box.svg);
     expect(service.box.svgHtml).toEqual(test);
   });
 
-  it('#updatePositionMouse devrait ajouter les nombres en paramètre à translate pour chaque point de controlPointBox', () => {
+  it('#updateTranslationMouse devrait ajouter les nombres en paramètre à translate pour chaque point de controlPointBox', () => {
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
     for (const controlPoint of service.controlPointBox) {
       controlPoint.translate = {x: 10, y: 10};
     }
-    service.updatePositionMouse(click);
+    service.updateTranslationMouse(click);
     for (const controlPoint of service.controlPointBox) {
       expect(controlPoint.translate).toEqual({x: 90, y: 90});
     }
   });
 
-  it('#updatePositionMouse devrait appeler la fonction drawShape pour chaque point de controlPointBox', () => {
+  it('#updateTranslationMouse devrait appeler la fonction drawShape pour chaque point de controlPointBox', () => {
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
     for (const controlPoint of service.controlPointBox) {
       spyOn(controlPoint, 'drawShape');
     }
-    service.updatePositionMouse(click);
+    service.updateTranslationMouse(click);
     for (const controlPoint of service.controlPointBox) {
       expect(controlPoint.drawShape).toHaveBeenCalled();
     }
   });
 
-  it('#updatePositionMouse devrait assigner svg à svgHtml pour chaque point de controlPointBox', () => {
+  it('#updateTranslationMouse devrait assigner svg à svgHtml pour chaque point de controlPointBox', () => {
     const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
     for (const controlPoint of service.controlPointBox) {
       controlPoint.svgHtml = 'test';
     }
-    service.updatePositionMouse(click);
+    service.updateTranslationMouse(click);
     const test = service['sanitizer'].bypassSecurityTrustHtml(service.box.svg);
     for (const controlPoint of service.controlPointBox) {
       expect(controlPoint.svgHtml).toEqual(test);

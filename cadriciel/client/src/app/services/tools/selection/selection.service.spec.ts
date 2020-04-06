@@ -32,8 +32,8 @@ describe('SelectionService', () => {
     pointMax: {x: 0, y: 0},
     translate: {x: 0, y: 0},
     draw: () => { return; },
-    updatePosition: () => { return; },
-    updatePositionMouse: () => { return; },
+    updateTranslation: () => { return; },
+    updateTranslationMouse: () => { return; },
     updateParameters: () => { return; },
     translateAllPoints: () => { return; }
   }
@@ -50,8 +50,8 @@ describe('SelectionService', () => {
     pointMax: {x: 0, y: 0},
     translate: {x: 0, y: 0},
     draw: () => { return; },
-    updatePosition: () => { return; },
-    updatePositionMouse: () => { return; },
+    updateTranslation: () => { return; },
+    updateTranslationMouse: () => { return; },
     updateParameters: () => { return; },
     translateAllPoints: () => { return; }
   });
@@ -148,15 +148,15 @@ describe('SelectionService', () => {
 
   // TESTS onMouseMove
 
-  it('#onMouseMove ne devrait pas appeler updatePositionMouse il n\'y a pas de click sur la boite de selection', () => {
-    const spy = spyOn(service, 'updatePositionMouse');
+  it('#onMouseMove ne devrait pas appeler updateTranslationMouse il n\'y a pas de click sur la boite de selection', () => {
+    const spy = spyOn(service, 'updateTranslationMouse');
     service.onMouseMove(new MouseEvent('mousemove'));
     expect(spy).not.toHaveBeenCalled();
   });
 
-  it('#onMouseMove devrait appeler updatePositionMouse si il y a un click dans ou sur la boite de slection', () => {
+  it('#onMouseMove devrait appeler updateTranslationMouse si il y a un click dans ou sur la boite de slection', () => {
     service.clickInSelectionBox = true;
-    const spy = spyOn(service, 'updatePositionMouse');
+    const spy = spyOn(service, 'updateTranslationMouse');
     service.onMouseMove(new MouseEvent('mousemove'));
     expect(spy).toHaveBeenCalled();
   });
@@ -585,95 +585,95 @@ describe('SelectionService', () => {
     expect(element.pointMax).toEqual({x: 90, y: 90 });
   });
 
-  // TESTS updatePosition
+  // TESTS updateTranslation
 
-  it('#updatePosition ne devrait rien faire si il n\'y a pas de boite de selection', () => {
+  it('#updateTranslation ne devrait rien faire si il n\'y a pas de boite de selection', () => {
     const spy1 = spyOn(service['sanitizer'], 'bypassSecurityTrustHtml');
-    const spy2 = spyOn(service.selectionBox, 'updatePosition');
-    const spy3 = spyOn(element, 'updatePosition');
+    const spy2 = spyOn(service.selectionBox, 'updateTranslation');
+    const spy3 = spyOn(element, 'updateTranslation');
 
     service.selectedElements.push(element);
-    service.updatePosition(15, 15);
+    service.updateTranslation(15, 15);
 
     expect(spy1).not.toHaveBeenCalled();
     expect(spy2).not.toHaveBeenCalled();
     expect(spy3).not.toHaveBeenCalled();
   });
 
-  it('#updatePosition devrait mettre à jours l\'HTML des elements sélectionnés', () => {
+  it('#updateTranslation devrait mettre à jours l\'HTML des elements sélectionnés', () => {
     element.svg = 'test';
     service.selectionBox.mouseClick = {x: 20, y: 20};
 
     service.selectedElements.push(element);
     service.createBoundingBox();
-    service.updatePosition(15, 15);
+    service.updateTranslation(15, 15);
     expect(element.svgHtml).toEqual(service['sanitizer'].bypassSecurityTrustHtml('test'));
   });
 
-  it('#updatePosition devrait appeler la méthode updatePosition des elements sélectionnés', () => {
-    const spy = spyOn(element, 'updatePosition');
+  it('#updateTranslation devrait appeler la méthode updateTranslation des elements sélectionnés', () => {
+    const spy = spyOn(element, 'updateTranslation');
     service.selectionBox.mouseClick = {x: 20, y: 20};
 
     service.selectedElements.push(element);
     service.createBoundingBox();
-    service.updatePosition(15, 15);
+    service.updateTranslation(15, 15);
     expect(spy).toHaveBeenCalledWith(15, 15);
   });
 
-  it('#updatePosition devrait appeler la méthode updatePosition de la boite de sélection', () => {
-    const spy = spyOn(service.selectionBox, 'updatePosition');
+  it('#updateTranslation devrait appeler la méthode updateTranslation de la boite de sélection', () => {
+    const spy = spyOn(service.selectionBox, 'updateTranslation');
     service.selectionBox.mouseClick = {x: 20, y: 20};
 
     service.selectedElements.push(element);
     service.createBoundingBox();
-    service.updatePosition(15, 15);
+    service.updateTranslation(15, 15);
     expect(spy).toHaveBeenCalledWith(15, 15);
   });
 
-  // TESTS updatePositionMouse
+  // TESTS updateTranslationMouse
 
-  it('#updatePositionMouse ne devrait rien faire si il n\'y a pas de boite de selection', () => {
+  it('#updateTranslationMouse ne devrait rien faire si il n\'y a pas de boite de selection', () => {
     const spy1 = spyOn(service['sanitizer'], 'bypassSecurityTrustHtml');
-    const spy2 = spyOn(service.selectionBox, 'updatePositionMouse');
-    const spy3 = spyOn(element, 'updatePositionMouse');
+    const spy2 = spyOn(service.selectionBox, 'updateTranslationMouse');
+    const spy3 = spyOn(element, 'updateTranslationMouse');
 
     service.selectedElements.push(element);
-    service.updatePositionMouse(new MouseEvent('mousedown', {clientX: 15, clientY: 15}));
+    service.updateTranslationMouse(new MouseEvent('mousedown', {clientX: 15, clientY: 15}));
 
     expect(spy1).not.toHaveBeenCalled();
     expect(spy2).not.toHaveBeenCalled();
     expect(spy3).not.toHaveBeenCalled();
   });
 
-  it('#updatePositionMouse devrait mettre à jours l\'HTML des elements sélectionnés', () => {
+  it('#updateTranslationMouse devrait mettre à jours l\'HTML des elements sélectionnés', () => {
     element.svg = 'test';
     service.selectionBox.mouseClick = {x: 20, y: 20};
 
     service.selectedElements.push(element);
     service.createBoundingBox();
-    service.updatePositionMouse(new MouseEvent('mousedown', {clientX: 15, clientY: 15}));
+    service.updateTranslationMouse(new MouseEvent('mousedown', {clientX: 15, clientY: 15}));
     expect(element.svgHtml).toEqual(service['sanitizer'].bypassSecurityTrustHtml('test'));
   });
 
-  it('#updatePositionMouse devrait appeler la méthode updatePositionMouse des elements sélectionnés', () => {
-    const spy = spyOn(element, 'updatePositionMouse');
+  it('#updateTranslationMouse devrait appeler la méthode updateTranslationMouse des elements sélectionnés', () => {
+    const spy = spyOn(element, 'updateTranslationMouse');
     const mouse = new MouseEvent('mousedown', {clientX: 15, clientY: 15});
     service.selectionBox.mouseClick = {x: 20, y: 20};
 
     service.selectedElements.push(element);
     service.createBoundingBox();
-    service.updatePositionMouse(mouse);
+    service.updateTranslationMouse(mouse);
     expect(spy).toHaveBeenCalledWith(mouse, {x: 20, y: 20});
   });
 
-  it('#updatePositionMouse devrait appeler la méthode updatePositionMouse de la boite de sélection', () => {
-    const spy = spyOn(service.selectionBox, 'updatePositionMouse');
+  it('#updateTranslationMouse devrait appeler la méthode updateTranslationMouse de la boite de sélection', () => {
+    const spy = spyOn(service.selectionBox, 'updateTranslationMouse');
     const mouse = new MouseEvent('mousedown', {clientX: 15, clientY: 15});
     service.selectionBox.mouseClick = {x: 20, y: 20};
 
     service.selectedElements.push(element);
     service.createBoundingBox();
-    service.updatePositionMouse(mouse);
+    service.updateTranslationMouse(mouse);
     expect(spy).toHaveBeenCalledWith(mouse);
   });
 
