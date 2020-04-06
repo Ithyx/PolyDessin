@@ -44,7 +44,7 @@ export abstract class BasicShapeService implements DrawElement  {
     };
     this.erasingColor = ERASING_COLOR_INIT;
     this.points = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
-                   {x: 0, y: 0}];   // points[1], coin bas droite
+                   {x: 0, y: 0}],    // points[1], coin bas droite
     this.isSelected = false;
     this.erasingEvidence = false;
     this.hasMoved = true;

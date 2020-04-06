@@ -98,7 +98,7 @@ export abstract class BasicShapeToolService implements ToolInterface {
   shiftRelease(): void {
     if (this.commands.drawingInProgress) {
       // Lorsque la touche 'shift' est relâchée, la forme à dessiner est un rectangle
-      this.shape.points[0] = {x : this.calculatedBase.x, y: this.calculatedBase.y};
+      this.shape.points[0] = {x: this.calculatedBase.x, y: this.calculatedBase.y};
       this.shape.points[1] = {x: this.calculatedBase.x + this.calculatedWidth, y: this.calculatedBase.y + this.calculatedHeight};
       this.refreshSVG();
     }

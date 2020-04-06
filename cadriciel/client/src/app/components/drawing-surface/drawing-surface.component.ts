@@ -9,7 +9,6 @@ import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
 import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
 import { LEFT_CLICK, RIGHT_CLICK, SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
-import { TracePencilService } from 'src/app/services/stockage-svg/draw-element/trace/trace-pencil.service';
 
 const BIG_ROTATION_ANGLE = 15;
 const SMALL_ROTATION_ANGLE = 1;
@@ -179,10 +178,9 @@ export class DrawingSurfaceComponent implements AfterViewInit {
       if (event.shiftKey) {
         // Rotation de tous les éléments autour de leur propre point central
         for (const element of this.selection.selectedElements) {
-          if (element.hasMoved) {
-            this.selection.findPointMinAndMax(element);
-            element.hasMoved = false;
-          }
+
+          this.selection.findPointMinAndMax(element);
+          element.hasMoved = false;
           const middleX = (element.pointMin.x + element.pointMax.x) / 2;
           const middleY = (element.pointMin.y + element.pointMax.y) / 2;
           event.deltaY > 0 ? (
@@ -192,15 +190,13 @@ export class DrawingSurfaceComponent implements AfterViewInit {
                          element.updateRotation(middleX, middleY, -BIG_ROTATION_ANGLE);
           element.svgHtml = this.selection.sanitizer.bypassSecurityTrustHtml(element.svg);
         }
+        this.selection.selectionBox.deleteSelectionBox();
+        this.selection.createBoundingBox();
 
       } else {
         // Rotation de tous les éléments autour du même point central
-        if (this.selection.selectionBox.box.hasMoved) {
-          this.selection.findPointMinAndMax(this.selection.selectionBox.box);
-          this.selection.selectionBox.box.hasMoved = false;
-        }
-        const middleX = (this.selection.selectionBox.box.pointMin.x + this.selection.selectionBox.box.pointMax.x ) / 2;
-        const middleY = (this.selection.selectionBox.box.pointMin.y + this.selection.selectionBox.box.pointMax.y ) / 2;
+        const middleX = (this.selection.selectionBox.box.points[0].x + this.selection.selectionBox.box.points[1].x ) / 2;
+        const middleY = (this.selection.selectionBox.box.points[0].y + this.selection.selectionBox.box.points[1].y ) / 2;
         for (const element of this.selection.selectedElements) {
           event.deltaY > 0 ? (
             event.altKey ? element.updateRotation(middleX, middleY, SMALL_ROTATION_ANGLE) :
@@ -209,6 +205,8 @@ export class DrawingSurfaceComponent implements AfterViewInit {
                            element.updateRotation(middleX, middleY, -BIG_ROTATION_ANGLE);
           element.svgHtml = this.selection.sanitizer.bypassSecurityTrustHtml(element.svg);
         }
+        this.selection.selectionBox.deleteSelectionBox();
+        this.selection.createBoundingBox();
       }
     }
    }
