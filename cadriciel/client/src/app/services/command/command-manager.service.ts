@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanvasConversionService } from '../canvas-conversion.service';
 import { LocalSaveManagerService } from '../saving/local/local-save-manager.service';
+import { SelectionBoxService } from '../tools/selection/selection-box.service';
 import { Command } from './command';
 
 @Injectable({
@@ -13,7 +14,8 @@ export class CommandManagerService {
   private cancelledCommands: Command[] = [];
 
   constructor(private canvasConversion: CanvasConversionService,
-              private localSaving: LocalSaveManagerService) {
+              private localSaving: LocalSaveManagerService,
+              private selectionBox: SelectionBoxService) {
     this.drawingInProgress = false;
   }
 
@@ -31,6 +33,9 @@ export class CommandManagerService {
       this.cancelledCommands.push(command);
       this.canvasConversion.updateDrawing();
       this.localSaving.saveState();
+      if (this.selectionBox.box) {
+        this.selectionBox.deleteSelectionBox();
+      }
     }
   }
 
