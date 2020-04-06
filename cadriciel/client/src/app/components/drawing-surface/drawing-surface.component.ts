@@ -23,6 +23,8 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   private mousePosition: Point;
   @ViewChild('canvas', {static: false})
   private canvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvasConversion', {static: false})
+  private conversion: ElementRef<HTMLCanvasElement>;
 
   constructor(protected svgStockage: SVGStockageService,
               private tools: ToolManagerService,
@@ -42,7 +44,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
     this.eraser.drawing = this.drawing.nativeElement;
     this.pipette.drawing = this.drawing.nativeElement;
     this.bucket.drawing = this.drawing.nativeElement;
-    this.canvasConversion.canvas = this.canvas.nativeElement;
+    this.canvasConversion.canvas = this.conversion.nativeElement;
     this.pipette.canvas = this.canvas.nativeElement;
     this.bucket.canvas = this.canvas.nativeElement;
   }

@@ -24,7 +24,7 @@ import { PencilToolService } from 'src/app/services/tools/tracing-tool/pencil-to
 
 export class DrawingPageComponent implements AfterViewInit {
 
-  @ViewChild('canvasConversion', {static: false})
+  @ViewChild('coloredDrawing', {static: false})
   private coloredDrawing: ElementRef<SVGElement>;
 
   private toolMap: Map<string, ToolInterface> = new Map<string, ToolInterface>();
