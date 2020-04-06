@@ -69,7 +69,6 @@ export class PaintBucketToolService implements ToolInterface {
     while (queue.length > 0) {
       const point = queue.pop();
       if (point) {
-        // this.checkedPixels.push(this.getIndex(point));
         let x1 = point.x;
         while (x1 > 0 && this.checkColor({x: x1, y: point.y})) {
           x1--;
@@ -79,21 +78,25 @@ export class PaintBucketToolService implements ToolInterface {
         let spanAbove = false;
         let spanBelow = false;
         while (x1 < this.drawing.clientWidth && this.checkColor({x: x1, y: point.y})) {
-            if (!spanAbove && point.y > 0 && this.checkColor({x: x1, y: point.y - 1})) {
-              queue.push({x: x1, y: point.y - 1});
-              spanAbove = true;
-            }
-            if (!spanBelow && point.y < this.drawing.clientHeight - 1 && this.checkColor({x: x1, y: point.y + 1})) {
-              queue.push({x: x1, y: point.y + 1});
-              spanBelow = true;
-            }
-            const array = this.checkedPixels.get(x1);
-            if (array) {
-              array.push(this.getIndex({x: x1, y: point.y}));
-            } else {
-              this.checkedPixels.set(x1, [point.y]);
-            }
-            x1++;
+          if (!this.checkColor({x: x1, y: point.y - 1})) {
+            spanAbove = false;
+          } else if (!spanAbove && point.y > 0 ) {
+            queue.push({x: x1, y: point.y - 1});
+            spanAbove = true;
+          }
+          if (!this.checkColor({x: x1, y: point.y + 1})) {
+            spanBelow = false;
+          } else if (!spanBelow && point.y < this.drawing.clientHeight - 1) {
+            queue.push({x: x1, y: point.y + 1});
+            spanBelow = true;
+          }
+          const array = this.checkedPixels.get(x1);
+          if (array) {
+            array.push(this.getIndex({x: x1, y: point.y}));
+          } else {
+            this.checkedPixels.set(x1, [point.y]);
+          }
+          x1++;
         }
         this.fill.points.push({x: x1, y: point.y});
       }
