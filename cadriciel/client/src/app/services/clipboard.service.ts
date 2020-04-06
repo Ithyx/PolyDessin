@@ -116,20 +116,34 @@ export class ClipboardService {
   }
 
   duplicateSelectedElement(): void {
+    // copie
     this.duplicatedElements = [];
     for (const element of this.selection.selectedElements) {
       this.createCopyDrawElement(element, this.duplicatedElements);
     }
+
+    // colle
     this.selection.deleteBoundingBox();
     for (const element of this.duplicatedElements) {
       element.updatePosition(PASTE_OFFSET.x, PASTE_OFFSET.y);
       element.translateAllPoints();
-      this.selection.selectedElements.push(element);
     }
+
+    if (this.isInDrawing(this.duplicatedElements)) {
+      for (const element of this.duplicatedElements) {
+        this.selection.selectedElements.push(element);
+      }
+    } else {
+      for (const element of this.duplicatedElements) {
+        element.updatePosition(-PASTE_OFFSET.x, -PASTE_OFFSET.y);
+        element.translateAllPoints();
+        this.selection.selectedElements.push(element);
+      }
+    }
+
     this.commands.execute(new AddSVGService(this.duplicatedElements, this.svgStockage));
 
     this.selection.createBoundingBox();
-    console.log('duplicate', this.duplicatedElements);
   }
 
   deleteSelectedElement(): void {
@@ -148,7 +162,7 @@ export class ClipboardService {
       element.translateAllPoints();
     }
 
-    if (this.isInDrawing) {
+    if (this.isInDrawing(this.copiedElements)) {
       for (const element of this.copiedElements) {
         this.selection.selectedElements.push(element);
         this.createCopyDrawElement(element, buffer);
@@ -159,6 +173,7 @@ export class ClipboardService {
         element.translateAllPoints();
         this.selection.selectedElements.push(element);
         this.createCopyDrawElement(element, buffer);
+        this.numberOfPaste = 0;
       }
     }
 
@@ -168,16 +183,13 @@ export class ClipboardService {
 
     this.selection.createBoundingBox();
     this.numberOfPaste++;
-    console.log(this.numberOfPaste);
-    console.log('paste', this.copiedElements);
-    console.log(this.svgStockage.getCompleteSVG());
   }
 
   isInDrawing(elements: DrawElement[]): boolean {
     let allElementAreVisible = true;
     for (const element of elements) {
       this.selection.findPointMinAndMax(element);
-      const elementIsVisible = element.pointMin.x > this.drawing.width && element.pointMin.y > this.drawing.height;
+      const elementIsVisible = element.pointMax.x < this.drawing.width && element.pointMax.y < this.drawing.height;
       allElementAreVisible = allElementAreVisible && elementIsVisible;
     }
     return allElementAreVisible;
