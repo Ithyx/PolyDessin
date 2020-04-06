@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { EllipseService } from '../stockage-svg/draw-element/basic-shape/ellipse.service';
 import { PolygonService } from '../stockage-svg/draw-element/basic-shape/polygon.service';
 import { RectangleService } from '../stockage-svg/draw-element/basic-shape/rectangle.service';
+import { ColorFillService } from '../stockage-svg/draw-element/color-fill.service';
 import { DrawElement } from '../stockage-svg/draw-element/draw-element';
 import { LineService } from '../stockage-svg/draw-element/line.service';
 import { SprayService } from '../stockage-svg/draw-element/spray.service';
@@ -20,7 +21,7 @@ export class SavingUtilityService {
 
   addElement(element: DrawElement): void {
     let newElement: TracePencilService | TraceBrushService | SprayService | RectangleService
-                    | PolygonService | LineService | EllipseService;
+                    | PolygonService | LineService | EllipseService | ColorFillService;
     switch (element.trueType) {
       case TOOL_INDEX.PENCIL:
         newElement = new TracePencilService();
@@ -43,6 +44,9 @@ export class SavingUtilityService {
         break;
       case TOOL_INDEX.ELLIPSE:
         newElement = new EllipseService();
+        break;
+      case TOOL_INDEX.PAINT_BUCKET:
+        newElement = new ColorFillService();
         break;
       default:
         newElement = new TracePencilService();
