@@ -85,6 +85,7 @@ export class ShortcutsManagerService {
                                     .set('Shift', this.shortcutKeyShift.bind(this))
                                     .set('o', this.shortcutKeyO.bind(this))
                                     .set('Backspace', this.shortcutKeyBackSpace.bind(this))
+                                    .set('Delete', this.shortcutKeyDelete.bind(this))
                                     .set('Escape', this.shortcutKeyEscape.bind(this))
                                     .set('g', this.shortcutKeyG.bind(this))
                                     .set('+', this.shortcutKeyPlus.bind(this))
@@ -294,7 +295,13 @@ export class ShortcutsManagerService {
   shortcutKeyBackSpace(): void {
     if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
       this.lineTool.removePoint();
-    } else if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
+    } // else if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
+      // this.clipboard.deleteSelectedElement();
+    // }
+  }
+
+  shortcutKeyDelete(): void {
+    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION && this.selection.selectionBox.box) {
       this.clipboard.deleteSelectedElement();
     }
   }

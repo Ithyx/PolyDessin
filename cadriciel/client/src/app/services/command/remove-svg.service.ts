@@ -33,8 +33,6 @@ export class RemoveSVGService implements Command {
       const key = this.elementsBeforeRemove.indexOf(element);
       this.elementsKeys.push(key);
     }
-    console.log(this.elementsKeys);
-    console.log(this.elementsBeforeRemove);
   }
 
   isEmpty(): boolean {

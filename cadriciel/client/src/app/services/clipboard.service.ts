@@ -106,13 +106,11 @@ export class ClipboardService {
     for (const element of this.selection.selectedElements) {
       this.createCopyDrawElement(element, this.copiedElements);
     }
-    console.log('copy', this.copiedElements);
   }
 
   cutSelectedElement(): void {
     this.copySelectedElement();
     this.deleteSelectedElement();
-    console.log('cut', this.copiedElements);
   }
 
   duplicateSelectedElement(): void {
@@ -151,7 +149,6 @@ export class ClipboardService {
     this.removeCommand.addElements(this.selection.selectedElements);
     this.selection.deleteBoundingBox();
     this.commands.execute(this.removeCommand);
-    console.log('delete');
   }
 
   pasteSelectedElement(): void {
