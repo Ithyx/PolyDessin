@@ -14,7 +14,7 @@ export abstract class TraceService implements DrawElement {
   trueType: TOOL_INDEX;
 
   points: Point[];
-  isSelected: boolean;
+  // isSelected: boolean;
   erasingEvidence: boolean;
 
   primaryColor: Color;
@@ -32,7 +32,7 @@ export abstract class TraceService implements DrawElement {
   constructor() {
     this.svgHtml = '';
     this.points = [];
-    this.isSelected = false;
+    // this.isSelected = false;
     this.primaryColor = {
       RGBAString: '',
       RGBA: [0, 0, 0, 0]

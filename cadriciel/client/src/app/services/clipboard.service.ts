@@ -81,7 +81,6 @@ export class ClipboardService {
     for (const point of element.points) {
       newElement.points.push({x: point.x, y: point.y});
     }
-    newElement.isSelected = true;
     newElement.erasingEvidence = element.erasingEvidence;
     if (element.primaryColor !== undefined) { newElement.primaryColor = element.primaryColor; }
     if (element.secondaryColor !== undefined) { newElement.secondaryColor = element.secondaryColor; }
@@ -134,13 +133,9 @@ export class ClipboardService {
   }
 
   deleteSelectedElement(): void {
-    // TODO : CORRECTION UTILISATION COMMANDE REMOVE SVG
     this.removeCommand.addElements(this.selection.selectedElements);
-
-    if (!this.removeCommand.isEmpty()) {
-      this.commands.execute(this.removeCommand);
-      this.selection.deleteBoundingBox();
-    }
+    this.selection.deleteBoundingBox();
+    this.commands.execute(this.removeCommand);
     console.log('delete');
   }
 
@@ -174,6 +169,7 @@ export class ClipboardService {
     this.numberOfPaste++;
     console.log(this.numberOfPaste);
     console.log('paste', this.copiedElements);
+    console.log(this.svgStockage.getCompleteSVG());
   }
 
   isInDrawing(elements: DrawElement[]): boolean {

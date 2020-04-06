@@ -181,7 +181,6 @@ export class ShortcutsManagerService {
       this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
       if (this.svgStockage.getCompleteSVG().length !== 0) {
         for (const element of this.svgStockage.getCompleteSVG()) {
-          element.isSelected = true;
           this.selection.selectedElements.push(element);
         }
         this.selection.createBoundingBox();

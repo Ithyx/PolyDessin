@@ -81,7 +81,7 @@ export class DatabaseService {
     newElement.svg = element.svg;
     newElement.trueType = element.trueType;
     newElement.points = element.points;
-    newElement.isSelected = element.isSelected;
+    // newElement.isSelected = element.isSelected;
     newElement.erasingEvidence = element.erasingEvidence;
     if (element.primaryColor !== undefined) { newElement.primaryColor = element.primaryColor; }
     if (element.secondaryColor !== undefined) { newElement.secondaryColor = element.secondaryColor; }
