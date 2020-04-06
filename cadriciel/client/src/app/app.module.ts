@@ -38,6 +38,7 @@ import { DrawingManagerService } from './services/drawing-manager/drawing-manage
 import { GridService } from './services/grid/grid.service';
 import { NavigationGuideService } from './services/navigation-guide.service';
 import { RoutingManagerService } from './services/routing-manager.service';
+import { LocalSaveManagerService } from './services/saving/local/local-save-manager.service';
 import { ShortcutsManagerService } from './services/shortcuts-manager.service';
 import { SVGStockageService } from './services/stockage-svg/svg-stockage.service';
 import { RectangleToolService } from './services/tools/basic-shape-tool/rectangle-tool.service';
@@ -60,7 +61,7 @@ import { PencilToolService } from './services/tools/tracing-tool/pencil-tool.ser
     providers: [NavigationGuideService, SVGStockageService, PencilToolService, DrawingManagerService,
                 ShortcutsManagerService, RectangleToolService, LineToolService,
                 RoutingManagerService, ColorParameterService, MatDialogConfig, SelectionService,
-                CommandManagerService, GridService, CanvasConversionService],
+                CommandManagerService, GridService, CanvasConversionService, LocalSaveManagerService],
 
     entryComponents: [NewDrawingWindowComponent, NewDrawingWarningComponent,
                       ColorChoiceComponent, GridOptionsComponent, SavePopupComponent, GalleryComponent,
