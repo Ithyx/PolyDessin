@@ -9,6 +9,7 @@ import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
 import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
 import { LEFT_CLICK, RIGHT_CLICK, SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
+import { TracePencilService } from 'src/app/services/stockage-svg/draw-element/trace/trace-pencil.service';
 
 const BIG_ROTATION_ANGLE = 15;
 const SMALL_ROTATION_ANGLE = 1;
@@ -208,7 +209,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
                            element.updateRotation(middleX, middleY, -BIG_ROTATION_ANGLE);
           element.svgHtml = this.selection.sanitizer.bypassSecurityTrustHtml(element.svg);
         }
-        }
+      }
     }
    }
 }

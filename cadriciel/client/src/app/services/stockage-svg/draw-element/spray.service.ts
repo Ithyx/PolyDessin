@@ -93,12 +93,13 @@ export class SprayService implements DrawElement {
   }
 
   updateTransform(matrix: TransformMatrix): void {
-    this.transform.a = this.transform.a * matrix.a + this.transform.b * matrix.c;
-    this.transform.b = this.transform.a * matrix.b + this.transform.b * matrix.d;
-    this.transform.c = this.transform.c * matrix.a + this.transform.d * matrix.c;
-    this.transform.d = this.transform.c * matrix.b + this.transform.d * matrix.d;
-    this.transform.e = this.transform.e * matrix.a + this.transform.f * matrix.c + matrix.e;
-    this.transform.f = this.transform.e * matrix.b + this.transform.f * matrix.d + matrix.f;
+    const oldTransform = {...this.transform};
+    this.transform.a = oldTransform.a * matrix.a + oldTransform.b * matrix.c;
+    this.transform.b = oldTransform.a * matrix.b + oldTransform.b * matrix.d;
+    this.transform.c = oldTransform.c * matrix.a + oldTransform.d * matrix.c;
+    this.transform.d = oldTransform.c * matrix.b + oldTransform.d * matrix.d;
+    this.transform.e = oldTransform.e * matrix.a + oldTransform.f * matrix.c + matrix.e;
+    this.transform.f = oldTransform.e * matrix.b + oldTransform.f * matrix.d + matrix.f;
     this.draw();
   }
 
