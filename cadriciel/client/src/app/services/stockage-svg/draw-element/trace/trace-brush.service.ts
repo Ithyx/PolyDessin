@@ -14,7 +14,7 @@ export class TraceBrushService extends TraceService {
   }
 
   drawPath(): void {
-    this.svg = '<path #svg transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
+    this.svg = '<path transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
                                             + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
       + ')" fill="none" '
       + `stroke="${(this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString}"`
@@ -28,7 +28,7 @@ export class TraceBrushService extends TraceService {
   }
 
   drawPoint(): void {
-    this.svg = '<circle #svg cx="' + this.points[0].x + '" cy="' + this.points[0].y
+    this.svg = '<circle  cx="' + this.points[0].x + '" cy="' + this.points[0].y
       + '" transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
                                 + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
       + ')" filter="url(#' + this.chosenOption

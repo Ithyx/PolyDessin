@@ -15,7 +15,7 @@ export class RectangleService extends BasicShapeService {
   }
 
   drawLine(): void {
-    this.svg = '<line #svg stroke-linecap="square'
+    this.svg = '<line stroke-linecap="square'
       + '" transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
       + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
       + ')" stroke="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString :  this.secondaryColor.RGBAString)
@@ -28,7 +28,7 @@ export class RectangleService extends BasicShapeService {
 
   drawShape(): void {
     const choosedOption = this.chosenOption;
-    this.svg = '<rect #svg transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
+    this.svg = '<rect transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
                                            + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
       + ')" fill="' + ((choosedOption !== 'Contour') ? this.primaryColor.RGBAString : 'none') + '" stroke="'
       + ((this.erasingEvidence) ? this.erasingColor.RGBAString :

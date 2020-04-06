@@ -30,7 +30,7 @@ export abstract class BasicShapeService implements DrawElement  {
 
   pointMin: Point;
   pointMax: Point;
-  transform: TransformMatrix;
+ transform: TransformMatrix;
 
   constructor() {
     this.svgHtml = '';

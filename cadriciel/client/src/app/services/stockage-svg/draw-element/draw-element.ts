@@ -55,7 +55,7 @@ export interface DrawElement {
   pointMin: Point;
   pointMax: Point;
 
-  transform: TransformMatrix;
+ transform: TransformMatrix;
 
   draw(): void;
   updateTranslation(x: number, y: number): void;

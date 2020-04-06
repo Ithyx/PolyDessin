@@ -27,7 +27,7 @@ export class PolygonService extends BasicShapeService {
   drawLine(): void { /*L'outil ne trace jamais de lignes*/ }
 
   drawShape(): void {
-    this.svg = '<polygon #svg transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
+    this.svg = '<polygon transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
                                               + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
       + ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor.RGBAString : 'none') + '" stroke="'
       + ((this.erasingEvidence) ? this.erasingColor.RGBAString :

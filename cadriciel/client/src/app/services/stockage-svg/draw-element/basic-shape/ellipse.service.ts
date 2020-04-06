@@ -13,7 +13,7 @@ export class EllipseService extends BasicShapeService {
   }
 
   drawLine(): void {
-    this.svg = '<line #svg stroke-linecap="round'
+    this.svg = '<line stroke-linecap="round'
       + '" transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
                                 + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
       + ')" stroke="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString :  this.secondaryColor.RGBAString)
@@ -24,7 +24,7 @@ export class EllipseService extends BasicShapeService {
   }
 
   drawShape(): void {
-    this.svg = '<ellipse #svg transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
+    this.svg = '<ellipse transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
                                               + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
       + ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor.RGBAString : 'none')
       + '" stroke="'

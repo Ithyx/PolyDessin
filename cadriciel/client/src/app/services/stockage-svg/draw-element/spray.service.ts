@@ -28,7 +28,7 @@ export class SprayService implements DrawElement {
 
   pointMin: Point;
   pointMax: Point;
-  transform: TransformMatrix;
+ transform: TransformMatrix;
 
   constructor() {
     this.svgHtml = '';
@@ -47,7 +47,7 @@ export class SprayService implements DrawElement {
   draw(): void {
     this.svg = '';
     for (const point of this.points) {
-      this.svg += '<circle #svg transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
+      this.svg += '<circle transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
                                                 + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
       + `)" cx="${point.x}" cy="${point.y}" r="1" `
       + `fill="${(this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString}"></circle>`;

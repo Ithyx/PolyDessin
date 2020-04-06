@@ -33,7 +33,7 @@ export class LineService implements DrawElement {
 
   pointMin: Point;
   pointMax: Point;
-  transform: TransformMatrix;
+ transform: TransformMatrix;
 
   constructor() {
     this.svgHtml = '';
@@ -54,7 +54,7 @@ export class LineService implements DrawElement {
 
   draw(): void {
     this.svg = (this.isAPolygon) ? '<polygon ' : '<polyline ';
-    this.svg += ' #svg transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
+    this.svg += 'transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
                                         + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f + ')" ';
     this.svg += 'fill="none" stroke="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString);
     this.svg += '" stroke-width="' + this.thicknessLine;

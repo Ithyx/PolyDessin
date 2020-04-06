@@ -29,7 +29,7 @@ export abstract class TraceService implements DrawElement {
   pointMin: Point;
   pointMax: Point;
 
-  transform: TransformMatrix;
+ transform: TransformMatrix;
 
   constructor() {
     this.svgHtml = '';
