@@ -38,7 +38,7 @@ export class PaintBucketToolService implements ToolInterface {
     this.mousePosition = {x: mouse.offsetX, y: mouse.offsetY};
     this.fill = new ColorFillService();
     this.fill.points = [];
-    this.fill.primaryColor = this.colorParameter.primaryColor;
+    this.fill.primaryColor = {...this.colorParameter.primaryColor};
     this.checkedPixels = new Map<number, number[]>();
     this.createCanvas();
   }
@@ -52,17 +52,28 @@ export class PaintBucketToolService implements ToolInterface {
       const svgString = new XMLSerializer().serializeToString(this.drawing);
       const svg = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
       this.image = new Image();
-      this.image.onload = this.fillWithColor.bind(this);
+      this.image.onload = this.onImageLoad.bind(this);
       this.image.src = URL.createObjectURL(svg);
     }
   }
 
-  // Algorithme basé sur http://www.programmersought.com/article/3670113928/
-  fillWithColor(): void {
+  onImageLoad(): void {
     this.context.drawImage(this.image, 0, 0);
     const pixelData = this.context.getImageData(this.mousePosition.x, this.mousePosition.y, 1, 1).data;
     this.color = [pixelData[0], pixelData[1], pixelData[2]];
+    const primaryColor = this.colorParameter.primaryColor.RGBA;
+    if (this.color[0] === primaryColor[0] && this.color[1] === primaryColor[1] && this.color[2] === primaryColor[2]) {
+      return;
+    }
 
+    this.fillWithColor();
+
+    this.fill.draw();
+    this.commands.execute(new AddSVGService(this.fill, this.svgStockage));
+  }
+
+  // Algorithme basé sur http://www.programmersought.com/article/3670113928/
+  fillWithColor(): void {
     const queue: Point[] = [];
     queue.push(this.mousePosition);
 
@@ -101,9 +112,6 @@ export class PaintBucketToolService implements ToolInterface {
         this.fill.points.push({x: x1, y: point.y});
       }
     }
-
-    this.fill.draw();
-    this.commands.execute(new AddSVGService(this.fill, this.svgStockage));
   }
 
   checkColor(point: Point): boolean {
