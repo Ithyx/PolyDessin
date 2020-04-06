@@ -17,7 +17,7 @@ describe('EraserToolService', () => {
     svgHtml: '',
     trueType: 0,
     points: [{x: 90, y: 90}, {x: 76, y: 89 }],
-    isSelected: false,
+    // isSelected: false,
     erasingEvidence: false,
     erasingColor: {RGBA: [0, 0, 0, 1], RGBAString: ''},
     pointMin: {x: 0, y: 0},

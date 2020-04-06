@@ -39,7 +39,7 @@ export abstract class TracingToolService implements ToolInterface {
     if (this.commands.drawingInProgress) {
       if (this.trace.svg.includes('L')) {
         // on ne stocke le path que s'il n'y a au moins une ligne
-        this.commands.execute(new AddSVGService(this.trace, this.stockageSVG));
+        this.commands.execute(new AddSVGService([this.trace], this.stockageSVG));
       }
       this.resetTrace();
       this.canClick = true;
@@ -52,7 +52,7 @@ export abstract class TracingToolService implements ToolInterface {
         this.trace.points.push({x: mouse.offsetX, y: mouse.offsetY});
         this.trace.isAPoint = true;
         this.refreshSVG();
-        this.commands.execute(new AddSVGService(this.trace, this.stockageSVG));
+        this.commands.execute(new AddSVGService([this.trace], this.stockageSVG));
       }
       this.resetTrace();
     } else { this.canClick = true; }
@@ -60,7 +60,7 @@ export abstract class TracingToolService implements ToolInterface {
 
   onMouseLeave(): void {
     if (this.commands.drawingInProgress) {
-      this.commands.execute(new AddSVGService(this.trace, this.stockageSVG));
+      this.commands.execute(new AddSVGService([this.trace], this.stockageSVG));
       this.resetTrace();
     }
     this.canClick = false;

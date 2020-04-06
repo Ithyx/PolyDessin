@@ -63,7 +63,7 @@ export abstract class BasicShapeToolService implements ToolInterface {
   onMouseRelease(): void {
     // On évite de créer des formes vides
     if (this.shape.getWidth() !== 0 || this.shape.getHeight() !== 0) {
-      this.commands.execute(new AddSVGService(this.shape, this.stockageSVG));
+      this.commands.execute(new AddSVGService([this.shape], this.stockageSVG));
     }
     this.clear();
     this.stockageSVG.setOngoingSVG(this.shape);

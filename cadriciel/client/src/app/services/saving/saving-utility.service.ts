@@ -1,7 +1,4 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Drawing } from '../../../../../common/communication/drawing-interface';
-import { DrawingManagerService } from '../drawing-manager/drawing-manager.service';
 import { EllipseService } from '../stockage-svg/draw-element/basic-shape/ellipse.service';
 import { PolygonService } from '../stockage-svg/draw-element/basic-shape/polygon.service';
 import { RectangleService } from '../stockage-svg/draw-element/basic-shape/rectangle.service';
@@ -11,37 +8,15 @@ import { SprayService } from '../stockage-svg/draw-element/spray.service';
 import { TraceBrushService } from '../stockage-svg/draw-element/trace/trace-brush.service';
 import { TracePencilService } from '../stockage-svg/draw-element/trace/trace-pencil.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
-import { TOOL_INDEX } from '../tools/tool-manager.service';
 
-export enum SERVER_URL {
-  POST = 'http://localhost:3000/api/db/saveDrawing',
-  GET = 'http://localhost:3000/api/db/listDrawings',
-  DELETE = 'http://localhost:3000/api/db/deleteDrawing'
-}
-const ID_MAX = 1000000000;
+import { TOOL_INDEX } from '../tools/tool-manager.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DatabaseService {
+export class SavingUtilityService {
 
-  constructor(private http: HttpClient,
-              private stockageSVG: SVGStockageService,
-              private drawingParams: DrawingManagerService) {}
-
-  async saveDrawing(): Promise<void> {
-    if (this.drawingParams.id === 0) { this.drawingParams.id = Math.floor(Math.random() * ID_MAX); }
-    const drawing: Drawing = {
-      _id: this.drawingParams.id,
-      name: this.drawingParams.name,
-      height: this.drawingParams.height,
-      width: this.drawingParams.width,
-      backgroundColor: this.drawingParams.backgroundColor,
-      tags: this.drawingParams.tags,
-      elements: this.stockageSVG.getCompleteSVG()
-    };
-    await this.http.post(SERVER_URL.POST, drawing).toPromise();
-  }
+  constructor(private stockageSVG: SVGStockageService) { }
 
   addElement(element: DrawElement): void {
     let newElement: TracePencilService | TraceBrushService | SprayService | RectangleService
@@ -81,7 +56,7 @@ export class DatabaseService {
     newElement.svg = element.svg;
     newElement.trueType = element.trueType;
     newElement.points = element.points;
-    newElement.isSelected = element.isSelected;
+    // newElement.isSelected = element.isSelected;
     newElement.erasingEvidence = element.erasingEvidence;
     if (element.primaryColor !== undefined) { newElement.primaryColor = element.primaryColor; }
     if (element.secondaryColor !== undefined) { newElement.secondaryColor = element.secondaryColor; }
@@ -99,21 +74,5 @@ export class DatabaseService {
     newElement.pointMax = element.pointMax;
     newElement.translate = element.translate;
     this.stockageSVG.addSVG(newElement);
-  }
-
-  async getData(): Promise<Drawing[]> {
-    return await this.http.get<Drawing[]>(SERVER_URL.GET).toPromise();
-  }
-
-  async getDataWithTags(tags: string[]): Promise<Drawing[]> {
-    let URL: string = SERVER_URL.GET;
-    if (tags.length !== 0) {
-      URL += '?tags=' + encodeURIComponent(JSON.stringify(tags));
-    }
-    return await this.http.get<Drawing[]>(URL).toPromise();
-  }
-
-  async deleteDrawing(id: number): Promise<void> {
-    await this.http.delete(SERVER_URL.DELETE + '?id=' + id.toString()).toPromise();
   }
 }

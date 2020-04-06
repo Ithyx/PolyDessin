@@ -13,7 +13,7 @@ export class SprayService implements DrawElement {
 
   svg: string;
   svgHtml: SafeHtml;
-  isSelected: boolean;
+  // isSelected: boolean;
   erasingEvidence: boolean;
 
   trueType: TOOL_INDEX;
@@ -31,7 +31,7 @@ export class SprayService implements DrawElement {
   constructor() {
     this.svgHtml = '';
     this.trueType = TOOL_INDEX.SPRAY;
-    this.isSelected = false;
+    // this.isSelected = false;
     this.primaryColor = {
       RGBAString: '',
       RGBA: [0, 0, 0, 0]

@@ -16,7 +16,7 @@ export class LineService implements DrawElement {
   trueType: TOOL_INDEX;
 
   points: Point[];
-  isSelected: boolean;
+  // isSelected: boolean;
   erasingEvidence: boolean;
 
   primaryColor: Color;
@@ -37,7 +37,7 @@ export class LineService implements DrawElement {
     this.svgHtml = '';
     this.trueType = TOOL_INDEX.LINE;
     this.points = [];
-    this.isSelected = false;
+    // this.isSelected = false;
     this.erasingEvidence = false;
     this.primaryColor = {
       RGBAString: DEFAULT_COLOR,

@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ExportWindowComponent } from '../components/export-window/export-window.component';
 import { GalleryComponent } from '../components/gallery/gallery.component';
 import { SavePopupComponent } from '../components/save-popup/save-popup.component';
+import { ClipboardService } from './clipboard.service';
 import { CommandManagerService } from './command/command-manager.service';
 import { TranslateSvgService } from './command/translate-svg.service';
 import { GridService } from './grid/grid.service';
@@ -54,7 +55,8 @@ export class ShortcutsManagerService {
               private grid: GridService,
               private dialog: MatDialog,
               private sanitizer: DomSanitizer,
-              private eraser: EraserToolService
+              private eraser: EraserToolService,
+              private clipboard: ClipboardService
               ) {
                 this.focusOnInput = false;
                 this.counter100ms = 0;
@@ -70,17 +72,21 @@ export class ShortcutsManagerService {
                                     .set('a', this.shortcutKeyA.bind(this))
                                     .set('b', this.shortcutKeyB.bind(this))
                                     .set('c', this.shortcutKeyC.bind(this))
+                                    .set('d', this.shortcutKeyD.bind(this))
                                     .set('e', this.shortcutKeyE.bind(this))
                                     .set('i', this.shortcutKeyI.bind(this))
                                     .set('l', this.shortcutKeyL.bind(this))
                                     .set('w', this.shortcutKeyW.bind(this))
+                                    .set('v', this.shortcutKeyV.bind(this))
                                     .set('r', this.shortcutKeyR.bind(this))
                                     .set('s', this.shortcutKeyS.bind(this))
+                                    .set('x', this.shortcutKeyX.bind(this))
                                     .set('z', this.shortcutKeyZ.bind(this))
                                     .set('Z', this.shortcutKeyUpperZ.bind(this))
                                     .set('Shift', this.shortcutKeyShift.bind(this))
                                     .set('o', this.shortcutKeyO.bind(this))
                                     .set('Backspace', this.shortcutKeyBackSpace.bind(this))
+                                    .set('Delete', this.shortcutKeyDelete.bind(this))
                                     .set('Escape', this.shortcutKeyEscape.bind(this))
                                     .set('g', this.shortcutKeyG.bind(this))
                                     .set('+', this.shortcutKeyPlus.bind(this))
@@ -177,7 +183,6 @@ export class ShortcutsManagerService {
       this.tools.changeActiveTool(TOOL_INDEX.SELECTION);
       if (this.svgStockage.getCompleteSVG().length !== 0) {
         for (const element of this.svgStockage.getCompleteSVG()) {
-          element.isSelected = true;
           this.selection.selectedElements.push(element);
         }
         this.selection.createBoundingBox();
@@ -191,9 +196,13 @@ export class ShortcutsManagerService {
     this.clearOngoingSVG();
   }
 
-  shortcutKeyC(): void {
-    this.tools.changeActiveTool(TOOL_INDEX.PENCIL);
-    this.clearOngoingSVG();
+  shortcutKeyC(keyboard: KeyboardEvent): void {
+    if (keyboard.ctrlKey && this.selection.selectionBox.box) {
+      this.clipboard.copySelectedElement();
+    } else {
+      this.tools.changeActiveTool(TOOL_INDEX.PENCIL);
+      this.clearOngoingSVG();
+    }
   }
 
   shortcutKeyE(keyboard: KeyboardEvent): void {
@@ -238,6 +247,24 @@ export class ShortcutsManagerService {
     }
   }
 
+  shortcutKeyV(keyboard: KeyboardEvent): void {
+    if (keyboard.ctrlKey) {
+      this.clipboard.pasteSelectedElement();
+    }
+  }
+
+  shortcutKeyD(keyboard: KeyboardEvent): void {
+    if (keyboard.ctrlKey && this.selection.selectionBox.box) {
+      this.clipboard.duplicateSelectedElement();
+    }
+  }
+
+  shortcutKeyX(keyboard: KeyboardEvent): void {
+    if (keyboard.ctrlKey && this.selection.selectionBox.box) {
+      this.clipboard.cutSelectedElement();
+    }
+  }
+
   shortcutKeyZ(keyboard: KeyboardEvent): void {
     if (keyboard.ctrlKey && !this.commands.drawingInProgress) {
       this.commands.cancelCommand();
@@ -274,6 +301,14 @@ export class ShortcutsManagerService {
   shortcutKeyBackSpace(): void {
     if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
       this.lineTool.removePoint();
+    } // else if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
+      // this.clipboard.deleteSelectedElement();
+    // }
+  }
+
+  shortcutKeyDelete(): void {
+    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION && this.selection.selectionBox.box) {
+      this.clipboard.deleteSelectedElement();
     }
   }
 

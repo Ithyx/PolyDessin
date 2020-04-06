@@ -15,7 +15,7 @@ describe('AddSVGService', () =>  {
     stockageService = TestBed.get(SVGStockageService);
     element = new LineService();
     element.svg = 'test element';
-    service = new AddSVGService(element, stockageService);
+    service = new AddSVGService([element], stockageService);
   });
 
   it('should be created', () => {
@@ -26,13 +26,13 @@ describe('AddSVGService', () =>  {
 
   it('#constructor devrait ajouter l\'élément au stockage SVG', () => {
     spyOn(stockageService, 'addSVG');
-    service = new AddSVGService(element, stockageService);
+    service = new AddSVGService([element], stockageService);
     expect(stockageService.addSVG).toHaveBeenCalledWith(element);
   });
 
   it('#constructor devrait changer l\'élément', () => {
-    service = new AddSVGService(element, stockageService);
-    expect(service['element']).toEqual(element);
+    service = new AddSVGService([element], stockageService);
+    expect(service['elements']).toEqual([element]);
   });
 
   // TESTS undo

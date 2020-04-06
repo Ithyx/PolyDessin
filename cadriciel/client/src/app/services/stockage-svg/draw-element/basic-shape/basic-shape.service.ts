@@ -14,7 +14,7 @@ export abstract class BasicShapeService implements DrawElement {
   trueType: TOOL_INDEX;
 
   points: Point[];
-  isSelected: boolean;
+  // isSelected: boolean;
   erasingEvidence: boolean;
 
   primaryColor: Color;
@@ -42,7 +42,7 @@ export abstract class BasicShapeService implements DrawElement {
     this.erasingColor = ERASING_COLOR_INIT;
     this.points = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
                    {x: 0, y: 0}];   // points[1], coin bas droite
-    this.isSelected = false;
+    // this.isSelected = false;
     this.erasingEvidence = false;
     this.translate = { x: 0, y: 0};
     this.pointMin = {x: 0, y: 0};
