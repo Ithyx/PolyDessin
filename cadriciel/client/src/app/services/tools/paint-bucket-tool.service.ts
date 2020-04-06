@@ -4,13 +4,11 @@ import { PERCENTAGE } from '../color/color-manager.service';
 import { ColorParameterService } from '../color/color-parameter.service';
 import { AddSVGService } from '../command/add-svg.service';
 import { CommandManagerService } from '../command/command-manager.service';
+import { ColorFillService } from '../stockage-svg/draw-element/color-fill.service';
 import { Point } from '../stockage-svg/draw-element/draw-element';
-import { TracePencilService } from '../stockage-svg/draw-element/trace/trace-pencil.service';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { ToolInterface } from './tool-interface';
 import { ToolManagerService } from './tool-manager.service';
-
-const PENCIL_THICKNESS = 2;
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +20,7 @@ export class PaintBucketToolService implements ToolInterface {
   private context: CanvasRenderingContext2D;
   private image: HTMLImageElement;
   private mousePosition: Point;
-  private fill: TracePencilService;
+  private fill: ColorFillService;
   private checkedPixels: Map<number, number[]>;
   private color: [number, number, number];
 
@@ -30,7 +28,7 @@ export class PaintBucketToolService implements ToolInterface {
               private commands: CommandManagerService,
               private svgStockage: SVGStockageService,
               private tools: ToolManagerService) {
-    this.fill = new TracePencilService();
+    this.fill = new ColorFillService();
     this.color = [0, 0, 0];
     this.mousePosition = {x: 0, y: 0};
     this.checkedPixels = new Map<number, number[]>();
@@ -38,10 +36,9 @@ export class PaintBucketToolService implements ToolInterface {
 
   onMouseClick(mouse: MouseEvent): void {
     this.mousePosition = {x: mouse.offsetX, y: mouse.offsetY};
-    this.fill = new TracePencilService();
+    this.fill = new ColorFillService();
     this.fill.points = [];
     this.fill.primaryColor = this.colorParameter.primaryColor;
-    this.fill.thickness = PENCIL_THICKNESS;
     this.checkedPixels = new Map<number, number[]>();
     this.createCanvas();
   }
