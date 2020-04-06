@@ -54,7 +54,14 @@
         <input id="name" type="text" (change)="updateFileName($event)" [value]="selectedFileName" />
     </div>
     <a #link class="no-display"></a>
-    <button mat-stroked-button (click)="export()">EXPORTER</button>
-    <button mat-button (click)="close()">fermer</button>
+    <div class="submit">
+        <button mat-stroked-button (click)="export()" class="list">EXPORTER</button>
+        <form #f="ngForm" class="list">
+            <label for="email">Ou envoyez l'image par courriel : </label>
+            <input type="email" ngModel name="email" required email [ngClass]="f.valid ? '' : 'invalid'">
+            <button [disabled]="!f.valid">Envoyer</button>
+        </form>
+        <button mat-button (click)="close()" class="list">fermer</button>
+    </div>
 
 </mat-dialog-content>

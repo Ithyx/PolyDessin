@@ -2,6 +2,17 @@
     text-align: center;
   }
 
-.no-display {
-  display: none;
+.no-display { display: none; }
+
+.list {
+  margin: 15px;
+  float: left;
 }
+
+.submit {
+  margin: auto;
+  width: 40%;
+  padding: 10px;
+}
+
+.invalid { border:3px solid rgb(255, 189, 7); }

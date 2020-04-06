@@ -49,4 +49,8 @@ export class DatabaseService {
   async deleteDrawing(id: number): Promise<void> {
     await this.http.delete(SERVER_URL.DELETE + '?id=' + id.toString()).toPromise();
   }
+
+  async sendEmail(emailAddress: string): Promise<void> {
+    //
+  }
 }

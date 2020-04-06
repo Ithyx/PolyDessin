@@ -3,6 +3,7 @@ import { MatDialogRef } from '@angular/material';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
+import { DatabaseService } from 'src/app/services/saving/remote/database.service';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { Drawing } from '../../../../../common/communication/drawing-interface';
 
@@ -28,6 +29,7 @@ export class ExportWindowComponent {
   private selectedExportFormat: string;
   private selectedExportFilter: string;
   private selectedFileName: string;
+  private emailAdress: string;
   private canvas: HTMLCanvasElement;
   protected drawing: Drawing;
 
@@ -35,11 +37,13 @@ export class ExportWindowComponent {
               private stockageSVG: SVGStockageService,
               private drawingParams: DrawingManagerService,
               private sanitizer: DomSanitizer,
-              private canvasConversion: CanvasConversionService
+              private canvasConversion: CanvasConversionService,
+              private db: DatabaseService
               ) {
     this.selectedExportFormat = this.EXPORT_FORMAT[0];
     this.selectedExportFilter = this.EXPORT_FILTER[0];
     this.selectedFileName = this.drawingParams.name;
+    this.emailAdress = '';
     this.drawing = {
       _id: this.drawingParams.id,
       name: this.drawingParams.name,
@@ -90,6 +94,10 @@ export class ExportWindowComponent {
     URL.revokeObjectURL(imageSrc);
   }
 
+  sendImage(): void {
+    this.db.sendEmail(this.emailAdress);
+  }
+
   updateSelectedFormat(event: Event): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.selectedExportFormat = eventCast.value;
@@ -103,6 +111,11 @@ export class ExportWindowComponent {
   updateFileName(event: Event): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.selectedFileName = eventCast.value;
+  }
+
+  updateEmail(event: Event): void {
+    const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
+    this.emailAdress = eventCast.value;
   }
 
   sanitize(svg: string): SafeHtml {

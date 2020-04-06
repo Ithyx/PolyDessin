@@ -17,7 +17,6 @@ export class HomePageComponent {
               private localSaving: LocalSaveManagerService,
               private ngZone: NgZone,
               private router: Router) {
-                console.log(localSaving.isStorageEmpty());
                 dialogConfig.disableClose = true;
                 dialogConfig.autoFocus = true;
                 dialogConfig.width = '60%'; }
