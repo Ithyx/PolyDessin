@@ -44,7 +44,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         previous: true, next: true,
                         id: 2
                     },
-                    // Sujet 3
                     {
                         name: 'Pinceau',
                         description: `<h1> Pinceau </h1>
@@ -57,7 +56,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         previous: true, next: true,
                         id: 3
                     },
-                    // Sujet 4
                     {
                         name: 'Aérosol',
                         description: `<h1> Aérosol </h1>
@@ -82,7 +80,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 openCategory: false,
                 subSubjects: [
                     {
-                        // Sujet 5
                         name: 'Rectangle',
                         description: `<h1> Rectangle </h1>
                                       <hr>
@@ -117,7 +114,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         previous: true, next: true,
                         id: 6
                     },
-                    // Sujet 7
                     {
                         name: 'Polygone',
                         description: `<h1> Polygone </h1>
@@ -135,7 +131,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         previous: true, next: true,
                         id: 7
                     },
-                    // Sujet 8
                     {
                         name: 'Ligne',
                         description: `<h1> Ligne </h1>
@@ -163,7 +158,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 previous: false, next: false,
                 openCategory: false,
                 subSubjects: [
-                    // Sujet 9
                     {
                         name: 'Couleur',
                         description: `<h1> Couleur </h1>
@@ -182,7 +176,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         previous: true, next: true,
                         id: 9
                     },
-                    // Sujet 10
                     {
                         name: 'Pipette',
                         description: `<h1> Pipette </h1>
@@ -197,7 +190,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         previous: true, next: true,
                         id: 10
                     },
-                    // Sujet 11
                     {
                         name: 'Applicateur de Couleur',
                         description: `<h1> Applicateur de couleur </h1>
@@ -213,7 +205,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                     },
                 ]
             },
-            // Sujet 12
             {
                 name: 'Selection',
                 description: `<h1> Selection </h1>
@@ -237,7 +228,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 previous: true, next: true,
                 id: 12
             },
-            // Sujet 13
             {
                 name: 'Efface',
                 description: `<h1> Efface </h1>
@@ -251,7 +241,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 previous: true, next: true,
                 id: 13
             },
-            // Sujet 14
             {
                 name: 'Grille',
                 description: `<h1> Grille </h1>
@@ -271,19 +260,9 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 previous: true, next: true,
                 id: 14
             },
-            // Sujet 15
             {
-                name: 'Annuler-Refaire',
-                description: `<h1> Annuler-Refaire </h1>
-                              <hr>
-                              <p> Il est possible d'annuler refaire les dernières actions convernant l'ajouter, la
-                              suppression et la modification des éléments dessinnés </p>
-                              <p> Les modifications d'un élément concerne:
-                                <li> Changer la couleur d'un élément </li>
-                                <li> Bouger une sélection </li>
-                              </p>
-                              <p> Il est possible d'annuler une action avec le raccourci 'CTRL+Z'. </p>
-                              <p> Il est possible de refaire une action avec le raccourci 'CTRL+SHIFT+Z'. </p>`,
+                name: 'Sceau de Peinture',
+                description: '',
                 previous: true, next: true,
                 id: 15
             }
@@ -292,8 +271,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
     {
         name: 'Gestion de Dessin',
         description: '',
-        previous: false,
-        next: false,
+        previous: false, next: false,
         openCategory: false,
         subSubjects: [
             {
@@ -360,9 +338,44 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                                     <li> Tache </li>
                                     <li> Tremblant </li></p>
                               </p>`,
-                previous: true, next: false,
+                previous: true, next: true,
                 id: 19
             },
         ]
+      },
+      {
+          name: 'Fonctionnalités',
+          description: '',
+          previous: false, next: false,
+          openCategory: false,
+          subSubjects: [
+              {
+                  name: 'Presse-Papier',
+                  description: '',
+                  previous: true, next: true,
+                  id: 20
+              },
+              {
+                  name: 'Annuler-Refaire',
+                  description: `<h1> Annuler-Refaire </h1>
+                                <hr>
+                                <p> Il est possible d'annuler refaire les dernières actions convernant l'ajouter, la
+                                suppression et la modification des éléments dessinnés </p>
+                                <p> Les modifications d'un élément concerne:
+                                  <li> Changer la couleur d'un élément </li>
+                                  <li> Bouger une sélection </li>
+                                </p>
+                                <p> Il est possible d'annuler une action avec le raccourci 'CTRL+Z'. </p>
+                                <p> Il est possible de refaire une action avec le raccourci 'CTRL+SHIFT+Z'. </p>`,
+                  previous: true, next: true,
+                  id: 21
+              }
+          ]
+      },
+      {
+          name: 'Bonus',
+          description: '',
+          previous: true, next: false,
+          id: 22
       }
 ];
