@@ -33,6 +33,7 @@ export class EllipseService extends BasicShapeService {
       + '" stroke-width="' + this.thickness
       + '" cx="' + (this.points[0].x + this.points[1].x) / 2 + '" cy="' + (this.points[0].y + this.points[1].y) / 2
       + '" rx="' + this.getWidth() / 2 + '" ry="' + this.getHeight() / 2 + '"></ellipse>';
+    this.calculatePoints();
   }
 
   drawPerimeter(): void {
@@ -47,5 +48,13 @@ export class EllipseService extends BasicShapeService {
       this.perimeter += '" height="' + (this.getHeight() + thickness)
         + '" width="' + (this.getWidth() + thickness) + '"/>';
     }
+    this.calculatePoints();
+  }
+
+  calculatePoints(): void {
+    this.points.push({x: this.points[0].x + this.getHeight(), y: this.points[0].y});
+    this.points.push({x: this.points[1].x - this.getHeight(), y: this.points[1].y});
+    this.points.push({x: this.points[0].x, y: this.points[0].y + this.getHeight() / 2});
+    this.points.push({x: this.points[1].x, y: this.points[1].y - this.getHeight() / 2});
   }
 }
