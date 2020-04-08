@@ -220,7 +220,7 @@ describe('GalleryComponent', () => {
   });
   it('#loadDrawing devrait changer complètement le dessin en cours', () => {
     const cleanSpy = spyOn(component['stockageSVG'], 'cleanDrawing');
-    const addSpy = spyOn(component['db'], 'addElement');
+    const addSpy = spyOn(component['saveUtility'], 'addElement');
     const drawingManager = component['drawingManager'];
     drawingManager.id = 123;
     drawingManager.height = 200;
@@ -245,7 +245,7 @@ describe('GalleryComponent', () => {
   });
   it('#loadDrawing devrait remttre les éléments à 0 même si le nouveau dessin n\'en a pas', () => {
     drawing.elements = undefined;
-    const spy = spyOn(component['db'], 'addElement');
+    const spy = spyOn(component['saveUtility'], 'addElement');
     component.loadDrawing(drawing);
     drawing.elements = [element, element];
     expect(spy).not.toHaveBeenCalled();
