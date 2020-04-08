@@ -55,14 +55,15 @@
    
     <g [innerHTML]="svgStockage.getOngoingSVGHTML()"></g>
     <g [innerHTML]="svgStockage.getOngoingPerimeterHTML()"></g>
-    
-    <!--Grille-->
-    <g class="grid" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" version="1.1" xlmns="http://www.w3.org/2000/svg">
-        <g *ngFor="let line of grid.getLines()">
-            <line class="grid" [attr.stroke]="grid.getColor()" stroke-width="1"
-                [attr.x1.px]="line.x1" [attr.x2.px]="line.x2"
-                [attr.y1.px]="line.y1" [attr.y2.px]="line.y2" />
-        </g>
+</svg>
+
+<!--Grille-->
+<svg class="grid" [attr.width.px]="drawingManager.width" pointer-events="none"
+    [attr.height.px]="drawingManager.height" version="1.1" xlmns="http://www.w3.org/2000/svg">
+    <g *ngFor="let line of grid.getLines()">
+        <line class="grid" [attr.stroke]="grid.getColor()" stroke-width="1"
+            [attr.x1.px]="line.x1" [attr.x2.px]="line.x2"
+            [attr.y1.px]="line.y1" [attr.y2.px]="line.y2" />
     </g>
 </svg>
 
