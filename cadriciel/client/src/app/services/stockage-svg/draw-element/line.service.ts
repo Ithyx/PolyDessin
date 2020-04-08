@@ -4,8 +4,6 @@ import { Color } from '../../color/color';
 import { DrawingTool, TOOL_INDEX } from '../../tools/tool-manager.service';
 import { DrawElement, ERASING_COLOR_INIT, Point } from '../draw-element/draw-element';
 
-const DEFAULT_COLOR = 'rgba(0,0,0,1)';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -40,7 +38,7 @@ export class LineService implements DrawElement {
     // this.isSelected = false;
     this.erasingEvidence = false;
     this.primaryColor = {
-      RGBAString: DEFAULT_COLOR,
+      RGBAString: '',
       RGBA: [0, 0, 0, 0]
     };
     this.erasingColor = ERASING_COLOR_INIT;
