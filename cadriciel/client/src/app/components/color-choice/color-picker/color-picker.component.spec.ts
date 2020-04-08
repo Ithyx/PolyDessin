@@ -5,6 +5,7 @@ import { ColorManagerService } from 'src/app/services/color/color-manager.servic
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
+import { LocalSaveManagerService } from 'src/app/services/saving/local/local-save-manager.service';
 import { ColorPickerComponent } from './color-picker.component';
 
 // tslint:disable: no-magic-numbers
@@ -14,6 +15,7 @@ describe('ColorPickerComponent', () => {
   let component: ColorPickerComponent;
   let fixture: ComponentFixture<ColorPickerComponent>;
   let commandes: CommandManagerService;
+  let localSaving: LocalSaveManagerService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -26,10 +28,12 @@ describe('ColorPickerComponent', () => {
     fixture = TestBed.createComponent(ColorPickerComponent);
     component = fixture.componentInstance;
     commandes = TestBed.get(CommandManagerService);
+    localSaving = TestBed.get(LocalSaveManagerService);
     const drawingManager = TestBed.get(DrawingManagerService);
     component['colorManager'] = new ColorManagerService(new ColorParameterService(),
                                                      commandes,
-                                                     drawingManager);
+                                                     drawingManager,
+                                                     localSaving);
     fixture.detectChanges();
   });
 
