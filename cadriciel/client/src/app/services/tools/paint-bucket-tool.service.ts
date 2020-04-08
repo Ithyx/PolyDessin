@@ -10,6 +10,8 @@ import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { ToolInterface } from './tool-interface';
 import { ToolManagerService } from './tool-manager.service';
 
+const RGBA_COUNT = 4;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,6 +25,7 @@ export class PaintBucketToolService implements ToolInterface {
   private fill: ColorFillService;
   private checkedPixels: Map<number, number[]>;
   private color: [number, number, number];
+  private pixelData: Uint8ClampedArray;
 
   constructor(private colorParameter: ColorParameterService,
               private commands: CommandManagerService,
@@ -59,17 +62,21 @@ export class PaintBucketToolService implements ToolInterface {
 
   onImageLoad(): void {
     this.context.drawImage(this.image, 0, 0);
-    const pixelData = this.context.getImageData(this.mousePosition.x, this.mousePosition.y, 1, 1).data;
-    this.color = [pixelData[0], pixelData[1], pixelData[2]];
+    this.pixelData = this.context.getImageData(0, 0, this.drawing.clientWidth, this.drawing.clientHeight).data;
+    const pixelIndex = this.getIndex(this.mousePosition) * RGBA_COUNT;
+    this.color = [this.pixelData[pixelIndex], this.pixelData[pixelIndex + 1], this.pixelData[pixelIndex + 2]];
     const primaryColor = this.colorParameter.primaryColor.RGBA;
     if (this.color[0] === primaryColor[0] && this.color[1] === primaryColor[1] && this.color[2] === primaryColor[2]) {
       return;
     }
+    console.log(this.color);
 
     this.fillWithColor();
 
-    this.fill.draw();
-    this.commands.execute(new AddSVGService([this.fill], this.svgStockage));
+    if (this.fill.points.length > 0) {
+      this.fill.draw();
+      this.commands.execute(new AddSVGService([this.fill], this.svgStockage));
+    }
   }
 
   // Algorithme basé sur http://www.programmersought.com/article/3670113928/
@@ -103,7 +110,7 @@ export class PaintBucketToolService implements ToolInterface {
           }
           const array = this.checkedPixels.get(x1);
           if (array) {
-            array.push(this.getIndex({x: x1, y: point.y}));
+            array.push(point.y);
           } else {
             this.checkedPixels.set(x1, [point.y]);
           }
@@ -117,12 +124,13 @@ export class PaintBucketToolService implements ToolInterface {
   checkColor(point: Point): boolean {
     // s'assurer de ne pas vérifier le même point deux fois
     const array = this.checkedPixels.get(point.x);
-    if (array && array.includes(this.getIndex(point))) { return false; }
-    const color = this.context.getImageData(point.x, point.y, 1, 1).data;
-    const tolerance = (this.tools.activeTool.parameters[0].value) ? (this.tools.activeTool.parameters[0].value) : 0;
-    const checkRedValue = Math.abs(this.color[R] - color[R]) <= (RGB_MAX * tolerance / PERCENTAGE);
-    const checkGreenValue = Math.abs(this.color[G] - color[G]) <= (RGB_MAX * tolerance / PERCENTAGE);
-    const checkBlueValue = Math.abs(this.color[B] - color[B]) <= (RGB_MAX * tolerance / PERCENTAGE);
+    if (array && array.includes(point.y)) { return false; }
+    const pixelIndex = this.getIndex(point) * RGBA_COUNT;
+    const tolerance = (this.tools.activeTool.parameters[0].value) ?
+      (RGB_MAX * this.tools.activeTool.parameters[0].value / PERCENTAGE) : 0;
+    const checkRedValue = Math.abs(this.color[R] - this.pixelData[pixelIndex]) <= tolerance;
+    const checkGreenValue = Math.abs(this.color[G] - this.pixelData[pixelIndex + 1]) <= tolerance;
+    const checkBlueValue = Math.abs(this.color[B] - this.pixelData[pixelIndex + 2]) <= tolerance;
     return checkRedValue && checkGreenValue && checkBlueValue;
   }
 
