@@ -59,7 +59,7 @@
         <form #f="ngForm" class="list">
             <label for="email">Ou envoyez l'image par courriel : </label>
             <input type="email" ngModel name="email" required email [ngClass]="f.valid ? '' : 'invalid'">
-            <button [disabled]="!f.valid" (click)="sendImage()">Envoyer</button>
+            <button [disabled]="!f.valid" (click)="exportToSend()">Envoyer</button>
         </form>
         <button mat-button (click)="close()" class="list">fermer</button>
     </div>

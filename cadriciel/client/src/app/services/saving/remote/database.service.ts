@@ -8,7 +8,7 @@ export enum SERVER_URL {
   SAVE = 'http://localhost:3000/api/db/saveDrawing',
   LIST = 'http://localhost:3000/api/db/listDrawings',
   DELETE = 'http://localhost:3000/api/db/deleteDrawing',
-  SEND = 'http://localhost:3000/api/db/sendDrawing'
+  SEND = 'http://localhost:3000/api/mail/sendDrawing'
 }
 const ID_MAX = 1000000000;
 
@@ -51,7 +51,7 @@ export class DatabaseService {
     await this.http.delete(SERVER_URL.DELETE + '?id=' + id.toString()).toPromise();
   }
 
-  async sendEmail(emailAddress: string): Promise<void> {
-    await this.http.post(SERVER_URL.SEND, 'testing message').toPromise();
+  async sendEmail(emailAddress: string, imageData: string, fileName: string): Promise<void> {
+    await this.http.post(SERVER_URL.SEND, {to: emailAddress, payload: imageData, filename: fileName}).toPromise();
   }
 }

@@ -36,7 +36,7 @@ export class Application {
     bindRoutes(): void {
         // Notre application utilise le routeur de notre API `Index`
         this.app.use('/api/db', this.databaseController.router);
-        this.app.use('/api/email', this.emailController.router);
+        this.app.use('/api/mail', this.emailController.router);
         this.errorHandling();
     }
 

@@ -14,7 +14,7 @@ export class EmailController {
     }
 
     private async sendDrawing(req: Request, res: Response): Promise<void> {
-        res.status(HttpStatus.OK).send(this.emailService.sendEmail(req));
+        res.status(HttpStatus.OK).send(this.emailService.sendEmail(req.body.to, req.body.payload as string, req.body.filename as string));
     }
 
     private configureRouter(): void {

@@ -94,8 +94,29 @@ export class ExportWindowComponent {
     URL.revokeObjectURL(imageSrc);
   }
 
-  sendImage(): void {
-    this.db.sendEmail(this.emailAdress);
+  exportToSend(): void {
+    const element = this.drawingPreview.nativeElement;
+    const context = this.canvas.getContext('2d');
+    if (element && context) {
+      element.setAttribute('width', this.drawingParams.width.toString());
+      element.setAttribute('height', this.drawingParams.height.toString());
+
+      this.context = context;
+      const svgString = new XMLSerializer().serializeToString(element);
+      const svg = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+      this.image = new Image();
+      this.image.onload = this.sendImage.bind(this);
+      this.image.src = URL.createObjectURL(svg);
+
+      element.setAttribute('width', PREVIEW_SIZE);
+      element.setAttribute('height', PREVIEW_SIZE);
+    }
+  }
+
+  async sendImage(): Promise<void> {
+    this.context.drawImage(this.image, 0, 0);
+    await this.db.sendEmail(this.emailAdress, this.canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, ''),
+    (this.selectedFileName === '' ? 'image' : this.selectedFileName) + this.selectedExportFormat);
   }
 
   updateSelectedFormat(event: Event): void {

@@ -1,22 +1,23 @@
-import { Request } from 'express';
+import * as Axios from 'axios';
+import * as FormData from 'form-data';
 import { injectable } from 'inversify';
 import 'reflect-metadata';
 
-import * as http from 'http';
-
 export const MAIL_API_URL = 'https://log2990.step.polymtl.ca/email';
+// export const MAIL_API_HOST = 'log2990.step.polymtl.ca';
+// export const MAIL_API_PATH = '/email';
 
 @injectable()
 export class EmailService {
 
-    sendEmail(request: Request): void {
-        const options = {
-            url: MAIL_API_URL,
-            headers: {
-                'X-Team-Key': process.env.MAIL_API_KEY,
-                'Content-Type': 'multipart/form-data;'
-            }
-        };
-        http.request(options);
+    async sendEmail(address: string, file: string, filename: string): Promise<void> {
+        const form = new FormData();
+        form.append('to', address);
+        console.log('before error ? ', file, filename);
+        form.append('payload', file);
+        await Axios.default.post(MAIL_API_URL, form, form.getHeaders({'X-Team-Key': 'c9d92b61-2acd-4953-a17d-98c9d4213977'}))
+        .catch((err) => {
+            console.log(err);
+        });
     }
 }
