@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ColorParameterService } from '../color/color-parameter.service';
 import { AddSVGService } from '../command/add-svg.service';
 import { CommandManagerService } from '../command/command-manager.service';
 import { Point } from '../stockage-svg/draw-element/draw-element';
@@ -22,7 +23,8 @@ export class LineToolService implements ToolInterface {
 
   constructor(private svgStockage: SVGStockageService,
               private tools: ToolManagerService,
-              private commands: CommandManagerService
+              private commands: CommandManagerService,
+              private colorParameter: ColorParameterService
               ) {
                 this.line = new LineService();
                 this.isSimpleClick = true;
@@ -114,6 +116,7 @@ export class LineToolService implements ToolInterface {
   }
 
   refreshSVG(): void {
+    this.line.primaryColor = {...this.colorParameter.primaryColor};
     this.line.updateParameters(this.tools.activeTool);
     this.line.draw();
     this.svgStockage.setOngoingSVG(this.line);

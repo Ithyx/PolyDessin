@@ -5,6 +5,7 @@ import { ColorManagerService } from 'src/app/services/color/color-manager.servic
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
+import { LocalSaveManagerService } from 'src/app/services/saving/local/local-save-manager.service';
 import { ColorInputComponent } from './color-input.component';
 
 // tslint:disable: no-magic-numbers
@@ -14,6 +15,7 @@ describe('ColorInputComponent', () => {
   let component: ColorInputComponent;
   let fixture: ComponentFixture<ColorInputComponent>;
   let commandes: CommandManagerService;
+  let localSaving: LocalSaveManagerService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -29,9 +31,11 @@ describe('ColorInputComponent', () => {
     component = fixture.componentInstance;
     commandes = TestBed.get(CommandManagerService);
     const drawingManager = TestBed.get(DrawingManagerService);
+    localSaving = TestBed.get(LocalSaveManagerService);
     component['colorManager'] = new ColorManagerService(new ColorParameterService(),
                                                      commandes,
-                                                     drawingManager);
+                                                     drawingManager,
+                                                     localSaving);
 
     fixture.detectChanges();
     fixture.autoDetectChanges();
