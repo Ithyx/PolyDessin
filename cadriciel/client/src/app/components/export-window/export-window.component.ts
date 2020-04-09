@@ -113,10 +113,12 @@ export class ExportWindowComponent {
     }
   }
 
-  async sendImage(): Promise<void> {
+  sendImage(): void {
     this.context.drawImage(this.image, 0, 0);
-    await this.db.sendEmail(this.emailAdress, this.canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, ''),
-    (this.selectedFileName === '' ? 'image' : this.selectedFileName) + this.selectedExportFormat);
+    this.canvas.toBlob(() => {
+      this.db.sendEmail(this.emailAdress,
+        new File([], (this.selectedFileName === '' ? 'image' : this.selectedFileName) + this.selectedExportFormat));
+    }, 'image/' + this.selectedExportFormat);
   }
 
   updateSelectedFormat(event: Event): void {

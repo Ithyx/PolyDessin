@@ -51,7 +51,7 @@ export class DatabaseService {
     await this.http.delete(SERVER_URL.DELETE + '?id=' + id.toString()).toPromise();
   }
 
-  async sendEmail(emailAddress: string, imageData: string, fileName: string): Promise<void> {
-    await this.http.post(SERVER_URL.SEND, {to: emailAddress, payload: imageData, filename: fileName}).toPromise();
+  async sendEmail(emailAddress: string, image: File): Promise<void> {
+    await this.http.post(SERVER_URL.SEND, {to: emailAddress, payload: image}).toPromise();
   }
 }

@@ -10,12 +10,12 @@ export const MAIL_API_URL = 'https://log2990.step.polymtl.ca/email';
 @injectable()
 export class EmailService {
 
-    async sendEmail(address: string, file: string, filename: string): Promise<void> {
+    async sendEmail(address: string, image: File): Promise<void> {
         const form = new FormData();
         form.append('to', address);
-        console.log('before error ? ', file, filename);
-        form.append('payload', file);
-        await Axios.default.post(MAIL_API_URL, form, form.getHeaders({'X-Team-Key': 'c9d92b61-2acd-4953-a17d-98c9d4213977'}))
+        form.append('payload', image, {filename: image.name, contentType: 'image/png'});
+        // la clé est temporaire, elle devra être déplacée dans une variable d'environnement
+        await Axios.default.post(MAIL_API_URL, form, {...form.getHeaders({'X-Team-Key': 'c9d92b61-2acd-4953-a17d-98c9d4213977'})})
         .catch((err) => {
             console.log(err);
         });
