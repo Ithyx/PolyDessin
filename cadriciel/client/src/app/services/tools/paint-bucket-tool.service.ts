@@ -63,13 +63,12 @@ export class PaintBucketToolService implements ToolInterface {
   onImageLoad(): void {
     this.context.drawImage(this.image, 0, 0);
     this.pixelData = this.context.getImageData(0, 0, this.drawing.clientWidth, this.drawing.clientHeight).data;
-    const pixelIndex = this.getIndex(this.mousePosition) * RGBA_COUNT;
+    const pixelIndex = this.getIndex(this.mousePosition);
     this.color = [this.pixelData[pixelIndex], this.pixelData[pixelIndex + 1], this.pixelData[pixelIndex + 2]];
     const primaryColor = this.colorParameter.primaryColor.RGBA;
     if (this.color[0] === primaryColor[0] && this.color[1] === primaryColor[1] && this.color[2] === primaryColor[2]) {
       return;
     }
-    console.log(this.color);
 
     this.fillWithColor();
 
@@ -88,7 +87,7 @@ export class PaintBucketToolService implements ToolInterface {
       const point = queue.pop();
       if (point) {
         let x1 = point.x;
-        while (x1 > 0 && this.checkColor({x: x1, y: point.y})) {
+        while (x1 >= 0 && this.checkColor({x: x1, y: point.y})) {
           x1--;
         }
         x1++;
@@ -125,7 +124,7 @@ export class PaintBucketToolService implements ToolInterface {
     // s'assurer de ne pas vérifier le même point deux fois
     const array = this.checkedPixels.get(point.x);
     if (array && array.includes(point.y)) { return false; }
-    const pixelIndex = this.getIndex(point) * RGBA_COUNT;
+    const pixelIndex = this.getIndex(point);
     const tolerance = (this.tools.activeTool.parameters[0].value) ?
       (RGB_MAX * this.tools.activeTool.parameters[0].value / PERCENTAGE) : 0;
     const checkRedValue = Math.abs(this.color[R] - this.pixelData[pixelIndex]) <= tolerance;
@@ -136,6 +135,6 @@ export class PaintBucketToolService implements ToolInterface {
 
   // Attribue un index unique à chaque position du dessin
   getIndex(position: Point): number {
-    return position.x + position.y * this.drawing.clientWidth;
+    return (position.x + position.y * this.drawing.clientWidth) * RGBA_COUNT;
   }
 }
