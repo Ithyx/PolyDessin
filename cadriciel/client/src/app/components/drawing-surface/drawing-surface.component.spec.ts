@@ -14,7 +14,7 @@ import { DrawingSurfaceComponent } from './drawing-surface.component';
 // tslint:disable: no-string-literal
 // tslint:disable: max-file-line-count
 
-describe('SurfaceDessinComponent', () => {
+describe('DrawingSurfaceComponent', () => {
   let component: DrawingSurfaceComponent;
   let fixture: ComponentFixture<DrawingSurfaceComponent>;
   let drawing: SVGElement;
