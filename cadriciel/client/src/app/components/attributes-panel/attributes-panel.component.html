@@ -1,10 +1,13 @@
 <!-- Panneau d'attributs -->
 <div class="attributs-panel">
-    <i class="fas fa-sliders-h"></i> 
+    <i class="fas fa-sliders-h"> </i> 
+    Paramètres
     <form method="POST" action="javascript:void(0);">
         <div *ngFor="let parameter of tools.activeTool.parameters">
 
-            <div *ngIf="parameter.type == 'invisible'"></div>
+            <div *ngIf="parameter.type == 'invisible'">
+                <br>
+            </div>
 
             <!-- Le paramètre est un 'select' avec plusieurs options -->
             <div *ngIf="parameter.type == 'select'">
@@ -22,8 +25,21 @@
                        (change)="onChange($event, parameter.name, parameter.min, parameter.max)"
                        (focus)="disableShortcuts()" (blur)="enableShortcuts()"/>
             </div>
-
         </div>
+
+        <div *ngIf="tools.activeTool.parameters.length === 0">
+            <br>
+            <br>
+            <br>
+        </div>
+        <div *ngIf="tools.activeTool.parameters.length === 1">
+            <br>
+            <br>
+        </div>
+        <div *ngIf="tools.activeTool.parameters.length === 2">
+            <br>
+        </div>
+
         <div class="redo-undo">
             <ng-template [ngIf]="commands.hasExecutedCommands()" [ngIfElse]="undoNotAvailable">
                 <a mat-stroked-button (click)="commands.cancelCommand()">
@@ -46,7 +62,9 @@
                 </a>
             </ng-template>
         </div>
-        <i class="fas fa-palette" style ="margin-top : 10px"></i>
+        <br>
+        <i class="fas fa-palette" style ="margin-top : 10px"> </i>
+        Couleurs
         <div class="color_button">
             Couleur primaire
             <br />
