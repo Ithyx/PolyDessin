@@ -15,37 +15,37 @@ import { DrawingPageComponent } from './drawing-page.component';
 // tslint:disable: no-string-literal
 
 /* Service stub pour réduire les dépendances */
-const outilTestActif: DrawingTool = {
-  name: 'stubComplet',
+const activeToolTest: DrawingTool = {
+  name: 'complete',
   isActive: true,
   ID: 0,
   parameters: [{type: '', name: '', value: 0 }],
   iconName: ''
 };
-const outilTestInactif: DrawingTool = {
-  name: 'stubVide',
+const inactiveToolTest: DrawingTool = {
+  name: 'empty',
   isActive: false,
   ID: 1,
   parameters: [],
   iconName: ''
 };
-const outilTestInexistant: DrawingTool = {
-  name: 'stubInexistant',
+const absentToolTest: DrawingTool = {
+  name: 'absent',
   isActive: false,
   ID: 2,
   parameters: [],
   iconName: ''
 };
-const gestionnaireOutilServiceStub: Partial<ToolManagerService> = {
+const toolManagerStub: Partial<ToolManagerService> = {
   toolList: [
-    outilTestActif,
-    outilTestInactif,
-    outilTestInexistant
+    activeToolTest,
+    inactiveToolTest,
+    absentToolTest
   ],
-  activeTool: outilTestActif
+  activeTool: activeToolTest
 };
 
-class StubOutil implements ToolInterface {
+class ToolStub implements ToolInterface {
   onMouseMove(event: MouseEvent): void {/**/}
   onMouseRelease(event: MouseEvent): void {/**/}
   onMousePress(event: MouseEvent): void {/**/}
@@ -60,7 +60,7 @@ describe('DrawingPageComponent', () => {
   let component: DrawingPageComponent;
   let fixture: ComponentFixture<DrawingPageComponent>;
   let service: ToolManagerService;
-  const stubOutilActif = new StubOutil();
+  const activeToolStub = new ToolStub();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -68,7 +68,7 @@ describe('DrawingPageComponent', () => {
         {path: 'dessin', component: DrawingPageComponent},
         {path: 'guide', component : GuidePageComponent}
       ])],
-      providers: [ {provide: ToolManagerService, useValue: gestionnaireOutilServiceStub} ],
+      providers: [ {provide: ToolManagerService, useValue: toolManagerStub} ],
       declarations: [ DrawingPageComponent, GuidePageComponent, ToolbarComponent,
         DrawingToolComponent, DrawingSurfaceComponent, GuideSubjectComponent, AttributesPanelComponent ]
     })
@@ -83,8 +83,8 @@ describe('DrawingPageComponent', () => {
     service.toolList[0].isActive = true;
     service.toolList[1].isActive = false;
     service.activeTool = service.toolList[0];
-    component['toolMap'].set('stubComplet', stubOutilActif)
-                           .set('stubVide', {});
+    component['toolMap'].set('complete', activeToolStub)
+                        .set('empty', {});
   });
 
   it('should create', () => {
@@ -112,183 +112,183 @@ describe('DrawingPageComponent', () => {
   // TESTS onClick
 
   it("#onClick devrait appeler onClick de l'outil actif si cette fonction existe", () => {
-    spyOn(stubOutilActif, 'onMouseClick');
+    spyOn(activeToolStub, 'onMouseClick');
     const event = new MouseEvent('click', { clientX: 0, clientY: 0 });
     component.onClick(event);
-    expect(stubOutilActif.onMouseClick).toHaveBeenCalledWith(event);
+    expect(activeToolStub.onMouseClick).toHaveBeenCalledWith(event);
   });
   it('#onClick ne devrait rien faire si la fonction onClick' +
     " de l'outil actif n'existe pas", () => {
-    spyOn(stubOutilActif, 'onMouseClick');
+    spyOn(activeToolStub, 'onMouseClick');
     service.activeTool = service.toolList[1];
     component.onClick(new MouseEvent('click'));
-    expect(stubOutilActif.onMouseClick).not.toHaveBeenCalled();
+    expect(activeToolStub.onMouseClick).not.toHaveBeenCalled();
   });
   it("#onClick ne devrait rien faire si l'outil actif n'exsite pas" +
     " dans le lexique d'outils", () => {
-    spyOn(stubOutilActif, 'onMouseClick');
+    spyOn(activeToolStub, 'onMouseClick');
     service.activeTool = service.toolList[2];
     component.onClick(new MouseEvent('click'));
-    expect(stubOutilActif.onMouseClick).not.toHaveBeenCalled();
+    expect(activeToolStub.onMouseClick).not.toHaveBeenCalled();
   });
 
   // TESTS onMouseMove
 
   it("#onMouseMove devrait appeler onMouseMove de l'outil actif si cette fonction existe", () => {
-    spyOn(stubOutilActif, 'onMouseMove');
+    spyOn(activeToolStub, 'onMouseMove');
     const event = new MouseEvent('mousemove', { clientX: 0, clientY: 0 });
     component.onMouseMove(event);
-    expect(stubOutilActif.onMouseMove).toHaveBeenCalledWith(event);
+    expect(activeToolStub.onMouseMove).toHaveBeenCalledWith(event);
   });
   it('#onMouseMove ne devrait rien faire si la fonction onMouseMove' +
     " de l'outil actif n'existe pas", () => {
-    spyOn(stubOutilActif, 'onMouseMove');
+    spyOn(activeToolStub, 'onMouseMove');
     service.activeTool = service.toolList[1];
     component.onMouseMove(new MouseEvent('mousemove'));
-    expect(stubOutilActif.onMouseMove).not.toHaveBeenCalled();
+    expect(activeToolStub.onMouseMove).not.toHaveBeenCalled();
   });
   it("#onMouseMove ne devrait rien faire si l'outil actif n'exsite pas" +
     " dans le lexique d'outils", () => {
-    spyOn(stubOutilActif, 'onMouseMove');
+    spyOn(activeToolStub, 'onMouseMove');
     service.activeTool = service.toolList[2];
     component.onMouseMove(new MouseEvent('mousemove'));
-    expect(stubOutilActif.onMouseMove).not.toHaveBeenCalled();
+    expect(activeToolStub.onMouseMove).not.toHaveBeenCalled();
   });
 
   // TESTS onMouseDown
 
   it("#onMouseDown devrait appeler onMouseDown de l'outil actif si cette fonction existe", () => {
-    spyOn(stubOutilActif, 'onMousePress');
+    spyOn(activeToolStub, 'onMousePress');
     const event = new MouseEvent('mousedown', { clientX: 0, clientY: 0 });
     component.onMouseDown(event);
-    expect(stubOutilActif.onMousePress).toHaveBeenCalledWith(event);
+    expect(activeToolStub.onMousePress).toHaveBeenCalledWith(event);
   });
   it('#onMouseDown ne devrait rien faire si la fonction onMouseDown' +
     " de l'outil actif n'existe pas", () => {
-    spyOn(stubOutilActif, 'onMousePress');
+    spyOn(activeToolStub, 'onMousePress');
     service.activeTool = service.toolList[1];
     component.onMouseDown(new MouseEvent('mousedown'));
-    expect(stubOutilActif.onMousePress).not.toHaveBeenCalled();
+    expect(activeToolStub.onMousePress).not.toHaveBeenCalled();
   });
   it("#onMouseDown ne devrait rien faire si l'outil actif n'exsite pas" +
     " dans le lexique d'outils", () => {
-    spyOn(stubOutilActif, 'onMousePress');
+    spyOn(activeToolStub, 'onMousePress');
     service.activeTool = service.toolList[2];
     component.onMouseDown(new MouseEvent('mousedown'));
-    expect(stubOutilActif.onMousePress).not.toHaveBeenCalled();
+    expect(activeToolStub.onMousePress).not.toHaveBeenCalled();
   });
 
   // TESTS onMouseUp
 
   it("#onMouseUp devrait appeler onMouseUp de l'outil actif si cette fonction existe", () => {
-    spyOn(stubOutilActif, 'onMouseRelease');
+    spyOn(activeToolStub, 'onMouseRelease');
     const event = new MouseEvent('mouseup', { clientX: 0, clientY: 0 });
     component.onMouseUp(event);
-    expect(stubOutilActif.onMouseRelease).toHaveBeenCalledWith(event);
+    expect(activeToolStub.onMouseRelease).toHaveBeenCalledWith(event);
   });
   it('#onMouseUp ne devrait rien faire si la fonction onMouseUp' +
     " de l'outil actif n'existe pas", () => {
-    spyOn(stubOutilActif, 'onMouseRelease');
+    spyOn(activeToolStub, 'onMouseRelease');
     service.activeTool = service.toolList[1];
     component.onMouseUp(new MouseEvent('mouseup'));
-    expect(stubOutilActif.onMouseRelease).not.toHaveBeenCalled();
+    expect(activeToolStub.onMouseRelease).not.toHaveBeenCalled();
   });
   it("#onMouseUp ne devrait rien faire si l'outil actif n'exsite pas" +
     " dans le lexique d'outils", () => {
-    spyOn(stubOutilActif, 'onMouseRelease');
+    spyOn(activeToolStub, 'onMouseRelease');
     service.activeTool = service.toolList[2];
     component.onMouseUp(new MouseEvent('mouseup'));
-    expect(stubOutilActif.onMouseRelease).not.toHaveBeenCalled();
+    expect(activeToolStub.onMouseRelease).not.toHaveBeenCalled();
   });
 
   // TESTS onMouseLeave
 
   it("#onMouseLeave devrait appeler onMouseLeave de l'outil actif si cette fonction existe", () => {
-    spyOn(stubOutilActif, 'onMouseLeave');
+    spyOn(activeToolStub, 'onMouseLeave');
     const event = new MouseEvent('mouseleave', { clientX: 0, clientY: 0 });
     component.onMouseLeave(event);
-    expect(stubOutilActif.onMouseLeave).toHaveBeenCalledWith(event);
+    expect(activeToolStub.onMouseLeave).toHaveBeenCalledWith(event);
   });
   it('#onMouseLeave ne devrait rien faire si la fonction onMouseLeave' +
     " de l'outil actif n'existe pas", () => {
-    spyOn(stubOutilActif, 'onMouseLeave');
+    spyOn(activeToolStub, 'onMouseLeave');
     service.activeTool = service.toolList[1];
     component.onMouseLeave(new MouseEvent('mouseleave'));
-    expect(stubOutilActif.onMouseLeave).not.toHaveBeenCalled();
+    expect(activeToolStub.onMouseLeave).not.toHaveBeenCalled();
   });
   it("#onMouseLeave ne devrait rien faire si l'outil actif n'exsite pas" +
     " dans le lexique d'outils", () => {
-    spyOn(stubOutilActif, 'onMouseLeave');
+    spyOn(activeToolStub, 'onMouseLeave');
     service.activeTool = service.toolList[2];
     component.onMouseLeave(new MouseEvent('mouseleave'));
-    expect(stubOutilActif.onMouseLeave).not.toHaveBeenCalled();
+    expect(activeToolStub.onMouseLeave).not.toHaveBeenCalled();
   });
 
   // TESTS onMouseEnter
 
   it("#onMouseEnter devrait appeler onMouseEnter de l'outil actif si cette fonction existe", () => {
-    spyOn(stubOutilActif, 'onMouseEnter');
+    spyOn(activeToolStub, 'onMouseEnter');
     const event = new MouseEvent('mouseenter', { clientX: 0, clientY: 0 });
     component.onMouseEnter(event);
-    expect(stubOutilActif.onMouseEnter).toHaveBeenCalledWith(event);
+    expect(activeToolStub.onMouseEnter).toHaveBeenCalledWith(event);
   });
   it('#onMouseEnter ne devrait rien faire si la fonction onMouseEnter' +
     " de l'outil actif n'existe pas", () => {
-    spyOn(stubOutilActif, 'onMouseEnter');
+    spyOn(activeToolStub, 'onMouseEnter');
     service.activeTool = service.toolList[1];
     component.onMouseEnter(new MouseEvent('mouseenter'));
-    expect(stubOutilActif.onMouseEnter).not.toHaveBeenCalled();
+    expect(activeToolStub.onMouseEnter).not.toHaveBeenCalled();
   });
   it("#onMouseEnter ne devrait rien faire si l'outil actif n'exsite pas" +
     " dans le lexique d'outils", () => {
-    spyOn(stubOutilActif, 'onMouseEnter');
+    spyOn(activeToolStub, 'onMouseEnter');
     service.activeTool = service.toolList[2];
     component.onMouseEnter(new MouseEvent('mouseenter'));
-    expect(stubOutilActif.onMouseEnter).not.toHaveBeenCalled();
+    expect(activeToolStub.onMouseEnter).not.toHaveBeenCalled();
   });
 
   // TESTS onDblClick
 
   it("#onDblClick devrait appeler onDblClick de l'outil actif si cette fonction existe", () => {
-    spyOn(stubOutilActif, 'onDoubleClick');
+    spyOn(activeToolStub, 'onDoubleClick');
     const event = new MouseEvent('dblclick', { clientX: 0, clientY: 0 });
     component.onDblClick(event);
-    expect(stubOutilActif.onDoubleClick).toHaveBeenCalledWith(event);
+    expect(activeToolStub.onDoubleClick).toHaveBeenCalledWith(event);
   });
   it('#onDblClick ne devrait rien faire si la fonction onDblClick' +
     " de l'outil actif n'existe pas", () => {
-    spyOn(stubOutilActif, 'onDoubleClick');
+    spyOn(activeToolStub, 'onDoubleClick');
     service.activeTool = service.toolList[1];
     component.onDblClick(new MouseEvent('dblclick'));
-    expect(stubOutilActif.onDoubleClick).not.toHaveBeenCalled();
+    expect(activeToolStub.onDoubleClick).not.toHaveBeenCalled();
   });
   it("#onDblClick ne devrait rien faire si l'outil actif n'exsite pas" +
     " dans le lexique d'outils", () => {
-    spyOn(stubOutilActif, 'onDoubleClick');
+    spyOn(activeToolStub, 'onDoubleClick');
     service.activeTool = service.toolList[2];
     component.onDblClick(new MouseEvent('dblclick'));
-    expect(stubOutilActif.onDoubleClick).not.toHaveBeenCalled();
+    expect(activeToolStub.onDoubleClick).not.toHaveBeenCalled();
   });
 
   // TESTS onRightClick
 
   it("#onRightClick devrait appeler onRightClick de l'outil actif si cette fonction existe", () => {
-    spyOn(stubOutilActif, 'onRightClick');
+    spyOn(activeToolStub, 'onRightClick');
     const event = new MouseEvent('contextmenu', { clientX: 0, clientY: 0 });
     component.onRightClick(event);
-    expect(stubOutilActif.onRightClick).toHaveBeenCalledWith(event);
+    expect(activeToolStub.onRightClick).toHaveBeenCalledWith(event);
   });
   it('#onRightClick ne devrait rien faire si la fonction onRightClick de l\'outil actif n\'existe pas', () => {
-    spyOn(stubOutilActif, 'onRightClick');
+    spyOn(activeToolStub, 'onRightClick');
     service.activeTool = service.toolList[2];
     component.onRightClick(new MouseEvent('contextmenu'));
-    expect(stubOutilActif.onRightClick).not.toHaveBeenCalled();
+    expect(activeToolStub.onRightClick).not.toHaveBeenCalled();
   });
   it('#onRightClick ne devrait rien faire si l\'outil actif n\'exsite pas dans le lexique d\'outils', () => {
-    spyOn(stubOutilActif, 'onRightClick');
+    spyOn(activeToolStub, 'onRightClick');
     service.activeTool = service.toolList[2];
     component.onRightClick(new MouseEvent('contextmenu'));
-    expect(stubOutilActif.onRightClick).not.toHaveBeenCalled();
+    expect(activeToolStub.onRightClick).not.toHaveBeenCalled();
   });
 
   // TESTS getDrawingSurfaceClass
