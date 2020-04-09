@@ -42,7 +42,7 @@ describe('SavingUtilityService', () => {
       element.trueType = i;
       service.addElement(element);
     }
-    expect(spy).toHaveBeenCalledTimes(11);
+    expect(spy).toHaveBeenCalledTimes(12);
   });
 
   // TESTS setupElement
