@@ -38,7 +38,7 @@ describe('SavingUtilityService', () => {
   // TESTS addElement
   it('#addElement devrait appeler setupElement peut importe le type de l\'objet chargé', () => {
     const spy = spyOn(service, 'setupElement');
-    for (let i = 0; i < 11; ++i) {
+    for (let i = 0; i < 12; ++i) {
       element.trueType = i;
       service.addElement(element);
     }
