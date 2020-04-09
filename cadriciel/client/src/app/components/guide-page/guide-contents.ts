@@ -266,7 +266,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                               <p> Deux autres raccourcis sont disponibles pour facilement changer la largeur des cellules
                               de la grille: </p>
                               <p> '+' pour agrandir la largeur de 5 px </p>
-                              <p> '-' pour diminuer la lagrgeur de 5 px </p>
+                              <p> '-' pour diminuer la largeur de 5 px </p>
                               <img src="assets/grille.png" width="300" height="300">`,
                 previous: true, next: true,
                 id: 14

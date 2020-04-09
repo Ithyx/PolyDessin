@@ -4,7 +4,6 @@ import { NavigationGuideService } from '../../services/navigation-guide.service'
 import { SubjectGuide } from '../guide-subject/subject-guide';
 import { GUIDE_CONTENTS } from './guide-contents';
 
-
 @Component({
   selector: 'app-guide-page',
   templateUrl: './guide-page.component.html',
