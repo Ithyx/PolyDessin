@@ -68,6 +68,11 @@ export class CanvasConversionService {
   }
 
   updateDrawing(): void {
+    this.coloredDrawing.setAttribute('width', this.drawingParams.width.toString());
+    this.coloredDrawing.setAttribute('height', this.drawingParams.height.toString());
+    this.canvas.setAttribute('width', this.drawingParams.width.toString());
+    this.canvas.setAttribute('height', this.drawingParams.height.toString());
+
     this.isValid = false;
     this.drawing.elements = [];
     this.coloredElements = new Map<string, DrawElement>();
