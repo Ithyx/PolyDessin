@@ -337,7 +337,9 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                                     <li> Flou </li>
                                     <li> Tache </li>
                                     <li> Tremblant </li></p>
-                              </p>`,
+                              </p>
+                              <p> Il est également possible d'exporter son dessin par couriel en entrant son adresse e-mail dans le 
+                              champ dédié du menu d'exporation </p>`,
                 previous: true, next: true,
                 id: 19
             },
@@ -351,7 +353,8 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
           subSubjects: [
               {
                   name: 'Presse-Papier',
-                  description: '',
+                  description: `<h1> Presse-Papier </h1>
+                                <hr>`,
                   previous: true, next: true,
                   id: 20
               },
@@ -359,12 +362,13 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                   name: 'Annuler-Refaire',
                   description: `<h1> Annuler-Refaire </h1>
                                 <hr>
-                                <p> Il est possible d'annuler refaire les dernières actions convernant l'ajouter, la
-                                suppression et la modification des éléments dessinnés </p>
+                                <p> L'annuler refaire de gérer les dernières actions concernant l'ajout, la
+                                suppression ou la modification d'éléments dessinés </p>
                                 <p> Les modifications d'un élément concerne:
                                   <li> Changer la couleur d'un élément </li>
-                                  <li> Bouger une sélection </li>
+                                  <li> Translater ou rotater une sélection </li>
                                 </p>
+                                <p> Les actions de l'annuler-refaire sont disponible sur le panneau des attributs. </p>
                                 <p> Il est possible d'annuler une action avec le raccourci 'CTRL+Z'. </p>
                                 <p> Il est possible de refaire une action avec le raccourci 'CTRL+SHIFT+Z'. </p>`,
                   previous: true, next: true,
@@ -374,7 +378,15 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
       },
       {
           name: 'Bonus',
-          description: '',
+          description: `<h1> Bonus </h1>
+                        <hr>
+                        <p> Coder une application demande un long processus de travail. Tout ne fonctionne généralement
+                        pas du premier coup, mais cela n'empêhce pas d'en rire: </p>
+                        <img src="assets/copy-paste.gif" width="500" height="300">
+                        <br>
+                        <img src="assets/disco-efface.gif" width="500" height="300">
+                        <br>
+                        <img src="assets/translation-difficile.gif" width="500" height="300">`,
           previous: true, next: false,
           id: 22
       }
