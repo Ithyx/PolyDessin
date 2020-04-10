@@ -262,7 +262,8 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
             },
             {
                 name: 'Sceau de Peinture',
-                description: '',
+                description: `<h1> Sceau de Peinture </h1>
+                              <hr>`,
                 previous: true, next: true,
                 id: 15
             }
@@ -300,6 +301,8 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                                 <li> Futuriste </li>
                                 <li> Minimaliste </li>
                               </p>
+                              <p> Une sauvegarde automatique après chaque opération sur le dessin permert de revenir directement sur
+                              le dernier dessin modifié après avoir quitté l'application. </p>
                               <img src="assets/sauvegarde.png" width="500" height="300">`,
                 previous: true, next: true,
                 id: 17
@@ -354,7 +357,19 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
               {
                   name: 'Presse-Papier',
                   description: `<h1> Presse-Papier </h1>
-                                <hr>`,
+                                <hr>
+                                <p> Le presse-papier permet de manipuler des éléments sélectionnés par l'outil selection. </p>
+                                <p> Il permet les actions suivantes :
+                                    <li> Copier (CTRL+C): copie les éléments sélectionnés dans le presse-papier. </li>
+                                    <li> Coller (CTRL+V): colle les éléments sélectionnés sur le dessin. </li>
+                                    <li> Couper (CTRL+X): copie les éléments sélectionnés dans le presse-papier et
+                                        supprime ensuite ses éléments du dessin </li>
+                                    <li> Dupliquer (CTRL+D): duplique les éléments sélectionnés sur le dessin. </li>
+                                    <li> Supprimer (Delete): supprime les éléments sélectionés du dessin. </li>
+                                </p>
+                                <p> En plus des raccouris, les opérations du presse-papier sont disponible depuis le
+                                panneau des attributs du dessin. </p>
+                                <img src="assets/presse-papier.png" width="300" height="800">`,
                   previous: true, next: true,
                   id: 20
               },
@@ -362,7 +377,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                   name: 'Annuler-Refaire',
                   description: `<h1> Annuler-Refaire </h1>
                                 <hr>
-                                <p> L'annuler refaire de gérer les dernières actions concernant l'ajout, la
+                                <p> L'annuler refaire permet de gérer les dernières actions concernant l'ajout, la
                                 suppression ou la modification d'éléments dessinés </p>
                                 <p> Les modifications d'un élément concerne:
                                   <li> Changer la couleur d'un élément </li>
@@ -370,7 +385,9 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                                 </p>
                                 <p> Les actions de l'annuler-refaire sont disponible sur le panneau des attributs. </p>
                                 <p> Il est possible d'annuler une action avec le raccourci 'CTRL+Z'. </p>
-                                <p> Il est possible de refaire une action avec le raccourci 'CTRL+SHIFT+Z'. </p>`,
+                                <p> Il est possible de refaire une action avec le raccourci 'CTRL+SHIFT+Z'. </p>
+
+                                <img src="assets/annuler-refaire.png" width="300" height="800">`,
                   previous: true, next: true,
                   id: 21
               }
@@ -381,7 +398,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
           description: `<h1> Bonus </h1>
                         <hr>
                         <p> Coder une application demande un long processus de travail. Tout ne fonctionne généralement
-                        pas du premier coup, mais cela n'empêhce pas d'en rire: </p>
+                        pas du premier coup, mais cela n'empêche pas d'en rire: </p>
                         <img src="assets/copy-paste.gif" width="500" height="300">
                         <br>
                         <img src="assets/disco-efface.gif" width="500" height="300">
