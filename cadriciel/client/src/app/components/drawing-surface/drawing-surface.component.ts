@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
+import { CommandManagerService } from 'src/app/services/command/command-manager.service';
+import { TransformSvgService } from 'src/app/services/command/transform-svg.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { GridService } from 'src/app/services/grid/grid.service';
 import { DrawElement, Point } from 'src/app/services/stockage-svg/draw-element/draw-element';
@@ -34,7 +36,8 @@ export class DrawingSurfaceComponent implements AfterViewInit {
               private colorChanger: ColorChangerToolService,
               private eraser: EraserToolService,
               private canvasConversion: CanvasConversionService,
-              private pipette: PipetteToolService
+              private pipette: PipetteToolService,
+              private commands: CommandManagerService
               ) {
                  this.mousePosition = {x: 0, y: 0};
                 }
@@ -175,6 +178,9 @@ export class DrawingSurfaceComponent implements AfterViewInit {
    @HostListener('mousewheel', ['$event']) onMousewheel(event: WheelEvent): void {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION && this.selection.selectedElements.length > 0) {
       event.preventDefault();
+      const transformCommand = new TransformSvgService(
+        this.selection.selectedElements, this.selection.sanitizer, this.selection.deleteBoundingBox.bind(this.selection)
+      );
       if (event.shiftKey) {
         // Rotation de tous les éléments autour de leur propre point central
         for (const element of this.selection.selectedElements) {
@@ -208,6 +214,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
         this.selection.selectionBox.deleteSelectionBox();
         this.selection.createBoundingBox();
       }
+      this.commands.execute(transformCommand);
     }
    }
 }
