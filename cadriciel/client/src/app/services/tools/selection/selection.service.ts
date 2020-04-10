@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommandManagerService } from '../../command/command-manager.service';
-import { TranslateSvgService } from '../../command/translate-svg.service';
+import { TransformSvgService } from '../../command/transform-svg.service';
 import { DrawingManagerService } from '../../drawing-manager/drawing-manager.service';
 import { RectangleService } from '../../stockage-svg/draw-element/basic-shape/rectangle.service';
 import { DrawElement, Point } from '../../stockage-svg/draw-element/draw-element';
@@ -25,6 +25,7 @@ export class SelectionService implements ToolInterface {
   clickInSelectionBox: boolean;
 
   private modifiedElement: Set<DrawElement>;
+  private transformCommand: TransformSvgService;
 
   constructor(private svgStockage: SVGStockageService,
               public selectionBox: SelectionBoxService,
@@ -90,6 +91,8 @@ export class SelectionService implements ToolInterface {
   onMousePress(mouse: MouseEvent): void {
     if (!this.clickOnSelectionBox && !this.clickInSelectionBox) {
       this.selectionRectangle.mouseDown(mouse);
+    } else {
+      this.transformCommand = new TransformSvgService(this.selectedElements, this.sanitizer, this.deleteBoundingBox.bind(this));
     }
   }
 
@@ -97,14 +100,10 @@ export class SelectionService implements ToolInterface {
     if (this.clickOnSelectionBox || this.clickInSelectionBox) {
       this.clickOnSelectionBox = false;
       this.clickInSelectionBox = false;
-      if (this.hasMoved()) {
-        this.command.execute(new TranslateSvgService(
-          this.selectedElements,
-          this.selectionBox,
-          this.sanitizer,
-          this.deleteBoundingBox
-        ));
+      if (this.transformCommand.hasMoved()) {
+        this.command.execute(this.transformCommand);
       }
+      this.command.drawingInProgress = false;
     } else {
         if (this.selectionRectangle.rectangle) {
           this.isInRectangleSelection(this.selectionRectangle.rectangle);
@@ -253,10 +252,6 @@ export class SelectionService implements ToolInterface {
       }
       this.selectionBox.updateTranslationMouse(mouse);
     }
-  }
-
-  hasMoved(): boolean {
-    return false;
   }
 
   reverseElementSelectionStatus(element: DrawElement): void {

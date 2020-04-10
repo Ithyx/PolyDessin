@@ -6,7 +6,7 @@ import { ExportWindowComponent } from '../components/export-window/export-window
 import { GalleryComponent } from '../components/gallery/gallery.component';
 import { SavePopupComponent } from '../components/save-popup/save-popup.component';
 import { CommandManagerService } from './command/command-manager.service';
-import { TranslateSvgService } from './command/translate-svg.service';
+import { TransformSvgService } from './command/transform-svg.service';
 import { GridService } from './grid/grid.service';
 import { Point } from './stockage-svg/draw-element/draw-element';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
@@ -41,6 +41,7 @@ export class ShortcutsManagerService {
   private clearTimeout: number;
   private arrowKeys: [boolean, boolean, boolean, boolean];
   private dialogConfig: MatDialogConfig;
+  private transformCommand: TransformSvgService;
 
   newDrawingEmmiter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
@@ -92,17 +93,18 @@ export class ShortcutsManagerService {
 
   updatePositionTimer(): void {
     if (this.selection.selectionBox.box) {
+      if (this.counter100ms === 0) {
+        this.transformCommand = new TransformSvgService(
+          this.selection.selectedElements, this.sanitizer, this.selection.deleteBoundingBox.bind(this.selection)
+        );
+      }
       if (!this.arrowKeys[DIRECTION.LEFT] && !this.arrowKeys[DIRECTION.RIGHT]
           && !this.arrowKeys[DIRECTION.UP] && !this.arrowKeys[DIRECTION.DOWN]) {
         window.clearInterval(this.clearTimeout);
         this.counter100ms = 0;
         this.clearTimeout = 0;
-        if (this.selection.hasMoved()) {
-          this.commands.execute(new TranslateSvgService(
-            this.selection.selectedElements,
-            this.selection.selectionBox,
-            this.sanitizer,
-            this.selection.deleteBoundingBox));
+        if (this.transformCommand.hasMoved()) {
+          this.commands.execute(this.transformCommand);
         }
 
       } else if (this.clearTimeout === 0) {
