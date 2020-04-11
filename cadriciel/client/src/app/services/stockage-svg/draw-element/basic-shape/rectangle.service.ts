@@ -38,7 +38,7 @@ export class RectangleService extends BasicShapeService {
       + '" x="' + this.points[0].x + '" y="' + this.points[0].y
       + '" width="' + this.getWidth() + '" height="' + this.getHeight() + '"></rect>';
 
-    this.points.push({x: this.points[1].x, y: this.points[0].y}, {x: this.points[0].x, y: this.points[1].y});
+    // this.points.push({x: this.points[1].x, y: this.points[0].y}, {x: this.points[0].x, y: this.points[1].y});
   }
 
   drawPerimeter(): void {
@@ -53,6 +53,6 @@ export class RectangleService extends BasicShapeService {
       this.perimeter += '" height="' + ((this.getHeight() === 0) ? thickness : (this.getHeight() + thickness))
         + '" width="' + ((this.getWidth() === 0) ? thickness : (this.getWidth() + thickness)) + '"></rect>';
     }
-    this.points.push({x: this.points[1].x, y: this.points[0].y}, {x: this.points[0].x, y: this.points[1].y});
+    // this.points.push({x: this.points[1].x, y: this.points[0].y}, {x: this.points[0].x, y: this.points[1].y});
   }
 }
