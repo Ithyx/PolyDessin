@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { CommandManagerService } from '../../command/command-manager.service';
 import { TracePencilService } from '../../stockage-svg/draw-element/trace/trace-pencil.service';
 import { SVGStockageService } from '../../stockage-svg/svg-stockage.service';
 import { PencilToolService } from './pencil-tool.service';
@@ -12,7 +13,10 @@ describe('TracingToolService', () => {
   let stockageService: SVGStockageService;
   let element: TracePencilService;
   let resetTraceSpy: jasmine.Spy<() => void>;
-  beforeEach(() => TestBed.configureTestingModule({}));
+
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [{ provide: CommandManagerService, useValue: {execute: () => { return; }}}]
+  }));
   beforeEach(() => service = TestBed.get(PencilToolService));
   beforeEach(() => stockageService = TestBed.get(SVGStockageService));
   beforeEach(() => {

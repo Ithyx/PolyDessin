@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
+import { CanvasConversionService } from '../canvas-conversion.service';
 import { RemoveSVGService } from '../command/remove-svg.service';
 import { RectangleService } from '../stockage-svg/draw-element/basic-shape/rectangle.service';
 import { DrawElement } from '../stockage-svg/draw-element/draw-element';
@@ -33,7 +34,9 @@ describe('EraserToolService', () => {
     element, element, element
   ];
 
-  beforeEach(() => TestBed.configureTestingModule({}));
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [{ provide: CanvasConversionService, useValue: {updateDrawing: () => { return; }, getElementsInArea: () => []}}]
+  }));
   beforeEach(() => {
     service = TestBed.get(EraserToolService);
     service['drawing'] = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
