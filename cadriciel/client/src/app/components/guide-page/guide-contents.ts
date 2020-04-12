@@ -224,7 +224,12 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                               <p> Il est possible de sélectionner l'ensemble des éléments dessinés avec le raccourci 'CTRL+A'. </p>
                               <p> La sélection permet alors de bouger les éléments à l'aide de soit la souris soit du clavier avec
                               les flèches directionnelles. </p>
-                              <img src="assets/selection.gif" width="300" height="300">`,
+                              <img src="assets/selection.gif" width="300" height="300">
+                              <p> Il est également possible de faire pivoter une sélection avec la molette de la souris. Plusieurs styles de
+                              rotation sont possible:
+                              <li> Par 15° à chaque cran de roulette autour d'une centre de la sélection. </li>
+                              <li> Par 1° si la touche ALT est enfoncée </li>
+                              <li> Autour du centre chacun des élément sélectionnés si la touche SHIFT est enfoncée </li> </p>`,
                 previous: true, next: true,
                 id: 12
             },
@@ -263,7 +268,13 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
             {
                 name: 'Sceau de Peinture',
                 description: `<h1> Sceau de Peinture </h1>
-                              <hr>`,
+                              <hr>
+                              <p> L'outil sceau de peinture permet de remplir une région de la couleur principale. Ce remplissage
+                              est considéré comme étant une élément dessin et peut donc être manipulé par l'utilisateur (sélection,
+                              efface, etc). L'outil est également accessible en appuyant sur la touche 'b'.</p>
+                              <p> Il est possible de configurer un pourcentage de tolérence d'écart au niveau des couleurs de la région
+                              que le sceau doit remplir </p>
+                              <img src="assets/sceau.gif" width="300" height="300">`,
                 previous: true, next: true,
                 id: 15
             }
