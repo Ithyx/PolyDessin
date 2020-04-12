@@ -19,6 +19,7 @@ describe('DrawingSurfaceComponent', () => {
   let fixture: ComponentFixture<DrawingSurfaceComponent>;
   let drawing: SVGElement;
   let canvas: HTMLCanvasElement;
+  let conversion: HTMLCanvasElement;
   const element: DrawElement = new RectangleService();
   const selectedElement: DrawElement = new LineService();
 
@@ -82,6 +83,8 @@ describe('DrawingSurfaceComponent', () => {
     component['drawing'] = new ElementRef<SVGElement>(drawing);
     canvas = document.createElement('canvas');
     component['canvas'] = new ElementRef<HTMLCanvasElement>(canvas);
+    conversion = document.createElement('canvas');
+    component['conversion'] = new ElementRef<HTMLCanvasElement>(conversion);
     component['selection'] = TestBed.get(SelectionService);
     component['selection'].selectionBox.box = new RectangleService();
     component['selection'].selectionBox.box.points[0] = {x: 10, y: 10};
@@ -105,9 +108,9 @@ describe('DrawingSurfaceComponent', () => {
     component.ngAfterViewInit();
     expect(component['pipette'].drawing).toEqual(drawing);
   });
-  it('#ngAfterViewInit devrait assigner le nativeElement de canvas au canvas de canvasConversion', () => {
+  it('#ngAfterViewInit devrait assigner le nativeElement de conversion au canvas de canvasConversion', () => {
     component.ngAfterViewInit();
-    expect(component['canvasConversion'].canvas).toEqual(canvas);
+    expect(component['canvasConversion'].canvas).toEqual(conversion);
   });
   it('#ngAfterViewInit devrait assigner le nativeElement de canvas au canvas de pipette', () => {
     component.ngAfterViewInit();
