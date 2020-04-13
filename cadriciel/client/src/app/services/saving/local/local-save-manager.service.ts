@@ -14,7 +14,8 @@ export class LocalSaveManagerService {
 
   constructor(private currentDrawingParams: DrawingManagerService,
               private currentDrawingContent: SVGStockageService,
-              private savingUtility: SavingUtilityService) { }
+              private savingUtility: SavingUtilityService,
+              private svgStockage: SVGStockageService) { }
 
   isStorageEmpty(): boolean {
     return localStorage.length === 0;
@@ -47,7 +48,7 @@ export class LocalSaveManagerService {
 
     this.currentDrawingContent.cleanDrawing();
     for (const element of parsedContent) {
-      this.savingUtility.addElement(element);
+      this.svgStockage.addSVG(this.savingUtility.createCopyDrawElement(element));
     }
 
     return true;

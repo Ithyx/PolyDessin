@@ -105,7 +105,9 @@ export class GalleryComponent implements OnInit {
     this.drawingManager.backgroundColor = drawing.backgroundColor;
     this.drawingManager.name = drawing.name;
     if (drawing.tags) { this.drawingManager.tags = drawing.tags; } else { this.drawingManager.tags = []; }
-    if (drawing.elements) { drawing.elements.forEach(this.saveUtility.addElement.bind(this.saveUtility)); }
+    if (drawing.elements) {
+      drawing.elements.forEach((element) => { this.stockageSVG.addSVG(this.saveUtility.createCopyDrawElement(element)); });
+    }
     this.ngZone.run(() => this.router.navigate(['dessin']));
     this.canvas.updateDrawing();
     this.localSaving.saveState();
