@@ -68,6 +68,9 @@ export class SelectionService implements ToolInterface {
   }
 
   onMouseMove(mouse: MouseEvent): void {
+    if (this.selectionBox.scaling) {
+      return;
+    }
     if (this.clickOnSelectionBox || this.clickInSelectionBox) {
       this.updateTranslationMouse(mouse);
     } else {
@@ -97,6 +100,7 @@ export class SelectionService implements ToolInterface {
   }
 
   onMouseRelease(): void {
+    this.selectionBox.scaling = false;
     if (this.clickOnSelectionBox || this.clickInSelectionBox) {
       this.clickOnSelectionBox = false;
       this.clickInSelectionBox = false;

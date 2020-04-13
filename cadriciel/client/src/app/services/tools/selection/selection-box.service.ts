@@ -17,10 +17,13 @@ export class SelectionBoxService {
   box: RectangleService;
   mouseClick: Point;
   controlPointBox: RectangleService[];
+  scaling: boolean;
 
   constructor(private tools: ToolManagerService,
               private sanitizer: DomSanitizer,
-              ) {}
+              ) {
+                this.scaling = false;
+              }
 
   createSelectionBox(pointMin: Point, pointMax: Point): void {
 
@@ -107,5 +110,15 @@ export class SelectionBoxService {
       controlPoint.updateTranslationMouse(mouse);
       controlPoint.svgHtml = this.sanitizer.bypassSecurityTrustHtml(controlPoint.svg);
     }
+  }
+
+  controlPointMouseDown(mouse: MouseEvent, index: number): void {
+    this.mouseClick = {x: mouse.clientX, y: mouse.clientY};
+    if (index <= 1) {
+      // redimensionnement vertical
+    } else {
+      // redimensionnement horizontal
+    }
+    this.scaling = true;
   }
 }
