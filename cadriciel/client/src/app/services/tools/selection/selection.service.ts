@@ -9,6 +9,7 @@ import { SVGStockageService } from '../../stockage-svg/svg-stockage.service';
 import { ToolInterface } from '../tool-interface';
 import { ControlPosition, SelectionBoxService } from './selection-box.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
+import { TracePencilService } from '../../stockage-svg/draw-element/trace/trace-pencil.service';
 
 export const LEFT_CLICK = 0;
 export const RIGHT_CLICK = 2;
@@ -70,6 +71,8 @@ export class SelectionService implements ToolInterface {
   onMouseMove(mouse: MouseEvent): void {
     if (this.selectionBox.controlPosition !== ControlPosition.NONE) {
       this.resizeElements(mouse);
+      this.selectionBox.mouseClick = {x: mouse.offsetX, y: mouse.offsetY};
+      this.createBoundingBox();
       return;
     }
     if (this.clickOnSelectionBox || this.clickInSelectionBox) {
@@ -275,24 +278,29 @@ export class SelectionService implements ToolInterface {
   }
 
   resizeElements(mouse: MouseEvent): void {
-    let resizeFactor = 0;
+    const scale: Point = {x: 1, y: 1};
+    const center: Point = {...this.selectionBox.mouseClick};
     switch (this.selectionBox.controlPosition) {
       case ControlPosition.UP:
-        resizeFactor = 1 + (this.selectionBox.mouseClick.y - mouse.offsetY) / this.selectionBox.box.getHeight();
+        scale.y = 1 + (this.selectionBox.mouseClick.y - mouse.offsetY) / this.selectionBox.box.getHeight();
+        center.y += this.selectionBox.box.getHeight();
         break;
       case ControlPosition.DOWN:
-        resizeFactor = 1 - (this.selectionBox.mouseClick.y - mouse.offsetY) / this.selectionBox.box.getHeight();
+        scale.y = 1 - (this.selectionBox.mouseClick.y - mouse.offsetY) / this.selectionBox.box.getHeight();
+        center.y -= this.selectionBox.box.getHeight();
         break;
       case ControlPosition.LEFT:
-        resizeFactor = 1 + (this.selectionBox.mouseClick.x - mouse.offsetX) / this.selectionBox.box.getWidth();
+        scale.x = 1 + (this.selectionBox.mouseClick.x - mouse.offsetX) / this.selectionBox.box.getWidth();
+        center.x += this.selectionBox.box.getWidth();
         break;
       case ControlPosition.RIGHT:
-        resizeFactor = 1 - (this.selectionBox.mouseClick.x - mouse.offsetX) / this.selectionBox.box.getWidth();
+        scale.x = 1 - (this.selectionBox.mouseClick.x - mouse.offsetX) / this.selectionBox.box.getWidth();
+        center.x -= this.selectionBox.box.getWidth();
         break;
     }
-    console.log(resizeFactor);
     for (const element of this.selectedElements) {
-      // TODO: redimensionner les éléments
+      element.updateScale(scale, center);
+      element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
     }
   }
 

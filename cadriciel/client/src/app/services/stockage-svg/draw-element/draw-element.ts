@@ -79,7 +79,7 @@ export abstract class DrawElement {
    updateTranslationMouse(mouse: MouseEvent): void {
     const x = mouse.movementX;
     const y = mouse.movementY;
-    const translationMatrix = {a: 1, b: 0, c: 0, d: 1, e: x, f: y};
+    const translationMatrix: TransformMatrix = {a: 1, b: 0, c: 0, d: 1, e: x, f: y};
     this.updateTransform(translationMatrix);
   }
 
@@ -91,8 +91,15 @@ export abstract class DrawElement {
     const dRotation = Math.cos(radianAngle);
     const eRotation = (1 - Math.cos(radianAngle)) * x + Math.sin(radianAngle) * y;
     const fRotation = (1 - Math.cos(radianAngle)) * y - Math.sin(radianAngle) * x;
-    const rotationMatrix = {a: aRotation, b: bRotation, c: cRotation, d: dRotation, e: eRotation, f: fRotation };
+    const rotationMatrix: TransformMatrix = {a: aRotation, b: bRotation, c: cRotation, d: dRotation, e: eRotation, f: fRotation };
     this.updateTransform(rotationMatrix);
+  }
+
+  updateScale(scale: Point, center: Point): void {
+    const eScale = (1 - scale.x) * center.x;
+    const fScale = (1 - scale.y) * center.y;
+    const scaleMatrix: TransformMatrix = {a: scale.x, b: 0, c: 0, d: scale.y, e: eScale, f: fScale};
+    this.updateTransform(scaleMatrix);
   }
 
   updateTransform(matrix: TransformMatrix): void {
