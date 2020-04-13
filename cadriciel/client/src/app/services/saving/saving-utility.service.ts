@@ -8,7 +8,6 @@ import { LineService } from '../stockage-svg/draw-element/line.service';
 import { SprayService } from '../stockage-svg/draw-element/spray.service';
 import { TraceBrushService } from '../stockage-svg/draw-element/trace/trace-brush.service';
 import { TracePencilService } from '../stockage-svg/draw-element/trace/trace-pencil.service';
-import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 
 import { TOOL_INDEX } from '../tools/tool-manager.service';
 
@@ -17,9 +16,7 @@ import { TOOL_INDEX } from '../tools/tool-manager.service';
 })
 export class SavingUtilityService {
 
-  constructor(private stockageSVG: SVGStockageService) { }
-
-  addElement(element: DrawElement): void {
+  createCopyDrawElement(element: DrawElement): DrawElement {
     let newElement: TracePencilService | TraceBrushService | SprayService | RectangleService
                     | PolygonService | LineService | EllipseService | ColorFillService;
     switch (element.trueType) {
@@ -52,15 +49,17 @@ export class SavingUtilityService {
         newElement = new TracePencilService();
         break;
     }
-    this.setupElement(newElement, element);
+    return this.setupCopy(newElement, element);
   }
 
-  setupElement(newElement: DrawElement, element: DrawElement): void {
+  setupCopy(newElement: DrawElement, element: DrawElement): DrawElement {
     newElement.svgHtml = element.svgHtml;
     newElement.svg = element.svg;
     newElement.trueType = element.trueType;
-    newElement.points = element.points;
-    // newElement.isSelected = element.isSelected;
+    newElement.points = [];
+    for (const point of element.points) {
+      newElement.points.push({x: point.x, y: point.y});
+    }
     newElement.erasingEvidence = element.erasingEvidence;
     if (element.primaryColor !== undefined) { newElement.primaryColor = element.primaryColor; }
     if (element.secondaryColor !== undefined) { newElement.secondaryColor = element.secondaryColor; }
@@ -74,9 +73,9 @@ export class SavingUtilityService {
     if (element.isDotted !== undefined) { newElement.isDotted = element.isDotted; }
     if (element.chosenOption !== undefined) { newElement.chosenOption = element.chosenOption; }
     if (element.isAPolygon !== undefined) { newElement.isAPolygon = element.isAPolygon; }
-    newElement.pointMin = element.pointMin;
-    newElement.pointMax = element.pointMax;
-    newElement.transform = element.transform;
-    this.stockageSVG.addSVG(newElement);
+    newElement.pointMin = {x: element.pointMin.x, y: element.pointMin.y};
+    newElement.pointMax = {x: element.pointMax.x, y: element.pointMax.y};
+    newElement.transform = {...element.transform};
+    return newElement;
   }
 }
