@@ -247,7 +247,7 @@ export class SelectionService implements ToolInterface {
   updateTranslationMouse(mouse: MouseEvent): void {
     if (this.selectionBox.box) {
       for (const element of this.selectedElements) {
-          element.updateTranslationMouse(mouse, this.selectionBox.mouseClick);
+          element.updateTranslationMouse(mouse);
           element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
       }
       this.selectionBox.updateTranslationMouse(mouse);

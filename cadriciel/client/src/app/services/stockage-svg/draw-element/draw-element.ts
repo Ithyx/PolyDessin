@@ -76,7 +76,7 @@ export abstract class DrawElement {
     this.updateTransform(translationMatrix);
    }
 
-   updateTranslationMouse(mouse: MouseEvent, mouseClick: Point): void {
+   updateTranslationMouse(mouse: MouseEvent): void {
     const x = mouse.movementX;
     const y = mouse.movementY;
     const translationMatrix = {a: 1, b: 0, c: 0, d: 1, e: x, f: y};

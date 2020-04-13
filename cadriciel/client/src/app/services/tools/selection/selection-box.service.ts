@@ -101,10 +101,10 @@ export class SelectionBoxService {
   }
 
   updateTranslationMouse(mouse: MouseEvent): void {
-    this.box.updateTranslationMouse(mouse, this.mouseClick);
+    this.box.updateTranslationMouse(mouse);
     this.box.svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.box.svg);
     for (const controlPoint of this.controlPointBox) {
-      controlPoint.updateTranslationMouse(mouse, this.mouseClick);
+      controlPoint.updateTranslationMouse(mouse);
       controlPoint.svgHtml = this.sanitizer.bypassSecurityTrustHtml(controlPoint.svg);
     }
   }
