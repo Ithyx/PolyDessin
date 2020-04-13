@@ -182,7 +182,6 @@ export class DrawingSurfaceComponent implements AfterViewInit {
         for (const element of this.selection.selectedElements) {
 
           this.selection.findPointMinAndMax(element);
-          element.hasMoved = false;
           const middleX = (element.pointMin.x + element.pointMax.x) / 2;
           const middleY = (element.pointMin.y + element.pointMax.y) / 2;
           event.deltaY > 0 ? (

@@ -100,7 +100,6 @@ export class ClipboardService {
     if (element.isAPolygon !== undefined) { newElement.isAPolygon = element.isAPolygon; }
     newElement.pointMin = {x: element.pointMin.x, y: element.pointMin.y};
     newElement.pointMax = {x: element.pointMax.x, y: element.pointMax.y};
-    // newElement.translate = {x: element.translate.x, y: element.translate.y};
     newElement.transform = {...element.transform};
     array.push(newElement);
   }
@@ -129,7 +128,6 @@ export class ClipboardService {
     this.selection.deleteBoundingBox();
     for (const element of this.duplicatedElements) {
       element.updateTranslation(PASTE_OFFSET.x, PASTE_OFFSET.y);
-      element.translateAllPoints();
     }
 
     if (this.isInDrawing(this.duplicatedElements)) {
@@ -139,7 +137,6 @@ export class ClipboardService {
     } else {
       for (const element of this.duplicatedElements) {
         element.updateTranslation(-PASTE_OFFSET.x, -PASTE_OFFSET.y);
-        element.translateAllPoints();
         this.selection.selectedElements.push(element);
       }
     }
@@ -161,7 +158,6 @@ export class ClipboardService {
     const buffer: DrawElement[] = [];
     for (const element of this.copiedElements) {
       element.updateTranslation(PASTE_OFFSET.x, PASTE_OFFSET.y);
-      element.translateAllPoints();
     }
 
     if (this.isInDrawing(this.copiedElements)) {
@@ -172,7 +168,6 @@ export class ClipboardService {
     } else {
       for (const element of this.copiedElements) {
         element.updateTranslation(-PASTE_OFFSET.x * this.numberOfPaste, -PASTE_OFFSET.y * this.numberOfPaste);
-        element.translateAllPoints();
         this.selection.selectedElements.push(element);
         this.createCopyDrawElement(element, buffer);
         this.numberOfPaste = 0;
