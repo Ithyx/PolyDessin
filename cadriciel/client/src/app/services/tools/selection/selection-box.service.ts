@@ -4,6 +4,14 @@ import { RectangleService } from '../../stockage-svg/draw-element/basic-shape/re
 import { Point } from '../../stockage-svg/draw-element/draw-element';
 import { ToolManagerService} from '../tool-manager.service';
 
+export enum ControlPosition {
+  NONE,
+  UP,
+  DOWN,
+  LEFT,
+  RIGHT
+}
+
 export const NUMBER_OF_CONTROL_POINT = 4;
 export const SELECTION_BOX_THICKNESS = 4;
 const CONTROL_POINT_THICKNESS = 4;
@@ -17,12 +25,12 @@ export class SelectionBoxService {
   box: RectangleService;
   mouseClick: Point;
   controlPointBox: RectangleService[];
-  scaling: boolean;
+  controlPosition: ControlPosition; // Point de contrôle sélectionné pour redimensionnement
 
   constructor(private tools: ToolManagerService,
               private sanitizer: DomSanitizer,
               ) {
-                this.scaling = false;
+                this.controlPosition = ControlPosition.NONE;
               }
 
   createSelectionBox(pointMin: Point, pointMax: Point): void {
@@ -113,12 +121,7 @@ export class SelectionBoxService {
   }
 
   controlPointMouseDown(mouse: MouseEvent, index: number): void {
-    this.mouseClick = {x: mouse.clientX, y: mouse.clientY};
-    if (index <= 1) {
-      // redimensionnement vertical
-    } else {
-      // redimensionnement horizontal
-    }
-    this.scaling = true;
+    this.mouseClick = {x: mouse.offsetX, y: mouse.offsetY};
+    this.controlPosition = index + 1;
   }
 }

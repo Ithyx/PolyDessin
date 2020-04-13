@@ -7,7 +7,7 @@ import { RectangleService } from '../../stockage-svg/draw-element/basic-shape/re
 import { DrawElement, Point } from '../../stockage-svg/draw-element/draw-element';
 import { SVGStockageService } from '../../stockage-svg/svg-stockage.service';
 import { ToolInterface } from '../tool-interface';
-import { SelectionBoxService } from './selection-box.service';
+import { ControlPosition, SelectionBoxService } from './selection-box.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
 
 export const LEFT_CLICK = 0;
@@ -68,7 +68,8 @@ export class SelectionService implements ToolInterface {
   }
 
   onMouseMove(mouse: MouseEvent): void {
-    if (this.selectionBox.scaling) {
+    if (this.selectionBox.controlPosition !== ControlPosition.NONE) {
+      this.resizeElements(mouse);
       return;
     }
     if (this.clickOnSelectionBox || this.clickInSelectionBox) {
@@ -100,7 +101,7 @@ export class SelectionService implements ToolInterface {
   }
 
   onMouseRelease(): void {
-    this.selectionBox.scaling = false;
+    this.selectionBox.controlPosition = ControlPosition.NONE;
     if (this.clickOnSelectionBox || this.clickInSelectionBox) {
       this.clickOnSelectionBox = false;
       this.clickInSelectionBox = false;
@@ -120,6 +121,10 @@ export class SelectionService implements ToolInterface {
         this.selectionRectangle.rectangleInverted = new RectangleService();
         this.modifiedElement.clear();
     }
+  }
+
+  onMouseLeave(): void {
+    this.selectionBox.controlPosition = ControlPosition.NONE;
   }
 
   createBoundingBox(): void {
@@ -266,6 +271,28 @@ export class SelectionService implements ToolInterface {
       const index = this.selectedElements.indexOf(element, 0);
       this.selectedElements.splice(index, 1);
       // element.isSelected = false;
+    }
+  }
+
+  resizeElements(mouse: MouseEvent): void {
+    let resizeFactor = 0;
+    switch (this.selectionBox.controlPosition) {
+      case ControlPosition.UP:
+        resizeFactor = 1 + (this.selectionBox.mouseClick.y - mouse.offsetY) / this.selectionBox.box.getHeight();
+        break;
+      case ControlPosition.DOWN:
+        resizeFactor = 1 - (this.selectionBox.mouseClick.y - mouse.offsetY) / this.selectionBox.box.getHeight();
+        break;
+      case ControlPosition.LEFT:
+        resizeFactor = 1 + (this.selectionBox.mouseClick.x - mouse.offsetX) / this.selectionBox.box.getWidth();
+        break;
+      case ControlPosition.RIGHT:
+        resizeFactor = 1 - (this.selectionBox.mouseClick.x - mouse.offsetX) / this.selectionBox.box.getWidth();
+        break;
+    }
+    console.log(resizeFactor);
+    for (const element of this.selectedElements) {
+      // TODO: redimensionner les éléments
     }
   }
 
