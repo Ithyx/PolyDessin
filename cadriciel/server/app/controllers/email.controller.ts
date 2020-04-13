@@ -16,7 +16,7 @@ export class EmailController {
     private async sendDrawing(req: Request, res: Response): Promise<void> {
         const array = (req.body.payload as string).split(',');
         const data = Buffer.from(array[1], 'base64');
-        res.status(HttpStatus.OK).send(this.emailService.sendEmail(req.body.to, data,
+        res.status(HttpStatus.OK).send(this.emailService.sendEmail(req.body.to as string, data,
         req.body.filename as string, req.body.extension as string));
     }
 

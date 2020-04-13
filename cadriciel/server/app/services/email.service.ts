@@ -3,20 +3,20 @@ import * as FormData from 'form-data';
 import { injectable } from 'inversify';
 import 'reflect-metadata';
 
-export const MAIL_API_URL = 'https://log2990.step.polymtl.ca/email?dry_run=true';
+export const MAIL_API_URL = 'https://log2990.step.polymtl.ca/email';
 // export const MAIL_API_HOST = 'log2990.step.polymtl.ca';
 // export const MAIL_API_PATH = '/email';
 
 @injectable()
 export class EmailService {
 
-    async sendEmail(address: string, image: Buffer, fileName: string, fileExtension: string): Promise<void> {
+    async sendEmail(address: string, image: Buffer, fileName: string, fileExtension: string): Promise<boolean> {
         if (fileName === '') { fileName = 'image'; }
-        const form = new FormData();
-        form.append('to', address);
         const appendOptions = {filename: fileName + '.' +  fileExtension, contentType: 'image/' + fileExtension,
         knownLength: image.byteLength};
-        console.log(appendOptions);
+        console.log('email:', address);
+        const form = new FormData();
+        form.append('to', address);
         form.append('payload', image, appendOptions);
         // la clé est temporaire, elle devra être déplacée dans une variable d'environnement
         const formHeaders = form.getHeaders();
@@ -27,9 +27,13 @@ export class EmailService {
                 ...formHeaders
             }
         };
-        await Axios.default.post(MAIL_API_URL, form, config)
-        .catch((err) => {
+        try {
+            const res = await Axios.default.post(MAIL_API_URL, form, config);
+            console.log(res);
+            return true;
+        } catch (err) {
             console.log(err);
-        });
+            return false;
+        }
     }
 }

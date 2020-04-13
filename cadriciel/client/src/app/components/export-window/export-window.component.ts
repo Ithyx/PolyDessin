@@ -115,9 +115,10 @@ export class ExportWindowComponent {
 
   sendImage(): void {
     this.context.drawImage(this.image, 0, 0);
-    const imageData = this.canvas.toDataURL('image/' + this.selectedExportFormat);
+    const format = (this.selectedExportFormat === 'svg') ? 'svg+xml' : this.selectedExportFormat;
+    const imageData = this.canvas.toDataURL('image/' + format);
     console.log(imageData);
-    this.db.sendEmail(this.emailAdress, imageData, this.selectedFileName, this.selectedExportFormat);
+    this.db.sendEmail(this.emailAdress, imageData, this.selectedFileName, format);
   }
 
   updateSelectedFormat(event: Event): void {
