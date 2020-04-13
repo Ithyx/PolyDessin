@@ -44,7 +44,7 @@ export class ColorFillService implements DrawElement {
 
   draw(): void {
     this.svg = '<path transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
-    + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f + ')" ' + ')" fill="none" '
+    + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f + ')" fill="none" '
       + `stroke="${(this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString}" `
       + 'stroke-width="3" d="';
     for (let i = 0; i < this.points.length; ++i) {
