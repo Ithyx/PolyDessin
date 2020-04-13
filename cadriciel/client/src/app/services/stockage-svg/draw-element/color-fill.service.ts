@@ -26,7 +26,6 @@ export class ColorFillService implements DrawElement {
 
   pointMin: Point;
   pointMax: Point;
-  translate: Point;
 
   constructor() {
     this.svg = '';
@@ -40,11 +39,12 @@ export class ColorFillService implements DrawElement {
       RGBA: [0, 0, 0, 0]
     };
     this.erasingColor = ERASING_COLOR_INIT;
-    this.translate = {x: 0, y: 0};
+    this.transform = {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0};
   }
 
   draw(): void {
-    this.svg = '<path transform="translate(' + this.translate.x + ' ' + this.translate.y + ')" fill="none" '
+    this.svg = '<path transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
+    + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f + ')" ' + ')" fill="none" '
       + `stroke="${(this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString}" `
       + 'stroke-width="3" d="';
     for (let i = 0; i < this.points.length; ++i) {
@@ -54,7 +54,7 @@ export class ColorFillService implements DrawElement {
     this.svg += '"></path>';
   }
 
-  updatePosition(x: number, y: number): void {
+  /* updatePosition(x: number, y: number): void {
     this.translate.x += x;
     this.translate.y += y;
     this.draw();
@@ -64,7 +64,7 @@ export class ColorFillService implements DrawElement {
     this.translate.x = mouse.offsetX - mouseClick.x;
     this.translate.y = mouse.offsetY - mouseClick.y;
     this.draw();
-  }
+  } */
 
   updateParameters(): void {
     // Aucun paramètre à modifier
