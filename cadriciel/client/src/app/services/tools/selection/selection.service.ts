@@ -95,22 +95,23 @@ export class SelectionService implements ToolInterface {
   }
 
   onMousePress(mouse: MouseEvent): void {
-    if (!this.clickOnSelectionBox && !this.clickInSelectionBox) {
+    if (!this.clickOnSelectionBox && !this.clickInSelectionBox && this.selectionBox.controlPosition === ControlPosition.NONE) {
       this.selectionRectangle.mouseDown(mouse);
     } else {
+      this.command.drawingInProgress = true;
       this.transformCommand = new TransformSvgService(this.selectedElements, this.sanitizer, this.deleteBoundingBox.bind(this));
     }
   }
 
   onMouseRelease(): void {
-    this.selectionBox.controlPosition = ControlPosition.NONE;
-    if (this.clickOnSelectionBox || this.clickInSelectionBox) {
+    if (this.clickOnSelectionBox || this.clickInSelectionBox || this.selectionBox.controlPosition !== ControlPosition.NONE) {
       this.clickOnSelectionBox = false;
       this.clickInSelectionBox = false;
       if (this.transformCommand.hasMoved()) {
         this.command.execute(this.transformCommand);
       }
       this.command.drawingInProgress = false;
+      this.selectionBox.controlPosition = ControlPosition.NONE;
     } else {
         if (this.selectionRectangle.rectangle) {
           this.isInRectangleSelection(this.selectionRectangle.rectangle);
@@ -127,6 +128,9 @@ export class SelectionService implements ToolInterface {
 
   onMouseLeave(): void {
     this.selectionBox.controlPosition = ControlPosition.NONE;
+    if (this.transformCommand && this.transformCommand.hasMoved()) {
+      this.command.execute(this.transformCommand);
+    }
   }
 
   createBoundingBox(): void {
