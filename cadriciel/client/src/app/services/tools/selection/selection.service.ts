@@ -9,7 +9,6 @@ import { SVGStockageService } from '../../stockage-svg/svg-stockage.service';
 import { ToolInterface } from '../tool-interface';
 import { ControlPosition, SelectionBoxService } from './selection-box.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
-import { TracePencilService } from '../../stockage-svg/draw-element/trace/trace-pencil.service';
 
 export const LEFT_CLICK = 0;
 export const RIGHT_CLICK = 2;
@@ -165,6 +164,7 @@ export class SelectionService implements ToolInterface {
 
       pointMin = {x: pointMin.x - HALF_DRAW_ELEMENT * epaisseurMin.x, y: pointMin.y - HALF_DRAW_ELEMENT * epaisseurMin.y};
       pointMax = {x: pointMax.x + HALF_DRAW_ELEMENT * epaisseurMax.x, y: pointMax.y + HALF_DRAW_ELEMENT * epaisseurMax.y};
+
       this.selectionBox.createSelectionBox(pointMin, pointMax);
     }
   }
@@ -279,27 +279,22 @@ export class SelectionService implements ToolInterface {
 
   resizeElements(mouse: MouseEvent): void {
     const scale: Point = {x: 1, y: 1};
-    const center: Point = {...this.selectionBox.mouseClick};
     switch (this.selectionBox.controlPosition) {
       case ControlPosition.UP:
         scale.y = 1 + (this.selectionBox.mouseClick.y - mouse.offsetY) / this.selectionBox.box.getHeight();
-        center.y += this.selectionBox.box.getHeight();
         break;
       case ControlPosition.DOWN:
         scale.y = 1 - (this.selectionBox.mouseClick.y - mouse.offsetY) / this.selectionBox.box.getHeight();
-        center.y -= this.selectionBox.box.getHeight();
         break;
       case ControlPosition.LEFT:
         scale.x = 1 + (this.selectionBox.mouseClick.x - mouse.offsetX) / this.selectionBox.box.getWidth();
-        center.x += this.selectionBox.box.getWidth();
         break;
       case ControlPosition.RIGHT:
         scale.x = 1 - (this.selectionBox.mouseClick.x - mouse.offsetX) / this.selectionBox.box.getWidth();
-        center.x -= this.selectionBox.box.getWidth();
         break;
     }
     for (const element of this.selectedElements) {
-      element.updateScale(scale, center);
+      element.updateScale(scale, {...this.selectionBox.scaleCenter});
       element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
     }
   }

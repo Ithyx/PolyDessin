@@ -26,14 +26,33 @@ export class SelectionBoxService {
   mouseClick: Point;
   controlPointBox: RectangleService[];
   controlPosition: ControlPosition; // Point de contrôle sélectionné pour redimensionnement
+  scaleCenter: Point;
 
   constructor(private tools: ToolManagerService,
               private sanitizer: DomSanitizer,
               ) {
                 this.controlPosition = ControlPosition.NONE;
+                this.scaleCenter = {x: 0, y: 0};
+                this.mouseClick = {x: 0, y: 0};
               }
 
   createSelectionBox(pointMin: Point, pointMax: Point): void {
+
+    // ajuster les valeurs de boite de sélection pour qu'elle reste fixe avec le redimensionnement
+    switch (this.controlPosition) {
+      case ControlPosition.UP:
+        pointMax.y = this.scaleCenter.y;
+        break;
+      case ControlPosition.DOWN:
+        pointMin.y = this.scaleCenter.y;
+        break;
+      case ControlPosition.LEFT:
+        pointMax.x = this.scaleCenter.x;
+        break;
+      case ControlPosition.RIGHT:
+        pointMin.x = this.scaleCenter.x;
+        break;
+    }
 
     this.box = new RectangleService();
     this.controlPointBox = new Array<RectangleService>(NUMBER_OF_CONTROL_POINT);
@@ -122,6 +141,21 @@ export class SelectionBoxService {
 
   controlPointMouseDown(mouse: MouseEvent, index: number): void {
     this.mouseClick = {x: mouse.offsetX, y: mouse.offsetY};
+    this.scaleCenter = {...this.mouseClick};
     this.controlPosition = index + 1;
+    switch (this.controlPosition) {
+      case ControlPosition.UP:
+        this.scaleCenter.y = this.box.points[1].y;
+        break;
+      case ControlPosition.DOWN:
+        this.scaleCenter.y = this.box.points[0].y;
+        break;
+      case ControlPosition.LEFT:
+        this.scaleCenter.x = this.box.points[1].x;
+        break;
+      case ControlPosition.RIGHT:
+        this.scaleCenter.x = this.box.points[0].x;
+        break;
+    }
   }
 }
