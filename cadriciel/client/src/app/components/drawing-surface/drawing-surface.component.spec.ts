@@ -371,7 +371,8 @@ describe('DrawingSurfaceComponent', () => {
     expect(component['selection'].selectionBox.mouseClick).toEqual({x: 12, y: 14});
   });
 
-  // TESTS handleMouseUpBox
+ /*
+ // TESTS handleMouseUpBox
   it('#handleMouseUpBox ne devrait rien faire si l\'outil actif n\'est pas la sélection', () => {
     component['tools'].activeTool.ID = TOOL_INDEX.COLOR_CHANGER;
     const spy = spyOn(component['selection'].selectionBox.box, 'translateAllPoints');
@@ -392,7 +393,7 @@ describe('DrawingSurfaceComponent', () => {
     component.handleMouseUpBox();
     expect(spy1).toHaveBeenCalled();
     expect(spy2).toHaveBeenCalled();
-  });
+  }); */
 
   // TESTS handleMouseDownBackground
   it('#handleMouseDownBackground devrait changer mousePosition pour screenX et screenY du MouseEvent', () => {
