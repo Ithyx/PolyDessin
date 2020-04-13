@@ -1,11 +1,11 @@
 .subject {
-    border-top: 1px solid darkgray;
-    border-bottom: 1px solid darkgray;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
 }
 
 .parent-subject {
-    border-top: 1px solid darkgray;
-    border-bottom: 1px solid darkgray;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
     font-weight: bold;
 }
 
@@ -18,8 +18,8 @@ a {
 }
 
 a:hover {
-    color: red;
-    background-color: darkgray;
+    color: #EFE2BA;
+    background-color: rgb(25, 25, 40);
 }
 
 /*nécessaire pour l'espacement des noms de catégories*/

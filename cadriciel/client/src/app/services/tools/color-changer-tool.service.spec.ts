@@ -25,7 +25,7 @@ describe('ColorChangerToolService', () => {
     svgHtml: '',
     trueType: 0,
     points: [],
-    isSelected: false,
+    // isSelected: false,
     erasingEvidence: false,
     erasingColor: {RGBA: [0, 0, 0, 0], RGBAString: ''},
     pointMin: {x: 0, y: 0},

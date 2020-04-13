@@ -34,7 +34,7 @@ describe('ShortcutsManagerService', () => {
     svgHtml: '',
     trueType: 0,
     points: [{x: 90, y: 90}, {x: 76, y: 89 }],
-    isSelected: false,
+    // isSelected: false,
     erasingEvidence: false,
     erasingColor: {RGBA: [0, 0, 0, 1], RGBAString: ''},
     pointMin: {x: 0, y: 0},
@@ -336,12 +336,12 @@ describe('ShortcutsManagerService', () => {
     expect(service['selection'].selectedElements[0]).toEqual(service['svgStockage'].getCompleteSVG()[0]);
   });
 
-  it('#shortcutKeyA devrait créer une boite de sélection si le nombre d\'SVG est non-nul', () => {
+  /* it('#shortcutKeyA devrait créer une boite de sélection si le nombre d\'SVG est non-nul', () => {
     const keyboard = new KeyboardEvent('keypress', { key: 'a' , ctrlKey: true});
     service['svgStockage'].addSVG(element);
     service.shortcutKeyA(keyboard);
     expect(service['svgStockage'].getCompleteSVG()[0].isSelected).toEqual(true);
-  });
+  }); */
 
   it('#shortcutKeyA devrait mettre les éléments sélectionné du svgStockage si le nombre d\'SVG est non-nul', () => {
     const keyboard = new KeyboardEvent('keypress', { key: 'a' , ctrlKey: true});
@@ -354,13 +354,15 @@ describe('ShortcutsManagerService', () => {
   // TESTS shortcutKeyC
 
   it('#shortcutKeyC devrait changer l\'outil actif pour le crayon', () => {
-    service.shortcutKeyC();
+    const keyboard = new KeyboardEvent('keypress', { key: 'c' });
+    service.shortcutKeyC(keyboard);
     expect(service['tools'].activeTool.ID).toEqual(TOOL_INDEX.PENCIL);
   });
 
   it('#shortcutKeyC devrait supprimer le SVG en cours', () => {
     spyOn(service, 'clearOngoingSVG');
-    service.shortcutKeyC();
+    const keyboard = new KeyboardEvent('keypress', { key: 'c' });
+    service.shortcutKeyC(keyboard);
     expect(service.clearOngoingSVG).toHaveBeenCalled();
   });
 

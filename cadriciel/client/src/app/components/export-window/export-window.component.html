@@ -1,3 +1,4 @@
+<div class ="exportWindow">
 <mat-dialog-content>
     <svg #drawingPreview [attr.filter]="getFilter()" class="drawing-preview" [attr.width]="200" [attr.height]="200"
         [attr.viewBox]="'0 0 ' + drawing.width.toString() + ' ' + drawing.height.toString()">
@@ -35,6 +36,21 @@
                     <feFuncB type="linear" slope="0.5" intercept="0"></feFuncB>
                 </feComponentTransfer>
             </filter>
+
+            <!-- https://developer.mozilla.org/fr/docs/Web/SVG/Element/feOffset -->
+            <filter id="Surbrillance" filterUnits="userSpaceOnUse">
+                <feOffset in="SourceGraphic" dx="60" dy="60" />
+                <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="blur1" />
+                <feMerge>
+                    <feMergeNode in="blur1" />
+                    <feMergeNode in="SourceGraphic" />
+                </feMerge>
+            </filter>
+
+            <!-- https://developer.mozilla.org/fr/docs/Web/SVG/Element/feDropShadow -->
+            <filter id="Ombre" filterUnits="userSpaceOnUse">
+                <feDropShadow dx="1.5" dy="20" stdDeviation="5"/>
+            </filter>
         </defs>
         <rect [attr.width]="drawing.width" [attr.height]="drawing.height" [attr.fill]="drawing.backgroundColor.RGBAString" />
         <g *ngFor="let element of drawing.elements" [innerHtml]="sanitize(element.svg)" />
@@ -45,16 +61,20 @@
             <option *ngFor="let format of EXPORT_FORMAT" [value]="format"> {{format}} </option>
         </select>
         <br>
+        <br>
         <label for="filter">Choisissez un filtre d'exporation :</label>
         <select id="filter" (change)="updateSelectedFilter($event)">
             <option *ngFor="let filter of EXPORT_FILTER" [value]="filter"> {{filter}} </option>
         </select>
         <br>
+        <br>
         <label for="name">Choisissez un nom de fichier :</label>
         <input id="name" type="text" (change)="updateFileName($event)" [value]="selectedFileName" />
     </div>
+    <br>
     <a #link class="no-display"></a>
     <button mat-stroked-button (click)="export()">EXPORTER</button>
     <button mat-button (click)="close()">fermer</button>
 
 </mat-dialog-content>
+</div>

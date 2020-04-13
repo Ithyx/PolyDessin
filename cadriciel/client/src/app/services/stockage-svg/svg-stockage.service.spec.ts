@@ -31,7 +31,7 @@ describe('SVGStockageService', () => {
     lineElement = new LineService();
     lineElement.svgHtml = '';
     lineElement.points = [{x: 10, y: 10}];
-    lineElement.isSelected = true;
+    // lineElement.isSelected = true;
     lineElement.primaryColor = {
       RGBAString: 'rgba(0,1,0,1)',
       RGBA: [0, 1, 0, 1]

@@ -129,7 +129,7 @@ describe('LineToolService', () => {
     element.points.pop();
     element.points.pop();
     element.draw();
-    const ajout = new AddSVGService(element, stockageService);
+    const ajout = new AddSVGService([element], stockageService);
     expect(service['commands'].execute).toHaveBeenCalledWith(ajout);
   });
 
@@ -145,7 +145,7 @@ describe('LineToolService', () => {
     spyOn(service['commands'], 'execute');
     service.onDoubleClick(new MouseEvent('dblClick', {clientX: 1, clientY: 1}));
     element.draw();
-    const ajout = new AddSVGService(element, stockageService);
+    const ajout = new AddSVGService([element], stockageService);
     expect(service['commands'].execute).toHaveBeenCalledWith(ajout);
   });
 
@@ -163,7 +163,7 @@ describe('LineToolService', () => {
     service['line'].points.push({x: 0, y: 0});
     spyOn(service['commands'], 'execute');
     service.onDoubleClick(new MouseEvent('dblClick', {clientX: 100, clientY: 100}));
-    const addSVG = new AddSVGService(element, stockageService);
+    const addSVG = new AddSVGService([element], stockageService);
     expect(service['commands'].execute).toHaveBeenCalledWith(addSVG);
   });
 

@@ -8,6 +8,7 @@ import { DrawElement, Point } from 'src/app/services/stockage-svg/draw-element/d
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { ColorChangerToolService } from 'src/app/services/tools/color-changer-tool.service';
 import { EraserToolService } from 'src/app/services/tools/eraser-tool.service';
+import { PaintBucketToolService } from 'src/app/services/tools/paint-bucket-tool.service';
 import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service';
 import { LEFT_CLICK, RIGHT_CLICK, SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
@@ -27,6 +28,8 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   private mousePosition: Point;
   @ViewChild('canvas', {static: false})
   private canvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvasConversion', {static: false})
+  private conversion: ElementRef<HTMLCanvasElement>;
 
   constructor(protected svgStockage: SVGStockageService,
               private tools: ToolManagerService,
@@ -37,7 +40,8 @@ export class DrawingSurfaceComponent implements AfterViewInit {
               private eraser: EraserToolService,
               private canvasConversion: CanvasConversionService,
               private pipette: PipetteToolService,
-              private commands: CommandManagerService
+              private commands: CommandManagerService,
+              private bucket: PaintBucketToolService
               ) {
                  this.mousePosition = {x: 0, y: 0};
                 }
@@ -45,8 +49,10 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.eraser.drawing = this.drawing.nativeElement;
     this.pipette.drawing = this.drawing.nativeElement;
-    this.canvasConversion.canvas = this.canvas.nativeElement;
+    this.bucket.drawing = this.drawing.nativeElement;
+    this.canvasConversion.canvas = this.conversion.nativeElement;
     this.pipette.canvas = this.canvas.nativeElement;
+    this.bucket.canvas = this.canvas.nativeElement;
   }
 
   clickBelongToSelectionBox(mouse: MouseEvent): boolean {
@@ -66,12 +72,8 @@ export class DrawingSurfaceComponent implements AfterViewInit {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       if (mouse.button === LEFT_CLICK) {
         if (!this.selection.selectedElements.includes(element)) {
-          for (const elements of this.selection.selectedElements) {
-            elements.isSelected = false;
-          }
           this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
           this.selection.selectedElements.push(element);
-          element.isSelected = true;
           this.selection.createBoundingBox();
         }
         this.selection.selectionBox.mouseClick = {x: mouse.offsetX , y: mouse.offsetY };
@@ -88,12 +90,8 @@ export class DrawingSurfaceComponent implements AfterViewInit {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
       if (mouse.button === LEFT_CLICK) {
         if (this.mousePosition.x === mouse.screenX && this.mousePosition.y === mouse.screenY) {
-          for (const elements of this.selection.selectedElements) {
-            elements.isSelected = false;
-          }
           this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
           this.selection.selectedElements.push(element);
-          element.isSelected = true;
           this.selection.createBoundingBox();
         }
       } else if (mouse.button === RIGHT_CLICK) {
@@ -160,9 +158,6 @@ export class DrawingSurfaceComponent implements AfterViewInit {
     this.selection.deleteBoundingBox();
     this.selection.clickOnSelectionBox = false;
     this.selection.clickInSelectionBox = false;
-    for (const element of this.selection.selectedElements) {
-      element.isSelected = false;
-    }
     this.selection.selectedElements.splice(0, this.selection.selectedElements.length);
 
    }

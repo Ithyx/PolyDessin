@@ -5,8 +5,6 @@ import { DrawingTool, TOOL_INDEX } from '../../tools/tool-manager.service';
 import { DrawElement, ERASING_COLOR_INIT, Point, TransformMatrix } from '../draw-element/draw-element';
 import { HALF_CIRCLE } from './basic-shape/basic-shape.service';
 
-const DEFAULT_COLOR = 'rgba(0,0,0,1)';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -17,7 +15,7 @@ export class LineService implements DrawElement {
   trueType: TOOL_INDEX;
 
   points: Point[];
-  isSelected: boolean;
+  // isSelected: boolean;
   erasingEvidence: boolean;
   hasMoved: boolean;
 
@@ -39,11 +37,11 @@ export class LineService implements DrawElement {
     this.svgHtml = '';
     this.trueType = TOOL_INDEX.LINE;
     this.points = [];
-    this.isSelected = false;
+    // this.isSelected = false;
     this.erasingEvidence = false;
     this.hasMoved = true;
     this.primaryColor = {
-      RGBAString: DEFAULT_COLOR,
+      RGBAString: '',
       RGBA: [0, 0, 0, 0]
     };
     this.erasingColor = ERASING_COLOR_INIT;

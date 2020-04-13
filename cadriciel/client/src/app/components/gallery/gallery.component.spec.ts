@@ -6,6 +6,7 @@ import { MatDialogModule, MatDialogRef, MatProgressSpinnerModule } from '@angula
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
+import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element/draw-element';
 import { Drawing } from '../../../../../common/communication/drawing-interface';
 import { GalleryLoadWarningComponent } from '../gallery-load-warning/gallery-load-warning.component';
@@ -29,7 +30,7 @@ describe('GalleryComponent', () => {
     svgHtml: '',
     trueType: 0,
     points: [],
-    isSelected: false,
+    // isSelected: false,
     erasingEvidence: false,
     erasingColor: {RGBA: [0, 0, 0, 1], RGBAString: ''},
     pointMin: {x: 0, y: 0},
@@ -57,6 +58,7 @@ describe('GalleryComponent', () => {
       imports: [ MatProgressSpinnerModule, MatDialogModule, FormsModule, ReactiveFormsModule,
         RouterModule.forRoot([{path: 'dessin', component: GalleryComponent}]), BrowserAnimationsModule ],
       providers: [ { provide: MatDialogRef, useValue: {close: () => { return; }}},
+                   { provide: CanvasConversionService, useValue: {updateDrawing: () => { return; }}},
                      HttpClient, HttpHandler ],
     })
     .overrideModule(BrowserDynamicTestingModule, {
@@ -220,7 +222,7 @@ describe('GalleryComponent', () => {
   });
   it('#loadDrawing devrait changer complètement le dessin en cours', () => {
     const cleanSpy = spyOn(component['stockageSVG'], 'cleanDrawing');
-    const addSpy = spyOn(component['db'], 'addElement');
+    const addSpy = spyOn(component['saveUtility'], 'addElement');
     const drawingManager = component['drawingManager'];
     drawingManager.id = 123;
     drawingManager.height = 200;
@@ -245,7 +247,7 @@ describe('GalleryComponent', () => {
   });
   it('#loadDrawing devrait remttre les éléments à 0 même si le nouveau dessin n\'en a pas', () => {
     drawing.elements = undefined;
-    const spy = spyOn(component['db'], 'addElement');
+    const spy = spyOn(component['saveUtility'], 'addElement');
     component.loadDrawing(drawing);
     drawing.elements = [element, element];
     expect(spy).not.toHaveBeenCalled();

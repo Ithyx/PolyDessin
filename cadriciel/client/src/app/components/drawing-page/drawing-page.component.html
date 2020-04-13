@@ -1,6 +1,6 @@
 <app-toolbar></app-toolbar>
 
-<div class="drawing-surface">
+<div class="drawing-surface" style="cursor:crosshair">
     <app-drawing-surface [class]="getDrawingSurfaceClass()"
                         (click)="onClick($event)"
                         (dblclick)="onDblClick($event)"
@@ -13,8 +13,7 @@
     </app-drawing-surface>
 </div>
 
-<svg #canvasConversion class="canvas-conversion" [attr.width]="canvas.drawing.width" [attr.height]="canvas.drawing.height"
-    [attr.viewBox]="'0 0 ' + canvas.drawing.width.toString() + ' ' + canvas.drawing.height.toString()">
+<svg #coloredDrawing class="canvas-conversion" [attr.width]="canvas.drawing.width" [attr.height]="canvas.drawing.height">
     <defs>
         <!-- Texture libre de droit-->
 

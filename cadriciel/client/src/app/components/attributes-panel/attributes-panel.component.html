@@ -1,10 +1,13 @@
 <!-- Panneau d'attributs -->
 <div class="attributs-panel">
-    <i class="fas fa-sliders-h"></i> 
+    <i class="fas fa-sliders-h"> </i> 
+    Paramètres
     <form method="POST" action="javascript:void(0);">
         <div *ngFor="let parameter of tools.activeTool.parameters">
 
-            <div *ngIf="parameter.type == 'invisible'"></div>
+            <div *ngIf="parameter.type == 'invisible'">
+                <br>
+            </div>
 
             <!-- Le paramètre est un 'select' avec plusieurs options -->
             <div *ngIf="parameter.type == 'select'">
@@ -22,8 +25,21 @@
                        (change)="onChange($event, parameter.name, parameter.min, parameter.max)"
                        (focus)="disableShortcuts()" (blur)="enableShortcuts()"/>
             </div>
-
         </div>
+
+        <div *ngIf="tools.activeTool.parameters.length === 0">
+            <br>
+            <br>
+            <br>
+        </div>
+        <div *ngIf="tools.activeTool.parameters.length === 1">
+            <br>
+            <br>
+        </div>
+        <div *ngIf="tools.activeTool.parameters.length === 2">
+            <br>
+        </div>
+
         <div class="redo-undo">
             <ng-template [ngIf]="commands.hasExecutedCommands()" [ngIfElse]="undoNotAvailable">
                 <a mat-stroked-button (click)="commands.cancelCommand()">
@@ -46,7 +62,9 @@
                 </a>
             </ng-template>
         </div>
-        <i class="fas fa-palette" style ="margin-top : 10px"></i>
+        <br>
+        <i class="fas fa-palette" style ="margin-top : 10px"> </i>
+        Couleurs
         <div class="color_button">
             Couleur primaire
             <br />
@@ -91,4 +109,68 @@
             </div>
         </div>
     </form>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="clipboard">
+        Presse-Papier
+        <br>
+        <ng-template [ngIf]="clipboard.ongoingSelection()" [ngIfElse]="copyNotAvailable">
+            <a mat-stroked-button (click)="clipboard.copySelectedElement()">
+                <i class="fas fa-copy"></i> Copier
+            </a>
+        </ng-template>
+        <ng-template #copyNotAvailable>
+            <a mat-stroked-button class="notavailable">
+                <i class="fas fa-copy"></i> Copier
+            </a>
+        </ng-template>
+
+        <ng-template [ngIf]="clipboard.canPaste()" [ngIfElse]="pasteNotAvailable">
+            <a mat-stroked-button (click)="clipboard.pasteSelectedElement()">
+                <i class="fas fa-paste"></i> Coller
+            </a>
+        </ng-template>
+        <ng-template #pasteNotAvailable>
+            <a mat-stroked-button class="notavailable">
+                <i class="fas fa-paste"></i> Coller
+            </a>
+        </ng-template>
+
+        <ng-template [ngIf]="clipboard.ongoingSelection()" [ngIfElse]="cutNotAvailable">
+            <a mat-stroked-button (click)="clipboard.cutSelectedElement()">
+                <i class="fas fa-cut"></i> Couper
+            </a>
+        </ng-template>
+        <ng-template #cutNotAvailable>
+            <a mat-stroked-button class="notavailable">
+                <i class="fas fa-cut"></i> Couper
+            </a>
+        </ng-template>
+
+        <br>
+
+        <ng-template [ngIf]="clipboard.ongoingSelection()" [ngIfElse]="duplicateNotAvailable">
+            <a mat-stroked-button (click)="clipboard.duplicateSelectedElement()">
+                <i class="fas fa-clone"></i> Dupliquer
+            </a>
+        </ng-template>
+        <ng-template #duplicateNotAvailable>
+            <a mat-stroked-button class="notavailable">
+                <i class="fas fa-clone"></i> Dupliquer
+            </a>
+        </ng-template>
+
+        <ng-template [ngIf]="clipboard.ongoingSelection()" [ngIfElse]="deleteNotAvailable">
+            <a mat-stroked-button (click)="clipboard.deleteSelectedElement()">
+                <i class="fas fa-backspace"></i> Supprimer
+            </a>
+        </ng-template>
+        <ng-template #deleteNotAvailable>
+            <a mat-stroked-button class="notavailable">
+                <i class="fas fa-backspace"></i> Supprimer
+            </a>
+        </ng-template>
+    </div>
 </div>

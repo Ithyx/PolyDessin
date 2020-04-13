@@ -34,7 +34,7 @@ export interface DrawElement {
   trueType: TOOL_INDEX;
 
   points: Point[];
-  isSelected: boolean;
+  // isSelected: boolean;
   erasingEvidence: boolean;
   hasMoved: boolean;
 

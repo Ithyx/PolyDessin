@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
+import { CanvasConversionService } from '../canvas-conversion.service';
 import { EllipseService } from '../stockage-svg/draw-element/basic-shape/ellipse.service';
 import { PolygonService } from '../stockage-svg/draw-element/basic-shape/polygon.service';
 import { RectangleService } from '../stockage-svg/draw-element/basic-shape/rectangle.service';
@@ -22,25 +23,27 @@ describe('CommandManagerService', () => {
   let lastCommand: Command;
   let lastCancelledCommand: Command;
 
-  beforeEach(() => TestBed.configureTestingModule({}));
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [{provide: CanvasConversionService, useValue: {updateDrawing: () => { return; }}}]
+  }));
 
   beforeEach(() => {
     stockageService = TestBed.get(SVGStockageService);
-    command = new AddSVGService(new LineService(), stockageService);
+    command = new AddSVGService([new LineService()], stockageService);
     service = TestBed.get(CommandManagerService);
   });
 
   beforeEach(() => {
-    lastCancelledCommand = new AddSVGService(new EllipseService(), stockageService);
-    service['cancelledCommands'].push(new AddSVGService(new PolygonService(), stockageService));
-    service['cancelledCommands'].push(new AddSVGService(new RectangleService(), stockageService));
+    lastCancelledCommand = new AddSVGService([new EllipseService()], stockageService);
+    service['cancelledCommands'].push(new AddSVGService([new PolygonService()], stockageService));
+    service['cancelledCommands'].push(new AddSVGService([new RectangleService()], stockageService));
     service['cancelledCommands'].push(lastCancelledCommand);
   });
 
   beforeEach(() => {
-    lastCommand = new AddSVGService(new SprayService(), stockageService);
-    service['executedCommands'].push(new AddSVGService(new TracePencilService(), stockageService));
-    service['executedCommands'].push(new AddSVGService(new TraceBrushService(), stockageService));
+    lastCommand = new AddSVGService([new SprayService()], stockageService);
+    service['executedCommands'].push(new AddSVGService([new TracePencilService()], stockageService));
+    service['executedCommands'].push(new AddSVGService([new TraceBrushService()], stockageService));
     service['executedCommands'].push(lastCommand);
   });
 

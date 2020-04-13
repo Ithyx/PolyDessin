@@ -14,11 +14,12 @@ import { DrawingSurfaceComponent } from './drawing-surface.component';
 // tslint:disable: no-string-literal
 // tslint:disable: max-file-line-count
 
-describe('SurfaceDessinComponent', () => {
+describe('DrawingSurfaceComponent', () => {
   let component: DrawingSurfaceComponent;
   let fixture: ComponentFixture<DrawingSurfaceComponent>;
   let drawing: SVGElement;
   let canvas: HTMLCanvasElement;
+  let conversion: HTMLCanvasElement;
   const element: DrawElement = new RectangleService();
   const selectedElement: DrawElement = new LineService();
 
@@ -82,13 +83,15 @@ describe('SurfaceDessinComponent', () => {
     component['drawing'] = new ElementRef<SVGElement>(drawing);
     canvas = document.createElement('canvas');
     component['canvas'] = new ElementRef<HTMLCanvasElement>(canvas);
+    conversion = document.createElement('canvas');
+    component['conversion'] = new ElementRef<HTMLCanvasElement>(conversion);
     component['selection'] = TestBed.get(SelectionService);
     component['selection'].selectionBox.box = new RectangleService();
     component['selection'].selectionBox.box.points[0] = {x: 10, y: 10};
     component['selection'].selectionBox.box.points[1] = {x: 20, y: 20};
     component['selection'].selectionRectangle.rectangle = new RectangleService();
-    selectedElement.isSelected = true;
-    element.isSelected = false;
+    // selectedElement.isSelected = true;
+    // element.isSelected = false;
     component['mousePosition'] = {x: 0, y: 0};
   });
 
@@ -105,9 +108,9 @@ describe('SurfaceDessinComponent', () => {
     component.ngAfterViewInit();
     expect(component['pipette'].drawing).toEqual(drawing);
   });
-  it('#ngAfterViewInit devrait assigner le nativeElement de canvas au canvas de canvasConversion', () => {
+  it('#ngAfterViewInit devrait assigner le nativeElement de conversion au canvas de canvasConversion', () => {
     component.ngAfterViewInit();
-    expect(component['canvasConversion'].canvas).toEqual(canvas);
+    expect(component['canvasConversion'].canvas).toEqual(conversion);
   });
   it('#ngAfterViewInit devrait assigner le nativeElement de canvas au canvas de pipette', () => {
     component.ngAfterViewInit();
@@ -156,11 +159,11 @@ describe('SurfaceDessinComponent', () => {
     component.handleElementMouseDown(element, new MouseEvent('down', {button: 0}));
     expect(spy).toHaveBeenCalledWith(element);
   });
-  it('#handleElementMouseDown devrait mettre isSelected des selectedElements à false '
+  /* it('#handleElementMouseDown devrait mettre isSelected des selectedElements à false '
     + 'si selectedElements n\'inclut pas l\'élément en paramètre', () => {
     component.handleElementMouseDown(element, new MouseEvent('down', {button: 0}));
     expect(selectedElement.isSelected).toBe(false);
-  });
+  }); */
   it('#handleElementMouseDown devrait appeler splice pour vider selectedElements '
     + 'si selectedElements n\'inclut pas l\'élément en paramètre', () => {
     component['selection'].selectedElements.push(selectedElement);
@@ -174,11 +177,11 @@ describe('SurfaceDessinComponent', () => {
     component.handleElementMouseDown(element, new MouseEvent('down', {button: 0}));
     expect(spy).toHaveBeenCalledWith(element);
   });
-  it('#handleElementMouseDown devrait mettre isSelected de l\'élément à true '
+  /* it('#handleElementMouseDown devrait mettre isSelected de l\'élément à true '
     + 'si selectedElements n\'inclut pas l\'élément en paramètre', () => {
     component.handleElementMouseDown(element, new MouseEvent('down', {button: 0}));
     expect(element.isSelected).toBe(true);
-  });
+  }); */
   it('#handleElementMouseDown devrait appeler createBoundingBox de selection '
     + 'si selectedElements n\'inclut pas l\'élément en paramètre', () => {
     const spy = spyOn(component['selection'], 'createBoundingBox');
@@ -237,12 +240,12 @@ describe('SurfaceDessinComponent', () => {
     component.handleElementMouseUp(element, new MouseEvent('up', {button: 0, screenX: 25, screenY: 25}));
     expect(component['selection'].selectedElements).toEqual([selectedElement]);
   });
-  it('#handleElementMouseUp devrait mettre isSelected des selectedElements à false '
+  /* it('#handleElementMouseUp devrait mettre isSelected des selectedElements à false '
     + 'lors d\'un left click où mousePosition est égal à screenX, screenY du MouseEvent', () => {
     component['mousePosition'] = {x: 25, y: 25};
     component.handleElementMouseUp(element, new MouseEvent('up', {button: 0, screenX: 25, screenY: 25}));
     expect(selectedElement.isSelected).toBe(false);
-  });
+  }); */
   it('#handleElementMouseUp devrait appeler splice pour vider selectedElements '
     + 'lors d\'un left click où mousePosition est égal à screenX, screenY du MouseEvent', () => {
     component['mousePosition'] = {x: 25, y: 25};
@@ -258,12 +261,12 @@ describe('SurfaceDessinComponent', () => {
     component.handleElementMouseUp(element, new MouseEvent('up', {button: 0, screenX: 25, screenY: 25}));
     expect(spy).toHaveBeenCalledWith(element);
   });
-  it('#handleElementMouseUp devrait mettre isSelected de l\'élément en paramètre à true '
+  /* it('#handleElementMouseUp devrait mettre isSelected de l\'élément en paramètre à true '
     + 'lors d\'un left click où mousePosition est égal à screenX, screenY du MouseEvent', () => {
     component['mousePosition'] = {x: 25, y: 25};
     component.handleElementMouseUp(element, new MouseEvent('up', {button: 0, screenX: 25, screenY: 25}));
     expect(element.isSelected).toBe(true);
-  });
+  }); */
   it('#handleElementMouseUp devrait appeler createBoundingBox de selection '
     + 'lors d\'un left click où mousePosition est égal à screenX, screenY du MouseEvent', () => {
     component['mousePosition'] = {x: 25, y: 25};
@@ -530,10 +533,10 @@ describe('SurfaceDessinComponent', () => {
     component.handleBackgroundLeftClick();
     expect(component['selection'].clickInSelectionBox).toBe(false);
   });
-  it('#handleBackgroundLeftClick devrait mettre isSelected des selectedElements à false', () => {
+  /* it('#handleBackgroundLeftClick devrait mettre isSelected des selectedElements à false', () => {
     component.handleBackgroundLeftClick();
     expect(selectedElement.isSelected).toBe(false);
-  });
+  });*/
   it('#handleBackgroundLeftClick devrait appeler splice pour vider les selectedElements', () => {
     component['selection'].selectedElements.push(selectedElement);
     const spy = spyOn(component['selection'].selectedElements, 'splice');
