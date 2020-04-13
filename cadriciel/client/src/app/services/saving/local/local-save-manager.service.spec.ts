@@ -152,12 +152,16 @@ describe('LocalSaveManagerService', () => {
     expect(spy).toHaveBeenCalled();
   });
 
+  /* 
+
   it('#loadState devrait appeler addElement de savingUtility avec les éléments trouvés', () => {
     spyOn(localStorage, 'getItem').and.callFake((key) => { if (key === CONTENT_KEY) { return 'content'; } return 'params'; });
     const spy = spyOn(service['savingUtility'], 'addElement');
     service.loadState();
     expect(spy).toHaveBeenCalledWith(new LineService());
   });
+
+  */
 
   it('#loadState devrait retourner vrai si les valeurs de params et de content ne sont pas nulles', () => {
     spyOn(localStorage, 'getItem').and.callFake((key) => { if (key === CONTENT_KEY) { return 'content'; } return 'params'; });

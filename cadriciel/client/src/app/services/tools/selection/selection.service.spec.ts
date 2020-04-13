@@ -29,7 +29,6 @@ describe('SelectionService', () => {
     erasingColor: {RGBA: [0, 0, 0, 1], RGBAString: ''},
     pointMin: {x: 0, y: 0},
     pointMax: {x: 0, y: 0},
-    hasMoved: false,
     transform: {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0},
     draw: () => { return; },
     updateRotation: () => { return; },
@@ -37,7 +36,6 @@ describe('SelectionService', () => {
     updateTranslation: () => { return; },
     updateTranslationMouse: () => { return; },
     updateParameters: () => { return; },
-    translateAllPoints: () => { return; }
   }
   );
   beforeEach(() => element2 = {
@@ -45,9 +43,7 @@ describe('SelectionService', () => {
     svgHtml: '',
     trueType: 0,
     points: [{x: 10, y: 0}, {x: 56, y: 12 }],
-    // isSelected: false,
     erasingEvidence: false,
-    hasMoved: false,
     erasingColor: {RGBA: [0, 0, 0, 1], RGBAString: ''},
     pointMin: {x: 0, y: 0},
     pointMax: {x: 0, y: 0},
@@ -58,7 +54,6 @@ describe('SelectionService', () => {
     updateTranslation: () => { return; },
     updateTranslationMouse: () => { return; },
     updateParameters: () => { return; },
-    translateAllPoints: () => { return; }
   });
 
   it('should be created', () => {

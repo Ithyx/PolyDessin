@@ -290,6 +290,7 @@ describe('CanvasConversionService', () => {
 
   // TESTS createClone
 
+  /* 
   it('#createClone devrait appeler draw sur l\'élément en paramètre s\'il n\'est pas un TraceBrush', () => {
     const spy = spyOn(firstElement, 'draw');
     service.createClone(firstElement);
@@ -329,7 +330,7 @@ describe('CanvasConversionService', () => {
     firstElement.draw();
     element.svgHtml = sanitizer.bypassSecurityTrustHtml(firstElement.svg);
     expect(service.createClone(firstElement)).toEqual(element);
-  });
+  }); */
 
   // TESTS getElementsInArea
 
