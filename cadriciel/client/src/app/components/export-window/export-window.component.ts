@@ -115,10 +115,9 @@ export class ExportWindowComponent {
 
   sendImage(): void {
     this.context.drawImage(this.image, 0, 0);
-    this.canvas.toBlob(() => {
-      this.db.sendEmail(this.emailAdress,
-        new File([], (this.selectedFileName === '' ? 'image' : this.selectedFileName) + this.selectedExportFormat));
-    }, 'image/' + this.selectedExportFormat);
+    const imageData = this.canvas.toDataURL('image/' + this.selectedExportFormat);
+    console.log(imageData);
+    this.db.sendEmail(this.emailAdress, imageData, this.selectedFileName, this.selectedExportFormat);
   }
 
   updateSelectedFormat(event: Event): void {
