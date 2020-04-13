@@ -50,11 +50,12 @@ export class DrawingSurfaceComponent implements AfterViewInit {
   }
 
   clickBelongToSelectionBox(mouse: MouseEvent): boolean {
-    const belongInX = mouse.offsetX >= this.selection.selectionBox.box.points[0].x
-                    && mouse.offsetX <= this.selection.selectionBox.box.points[1].x;
+    this.selection.findPointMinAndMax(this.selection.selectionBox.box);
+    const belongInX = mouse.offsetX >= this.selection.selectionBox.box.pointMin.x
+                    && mouse.offsetX <= this.selection.selectionBox.box.pointMax.x;
 
-    const belongInY = mouse.offsetY >= this.selection.selectionBox.box.points[0].y
-                    && mouse.offsetY <= this.selection.selectionBox.box.points[1].y;
+    const belongInY = mouse.offsetY >= this.selection.selectionBox.box.pointMin.y
+                    && mouse.offsetY <= this.selection.selectionBox.box.pointMax.y;
 
     return belongInX && belongInY;
   }
@@ -201,8 +202,9 @@ export class DrawingSurfaceComponent implements AfterViewInit {
 
       } else {
         // Rotation de tous les éléments autour du même point central
-        const middleX = (this.selection.selectionBox.box.points[0].x + this.selection.selectionBox.box.points[1].x ) / 2;
-        const middleY = (this.selection.selectionBox.box.points[0].y + this.selection.selectionBox.box.points[1].y ) / 2;
+        this.selection.findPointMinAndMax(this.selection.selectionBox.box);
+        const middleX = (this.selection.selectionBox.box.pointMin.x + this.selection.selectionBox.box.pointMax.x ) / 2;
+        const middleY = (this.selection.selectionBox.box.pointMin.y + this.selection.selectionBox.box.pointMax.y ) / 2;
         for (const element of this.selection.selectedElements) {
           event.deltaY > 0 ? (
             event.altKey ? element.updateRotation(middleX, middleY, SMALL_ROTATION_ANGLE) :
