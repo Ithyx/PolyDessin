@@ -21,7 +21,7 @@ describe('LineService', () => {
     element.thickness = 5;
     element.thicknessLine = 10;
     element.thicknessPoint = 20;
-    element.translate = { x: 10, y: 10};
+    element.transform = {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0};
     element.points.push({ x: 10, y: 10});
     element.points.push({ x: 100, y: 100});
     element.chosenOption = 'Vide';
@@ -159,36 +159,6 @@ describe('LineService', () => {
     expect(test).toBe(false);
   });
 
-  // TESTS updateTranslation
-
-  it('#updateTranslation devrait ajouter les valeurs en paramètre à translate', () => {
-    element.updateTranslation(10, -25);
-    expect(element.translate.x).toEqual(20);
-    expect(element.translate.y).toEqual(-15);
-  });
-
-  it('#updateTranslation devrait appeler draw', () => {
-    spyOn(element, 'draw');
-    element.updateTranslation(10, 10);
-    expect(element.draw).toHaveBeenCalled();
-  });
-
-  // TESTS updateTranslationMouse
-
-  it('#updateTranslationMouse devrait ajouter les valeurs en paramètre à translate', () => {
-    const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    element.updateTranslationMouse(click, { x: 10, y: 10});
-    expect(element.translate.x).toEqual(90);
-    expect(element.translate.y).toEqual(90);
-  });
-
-  it('#updateTranslationMouse devrait appeler draw', () => {
-    spyOn(element, 'draw');
-    const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    element.updateTranslationMouse(click, { x: 10, y: 10});
-    expect(element.draw).toHaveBeenCalled();
-  });
-
   // TESTS updateParameters
 
   it('#updateParameters devrait assigner la valeur en paramètre à thicknessLine', () => {
@@ -233,17 +203,4 @@ describe('LineService', () => {
     expect(element.thicknessPoint).toEqual(1);
   });
 
-  // TESTS translateAllPoints
-
-  it('#translateAllPoints devrait changer tous les points de points pour ajouter la translation', () => {
-    element.points.push({x: 10, y: 10});
-    element.translateAllPoints();
-    expect(element.points[0].x).toEqual(20);
-    expect(element.points[0].y).toEqual(20);
-  });
-
-  it('#translateAllPoints devrait mettre translation à 0', () => {
-    element.translateAllPoints();
-    expect(element.translate).toEqual({x: 0, y: 0});
-  });
 });

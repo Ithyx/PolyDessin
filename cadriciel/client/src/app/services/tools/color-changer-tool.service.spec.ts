@@ -29,15 +29,13 @@ describe('ColorChangerToolService', () => {
     erasingColor: {RGBA: [0, 0, 0, 1], RGBAString: ''},
     pointMin: {x: 0, y: 0},
     pointMax: {x: 0, y: 0},
-    hasMoved: false,
     transform: {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0},
     draw: () => { return; },
     updateRotation: () => { return; },
     updateTransform: () => { return; },
     updateTranslation: () => { return; },
     updateTranslationMouse: () => { return; },
-    updateParameters: () => { return; },
-    translateAllPoints: () => { return; }
+    updateParameters: () => { return; }
   };
 
   beforeEach(() => TestBed.configureTestingModule({}));

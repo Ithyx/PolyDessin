@@ -12,7 +12,6 @@ import { GalleryLoadWarningComponent } from '../components/gallery-load-warning/
 import { GalleryElementComponent } from '../components/gallery/gallery-element/gallery-element.component';
 import { GalleryComponent } from '../components/gallery/gallery.component';
 import { SavePopupComponent } from '../components/save-popup/save-popup.component';
-import { TranslateSvgService } from './command/translate-svg.service';
 import { ShortcutsManagerService } from './shortcuts-manager.service';
 import { DrawElement } from './stockage-svg/draw-element/draw-element';
 import { TOOL_INDEX } from './tools/tool-manager.service';
@@ -34,17 +33,17 @@ describe('ShortcutsManagerService', () => {
     svgHtml: '',
     trueType: 0,
     points: [{x: 90, y: 90}, {x: 76, y: 89 }],
-    // isSelected: false,
     erasingEvidence: false,
     erasingColor: {RGBA: [0, 0, 0, 1], RGBAString: ''},
     pointMin: {x: 0, y: 0},
     pointMax: {x: 0, y: 0},
-    translate: {x: 0, y: 0},
+    transform: {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0},
     draw: () => { return; },
+    updateRotation: () => { return; },
+    updateTransform: () => { return; },
     updateTranslation: () => { return; },
     updateTranslationMouse: () => { return; },
-    updateParameters: () => { return; },
-    translateAllPoints: () => { return; }
+    updateParameters: () => { return; }
   };
 
   beforeEach(async(() => {
