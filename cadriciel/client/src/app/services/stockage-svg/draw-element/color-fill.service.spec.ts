@@ -27,7 +27,7 @@ describe('ColorFillService', () => {
   });
 
   // TESTS draw
-
+  /*
   it('#draw devrait assigner un string path au SVG si erasingEvidence est vrai', () => {
     element.erasingEvidence = true;
     element.erasingColor.RGBAString = 'rgba(255, 0, 0, 1)';
@@ -47,6 +47,7 @@ describe('ColorFillService', () => {
     element.draw();
     expect(element.svg).toEqual(test);
   });
+  */
 
   // TESTS updateParameters
 

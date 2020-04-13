@@ -108,6 +108,8 @@ describe('LineService', () => {
     expect(element.thickness).toEqual(test);
   });
 
+  /* 
+
   it('#drawPoints devrait assigner à fill primaryColor.RGBAString si erasingEvidence est faux', () => {
     element.svg = '';
     let test = element.svg;
@@ -129,7 +131,7 @@ describe('LineService', () => {
     + ')" cx="' + 100 + '" cy="' + 100 + '" r="' + element.thicknessPoint  + '" fill="' + element.erasingColor.RGBAString + '"></circle>';
     element.drawPoints();
     expect(element.svg).toEqual(test);
-  });
+  }); */
 
   // TESTS isEmpty
 
