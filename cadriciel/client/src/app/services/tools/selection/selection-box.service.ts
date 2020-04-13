@@ -89,6 +89,8 @@ export class SelectionBoxService {
     }
   }
 
+  // TODO: VÉRIFIER LES TESTS :
+
   updateTranslation(x: number, y: number): void {
     this.box.updateTranslation(x, y);
     this.box.svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.box.svg);

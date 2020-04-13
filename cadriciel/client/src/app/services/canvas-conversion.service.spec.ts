@@ -316,7 +316,8 @@ describe('CanvasConversionService', () => {
       tracePencil.points = thirdElement.points;
       tracePencil.primaryColor = thirdElement.primaryColor;
       tracePencil.thickness = thirdElement.thickness;
-      tracePencil.translate = thirdElement.translate;
+      // tracePencil.translate = thirdElement.translate;
+      tracePencil.transform = {...thirdElement.transform};
       tracePencil.isAPoint = thirdElement.isAPoint;
       tracePencil.draw();
     }
