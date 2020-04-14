@@ -120,7 +120,7 @@ describe('CommandManagerService', () => {
     const spy = spyOn(service['selectionBox'], 'deleteSelectionBox');
     delete service['selectionBox'].box;
     service.cancelCommand();
-    expect(spy).toHaveBeenCalled();
+    expect(spy).not.toHaveBeenCalled();
   });
 
   it('#cancelCommand ne devrait rien faire si executedCommands est vide', () => {

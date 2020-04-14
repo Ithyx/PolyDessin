@@ -38,7 +38,7 @@ export class TransformSvgService implements Command {
   }
 
   hasMoved(): boolean {
-    const testElement = Array.from(this.elements.keys())[0];
+    const testElement = this.elements.keys().next().value as DrawElement;
     const transform = this.elements.get(testElement);
     return !(JSON.stringify(transform) === JSON.stringify(testElement.transform));
   }
