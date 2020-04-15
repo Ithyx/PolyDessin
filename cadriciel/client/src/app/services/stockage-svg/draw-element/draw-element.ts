@@ -36,6 +36,7 @@ export abstract class DrawElement {
   trueType: TOOL_INDEX;
 
   points: Point[];
+  strokePoints?: Point[];
   erasingEvidence: boolean;
 
   primaryColor?: Color;
@@ -56,6 +57,7 @@ export abstract class DrawElement {
   pointMax: Point;
 
   transform: TransformMatrix;
+  strokeTransform?: TransformMatrix;
 
   constructor() {
     this.svg = '';
