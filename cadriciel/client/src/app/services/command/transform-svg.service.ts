@@ -4,10 +4,8 @@ import { DrawElement, Point, TransformMatrix } from '../stockage-svg/draw-elemen
 import { Command } from './command';
 
 interface OldElementParameters {
-  transforms: TransformMatrix[];
+  transform: TransformMatrix;
   strokePoints: Point[];
-  pointMin: Point;
-  pointMax: Point;
 }
 
 @Injectable({
@@ -22,17 +20,12 @@ export class TransformSvgService implements Command {
               private deleteBoundingBoxMethod: () => void) {
     this.elements = new Map<DrawElement, OldElementParameters>();
     for (const element of elements) {
-      const transforms = [{...element.transform}];
-      if (element.strokeTransform) {
-        transforms.push({...element.strokeTransform});
-      }
+      const transform = {...element.transform};
       const strokePoints: Point[] = [];
       if (element.strokePoints) {
         element.strokePoints.forEach((point) => { strokePoints.push({...point}); });
       }
-      this.elements.set(element,
-        {transforms, strokePoints, pointMin: {...element.pointMin}, pointMax: {...element.pointMax}}
-      );
+      this.elements.set(element, {transform, strokePoints});
     }
   }
 
@@ -45,13 +38,8 @@ export class TransformSvgService implements Command {
 
   changeTransform(): void {
     this.elements.forEach((parameters, element) => {
-      const transforms = [{...element.transform}];
-      element.transform = {...parameters.transforms[0]};
-
-      if (element.strokeTransform) {
-        transforms.push({...element.strokeTransform});
-        element.strokeTransform = {...parameters.transforms[1]};
-      }
+      const transform = {...element.transform};
+      element.transform = {...parameters.transform};
 
       const strokePoints: Point[] = [];
       if (element.strokePoints) {
@@ -62,12 +50,7 @@ export class TransformSvgService implements Command {
         }
       }
 
-      const pointMin = {...element.pointMin};
-      element.pointMin = {...parameters.pointMin};
-      const pointMax = {...element.pointMax};
-      element.pointMax = {...parameters.pointMax};
-
-      this.elements.set(element, {transforms, strokePoints, pointMin, pointMax});
+      this.elements.set(element, {transform, strokePoints});
       element.draw();
       element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
     });
@@ -77,6 +60,6 @@ export class TransformSvgService implements Command {
   hasMoved(): boolean {
     const element = Array.from(this.elements.keys())[0];
     const parameters = this.elements.get(element);
-    return (parameters && (JSON.stringify(parameters.transforms[0]) !== JSON.stringify(element.transform))) as boolean;
+    return (parameters && (JSON.stringify(parameters.transform) !== JSON.stringify(element.transform))) as boolean;
   }
 }

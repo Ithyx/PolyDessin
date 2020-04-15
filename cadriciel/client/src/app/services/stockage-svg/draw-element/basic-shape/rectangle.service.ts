@@ -35,16 +35,6 @@ export class RectangleService extends BasicShapeService {
     this.addRectanglePoints();
   }
 
-  drawStroke(): void {
-    this.svg += '<rect transform=" matrix(' + this.strokeTransform.a + ' ' + this.strokeTransform.b + ' ' + this.strokeTransform.c + ' '
-                                           + this.strokeTransform.d + ' ' + this.strokeTransform.e + ' ' + this.strokeTransform.f
-      + ')" fill="none" stroke="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString : this.secondaryColor.RGBAString)
-      + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')
-      + '" stroke-width="' + this.thickness
-      + '" x="' + this.pointMin.x + '" y="' + this.pointMin.y
-      + '" width="' + this.getStrokeWidth() + '" height="' + this.getStrokeHeight() + '"></rect>';
-  }
-
   drawPerimeter(): void {
     const thickness = (this.chosenOption === 'Plein') ? 0 : this.thickness;
     this.perimeter = '<rect stroke="gray" fill="none" stroke-width="2' + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '');

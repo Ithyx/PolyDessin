@@ -45,15 +45,6 @@ export class EllipseService extends BasicShapeService {
       + '" rx="' + this.getWidth() / 2 + '" ry="' + this.getHeight() / 2 + '"></ellipse>';
   }
 
-  drawStroke(): void {
-    this.svg += '<ellipse transform=" matrix(' + this.strokeTransform.a + ' ' + this.strokeTransform.b + ' '
-      + this.strokeTransform.c + ' ' + this.strokeTransform.d + ' ' + this.strokeTransform.e + ' ' + this.strokeTransform.f
-      + ')" fill="none" stroke="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString : this.secondaryColor.RGBAString)
-      + '" stroke-width="' + this.thickness
-      + '" cx="' + (this.pointMin.x + this.pointMax.x) / 2 + '" cy="' + (this.pointMin.y + this.pointMax.y) / 2
-      + '" rx="' + this.getStrokeWidth() / 2 + '" ry="' + this.getStrokeHeight() / 2 + '"></ellipse>';
-  }
-
   drawPerimeter(): void {
     const thickness = (this.chosenOption === 'Plein') ? 0 : this.thickness;
     this.perimeter = '<rect stroke="gray" fill="none" stroke-width="2';
