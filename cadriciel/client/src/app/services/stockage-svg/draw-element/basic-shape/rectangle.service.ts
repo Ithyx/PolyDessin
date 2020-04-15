@@ -14,6 +14,14 @@ export class RectangleService extends BasicShapeService {
     this.trueType = TOOL_INDEX.RECTANGLE;
   }
 
+  getStrokeWidth(): number {
+    return this.pointMax.x - this.pointMin.x;
+  }
+
+  getStrokeHeight(): number {
+    return this.pointMax.y - this.pointMin.y;
+  }
+
   drawLine(): void {
     this.svg = '<line stroke-linecap="square'
       + '" transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
@@ -27,17 +35,22 @@ export class RectangleService extends BasicShapeService {
   }
 
   drawShape(): void {
-    const choosedOption = this.chosenOption;
     this.svg = '<rect transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
                                            + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
-      + ')" fill="' + ((choosedOption !== 'Contour') ? this.primaryColor.RGBAString : 'none') + '" stroke="'
-      + ((this.erasingEvidence) ? this.erasingColor.RGBAString :
-        ((this.chosenOption !== 'Plein') ? this.secondaryColor.RGBAString : 'none'))
-      + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')
-      + '" stroke-width="' + this.thickness
+      + ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor.RGBAString : 'none') + '" stroke="none'
       + '" x="' + this.points[0].x + '" y="' + this.points[0].y
       + '" width="' + this.getWidth() + '" height="' + this.getHeight() + '"></rect>';
     this.addRectanglePoints();
+  }
+
+  drawStroke(): void {
+    this.svg += '<rect transform=" matrix(' + this.strokeTransform.a + ' ' + this.strokeTransform.b + ' ' + this.strokeTransform.c + ' '
+                                           + this.strokeTransform.d + ' ' + this.strokeTransform.e + ' ' + this.strokeTransform.f
+      + ')" fill="none" stroke="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString : this.secondaryColor.RGBAString)
+      + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')
+      + '" stroke-width="' + this.thickness
+      + '" x="' + this.pointMin.x + '" y="' + this.pointMin.y
+      + '" width="' + this.getStrokeWidth() + '" height="' + this.getStrokeHeight() + '"></rect>';
   }
 
   drawPerimeter(): void {

@@ -299,6 +299,8 @@ export class SelectionService implements ToolInterface {
     }
     for (const element of this.selectedElements) {
       element.updateScale(scale, {...this.selectionBox.scaleCenter});
+      this.findPointMinAndMax(element);
+      element.draw();
       element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
     }
   }
