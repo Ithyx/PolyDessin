@@ -29,19 +29,6 @@ describe('TracePencilService', () => {
 
   // TESTS drawPath
 
-  it('#drawPath devrait mettre la translation dans SVG', () => {
-    element.points.push({ x: 10, y: 10});
-    element.points.push({ x: 10, y: 10});
-    element.points.push({ x: 10, y: 10});
-    element.svg = '<path transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
-    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f + ')" fill="none" '
-    + `stroke="${(element.erasingEvidence) ? element.erasingColor.RGBAString :  element.primaryColor.RGBAString}"`
-    + ' stroke-linejoin="round" stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 "></path>';
-    const testSVG = element.svg;
-    element.drawPath();
-    expect(element.svg).toEqual(testSVG);
-  });
-
   it('#drawPath devrait  mettre la primaryColor dans SVG si erasingEvidence est faux', () => {
     element.erasingEvidence = false;
     element.points.push({ x: 10, y: 10});

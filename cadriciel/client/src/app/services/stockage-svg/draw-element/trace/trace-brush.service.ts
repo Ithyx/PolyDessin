@@ -28,7 +28,7 @@ export class TraceBrushService extends TraceService {
   }
 
   drawPoint(): void {
-    this.svg = '<circle  cx="' + this.points[0].x + '" cy="' + this.points[0].y
+    this.svg = '<circle cx="' + this.points[0].x + '" cy="' + this.points[0].y
       + '" transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
                                 + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
       + ')" filter="url(#' + this.chosenOption
