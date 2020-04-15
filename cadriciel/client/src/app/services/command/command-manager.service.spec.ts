@@ -67,6 +67,18 @@ describe('CommandManagerService', () => {
     expect(service['cancelledCommands']).toEqual([]);
   });
 
+  it('#execute devrait appeler updateDrawing de canvasConversion', () => {
+    const spy = spyOn(service['canvasConversion'], 'updateDrawing');
+    service.execute(command);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#execute devrait appeler saveState de localSaving', () => {
+    const spy = spyOn(service['localSaving'], 'saveState');
+    service.execute(command);
+    expect(spy).toHaveBeenCalled();
+  });
+
   // TESTS cancelCommand
 
   it('#cancelCommand devrait retirer la dernière commande de executedCommands', () => {
@@ -83,6 +95,32 @@ describe('CommandManagerService', () => {
   it('#cancelCommand devrait ajouter la dernière commande à cancelledCommands si celle-ci existe', () => {
     service.cancelCommand();
     expect(service['cancelledCommands']).toContain(lastCommand);
+  });
+
+  it('#cancelCommand devrait appeler updateDrawing de canvasConversion si la commande existe', () => {
+    const spy = spyOn(service['canvasConversion'], 'updateDrawing');
+    service.cancelCommand();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#cancelCommand devrait appeler saveState de localSaving si la commande existe', () => {
+    const spy = spyOn(service['localSaving'], 'saveState');
+    service.cancelCommand();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#cancelCommand devrait appeler deleteSelectionBox de selectionBox si la boite de sélection existe', () => {
+    const spy = spyOn(service['selectionBox'], 'deleteSelectionBox');
+    service['selectionBox'].box = new RectangleService();
+    service.cancelCommand();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#cancelCommand ne devrait pas appeler deleteSelectionBox de selectionBox si la boite de sélection n\'existe pas', () => {
+    const spy = spyOn(service['selectionBox'], 'deleteSelectionBox');
+    delete service['selectionBox'].box;
+    service.cancelCommand();
+    expect(spy).not.toHaveBeenCalled();
   });
 
   it('#cancelCommand ne devrait rien faire si executedCommands est vide', () => {
@@ -108,6 +146,18 @@ describe('CommandManagerService', () => {
   it('#redoCommand devrait ajouter la dernière commande à executedCommands si celle-ci existe', () => {
     service.redoCommand();
     expect(service['executedCommands']).toContain(lastCancelledCommand);
+  });
+
+  it('#redoCommand devrait appeler updateDrawing de canvasConversion si la commande existe', () => {
+    const spy = spyOn(service['canvasConversion'], 'updateDrawing');
+    service.redoCommand();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#redoCommand devrait appeler saveState de localSaving si la commande existe', () => {
+    const spy = spyOn(service['localSaving'], 'saveState');
+    service.redoCommand();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('#redoCommand ne devrait rien faire si cancelledCommands est vide', () => {
