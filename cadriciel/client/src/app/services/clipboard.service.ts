@@ -116,13 +116,14 @@ export class ClipboardService {
     for (const element of elements) {
       this.selection.findPointMinAndMax(element);
       const elementIsVisible = element.pointMax.x < this.drawing.width && element.pointMax.y < this.drawing.height;
+
       allElementAreVisible = allElementAreVisible && elementIsVisible;
     }
     return allElementAreVisible;
   }
 
   ongoingSelection(): boolean {
-    return this.selection.selectionBox.box as unknown as boolean;
+    return this.selection.selectedElements.length !== 0;
   }
 
   canPaste(): boolean {

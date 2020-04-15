@@ -30,7 +30,6 @@ export class SelectionBoxService {
       this.controlPointBox[index] = new RectangleService();
     }
 
-    // this.box.isSelected = true;
     this.box.updateParameters(this.tools.activeTool);
 
     this.box.points[0] = pointMin;
@@ -69,7 +68,6 @@ export class SelectionBoxService {
                                                                   + this.box.points[1].y) / 2) + CONTROL_POINT_THICKNESS;
 
     for (const controlPoint of this.controlPointBox) {
-      // controlPoint.isSelected = true;
       controlPoint.updateParameters(this.tools.activeTool);
       controlPoint.chosenOption = 'Plein avec contour';
       controlPoint.primaryColor.RGBAString =  'rgba(0, 0, 0, 1)';
