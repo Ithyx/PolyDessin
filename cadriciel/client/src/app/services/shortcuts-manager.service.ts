@@ -35,7 +35,7 @@ export class ShortcutsManagerService {
   private releaseKeyList: Map<string, FunctionShortcut > = new Map<string, FunctionShortcut>();
   private counter100ms: number;
   private clearTimeout: number;
-  private arrowKeys: [boolean, boolean, boolean, boolean];
+  // private arrowKeys: [boolean, boolean, boolean, boolean];
   private dialogConfig: MatDialogConfig;
   private transformCommand: TransformSvgService;
 
@@ -53,7 +53,6 @@ export class ShortcutsManagerService {
                 this.focusOnInput = false;
                 this.counter100ms = 0;
                 this.clearTimeout = 0;
-                this.arrowKeys = [false, false, false, false];
                 this.dialogConfig = new MatDialogConfig();
                 this.dialogConfig.disableClose = true;
                 this.dialogConfig.autoFocus = true;
@@ -112,8 +111,8 @@ export class ShortcutsManagerService {
           this.selection.selectedElements, this.sanitizer, this.selection.deleteBoundingBox.bind(this.selection)
         );
       }
-      if (!this.arrowKeys[DIRECTION.LEFT] && !this.arrowKeys[DIRECTION.RIGHT]
-          && !this.arrowKeys[DIRECTION.UP] && !this.arrowKeys[DIRECTION.DOWN]) {
+      if (!this.shortcutsFunctions.arrowKeys[DIRECTION.LEFT] && !this.shortcutsFunctions.arrowKeys[DIRECTION.RIGHT]
+          && !this.shortcutsFunctions.arrowKeys[DIRECTION.UP] && !this.shortcutsFunctions.arrowKeys[DIRECTION.DOWN]) {
         window.clearInterval(this.clearTimeout);
         this.counter100ms = 0;
         this.clearTimeout = 0;
@@ -131,16 +130,16 @@ export class ShortcutsManagerService {
   translateSelection(): void {
     const translate: Point = {x: 0 , y: 0};
 
-    if (this.arrowKeys[DIRECTION.LEFT]) {
+    if (this.shortcutsFunctions.arrowKeys[DIRECTION.LEFT]) {
       translate.x = -SELECTION_MOVEMENT_PIXEL;
     }
-    if (this.arrowKeys[DIRECTION.RIGHT]) {
+    if (this.shortcutsFunctions.arrowKeys[DIRECTION.RIGHT]) {
       translate.x = SELECTION_MOVEMENT_PIXEL;
     }
-    if (this.arrowKeys[DIRECTION.UP]) {
+    if (this.shortcutsFunctions.arrowKeys[DIRECTION.UP]) {
       translate.y = -SELECTION_MOVEMENT_PIXEL;
     }
-    if (this.arrowKeys[DIRECTION.DOWN]) {
+    if (this.shortcutsFunctions.arrowKeys[DIRECTION.DOWN]) {
       translate.y = SELECTION_MOVEMENT_PIXEL;
     }
     this.counter100ms++;
@@ -156,6 +155,7 @@ export class ShortcutsManagerService {
       this.rectangleTool.shiftRelease();
     }
     if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
+      console.log('relase line');
       this.lineTool.shiftRelease();
     }
     if (this.tools.activeTool.ID === TOOL_INDEX.ELLIPSE) {
@@ -164,19 +164,20 @@ export class ShortcutsManagerService {
   }
 
   releaseKeyArrowLeft(): void {
-    this.arrowKeys[DIRECTION.LEFT] = false;
+    this.shortcutsFunctions.arrowKeys[DIRECTION.LEFT] = false;
   }
 
   releaseKeyArrowRight(): void {
-    this.arrowKeys[DIRECTION.RIGHT] = false;
+    this.shortcutsFunctions.arrowKeys[DIRECTION.RIGHT] = false;
   }
 
   releaseKeyArrowUp(): void {
-    this.arrowKeys[DIRECTION.UP] = false;
+    this.shortcutsFunctions.arrowKeys[DIRECTION.UP] = false;
   }
 
   releaseKeyArrowDown(): void {
-    this.arrowKeys[DIRECTION.DOWN] = false;
+    console.log('release');
+    this.shortcutsFunctions.arrowKeys[DIRECTION.DOWN] = false;
   }
 
   treatReleaseKey(keyboard: KeyboardEvent): void {
