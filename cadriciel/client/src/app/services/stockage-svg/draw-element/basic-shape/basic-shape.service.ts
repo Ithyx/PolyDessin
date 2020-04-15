@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Color } from 'src/app/services/color/color';
 import { DrawingTool } from 'src/app/services/tools/tool-manager.service';
-import { DrawElement, TransformMatrix } from '../../draw-element/draw-element';
+import { DrawElement, Point, TransformMatrix } from '../../draw-element/draw-element';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +15,7 @@ export abstract class BasicShapeService extends DrawElement  {
   perimeter: string;
 
   strokeTransform: TransformMatrix;
+  strokePoints?: Point[];
 
   constructor() {
     super();

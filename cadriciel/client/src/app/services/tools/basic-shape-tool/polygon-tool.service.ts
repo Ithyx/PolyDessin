@@ -49,10 +49,14 @@ export class PolygonToolService extends BasicShapeToolService {
 
   calculatePoints(sides: number): void {
     this.shape.points = [];
+    this.shape.strokePoints = [];
     for (let angle = STARTING_ANGLE; angle < ENDING_ANGLE; angle += (2 * Math.PI / sides)) {
       const x = this.calculatedCenter.x + this.calculatedRadius * Math.cos(angle);
       const y = this.calculatedCenter.y + this.calculatedRadius * Math.sin(angle);
       this.shape.points.push({x, y});
+      if (this.shape.strokePoints) {
+        this.shape.strokePoints.push({x, y});
+      }
       if (x < this.minPoint.x) {
         this.minPoint.x = x;
         this.minPoint.y = y;
