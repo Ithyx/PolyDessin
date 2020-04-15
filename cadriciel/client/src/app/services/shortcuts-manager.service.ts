@@ -35,7 +35,6 @@ export class ShortcutsManagerService {
   private releaseKeyList: Map<string, FunctionShortcut > = new Map<string, FunctionShortcut>();
   private counter100ms: number;
   private clearTimeout: number;
-  // private arrowKeys: [boolean, boolean, boolean, boolean];
   private dialogConfig: MatDialogConfig;
   private transformCommand: TransformSvgService;
 
@@ -155,7 +154,6 @@ export class ShortcutsManagerService {
       this.rectangleTool.shiftRelease();
     }
     if (this.tools.activeTool.ID === TOOL_INDEX.LINE) {
-      console.log('relase line');
       this.lineTool.shiftRelease();
     }
     if (this.tools.activeTool.ID === TOOL_INDEX.ELLIPSE) {
@@ -176,7 +174,6 @@ export class ShortcutsManagerService {
   }
 
   releaseKeyArrowDown(): void {
-    console.log('release');
     this.shortcutsFunctions.arrowKeys[DIRECTION.DOWN] = false;
   }
 
