@@ -11,7 +11,8 @@ export enum TOOL_INDEX {
   PIPETTE,        // 7
   ELLIPSE,        // 8
   COLOR_CHANGER,  // 9
-  ERASER          // 10
+  ERASER,         // 10
+  PAINT_BUCKET    // 11
 }
 
 export interface ToolParameter {
@@ -169,5 +170,12 @@ export const TOOL_LIST: DrawingTool[] = [
     ID: 10,
     iconName: 'fas fa-eraser',
     parameters: [{type: 'number', name: 'Épaisseur de l\'efface', value: 20, min: 3, max: 50}]
+  },
+  {
+    name: 'Seau de peinture',
+    isActive: false,
+    ID: 11,
+    iconName: 'fas fa-fill-drip',
+    parameters: [{type: 'number', name: 'Tolérance (%)', value: 0, min: 0, max: 100}]
   }
 ];

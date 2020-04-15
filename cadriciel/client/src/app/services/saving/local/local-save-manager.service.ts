@@ -4,8 +4,8 @@ import { DrawElement } from '../../stockage-svg/draw-element/draw-element';
 import { SVGStockageService } from '../../stockage-svg/svg-stockage.service';
 import { SavingUtilityService } from '../saving-utility.service';
 
-const PARAMETERS_KEY = 'currentDrawingParameters';
-const CONTENT_KEY = 'currentDrawingContent';
+export const PARAMETERS_KEY = 'currentDrawingParameters';
+export const CONTENT_KEY = 'currentDrawingContent';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,8 @@ export class LocalSaveManagerService {
 
   constructor(private currentDrawingParams: DrawingManagerService,
               private currentDrawingContent: SVGStockageService,
-              private savingUtility: SavingUtilityService) { }
+              private savingUtility: SavingUtilityService,
+              private svgStockage: SVGStockageService) { }
 
   isStorageEmpty(): boolean {
     return localStorage.length === 0;
@@ -23,7 +24,6 @@ export class LocalSaveManagerService {
   saveState(): void {
     localStorage.setItem(PARAMETERS_KEY, JSON.stringify(this.currentDrawingParams));
     localStorage.setItem(CONTENT_KEY, JSON.stringify(this.currentDrawingContent.getCompleteSVG()));
-    console.log('saved state !');
   }
 
   loadState(): boolean {
@@ -48,7 +48,7 @@ export class LocalSaveManagerService {
 
     this.currentDrawingContent.cleanDrawing();
     for (const element of parsedContent) {
-      this.savingUtility.addElement(element);
+      this.svgStockage.addSVG(this.savingUtility.createCopyDrawElement(element));
     }
 
     return true;

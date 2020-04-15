@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommandManagerService } from '../../command/command-manager.service';
-import { TranslateSvgService } from '../../command/translate-svg.service';
+import { TransformSvgService } from '../../command/transform-svg.service';
 import { DrawingManagerService } from '../../drawing-manager/drawing-manager.service';
 import { RectangleService } from '../../stockage-svg/draw-element/basic-shape/rectangle.service';
 import { DrawElement, Point } from '../../stockage-svg/draw-element/draw-element';
@@ -25,12 +25,13 @@ export class SelectionService implements ToolInterface {
   clickInSelectionBox: boolean;
 
   private modifiedElement: Set<DrawElement>;
+  private transformCommand: TransformSvgService;
 
   constructor(private svgStockage: SVGStockageService,
               public selectionBox: SelectionBoxService,
               public selectionRectangle: SelectionRectangleService,
               private drawingManager: DrawingManagerService,
-              private sanitizer: DomSanitizer,
+              public sanitizer: DomSanitizer,
               private command: CommandManagerService
              ) {
               this.selectedElements = [];
@@ -40,10 +41,6 @@ export class SelectionService implements ToolInterface {
              }
 
   handleClick(drawElement: DrawElement): void {
-    for (const element of this.selectedElements) {
-      element.isSelected = false;
-    }
-    drawElement.isSelected = true;
     this.selectedElements.splice(0, this.selectedElements.length);
     this.selectedElements.push(drawElement);
     this.createBoundingBox();
@@ -51,7 +48,6 @@ export class SelectionService implements ToolInterface {
 
   handleRightClick(element: DrawElement): void {
     if (this.selectedElements.includes(element)) {
-      element.isSelected = false;
       const index = this.selectedElements.indexOf(element, 0);
       this.selectedElements.splice(index, 1);
       if (this.selectedElements.length === 0) {
@@ -60,7 +56,6 @@ export class SelectionService implements ToolInterface {
         this.createBoundingBox();
       }
     } else {
-      element.isSelected = true;
       this.selectedElements.push(element);
       this.createBoundingBox();
     }
@@ -68,7 +63,7 @@ export class SelectionService implements ToolInterface {
 
   onMouseMove(mouse: MouseEvent): void {
     if (this.clickOnSelectionBox || this.clickInSelectionBox) {
-      this.updatePositionMouse(mouse);
+      this.updateTranslationMouse(mouse);
     } else {
       this.selectionRectangle.mouseMove(mouse);
       if (this.selectionRectangle.ongoingSelection) {
@@ -90,6 +85,8 @@ export class SelectionService implements ToolInterface {
   onMousePress(mouse: MouseEvent): void {
     if (!this.clickOnSelectionBox && !this.clickInSelectionBox) {
       this.selectionRectangle.mouseDown(mouse);
+    } else {
+      this.transformCommand = new TransformSvgService(this.selectedElements, this.sanitizer, this.deleteBoundingBox.bind(this));
     }
   }
 
@@ -97,14 +94,10 @@ export class SelectionService implements ToolInterface {
     if (this.clickOnSelectionBox || this.clickInSelectionBox) {
       this.clickOnSelectionBox = false;
       this.clickInSelectionBox = false;
-      if (this.hasMoved()) {
-        this.command.execute(new TranslateSvgService(
-          this.selectedElements,
-          this.selectionBox,
-          this.sanitizer,
-          this.deleteBoundingBox
-        ));
+      if (this.transformCommand.hasMoved()) {
+        this.command.execute(this.transformCommand);
       }
+      this.command.drawingInProgress = false;
     } else {
         if (this.selectionRectangle.rectangle) {
           this.isInRectangleSelection(this.selectionRectangle.rectangle);
@@ -128,23 +121,25 @@ export class SelectionService implements ToolInterface {
 
       for (const element of this.selectedElements) {
         for (const point of element.points) {
-          // Point Min
-          if (pointMin.x > point.x + element.translate.x) {
-            pointMin.x = point.x + element.translate.x;
+          // pointMin
+          const transformedX = element.transform.a * point.x + element.transform.c * point.y + element.transform.e;
+          const transformedY = element.transform.b * point.x + element.transform.d * point.y + element.transform.f;
+          if (transformedX < pointMin.x) {
+            pointMin.x = transformedX;
             epaisseurMin.x = element.thickness ? element.thickness : 0;
           }
-          if (pointMin.y > point.y + element.translate.y) {
-            pointMin.y = point.y + element.translate.y;
+          if (transformedY < pointMin.y) {
+            pointMin.y = transformedY;
             epaisseurMin.y = element.thickness ? element.thickness : 0;
           }
 
-          // Point Max
-          if (pointMax.x < point.x + element.translate.x) {
-            pointMax.x = point.x + element.translate.x;
+          // pointMax
+          if (transformedX > pointMax.x) {
+            pointMax.x = transformedX;
             epaisseurMax.x = element.thickness ? element.thickness : 0;
           }
-          if (pointMax.y < point.y + element.translate.y) {
-            pointMax.y = point.y + element.translate.y;
+          if (transformedY > pointMax.y) {
+            pointMax.y = transformedY;
             epaisseurMax.y = element.thickness ? element.thickness : 0;
           }
         }
@@ -158,9 +153,6 @@ export class SelectionService implements ToolInterface {
 
   deleteBoundingBox(): void {
     this.selectionBox.deleteSelectionBox();
-    for (const element of this.selectedElements) {
-      element.isSelected = false;
-    }
     this.selectedElements = [];
   }
 
@@ -172,9 +164,8 @@ export class SelectionService implements ToolInterface {
 
       if (this.selectionRectangle.rectangle) {
         if (this.belongToRectangle(element, this.selectionRectangle.rectangle) && !this.selectedElements.includes(element)) {
-          element.isSelected = true;
           this.selectedElements.push(element);
-        } else { element.isSelected = false; }
+        }
       } else if (this.selectionRectangle.rectangleInverted) {
         if (this.belongToRectangle(element, this.selectionRectangle.rectangleInverted) && !this.modifiedElement.has(element)) {
           this.reverseElementSelectionStatus(element);
@@ -208,22 +199,24 @@ export class SelectionService implements ToolInterface {
 
     for (const point of element.points) {
       // pointMin
-      if (point.x < pointMin.x) {
-        pointMin.x = point.x;
+      const transformedX = element.transform.a * point.x + element.transform.c * point.y + element.transform.e;
+      const transformedY = element.transform.b * point.x + element.transform.d * point.y + element.transform.f;
+      if (transformedX < pointMin.x) {
+        pointMin.x = transformedX;
         epaisseurMin.x = element.thickness ? element.thickness : 0;
       }
-      if (point.y < pointMin.y) {
-        pointMin.y = point.y;
+      if (transformedY < pointMin.y) {
+        pointMin.y = transformedY;
         epaisseurMin.y = element.thickness ? element.thickness : 0;
       }
 
       // pointMax
-      if (point.x > pointMax.x) {
-        pointMax.x = point.x;
+      if (transformedX > pointMax.x) {
+        pointMax.x = transformedX;
         epaisseurMax.x = element.thickness ? element.thickness : 0;
       }
-      if (point.y > pointMax.y) {
-        pointMax.y = point.y;
+      if (transformedY > pointMax.y) {
+        pointMax.y = transformedY;
         epaisseurMax.y = element.thickness ? element.thickness : 0;
       }
     }
@@ -231,40 +224,32 @@ export class SelectionService implements ToolInterface {
     element.pointMax = {x: pointMax.x + HALF_DRAW_ELEMENT * epaisseurMax.x, y: pointMax.y + HALF_DRAW_ELEMENT * epaisseurMax.y };
   }
 
-  updatePosition(x: number, y: number): void {
+  updateTranslation(x: number, y: number): void {
     if (this.selectionBox.box) {
       for (const element of this.selectedElements) {
-          element.updatePosition(x, y);
+          element.updateTranslation(x, y);
           element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
       }
-      this.selectionBox.updatePosition(x, y);
+      this.selectionBox.updateTranslation(x, y);
     }
   }
 
-  updatePositionMouse(mouse: MouseEvent): void {
+  updateTranslationMouse(mouse: MouseEvent): void {
     if (this.selectionBox.box) {
       for (const element of this.selectedElements) {
-          element.updatePositionMouse(mouse, this.selectionBox.mouseClick);
+          element.updateTranslationMouse(mouse);
           element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
       }
-      this.selectionBox.updatePositionMouse(mouse);
+      this.selectionBox.updateTranslationMouse(mouse);
     }
-  }
-
-  hasMoved(): boolean {
-    const xTranslation = this.selectedElements[0].translate.x !== 0;
-    const yTranslation = this.selectedElements[0].translate.y !== 0;
-    return xTranslation || yTranslation;
   }
 
   reverseElementSelectionStatus(element: DrawElement): void {
     if (!this.selectedElements.includes(element)) {
       this.selectedElements.push(element);
-      element.isSelected = true;
     } else {
       const index = this.selectedElements.indexOf(element, 0);
       this.selectedElements.splice(index, 1);
-      element.isSelected = false;
     }
   }
 

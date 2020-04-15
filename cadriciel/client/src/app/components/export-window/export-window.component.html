@@ -1,3 +1,4 @@
+<div class ="exportWindow">
 <mat-dialog-content>
     <div *ngIf="mailStatus === 1" class="loading">
         Patientez s'il vous plaît...
@@ -45,6 +46,21 @@
                     <feFuncB type="linear" slope="0.5" intercept="0"></feFuncB>
                 </feComponentTransfer>
             </filter>
+
+            <!-- https://developer.mozilla.org/fr/docs/Web/SVG/Element/feOffset -->
+            <filter id="Surbrillance" filterUnits="userSpaceOnUse">
+                <feOffset in="SourceGraphic" dx="60" dy="60" />
+                <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="blur1" />
+                <feMerge>
+                    <feMergeNode in="blur1" />
+                    <feMergeNode in="SourceGraphic" />
+                </feMerge>
+            </filter>
+
+            <!-- https://developer.mozilla.org/fr/docs/Web/SVG/Element/feDropShadow -->
+            <filter id="Ombre" filterUnits="userSpaceOnUse">
+                <feDropShadow dx="1.5" dy="20" stdDeviation="5"/>
+            </filter>
         </defs>
         <rect [attr.width]="drawing.width" [attr.height]="drawing.height" [attr.fill]="drawing.backgroundColor.RGBAString" />
         <g *ngFor="let element of drawing.elements" [innerHtml]="sanitize(element.svg)" />
@@ -80,3 +96,4 @@
     </div>
 
 </mat-dialog-content>
+</div>

@@ -63,7 +63,7 @@ export abstract class BasicShapeToolService implements ToolInterface {
   onMouseRelease(): void {
     // On évite de créer des formes vides
     if (this.shape.getWidth() !== 0 || this.shape.getHeight() !== 0) {
-      this.commands.execute(new AddSVGService(this.shape, this.stockageSVG));
+      this.commands.execute(new AddSVGService([this.shape], this.stockageSVG));
     }
     this.clear();
     this.stockageSVG.setOngoingSVG(this.shape);
@@ -98,7 +98,7 @@ export abstract class BasicShapeToolService implements ToolInterface {
   shiftRelease(): void {
     if (this.commands.drawingInProgress) {
       // Lorsque la touche 'shift' est relâchée, la forme à dessiner est un rectangle
-      this.shape.points[0] = {x : this.calculatedBase.x, y: this.calculatedBase.y};
+      this.shape.points[0] = {x: this.calculatedBase.x, y: this.calculatedBase.y};
       this.shape.points[1] = {x: this.calculatedBase.x + this.calculatedWidth, y: this.calculatedBase.y + this.calculatedHeight};
       this.refreshSVG();
     }

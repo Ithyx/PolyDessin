@@ -6,15 +6,18 @@
     z-index: 1; /* Stay on top */
     top: 0; /* Stay at the top */
     left: 0;
-    background-color: lightgray; /* Black */
+    background-color: rgb(145, 145, 160); /* Black */
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 20px;
+    text-align: left;
 }
 
 
 .content {
-    margin-left: 25%;
-    margin-right: 15%;
+    margin-left: 22%;
+    margin-right: 3%;
+    margin-bottom: 3%;
+    margin-top: 3%;
 }
 
 .buttonDiv {
@@ -24,6 +27,7 @@
 #nextButton {
     float: right;
 }
+
 
 button.return{
     position: fixed;

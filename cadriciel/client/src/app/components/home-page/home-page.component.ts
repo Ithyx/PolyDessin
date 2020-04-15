@@ -39,6 +39,9 @@ export class HomePageComponent {
     if (event.key === 'o' && event.ctrlKey === true) {
       event.preventDefault();
       this.createDrawing();
+    } else if (event.key === 'g' && event.ctrlKey === true) {
+      event.preventDefault();
+      this.openGallery();
     }
   }
 

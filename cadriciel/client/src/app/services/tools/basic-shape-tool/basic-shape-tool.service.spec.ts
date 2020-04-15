@@ -283,7 +283,7 @@ describe('BasicShapeToolService', () => {
     spyOn(service['commands'], 'execute');
     service.onMouseRelease();
     // vérifier que la fonction ajouterSVG a été correctement appelée
-    const addSVG = new AddSVGService(rectangle, service['stockageSVG']);
+    const addSVG = new AddSVGService([rectangle], service['stockageSVG']);
     expect(service['commands'].execute).toHaveBeenCalledWith(addSVG);
   });
   it('#onMouseRelease devrait appeler clear', () => {

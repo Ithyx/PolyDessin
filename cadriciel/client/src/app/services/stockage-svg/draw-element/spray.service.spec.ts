@@ -18,7 +18,7 @@ describe('SprayService', () => {
       RGBAString: 'rgba(0, 0, 0, 1)',
       RGBA: [0, 0, 0, 1]
     };
-    element.translate = { x: 10, y: 10};
+    element.transform = {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0};
     element.points.push({x: 10, y: 10});
     element.points.push({x: 100, y: 100});
     element.diameter = 10;
@@ -33,10 +33,12 @@ describe('SprayService', () => {
   // TESTS draw
 
   it('#draw devrait mettre le bon fill si erasingEvidence est faux', () => {
-    let test = '<circle transform="translate(' + element.translate.x + ' ' + element.translate.y
+    let test = '<circle transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" cx="10" cy="10" r="1" '
     + 'fill="' + element.primaryColor.RGBAString + '"></circle>';
-    test += '<circle transform="translate(' + element.translate.x + ' ' + element.translate.y
+    test += '<circle transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" cx="100" cy="100" r="1" '
     + 'fill="' + element.primaryColor.RGBAString + '"></circle>';
     element.draw();
@@ -45,10 +47,12 @@ describe('SprayService', () => {
 
   it('#draw devrait mettre le bon fill si erasingEvidence est vrai', () => {
     element.erasingEvidence = true;
-    let test = '<circle transform="translate(' + element.translate.x + ' ' + element.translate.y
+    let test = '<circle transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" cx="10" cy="10" r="1" '
     + 'fill="' + element.erasingColor.RGBAString + '"></circle>';
-    test += '<circle transform="translate(' + element.translate.x + ' ' + element.translate.y
+    test += '<circle transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" cx="100" cy="100" r="1" '
     + 'fill="' + element.erasingColor.RGBAString + '"></circle>';
     element.draw();
@@ -95,7 +99,8 @@ describe('SprayService', () => {
     element.points = [];
     spyOn(Math, 'random').and.returnValues(0.5, 0.25);
 
-    const test = '<circle transform="translate(' + element.translate.x + ' ' + element.translate.y
+    const test = '<circle transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + `)" cx="${pointX}" cy="${pointY}" r="1" `
     + `fill="${(element.erasingEvidence) ? element.erasingColor.RGBAString :  element.primaryColor.RGBAString}"></circle>`;
     element.addPoint(mousePosition);
@@ -112,41 +117,12 @@ describe('SprayService', () => {
     spyOn(Math, 'random').and.returnValues(0.5, 0.25);
 
     element.erasingEvidence = true;
-    const test = '<circle transform="translate(' + element.translate.x + ' ' + element.translate.y
+    const test = '<circle transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + `)" cx="${pointX}" cy="${pointY}" r="1" `
     + `fill="${(element.erasingEvidence) ? element.erasingColor.RGBAString :  element.primaryColor.RGBAString}"></circle>`;
     element.addPoint(mousePosition);
     expect(element.svg).toEqual(test);
-  });
-
-  // TESTS updatePosition
-
-  it('#updatePosition devrait ajouter les valeurs en paramètre à translate', () => {
-    element.updatePosition(10, -25);
-    expect(element.translate.x).toEqual(20);
-    expect(element.translate.y).toEqual(-15);
-  });
-
-  it('#updatePosition devrait appeler draw', () => {
-    spyOn(element, 'draw');
-    element.updatePosition(10, 10);
-    expect(element.draw).toHaveBeenCalled();
-  });
-
-  // TESTS updatePositionMouse
-
-  it('#updatePositionMouse devrait ajouter les valeurs en paramètre à translate', () => {
-    const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    element.updatePositionMouse(click, { x: 10, y: 10});
-    expect(element.translate.x).toEqual(90);
-    expect(element.translate.y).toEqual(90);
-  });
-
-  it('#updatePositionMouse devrait appeler draw', () => {
-    spyOn(element, 'draw');
-    const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
-    element.updatePositionMouse(click, { x: 10, y: 10});
-    expect(element.draw).toHaveBeenCalled();
   });
 
   // TESTS updateParameters
@@ -165,17 +141,4 @@ describe('SprayService', () => {
     expect(element.diameter).toEqual(MIN_DIAMETER);
   });
 
-  // TESTS translateAllPoints
-
-  it('#translateAllPoints devrait changer tous les points de points pour ajouter la translation', () => {
-    element.points.push({x: 10, y: 10});
-    element.translateAllPoints();
-    expect(element.points[0].x).toEqual(20);
-    expect(element.points[0].y).toEqual(20);
-  });
-
-  it('#translateAllPoints devrait mettre translation à 0', () => {
-    element.translateAllPoints();
-    expect(element.translate).toEqual({x: 0, y: 0});
-  });
 });

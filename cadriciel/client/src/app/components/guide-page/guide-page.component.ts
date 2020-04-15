@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { RoutingManagerService } from 'src/app/services/routing-manager.service';
 import { NavigationGuideService } from '../../services/navigation-guide.service';
 import { SubjectGuide } from '../guide-subject/subject-guide';
@@ -11,6 +11,7 @@ import { GUIDE_CONTENTS } from './guide-contents';
 })
 
 export class GuidePageComponent {
+
   private subjects: SubjectGuide[];
   private activeSubject: SubjectGuide;
 
@@ -41,4 +42,5 @@ export class GuidePageComponent {
   notificationReceived(subject: SubjectGuide): void {
     this.activeSubject = subject;
   }
+
 }

@@ -51,7 +51,7 @@ export class SprayToolService implements ToolInterface {
   onMouseRelease(): void {
     if (this.commands.drawingInProgress) {
       if (this.trace.points.length > 0) {
-        this.commands.execute(new AddSVGService(this.trace, this.stockageSVG));
+        this.commands.execute(new AddSVGService([this.trace], this.stockageSVG));
       }
     }
     this.resetTrace();
