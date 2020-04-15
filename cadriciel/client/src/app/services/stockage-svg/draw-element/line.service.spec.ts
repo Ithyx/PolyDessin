@@ -37,14 +37,16 @@ describe('LineService', () => {
   it('#draw devrait assigner un string polyline au SVG si erasingEvidence est vrai', () => {
     element.erasingEvidence = true;
     element.erasingColor.RGBAString = 'rgba(255, 0, 0, 1)';
-    const test = '<polyline transform="translate(10 10)" fill="none"'
+    const test = '<polyline transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f + ')" ' + 'fill="none"'
     + ' stroke="rgba(255, 0, 0, 1)" stroke-width="10" points="10 10 100 100 0 0"></polyline>';
     element.draw();
     expect(element.svg).toEqual(test);
   });
 
   it('#draw devrait assigner un string polyline au SVG si isAPolygon est faux', () => {
-    const test = '<polyline transform="translate(10 10)" fill="none"'
+    const test = '<polyline transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f + ')" ' + 'fill="none"'
     + ' stroke="rgba(0, 0, 0, 1)" stroke-width="10" points="10 10 100 100 0 0"></polyline>';
     element.draw();
     expect(element.svg).toEqual(test);
@@ -52,7 +54,8 @@ describe('LineService', () => {
 
   it('#draw devrait assigner un string polygon au SVG si isAPolygon est vrai', () => {
     element.isAPolygon = true;
-    const test = '<polygon transform="translate(10 10)" fill="none"'
+    const test = '<polygon transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f + ')" ' + 'fill="none"'
     + ' stroke="rgba(0, 0, 0, 1)" stroke-width="10" points="10 10 100 100 "></polygon>';
     element.draw();
     expect(element.svg).toEqual(test);
@@ -108,14 +111,14 @@ describe('LineService', () => {
     expect(element.thickness).toEqual(test);
   });
 
-  /* 
-
   it('#drawPoints devrait assigner à fill primaryColor.RGBAString si erasingEvidence est faux', () => {
     element.svg = '';
     let test = element.svg;
-    test += '<circle transform="translate(' + element.translate.x + ' ' + element.translate.y
+    test += '<circle transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" cx="' + 10 + '" cy="' + 10 + '" r="' + element.thicknessPoint  + '" fill="' + element.primaryColor.RGBAString + '"></circle>';
-    test += '<circle transform="translate(' + element.translate.x + ' ' + element.translate.y
+    test += '<circle transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" cx="' + 100 + '" cy="' + 100 + '" r="' + element.thicknessPoint  + '" fill="' + element.primaryColor.RGBAString + '"></circle>';
     element.drawPoints();
     expect(element.svg).toEqual(test);
@@ -125,9 +128,11 @@ describe('LineService', () => {
     element.erasingEvidence = true;
     element.svg = '';
     let test = element.svg;
-    test += '<circle transform="translate(' + element.translate.x + ' ' + element.translate.y
+    test += '<circle transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" cx="' + 10 + '" cy="' + 10 + '" r="' + element.thicknessPoint  + '" fill="' + element.erasingColor.RGBAString + '"></circle>';
-    test += '<circle transform="translate(' + element.translate.x + ' ' + element.translate.y
+    test += '<circle transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" cx="' + 100 + '" cy="' + 100 + '" r="' + element.thicknessPoint  + '" fill="' + element.erasingColor.RGBAString + '"></circle>';
     element.drawPoints();
     expect(element.svg).toEqual(test);

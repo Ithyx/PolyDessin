@@ -27,11 +27,12 @@ describe('ColorFillService', () => {
   });
 
   // TESTS draw
-  /*
+
   it('#draw devrait assigner un string path au SVG si erasingEvidence est vrai', () => {
     element.erasingEvidence = true;
     element.erasingColor.RGBAString = 'rgba(255, 0, 0, 1)';
-    const test = '<path transform="translate(' + element.translate.x + ' ' + element.translate.y + ')" fill="none" '
+    const test = '<path transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f + ')" fill="none" '
     + 'stroke="' + element.erasingColor.RGBAString + '" '
     + 'stroke-width="3" d="M 10 10 L 100 100 ' + '"></path>';
     element.draw();
@@ -41,13 +42,13 @@ describe('ColorFillService', () => {
   it('#draw devrait assigner un string path au SVG si erasingEvidence est faux', () => {
     element.erasingEvidence = false;
     element.erasingColor.RGBAString = 'rgba(255, 0, 0, 1)';
-    const test = '<path transform="translate(' + element.translate.x + ' ' + element.translate.y + ')" fill="none" '
+    const test = '<path transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f + ')" fill="none" '
     + 'stroke="' + element.primaryColor.RGBAString + '" '
     + 'stroke-width="3" d="M 10 10 L 100 100 ' + '"></path>';
     element.draw();
     expect(element.svg).toEqual(test);
   });
-  */
 
   // TESTS updateParameters
 

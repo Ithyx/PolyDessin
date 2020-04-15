@@ -1,4 +1,4 @@
-/* import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+/*import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
 
 import { ElementRef } from '@angular/core';
@@ -161,7 +161,7 @@ describe('DrawingSurfaceComponent', () => {
     + 'si selectedElements n\'inclut pas l\'élément en paramètre', () => {
     component.handleElementMouseDown(element, new MouseEvent('down', {button: 0}));
     expect(selectedElement.isSelected).toBe(false);
-  }); 
+  }); *//*
   it('#handleElementMouseDown devrait appeler splice pour vider selectedElements '
     + 'si selectedElements n\'inclut pas l\'élément en paramètre', () => {
     component['selection'].selectedElements.push(selectedElement);
@@ -253,7 +253,7 @@ describe('DrawingSurfaceComponent', () => {
     component['mousePosition'] = {x: 25, y: 25};
     component.handleElementMouseUp(element, new MouseEvent('up', {button: 0, screenX: 25, screenY: 25}));
     expect(element.isSelected).toBe(true);
-  }); 
+  }); *//*
   it('#handleElementMouseUp devrait appeler createBoundingBox de selection '
     + 'lors d\'un left click où mousePosition est égal à screenX, screenY du MouseEvent', () => {
     component['mousePosition'] = {x: 25, y: 25};
@@ -380,7 +380,7 @@ describe('DrawingSurfaceComponent', () => {
     component.handleMouseUpBox();
     expect(spy1).toHaveBeenCalled();
     expect(spy2).toHaveBeenCalled();
-  }); 
+  }); *//*
 
   // TESTS handleMouseDownBackground
   it('#handleMouseDownBackground devrait changer mousePosition pour screenX et screenY du MouseEvent', () => {
@@ -492,7 +492,7 @@ describe('DrawingSurfaceComponent', () => {
   /* it('#handleBackgroundLeftClick devrait mettre isSelected des selectedElements à false', () => {
     component.handleBackgroundLeftClick();
     expect(selectedElement.isSelected).toBe(false);
-  });
+  });*//*
   it('#handleBackgroundLeftClick devrait appeler splice pour vider les selectedElements', () => {
     component['selection'].selectedElements.push(selectedElement);
     const spy = spyOn(component['selection'].selectedElements, 'splice');
@@ -529,4 +529,4 @@ describe('DrawingSurfaceComponent', () => {
     component.handleControlPointMouseDown(new MouseEvent('down', {button: 2}));
     expect(component['selection'].selectionRectangle.rectangle).not.toBeDefined();
   });
-}); */
+});*/
