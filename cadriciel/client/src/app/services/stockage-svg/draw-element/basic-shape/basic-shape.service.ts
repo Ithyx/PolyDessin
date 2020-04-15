@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Color } from 'src/app/services/color/color';
-import { DrawingTool } from 'src/app/services/tools/tool-manager.service';
+import { DrawingTool, TOOL_INDEX } from 'src/app/services/tools/tool-manager.service';
 import { DrawElement, Point } from '../../draw-element/draw-element';
 
 @Injectable({
@@ -56,7 +56,7 @@ export abstract class BasicShapeService extends DrawElement  {
   abstract drawPerimeter(): void;
 
   drawStroke(): void {
-    this.svg += '<polygon fill="none" stroke-linejoin="round'
+    this.svg += '<polygon fill="none"' + (this.trueType === TOOL_INDEX.ELLIPSE ? 'stroke-linejoin="round' : '')
     + '" stroke="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString : this.secondaryColor.RGBAString)
     + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')
     + '" stroke-width="' + this.thickness

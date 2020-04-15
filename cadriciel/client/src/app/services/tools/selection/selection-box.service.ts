@@ -65,8 +65,11 @@ export class SelectionBoxService {
 
     this.box.points[0] = pointMin;
     this.box.points[1] = pointMax;
-    this.box.pointMin = {...pointMin};
-    this.box.pointMax = {...pointMax};
+    this.box.addRectanglePoints();
+    this.box.strokePoints = [
+      {...this.box.points[0]}, {...this.box.points[2]},
+      {...this.box.points[1]}, {...this.box.points[this.box.points.length - 1]}
+    ];
     this.box.secondaryColor.RGBAString =  'rgba(0, 80, 150, 1)';
     this.box.thickness = SELECTION_BOX_THICKNESS;
 
@@ -108,8 +111,11 @@ export class SelectionBoxService {
       controlPoint.primaryColor.RGBAString =  'rgba(0, 0, 0, 1)';
       controlPoint.secondaryColor.RGBAString = 'rgba(0, 255, 0, 1)';
       controlPoint.thickness = CONTROL_POINT_THICKNESS;
-      controlPoint.pointMin = {...controlPoint.points[0]};
-      controlPoint.pointMax = {...controlPoint.points[1]};
+      controlPoint.addRectanglePoints();
+      controlPoint.strokePoints = [
+        {...controlPoint.points[0]}, {...controlPoint.points[2]},
+        {...controlPoint.points[1]}, {...controlPoint.points[controlPoint.points.length - 1]}
+      ];
       controlPoint.drawShape();
       controlPoint.drawStroke();
 
