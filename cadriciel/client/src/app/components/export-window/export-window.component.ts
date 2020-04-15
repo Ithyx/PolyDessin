@@ -9,13 +9,18 @@ import { Drawing } from '../../../../../common/communication/drawing-interface';
 import { FILTERS } from '../../services/filters/filters';
 
 export const PREVIEW_SIZE = '200';
+enum MailStatus {
+  UNDEFINED = 0,
+  LOADING = 1,
+  SUCCESS = 2,
+  FAILURE = 3
+}
 
 @Component({
   selector: 'app-export-window',
   templateUrl: './export-window.component.html',
   styleUrls: ['./export-window.component.scss']
 })
-
 export class ExportWindowComponent {
   @ViewChild('drawingPreview', {static: false})
   private drawingPreview: ElementRef<SVGElement>;
@@ -34,6 +39,8 @@ export class ExportWindowComponent {
   private emailAdress: string;
   private canvas: HTMLCanvasElement;
   protected drawing: Drawing;
+  protected mailStatus: MailStatus;
+  protected mostRecentError: number | undefined;
 
   constructor(private dialogRef: MatDialogRef<ExportWindowComponent>,
               private stockageSVG: SVGStockageService,
@@ -57,6 +64,8 @@ export class ExportWindowComponent {
       elements: this.stockageSVG.getCompleteSVG()
     };
     this.canvas = this.canvasConversion.canvas;
+    this.mailStatus = MailStatus.UNDEFINED;
+    this.mostRecentError = undefined;
   }
 
   close(): void {
@@ -117,6 +126,7 @@ export class ExportWindowComponent {
   }
 
   sendImage(): void {
+    this.mailStatus = MailStatus.LOADING;
     this.context.drawImage(this.image, 0, 0);
     if (this.selectedAuthor !== '' && this.context) {
       console.log('DRAWING');
@@ -151,7 +161,13 @@ export class ExportWindowComponent {
       imageData += '</svg>\n';
     }
     console.log(imageData);
-    this.db.sendEmail(this.emailAdress, imageData, this.selectedFileName, this.selectedExportFormat);
+    this.db.sendEmail(this.emailAdress, imageData, this.selectedFileName, this.selectedExportFormat)
+    .then(() => {
+      this.mailStatus = MailStatus.SUCCESS;
+    }, (err) => {
+      this.mostRecentError = err.status;
+      this.mailStatus = MailStatus.FAILURE;
+    });
   }
 
   updateSelectedFormat(event: Event): void {
