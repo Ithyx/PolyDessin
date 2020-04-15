@@ -39,6 +39,14 @@ export abstract class BasicShapeService extends DrawElement  {
     return Math.abs(this.points[1].y - this.points[0].y);
   }
 
+  getStrokeWidth(): number {
+    return Math.abs(this.pointMax.x - this.pointMin.x);
+  }
+
+  getStrokeHeight(): number {
+    return Math.abs(this.pointMax.y - this.pointMin.y);
+  }
+
   draw(): void {
     if ((this.getWidth() === 0 || this.getHeight() === 0) && this.chosenOption !== 'Plein') {
       this.drawLine();

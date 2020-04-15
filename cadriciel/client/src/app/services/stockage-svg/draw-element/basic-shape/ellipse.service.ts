@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TOOL_INDEX } from 'src/app/services/tools/tool-manager.service';
+import { Point } from '../draw-element';
 import { BasicShapeService } from './basic-shape.service';
 
 export const ANGLE_VARIATION = 32;
@@ -15,11 +16,11 @@ export class EllipseService extends BasicShapeService {
   }
 
   getWidth(): number {
-    return this.pointMax.x - this.pointMin.x;
+    return Math.abs(this.points[ANGLE_VARIATION / 2].x - this.points[ANGLE_VARIATION + ANGLE_VARIATION / 2].x);
   }
 
   getHeight(): number {
-    return this.pointMax.y - this.pointMin.y;
+    return Math.abs(this.points[ANGLE_VARIATION].y - this.points[0].y);
   }
 
   drawLine(): void {
@@ -35,19 +36,22 @@ export class EllipseService extends BasicShapeService {
 
   drawShape(): void {
     // ajuster les pointMin et pointMax en fonction de la position des points
-    this.pointMin.x = this.points[ANGLE_VARIATION + ANGLE_VARIATION / 2].x;
-    this.pointMin.y = this.points[0].y;
-    this.pointMax.x = this.points[ANGLE_VARIATION / 2].x;
-    this.pointMax.y = this.points[ANGLE_VARIATION].y;
+    const pointMin: Point = {x: this.points[ANGLE_VARIATION + ANGLE_VARIATION / 2].x, y: this.points[0].y};
+    const pointMax: Point = {x: this.points[ANGLE_VARIATION / 2].x, y: this.points[ANGLE_VARIATION].y};
     this.svg = '<ellipse transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
                                               + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
-      + ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor.RGBAString : 'none')
-      + '" stroke="'
-      + ((this.erasingEvidence) ? this.erasingColor.RGBAString :
-        ((this.chosenOption !== 'Plein') ? this.secondaryColor.RGBAString : 'none'))
+      + ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor.RGBAString : 'none') + '" stroke="none'
+      + '" cx="' + (pointMin.x + pointMax.x) / 2 + '" cy="' + (pointMin.y + pointMax.y) / 2
+      + '" rx="' + this.getWidth() / 2 + '" ry="' + this.getHeight() / 2 + '"></ellipse>';
+  }
+
+  drawStroke(): void {
+    this.svg += '<ellipse transform=" matrix(' + this.strokeTransform.a + ' ' + this.strokeTransform.b + ' '
+      + this.strokeTransform.c + ' ' + this.strokeTransform.d + ' ' + this.strokeTransform.e + ' ' + this.strokeTransform.f
+      + ')" fill="none" stroke="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString : this.secondaryColor.RGBAString)
       + '" stroke-width="' + this.thickness
       + '" cx="' + (this.pointMin.x + this.pointMax.x) / 2 + '" cy="' + (this.pointMin.y + this.pointMax.y) / 2
-      + '" rx="' + this.getWidth() / 2 + '" ry="' + this.getHeight() / 2 + '"></ellipse>';
+      + '" rx="' + this.getStrokeWidth() / 2 + '" ry="' + this.getStrokeHeight() / 2 + '"></ellipse>';
   }
 
   drawPerimeter(): void {

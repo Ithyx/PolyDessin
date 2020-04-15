@@ -14,14 +14,6 @@ export class RectangleService extends BasicShapeService {
     this.trueType = TOOL_INDEX.RECTANGLE;
   }
 
-  getStrokeWidth(): number {
-    return this.pointMax.x - this.pointMin.x;
-  }
-
-  getStrokeHeight(): number {
-    return this.pointMax.y - this.pointMin.y;
-  }
-
   drawLine(): void {
     this.svg = '<line stroke-linecap="square'
       + '" transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '

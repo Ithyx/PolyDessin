@@ -20,12 +20,16 @@ export class EllipseToolService extends BasicShapeToolService {
   refreshSVG(): void {
     this.shape.pointMin = {...this.shape.points[0]};
     this.shape.pointMax = {...this.shape.points[1]};
-    const center: Point = {x: this.shape.pointMin.x + this.shape.getWidth() / 2, y: this.shape.pointMin.y + this.shape.getHeight() / 2};
+    const center: Point = {
+      x: this.shape.pointMin.x + this.shape.getStrokeWidth() / 2,
+      y: this.shape.pointMin.y + this.shape.getStrokeHeight() / 2
+    };
     this.shape.points = [];
     for (let angle = STARTING_ANGLE; angle < ENDING_ANGLE; angle += Math.PI / ANGLE_VARIATION) {
-      this.shape.points.push(
-        {x: (this.shape.getWidth() / 2) * Math.cos(angle) + center.x, y: (this.shape.getHeight() / 2) * Math.sin(angle) + center.y}
-      );
+      this.shape.points.push({
+        x: (this.shape.getStrokeWidth() / 2) * Math.cos(angle) + center.x,
+        y: (this.shape.getStrokeHeight() / 2) * Math.sin(angle) + center.y
+      });
     }
     super.refreshSVG();
   }
