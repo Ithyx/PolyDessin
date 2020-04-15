@@ -52,7 +52,6 @@ export class DatabaseService {
   }
 
   async sendEmail(emailAddress: string, image: string, fileName: string, fileExtension: string): Promise<void> {
-    console.log(emailAddress);
     await this.http.post(SERVER_URL.SEND, {to: emailAddress, payload: image, filename: fileName, extension: fileExtension}).toPromise();
   }
 }

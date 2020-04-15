@@ -6,6 +6,7 @@ import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-
 import { DatabaseService } from 'src/app/services/saving/remote/database.service';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { Drawing } from '../../../../../common/communication/drawing-interface';
+import { FILTERS } from '../../services/filters/filters';
 
 export const PREVIEW_SIZE = '200';
 
@@ -115,10 +116,26 @@ export class ExportWindowComponent {
 
   sendImage(): void {
     this.context.drawImage(this.image, 0, 0);
-    const format = (this.selectedExportFormat === 'svg') ? 'svg+xml' : this.selectedExportFormat;
-    const imageData = this.canvas.toDataURL('image/' + format);
+    let imageData = this.canvas.toDataURL('image/' + this.selectedExportFormat);
+    if (this.selectedExportFormat === 'svg') {
+      imageData =
+      `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="${this.drawingParams.width}" height="${this.drawingParams.height}">\n`;
+      imageData += '<defs>\n';
+      for (const filter of FILTERS) {
+        imageData += `${filter}\n`;
+      }
+      imageData += '</defs>\n';
+      imageData += `<rect x="0" y="0" width="${this.drawingParams.width}" height="${this.drawingParams.height}"
+      fill="${this.drawingParams.backgroundColor.RGBAString}"></rect>\n`;
+      if (this.drawing.elements) {
+        for (const element of this.drawing.elements) {
+          imageData += `<g>${element.svg}</g>\n`;
+        }
+      }
+      imageData += '</svg>\n';
+    }
     console.log(imageData);
-    this.db.sendEmail(this.emailAdress, imageData, this.selectedFileName, format);
+    this.db.sendEmail(this.emailAdress, imageData, this.selectedFileName, this.selectedExportFormat);
   }
 
   updateSelectedFormat(event: Event): void {

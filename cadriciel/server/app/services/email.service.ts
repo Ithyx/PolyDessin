@@ -12,7 +12,8 @@ export class EmailService {
 
     async sendEmail(address: string, image: Buffer, fileName: string, fileExtension: string): Promise<boolean> {
         if (fileName === '') { fileName = 'image'; }
-        const appendOptions = {filename: fileName + '.' +  fileExtension, contentType: 'image/' + fileExtension,
+        const type = (fileExtension === 'svg') ? 'svg+xml' : fileExtension;
+        const appendOptions = {filename: fileName + '.' +  fileExtension, contentType: 'image/' + type,
         knownLength: image.byteLength};
         console.log('email:', address);
         const form = new FormData();
