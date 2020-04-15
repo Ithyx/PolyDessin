@@ -66,18 +66,16 @@ describe('ColorChangerToolService', () => {
     expect(service['commands'].execute).not.toHaveBeenCalled();
   });
 
-  /*
-
   it('#onMouseClick devrait executer une commande si la couleur principale de l\'element actif est différente de  celle choisi', () => {
     spyOn(service['commands'], 'execute');
 
-    service.activeElement = {...element};
+    service.activeElement = element;
     service.activeElement.primaryColor = colorTest1;
     service['colorParameter'].primaryColor = colorTest2;
 
     service.onMouseClick();
     expect(service['commands'].execute).toHaveBeenCalled();
-  }); */
+  });
 
   // TESTS onRightClick
 
@@ -99,16 +97,15 @@ describe('ColorChangerToolService', () => {
     expect(service['commands'].execute).not.toHaveBeenCalled();
   });
 
-  /*
   it('#onRightClick devrait executer une commande si la couleur secondaire de l\'element actif est différente de  celle choisi', () => {
     spyOn(service['commands'], 'execute');
 
-    service.activeElement = {...element};
+    service.activeElement = element;
     service.activeElement.secondaryColor = colorTest1;
     service['colorParameter'].secondaryColor = colorTest2;
 
     service.onRightClick();
     expect(service['commands'].execute).toHaveBeenCalled();
-  }); */
+  });
 
 });

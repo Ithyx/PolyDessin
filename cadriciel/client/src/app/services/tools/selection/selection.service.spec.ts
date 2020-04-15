@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
+import { TransformSvgService } from '../../command/transform-svg.service';
 import { RectangleService } from '../../stockage-svg/draw-element/basic-shape/rectangle.service';
 import { DrawElement } from '../../stockage-svg/draw-element/draw-element';
 import { TOOL_INDEX } from '../tool-manager.service';
 import { LEFT_CLICK, RIGHT_CLICK, SelectionService } from './selection.service';
-import { TransformSvgService } from '../../command/transform-svg.service';
 
 // tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers
@@ -300,6 +300,16 @@ describe('SelectionService', () => {
     expect(service.clickInSelectionBox).toBe(false);
   });
 
+  it('#onMouseRelease devrait mettre clickInSelectionBox à false si il y a eu un clic dans ou sur la boite de selection', () => {
+    service.clickInSelectionBox = true;
+    service.selectedElements.push(element);
+    service['transformCommand'] = new TransformSvgService(service.selectedElements, service.sanitizer, service.deleteBoundingBox);
+    const spy = spyOn(service['command'], 'execute');
+    spyOn(service['transformCommand'], 'hasMoved').and.returnValue(true);
+    service.onMouseRelease();
+    expect(spy).toHaveBeenCalled();
+  });
+
   it('#onMouseRelease devrait appeler createBoundingBox si il n\'y a pas de clic sur ou dans la boite de selection', () => {
     const spy = spyOn(service, 'createBoundingBox');
     service.onMouseRelease();
@@ -478,6 +488,18 @@ describe('SelectionService', () => {
     service.isInRectangleSelection(new RectangleService());
     expect(spy).not.toHaveBeenCalled();
     expect(spy1).not.toHaveBeenCalled();
+  });
+
+  it('#isInRectangleSelction ne devrait rien faire si aucun element apparient au rectangle de selection', () => {
+    service['svgStockage'].addSVG(element);
+    service.selectedElements.push(element);
+    service.selectionRectangle.rectangle = new RectangleService();
+    service.selectionRectangle.rectangle.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangle.points[1] = {x: 100, y: 300};
+    spyOn(service, 'belongToRectangle').and.returnValue(true);
+    const spy = spyOn(service.selectedElements, 'push');
+    service.isInRectangleSelection(new RectangleService());
+    expect(spy).not.toHaveBeenCalled();
   });
 
   // TESTS belongToRectangle
