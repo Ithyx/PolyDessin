@@ -183,7 +183,7 @@ export class ShortcutsManagerService {
   treatReleaseKey(keyboard: KeyboardEvent): void {
     if (this.releaseKeyList.has(keyboard.key)) {
       keyboard.preventDefault();
-      (this.shortcutsList.get(keyboard.key) as FunctionShortcut)(keyboard);
+      (this.releaseKeyList.get(keyboard.key) as FunctionShortcut)(keyboard);
       this.updatePositionTimer();
     }
   }
