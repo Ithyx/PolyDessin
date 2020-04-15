@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DrawElement, Point, TransformMatrix } from '../stockage-svg/draw-element/draw-element';
 import { Command } from './command';
-import { BasicShapeService } from '../stockage-svg/draw-element/basic-shape/basic-shape.service';
 
 interface OldElementParameters {
   transforms: TransformMatrix[];
@@ -25,7 +24,7 @@ export class TransformSvgService implements Command {
     for (const element of elements) {
       const transforms = [{...element.transform}];
       if (element.strokeTransform) {
-        transforms.push(element.strokeTransform);
+        transforms.push({...element.strokeTransform});
       }
       const strokePoints: Point[] = [];
       if (element.strokePoints) {
@@ -70,7 +69,6 @@ export class TransformSvgService implements Command {
 
       this.elements.set(element, {transforms, strokePoints, pointMin, pointMax});
       element.draw();
-      console.log(element.svg);
       element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
     });
     this.deleteBoundingBoxMethod();
