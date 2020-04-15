@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+/* import { TestBed } from '@angular/core/testing';
 import { EllipseService } from './ellipse.service';
 
 // tslint:disable:no-magic-numbers
@@ -137,7 +137,7 @@ describe('EllipseService', () => {
 
     element.drawShape();
     expect(element.svg).toEqual(test);
-  }); */
+  }); 
 
   // TESTS drawPerimeter
 
@@ -166,4 +166,4 @@ describe('EllipseService', () => {
     element.drawPerimeter();
     expect(element.perimeter).toEqual(test);
   });
-});
+}); */

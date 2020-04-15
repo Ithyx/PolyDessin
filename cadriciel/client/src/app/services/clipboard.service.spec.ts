@@ -1,13 +1,17 @@
-/* import { TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
+import { CanvasConversionService } from './canvas-conversion.service';
 import { ClipboardService } from './clipboard.service';
+import { RemoveSVGService } from './command/remove-svg.service';
 import { DrawElement } from './stockage-svg/draw-element/draw-element';
+import { TOOL_INDEX } from './tools/tool-manager.service';
 
 // tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers
 
 describe('ClipboardService', () => {
   let service: ClipboardService;
+
   const element: DrawElement = {
     svg: '',
     svgHtml: '',
@@ -26,8 +30,14 @@ describe('ClipboardService', () => {
     updateParameters: () => { return; }
   };
 
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [{provide: CanvasConversionService, useValue: {updateDrawing: () => { return; }}}]
+  }));
+
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(ClipboardService));
+  beforeEach(() => service['selection'].selectionBox['tools'].activeTool = 
+                    service['selection'].selectionBox['tools'].toolList[TOOL_INDEX.SELECTION]);
 
   it('should be created', () => {
     const testService: ClipboardService = TestBed.get(ClipboardService);
@@ -41,22 +51,25 @@ describe('ClipboardService', () => {
     expect(service['numberOfPaste']).toBe(0);
   });
 
-  it('#copySelectedElement devrait copier les drawElement de selection.selectedElements', () => {
+  it('#copySelectedElement devrait copier les elements sélectionnés', () => {
     service['selection'].selectedElements.push(element);
+    const spy = spyOn(service['savingUtility'], 'createCopyDrawElement');
     service.copySelectedElement();
-    expect(service['copiedElements'].includes(element)).toBe(true);
+    expect(spy).toHaveBeenCalledWith(element);
   });
 
   // TESTS cutSelectedElement
 
   it('#cutSelectedElement devrait appeler copySelectedElement', () => {
+    service['selection'].selectedElements.push(element);
     const spy = spyOn(service, 'copySelectedElement');
     service.cutSelectedElement();
     expect(spy).toHaveBeenCalled();
   });
 
-  it('#cutSelectedElement devrait appeler cutSelectedElement', () => {
-    const spy = spyOn(service, 'cutSelectedElement');
+  it('#cutSelectedElement devrait appeler deleteSelectedElement', () => {
+    service['selection'].selectedElements.push(element);
+    const spy = spyOn(service, 'deleteSelectedElement');
     service.cutSelectedElement();
     expect(spy).toHaveBeenCalled();
   });
@@ -65,26 +78,42 @@ describe('ClipboardService', () => {
 
   // TESTS deleteSelectedElement
 
-  it('#deleteSelectedElement devrait ajouter des elements à supprimer à la commande', () => {
-    service['selection'].selectedElements.push(element);
-    const spy = spyOn(service['removeCommand'], 'addElements');
+  it('#deleteSelectedElement devrait ré-initialiser removeCommand', () => {
     service.deleteSelectedElement();
-    expect(spy).toHaveBeenCalled();
+    expect(service['removeCommand']).toEqual(new RemoveSVGService(service['svgStockage']));
   });
 
-  it('#deleteSelectedElement devrait supprimer la boite de sélection', () => {
+  it('#deleteSelecteElement devrait supprimer la boite de selection', () => {
     const spy = spyOn(service['selection'], 'deleteBoundingBox');
     service.deleteSelectedElement();
     expect(spy).toHaveBeenCalled();
   });
 
-  it('#deleteSelectedElement devrait exectuer la commande removeCommand', () => {
+  it('#deleteSelecteElement devrait exectuer la commande removeCommand', () => {
     const spy = spyOn(service['commands'], 'execute');
     service.deleteSelectedElement();
-    expect(spy).toHaveBeenCalledWith(service['removeCommand']);
+    expect(spy).toHaveBeenCalled();
   });
 
   // TESTS pasteSelectedElement
+
+  it('#pasteSelectedElement devrait detruire la boite de selection', () => {
+    service['selection'].selectedElements.push(element);
+    service.cutSelectedElement();
+
+    const spy = spyOn(service['selection'], 'deleteBoundingBox');
+    service.pasteSelectedElement();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#pasteSelectedElement devrait décaler les elements à coller', () => {
+    service['selection'].selectedElements.push(element);
+    service.cutSelectedElement();
+
+    const spy = spyOn(service['copiedElements'][0], 'updateTranslation');
+    service.pasteSelectedElement();
+    expect(spy).toHaveBeenCalledWith(20, 20);
+  });
 
   // TESTS isInDrawing
 
@@ -109,4 +138,4 @@ describe('ClipboardService', () => {
     service['copiedElements'].push(element);
     expect(service.canPaste()).toBe(true);
   });
-}); */
+});

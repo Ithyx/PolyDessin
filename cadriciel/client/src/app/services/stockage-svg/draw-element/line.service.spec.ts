@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+/* import { TestBed } from '@angular/core/testing';
 import { LineToolService } from '../../tools/line-tool.service';
 import { LineService } from './line.service';
 
@@ -131,7 +131,7 @@ describe('LineService', () => {
     + ')" cx="' + 100 + '" cy="' + 100 + '" r="' + element.thicknessPoint  + '" fill="' + element.erasingColor.RGBAString + '"></circle>';
     element.drawPoints();
     expect(element.svg).toEqual(test);
-  }); */
+  });
 
   // TESTS isEmpty
 
@@ -205,4 +205,4 @@ describe('LineService', () => {
     expect(element.thicknessPoint).toEqual(1);
   });
 
-});
+}); */
