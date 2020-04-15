@@ -13,7 +13,7 @@ import { SelectionRectangleService } from './selection-rectangle.service';
 export const LEFT_CLICK = 0;
 export const RIGHT_CLICK = 2;
 
-const HALF_DRAW_ELEMENT = 0.5 ;
+const HALF_DRAW_ELEMENT = 0.5;
 
 @Injectable({
   providedIn: 'root'
@@ -286,15 +286,31 @@ export class SelectionService implements ToolInterface {
     switch (this.selectionBox.controlPosition) {
       case ControlPosition.UP:
         scale.y = 1 + (this.selectionBox.mouseClick.y - mouse.offsetY) / this.selectionBox.box.getHeight();
+        if (scale.y < 0) {
+          this.selectionBox.controlPosition = ControlPosition.DOWN;
+          this.selectionBox.mouseClick = {...this.selectionBox.scaleCenter};
+        }
         break;
       case ControlPosition.DOWN:
         scale.y = 1 - (this.selectionBox.mouseClick.y - mouse.offsetY) / this.selectionBox.box.getHeight();
+        if (scale.y < 0) {
+          this.selectionBox.controlPosition = ControlPosition.UP;
+          this.selectionBox.mouseClick = {...this.selectionBox.scaleCenter};
+        }
         break;
       case ControlPosition.LEFT:
         scale.x = 1 + (this.selectionBox.mouseClick.x - mouse.offsetX) / this.selectionBox.box.getWidth();
+        if (scale.x < 0) {
+          this.selectionBox.controlPosition = ControlPosition.RIGHT;
+          this.selectionBox.mouseClick = {...this.selectionBox.scaleCenter};
+        }
         break;
       case ControlPosition.RIGHT:
         scale.x = 1 - (this.selectionBox.mouseClick.x - mouse.offsetX) / this.selectionBox.box.getWidth();
+        if (scale.x < 0) {
+          this.selectionBox.controlPosition = ControlPosition.LEFT;
+          this.selectionBox.mouseClick = {...this.selectionBox.scaleCenter};
+        }
         break;
     }
     for (const element of this.selectedElements) {
