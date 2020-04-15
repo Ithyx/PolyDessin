@@ -30,6 +30,7 @@ export class ExportWindowComponent {
   private selectedExportFormat: string;
   private selectedExportFilter: string;
   private selectedFileName: string;
+  private selectedAuthor: string;
   private emailAdress: string;
   private canvas: HTMLCanvasElement;
   protected drawing: Drawing;
@@ -44,6 +45,7 @@ export class ExportWindowComponent {
     this.selectedExportFormat = this.EXPORT_FORMAT[0];
     this.selectedExportFilter = this.EXPORT_FILTER[0];
     this.selectedFileName = this.drawingParams.name;
+    this.selectedAuthor = '';
     this.emailAdress = '';
     this.drawing = {
       _id: this.drawingParams.id,
@@ -116,6 +118,15 @@ export class ExportWindowComponent {
 
   sendImage(): void {
     this.context.drawImage(this.image, 0, 0);
+    if (this.selectedAuthor !== '' && this.context) {
+      console.log('DRAWING');
+      this.context.font = '30px Arial';
+      this.context.strokeStyle = 'white';
+      this.context.lineWidth = 3;
+      this.context.strokeText(`auteur: ${this.selectedAuthor}`, 0, this.drawingParams.height - 5);
+      this.context.fillStyle = 'black';
+      this.context.fillText(`auteur: ${this.selectedAuthor}`, 0, this.drawingParams.height - 5);
+    }
     let imageData = this.canvas.toDataURL('image/' + this.selectedExportFormat);
     if (this.selectedExportFormat === 'svg') {
       imageData =
@@ -131,6 +142,11 @@ export class ExportWindowComponent {
         for (const element of this.drawing.elements) {
           imageData += `<g>${element.svg}</g>\n`;
         }
+      }
+      if (this.selectedAuthor !== '') {
+        imageData += `<text x="0" y="${this.drawingParams.height - 5}" style="font-family: Arial;font-size:30;stroke:#ffffff;fill:#000000;">
+        auteur: ${this.selectedAuthor}
+        </text>\n`;
       }
       imageData += '</svg>\n';
     }
@@ -156,6 +172,12 @@ export class ExportWindowComponent {
   updateEmail(event: Event): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.emailAdress = eventCast.value;
+  }
+
+  updateAuthor(event: Event): void {
+    const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
+    this.selectedAuthor = eventCast.value;
+    console.log('author: ', this.selectedAuthor);
   }
 
   sanitize(svg: string): SafeHtml {
