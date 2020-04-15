@@ -27,11 +27,9 @@ export class EmailController {
             const array = (req.body.payload as string).split(',');
             data = Buffer.from(array[1], 'base64');
         }
-        if (await this.emailService.sendEmail(req.body.to as string, data, req.body.filename as string, req.body.extension as string)) {
-            res.status(HttpStatus.OK).send('dessin envoyé avec succès!');
-        } else {
-            res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('echec dans l\'envoi du dessin');
-        }
+        res
+        .status(await this.emailService.sendEmail(req.body.to as string, data, req.body.filename as string, req.body.extension as string))
+        .end();
     }
 
     private configureRouter(): void {

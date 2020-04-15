@@ -10,7 +10,7 @@ export const MAIL_API_URL = 'https://log2990.step.polymtl.ca/email?quick_return=
 @injectable()
 export class EmailService {
 
-    async sendEmail(address: string, image: Buffer, fileName: string, fileExtension: string): Promise<boolean> {
+    async sendEmail(address: string, image: Buffer, fileName: string, fileExtension: string): Promise<number> {
         if (fileName === '') { fileName = 'image'; }
         const type = (fileExtension === 'svg') ? 'svg+xml' : fileExtension;
         const appendOptions = {filename: fileName + '.' +  fileExtension, contentType: 'image/' + type,
@@ -28,13 +28,6 @@ export class EmailService {
                 ...formHeaders
             }
         };
-        try {
-            const res = await Axios.default.post(MAIL_API_URL, form, config);
-            console.log(res);
-            return true;
-        } catch (err) {
-            console.log(err);
-            return false;
-        }
+        return (await Axios.default.post(MAIL_API_URL, form, config)).status;
     }
 }
