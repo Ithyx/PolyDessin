@@ -56,7 +56,8 @@ export abstract class BasicShapeService extends DrawElement  {
   abstract drawPerimeter(): void;
 
   drawStroke(): void {
-    this.svg += '<polygon fill="none"' + (this.trueType === TOOL_INDEX.ELLIPSE ? 'stroke-linejoin="round' : '')
+    this.svg += '<polygon fill="none"'
+    + (this.trueType === TOOL_INDEX.ELLIPSE ? 'stroke-linejoin="round' : 'stroke-linejoin="square')
     + '" stroke="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString : this.secondaryColor.RGBAString)
     + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')
     + '" stroke-width="' + this.thickness
