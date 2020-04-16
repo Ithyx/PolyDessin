@@ -121,10 +121,11 @@ export class SelectionService implements ToolInterface {
   }
 
   onMouseLeave(): void {
-    this.selectionBox.controlPosition = ControlPosition.NONE;
-    if (this.transformCommand && this.transformCommand.hasMoved()) {
+    if (this.selectionBox.controlPosition !== ControlPosition.NONE && this.transformCommand.hasMoved()) {
       this.command.execute(this.transformCommand);
+      this.transformCommand = new TransformSvgService(this.selectedElements, this.sanitizer, this.deleteBoundingBox.bind(this));
     }
+    this.selectionBox.controlPosition = ControlPosition.NONE;
   }
 
   createBoundingBox(): void {
