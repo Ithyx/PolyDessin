@@ -95,7 +95,7 @@ export const TOOL_LIST: DrawingTool[] = [
     iconName: 'fas fa-spray-can',
     parameters: [
       { type: 'number', name: 'Diamétre du jet', value: 20, min: 5, max: 100 },
-      { type: 'number', name: 'Nombre d\'émissions par seconde', value: 100, min: 1, max: 200 }
+      { type: 'number', name: 'Émissions par seconde', value: 100, min: 1, max: 200 }
     ]
   },
   {
