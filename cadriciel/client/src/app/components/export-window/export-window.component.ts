@@ -132,7 +132,6 @@ export class ExportWindowComponent {
     this.mailStatus = MailStatus.LOADING;
     this.context.drawImage(this.image, 0, 0);
     if (this.selectedAuthor !== '' && this.context) {
-      console.log('DRAWING');
       this.context.font = '30px Arial';
       this.context.strokeStyle = 'white';
       this.context.lineWidth = AUTHOR_OUTLINE_WIDTH;
@@ -164,7 +163,6 @@ export class ExportWindowComponent {
       }
       imageData += '</svg>\n';
     }
-    console.log(imageData);
     this.db.sendEmail(this.emailAdress, imageData, this.selectedFileName, this.selectedExportFormat)
     .then(() => {
       this.mailStatus = MailStatus.SUCCESS;
@@ -197,7 +195,6 @@ export class ExportWindowComponent {
   updateAuthor(event: Event): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);
     this.selectedAuthor = eventCast.value;
-    console.log('author: ', this.selectedAuthor);
   }
 
   sanitize(svg: string): SafeHtml {

@@ -15,7 +15,6 @@ export class EmailService {
         const type = (fileExtension === 'svg') ? 'svg+xml' : fileExtension;
         const appendOptions = {filename: fileName + '.' +  fileExtension, contentType: 'image/' + type,
         knownLength: image.byteLength};
-        console.log('email:', address);
         const form = new FormData();
         form.append('to', address);
         form.append('payload', image, appendOptions);
