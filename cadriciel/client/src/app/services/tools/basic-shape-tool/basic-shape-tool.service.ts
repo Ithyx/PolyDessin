@@ -33,8 +33,8 @@ export abstract class BasicShapeToolService implements ToolInterface {
     this.shape.updateParameters(this.tools.activeTool);
     this.shape.primaryColor = {...this.colorParameter.primaryColor};
     this.shape.secondaryColor = {...this.colorParameter.secondaryColor};
-    this.shape.draw();
     this.calculateStrokePoints();
+    this.shape.draw();
     this.stockageSVG.setOngoingSVG(this.shape);
   }
 

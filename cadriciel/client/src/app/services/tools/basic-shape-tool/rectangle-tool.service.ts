@@ -16,6 +16,7 @@ export class RectangleToolService extends BasicShapeToolService {
   }
 
   calculateStrokePoints(): void {
+    (this.shape as RectangleService).addRectanglePoints();
     this.shape.strokePoints = [
       {...this.shape.points[0]}, {...this.shape.points[2]},
       {...this.shape.points[1]}, {...this.shape.points[this.shape.points.length - 1]}
