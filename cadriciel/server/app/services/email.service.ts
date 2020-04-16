@@ -23,7 +23,7 @@ export class EmailService {
         const formHeaders = form.getHeaders();
         const config = {
             headers: {
-                'X-Team-Key': 'c9d92b61-2acd-4953-a17d-98c9d4213977',
+                'X-Team-Key': process.env.MAIL_API_KEY,
                 'content-type': 'multipart/form-data',
                 ...formHeaders
             }
