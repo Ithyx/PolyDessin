@@ -44,7 +44,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         previous: true, next: true,
                         id: 2
                     },
-                    // Sujet 3
                     {
                         name: 'Pinceau',
                         description: `<h1> Pinceau </h1>
@@ -57,7 +56,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         previous: true, next: true,
                         id: 3
                     },
-                    // Sujet 4
                     {
                         name: 'Aérosol',
                         description: `<h1> Aérosol </h1>
@@ -82,7 +80,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 openCategory: false,
                 subSubjects: [
                     {
-                        // Sujet 5
                         name: 'Rectangle',
                         description: `<h1> Rectangle </h1>
                                       <hr>
@@ -117,7 +114,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         previous: true, next: true,
                         id: 6
                     },
-                    // Sujet 7
                     {
                         name: 'Polygone',
                         description: `<h1> Polygone </h1>
@@ -135,7 +131,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         previous: true, next: true,
                         id: 7
                     },
-                    // Sujet 8
                     {
                         name: 'Ligne',
                         description: `<h1> Ligne </h1>
@@ -163,7 +158,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 previous: false, next: false,
                 openCategory: false,
                 subSubjects: [
-                    // Sujet 9
                     {
                         name: 'Couleur',
                         description: `<h1> Couleur </h1>
@@ -182,7 +176,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         previous: true, next: true,
                         id: 9
                     },
-                    // Sujet 10
                     {
                         name: 'Pipette',
                         description: `<h1> Pipette </h1>
@@ -197,7 +190,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         previous: true, next: true,
                         id: 10
                     },
-                    // Sujet 11
                     {
                         name: 'Applicateur de Couleur',
                         description: `<h1> Applicateur de couleur </h1>
@@ -213,7 +205,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                     },
                 ]
             },
-            // Sujet 12
             {
                 name: 'Selection',
                 description: `<h1> Selection </h1>
@@ -233,11 +224,15 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                               <p> Il est possible de sélectionner l'ensemble des éléments dessinés avec le raccourci 'CTRL+A'. </p>
                               <p> La sélection permet alors de bouger les éléments à l'aide de la souris ou du clavier avec
                               les flèches directionnelles. </p>
-                              <img src="assets/selection.gif" width="300" height="300">`,
+                              <img src="assets/selection.gif" width="300" height="300">
+                              <p> Il est également possible de faire pivoter une sélection avec la molette de la souris. Plusieurs styles de
+                              rotation sont possible:
+                              <li> Par 15° à chaque cran de roulette autour d'une centre de la sélection. </li>
+                              <li> Par 1° si la touche ALT est enfoncée </li>
+                              <li> Autour du centre chacun des élément sélectionnés si la touche SHIFT est enfoncée </li> </p>`,
                 previous: true, next: true,
                 id: 12
             },
-            // Sujet 13
             {
                 name: 'Efface',
                 description: `<h1> Efface </h1>
@@ -251,7 +246,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 previous: true, next: true,
                 id: 13
             },
-            // Sujet 14
             {
                 name: 'Grille',
                 description: `<h1> Grille </h1>
@@ -271,20 +265,16 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                 previous: true, next: true,
                 id: 14
             },
-            // Sujet 15
             {
-                name: 'Annuler-Refaire',
-                description: `<h1> Annuler-Refaire </h1>
+                name: 'Sceau de Peinture',
+                description: `<h1> Sceau de Peinture </h1>
                               <hr>
-                              <p> Il est possible d'annuler et de refaire les dernières actions concernant l'ajout, la
-                              suppression et la modification des éléments dessinés </p>
-                              <p> Les modifications d'un élément concernent:
-                                <li> Changer la couleur d'un élément </li>
-                                <li> Bouger une sélection </li>
-                                <li> Ajouter ou supprimer des éléments sur le dessin </li>
-                              </p>
-                              <p> Il est possible d'annuler une action avec le raccourci 'CTRL+Z'. </p>
-                              <p> Il est possible de refaire une action avec le raccourci 'CTRL+SHIFT+Z'. </p>`,
+                              <p> L'outil sceau de peinture permet de remplir une région de la couleur principale. Ce remplissage
+                              est considéré comme étant une élément dessin et peut donc être manipulé par l'utilisateur (sélection,
+                              efface, etc). L'outil est également accessible en appuyant sur la touche 'b'.</p>
+                              <p> Il est possible de configurer un pourcentage de tolérence d'écart au niveau des couleurs de la région
+                              que le sceau doit remplir </p>
+                              <img src="assets/sceau.gif" width="300" height="300">`,
                 previous: true, next: true,
                 id: 15
             }
@@ -293,8 +283,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
     {
         name: 'Gestion de Dessin',
         description: '',
-        previous: false,
-        next: false,
+        previous: false, next: false,
         openCategory: false,
         subSubjects: [
             {
@@ -325,6 +314,8 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                                 <li> Futuriste </li>
                                 <li> Minimaliste </li>
                               </p>
+                              <p> Une sauvegarde automatique après chaque opération sur le dessin permert de revenir directement sur
+                              le dernier dessin modifié après avoir quitté l'application. </p>
                               <img src="assets/sauvegarde.png" width="500" height="300">`,
                 previous: true, next: true,
                 id: 17
@@ -362,10 +353,71 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                                     <li> Flou </li>
                                     <li> Tache </li>
                                     <li> Tremblant </li></p>
-                              </p>`,
-                previous: true, next: false,
+                              </p>
+                              <p> Il est également possible d'exporter son dessin par couriel en entrant son adresse e-mail dans le 
+                              champ dédié du menu d'exporation </p>`,
+                previous: true, next: true,
                 id: 19
             },
         ]
+      },
+      {
+          name: 'Fonctionnalités',
+          description: '',
+          previous: false, next: false,
+          openCategory: false,
+          subSubjects: [
+              {
+                  name: 'Presse-Papier',
+                  description: `<h1> Presse-Papier </h1>
+                                <hr>
+                                <p> Le presse-papier permet de manipuler des éléments sélectionnés par l'outil selection. </p>
+                                <p> Il permet les actions suivantes :
+                                    <li> Copier (CTRL+C): copie les éléments sélectionnés dans le presse-papier. </li>
+                                    <li> Coller (CTRL+V): colle les éléments sélectionnés sur le dessin. </li>
+                                    <li> Couper (CTRL+X): copie les éléments sélectionnés dans le presse-papier et
+                                        supprime ensuite ses éléments du dessin </li>
+                                    <li> Dupliquer (CTRL+D): duplique les éléments sélectionnés sur le dessin. </li>
+                                    <li> Supprimer (Delete): supprime les éléments sélectionés du dessin. </li>
+                                </p>
+                                <p> En plus des raccouris, les opérations du presse-papier sont disponible depuis le
+                                panneau des attributs du dessin. </p>
+                                <img src="assets/presse-papier.png" width="300" height="800">`,
+                  previous: true, next: true,
+                  id: 20
+              },
+              {
+                  name: 'Annuler-Refaire',
+                  description: `<h1> Annuler-Refaire </h1>
+                                <hr>
+                                <p> L'annuler refaire permet de gérer les dernières actions concernant l'ajout, la
+                                suppression ou la modification d'éléments dessinés </p>
+                                <p> Les modifications d'un élément concerne:
+                                  <li> Changer la couleur d'un élément </li>
+                                  <li> Translater ou rotater une sélection </li>
+                                </p>
+                                <p> Les actions de l'annuler-refaire sont disponible sur le panneau des attributs. </p>
+                                <p> Il est possible d'annuler une action avec le raccourci 'CTRL+Z'. </p>
+                                <p> Il est possible de refaire une action avec le raccourci 'CTRL+SHIFT+Z'. </p>
+
+                                <img src="assets/annuler-refaire.png" width="300" height="800">`,
+                  previous: true, next: true,
+                  id: 21
+              }
+          ]
+      },
+      {
+          name: 'Bonus',
+          description: `<h1> Bonus </h1>
+                        <hr>
+                        <p> Coder une application demande un long processus de travail. Tout ne fonctionne généralement
+                        pas du premier coup, mais cela n'empêche pas d'en rire: </p>
+                        <img src="assets/copy-paste.gif" width="500" height="300">
+                        <br>
+                        <img src="assets/disco-efface.gif" width="500" height="300">
+                        <br>
+                        <img src="assets/translation-difficile.gif" width="500" height="300">`,
+          previous: true, next: false,
+          id: 22
       }
 ];

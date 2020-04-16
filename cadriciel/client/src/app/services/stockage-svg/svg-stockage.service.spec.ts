@@ -31,7 +31,6 @@ describe('SVGStockageService', () => {
     lineElement = new LineService();
     lineElement.svgHtml = '';
     lineElement.points = [{x: 10, y: 10}];
-    lineElement.isSelected = true;
     lineElement.primaryColor = {
       RGBAString: 'rgba(0,1,0,1)',
       RGBA: [0, 1, 0, 1]
@@ -43,7 +42,7 @@ describe('SVGStockageService', () => {
     ], iconName: 'nomIcone'});
     lineElement.isAPolygon = false;
     lineElement.mousePosition = {x: 100, y: 100};
-    lineElement.translate = { x: 20, y: 20};
+    lineElement.transform = {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0};
   } );
 
   it('should be created', () => {

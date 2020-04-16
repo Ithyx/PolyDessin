@@ -6,6 +6,7 @@ import { MatDialogModule, MatDialogRef, MatProgressSpinnerModule } from '@angula
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
+import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element/draw-element';
 import { Drawing } from '../../../../../common/communication/drawing-interface';
 import { GalleryLoadWarningComponent } from '../gallery-load-warning/gallery-load-warning.component';
@@ -28,19 +29,20 @@ describe('GalleryComponent', () => {
     svg: '',
     svgHtml: '',
     trueType: 0,
-    points: [],
-    isSelected: false,
+    points: [{x: 90, y: 90}, {x: 76, y: 89 }],
     erasingEvidence: false,
     erasingColor: {RGBA: [0, 0, 0, 1], RGBAString: ''},
     pointMin: {x: 0, y: 0},
     pointMax: {x: 0, y: 0},
-    translate: {x: 0, y: 0},
+    transform: {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0},
     draw: () => { return; },
-    updatePosition: () => { return; },
-    updatePositionMouse: () => { return; },
-    updateParameters: () => { return; },
-    translateAllPoints: () => { return; }
+    updateRotation: () => { return; },
+    updateTransform: () => { return; },
+    updateTranslation: () => { return; },
+    updateTranslationMouse: () => { return; },
+    updateParameters: () => { return; }
   };
+
   const drawing: Drawing = {
     _id: 0,
     name: 'post change name',
@@ -57,6 +59,7 @@ describe('GalleryComponent', () => {
       imports: [ MatProgressSpinnerModule, MatDialogModule, FormsModule, ReactiveFormsModule,
         RouterModule.forRoot([{path: 'dessin', component: GalleryComponent}]), BrowserAnimationsModule ],
       providers: [ { provide: MatDialogRef, useValue: {close: () => { return; }}},
+                   { provide: CanvasConversionService, useValue: {updateDrawing: () => { return; }}},
                      HttpClient, HttpHandler ],
     })
     .overrideModule(BrowserDynamicTestingModule, {
@@ -218,9 +221,25 @@ describe('GalleryComponent', () => {
     component.loadDrawing(drawing);
     expect(spy).not.toHaveBeenCalled();
   });
-  it('#loadDrawing devrait changer complètement le dessin en cours', () => {
+
+  it('#loadDrawing devrait remttre les tags à 0 même si le nouveau dessin n\'en a pas', () => {
+    component['drawingManager'].tags = ['tag1'];
+    drawing.tags = undefined;
+    component.loadDrawing(drawing);
+    drawing.tags = ['tag 1', 'tag 2'];
+    expect(component['drawingManager'].tags).toEqual([]);
+  });
+  it('#loadDrawing devrait naviguer vers la page de dessin et fermer le popup', () => {
+    const navigSpy = spyOn(component['router'], 'navigate');
+    const closeSpy = spyOn(component, 'close');
+    component.loadDrawing(drawing);
+    expect(navigSpy).toHaveBeenCalledWith(['dessin']);
+    expect(closeSpy).toHaveBeenCalled();
+  });
+
+  /* it('#loadDrawing devrait changer complètement le dessin en cours', () => {
     const cleanSpy = spyOn(component['stockageSVG'], 'cleanDrawing');
-    const addSpy = spyOn(component['db'], 'addElement');
+    const addSpy = spyOn(component['saveUtility'], 'createCopyDrawElement');
     const drawingManager = component['drawingManager'];
     drawingManager.id = 123;
     drawingManager.height = 200;
@@ -241,28 +260,14 @@ describe('GalleryComponent', () => {
     expect(drawingManager.backgroundColor).toEqual(drawing.backgroundColor);
     expect(drawingManager.name).toBe(drawing.name);
     expect(drawingManager.tags).toEqual(['tag 1', 'tag 2']);
-    expect(addSpy).toHaveBeenCalledTimes(2);
-  });
+    expect(addSpy).toHaveBeenCalledTimes(1);
+  }); */
   it('#loadDrawing devrait remttre les éléments à 0 même si le nouveau dessin n\'en a pas', () => {
     drawing.elements = undefined;
-    const spy = spyOn(component['db'], 'addElement');
+    const spy = spyOn(component['saveUtility'], 'createCopyDrawElement');
     component.loadDrawing(drawing);
     drawing.elements = [element, element];
     expect(spy).not.toHaveBeenCalled();
-  });
-  it('#loadDrawing devrait remttre les tags à 0 même si le nouveau dessin n\'en a pas', () => {
-    component['drawingManager'].tags = ['tag1'];
-    drawing.tags = undefined;
-    component.loadDrawing(drawing);
-    drawing.tags = ['tag 1', 'tag 2'];
-    expect(component['drawingManager'].tags).toEqual([]);
-  });
-  it('#loadDrawing devrait naviguer vers la page de dessin et fermer le popup', () => {
-    const navigSpy = spyOn(component['router'], 'navigate');
-    const closeSpy = spyOn(component, 'close');
-    component.loadDrawing(drawing);
-    expect(navigSpy).toHaveBeenCalledWith(['dessin']);
-    expect(closeSpy).toHaveBeenCalled();
   });
 
   // TESTS deleteDrawing

@@ -24,18 +24,18 @@ describe('ColorChangerToolService', () => {
     svg: '',
     svgHtml: '',
     trueType: 0,
-    points: [],
-    isSelected: false,
+    points: [{x: 90, y: 90}, {x: 76, y: 89 }],
     erasingEvidence: false,
-    erasingColor: {RGBA: [0, 0, 0, 0], RGBAString: ''},
+    erasingColor: {RGBA: [0, 0, 0, 1], RGBAString: ''},
     pointMin: {x: 0, y: 0},
     pointMax: {x: 0, y: 0},
-    translate: {x: 0, y: 0},
+    transform: {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0},
     draw: () => { return; },
-    updatePosition: () => { return; },
-    updatePositionMouse: () => { return; },
-    updateParameters: () => { return; },
-    translateAllPoints: () => { return; }
+    updateRotation: () => { return; },
+    updateTransform: () => { return; },
+    updateTranslation: () => { return; },
+    updateTranslationMouse: () => { return; },
+    updateParameters: () => { return; }
   };
 
   beforeEach(() => TestBed.configureTestingModule({}));
@@ -69,7 +69,7 @@ describe('ColorChangerToolService', () => {
   it('#onMouseClick devrait executer une commande si la couleur principale de l\'element actif est différente de  celle choisi', () => {
     spyOn(service['commands'], 'execute');
 
-    service.activeElement = {...element};
+    service.activeElement = element;
     service.activeElement.primaryColor = colorTest1;
     service['colorParameter'].primaryColor = colorTest2;
 
@@ -100,7 +100,7 @@ describe('ColorChangerToolService', () => {
   it('#onRightClick devrait executer une commande si la couleur secondaire de l\'element actif est différente de  celle choisi', () => {
     spyOn(service['commands'], 'execute');
 
-    service.activeElement = {...element};
+    service.activeElement = element;
     service.activeElement.secondaryColor = colorTest1;
     service['colorParameter'].secondaryColor = colorTest2;
 

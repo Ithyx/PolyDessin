@@ -3,6 +3,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Drawing } from '../../../../common/communication/drawing-interface';
 import { B, Color, G, R } from './color/color';
 import { DrawingManagerService } from './drawing-manager/drawing-manager.service';
+import { SavingUtilityService } from './saving/saving-utility.service';
 import { DrawElement } from './stockage-svg/draw-element/draw-element';
 import { TraceBrushService } from './stockage-svg/draw-element/trace/trace-brush.service';
 import { TracePencilService } from './stockage-svg/draw-element/trace/trace-pencil.service';
@@ -30,7 +31,8 @@ export class CanvasConversionService {
 
   constructor(private drawingParams: DrawingManagerService,
               private svgStockage: SVGStockageService,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              private savingUtility: SavingUtilityService) {
     this.drawing = {
       _id: this.drawingParams.id,
       name: this.drawingParams.name,
@@ -68,6 +70,11 @@ export class CanvasConversionService {
   }
 
   updateDrawing(): void {
+    this.coloredDrawing.setAttribute('width', this.drawingParams.width.toString());
+    this.coloredDrawing.setAttribute('height', this.drawingParams.height.toString());
+    this.canvas.setAttribute('width', this.drawingParams.width.toString());
+    this.canvas.setAttribute('height', this.drawingParams.height.toString());
+
     this.isValid = false;
     this.drawing.elements = [];
     this.coloredElements = new Map<string, DrawElement>();
@@ -123,7 +130,7 @@ export class CanvasConversionService {
   }
 
   createClone(element: DrawElement): DrawElement {
-    const cloneElement = {...element};
+    const cloneElement = this.savingUtility.createCopyDrawElement(element);
     if (element instanceof TraceBrushService) {
       // Si l'élément est un trait de pinceau, on le convertit en trait de crayon
       // pour éviter d'avoir un filtre qui modifie les couleurs
@@ -131,7 +138,7 @@ export class CanvasConversionService {
       tracePencil.points = element.points;
       tracePencil.primaryColor = element.primaryColor;
       tracePencil.thickness = element.thickness;
-      tracePencil.translate = element.translate;
+      tracePencil.transform = element.transform;
       tracePencil.isAPoint = element.isAPoint;
       tracePencil.draw();
       cloneElement.svgHtml = this.sanitize(tracePencil.svg);

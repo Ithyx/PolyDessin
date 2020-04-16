@@ -1,50 +1,31 @@
 import { Injectable } from '@angular/core';
-import { SafeHtml } from '@angular/platform-browser';
 import { Color } from '../../color/color';
 import { DrawingTool, TOOL_INDEX } from '../../tools/tool-manager.service';
-import { DrawElement, ERASING_COLOR_INIT, Point} from '../draw-element/draw-element';
+import { DrawElement, Point} from '../draw-element/draw-element';
 
 export const MIN_DIAMETER = 5;
 
 @Injectable({
   providedIn: 'root'
 })
-export class SprayService implements DrawElement {
-
-  svg: string;
-  svgHtml: SafeHtml;
-  isSelected: boolean;
-  erasingEvidence: boolean;
-
-  trueType: TOOL_INDEX;
-
+export class SprayService extends DrawElement {
   diameter: number;
-  points: Point[] = [];
-
   primaryColor: Color;
-  erasingColor: Color;
-
-  pointMin: Point;
-  pointMax: Point;
-  translate: Point;
 
   constructor() {
-    this.svgHtml = '';
+    super();
     this.trueType = TOOL_INDEX.SPRAY;
-    this.isSelected = false;
     this.primaryColor = {
       RGBAString: '',
       RGBA: [0, 0, 0, 0]
     };
-    this.erasingColor = ERASING_COLOR_INIT;
-    this.erasingEvidence = false;
-    this.translate = { x: 0, y: 0};
   }
 
   draw(): void {
     this.svg = '';
     for (const point of this.points) {
-      this.svg += '<circle transform="translate(' + this.translate.x + ' ' + this.translate.y
+      this.svg += '<circle transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
+                                                + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
       + `)" cx="${point.x}" cy="${point.y}" r="1" `
       + `fill="${(this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString}"></circle>`;
     }
@@ -56,32 +37,13 @@ export class SprayService implements DrawElement {
     const x = mousePosition.x + position * Math.cos(angle);
     const y = mousePosition.y + position * Math.sin(angle);
     this.points.push({x, y});
-    this.svg += '<circle transform="translate(' + this.translate.x + ' ' + this.translate.y
+    this.svg += '<circle transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
+                                              + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
       + `)" cx="${x}" cy="${y}" r="1" `
       + `fill="${(this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString}"></circle>`;
   }
 
-  updatePosition(x: number, y: number): void {
-    this.translate.x += x;
-    this.translate.y += y;
-    this.draw();
-  }
-
-  updatePositionMouse(mouse: MouseEvent, mouseClick: Point): void {
-    this.translate.x = mouse.offsetX - mouseClick.x;
-    this.translate.y = mouse.offsetY - mouseClick.y;
-    this.draw();
-  }
-
   updateParameters(tool: DrawingTool): void {
     this.diameter = (tool.parameters[0].value) ? tool.parameters[0].value : MIN_DIAMETER;
-  }
-
-  translateAllPoints(): void {
-    for (const point of this.points) {
-      point.x += this.translate.x;
-      point.y += this.translate.y;
-    }
-    this.translate = {x: 0, y: 0};
   }
 }

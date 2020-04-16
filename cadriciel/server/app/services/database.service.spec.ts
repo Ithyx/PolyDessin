@@ -1,4 +1,4 @@
-import {assert, expect } from 'chai';
+import { assert, expect } from 'chai';
 import {Collection, Cursor, MongoClient} from 'mongodb';
 import {Color} from '../../../client/src/app/services/color/color';
 import {DrawElement} from '../../../client/src/app/services/stockage-svg/draw-element/draw-element';
@@ -53,18 +53,19 @@ describe('Tests de database.service', () => {
         svg: '',
         svgHtml: '',
         trueType: 0,
-        points: [],
-        isSelected: false,
+        points: [{x: 90, y: 90}, {x: 76, y: 89 }],
+        // isSelected: false,
         erasingEvidence: false,
-        erasingColor: {RGBA: [0, 0, 0, 0], RGBAString: ''},
+        erasingColor: {RGBA: [0, 0, 0, 1], RGBAString: ''},
         pointMin: {x: 0, y: 0},
         pointMax: {x: 0, y: 0},
-        translate: {x: 0, y: 0},
+        transform: { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6},
         draw: () => { return; },
-        updatePosition: () => { return; },
-        updatePositionMouse: () => { return; },
+        updateTranslation: () => { return; },
+        updateTranslationMouse: () => { return; },
         updateParameters: () => { return; },
-        translateAllPoints: () => { return; }
+        updateRotation : () => { return; },
+        updateTransform : () => { return; }
     };
 
     beforeEach(() => black = {

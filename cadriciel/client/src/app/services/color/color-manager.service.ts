@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CommandManagerService } from '../command/command-manager.service';
 import { DrawingManagerService } from '../drawing-manager/drawing-manager.service';
+import { LocalSaveManagerService } from '../saving/local/local-save-manager.service';
 import { A, B, Color, G, R } from './color';
 import { ColorParameterService } from './color-parameter.service';
 
@@ -25,7 +26,8 @@ export class ColorManagerService {
 
   constructor(private colorParameter: ColorParameterService,
               protected commands: CommandManagerService,
-              private drawingManager: DrawingManagerService) {
+              private drawingManager: DrawingManagerService,
+              private localSaving: LocalSaveManagerService) {
     this.color = {
       RGBAString: 'rgba(0, 0, 0, 1)',
       RGBA: [0, 0, 0, 1]
@@ -59,6 +61,7 @@ export class ColorManagerService {
       case Scope.BackgroundToolBar:
         this.drawingManager.backgroundColor = this.getColor();
         this.colorParameter.temporaryBackgroundColor = this.getColor();
+        this.localSaving.saveState();
       default:
         /* Par mesure de sécurité, ne rien faire. */
         break;

@@ -13,7 +13,9 @@ export class TracePencilService extends TraceService {
   }
 
   drawPath(): void {
-    this.svg = '<path transform="translate(' + this.translate.x + ' ' + this.translate.y + ')" fill="none" '
+    this.svg = '<path transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
+                                           + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
+      + ')" fill="none" '
       + `stroke="${(this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString}"`
       + ' stroke-linejoin="round" stroke-linecap="round" stroke-width="' + this.thickness + '" d="';
     for (let i = 0; i < this.points.length; ++i) {
@@ -25,7 +27,8 @@ export class TracePencilService extends TraceService {
 
   drawPoint(): void {
     this.svg = '<circle cx="' + this.points[0].x + '" cy="' + this.points[0].y
-      + '" transform=" translate(' + this.translate.x + ' ' + this.translate.y
+      + '" transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
+                                + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
       + ')" r="' + this.thickness / 2
       + '" fill="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString :  this.primaryColor.RGBAString) + '"></circle>';
   }

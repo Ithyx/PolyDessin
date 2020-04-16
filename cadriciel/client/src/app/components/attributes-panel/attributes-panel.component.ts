@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
+import { ClipboardService } from 'src/app/services/clipboard.service';
 import { A, Color } from 'src/app/services/color/color';
 import { PERCENTAGE, Scope } from 'src/app/services/color/color-manager.service';
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
@@ -23,7 +24,8 @@ export class AttributesPanelComponent {
               private colorParameter: ColorParameterService,
               protected commands: CommandManagerService,
               private shortcuts: ShortcutsManagerService,
-              protected drawingManager: DrawingManagerService) { }
+              protected drawingManager: DrawingManagerService,
+              protected clipboard: ClipboardService) { }
 
   onChange(event: Event, parameterName: string, min: number, max: number): void {
     const eventCast: HTMLInputElement = (event.target as HTMLInputElement);

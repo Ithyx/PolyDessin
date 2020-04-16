@@ -19,7 +19,7 @@ describe('trace-brush', () => {
       RGBA: [0, 0, 0, 1]
     };
     element.thickness = 5;
-    element.translate = { x: 10, y: 10};
+    element.transform = {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0};
   });
 
   it('should be created', () => {
@@ -29,27 +29,14 @@ describe('trace-brush', () => {
 
   // TESTS drawPath
 
-  it('#drawPath devrait mettre la translation dans SVG', () => {
-    element.points.push({ x: 10, y: 10});
-    element.points.push({ x: 10, y: 10});
-    element.points.push({ x: 10, y: 10});
-    element.translate = { x: 20, y: 20};
-    element.svg = '<path transform="translate(' + element.translate.x + ' ' + element.translate.y + ')" fill="none" '
-    + `stroke="${(element.erasingEvidence) ? element.erasingColor.RGBAString :  element.primaryColor.RGBAString}"`
-    + ' filter="url(#' + element.chosenOption
-    + ')" stroke-linejoin="round" stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 "></path>';
-    const testSVG = element.svg;
-    element.drawPath();
-    expect(element.svg).toEqual(testSVG);
-  });
-
   it('#drawPath devrait  mettre la primaryColor dans SVG si erasingEvidence est faux', () => {
     element.erasingEvidence = false;
     element.points.push({ x: 10, y: 10});
     element.points.push({ x: 10, y: 10});
     element.points.push({ x: 10, y: 10});
     element.primaryColor.RGBAString = 'rgba(1, 1, 1, 1)';
-    element.svg = '<path transform="translate(' + element.translate.x + ' ' + element.translate.y + ')" fill="none" '
+    element.svg = '<path transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f + ')" fill="none" '
     + 'stroke="' + element.primaryColor.RGBAString
     + '" filter="url(#' + element.chosenOption
     + ')" stroke-linejoin="round" stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 "></path>';
@@ -64,7 +51,8 @@ describe('trace-brush', () => {
     element.points.push({ x: 10, y: 10});
     element.points.push({ x: 10, y: 10});
     element.erasingColor.RGBAString = '"rgba(1, 1, 1, 1)"';
-    element.svg = '<path transform="translate(' + element.translate.x + ' ' + element.translate.y + ')" fill="none" '
+    element.svg = '<path transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f + ')" fill="none" '
     + 'stroke="' + element.erasingColor.RGBAString
     + '" filter="url(#' + element.chosenOption
     + ')" stroke-linejoin="round" stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 "></path>';
@@ -78,7 +66,8 @@ describe('trace-brush', () => {
     element.points.push({ x: 10, y: 10});
     element.points.push({ x: 10, y: 10});
     element.thickness = 25;
-    element.svg = '<path transform="translate(' + element.translate.x + ' ' + element.translate.y + ')" fill="none" '
+    element.svg = '<path transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f + ')" fill="none" '
     + `stroke="${(element.erasingEvidence) ? element.erasingColor.RGBAString :  element.primaryColor.RGBAString}"`
     + ' filter="url(#' + element.chosenOption
     + ')" stroke-linejoin="round" stroke-linecap="round" stroke-width="' + element.thickness + '" d="M 10 10 L 10 10 L 10 10 "></path>';
@@ -92,7 +81,8 @@ describe('trace-brush', () => {
   it('#drawPoint devrait mettre un point dans SVG', () => {
     element.points.push({ x: 10, y: 10});
     element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
-    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + '" transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+                                + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" filter="url(#' + element.chosenOption
     + ')" r="' + element.thickness / 2
     + '" fill="' + ((element.erasingEvidence) ? element.erasingColor.RGBAString :  element.primaryColor.RGBAString) + '"></circle>';
@@ -105,7 +95,8 @@ describe('trace-brush', () => {
     element.thickness = 24;
     element.points.push({ x: 10, y: 10});
     element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
-    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + '" transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+                                + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" filter="url(#' + element.chosenOption
     + ')" r="' + 12
     + '" fill="' + ((element.erasingEvidence) ? element.erasingColor.RGBAString :  element.primaryColor.RGBAString) + '"></circle>';
@@ -119,7 +110,8 @@ describe('trace-brush', () => {
     element.primaryColor.RGBAString = 'rgba(1, 1, 1, 1)';
     element.points.push({ x: 10, y: 10});
     element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
-    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + '" transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+                                + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" filter="url(#' + element.chosenOption
     + ')" r="' + element.thickness / 2
     + '" fill="' + element.primaryColor.RGBAString + '"></circle>';
@@ -133,7 +125,8 @@ describe('trace-brush', () => {
     element.primaryColor.RGBAString = 'rgba(1, 1, 1, 1)';
     element.points.push({ x: 10, y: 10});
     element.svg = '<circle cx="' + element.points[0].x + '" cy="' + element.points[0].y
-    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + '" transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+                                + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" filter="url(#' + element.chosenOption
     + ')" r="' + element.thickness / 2
     + '" fill="' + element.erasingColor.RGBAString + '"></circle>';

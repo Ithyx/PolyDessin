@@ -3,8 +3,10 @@ import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
-import { DatabaseService } from 'src/app/services/database/database.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
+import { LocalSaveManagerService } from 'src/app/services/saving/local/local-save-manager.service';
+import { DatabaseService } from 'src/app/services/saving/remote/database.service';
+import { SavingUtilityService } from 'src/app/services/saving/saving-utility.service';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { Drawing } from '../../../../../common/communication/drawing-interface';
 import { GalleryLoadWarningComponent } from '../gallery-load-warning/gallery-load-warning.component';
@@ -30,12 +32,14 @@ export class GalleryComponent implements OnInit {
 
   constructor(private dialogRef: MatDialogRef<GalleryComponent>,
               private db: DatabaseService,
+              private saveUtility: SavingUtilityService,
               private drawingManager: DrawingManagerService,
               private stockageSVG: SVGStockageService,
               private ngZone: NgZone,
               private router: Router,
               private dialog: MatDialog,
-              private canvas: CanvasConversionService) {
+              private canvas: CanvasConversionService,
+              private localSaving: LocalSaveManagerService) {
     this.dialogConfig = new MatDialogConfig();
     this.dialogConfig.disableClose = true;
     this.dialogConfig.autoFocus = true;
@@ -101,9 +105,12 @@ export class GalleryComponent implements OnInit {
     this.drawingManager.backgroundColor = drawing.backgroundColor;
     this.drawingManager.name = drawing.name;
     if (drawing.tags) { this.drawingManager.tags = drawing.tags; } else { this.drawingManager.tags = []; }
-    if (drawing.elements) { drawing.elements.forEach(this.db.addElement.bind(this.db)); }
+    if (drawing.elements) {
+      drawing.elements.forEach((element) => { this.stockageSVG.addSVG(this.saveUtility.createCopyDrawElement(element)); });
+    }
     this.ngZone.run(() => this.router.navigate(['dessin']));
     this.canvas.updateDrawing();
+    this.localSaving.saveState();
     this.close();
   }
 

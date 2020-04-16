@@ -55,4 +55,12 @@ describe('ColorChoiceComponent', () => {
     expect(component['dialogRef'].close).toHaveBeenCalled();
   });
 
+  // TEST notificationReceived
+
+  it('#notificationReceived devrait appler picker.draw', () => {
+    const spy = spyOn(component['picker'], 'draw');
+    component.notificationReceived();
+    expect(spy).toHaveBeenCalled();
+  });
+
 });

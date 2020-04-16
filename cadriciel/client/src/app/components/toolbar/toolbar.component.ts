@@ -37,7 +37,7 @@ export class ToolbarComponent implements OnDestroy {
     this.tools.activeTool.isActive = false;
     this.tools.activeTool = tool;
     this.tools.activeTool.isActive = true;
-    this.shortcuts.clearOngoingSVG();
+    this.shortcuts.shortcutsFunctions.clearOngoingSVG();
   }
 
   disableShortcuts(): void {

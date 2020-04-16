@@ -1,36 +1,21 @@
 import { Injectable } from '@angular/core';
-import { SafeHtml } from '@angular/platform-browser';
 import { Color } from 'src/app/services/color/color';
-import { DrawingTool, TOOL_INDEX } from 'src/app/services/tools/tool-manager.service';
-import { DrawElement, ERASING_COLOR_INIT, Point } from '../../draw-element/draw-element';
+import { DrawingTool } from 'src/app/services/tools/tool-manager.service';
+import { DrawElement } from '../../draw-element/draw-element';
 
 @Injectable({
   providedIn: 'root'
 })
-export abstract class BasicShapeService implements DrawElement {
-  svg: string;
-  svgHtml: SafeHtml;
-
-  trueType: TOOL_INDEX;
-
-  points: Point[];
-  isSelected: boolean;
-  erasingEvidence: boolean;
-
+export abstract class BasicShapeService extends DrawElement  {
   primaryColor: Color;
   secondaryColor: Color;
-  erasingColor: Color;
 
   thickness: number;
   chosenOption: string;
   perimeter: string;
 
-  pointMin: Point;
-  pointMax: Point;
-  translate: Point;
-
   constructor() {
-    this.svgHtml = '';
+    super();
     this.primaryColor = {
       RGBAString: '',
       RGBA: [0, 0, 0, 0]
@@ -39,14 +24,8 @@ export abstract class BasicShapeService implements DrawElement {
       RGBAString: '',
       RGBA: [0, 0, 0, 0]
     };
-    this.erasingColor = ERASING_COLOR_INIT;
     this.points = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
                    {x: 0, y: 0}];   // points[1], coin bas droite
-    this.isSelected = false;
-    this.erasingEvidence = false;
-    this.translate = { x: 0, y: 0};
-    this.pointMin = {x: 0, y: 0};
-    this.pointMax = {x: 0, y: 0};
   }
 
   getWidth(): number {
@@ -70,28 +49,8 @@ export abstract class BasicShapeService implements DrawElement {
   abstract drawShape(): void;
   abstract drawPerimeter(): void;
 
-  updatePosition(x: number, y: number): void {
-    this.translate.x += x;
-    this.translate.y += y;
-    this.draw();
-  }
-
-  updatePositionMouse(mouse: MouseEvent, mouseClick: Point): void {
-    this.translate.x = mouse.offsetX - mouseClick.x;
-    this.translate.y = mouse.offsetY - mouseClick.y;
-    this.draw();
-  }
-
   updateParameters(tool: DrawingTool): void {
     this.thickness = (tool.parameters[0].value) ? tool.parameters[0].value : 1;
     this.chosenOption = (tool.parameters[1].chosenOption) ? tool.parameters[1].chosenOption : '';
-  }
-
-  translateAllPoints(): void {
-    for (const point of this.points) {
-      point.x += this.translate.x;
-      point.y += this.translate.y;
-    }
-    this.translate = {x: 0, y: 0};
   }
 }

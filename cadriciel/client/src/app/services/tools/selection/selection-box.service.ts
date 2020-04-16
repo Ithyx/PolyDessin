@@ -30,7 +30,6 @@ export class SelectionBoxService {
       this.controlPointBox[index] = new RectangleService();
     }
 
-    this.box.isSelected = true;
     this.box.updateParameters(this.tools.activeTool);
 
     this.box.points[0] = pointMin;
@@ -69,7 +68,6 @@ export class SelectionBoxService {
                                                                   + this.box.points[1].y) / 2) + CONTROL_POINT_THICKNESS;
 
     for (const controlPoint of this.controlPointBox) {
-      controlPoint.isSelected = true;
       controlPoint.updateParameters(this.tools.activeTool);
       controlPoint.chosenOption = 'Plein avec contour';
       controlPoint.primaryColor.RGBAString =  'rgba(0, 0, 0, 1)';
@@ -89,28 +87,22 @@ export class SelectionBoxService {
     }
   }
 
-  updatePosition(x: number, y: number): void {
-    this.box.translate.x += x;
-    this.box.translate.y += y;
-    this.box.drawShape();
+  // TODO: VÉRIFIER LES TESTS :
+
+  updateTranslation(x: number, y: number): void {
+    this.box.updateTranslation(x, y);
     this.box.svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.box.svg);
     for (const controlPoint of this.controlPointBox) {
-      controlPoint.translate.x += x;
-      controlPoint.translate.y += y;
-      controlPoint.drawShape();
+      controlPoint.updateTranslation(x, y);
       controlPoint.svgHtml = this.sanitizer.bypassSecurityTrustHtml(controlPoint.svg);
     }
   }
 
-  updatePositionMouse(mouse: MouseEvent): void {
-    this.box.translate.x = mouse.offsetX - this.mouseClick.x;
-    this.box.translate.y = mouse.offsetY - this.mouseClick.y;
-    this.box.drawShape();
+  updateTranslationMouse(mouse: MouseEvent): void {
+    this.box.updateTranslationMouse(mouse);
     this.box.svgHtml = this.sanitizer.bypassSecurityTrustHtml(this.box.svg);
     for (const controlPoint of this.controlPointBox) {
-      controlPoint.translate.x = mouse.offsetX - this.mouseClick.x;
-      controlPoint.translate.y = mouse.offsetY - this.mouseClick.y;
-      controlPoint.drawShape();
+      controlPoint.updateTranslationMouse(mouse);
       controlPoint.svgHtml = this.sanitizer.bypassSecurityTrustHtml(controlPoint.svg);
     }
   }
