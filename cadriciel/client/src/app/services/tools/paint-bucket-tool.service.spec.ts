@@ -13,19 +13,33 @@ describe('PaintBucketToolService', () => {
   let element: ColorFillService;
   let canvas: HTMLCanvasElement;
   let context: CanvasRenderingContext2D;
+  //let svg: SVGElement;
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(PaintBucketToolService));
   beforeEach(() => stockageService = TestBed.get(SVGStockageService));
 
   beforeEach(() => {
+    //svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     canvas = document.createElement('canvas');
     service.canvas = canvas;
-    service['image'] = new Image();
+
+    //service.drawing = svg;
+    //service.drawing.setAttribute('width', '10');
+    //service.drawing.setAttribute('height', '10');
     const contextCanvas = canvas.getContext('2d');
     if (contextCanvas) {
       context = contextCanvas;
       service['context'] = context;
     }
+    /*const imageData = new ImageData(2, 2);
+    const data = imageData.data;
+    data.set([
+      1, 0, 0, 1,
+      1, 0, 0, 1,
+      9, 0, 0, 1,
+      3, 0, 2, 1
+    ]);
+    spyOn(context, 'getImageData').and.callFake(() => imageData);*/
 
     service['commands'].drawingInProgress = true;
     service['tools'].activeTool = service['tools'].toolList[11];
@@ -84,7 +98,7 @@ describe('PaintBucketToolService', () => {
     service.onMouseClick(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
     expect(spy).toHaveBeenCalled();
   });
-
+/*
   // TESTS createCanvas
 
   it('#createCanvas devrait appeler la fonction getContext', () => {
@@ -93,13 +107,9 @@ describe('PaintBucketToolService', () => {
     expect(spy).toHaveBeenCalledWith('2d');
   });
 
-  /* CANVAS BEURK :P
-
   it('#createCanvas devrait assigner à context', () => {
-    const contextTest = service.canvas.getContext('2d');
-    service['context'] = contextTest;
     service.createCanvas();
-    expect(spy).toHaveBeenCalledWith('2d');
+    expect(service['context']).toEqual(context);
   });
 
   // TESTS onImageLoad
@@ -109,5 +119,13 @@ describe('PaintBucketToolService', () => {
     service['image'].onload = service.onImageLoad.bind(service);
     service.onImageLoad();
     expect(spy).toHaveBeenCalledWith(service['image'], 0, 0);
+  });
+
+  // TESTS fillWithColor
+
+  it('#fillWithColor devrait appeler la fonction getContext', () => {
+    const spy = spyOn(Array.prototype, 'push');
+    service.fillWithColor();
+    expect(spy).toHaveBeenCalledWith(service['mousePosition']);
   });*/
 });
