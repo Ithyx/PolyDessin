@@ -16,6 +16,9 @@ enum MailStatus {
   FAILURE = 3
 }
 
+const AUTHOR_OFFSET = 5;
+const AUTHOR_OUTLINE_WIDTH = 3;
+
 @Component({
   selector: 'app-export-window',
   templateUrl: './export-window.component.html',
@@ -132,10 +135,10 @@ export class ExportWindowComponent {
       console.log('DRAWING');
       this.context.font = '30px Arial';
       this.context.strokeStyle = 'white';
-      this.context.lineWidth = 3;
-      this.context.strokeText(`auteur: ${this.selectedAuthor}`, 0, this.drawingParams.height - 5);
+      this.context.lineWidth = AUTHOR_OUTLINE_WIDTH;
+      this.context.strokeText(`auteur: ${this.selectedAuthor}`, 0, this.drawingParams.height - AUTHOR_OFFSET);
       this.context.fillStyle = 'black';
-      this.context.fillText(`auteur: ${this.selectedAuthor}`, 0, this.drawingParams.height - 5);
+      this.context.fillText(`auteur: ${this.selectedAuthor}`, 0, this.drawingParams.height - AUTHOR_OFFSET);
     }
     let imageData = this.canvas.toDataURL('image/' + this.selectedExportFormat);
     if (this.selectedExportFormat === 'svg') {
@@ -154,7 +157,8 @@ export class ExportWindowComponent {
         }
       }
       if (this.selectedAuthor !== '') {
-        imageData += `<text x="0" y="${this.drawingParams.height - 5}" style="font-family: Arial;font-size:30;stroke:#ffffff;fill:#000000;">
+        imageData += `<text x="0" y="${this.drawingParams.height - AUTHOR_OFFSET}"` +
+        `style="font-family: Arial;font-size:30;stroke:#ffffff;fill:#000000;">
         auteur: ${this.selectedAuthor}
         </text>\n`;
       }
