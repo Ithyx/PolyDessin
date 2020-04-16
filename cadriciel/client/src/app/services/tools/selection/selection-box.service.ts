@@ -155,7 +155,7 @@ export class SelectionBoxService {
     this.controlPosition = index + 1;
     switch (this.controlPosition) {
       case ControlPosition.UP:
-        this.scaleCenter.y = this.box.strokePoints[1].y;
+        this.scaleCenter.y = this.box.strokePoints[2].y;
         break;
       case ControlPosition.DOWN:
         this.scaleCenter.y = this.box.strokePoints[0].y;
