@@ -94,7 +94,7 @@ export class ShortcutsManagerService {
               }
 
   treatInput(keyboard: KeyboardEvent): void {
-    if (!this.focusOnInput) {
+    if (!this.focusOnInput && !this.shortcutsFunctions.focusOnInput) {
       if (this.shortcutsList.has(keyboard.key)) {
         keyboard.preventDefault();
         (this.shortcutsList.get(keyboard.key) as FunctionShortcut)(keyboard);

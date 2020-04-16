@@ -1,5 +1,15 @@
 <div class ="exportWindow">
 <mat-dialog-content>
+    <div *ngIf="mailStatus === 1" class="loading">
+        Patientez s'il vous plaît...
+    </div>
+    <div *ngIf="mailStatus === 2" class="success">
+        Dessin envoyé avec succès !
+    </div>
+    <div *ngIf="mailStatus === 3" class="error">
+        Erreur: Le dessin n'a pas pu être envoyé (le serveur à renvoyé l'erreur {{mostRecentError}})
+    </div>
+    <br>
     <svg #drawingPreview [attr.filter]="getFilter()" class="drawing-preview" [attr.width]="200" [attr.height]="200"
         [attr.viewBox]="'0 0 ' + drawing.width.toString() + ' ' + drawing.height.toString()">
         <defs>
@@ -56,25 +66,35 @@
         <g *ngFor="let element of drawing.elements" [innerHtml]="sanitize(element.svg)" />
     </svg>
     <div>
-        <label for="format">Choisissez un format d'exporation :</label>
+        <label for="format">Choisissez un format d'exporation: </label>
         <select id="format" (change)="updateSelectedFormat($event)">
             <option *ngFor="let format of EXPORT_FORMAT" [value]="format"> {{format}} </option>
         </select>
         <br>
-        <br>
-        <label for="filter">Choisissez un filtre d'exporation :</label>
+        <label for="filter">Choisissez un filtre d'exporation: </label>
         <select id="filter" (change)="updateSelectedFilter($event)">
             <option *ngFor="let filter of EXPORT_FILTER" [value]="filter"> {{filter}} </option>
         </select>
         <br>
-        <br>
-        <label for="name">Choisissez un nom de fichier :</label>
+        <label for="name">Choisissez un nom de fichier: </label>
         <input id="name" type="text" (change)="updateFileName($event)" [value]="selectedFileName" />
     </div>
     <br>
     <a #link class="no-display"></a>
-    <button mat-raised-button (click)="export()">Exporter</button>
-    <button mat-button (click)="close()">Fermer</button>
-
+    <div class="submit">
+        <label for="email">Ou envoyez l'image par courriel: </label>
+        <br><br>
+        <form #f="ngForm">
+            <label for="author">Entrez un nom d'auteur: </label>
+            <input id="author" type="text" (change)="updateAuthor($event)" [value]="selectedAuthor" />
+            <br>
+            <label for="email">Entrez l'adresse email du destinataire: </label>
+            <input type="email" (change)="updateEmail($event)" ngModel name="email" required email [ngClass]="f.valid ? '' : 'invalid'">
+            <br>
+            <button mat-stroked-button [disabled]="!f.valid" (click)="exportToSend()">Envoyer</button>
+        </form>
+        <button mat-raised-button (click)="export()">Exporter</button>
+        <button mat-button (click)="close()">Fermer</button>
+    </div>
 </mat-dialog-content>
 </div>

@@ -78,4 +78,5 @@ export class SavingUtilityService {
     newElement.transform = {...element.transform};
     return newElement;
   }
+
 }

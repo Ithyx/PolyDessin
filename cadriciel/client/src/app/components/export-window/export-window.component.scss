@@ -2,11 +2,58 @@
     text-align: center;
   }
 
-.no-display {
-  display: none;
+.no-display { display: none; }
+
+.list {
+  margin: 15px;
+  float: left;
 }
 
-.exportWindow{
+.submit {
+  margin: auto;
+  width: 40%;
+  padding: 10px;
+}
+
+.invalid { border:3px solid rgb(255, 189, 7); }
+
+.error {
+  width: 95%;
+  left: 2.5%;
+  right: 2.5%;
+  margin: auto;
+  text-align: center;
+  color: darkred;
+  background-color: rgb(223, 136, 136);
+  border: 2px solid #f44336;
+  border-radius: 15px;
+}
+
+.loading {
+  width: 95%;
+  left: 2.5%;
+  right: 2.5%;
+  margin: auto;
+  text-align: center;
+  color: darkorange;
+  background-color: yellow;
+  border: 2px solid orange;
+  border-radius: 15px;
+}
+
+.success {
+  width: 95%;
+  left: 2.5%;
+  right: 2.5%;
+  margin: auto;
+  text-align: center;
+  color: green;
+  background-color: yellowgreen;
+  border: 2px solid darkgreen;
+  border-radius: 15px;
+}
+
+.exportWindow {
   color: white;
   font-size: 20px;
 }
