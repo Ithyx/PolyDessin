@@ -136,12 +136,6 @@ describe('DrawSprayService', () => {
 
   // TESTS resetTrace
 
-  /* it('#resetTrace devrait réinitialiser service.trace', () => {
-    service.trace.isSelected = true; // Par défaut devrait être à faux
-    service.resetTrace();
-    expect(service.trace.isSelected).toBe(false);
-  }); */
-
   it('#resetTrace devrait attribuer la couleur principale dans colorParameter à celle trace', () => {
     service.trace.primaryColor.RGBAString = 'rgba(0, 1, 1, 0)';
     service.resetTrace();

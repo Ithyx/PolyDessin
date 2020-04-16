@@ -32,12 +32,13 @@ describe('SprayService', () => {
 
   // TESTS draw
 
-  /*
   it('#draw devrait mettre le bon fill si erasingEvidence est faux', () => {
-    let test = '<circle transform="translate(' + element.translate.x + ' ' + element.translate.y
+    let test = '<circle transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" cx="10" cy="10" r="1" '
     + 'fill="' + element.primaryColor.RGBAString + '"></circle>';
-    test += '<circle transform="translate(' + element.translate.x + ' ' + element.translate.y
+    test += '<circle transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" cx="100" cy="100" r="1" '
     + 'fill="' + element.primaryColor.RGBAString + '"></circle>';
     element.draw();
@@ -46,16 +47,17 @@ describe('SprayService', () => {
 
   it('#draw devrait mettre le bon fill si erasingEvidence est vrai', () => {
     element.erasingEvidence = true;
-    let test = '<circle transform="translate(' + element.translate.x + ' ' + element.translate.y
+    let test = '<circle transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" cx="10" cy="10" r="1" '
     + 'fill="' + element.erasingColor.RGBAString + '"></circle>';
-    test += '<circle transform="translate(' + element.translate.x + ' ' + element.translate.y
+    test += '<circle transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" cx="100" cy="100" r="1" '
     + 'fill="' + element.erasingColor.RGBAString + '"></circle>';
     element.draw();
     expect(element.svg).toEqual(test);
   });
-  */
 
   // TESTS addPoint
 
@@ -88,8 +90,6 @@ describe('SprayService', () => {
     expect(test).toHaveBeenCalledWith({x: pointX, y: pointY});
   });
 
-  /* 
-
   it('#addPoint devrait mettre le bon fill si erasingEvidence est faux', () => {
     const mousePosition = {x: 100, y: 100};
     const position = 0.5 * element.diameter / 2;
@@ -99,7 +99,8 @@ describe('SprayService', () => {
     element.points = [];
     spyOn(Math, 'random').and.returnValues(0.5, 0.25);
 
-    const test = '<circle transform="translate(' + element.translate.x + ' ' + element.translate.y
+    const test = '<circle transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + `)" cx="${pointX}" cy="${pointY}" r="1" `
     + `fill="${(element.erasingEvidence) ? element.erasingColor.RGBAString :  element.primaryColor.RGBAString}"></circle>`;
     element.addPoint(mousePosition);
@@ -116,12 +117,13 @@ describe('SprayService', () => {
     spyOn(Math, 'random').and.returnValues(0.5, 0.25);
 
     element.erasingEvidence = true;
-    const test = '<circle transform="translate(' + element.translate.x + ' ' + element.translate.y
+    const test = '<circle transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + `)" cx="${pointX}" cy="${pointY}" r="1" `
     + `fill="${(element.erasingEvidence) ? element.erasingColor.RGBAString :  element.primaryColor.RGBAString}"></circle>`;
     element.addPoint(mousePosition);
     expect(element.svg).toEqual(test);
-  }); */
+  });
 
   // TESTS updateParameters
 

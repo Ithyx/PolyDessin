@@ -35,7 +35,6 @@ export class ShortcutsManagerService {
   private releaseKeyList: Map<string, FunctionShortcut > = new Map<string, FunctionShortcut>();
   private counter100ms: number;
   private clearTimeout: number;
-  private arrowKeys: [boolean, boolean, boolean, boolean];
   private dialogConfig: MatDialogConfig;
   private transformCommand: TransformSvgService;
 
@@ -53,7 +52,6 @@ export class ShortcutsManagerService {
                 this.focusOnInput = false;
                 this.counter100ms = 0;
                 this.clearTimeout = 0;
-                this.arrowKeys = [false, false, false, false];
                 this.dialogConfig = new MatDialogConfig();
                 this.dialogConfig.disableClose = true;
                 this.dialogConfig.autoFocus = true;
@@ -96,7 +94,7 @@ export class ShortcutsManagerService {
               }
 
   treatInput(keyboard: KeyboardEvent): void {
-    if (!this.focusOnInput) {
+    if (!this.focusOnInput && !this.shortcutsFunctions.focusOnInput) {
       if (this.shortcutsList.has(keyboard.key)) {
         keyboard.preventDefault();
         (this.shortcutsList.get(keyboard.key) as FunctionShortcut)(keyboard);
@@ -112,8 +110,8 @@ export class ShortcutsManagerService {
           this.selection.selectedElements, this.sanitizer, this.selection.deleteBoundingBox.bind(this.selection)
         );
       }
-      if (!this.arrowKeys[DIRECTION.LEFT] && !this.arrowKeys[DIRECTION.RIGHT]
-          && !this.arrowKeys[DIRECTION.UP] && !this.arrowKeys[DIRECTION.DOWN]) {
+      if (!this.shortcutsFunctions.arrowKeys[DIRECTION.LEFT] && !this.shortcutsFunctions.arrowKeys[DIRECTION.RIGHT]
+          && !this.shortcutsFunctions.arrowKeys[DIRECTION.UP] && !this.shortcutsFunctions.arrowKeys[DIRECTION.DOWN]) {
         window.clearInterval(this.clearTimeout);
         this.counter100ms = 0;
         this.clearTimeout = 0;
@@ -131,16 +129,16 @@ export class ShortcutsManagerService {
   translateSelection(): void {
     const translate: Point = {x: 0 , y: 0};
 
-    if (this.arrowKeys[DIRECTION.LEFT]) {
+    if (this.shortcutsFunctions.arrowKeys[DIRECTION.LEFT]) {
       translate.x = -SELECTION_MOVEMENT_PIXEL;
     }
-    if (this.arrowKeys[DIRECTION.RIGHT]) {
+    if (this.shortcutsFunctions.arrowKeys[DIRECTION.RIGHT]) {
       translate.x = SELECTION_MOVEMENT_PIXEL;
     }
-    if (this.arrowKeys[DIRECTION.UP]) {
+    if (this.shortcutsFunctions.arrowKeys[DIRECTION.UP]) {
       translate.y = -SELECTION_MOVEMENT_PIXEL;
     }
-    if (this.arrowKeys[DIRECTION.DOWN]) {
+    if (this.shortcutsFunctions.arrowKeys[DIRECTION.DOWN]) {
       translate.y = SELECTION_MOVEMENT_PIXEL;
     }
     this.counter100ms++;
@@ -164,25 +162,25 @@ export class ShortcutsManagerService {
   }
 
   releaseKeyArrowLeft(): void {
-    this.arrowKeys[DIRECTION.LEFT] = false;
+    this.shortcutsFunctions.arrowKeys[DIRECTION.LEFT] = false;
   }
 
   releaseKeyArrowRight(): void {
-    this.arrowKeys[DIRECTION.RIGHT] = false;
+    this.shortcutsFunctions.arrowKeys[DIRECTION.RIGHT] = false;
   }
 
   releaseKeyArrowUp(): void {
-    this.arrowKeys[DIRECTION.UP] = false;
+    this.shortcutsFunctions.arrowKeys[DIRECTION.UP] = false;
   }
 
   releaseKeyArrowDown(): void {
-    this.arrowKeys[DIRECTION.DOWN] = false;
+    this.shortcutsFunctions.arrowKeys[DIRECTION.DOWN] = false;
   }
 
   treatReleaseKey(keyboard: KeyboardEvent): void {
     if (this.releaseKeyList.has(keyboard.key)) {
       keyboard.preventDefault();
-      (this.shortcutsList.get(keyboard.key) as FunctionShortcut)(keyboard);
+      (this.releaseKeyList.get(keyboard.key) as FunctionShortcut)(keyboard);
       this.updatePositionTimer();
     }
   }

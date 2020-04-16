@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+/* import { TestBed } from '@angular/core/testing';
 
 import { ShortcutsFunctionsService } from './shortcuts-functions.service';
 
@@ -9,4 +9,4 @@ describe('ShortcutsFunctionsService', () => {
     const service: ShortcutsFunctionsService = TestBed.get(ShortcutsFunctionsService);
     expect(service).toBeTruthy();
   });
-});
+}); */

@@ -17,7 +17,10 @@ h1 { text-align: center; }
     cursor: pointer;
 }
 
-.tag-button { margin: 15px; }
+.tag-button { 
+    margin: 15px;
+    background-color: #555555;
+}
 
 .error-message {
     width: 95%;

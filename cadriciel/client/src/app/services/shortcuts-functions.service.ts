@@ -22,7 +22,7 @@ import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
 export class ShortcutsFunctionsService {
   focusOnInput: boolean;
   private dialogConfig: MatDialogConfig;
-  private arrowKeys: [boolean, boolean, boolean, boolean];
+  arrowKeys: [boolean, boolean, boolean, boolean];
   newDrawingEmmiter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   constructor(private tools: ToolManagerService,

@@ -28,13 +28,10 @@
         </div>
 
         <div *ngIf="tools.activeTool.parameters.length === 0">
-            <br>
-            <br>
-            <br>
+            <br><br><br>
         </div>
-        <div *ngIf="tools.activeTool.parameters.length === 1">
-            <br>
-            <br>
+        <div *ngIf="tools.activeTool.parameters.length === 1"> 
+            <br><br>
         </div>
         <div *ngIf="tools.activeTool.parameters.length === 2">
             <br>
@@ -63,11 +60,13 @@
             </ng-template>
         </div>
         <br>
-        <i class="fas fa-palette" style ="margin-top : 10px"> </i>
+        <i class="fas fa-palette" style ="margin-top : 10px"></i>
         Couleurs
         <div class="color_button">
             Couleur primaire
-            <br />
+            <br/>
+            <a class="tip"> (Click Gauche)</a>
+            <br>
             <button [ngStyle]= "{'background-color': colorParameter.primaryColor.RGBAString || 'white'}" 
                     (click)="selectColor('primary')"></button>
             <br />
@@ -78,9 +77,11 @@
                        (input)="applyPrimaryOpacity($event)" />
                 {{colorParameter.primaryOpacityDisplayed}}%
             </div>
-            <a mat-stroked-button (click)="colorParameter.intervertColors()">Intervertir</a>
+            <a class="intervert-button" mat-stroked-button (click)="colorParameter.intervertColors()">Intervertir</a>
             <br />
             Couleur secondaire
+            <br/>
+            <a class="tip"> (Click Droit)</a>
             <br />
             <button [ngStyle]= "{'background-color': colorParameter.secondaryColor.RGBAString || 'white'}"
                     (click)="selectColor('secondary')"></button>

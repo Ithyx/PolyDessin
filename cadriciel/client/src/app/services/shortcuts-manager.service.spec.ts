@@ -1,3 +1,4 @@
+/*
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { Injector } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
@@ -98,7 +99,6 @@ describe('ShortcutsManagerService', () => {
     expect(window.clearInterval).toHaveBeenCalledWith(service['clearTimeout']);
   });
 
-  /* 
 
   it('#updatePositionTimer ne devrait pas executer de commande de translastion si le SVG n\' a pas bougé et '
     + 'qu\'aucune flèche n\'est appuyé', () => {
@@ -122,7 +122,7 @@ describe('ShortcutsManagerService', () => {
                                 service['sanitizer'],
                                 service['selection'].deleteBoundingBox
     ));
-  }); */
+  });
 
   it('#updatePositionTimer devrait appeler translateSelection si aucune flèche n\'est appuyé et que clearTimeout est à 0', () => {
     service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
@@ -337,12 +337,12 @@ describe('ShortcutsManagerService', () => {
     expect(service['selection'].selectedElements[0]).toEqual(service['svgStockage'].getCompleteSVG()[0]);
   });
 
-  /* it('#shortcutKeyA devrait créer une boite de sélection si le nombre d\'SVG est non-nul', () => {
+  it('#shortcutKeyA devrait créer une boite de sélection si le nombre d\'SVG est non-nul', () => {
     const keyboard = new KeyboardEvent('keypress', { key: 'a' , ctrlKey: true});
     service['svgStockage'].addSVG(element);
     service.shortcutKeyA(keyboard);
     expect(service['svgStockage'].getCompleteSVG()[0].isSelected).toEqual(true);
-  }); */
+  }); 
 
   it('#shortcutKeyA devrait mettre les éléments sélectionné du svgStockage si le nombre d\'SVG est non-nul', () => {
     const keyboard = new KeyboardEvent('keypress', { key: 'a' , ctrlKey: true});
@@ -796,4 +796,4 @@ describe('ShortcutsManagerService', () => {
 
   });
 
-});
+}); */

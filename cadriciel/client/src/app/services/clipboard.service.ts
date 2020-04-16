@@ -5,11 +5,11 @@ import { CommandManagerService } from './command/command-manager.service';
 import { RemoveSVGService } from './command/remove-svg.service';
 import { DrawingManagerService } from './drawing-manager/drawing-manager.service';
 import { SavingUtilityService } from './saving/saving-utility.service';
-import { DrawElement , Point } from './stockage-svg/draw-element/draw-element';
+import { DrawElement } from './stockage-svg/draw-element/draw-element';
 import { SVGStockageService } from './stockage-svg/svg-stockage.service';
 import { SelectionService } from './tools/selection/selection.service';
 
-const PASTE_OFFSET: Point = {x: 20, y: 20};
+const PASTE_OFFSET = 20;
 
 @Injectable({
   providedIn: 'root'
@@ -56,7 +56,7 @@ export class ClipboardService {
     // colle
     this.selection.deleteBoundingBox();
     for (const element of this.duplicatedElements) {
-      element.updateTranslation(PASTE_OFFSET.x, PASTE_OFFSET.y);
+      element.updateTranslation(PASTE_OFFSET, PASTE_OFFSET);
     }
 
     if (this.isInDrawing(this.duplicatedElements)) {
@@ -65,7 +65,7 @@ export class ClipboardService {
       }
     } else {
       for (const element of this.duplicatedElements) {
-        element.updateTranslation(-PASTE_OFFSET.x, -PASTE_OFFSET.y);
+        element.updateTranslation(-PASTE_OFFSET, -PASTE_OFFSET);
         this.selection.selectedElements.push(element);
       }
     }
@@ -86,7 +86,7 @@ export class ClipboardService {
     this.selection.deleteBoundingBox();
     const buffer: DrawElement[] = [];
     for (const element of this.copiedElements) {
-      element.updateTranslation(PASTE_OFFSET.x, PASTE_OFFSET.y);
+      element.updateTranslation(PASTE_OFFSET, PASTE_OFFSET);
     }
 
     if (this.isInDrawing(this.copiedElements)) {
@@ -96,7 +96,7 @@ export class ClipboardService {
       }
     } else {
       for (const element of this.copiedElements) {
-        element.updateTranslation(-PASTE_OFFSET.x * this.numberOfPaste, -PASTE_OFFSET.y * this.numberOfPaste);
+        element.updateTranslation(-PASTE_OFFSET * this.numberOfPaste, -PASTE_OFFSET * this.numberOfPaste);
         this.selection.selectedElements.push(element);
         buffer.push(this.savingUtility.createCopyDrawElement(element));
         this.numberOfPaste = 0;
@@ -116,13 +116,14 @@ export class ClipboardService {
     for (const element of elements) {
       this.selection.findPointMinAndMax(element);
       const elementIsVisible = element.pointMax.x < this.drawing.width && element.pointMax.y < this.drawing.height;
+
       allElementAreVisible = allElementAreVisible && elementIsVisible;
     }
     return allElementAreVisible;
   }
 
   ongoingSelection(): boolean {
-    return this.selection.selectionBox.box as unknown as boolean;
+    return this.selection.selectedElements.length !== 0;
   }
 
   canPaste(): boolean {

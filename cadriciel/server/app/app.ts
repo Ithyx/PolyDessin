@@ -5,6 +5,7 @@ import * as express from 'express';
 import { inject, injectable } from 'inversify';
 import * as logger from 'morgan';
 import { DatabaseController } from './controllers/database.controller';
+import { EmailController } from './controllers/email.controller';
 import Types from './types';
 
 @injectable()
@@ -14,6 +15,7 @@ export class Application {
 
     constructor(
         @inject(Types.DatabaseController) private databaseController: DatabaseController,
+        @inject(Types.EmailController) private emailController: EmailController
     ) {
         this.app = express();
 
@@ -34,6 +36,7 @@ export class Application {
     bindRoutes(): void {
         // Notre application utilise le routeur de notre API `Index`
         this.app.use('/api/db', this.databaseController.router);
+        this.app.use('/api/mail', this.emailController.router);
         this.errorHandling();
     }
 

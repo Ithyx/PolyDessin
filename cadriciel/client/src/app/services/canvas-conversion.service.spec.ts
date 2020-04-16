@@ -31,14 +31,14 @@ describe('CanvasConversionService', () => {
     RGBAString: 'rgba(1, 0, 0, 1)',
     RGBA: [1, 0, 0, 1]
   };
-  const secondColor: Color = {
+ /* const secondColor: Color = {
     RGBAString: 'rgba(2, 0, 0, 1)',
     RGBA: [2, 0, 0, 1]
   };
   const thirdColor: Color = {
     RGBAString: 'rgba(3, 0, 0, 1)',
     RGBA: [3, 0, 0, 1]
-  };
+  };*/
 
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => {
@@ -162,7 +162,7 @@ describe('CanvasConversionService', () => {
     service.loadImage();
     expect(context.drawImage).toHaveBeenCalledWith(service['image'], 0, 0);
   });
-
+/*
   // TESTS updateDrawing
 
   it('#updateDrawing devrait mettre isValid à false', () => {
@@ -258,7 +258,7 @@ describe('CanvasConversionService', () => {
     jasmine.clock().tick(5);
     expect(service.convertToCanvas).toHaveBeenCalled();
   });
-
+*/
   // TESTS calculateColor
 
   it('#calculateColor devrait assigner des teintes de rouge aux premiers SVG du stockage', () => {
@@ -290,7 +290,7 @@ describe('CanvasConversionService', () => {
 
   // TESTS createClone
 
-  /* 
+  /*
   it('#createClone devrait appeler draw sur l\'élément en paramètre s\'il n\'est pas un TraceBrush', () => {
     const spy = spyOn(firstElement, 'draw');
     service.createClone(firstElement);

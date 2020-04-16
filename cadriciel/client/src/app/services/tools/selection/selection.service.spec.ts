@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-// import { TranslateSvgService } from '../../command/translate-svg.service';
+import { TransformSvgService } from '../../command/transform-svg.service';
 import { RectangleService } from '../../stockage-svg/draw-element/basic-shape/rectangle.service';
 import { DrawElement } from '../../stockage-svg/draw-element/draw-element';
 import { TOOL_INDEX } from '../tool-manager.service';
@@ -62,23 +62,6 @@ describe('SelectionService', () => {
   });
 
   // TESTS handleClick
-  /* it('#handleClick devrait déselectionner les elements déjà sélectionner', () => {
-    service.selectedElements.push(element);
-    service.handleClick(element2);
-    expect(element.isSelected).toBe(false);
-  });
-
-  it('#handleClick devrait mettre isSelected des éléments déjà sélectionnés à false', () => {
-    service.selectedElements.push(element);
-    service.handleClick(element2);
-    expect(element.isSelected).toBe(false);
-  });
-
-  it('#handleClick devrait mettre isSelected de l\'element cliqué à true', () => {
-    service.selectedElements.push(element);
-    service.handleClick(element2);
-    expect(element2.isSelected).toBe(true);
-  });*/
 
   it('#handleClick devrait vider le tableau selectedElements', () => {
     service.selectedElements.push(element);
@@ -102,12 +85,6 @@ describe('SelectionService', () => {
 
   // TESTS handleRightClick
 
-  /* it('#handleRightClick devrait dé-sélectionner l\'element si il appartient à selectedElements', () => {
-    service.selectedElements.push(element);
-    service.handleRightClick(element);
-    expect(element.isSelected).toBe(false);
-  }); */
-
   it('#handleRightClick devrait retirer l\'element de selectedElement si il appartient à selectedElements', () => {
     service.selectedElements.push(element);
     service.handleRightClick(element);
@@ -129,11 +106,6 @@ describe('SelectionService', () => {
     service.handleRightClick(element);
     expect(spy).toHaveBeenCalled();
   });
-
-  /* it('#handleRightClick devrait sélectionner l\'element si il n\'appartient pas à selectedElements', () => {
-    service.handleRightClick(element);
-    expect(element.isSelected).toBe(true);
-  }); */
 
   it('#handleRightClick devrait ajouter l\'element à slectedElements si il n\'appartient pas à selectedElements', () => {
     service.handleRightClick(element);
@@ -315,6 +287,7 @@ describe('SelectionService', () => {
   it('#onMouseRelease devrait mettre clickOnSelectionBox à false si il y a eu un clic dans ou sur la boite de selection', () => {
     service.clickOnSelectionBox = true;
     service.selectedElements.push(element);
+    service['transformCommand'] = new TransformSvgService(service.selectedElements, service.sanitizer, service.deleteBoundingBox);
     service.onMouseRelease();
     expect(service.clickOnSelectionBox).toBe(false);
   });
@@ -322,22 +295,20 @@ describe('SelectionService', () => {
   it('#onMouseRelease devrait mettre clickInSelectionBox à false si il y a eu un clic dans ou sur la boite de selection', () => {
     service.clickInSelectionBox = true;
     service.selectedElements.push(element);
+    service['transformCommand'] = new TransformSvgService(service.selectedElements, service.sanitizer, service.deleteBoundingBox);
     service.onMouseRelease();
     expect(service.clickInSelectionBox).toBe(false);
   });
 
-  /* it('#onMouseRelease devrait exectuer une commande TranslateSvgService si il y a eu un clic dans ou sur la boite de selection' +
-  ' et que la selection a été bougé', () => {
-    const spy = spyOn(service['command'], 'execute');
-    service.clickOnSelectionBox = true;
-    // element.translate = {x: 90, y: 90};
+  it('#onMouseRelease devrait mettre clickInSelectionBox à false si il y a eu un clic dans ou sur la boite de selection', () => {
+    service.clickInSelectionBox = true;
     service.selectedElements.push(element);
-    service.createBoundingBox();
+    service['transformCommand'] = new TransformSvgService(service.selectedElements, service.sanitizer, service.deleteBoundingBox);
+    const spy = spyOn(service['command'], 'execute');
+    spyOn(service['transformCommand'], 'hasMoved').and.returnValue(true);
     service.onMouseRelease();
-    expect(spy)
-        .toHaveBeenCalledWith(new TranslateSvgService(service.selectedElements, service.selectionBox,
-                                                      service['sanitizer'], service.deleteBoundingBox));
-  }); */
+    expect(spy).toHaveBeenCalled();
+  });
 
   it('#onMouseRelease devrait appeler createBoundingBox si il n\'y a pas de clic sur ou dans la boite de selection', () => {
     const spy = spyOn(service, 'createBoundingBox');
@@ -418,12 +389,6 @@ describe('SelectionService', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  /* it('#deleteBoundingBox devrait mettre isSelected des éléments de selectedElement à false', () => {
-    service.selectedElements.push(element);
-    service.deleteBoundingBox();
-    expect(element.isSelected).toBe(false);
-  }); */
-
   it('#deleteBoundingBox devrait vider le tableau selectedElement', () => {
     service.selectedElements.push(element);
     service.deleteBoundingBox();
@@ -441,19 +406,6 @@ describe('SelectionService', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  /* it('#isInRectangleSelection devrait sélectionner l\'element si il appartient au rectange de selection', () => {
-    service.selectionRectangle.rectangle = new RectangleService();
-    service.selectionRectangle.rectangle.points[0] = {x: 80, y: 100};
-    service.selectionRectangle.rectangle.points[1] = {x: 100, y: 300};
-
-    service['svgStockage'].addSVG(element);
-
-    spyOn(service, 'belongToRectangle').and.returnValue(true);
-
-    service.isInRectangleSelection(service.selectionRectangle.rectangle);
-    expect(element.isSelected).toBe(true);
-  }); */
-
   it('#isInRectangleSelection devrait ajouter l\'element à selectedElement si il appartient au rectange de selection', () => {
     service.selectionRectangle.rectangle = new RectangleService();
     service.selectionRectangle.rectangle.points[0] = {x: 80, y: 100};
@@ -466,19 +418,6 @@ describe('SelectionService', () => {
     service.isInRectangleSelection(service.selectionRectangle.rectangle);
     expect(service.selectedElements.includes(element)).toBe(true);
   });
-
-  /* it('#isInRectangleSelection devrait dé-sélectionner l\'element si il n\'appartient pas au rectange de selection', () => {
-    service.selectionRectangle.rectangle = new RectangleService();
-    service.selectionRectangle.rectangle.points[0] = {x: 80, y: 100};
-    service.selectionRectangle.rectangle.points[1] = {x: 100, y: 300};
-
-    service['svgStockage'].addSVG(element);
-
-    spyOn(service, 'belongToRectangle').and.returnValue(false);
-
-    service.isInRectangleSelection(service.selectionRectangle.rectangle);
-    expect(element.isSelected).toBe(false);
-  }); */
 
   it('#isInRectangleSelection devrait ajouter les éléments sélectionnés à modifiedElemet', () => {
     service.selectionRectangle.rectangleInverted = new RectangleService();
@@ -549,6 +488,18 @@ describe('SelectionService', () => {
     service.isInRectangleSelection(new RectangleService());
     expect(spy).not.toHaveBeenCalled();
     expect(spy1).not.toHaveBeenCalled();
+  });
+
+  it('#isInRectangleSelction ne devrait rien faire si aucun element apparient au rectangle de selection', () => {
+    service['svgStockage'].addSVG(element);
+    service.selectedElements.push(element);
+    service.selectionRectangle.rectangle = new RectangleService();
+    service.selectionRectangle.rectangle.points[0] = {x: 80, y: 100};
+    service.selectionRectangle.rectangle.points[1] = {x: 100, y: 300};
+    spyOn(service, 'belongToRectangle').and.returnValue(true);
+    const spy = spyOn(service.selectedElements, 'push');
+    service.isInRectangleSelection(new RectangleService());
+    expect(spy).not.toHaveBeenCalled();
   });
 
   // TESTS belongToRectangle
@@ -663,7 +614,7 @@ describe('SelectionService', () => {
     service.selectedElements.push(element);
     service.createBoundingBox();
     service.updateTranslationMouse(mouse);
-    expect(spy).toHaveBeenCalledWith(mouse, {x: 20, y: 20});
+    expect(spy).toHaveBeenCalledWith(mouse);
   });
 
   it('#updateTranslationMouse devrait appeler la méthode updateTranslationMouse de la boite de sélection', () => {
@@ -677,34 +628,6 @@ describe('SelectionService', () => {
     expect(spy).toHaveBeenCalledWith(mouse);
   });
 
-  /* 
-  // TESTS hasMoved
-
-  it('#hasMoved devrait renvoyer true si la sélection a bougé sur l\'axe des x', () => {
-    element.translate = {x: 10, y: 0};
-    service.selectedElements.push(element);
-    expect(service.hasMoved()).toEqual(true);
-  });
-
-  it('#hasMoved devrait renvoyer true si la sélection a bougé sur l\'axe des y', () => {
-    element.translate = {x: 0, y: 10};
-    service.selectedElements.push(element);
-    expect(service.hasMoved()).toEqual(true);
-  });
-
-  it('#hasMoved devrait renvoyer true si la sélection a bougé sur l\'axe des x et des y', () => {
-    element.translate = {x: 10, y: 10};
-    service.selectedElements.push(element);
-    expect(service.hasMoved()).toEqual(true);
-  });
-
-  it('#hasMoved devrait renvoyer false si la sélection n\'a pas bougé', () => {
-    element.translate = {x: 0, y: 0};
-    service.selectedElements.push(element);
-    expect(service.hasMoved()).toEqual(false);
-  });
-  */
-
   // TESTS reverseElementSelectionStatus
 
   it('#reverseElementSelectionStatus devrait ajouter l\'element à selectedElements si il n\'y pas déjà', () => {
@@ -712,26 +635,6 @@ describe('SelectionService', () => {
     service.reverseElementSelectionStatus(element);
     expect(service.selectedElements.push).toHaveBeenCalledWith(element);
   });
-
-  /* it('#reverseElementSelectionStatus devrait mettre isSelected de l\'element à true si l\'element n\'est pas'
-  + 'dans selectedElements', () => {
-    service.reverseElementSelectionStatus(element);
-    expect(element.isSelected).toBe(true);
-  });
-
-  it('#reverseElementSelectionStatus devrait mettre isSelected de l\'element à false si l\'element est '
-  + 'dans selectedElements', () => {
-    service.selectedElements.push(element);
-    service.reverseElementSelectionStatus(element);
-    expect(element.isSelected).toBe(false);
-  });
-
-  it('#reverseElementSelectionStatus devrait mettre isSelected de l\'element à false si l\'element est '
-  + 'dans selectedElements', () => {
-    service.selectedElements.push(element);
-    service.reverseElementSelectionStatus(element);
-    expect(element.isSelected).toBe(false);
-  }); */
 
   it('#reverseElementSelectionStatus devrait retirer l\'element de selectedElement si l\'element est dans selectedElements', () => {
     service.selectedElements.push(element);

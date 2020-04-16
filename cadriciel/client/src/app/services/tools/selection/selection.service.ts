@@ -41,10 +41,6 @@ export class SelectionService implements ToolInterface {
              }
 
   handleClick(drawElement: DrawElement): void {
-    // for (const element of this.selectedElements) {
-      // element.isSelected = false;
-    // }
-    // drawElement.isSelected = true;
     this.selectedElements.splice(0, this.selectedElements.length);
     this.selectedElements.push(drawElement);
     this.createBoundingBox();
@@ -52,7 +48,6 @@ export class SelectionService implements ToolInterface {
 
   handleRightClick(element: DrawElement): void {
     if (this.selectedElements.includes(element)) {
-      // element.isSelected = false;
       const index = this.selectedElements.indexOf(element, 0);
       this.selectedElements.splice(index, 1);
       if (this.selectedElements.length === 0) {
@@ -61,7 +56,6 @@ export class SelectionService implements ToolInterface {
         this.createBoundingBox();
       }
     } else {
-      // element.isSelected = true;
       this.selectedElements.push(element);
       this.createBoundingBox();
     }
@@ -142,7 +136,7 @@ export class SelectionService implements ToolInterface {
 
       for (const element of this.selectedElements) {
         for (const point of element.points) {
-              // pointMin
+          // pointMin
           const transformedX = element.transform.a * point.x + element.transform.c * point.y + element.transform.e;
           const transformedY = element.transform.b * point.x + element.transform.d * point.y + element.transform.f;
           if (transformedX < pointMin.x) {
@@ -175,9 +169,6 @@ export class SelectionService implements ToolInterface {
 
   deleteBoundingBox(): void {
     this.selectionBox.deleteSelectionBox();
-    // for (const element of this.selectedElements) {
-      // element.isSelected = false;
-    // }
     this.selectedElements = [];
   }
 
@@ -189,9 +180,8 @@ export class SelectionService implements ToolInterface {
 
       if (this.selectionRectangle.rectangle) {
         if (this.belongToRectangle(element, this.selectionRectangle.rectangle) && !this.selectedElements.includes(element)) {
-          // element.isSelected = true;
           this.selectedElements.push(element);
-        } // else { element.isSelected = false; }
+        }
       } else if (this.selectionRectangle.rectangleInverted) {
         if (this.belongToRectangle(element, this.selectionRectangle.rectangleInverted) && !this.modifiedElement.has(element)) {
           this.reverseElementSelectionStatus(element);
@@ -273,11 +263,9 @@ export class SelectionService implements ToolInterface {
   reverseElementSelectionStatus(element: DrawElement): void {
     if (!this.selectedElements.includes(element)) {
       this.selectedElements.push(element);
-      // element.isSelected = true;
     } else {
       const index = this.selectedElements.indexOf(element, 0);
       this.selectedElements.splice(index, 1);
-      // element.isSelected = false;
     }
   }
 

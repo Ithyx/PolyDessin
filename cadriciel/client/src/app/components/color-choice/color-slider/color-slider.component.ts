@@ -1,6 +1,6 @@
 /*Component de couleur inspire de https://malcoded.com/posts/angular-color-picker/*/
 
-import { AfterViewInit, Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { A } from 'src/app/services/color/color';
 import { ColorManagerService } from 'src/app/services/color/color-manager.service';
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
@@ -41,6 +41,7 @@ export class ColorSliderComponent implements AfterViewInit, ToolInterface {
   private canvas: ElementRef<HTMLCanvasElement>;
 
   @Input() private colorManager: ColorManagerService;
+  @Output() private notification: EventEmitter<void>;
 
   private context2D: CanvasRenderingContext2D ;
   private mouseDown: boolean;
@@ -48,6 +49,7 @@ export class ColorSliderComponent implements AfterViewInit, ToolInterface {
 
   constructor() {
     this.mouseDown =  false;
+    this.notification = new EventEmitter<void>();
   }
 
   ngAfterViewInit(): void {
@@ -116,6 +118,7 @@ export class ColorSliderComponent implements AfterViewInit, ToolInterface {
     this.colorManager.color.RGBA = [imageData[0], imageData[1], imageData[2], this.colorManager.color.RGBA[A]];
     this.colorManager.updateColor();
     this.colorManager.hue = this.colorManager.color.RGBAString;
+    this.notification.emit();
   }
 
 }

@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
+import { LocalSaveManagerService } from 'src/app/services/saving/local/local-save-manager.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
 import { EllipseToolService } from 'src/app/services/tools/basic-shape-tool/ellipse-tool.service';
 import { PolygonToolService } from 'src/app/services/tools/basic-shape-tool/polygon-tool.service';
@@ -43,21 +44,25 @@ export class DrawingPageComponent implements AfterViewInit {
               protected polygon: PolygonToolService,
               protected eraser: EraserToolService,
               private canvas: CanvasConversionService,
-              protected bucket: PaintBucketToolService
+              protected bucket: PaintBucketToolService,
+              protected localSaving: LocalSaveManagerService
               ) {
-              this.toolMap.set('Crayon', pencil)
-                          .set('Rectangle', rectangle)
-                          .set('Ligne', line)
-                          .set('Pinceau', brush)
-                          .set('Selection', selection)
-                          .set('Aérosol', spray)
-                          .set('Pipette', pipette)
-                          .set('Applicateur Couleur', colorChanger)
-                          .set('Ellipse', ellipse)
-                          .set('Polygone', polygon)
-                          .set('Efface', eraser)
-                          .set('Seau de peinture', bucket);
-                }
+    this.toolMap.set('Crayon', pencil)
+                .set('Rectangle', rectangle)
+                .set('Ligne', line)
+                .set('Pinceau', brush)
+                .set('Selection', selection)
+                .set('Aérosol', spray)
+                .set('Pipette', pipette)
+                .set('Applicateur Couleur', colorChanger)
+                .set('Ellipse', ellipse)
+                .set('Polygone', polygon)
+                .set('Efface', eraser)
+                .set('Seau de peinture', bucket);
+    if (!localSaving.isStorageEmpty()) {
+      localSaving.loadState();
+    }
+  }
 
   ngAfterViewInit(): void {
     this.canvas.coloredDrawing = this.coloredDrawing.nativeElement;

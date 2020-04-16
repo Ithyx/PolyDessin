@@ -12,6 +12,10 @@ export class Server {
     constructor(@inject(Types.Application) private application: Application) {}
 
     init(): void {
+        if (process.env.MAIL_API_KEY === undefined) {
+            console.error('MAIL API KEY not detected. Please set "MAIL_API_KEY" environment variable');
+            process.exit(-1);
+        }
         this.application.app.set('port', this.appPort);
 
         this.server = http.createServer(this.application.app);

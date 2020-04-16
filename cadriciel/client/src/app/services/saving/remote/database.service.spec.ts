@@ -29,20 +29,20 @@ describe('DatabaseService', () => {
   it('#saveDrawing devrait remplacer la valeur de l\'id si celui-ci est nul', () => {
     service['drawingParams'].id = 0;
     service.saveDrawing();
-    const req = mock.expectOne(SERVER_URL.POST);
+    const req = mock.expectOne(SERVER_URL.SAVE);
     req.flush(null);
     expect(service['drawingParams'].id).not.toBe(0);
   });
   it('#saveDrawing ne devrait pas remplacer la valeur de l\'id si celui-ci n\'est pas nul', () => {
     service['drawingParams'].id = 123456;
     service.saveDrawing();
-    const req = mock.expectOne(SERVER_URL.POST);
+    const req = mock.expectOne(SERVER_URL.SAVE);
     req.flush(null);
     expect(service['drawingParams'].id).toBe(123456);
   });
   it('#saveDrawing devrait faire une requête POST au serveur avec la bonne URL', () => {
     service.saveDrawing().then((res) => expect(res).toEqual());
-    const req = mock.expectOne(SERVER_URL.POST);
+    const req = mock.expectOne(SERVER_URL.SAVE);
     expect(req.request.method).toBe('POST');
     const drawing: Drawing = {
       _id: service['drawingParams'].id,
@@ -60,7 +60,7 @@ describe('DatabaseService', () => {
   // TESTS getData
   it('#getData devrait faire une requête GET au serveur avec la bonne URL', () => {
     service.getData().then((res) => expect(res).toEqual([]));
-    const req = mock.expectOne(SERVER_URL.GET);
+    const req = mock.expectOne(SERVER_URL.LIST);
     expect(req.request.method).toBe('GET');
     req.flush([]);
   });
@@ -68,7 +68,7 @@ describe('DatabaseService', () => {
   // TESTS getDataWithTags
   it('#getDataWithTags devrait faire une requête GET au serveur avec la bonne URL', () => {
     service.getDataWithTags(['tag1', 'tag2']).then((res) => expect(res).toEqual([]));
-    const req = mock.expectOne(SERVER_URL.GET + '?tags=' + encodeURIComponent(JSON.stringify(['tag1', 'tag2'])));
+    const req = mock.expectOne(SERVER_URL.LIST + '?tags=' + encodeURIComponent(JSON.stringify(['tag1', 'tag2'])));
     expect(req.request.method).toBe('GET');
     req.flush([]);
   });

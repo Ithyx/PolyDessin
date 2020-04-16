@@ -5,9 +5,10 @@ import { DrawingManagerService } from '../../drawing-manager/drawing-manager.ser
 import { SVGStockageService } from '../../stockage-svg/svg-stockage.service';
 
 export enum SERVER_URL {
-  POST = 'http://localhost:3000/api/db/saveDrawing',
-  GET = 'http://localhost:3000/api/db/listDrawings',
-  DELETE = 'http://localhost:3000/api/db/deleteDrawing'
+  SAVE = 'http://localhost:3000/api/db/saveDrawing',
+  LIST = 'http://localhost:3000/api/db/listDrawings',
+  DELETE = 'http://localhost:3000/api/db/deleteDrawing',
+  SEND = 'http://localhost:3000/api/mail/sendDrawing'
 }
 const ID_MAX = 1000000000;
 
@@ -31,15 +32,15 @@ export class DatabaseService {
       tags: this.drawingParams.tags,
       elements: this.stockageSVG.getCompleteSVG()
     };
-    await this.http.post(SERVER_URL.POST, drawing).toPromise();
+    await this.http.post(SERVER_URL.SAVE, drawing).toPromise();
   }
 
   async getData(): Promise<Drawing[]> {
-    return await this.http.get<Drawing[]>(SERVER_URL.GET).toPromise();
+    return await this.http.get<Drawing[]>(SERVER_URL.LIST).toPromise();
   }
 
   async getDataWithTags(tags: string[]): Promise<Drawing[]> {
-    let URL: string = SERVER_URL.GET;
+    let URL: string = SERVER_URL.LIST;
     if (tags.length !== 0) {
       URL += '?tags=' + encodeURIComponent(JSON.stringify(tags));
     }
@@ -48,5 +49,9 @@ export class DatabaseService {
 
   async deleteDrawing(id: number): Promise<void> {
     await this.http.delete(SERVER_URL.DELETE + '?id=' + id.toString()).toPromise();
+  }
+
+  async sendEmail(emailAddress: string, image: string, fileName: string, fileExtension: string): Promise<void> {
+    await this.http.post(SERVER_URL.SEND, {to: emailAddress, payload: image, filename: fileName, extension: fileExtension}).toPromise();
   }
 }

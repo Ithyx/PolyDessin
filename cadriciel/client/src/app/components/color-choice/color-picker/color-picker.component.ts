@@ -1,4 +1,4 @@
-/*Component de couleur inspire de https://malcoded.com/posts/angular-color-picker/*/
+/*Component de couleur inspire de https://malcoded.com/posts/angular-color-picker/ */
 
 import { AfterViewInit, Component, ElementRef,  HostListener, Input, OnChanges, SimpleChanges, ViewChild, } from '@angular/core';
 import { A } from 'src/app/services/color/color';

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { ColorManagerService, Scope } from 'src/app/services/color/color-manager.service';
+import { ColorPickerComponent } from './color-picker/color-picker.component';
 
 @Component({
   selector: 'app-color-choice',
@@ -9,6 +10,9 @@ import { ColorManagerService, Scope } from 'src/app/services/color/color-manager
   providers: [ColorManagerService]
 })
 export class ColorChoiceComponent  {
+
+  @ViewChild('picker', {static: false})
+  private picker: ColorPickerComponent;
 
   scope: Scope;
 
@@ -27,4 +31,7 @@ export class ColorChoiceComponent  {
     this.dialogRef.close();
   }
 
+  notificationReceived(): void {
+    this.picker.draw();
+  }
 }

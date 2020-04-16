@@ -221,9 +221,25 @@ describe('GalleryComponent', () => {
     component.loadDrawing(drawing);
     expect(spy).not.toHaveBeenCalled();
   });
+
+  it('#loadDrawing devrait remttre les tags à 0 même si le nouveau dessin n\'en a pas', () => {
+    component['drawingManager'].tags = ['tag1'];
+    drawing.tags = undefined;
+    component.loadDrawing(drawing);
+    drawing.tags = ['tag 1', 'tag 2'];
+    expect(component['drawingManager'].tags).toEqual([]);
+  });
+  it('#loadDrawing devrait naviguer vers la page de dessin et fermer le popup', () => {
+    const navigSpy = spyOn(component['router'], 'navigate');
+    const closeSpy = spyOn(component, 'close');
+    component.loadDrawing(drawing);
+    expect(navigSpy).toHaveBeenCalledWith(['dessin']);
+    expect(closeSpy).toHaveBeenCalled();
+  });
+
   /* it('#loadDrawing devrait changer complètement le dessin en cours', () => {
     const cleanSpy = spyOn(component['stockageSVG'], 'cleanDrawing');
-    const addSpy = spyOn(component['saveUtility'], 'addElement');
+    const addSpy = spyOn(component['saveUtility'], 'createCopyDrawElement');
     const drawingManager = component['drawingManager'];
     drawingManager.id = 123;
     drawingManager.height = 200;
@@ -244,28 +260,14 @@ describe('GalleryComponent', () => {
     expect(drawingManager.backgroundColor).toEqual(drawing.backgroundColor);
     expect(drawingManager.name).toBe(drawing.name);
     expect(drawingManager.tags).toEqual(['tag 1', 'tag 2']);
-    expect(addSpy).toHaveBeenCalledTimes(2);
-  });
+    expect(addSpy).toHaveBeenCalledTimes(1);
+  }); */
   it('#loadDrawing devrait remttre les éléments à 0 même si le nouveau dessin n\'en a pas', () => {
     drawing.elements = undefined;
-    const spy = spyOn(component['saveUtility'], 'addElement');
+    const spy = spyOn(component['saveUtility'], 'createCopyDrawElement');
     component.loadDrawing(drawing);
     drawing.elements = [element, element];
     expect(spy).not.toHaveBeenCalled();
-  }); */
-  it('#loadDrawing devrait remttre les tags à 0 même si le nouveau dessin n\'en a pas', () => {
-    component['drawingManager'].tags = ['tag1'];
-    drawing.tags = undefined;
-    component.loadDrawing(drawing);
-    drawing.tags = ['tag 1', 'tag 2'];
-    expect(component['drawingManager'].tags).toEqual([]);
-  });
-  it('#loadDrawing devrait naviguer vers la page de dessin et fermer le popup', () => {
-    const navigSpy = spyOn(component['router'], 'navigate');
-    const closeSpy = spyOn(component, 'close');
-    component.loadDrawing(drawing);
-    expect(navigSpy).toHaveBeenCalledWith(['dessin']);
-    expect(closeSpy).toHaveBeenCalled();
   });
 
   // TESTS deleteDrawing

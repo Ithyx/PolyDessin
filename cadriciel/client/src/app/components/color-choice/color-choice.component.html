@@ -1,6 +1,6 @@
 <div class = "color-wrapper">
-    <app-color-picker [colorManager]="colorManager"></app-color-picker>
-    <app-color-slider [colorManager]="colorManager"></app-color-slider>
+    <app-color-picker #picker [colorManager]="colorManager"></app-color-picker>
+    <app-color-slider [colorManager]="colorManager" (notification)="notificationReceived()"></app-color-slider>
 </div>
 <div class="input-wrapper">
     <app-color-input [colorManager]="colorManager"></app-color-input>
