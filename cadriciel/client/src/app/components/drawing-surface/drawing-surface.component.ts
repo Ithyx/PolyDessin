@@ -162,11 +162,15 @@ export class DrawingSurfaceComponent implements AfterViewInit {
 
    }
 
-   handleControlPointMouseDown(mouse: MouseEvent): void {
+   handleControlPointMouseDown(mouse: MouseEvent, index: number): void {
     this.mousePosition = {x: mouse.screenX, y: mouse.screenY};
-    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION && mouse.button === RIGHT_CLICK) {
-      this.selection.selectionRectangle.mouseDown(mouse);
-      delete this.selection.selectionRectangle.rectangle;
+    if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION) {
+      if (mouse.button === RIGHT_CLICK) {
+        this.selection.selectionRectangle.mouseDown(mouse);
+        delete this.selection.selectionRectangle.rectangle;
+      } else if (mouse.button === LEFT_CLICK) {
+        this.selection.selectionBox.controlPointMouseDown(mouse, index);
+      }
     }
 
    }

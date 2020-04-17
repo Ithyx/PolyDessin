@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Color } from 'src/app/services/color/color';
-import { DrawingTool } from 'src/app/services/tools/tool-manager.service';
-import { DrawElement } from '../../draw-element/draw-element';
+import { DrawingTool, TOOL_INDEX } from 'src/app/services/tools/tool-manager.service';
+import { DrawElement, Point } from '../../draw-element/draw-element';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,8 @@ export abstract class BasicShapeService extends DrawElement  {
   thickness: number;
   chosenOption: string;
   perimeter: string;
+
+  strokePoints: Point[];
 
   constructor() {
     super();
@@ -26,6 +28,7 @@ export abstract class BasicShapeService extends DrawElement  {
     };
     this.points = [{x: 0, y: 0},    // points[0], coin haut gauche (base)
                    {x: 0, y: 0}];   // points[1], coin bas droite
+    this.strokePoints = [];
   }
 
   getWidth(): number {
@@ -41,6 +44,9 @@ export abstract class BasicShapeService extends DrawElement  {
       this.drawLine();
     } else {
       this.drawShape();
+      if (this.chosenOption !== 'Plein') {
+        this.drawStroke();
+      }
     }
     this.drawPerimeter();
   }
@@ -48,6 +54,17 @@ export abstract class BasicShapeService extends DrawElement  {
   abstract drawLine(): void;
   abstract drawShape(): void;
   abstract drawPerimeter(): void;
+
+  drawStroke(): void {
+    this.svg += '<polygon fill="none"'
+    + (this.trueType === TOOL_INDEX.ELLIPSE ? 'stroke-linejoin="round' : 'stroke-linejoin="square')
+    + '" stroke="' + ((this.erasingEvidence) ? this.erasingColor.RGBAString : this.secondaryColor.RGBAString)
+    + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')
+    + '" stroke-width="' + this.thickness
+    + '" points="';
+    this.strokePoints.forEach((point) => { this.svg += ' ' + point.x + ' ' + point.y; });
+    this.svg += '"></polygon>';
+  }
 
   updateParameters(tool: DrawingTool): void {
     this.thickness = (tool.parameters[0].value) ? tool.parameters[0].value : 1;

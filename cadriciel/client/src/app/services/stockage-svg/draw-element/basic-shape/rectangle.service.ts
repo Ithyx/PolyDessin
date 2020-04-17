@@ -27,14 +27,9 @@ export class RectangleService extends BasicShapeService {
   }
 
   drawShape(): void {
-    const choosedOption = this.chosenOption;
     this.svg = '<rect transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
                                            + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
-      + ')" fill="' + ((choosedOption !== 'Contour') ? this.primaryColor.RGBAString : 'none') + '" stroke="'
-      + ((this.erasingEvidence) ? this.erasingColor.RGBAString :
-        ((this.chosenOption !== 'Plein') ? this.secondaryColor.RGBAString : 'none'))
-      + (this.isDotted ? '"stroke-dasharray="4, 4"'  : '')
-      + '" stroke-width="' + this.thickness
+      + ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor.RGBAString : 'none') + '" stroke="none'
       + '" x="' + this.points[0].x + '" y="' + this.points[0].y
       + '" width="' + this.getWidth() + '" height="' + this.getHeight() + '"></rect>';
     this.addRectanglePoints();
