@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatSidenavModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
+import { LocalSaveManagerService } from 'src/app/services/saving/local/local-save-manager.service';
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
 import { DrawingTool, TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { AttributesPanelComponent } from '../attributes-panel/attributes-panel.component';
@@ -89,6 +90,22 @@ describe('DrawingPageComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  // TESTS constructeur
+
+  it('#constructor devrait appeler loadState de localSaving si isStorageEmpty est faux', () => {
+    spyOn(LocalSaveManagerService.prototype, 'isStorageEmpty').and.returnValue(false);
+    const spy = spyOn(LocalSaveManagerService.prototype, 'loadState');
+    TestBed.createComponent(DrawingPageComponent);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#constructor ne devrait pas appeler loadState de localSaving si isStorageEmpty est vrai', () => {
+    spyOn(LocalSaveManagerService.prototype, 'isStorageEmpty').and.returnValue(true);
+    const spy = spyOn(LocalSaveManagerService.prototype, 'loadState');
+    TestBed.createComponent(DrawingPageComponent);
+    expect(spy).not.toHaveBeenCalled();
   });
 
   // TEST onKeyDown
