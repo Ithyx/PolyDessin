@@ -58,6 +58,20 @@ describe('HomePageComponent', () => {
     expect(component['dialog'].open).toHaveBeenCalledWith(GalleryComponent, component['dialogConfig']);
   });
 
+  // TEST loadDrawing
+
+  it('#loadDrawing devrait appeler la methode loadState', () => {
+    spyOn(component['localSaving'], 'loadState');
+    component.loadDrawing();
+    expect(component['localSaving'].loadState).toHaveBeenCalled();
+  });
+
+  it('#loadDrawing devrait appeler la methode run', () => {
+    spyOn(component['ngZone'], 'run');
+    component.loadDrawing();
+    expect(component['localSaving'].loadState).toHaveBeenCalled();
+  });
+
   // TESTS onKeyDown
 
   it('#onKeyDown devrait appeler createDrawing() si on appuie CTRL+O', () => {
@@ -92,6 +106,21 @@ describe('HomePageComponent', () => {
     component.onKeyDown(keyboard);
     expect(component.createDrawing).not.toHaveBeenCalled();
     expect(keyboard.preventDefault).not.toHaveBeenCalled();
+  });
+
+  it('#onKeyDown devrait passer par la methode preventDefault lorsquon appuie CTRL+g', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'g', ctrlKey: true});
+    spyOn(keyboard, 'preventDefault');
+    component.onKeyDown(keyboard);
+    expect(keyboard.preventDefault).toHaveBeenCalled();
+  });
+
+  it('#onKeyDown devrait passer par la methode createDrawing lorsquon appuie CTRL+g', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'g', ctrlKey: true});
+    spyOn(keyboard, 'preventDefault');
+    spyOn(component, 'createDrawing');
+    component.onKeyDown(keyboard);
+    expect(component.createDrawing).toHaveBeenCalled();
   });
 
 });
