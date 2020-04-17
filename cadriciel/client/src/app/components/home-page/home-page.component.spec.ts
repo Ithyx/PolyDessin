@@ -69,7 +69,7 @@ describe('HomePageComponent', () => {
   it('#loadDrawing devrait appeler la methode run', () => {
     spyOn(component['ngZone'], 'run');
     component.loadDrawing();
-    expect(component['localSaving'].loadState).toHaveBeenCalled();
+    expect(component['ngZone'].run).toHaveBeenCalled();
   });
 
   // TESTS onKeyDown
@@ -108,19 +108,21 @@ describe('HomePageComponent', () => {
     expect(keyboard.preventDefault).not.toHaveBeenCalled();
   });
 
-  it('#onKeyDown devrait passer par la methode preventDefault lorsquon appuie CTRL+g', () => {
+  it('#onKeyDown devrait appeler createDrawing() si on appuie CTRL+g', () => {
     const keyboard = new KeyboardEvent('keypress', { key: 'g', ctrlKey: true});
-    spyOn(keyboard, 'preventDefault');
+    spyOn(component, 'openGallery');
     component.onKeyDown(keyboard);
-    expect(keyboard.preventDefault).toHaveBeenCalled();
+    expect(component.openGallery).toHaveBeenCalled();
   });
 
-  it('#onKeyDown devrait passer par la methode createDrawing lorsquon appuie CTRL+g', () => {
-    const keyboard = new KeyboardEvent('keypress', { key: 'g', ctrlKey: true});
+  it('#onKeyDown  ne devrait pas passer par la methode createDrawing lorsquon appuie autre touche', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 't', ctrlKey: true});
     spyOn(keyboard, 'preventDefault');
     spyOn(component, 'createDrawing');
     component.onKeyDown(keyboard);
-    expect(component.createDrawing).toHaveBeenCalled();
+    expect(keyboard.preventDefault).not.toHaveBeenCalled();
+    expect(component.createDrawing).not.toHaveBeenCalled();
+
   });
 
 });
