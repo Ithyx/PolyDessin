@@ -15,6 +15,9 @@ import { SavePopupComponent } from '../components/save-popup/save-popup.componen
 import { ShortcutsManagerService } from './shortcuts-manager.service';
 import { DrawElement } from './stockage-svg/draw-element/draw-element';
 import { TOOL_INDEX } from './tools/tool-manager.service';
+import { TransformSvgService } from './command/transform-svg.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { CanvasConversionService } from './canvas-conversion.service';
 
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
@@ -46,7 +49,7 @@ describe('ShortcutsManagerService', () => {
         declarations: [ ExportWindowComponent, SavePopupComponent, GalleryComponent, GalleryElementComponent, GalleryLoadWarningComponent],
         imports: [ MatProgressSpinnerModule, MatDialogModule, BrowserAnimationsModule,  ReactiveFormsModule,
                    FormsModule, RouterModule.forRoot([{path: 'dessin', component: GalleryComponent}]), RouterTestingModule],
-        providers: [HttpClient, HttpHandler]
+        providers: [HttpClient, HttpHandler, {provide: CanvasConversionService, useValue: {updateDrawing: () => { return; }}}]
     })
     .overrideModule(BrowserDynamicTestingModule, {set: { entryComponents: [ ExportWindowComponent,
                                                                                 SavePopupComponent, GalleryComponent ] }})
@@ -55,7 +58,9 @@ describe('ShortcutsManagerService', () => {
 
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(ShortcutsManagerService));
-
+  beforeEach(() => {
+    service['transformCommand'] = new TransformSvgService([], TestBed.get(DomSanitizer), () => {return ; });
+  });
   // TESTS constructor
   it('should be created', () => {
     const testService: ShortcutsManagerService = TestBed.get(ShortcutsManagerService);
@@ -102,15 +107,25 @@ describe('ShortcutsManagerService', () => {
     expect(service['commands'].execute).not.toHaveBeenCalled();
   });
 
-  /*it('#updatePositionTimer devrait executer une commande transformation si le SVG a été bougé et qu\'aucune flèche n\'est appuyé', () => {
+  it('#updatePositionTimer devrait executer une commande transformation si le SVG a été bougé et qu\'aucune flèche n\'est appuyé', () => {
     service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
-    element.transform = {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0};
     service['selection'].handleClick(element);    // création de la boite de sélection
     spyOn(service['commands'], 'execute');
-    service['selection'].updateTranslation(10, 11);
+    spyOn(TransformSvgService.prototype, 'hasMoved').and.returnValue(true);
     service.updatePositionTimer();
     expect(service['commands'].execute).toHaveBeenCalled();
-  });*/
+  });
+
+  it('#updatePositionTimer ne devrait pas creer de nouvelle transformCommand si le counter100ms n\'est pas a 0', () => {
+    service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
+    service['selection'].handleClick(element);    // création de la boite de sélection
+    service['counter100ms'] = 10;
+    spyOn(TransformSvgService.prototype, 'hasMoved').and.returnValue(true);
+    service['transformCommand'] = new TransformSvgService([], TestBed.get(DomSanitizer), () => 10);
+    service.updatePositionTimer();
+    expect(JSON.stringify(service['transformCommand']))
+    .toEqual(JSON.stringify(new TransformSvgService([], TestBed.get(DomSanitizer), () => 10)));
+  });
 
   it('#updatePositionTimer devrait appeler translateSelection si aucune flèche n\'est appuyé et que clearTimeout est à 0', () => {
     service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
