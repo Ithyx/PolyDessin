@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DrawElement, HALF_CIRCLE } from './draw-element';
+import { DrawElement, HALF_CIRCLE, Point } from './draw-element';
 import { TracePencilService } from './trace/trace-pencil.service';
 
 // tslint:disable: no-string-literal
@@ -19,6 +19,19 @@ describe('DrawElement', () => {
 
   // TESTS updateTranslation
 
+  it('#updateTranslation devrait appliquer une transformation à tous les points de strokePoints', () => {
+    element.strokePoints = [];
+    element.strokePoints.push({x: 10, y: 10});
+    element.updateTranslation(10, 10);
+    expect(element.strokePoints[0]).toEqual({x: 20, y: 20});
+  });
+
+  it('#updateTranslation ne devrait pas appliquer une transformation à tous les points de strokePoints s\'il n\'y en a pas', () => {
+    element.strokePoints = [];
+    element.updateTranslation(10, 10);
+    expect(element.strokePoints).toEqual([]);
+  });
+
   it('#updateTranslation devrait appeler la fonction updateTransform avec le bon paramètre', () => {
     const spy = spyOn(element, 'updateTransform');
     const test = {a: 1, b: 0, c: 0, d: 1, e: 10, f: 10};
@@ -28,6 +41,19 @@ describe('DrawElement', () => {
 
   // TESTS updateTranslationMouse
 
+  it('#updateTranslationMouse devrait appliquer une transformation à tous les points de strokePoints', () => {
+    element.strokePoints = [];
+    element.strokePoints.push({x: 10, y: 10});
+    element.updateTranslationMouse(new MouseEvent('mousemove', { movementX: 10, movementY: 10 }));
+    expect(element.strokePoints[0]).toEqual({x: 20, y: 20});
+  });
+
+  it('#updateTranslation ne devrait pas appliquer une transformation à tous les points de strokePoints s\'il n\'y en a pas', () => {
+    element.strokePoints = [];
+    element.updateTranslationMouse(new MouseEvent('mousemove', { movementX: 10, movementY: 10 }));
+    expect(element.strokePoints).toEqual([]);
+  });
+
   it('#updateTranslationMouse devrait appeler la fonction updateTransform avec le bon paramètre', () => {
     const spy = spyOn(element, 'updateTransform');
     const test = {a: 1, b: 0, c: 0, d: 1, e: 10, f: 10};
@@ -36,6 +62,24 @@ describe('DrawElement', () => {
   });
 
   // TESTS updateRotation
+
+  it('#updateRotation devrait appliquer une transformation à tous les points de strokePoints', () => {
+    let test: Point[];
+    test = [];
+    test.push({x: 10, y: 10});
+    element.calculateRotation(test[0], 10, 10, 10);
+
+    element.strokePoints = [];
+    element.strokePoints.push({x: 10, y: 10});
+    element.updateRotation(10, 10, 10);
+    expect(element.strokePoints[0]).toEqual(test[0]);
+  });
+
+  it('#updateRotation ne devrait pas appliquer une transformation à tous les points de strokePoints s\'il n\'y en a pas', () => {
+    element.strokePoints = [];
+    element.updateRotation(10, 10, 10);
+    expect(element.strokePoints).toEqual([]);
+  });
 
   it('#updateRotation devrait appeler la fonction updateTransform avec le bon paramètre', () => {
     const angle = 10;
@@ -53,6 +97,35 @@ describe('DrawElement', () => {
 
     const spy = spyOn(element, 'updateTransform');
     element.updateRotation(10, 10, 10);
+    expect(spy).toHaveBeenCalledWith(test);
+  });
+
+  // TESTS updateScale
+
+  it('#updateScale devrait appliquer une transformation à tous les points de strokePoints', () => {
+    let test: Point;
+    test = {x: 10, y: 10};
+    test.x = 10 * test.x + (1 - 10) * 10;
+    test.y = 10 * test.y + (1 - 10) * 10;
+
+    element.strokePoints = [];
+    element.strokePoints.push({x: 10, y: 10});
+    element.updateScale({x: 10, y: 10}, {x: 10, y: 10});
+    expect(element.strokePoints[0]).toEqual(test);
+  });
+
+  it('#updateScale ne devrait pas appliquer une transformation à tous les points de strokePoints s\'il n\'y en a pas', () => {
+    element.strokePoints = [];
+    element.updateScale({x: 10, y: 10}, {x: 10, y: 10});
+    expect(element.strokePoints).toEqual([]);
+  });
+
+  it('#updateScale devrait appeler la fonction updateTransform avec le bon paramètre', () => {
+    const eScale = (1 - 10) * 10;
+    const fScale = (1 - 10) * 10;
+    const test = {a: 10, b: 0, c: 0, d: 10, e: eScale, f: fScale};
+    const spy = spyOn(element, 'updateTransform');
+    element.updateScale({x: 10, y: 10}, {x: 10, y: 10});
     expect(spy).toHaveBeenCalledWith(test);
   });
 
@@ -80,5 +153,19 @@ describe('DrawElement', () => {
     const test = {a: 1, b: 0, c: 0, d: 1, e: 10, f: 10};
     element.updateTransform(test);
     expect(spy).toHaveBeenCalled();
+  });
+
+  // TESTS calculateRotation
+
+  it('#calculateRotation devrait retourner le point après une rotation', () => {
+    let test: Point[];
+    test = [];
+    test.push({x: 10, y: 10});
+    element.calculateRotation(test[0], 10, 10, 10);
+
+    element.strokePoints = [];
+    element.strokePoints.push({x: 10, y: 10});
+    element.calculateRotation(element.strokePoints[0], 10, 10, 10);
+    expect(element.strokePoints[0]).toEqual(test[0]);
   });
 });

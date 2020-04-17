@@ -2,6 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
 
 import { ElementRef } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { RectangleService } from 'src/app/services/stockage-svg/draw-element/basic-shape/rectangle.service';
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element/draw-element';
 import { LineService } from 'src/app/services/stockage-svg/draw-element/line.service';
@@ -9,7 +11,7 @@ import { SelectionBoxService } from 'src/app/services/tools/selection/selection-
 import { SelectionRectangleService } from 'src/app/services/tools/selection/selection-rectangle.service';
 import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { DrawingTool, TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
-import { DrawingSurfaceComponent } from './drawing-surface.component';
+import { BIG_ROTATION_ANGLE, DrawingSurfaceComponent, SMALL_ROTATION_ANGLE } from './drawing-surface.component';
 
 // tslint:disable: no-string-literal
 // tslint:disable: max-file-line-count
@@ -22,11 +24,14 @@ describe('DrawingSurfaceComponent', () => {
   let conversion: HTMLCanvasElement;
   const element: DrawElement = new RectangleService();
   const selectedElement: DrawElement = new LineService();
+  const SELECTION_BOX_CENTER = 15;
 
   const selectionBoxStub: Partial<SelectionBoxService> = {
     box: new RectangleService(),
     mouseClick: {x: 0, y: 0},
-    controlPointBox: []
+    controlPointBox: [],
+    controlPointMouseDown: () => { return; },
+    deleteSelectionBox: () => { return; }
   };
 
   const selectionRectangleStub: Partial<SelectionRectangleService> = {
@@ -42,6 +47,7 @@ describe('DrawingSurfaceComponent', () => {
     deleteBoundingBox: () => { return; },
     handleClick: () => { return; },
     handleRightClick: () => { return; },
+    findPointMinAndMax: () => { return; },
     clickInSelectionBox: false,
     clickOnSelectionBox: false
   };
@@ -69,7 +75,8 @@ describe('DrawingSurfaceComponent', () => {
                    {provide: SelectionService, useValue: selectionStub},
                    {provide: SelectionBoxService, useValue: selectionBoxStub},
                    {provide: SelectionRectangleService, useValue: selectionRectangleStub},
-                   {provide: ToolManagerService, useValue: toolManagerStub} ],
+                   {provide: ToolManagerService, useValue: toolManagerStub},
+                   {provide: CanvasConversionService, useValue: { updateDrawing: () => { return; }}} ],
       imports: [ RouterModule.forRoot([]) ]
     })
     .compileComponents();
@@ -87,10 +94,13 @@ describe('DrawingSurfaceComponent', () => {
     component['conversion'] = new ElementRef<HTMLCanvasElement>(conversion);
     component['selection'] = TestBed.get(SelectionService);
     component['selection'].selectionBox.box = new RectangleService();
-    component['selection'].selectionBox.box.points[0] = {x: 10, y: 10};
-    component['selection'].selectionBox.box.points[1] = {x: 20, y: 20};
+    component['selection'].selectionBox.box.pointMin = {x: 10, y: 10};
+    component['selection'].selectionBox.box.pointMax = {x: 20, y: 20};
     component['selection'].selectionRectangle.rectangle = new RectangleService();
+    component['selection'].sanitizer = TestBed.get(DomSanitizer);
     component['mousePosition'] = {x: 0, y: 0};
+    selectedElement.pointMin = {x: 0, y: 0};
+    selectedElement.pointMax = {x: 0, y: 0};
   });
 
   it('should create', () => {
@@ -115,8 +125,12 @@ describe('DrawingSurfaceComponent', () => {
     expect(component['pipette'].canvas).toEqual(canvas);
   });
 
-  /*
   // TESTS clickBelongToSelectionBox
+  it('#clickBelongToSelectionBox devrait appeler findPointMinAndMax de selectionBox', () => {
+    const spy = spyOn(component['selection'], 'findPointMinAndMax');
+    component.clickBelongToSelectionBox(new MouseEvent('click', {clientX: 15, clientY: 15}));
+    expect(spy).toHaveBeenCalledWith(component['selection'].selectionBox.box);
+  });
   it('#clickBelongToSelectionBox devrait retourner false si le x de la souris est inférieur '
     + 'au x minimal de la boîte de sélection', () => {
     expect(component.clickBelongToSelectionBox(new MouseEvent('click', {clientX: 5, clientY: 15}))).toBe(false);
@@ -133,10 +147,10 @@ describe('DrawingSurfaceComponent', () => {
     + 'au y maximal de la boîte de sélection', () => {
     expect(component.clickBelongToSelectionBox(new MouseEvent('click', {clientX: 15, clientY: 25}))).toBe(false);
   });
-  it('#clickBelongToSelectionBox devrait retourner false si le clic de la souris est contenu '
+  it('#clickBelongToSelectionBox devrait retourner true si le clic de la souris est contenu '
     + 'dans la boîte de sélection', () => {
     expect(component.clickBelongToSelectionBox(new MouseEvent('click', {clientX: 15, clientY: 15}))).toBe(true);
-  }); */
+  });
 
   // TESTS handleElementMouseDown
   it('#handleElementMouseDown devrait assigner l\'élément en paramètre à activeElement de colorChanger', () => {
@@ -244,12 +258,6 @@ describe('DrawingSurfaceComponent', () => {
     component.handleElementMouseUp(element, new MouseEvent('up', {button: 0, screenX: 25, screenY: 25}));
     expect(spy).toHaveBeenCalledWith(element);
   });
-  /* it('#handleElementMouseUp devrait mettre isSelected de l\'élément en paramètre à true '
-    + 'lors d\'un left click où mousePosition est égal à screenX, screenY du MouseEvent', () => {
-    component['mousePosition'] = {x: 25, y: 25};
-    component.handleElementMouseUp(element, new MouseEvent('up', {button: 0, screenX: 25, screenY: 25}));
-    expect(element.isSelected).toBe(true);
-  }); */
   it('#handleElementMouseUp devrait appeler createBoundingBox de selection '
     + 'lors d\'un left click où mousePosition est égal à screenX, screenY du MouseEvent', () => {
     component['mousePosition'] = {x: 25, y: 25};
@@ -355,14 +363,14 @@ describe('DrawingSurfaceComponent', () => {
   });
 
   // TESTS handleMouseDownBackground
-  /* it('#handleMouseDownBackground devrait changer mousePosition pour screenX et screenY du MouseEvent', () => {
+  it('#handleMouseDownBackground devrait changer mousePosition pour screenX et screenY du MouseEvent', () => {
     component.handleMouseDownBackground(new MouseEvent('down', {screenX: 16, screenY: 16}));
     expect(component['mousePosition']).toEqual({x: 16, y: 16});
   });
   it('handleMouseDownBackground devrait assigner undefined à activeElement de colorChanger', () => {
     component.handleMouseDownBackground(new MouseEvent('down'));
     expect(component['colorChanger'].activeElement).not.toBeDefined();
-  }); */
+  });
   it('#handleMouseDownBackground ne devrait rien faire avec la sélection si l\'outil actif n\'est pas la sélection', () => {
     component['tools'].activeTool.ID = TOOL_INDEX.COLOR_CHANGER;
     const spy = spyOn(component, 'handleBackgroundLeftClick');
@@ -421,7 +429,7 @@ describe('DrawingSurfaceComponent', () => {
     component.handleMouseDownBackground(new MouseEvent('down', {button: 2}));
     expect(component['selection'].selectionRectangle.rectangle).not.toBeDefined();
   });
-  /*
+
   // TESTS handleMouseUpBackground
   it('#handleMouseUpBackground devrait appeler handleBackgroundLeftClick si '
     + 'mousePosition est égal à screenX et screenY de la souris', () => {
@@ -443,7 +451,14 @@ describe('DrawingSurfaceComponent', () => {
     const spy = spyOn(component, 'handleBackgroundLeftClick');
     component.handleMouseUpBackground(new MouseEvent('up', {screenX: 17, screenY: 17}));
     expect(spy).not.toHaveBeenCalled();
-  }); */
+  });
+  it('#handleMouseUpBackground ne devrait pas appeler handleBackgroundLeftClick si '
+    + 'le MouseEvent n\'est pas un clic gauche de la souris', () => {
+    component['mousePosition'] = {x: 17, y: 15};
+    const spy = spyOn(component, 'handleBackgroundLeftClick');
+    component.handleMouseUpBackground(new MouseEvent('up', {button: 2}));
+    expect(spy).not.toHaveBeenCalled();
+  });
 
   // TESTS handleBackgroundLeftClick
   it('#handleBackgroundLeftClick devrait appeler deleteBoundingBox de selection', () => {
@@ -480,7 +495,7 @@ describe('DrawingSurfaceComponent', () => {
     expect(spy).not.toHaveBeenCalled();
   });
   it('#handleControlPointMouseDown ne devrait rien faire avec la sélection si l\'outil actif est la sélection '
-    + 'et que le bouton de la souris n\'est pas un right click', () => {
+    + 'et que le bouton de la souris n\'est pas un right click ou un left click', () => {
     const spy = spyOn(component['selection'].selectionRectangle, 'mouseDown');
     component.handleControlPointMouseDown(new MouseEvent('down', {button: 1}), 0);
     expect(spy).not.toHaveBeenCalled();
@@ -496,5 +511,145 @@ describe('DrawingSurfaceComponent', () => {
     + 'si l\'outil actif est la sélection et que le bouton de la souris est un right click', () => {
     component.handleControlPointMouseDown(new MouseEvent('down', {button: 2}), 0);
     expect(component['selection'].selectionRectangle.rectangle).not.toBeDefined();
+  });
+  it('#handleControlPointMouseDown devrait appeler controlPointMouseDown de selectionBox avec le MouseEvent et l\'index '
+    + 'si l\'outil actif est la sélection et que le bouton de la souris est un left click', () => {
+    const spy = spyOn(component['selection'].selectionBox, 'controlPointMouseDown');
+    const event = new MouseEvent('down', {button: 0});
+    component.handleControlPointMouseDown(event, 1);
+    expect(spy).toHaveBeenCalledWith(event, 1);
+  });
+
+  // TESTS onMouseWheel
+  it('#onMouseWheel ne devrait rien faire si l\'outil actif n\'est pas la sélection', () => {
+    component['tools'].activeTool.ID = TOOL_INDEX.COLOR_CHANGER;
+    const event = new WheelEvent('wheel');
+    const spy = spyOn(event, 'preventDefault');
+    component.onMouseWheel(event);
+    expect(spy).not.toHaveBeenCalled();
+  });
+  it('#onMouseWheel ne devrait rien faire si aucun élément n\'est sélectionné', () => {
+    component['selection'].selectedElements = [];
+    const event = new WheelEvent('wheel');
+    const spy = spyOn(event, 'preventDefault');
+    component.onMouseWheel(event);
+    expect(spy).not.toHaveBeenCalled();
+  });
+  it('#onMouseWheel devrait appeler preventDefault de l\'événement', () => {
+    const event = new WheelEvent('wheel');
+    const spy = spyOn(event, 'preventDefault');
+    component.onMouseWheel(event);
+    expect(spy).toHaveBeenCalled();
+  });
+  it('#onMouseWheel devrait appeler findPointMinAndMax sur tous les éléments si la touche shift est appuyée', () => {
+    const event = new WheelEvent('wheel', {shiftKey: true});
+    const spy = spyOn(component['selection'], 'findPointMinAndMax');
+    component.onMouseWheel(event);
+    expect(spy).toHaveBeenCalledWith(selectedElement);
+  });
+  it('#onMouseWheel devrait appeler updateRotation avec SMALL_ROTATION_ANGLE si la touche alt est appuyée '
+    + 'et que le deltaY de l\'événement est supérieur à 0 avec le centre de l\'élément si shift est appuyé', () => {
+      const event = new WheelEvent('wheel', {shiftKey: true, altKey: true, deltaY: 1});
+      const spy = spyOn(selectedElement, 'updateRotation');
+      component.onMouseWheel(event);
+      expect(spy).toHaveBeenCalledWith(0, 0, SMALL_ROTATION_ANGLE);
+  });
+  it('#onMouseWheel devrait appeler updateRotation avec BIG_ROTATION_ANGLE si la touche alt n\'est pas appuyée '
+    + 'et que le deltaY de l\'événement est supérieur à 0 avec le centre de l\'élément si shift est appuyé', () => {
+      const event = new WheelEvent('wheel', {shiftKey: true, altKey: false, deltaY: 1});
+      const spy = spyOn(selectedElement, 'updateRotation');
+      component.onMouseWheel(event);
+      expect(spy).toHaveBeenCalledWith(0, 0, BIG_ROTATION_ANGLE);
+  });
+  it('#onMouseWheel devrait appeler updateRotation avec -SMALL_ROTATION_ANGLE si la touche alt est appuyée '
+    + 'et que le deltaY de l\'événement est inférieur à 0 avec le centre de l\'élément si shift est appuyé', () => {
+      const event = new WheelEvent('wheel', {shiftKey: true, altKey: true, deltaY: -1});
+      const spy = spyOn(selectedElement, 'updateRotation');
+      component.onMouseWheel(event);
+      expect(spy).toHaveBeenCalledWith(0, 0, -SMALL_ROTATION_ANGLE);
+  });
+  it('#onMouseWheel devrait appeler updateRotation avec -BIG_ROTATION_ANGLE si la touche alt n\'est pas appuyée '
+    + 'et que le deltaY de l\'événement est inférieur à 0 avec le centre de l\'élément si shift est appuyé', () => {
+      const event = new WheelEvent('wheel', {shiftKey: true, altKey: false, deltaY: -1});
+      const spy = spyOn(selectedElement, 'updateRotation');
+      component.onMouseWheel(event);
+      expect(spy).toHaveBeenCalledWith(0, 0, -BIG_ROTATION_ANGLE);
+  });
+  it('#onMouseWheel devrait appeler actualiser le svgHtml de l\'élément si la touche shift est appuyée', () => {
+    const spy = spyOn(component['selection'].sanitizer, 'bypassSecurityTrustHtml');
+    const event = new WheelEvent('wheel', {shiftKey: true});
+    component.onMouseWheel(event);
+    expect(spy).toHaveBeenCalledWith(selectedElement.svg);
+  });
+  it('#onMouseWheel devrait appeler deleteSelectionBox de selectionBox si la touche shift est appuyée', () => {
+    const spy = spyOn(component['selection'].selectionBox, 'deleteSelectionBox');
+    const event = new WheelEvent('wheel', {shiftKey: true});
+    component.onMouseWheel(event);
+    expect(spy).toHaveBeenCalled();
+  });
+  it('#onMouseWheel devrait appeler createBoundingBox de selection si la touche shift est appuyée', () => {
+    const spy = spyOn(component['selection'], 'createBoundingBox');
+    const event = new WheelEvent('wheel', {shiftKey: true});
+    component.onMouseWheel(event);
+    expect(spy).toHaveBeenCalled();
+  });
+  it('#onMouseWheel devrait appeler findPointMinAndMax sur tous selectionBox si la touche shift n\'est pas appuyée', () => {
+    const event = new WheelEvent('wheel', {shiftKey: false});
+    const spy = spyOn(component['selection'], 'findPointMinAndMax');
+    component.onMouseWheel(event);
+    expect(spy).toHaveBeenCalledWith(component['selection'].selectionBox.box);
+  });
+  it('#onMouseWheel devrait appeler updateRotation avec SMALL_ROTATION_ANGLE si la touche alt est appuyée '
+    + 'et que le deltaY de l\'événement est supérieur à 0 avec le centre de selectionBox si shift n\'est pas appuyé', () => {
+      const event = new WheelEvent('wheel', {shiftKey: false, altKey: true, deltaY: 1});
+      const spy = spyOn(selectedElement, 'updateRotation');
+      component.onMouseWheel(event);
+      expect(spy).toHaveBeenCalledWith(SELECTION_BOX_CENTER, SELECTION_BOX_CENTER, SMALL_ROTATION_ANGLE);
+  });
+  it('#onMouseWheel devrait appeler updateRotation avec BIG_ROTATION_ANGLE si la touche alt n\'est pas appuyée '
+    + 'et que le deltaY de l\'événement est supérieur à 0 avec le centre de selectionBox si shift n\'est pas appuyé', () => {
+      const event = new WheelEvent('wheel', {shiftKey: false, altKey: false, deltaY: 1});
+      const spy = spyOn(selectedElement, 'updateRotation');
+      component.onMouseWheel(event);
+      expect(spy).toHaveBeenCalledWith(SELECTION_BOX_CENTER, SELECTION_BOX_CENTER, BIG_ROTATION_ANGLE);
+  });
+  it('#onMouseWheel devrait appeler updateRotation avec -SMALL_ROTATION_ANGLE si la touche alt est appuyée '
+    + 'et que le deltaY de l\'événement est inférieur à 0 avec le centre de selectionBox si shift n\'est pas appuyé', () => {
+      const event = new WheelEvent('wheel', {shiftKey: false, altKey: true, deltaY: -1});
+      const spy = spyOn(selectedElement, 'updateRotation');
+      component.onMouseWheel(event);
+      expect(spy).toHaveBeenCalledWith(SELECTION_BOX_CENTER, SELECTION_BOX_CENTER, -SMALL_ROTATION_ANGLE);
+  });
+  it('#onMouseWheel devrait appeler updateRotation avec -BIG_ROTATION_ANGLE si la touche alt n\'est pas appuyée '
+    + 'et que le deltaY de l\'événement est inférieur à 0 avec le centre de selectionBox si shift n\'est pas appuyé', () => {
+      const event = new WheelEvent('wheel', {shiftKey: false, altKey: false, deltaY: -1});
+      const spy = spyOn(selectedElement, 'updateRotation');
+      component.onMouseWheel(event);
+      expect(spy).toHaveBeenCalledWith(SELECTION_BOX_CENTER, SELECTION_BOX_CENTER, -BIG_ROTATION_ANGLE);
+  });
+  it('#onMouseWheel devrait appeler actualiser le svgHtml de l\'élément si la touche shift n\'est pas appuyée', () => {
+    const spy = spyOn(component['selection'].sanitizer, 'bypassSecurityTrustHtml');
+    const event = new WheelEvent('wheel', {shiftKey: false});
+    component.onMouseWheel(event);
+    expect(spy).toHaveBeenCalledWith(selectedElement.svg);
+  });
+  it('#onMouseWheel devrait appeler deleteSelectionBox de selectionBox si la touche shift n\'est pas appuyée', () => {
+    const spy = spyOn(component['selection'].selectionBox, 'deleteSelectionBox');
+    const event = new WheelEvent('wheel', {shiftKey: false});
+    component.onMouseWheel(event);
+    expect(spy).toHaveBeenCalled();
+  });
+  it('#onMouseWheel devrait appeler createBoundingBox de selection si la touche shift n\'est pas appuyée', () => {
+    const spy = spyOn(component['selection'], 'createBoundingBox');
+    const event = new WheelEvent('wheel', {shiftKey: false});
+    component.onMouseWheel(event);
+    expect(spy).toHaveBeenCalled();
+  });
+  it('#onMouseWheel devrait appeler execute de commands avec transformCommand', () => {
+    spyOn(selectedElement, 'updateRotation').and.returnValue();
+    const spy = spyOn(component['commands'], 'execute');
+    const event = new WheelEvent('wheel');
+    component.onMouseWheel(event);
+    expect(spy).toHaveBeenCalled();
   });
 });

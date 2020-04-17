@@ -13,9 +13,9 @@ import { GalleryElementComponent } from '../components/gallery/gallery-element/g
 import { GalleryComponent } from '../components/gallery/gallery.component';
 import { SavePopupComponent } from '../components/save-popup/save-popup.component';
 import { ShortcutsFunctionsService } from './shortcuts-functions.service';
+import { RectangleService } from './stockage-svg/draw-element/basic-shape/rectangle.service';
 import { DrawElement } from './stockage-svg/draw-element/draw-element';
 import { TOOL_INDEX } from './tools/tool-manager.service';
-import { RectangleService } from './stockage-svg/draw-element/basic-shape/rectangle.service';
 
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
@@ -545,8 +545,8 @@ describe('ShortcutsFunctionsService', () => {
     expect(service['ellipseTool'].shiftPress).toHaveBeenCalled();
   });
 
-  it('#shortcutKeyShift ne devrait rien faire si l\'outil actif n\'est ni la ligne ou le rectangle', () => {
-    service['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.PENCIL];
+  it('#shortcutKeyShift ne devrait rien faire si l\'outil actif n\'est ni la ligne, le rectangle ou l\'ellipse', () => {
+    service['tools'].activeTool.ID = TOOL_INDEX.PENCIL;
     spyOn(service['lineTool'], 'shiftPress');
     spyOn(service['ellipseTool'], 'shiftPress');
     spyOn(service['rectangleTool'], 'shiftPress');
