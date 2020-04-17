@@ -5,6 +5,8 @@ import { RectangleService } from '../../stockage-svg/draw-element/basic-shape/re
 import { DrawElement } from '../../stockage-svg/draw-element/draw-element';
 import { TOOL_INDEX } from '../tool-manager.service';
 import { LEFT_CLICK, RIGHT_CLICK, SelectionService } from './selection.service';
+import { ControlPosition } from './selection-box.service';
+import { CanvasConversionService } from '../../canvas-conversion.service';
 
 // tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers
@@ -14,8 +16,11 @@ describe('SelectionService', () => {
   let service: SelectionService;
 
   let element: DrawElement;
-
   let element2: DrawElement;
+
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [{provide: CanvasConversionService, useValue: {updateDrawing: () => { return; }}}]
+  }));
 
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => service = TestBed.get(SelectionService));
@@ -257,6 +262,15 @@ describe('SelectionService', () => {
     service.selectionRectangle.rectangle.points[1] = {x: 100, y: 300};
     service.onMouseMove(mouse);
     expect(spy1).not.toHaveBeenCalled();
+  });
+
+  it('#onMouseMove devrait appeler resizeElements si un point de controle est actif', () => {
+    const mouse = new MouseEvent('mouseclick', {clientX: 100, clientY: 100});
+    const spy = spyOn(service, 'resizeElements');
+    service.selectionBox.controlPosition = ControlPosition.LEFT;
+    service.selectedElements.push(element, element2);
+    service.onMouseMove(mouse);
+    expect(spy).toHaveBeenCalledWith(mouse);
   });
 
   // TESTS onMousePress
@@ -645,6 +659,132 @@ describe('SelectionService', () => {
     spyOn(service.selectedElements, 'splice');
     service.reverseElementSelectionStatus(element);
     expect(service.selectedElements.splice).toHaveBeenCalledWith(0, 1);
+  });
+
+  // TESTS resizeElements
+
+  it('#resizeElements devrait appeler updateScale des elements sélectionnés', () => {
+    const mouse = new MouseEvent('mousedown', {clientX: 15, clientY: 15});
+    service.handleClick(element);
+    const spy = spyOn(element, 'updateScale');
+    service.resizeElements(mouse);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#resizeElements devrait appeler draw des elements sélectionnés', () => {
+    const mouse = new MouseEvent('mousedown', {clientX: 15, clientY: 15});
+    service.handleClick(element);
+    const spy = spyOn(element, 'draw');
+    service.resizeElements(mouse);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#resizeElements devrait appeler findPointMinAndMax', () => {
+    const mouse = new MouseEvent('mousedown', {clientX: 15, clientY: 15});
+    service.handleClick(element);
+    const spy = spyOn(service, 'findPointMinAndMax');
+    service.resizeElements(mouse);
+    expect(spy).toHaveBeenCalledWith(element);
+  });
+
+  it('#resizeElements devrait modifier le scale en fonction du point de controle appuyé (cas UP)', () => {
+    const mouse = new MouseEvent('mousedown', {clientX: 15, clientY: -15});
+    service.handleClick(element);
+    service.selectionBox.controlPosition = ControlPosition.UP;
+    const spy = spyOn(element, 'updateScale');
+    service.resizeElements(mouse);
+    expect(spy).toHaveBeenCalledWith({x: 1, y: 16}, {x: 0, y: 0});
+  });
+
+  it('#resizeElements devrait modifier le scale en fonction du point de controle appuyé (cas DOWN)', () => {
+    const mouse = new MouseEvent('mousedown', {clientX: 15, clientY: 15});
+    service.handleClick(element);
+    service.selectionBox.controlPosition = ControlPosition.DOWN;
+    const spy = spyOn(element, 'updateScale');
+    service.resizeElements(mouse);
+    expect(spy).toHaveBeenCalledWith({x: 1, y: 16}, {x: 0, y: 0});
+  });
+
+  it('#resizeElements devrait modifier le scale en fonction du point de controle appuyé (cas LEFT)', () => {
+    const mouse = new MouseEvent('mousedown', {clientX: -20, clientY: 20});
+    service.handleClick(element);
+    service.selectionBox.controlPosition = ControlPosition.LEFT;
+    const spy = spyOn(element, 'updateScale');
+    service.resizeElements(mouse);
+    expect(spy).toHaveBeenCalledWith({x: 2.428571428571429, y: 1}, {x: 0, y: 0});
+  });
+
+  it('#resizeElements devrait modifier le scale en fonction du point de controle appuyé (cas RIGHT)', () => {
+    const mouse = new MouseEvent('mousedown', {clientX: 15, clientY: 15});
+    service.handleClick(element);
+    service.selectionBox.controlPosition = ControlPosition.RIGHT;
+    const spy = spyOn(element, 'updateScale');
+    service.resizeElements(mouse);
+    expect(spy).toHaveBeenCalledWith({x: 2.071428571428571, y: 1}, {x: 0, y: 0});
+  });
+
+  it('#resizeElements devrait modifier la nature du point de controle si le scale est négatif (cas RIGHT)', () => {
+    const mouse = new MouseEvent('mousedown', {clientX: -15, clientY: 15});
+    service.handleClick(element);
+    service.selectionBox.controlPosition = ControlPosition.RIGHT;
+    service.resizeElements(mouse);
+    expect(service.selectionBox.controlPosition).toEqual(3);
+  });
+
+  it('#resizeElements devrait modifier la nature du point de controle si le scale est négatif (cas DOWN)', () => {
+    const mouse = new MouseEvent('mousedown', {clientX: 15, clientY: -15});
+    service.handleClick(element);
+    service.selectionBox.controlPosition = ControlPosition.DOWN;
+    service.resizeElements(mouse);
+    expect(service.selectionBox.controlPosition).toEqual(1);
+  });
+
+  it('#resizeElements devrait modifier la nature du point de controle si le scale est négatif (cas UP)', () => {
+    const mouse = new MouseEvent('mousedown', {clientX: 15, clientY: 15});
+    service.handleClick(element);
+    service.selectionBox.controlPosition = ControlPosition.UP;
+    service.resizeElements(mouse);
+    expect(service.selectionBox.controlPosition).toEqual(2);
+  });
+
+  it('#resizeElements devrait modifier la nature du point de controle si le scale est négatif (cas LEFT)', () => {
+    const mouse = new MouseEvent('mousedown', {clientX: 20, clientY: 20});
+    service.handleClick(element);
+    service.selectionBox.controlPosition = ControlPosition.LEFT;
+    service.resizeElements(mouse);
+    expect(service.selectionBox.controlPosition).toEqual(4);
+  });
+
+  // TESTS onMouseLeave
+
+  it('#onMouseLeave ne devrait pas executer transformCommand si aucun point de controle de la sélection est actif', () => {
+    service.handleClick(element);
+    service.selectionBox.controlPosition = ControlPosition.NONE;
+    service['transformCommand'] = new TransformSvgService(service.selectedElements, service.sanitizer, service.deleteBoundingBox);
+    const spy = spyOn(service['command'], 'execute');
+    service.onMouseLeave();
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('#onMouseLeave ne devrait pas executer transformCommand s\'il n\'y eu aucune transformation', () => {
+    service.handleClick(element);
+    service.selectionBox.controlPosition = ControlPosition.LEFT;
+    service['transformCommand'] = new TransformSvgService(service.selectedElements, service.sanitizer, service.deleteBoundingBox);
+    spyOn(service['transformCommand'], 'hasMoved').and.returnValue(false);
+    const spy = spyOn(service['command'], 'execute');
+    service.onMouseLeave();
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('#onMouseLeave devrait executer transformCommand si un point de controle de la sélection est actif et qu\'il y' +
+  'a eu une transformation', () => {
+    service.handleClick(element);
+    service.selectionBox.controlPosition = ControlPosition.LEFT;
+    service['transformCommand'] = new TransformSvgService(service.selectedElements, service.sanitizer, service.deleteBoundingBox);
+    spyOn(service['transformCommand'], 'hasMoved').and.returnValue(true);
+    const spy = spyOn(service['command'], 'execute');
+    service.onMouseLeave();
+    expect(spy).toHaveBeenCalled();
   });
 
 });
