@@ -39,6 +39,8 @@ describe('GalleryComponent', () => {
     updateRotation: () => { return; },
     updateTransform: () => { return; },
     updateTranslation: () => { return; },
+    updateScale: () => { return; },
+    calculateRotation: () => { return; },
     updateTranslationMouse: () => { return; },
     updateParameters: () => { return; }
   };
