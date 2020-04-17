@@ -234,8 +234,9 @@ describe('ShortcutsFunctionsService', () => {
 
   it('#shortcutKeyC devrait changer l\'outil actif pour le crayon si CTRL n\'est pas appuye', () => {
     const keyboard = new KeyboardEvent('keypress', { key: 'c', ctrlKey: false });
+    const spy = spyOn(service['tools'], 'changeActiveTool');
     service.shortcutKeyC(keyboard);
-    expect(service['tools'].activeTool.ID).toEqual(TOOL_INDEX.PENCIL);
+    expect(spy).toHaveBeenCalledWith(TOOL_INDEX.PENCIL);
   });
 
   it('#shortcutKeyC devrait supprimer le SVG en cours s\'il n\'y a pas de selection en cours', () => {
@@ -249,8 +250,9 @@ describe('ShortcutsFunctionsService', () => {
   it('#shortcutKeyC devrait changer l\'outil actif pour le crayon s\'il n\'y a pas de selection en cours', () => {
     const keyboard = new KeyboardEvent('keypress', { key: 'c', ctrlKey: true});
     delete service['selection'].selectionBox.box;
+    const spy = spyOn(service['tools'], 'changeActiveTool');
     service.shortcutKeyC(keyboard);
-    expect(service['tools'].activeTool.ID).toEqual(TOOL_INDEX.PENCIL);
+    expect(spy).toHaveBeenCalledWith(TOOL_INDEX.PENCIL);
   });
 
   // TESTS shortcutKeyE
