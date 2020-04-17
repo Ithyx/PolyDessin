@@ -1,8 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig} from '@angular/material';
 import { Subscription } from 'rxjs';
+import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
-import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
+import { DrawingTool, TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { ExportWindowComponent } from '../export-window/export-window.component';
 import { GalleryComponent } from '../gallery/gallery.component';
 import { GridOptionsComponent } from '../grid-options/grid-options.component';
@@ -21,7 +22,8 @@ export class ToolbarComponent implements OnDestroy {
 
   constructor(private dialog: MatDialog,
               private tools: ToolManagerService,
-              private shortcuts: ShortcutsManagerService
+              private shortcuts: ShortcutsManagerService,
+              private canvas: CanvasConversionService
              ) {
     this.newDrawingSubscription = shortcuts.newDrawingEmmiter.subscribe((isIgnored: boolean) => {
     if (!isIgnored) { this.warningNewDrawing(); }
@@ -38,6 +40,9 @@ export class ToolbarComponent implements OnDestroy {
     this.tools.activeTool = tool;
     this.tools.activeTool.isActive = true;
     this.shortcuts.shortcutsFunctions.clearOngoingSVG();
+    if (this.tools.activeTool.ID === TOOL_INDEX.ERASER) {
+      this.canvas.updateDrawing();
+    }
   }
 
   disableShortcuts(): void {

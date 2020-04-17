@@ -3,10 +3,10 @@ import { MatDialogRef } from '@angular/material';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
+import { ExportService } from 'src/app/services/export/export.service';
 import { DatabaseService } from 'src/app/services/saving/remote/database.service';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 import { Drawing } from '../../../../../common/communication/drawing-interface';
-import { FILTERS } from '../../services/filters/filters';
 
 export const PREVIEW_SIZE = '200';
 enum MailStatus {
@@ -15,9 +15,6 @@ enum MailStatus {
   SUCCESS = 2,
   FAILURE = 3
 }
-
-const AUTHOR_OFFSET = 5;
-const AUTHOR_OUTLINE_WIDTH = 3;
 
 @Component({
   selector: 'app-export-window',
@@ -50,7 +47,8 @@ export class ExportWindowComponent {
               private drawingParams: DrawingManagerService,
               private sanitizer: DomSanitizer,
               private canvasConversion: CanvasConversionService,
-              private db: DatabaseService
+              private db: DatabaseService,
+              private exportService: ExportService
               ) {
     this.selectedExportFormat = this.EXPORT_FORMAT[0];
     this.selectedExportFilter = this.EXPORT_FILTER[0];
@@ -132,36 +130,12 @@ export class ExportWindowComponent {
     this.mailStatus = MailStatus.LOADING;
     this.context.drawImage(this.image, 0, 0);
     if (this.selectedAuthor !== '' && this.context) {
-      this.context.font = '30px Arial';
-      this.context.strokeStyle = 'white';
-      this.context.lineWidth = AUTHOR_OUTLINE_WIDTH;
-      this.context.strokeText(`auteur: ${this.selectedAuthor}`, 0, this.drawingParams.height - AUTHOR_OFFSET);
-      this.context.fillStyle = 'black';
-      this.context.fillText(`auteur: ${this.selectedAuthor}`, 0, this.drawingParams.height - AUTHOR_OFFSET);
+      this.exportService.drawAuthorCanvas(this.context, this.selectedAuthor, this.drawingParams.height);
     }
     let imageData = this.canvas.toDataURL('image/' + this.selectedExportFormat);
     if (this.selectedExportFormat === 'svg') {
-      imageData =
-      `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="${this.drawingParams.width}" height="${this.drawingParams.height}">\n`;
-      imageData += '<defs>\n';
-      for (const filter of FILTERS) {
-        imageData += `${filter}\n`;
-      }
-      imageData += '</defs>\n';
-      imageData += `<rect x="0" y="0" width="${this.drawingParams.width}" height="${this.drawingParams.height}"
-      fill="${this.drawingParams.backgroundColor.RGBAString}"></rect>\n`;
-      if (this.drawing.elements) {
-        for (const element of this.drawing.elements) {
-          imageData += `<g>${element.svg}</g>\n`;
-        }
-      }
-      if (this.selectedAuthor !== '') {
-        imageData += `<text x="0" y="${this.drawingParams.height - AUTHOR_OFFSET}"` +
-        `style="font-family: Arial;font-size:30;stroke:#ffffff;fill:#000000;">
-        auteur: ${this.selectedAuthor}
-        </text>\n`;
-      }
-      imageData += '</svg>\n';
+      imageData = this.exportService.generateSVG(this.drawing, this.drawingParams.width, this.drawingParams.height,
+        this.drawingParams.backgroundColor, this.selectedAuthor);
     }
     this.db.sendEmail(this.emailAdress, imageData, this.selectedFileName, this.selectedExportFormat)
     .then(() => {

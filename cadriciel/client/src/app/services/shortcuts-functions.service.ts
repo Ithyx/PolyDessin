@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ExportWindowComponent } from '../components/export-window/export-window.component';
 import { GalleryComponent } from '../components/gallery/gallery.component';
 import { SavePopupComponent } from '../components/save-popup/save-popup.component';
+import { CanvasConversionService } from './canvas-conversion.service';
 import { ClipboardService } from './clipboard.service';
 import { CommandManagerService } from './command/command-manager.service';
 import { GridService } from './grid/grid.service';
@@ -35,7 +36,8 @@ export class ShortcutsFunctionsService {
               private grid: GridService,
               private dialog: MatDialog,
               private eraser: EraserToolService,
-              private clipboard: ClipboardService
+              private clipboard: ClipboardService,
+              private canvas: CanvasConversionService
   ) { this.focusOnInput = false;
       this.dialogConfig = new MatDialogConfig();
       this.dialogConfig.disableClose = true;
@@ -101,6 +103,7 @@ export class ShortcutsFunctionsService {
       this.dialog.open(ExportWindowComponent, this.dialogConfig).afterClosed().subscribe(this.enableShortcuts.bind(this));
     } else {
       this.tools.changeActiveTool(TOOL_INDEX.ERASER);
+      this.canvas.updateDrawing();
       this.clearOngoingSVG();
     }
   }
