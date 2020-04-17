@@ -20,16 +20,18 @@ export class EmailController {
         const emailChecker = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (!emailChecker.test(req.body.to as string)) {
             res.status(HttpStatus.BAD_REQUEST).send('Mauvaise Adresse email!');
-            return;
+        } else {
+            let data: Buffer;
+            if (req.body.extension as string === 'svg') {
+                data = Buffer.from(req.body.payload as string, 'utf-8');
+            } else {
+                const array = (req.body.payload as string).split(',');
+                data = Buffer.from(array[1], 'base64');
+            }
+            res.status(await
+                this.emailService.sendEmail(req.body.to as string, data, req.body.filename as string, req.body.extension as string))
+            .end();
         }
-        let data: Buffer;
-        if (req.body.extension as string === 'svg') { data = Buffer.from(req.body.payload as string, 'utf-8'); } else {
-            const array = (req.body.payload as string).split(',');
-            data = Buffer.from(array[1], 'base64');
-        }
-        res
-        .status(await this.emailService.sendEmail(req.body.to as string, data, req.body.filename as string, req.body.extension as string))
-        .end();
     }
 
     private configureRouter(): void {
