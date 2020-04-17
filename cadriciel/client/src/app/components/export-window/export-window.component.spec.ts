@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+/*import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ElementRef } from '@angular/core';
 import { MatDialogModule, MatDialogRef, MatSidenavModule } from '@angular/material';
@@ -18,7 +18,7 @@ describe('ExportWindowComponent', () => {
   let sanitizer: DomSanitizer;
 
   const matDialogRefStub: Partial<MatDialogRef<ExportWindowComponent>> = {
-    close(): void { /* NE RIEN FAIRE */ }
+    close(): void {  NE RIEN FAIRE  }
   };
 
   beforeEach(async(() => {
@@ -244,4 +244,4 @@ describe('ExportWindowComponent', () => {
   it('#getFilter devrait retourner "none" si le filtre n\'est pas défini', () => {
     expect(component.getFilter()).toEqual('none');
   });
-});
+});*/
