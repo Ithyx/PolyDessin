@@ -34,11 +34,11 @@ describe('RectangleService', () => {
 
   // TESTS drawLine
 
-  /*
   it('#drawLine devrait attribuer le bon stroke si erasingEvidence est vrai', () => {
     element.erasingEvidence = true;
     const test = '<line stroke-linecap="square'
-    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + '" transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" stroke="' + element.erasingColor.RGBAString
     + '" stroke-width="' + element.thickness
     + '"stroke-dasharray="2, 8"'
@@ -53,7 +53,8 @@ describe('RectangleService', () => {
   it('#drawLine devrait attribuer le bon stroke si erasingEvidence est faux', () => {
     element.erasingEvidence = false;
     const test = '<line stroke-linecap="square'
-    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + '" transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" stroke="' + element.secondaryColor.RGBAString
     + '" stroke-width="' + element.thickness
     + '"stroke-dasharray="2, 8"'
@@ -67,7 +68,8 @@ describe('RectangleService', () => {
 
   it('#drawLine devrait attribuer le bon stroke-width si isDotted vrai', () => {
     const test = '<line stroke-linecap="square'
-    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + '" transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" stroke="' + ((element.erasingEvidence) ? element.erasingColor.RGBAString :  element.secondaryColor.RGBAString)
     + '" stroke-width="' + element.thickness
     + '"stroke-dasharray="2, 8"'
@@ -82,7 +84,8 @@ describe('RectangleService', () => {
   it('#drawLine devrait attribuer le bon stroke-width si isDotted faux', () => {
     element.isDotted = false;
     const test = '<line stroke-linecap="square'
-    + '" transform=" translate(' + element.translate.x + ' ' + element.translate.y
+    + '" transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f
     + ')" stroke="' + ((element.erasingEvidence) ? element.erasingColor.RGBAString :  element.secondaryColor.RGBAString)
     + '" stroke-width="' + element.thickness
     + ''
@@ -98,12 +101,9 @@ describe('RectangleService', () => {
 
   it('#drawShape devrait attribuer le bon svg si chosenOption n\'est pas \'Contour\'', () => {
     element.chosenOption = 'Vide';
-    const test = '<rect transform=" translate(' + element.translate.x + ' ' + element.translate.y +
-    ')" fill="' + element.primaryColor.RGBAString + '" stroke="'
-    + ((element.erasingEvidence) ? element.erasingColor.RGBAString :
-      ((element.chosenOption !== 'Plein') ? element.secondaryColor.RGBAString : 'none'))
-    + (element.isDotted ? '"stroke-dasharray="4, 4"'  : '')
-    + '" stroke-width="' + element.thickness
+    const test = '<rect transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f +
+    ')" fill="' + element.primaryColor.RGBAString + '" stroke="none'
     + '" x="' + element.points[0].x + '" y="' + element.points[0].y
     + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"></rect>';
 
@@ -113,12 +113,9 @@ describe('RectangleService', () => {
 
   it('#drawShape devrait attribuer le bon svg si chosenOption est \'Contour\'', () => {
     element.chosenOption = 'Contour';
-    const test = '<rect transform=" translate(' + element.translate.x + ' ' + element.translate.y +
-    ')" fill="' + 'none' + '" stroke="'
-    + ((element.erasingEvidence) ? element.erasingColor.RGBAString :
-      ((element.chosenOption !== 'Plein') ? element.secondaryColor.RGBAString : 'none'))
-    + (element.isDotted ? '"stroke-dasharray="4, 4"'  : '')
-    + '" stroke-width="' + element.thickness
+    const test = '<rect transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
+    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f +
+    ')" fill="' + 'none' + '" stroke="none'
     + '" x="' + element.points[0].x + '" y="' + element.points[0].y
     + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"></rect>';
 
@@ -126,76 +123,11 @@ describe('RectangleService', () => {
     expect(element.svg).toEqual(test);
   });
 
-  it('#drawShape devrait attribuer le bon svg si erasingEvidence est vrai', () => {
-    element.erasingEvidence = true;
-    const test = '<rect transform=" translate(' + element.translate.x + ' ' + element.translate.y +
-    ')" fill="' + element.primaryColor.RGBAString + '" stroke="'
-    + element.erasingColor.RGBAString
-    + (element.isDotted ? '"stroke-dasharray="4, 4"'  : '')
-    + '" stroke-width="' + element.thickness
-    + '" x="' + element.points[0].x + '" y="' + element.points[0].y
-    + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"></rect>';
-
+  it('#drawShape devrait appeler la fonction addRectanglePoints', () => {
+    const spy = spyOn(element, 'addRectanglePoints');
     element.drawShape();
-    expect(element.svg).toEqual(test);
+    expect(spy).toHaveBeenCalled();
   });
-
-  it('#drawShape devrait attribuer le bon svg si chosenOption n\'est pas \'Plein\' quand erasingEvidence est faux', () => {
-    element.chosenOption = 'Vide';
-    const test = '<rect transform=" translate(' + element.translate.x + ' ' + element.translate.y +
-    ')" fill="' + ((element.chosenOption !== 'Contour') ? element.primaryColor.RGBAString : 'none') + '" stroke="'
-    + ((element.erasingEvidence) ? element.erasingColor.RGBAString : element.secondaryColor.RGBAString)
-    + (element.isDotted ? '"stroke-dasharray="4, 4"'  : '')
-    + '" stroke-width="' + element.thickness
-    + '" x="' + element.points[0].x + '" y="' + element.points[0].y
-    + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"></rect>';
-
-    element.drawShape();
-    expect(element.svg).toEqual(test);
-  });
-
-  it('#drawShape devrait attribuer le bon svg si chosenOption est \'Plein\' quand erasingEvidence est faux', () => {
-    element.chosenOption = 'Plein';
-    const test = '<rect transform=" translate(' + element.translate.x + ' ' + element.translate.y +
-    ')" fill="' + ((element.chosenOption !== 'Contour') ? element.primaryColor.RGBAString : 'none') + '" stroke="'
-    + ((element.erasingEvidence) ? element.erasingColor.RGBAString : 'none')
-    + (element.isDotted ? '"stroke-dasharray="4, 4"'  : '')
-    + '" stroke-width="' + element.thickness
-    + '" x="' + element.points[0].x + '" y="' + element.points[0].y
-    + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"></rect>';
-
-    element.drawShape();
-    expect(element.svg).toEqual(test);
-  });
-
-  it('#drawShape devrait attribuer le bon svg si isDotted vrai', () => {
-    const test = '<rect transform=" translate(' + element.translate.x + ' ' + element.translate.y +
-    ')" fill="' + ((element.chosenOption !== 'Contour') ? element.primaryColor.RGBAString : 'none') + '" stroke="'
-    + ((element.erasingEvidence) ? element.erasingColor.RGBAString :
-      ((element.chosenOption !== 'Plein') ? element.secondaryColor.RGBAString : 'none'))
-    + '"stroke-dasharray="4, 4"'
-    + '" stroke-width="' + element.thickness
-    + '" x="' + element.points[0].x + '" y="' + element.points[0].y
-    + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"></rect>';
-
-    element.drawShape();
-    expect(element.svg).toEqual(test);
-  });
-
-  it('#drawShape devrait attribuer le bon svg si isDotted faux', () => {
-    element.isDotted = false;
-    const test = '<rect transform=" translate(' + element.translate.x + ' ' + element.translate.y +
-    ')" fill="' + ((element.chosenOption !== 'Contour') ? element.primaryColor.RGBAString : 'none') + '" stroke="'
-    + ((element.erasingEvidence) ? element.erasingColor.RGBAString :
-      ((element.chosenOption !== 'Plein') ? element.secondaryColor.RGBAString : 'none'))
-    + ''
-    + '" stroke-width="' + element.thickness
-    + '" x="' + element.points[0].x + '" y="' + element.points[0].y
-    + '" width="' + element.getWidth() + '" height="' + element.getHeight() + '"></rect>';
-
-    element.drawShape();
-    expect(element.svg).toEqual(test);
-  }); */
 
   // TESTS drawPerimeter
 
@@ -248,5 +180,25 @@ describe('RectangleService', () => {
 
     element.drawPerimeter();
     expect(element.perimeter).toEqual(test);
+  });
+
+  it('#drawPerimeter devrait appeler la fonction addRectanglePoints', () => {
+    const spy = spyOn(element, 'addRectanglePoints');
+    element.drawPerimeter();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  // TESTS addRectanglePoints
+
+  it('#addRectanglePoints devrait appeler la fonction splice de points', () => {
+    const spy = spyOn(element.points, 'splice');
+    element.addRectanglePoints();
+    expect(spy).toHaveBeenCalledWith(2, 2);
+  });
+
+  it('#addRectanglePoints devrait appeler la fonction push de points', () => {
+    const spy = spyOn(element.points, 'push');
+    element.addRectanglePoints();
+    expect(spy).toHaveBeenCalledWith({x: element.points[1].x, y: element.points[0].y}, {x: element.points[0].x, y: element.points[1].y});
   });
 });

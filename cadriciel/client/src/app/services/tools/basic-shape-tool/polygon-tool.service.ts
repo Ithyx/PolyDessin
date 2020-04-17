@@ -54,9 +54,6 @@ export class PolygonToolService extends BasicShapeToolService {
       const x = this.calculatedCenter.x + this.calculatedRadius * Math.cos(angle);
       const y = this.calculatedCenter.y + this.calculatedRadius * Math.sin(angle);
       this.shape.points.push({x, y});
-      if (this.shape.strokePoints) {
-        this.shape.strokePoints.push({x, y});
-      }
       if (x < this.minPoint.x) {
         this.minPoint.x = x;
         this.minPoint.y = y;
