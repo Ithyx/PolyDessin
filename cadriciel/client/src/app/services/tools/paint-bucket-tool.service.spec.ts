@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CanvasConversionService } from '../canvas-conversion.service';
-import { ColorFillService } from '../stockage-svg/draw-element/color-fill.service';
+// import { ColorFillService } from '../stockage-svg/draw-element/color-fill.service';
 import { PaintBucketToolService } from './paint-bucket-tool.service';
 
 // tslint:disable:no-magic-numbers
@@ -9,7 +9,7 @@ import { PaintBucketToolService } from './paint-bucket-tool.service';
 
 describe('PaintBucketToolService', () => {
   let service: PaintBucketToolService;
-  let element: ColorFillService;
+  // let element: ColorFillService;
   let canvas: HTMLCanvasElement;
   let context: CanvasRenderingContext2D;
   let svg: SVGElement;
@@ -32,7 +32,7 @@ describe('PaintBucketToolService', () => {
     service['image'] = new Image();
     service.drawing = svg;
     service.canvas = canvas;
-    element = new ColorFillService();
+    // element = new ColorFillService();
     const imageData = new ImageData(2, 2);
     const data = imageData.data;
     data.set([
@@ -50,7 +50,7 @@ describe('PaintBucketToolService', () => {
 
   // TESTS onMouseClick
 
-  it('#onMouseClick devrait ajouter la position de la souris à mousePosition', () => {
+  /* it('#onMouseClick devrait ajouter la position de la souris à mousePosition', () => {
     service['mousePosition'] = {x: 10, y: 10};
     service.onMouseClick(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
     expect(service['mousePosition']).toEqual({x: 100, y: 100});
@@ -83,11 +83,11 @@ describe('PaintBucketToolService', () => {
     const spy = spyOn(service, 'createCanvas');
     service.onMouseClick(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
     expect(spy).toHaveBeenCalled();
-  });
+  }); */
 
   // TESTS createCanvas
 
-  it('#createCanvas devrait appeler la fonction getContext', () => {
+  /* it('#createCanvas devrait appeler la fonction getContext', () => {
     const spy = spyOn(service.canvas, 'getContext');
     service.createCanvas();
     expect(spy).toHaveBeenCalledWith('2d');
@@ -105,7 +105,7 @@ describe('PaintBucketToolService', () => {
     service['image'].onload = service.onImageLoad.bind(service);
     service.onImageLoad();
     expect(spy).toHaveBeenCalledWith(service['image'], 0, 0);
-  });
+  }); */
 
   // TESTS fillWithColor
 
