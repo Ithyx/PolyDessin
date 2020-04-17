@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { AddSVGService } from '../../command/add-svg.service';
 import { RectangleService } from '../../stockage-svg/draw-element/basic-shape/rectangle.service';
 import { BasicShapeToolService } from './basic-shape-tool.service';
+import { EllipseToolService } from './ellipse-tool.service';
 import { RectangleToolService } from './rectangle-tool.service';
 
 // tslint:disable: no-magic-numbers
@@ -220,6 +221,20 @@ describe('BasicShapeToolService', () => {
     spyOn(service['stockageSVG'], 'setOngoingSVG');
     service.refreshSVG();
     expect(service['stockageSVG'].setOngoingSVG).toHaveBeenCalledWith(service['shape']);
+  });
+  it('#refreshSVG devrait appeler calculateStrokePoints', () => {
+    const spy = spyOn(service, 'calculateStrokePoints');
+    service.refreshSVG();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  // TEST calculateStrokePoints
+
+  it('#calculateStrokePoints devrait ajouter tous les points de shape dans strokePoints', () => {
+    service = TestBed.get(EllipseToolService);
+    service['shape'].points = [{x: 0, y: 0}, {x: 1, y: 0}, {x: 0, y: 1}];
+    service.calculateStrokePoints();
+    expect(service['shape'].strokePoints).toEqual([{x: 0, y: 0}, {x: 1, y: 0}, {x: 0, y: 1}]);
   });
 
   // TESTS onMousePress
