@@ -225,24 +225,33 @@ describe('ShortcutsFunctionsService', () => {
     expect(service['clipboard'].copySelectedElement).not.toHaveBeenCalled();
   });
 
-  it('#shortcutKeyC devrait changer l\'outil actif pour le crayon et supprimer le SVG en cours si CTRL n\'est pas appuye', () => {
+  it('#shortcutKeyC devrait changer supprimer le SVG en cours si CTRL n\'est pas appuye', () => {
     const keyboard = new KeyboardEvent('keypress', { key: 'c', ctrlKey: false });
     spyOn(service, 'clearOngoingSVG');
     service.shortcutKeyC(keyboard);
     expect(service.clearOngoingSVG).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyC devrait changer l\'outil actif pour le crayon si CTRL n\'est pas appuye', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'c', ctrlKey: false });
+    service.shortcutKeyC(keyboard);
     expect(service['tools'].activeTool.ID).toEqual(TOOL_INDEX.PENCIL);
   });
 
-  it('#shortcutKeyC devrait changer l\'outil actif pour le crayon et '
-    + 'supprimer le SVG en cours s\'il n\'y a pas de selection en cours', () => {
-    const keyboard = new KeyboardEvent('keypress', { key: 'c', ctrlKey: true });
+  it('#shortcutKeyC devrait supprimer le SVG en cours s\'il n\'y a pas de selection en cours', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'c', ctrlKey: true});
     delete service['selection'].selectionBox.box;
     spyOn(service, 'clearOngoingSVG');
     service.shortcutKeyC(keyboard);
     expect(service.clearOngoingSVG).toHaveBeenCalled();
-    expect(service['tools'].activeTool.ID).toEqual(TOOL_INDEX.PENCIL);
   });
 
+  it('#shortcutKeyC devrait changer l\'outil actif pour le crayon s\'il n\'y a pas de selection en cours', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'c', ctrlKey: true});
+    delete service['selection'].selectionBox.box;
+    service.shortcutKeyC(keyboard);
+    expect(service['tools'].activeTool.ID).toEqual(TOOL_INDEX.PENCIL);
+  });
 
   // TESTS shortcutKeyE
 
