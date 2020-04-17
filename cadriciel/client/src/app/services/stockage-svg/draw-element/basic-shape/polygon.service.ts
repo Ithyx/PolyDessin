@@ -1,26 +1,33 @@
 import { Injectable } from '@angular/core';
 import { TOOL_INDEX } from 'src/app/services/tools/tool-manager.service';
+import { Point } from '../draw-element';
 import { BasicShapeService } from './basic-shape.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PolygonService extends BasicShapeService {
+  strokePoints: Point[];
+
   constructor() {
     super();
     this.trueType = TOOL_INDEX.POLYGON;
+    this.strokePoints = [];
   }
 
   getWidth(): number {
-    return this.pointMax.x - this.pointMin.x;
+    return Math.abs(this.pointMax.x - this.pointMin.x);
   }
 
   getHeight(): number {
-    return this.pointMax.y - this.pointMin.y;
+    return Math.abs(this.pointMax.y - this.pointMin.y);
   }
 
   draw(): void {
     this.drawShape();
+    if (this.chosenOption !== 'Plein') {
+      this.drawStroke();
+    }
     this.drawPerimeter();
   }
 
@@ -29,11 +36,8 @@ export class PolygonService extends BasicShapeService {
   drawShape(): void {
     this.svg = '<polygon transform=" matrix(' + this.transform.a + ' ' + this.transform.b + ' ' + this.transform.c + ' '
                                               + this.transform.d + ' ' + this.transform.e + ' ' + this.transform.f
-      + ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor.RGBAString : 'none') + '" stroke="'
-      + ((this.erasingEvidence) ? this.erasingColor.RGBAString :
-        ((this.chosenOption !== 'Plein') ? this.secondaryColor.RGBAString : 'none'))
-      + '" stroke-width="' + this.thickness
-      + '" points="';
+      + ')" fill="' + ((this.chosenOption !== 'Contour') ? this.primaryColor.RGBAString : 'none') + '" stroke="none'
+      + '" stroke-width="' + this.thickness + '" points="';
     for (const point of this.points) {
       this.svg += point.x + ' ' + point.y + ' ';
     }

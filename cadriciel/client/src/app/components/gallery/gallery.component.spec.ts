@@ -39,6 +39,8 @@ describe('GalleryComponent', () => {
     updateRotation: () => { return; },
     updateTransform: () => { return; },
     updateTranslation: () => { return; },
+    updateScale: () => { return; },
+    calculateRotation: () => { return; },
     updateTranslationMouse: () => { return; },
     updateParameters: () => { return; }
   };
@@ -237,7 +239,8 @@ describe('GalleryComponent', () => {
     expect(closeSpy).toHaveBeenCalled();
   });
 
-  /* it('#loadDrawing devrait changer complètement le dessin en cours', () => {
+  it('#loadDrawing devrait changer complètement le dessin en cours', () => {
+    spyOn(component['stockageSVG'], 'addSVG').and.callFake(() => { return; });
     const cleanSpy = spyOn(component['stockageSVG'], 'cleanDrawing');
     const addSpy = spyOn(component['saveUtility'], 'createCopyDrawElement');
     const drawingManager = component['drawingManager'];
@@ -253,15 +256,15 @@ describe('GalleryComponent', () => {
 
     component.loadDrawing(drawing);
 
-    expect(cleanSpy).toHaveBeenCalled();
     expect(drawingManager.id).toBe(drawing._id);
     expect(drawingManager.height).toBe(drawing.height),
     expect(drawingManager.width).toBe(drawing.width),
     expect(drawingManager.backgroundColor).toEqual(drawing.backgroundColor);
     expect(drawingManager.name).toBe(drawing.name);
     expect(drawingManager.tags).toEqual(['tag 1', 'tag 2']);
-    expect(addSpy).toHaveBeenCalledTimes(1);
-  }); */
+    expect(cleanSpy).toHaveBeenCalled();
+    expect(addSpy).toHaveBeenCalledTimes(2);
+  });
   it('#loadDrawing devrait remttre les éléments à 0 même si le nouveau dessin n\'en a pas', () => {
     drawing.elements = undefined;
     const spy = spyOn(component['saveUtility'], 'createCopyDrawElement');

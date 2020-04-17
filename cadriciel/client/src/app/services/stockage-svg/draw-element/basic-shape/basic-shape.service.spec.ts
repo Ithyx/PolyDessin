@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { TOOL_INDEX } from 'src/app/services/tools/tool-manager.service';
 import { BasicShapeToolService } from '../../../tools/basic-shape-tool/basic-shape-tool.service';
 import { RectangleToolService } from '../../../tools/basic-shape-tool/rectangle-tool.service';
 import { BasicShapeService } from './basic-shape.service';
@@ -93,6 +94,30 @@ describe('BasicShapeService', () => {
     spyOn(element, 'drawPerimeter');
     element.draw();
     expect(element.drawPerimeter).toHaveBeenCalled();
+  });
+
+  // TESTS drawStroke
+
+  it('#drawStroke devrait mettre stroke-linejoin du svg à round si le drawElement est une ellipse', () => {
+    element.trueType = TOOL_INDEX.ELLIPSE;
+    element.drawStroke();
+    expect(element.svg.includes('stroke-linejoin="round')).toBe(true);
+  });
+
+  it('#drawStroke devrait mettre un contour en pointillé si isDotted est vrai', () => {
+    element.isDotted = true;
+    element.drawStroke();
+    expect(element.svg.includes('"stroke-dasharray="4, 4"')).toBe(true);
+  });
+
+  it('#drawStroke devrait utiliser erasingColor si erasingEvidence est vrai', () => {
+    element.erasingEvidence = true;
+    element.erasingColor = {
+      RGBAString: 'rgba(99, 99, 99, 1)',
+      RGBA: [99, 99, 99, 1]
+    };
+    element.drawStroke();
+    expect(element.svg.includes('rgba(99, 99, 99, 1)')).toBe(true);
   });
 
   // TESTS updateParameters

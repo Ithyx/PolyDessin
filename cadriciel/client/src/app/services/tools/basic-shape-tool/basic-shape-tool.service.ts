@@ -33,8 +33,14 @@ export abstract class BasicShapeToolService implements ToolInterface {
     this.shape.updateParameters(this.tools.activeTool);
     this.shape.primaryColor = {...this.colorParameter.primaryColor};
     this.shape.secondaryColor = {...this.colorParameter.secondaryColor};
+    this.calculateStrokePoints();
     this.shape.draw();
     this.stockageSVG.setOngoingSVG(this.shape);
+  }
+
+  calculateStrokePoints(): void {
+    this.shape.strokePoints = [];
+    this.shape.points.forEach((point) => { this.shape.strokePoints.push({...point}); });
   }
 
   onMouseMove(mouse: MouseEvent): void {
@@ -100,6 +106,8 @@ export abstract class BasicShapeToolService implements ToolInterface {
       // Lorsque la touche 'shift' est relâchée, la forme à dessiner est un rectangle
       this.shape.points[0] = {x: this.calculatedBase.x, y: this.calculatedBase.y};
       this.shape.points[1] = {x: this.calculatedBase.x + this.calculatedWidth, y: this.calculatedBase.y + this.calculatedHeight};
+      this.shape.pointMin = {...this.shape.points[0]};
+      this.shape.pointMax = {...this.shape.points[1]};
       this.refreshSVG();
     }
   }

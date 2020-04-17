@@ -99,8 +99,8 @@ export class ClipboardService {
         element.updateTranslation(-PASTE_OFFSET * this.numberOfPaste, -PASTE_OFFSET * this.numberOfPaste);
         this.selection.selectedElements.push(element);
         buffer.push(this.savingUtility.createCopyDrawElement(element));
-        this.numberOfPaste = 0;
       }
+      this.numberOfPaste = 0;
     }
 
     this.commands.execute(new AddSVGService(this.copiedElements, this.svgStockage));

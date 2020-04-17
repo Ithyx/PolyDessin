@@ -7,13 +7,13 @@ import { RectangleService } from '../../stockage-svg/draw-element/basic-shape/re
 import { DrawElement, Point } from '../../stockage-svg/draw-element/draw-element';
 import { SVGStockageService } from '../../stockage-svg/svg-stockage.service';
 import { ToolInterface } from '../tool-interface';
-import { SelectionBoxService } from './selection-box.service';
+import { ControlPosition, SelectionBoxService } from './selection-box.service';
 import { SelectionRectangleService } from './selection-rectangle.service';
 
 export const LEFT_CLICK = 0;
 export const RIGHT_CLICK = 2;
 
-const HALF_DRAW_ELEMENT = 0.5 ;
+const HALF_DRAW_ELEMENT = 0.5;
 
 @Injectable({
   providedIn: 'root'
@@ -62,6 +62,12 @@ export class SelectionService implements ToolInterface {
   }
 
   onMouseMove(mouse: MouseEvent): void {
+    if (this.selectionBox.controlPosition !== ControlPosition.NONE) {
+      this.resizeElements(mouse);
+      this.selectionBox.mouseClick = {x: mouse.offsetX, y: mouse.offsetY};
+      this.createBoundingBox();
+      return;
+    }
     if (this.clickOnSelectionBox || this.clickInSelectionBox) {
       this.updateTranslationMouse(mouse);
     } else {
@@ -83,21 +89,23 @@ export class SelectionService implements ToolInterface {
   }
 
   onMousePress(mouse: MouseEvent): void {
-    if (!this.clickOnSelectionBox && !this.clickInSelectionBox) {
+    if (!this.clickOnSelectionBox && !this.clickInSelectionBox && this.selectionBox.controlPosition === ControlPosition.NONE) {
       this.selectionRectangle.mouseDown(mouse);
     } else {
+      this.command.drawingInProgress = true;
       this.transformCommand = new TransformSvgService(this.selectedElements, this.sanitizer, this.deleteBoundingBox.bind(this));
     }
   }
 
   onMouseRelease(): void {
-    if (this.clickOnSelectionBox || this.clickInSelectionBox) {
+    if (this.clickOnSelectionBox || this.clickInSelectionBox || this.selectionBox.controlPosition !== ControlPosition.NONE) {
       this.clickOnSelectionBox = false;
       this.clickInSelectionBox = false;
       if (this.transformCommand.hasMoved()) {
         this.command.execute(this.transformCommand);
       }
       this.command.drawingInProgress = false;
+      this.selectionBox.controlPosition = ControlPosition.NONE;
     } else {
         if (this.selectionRectangle.rectangle) {
           this.isInRectangleSelection(this.selectionRectangle.rectangle);
@@ -110,6 +118,14 @@ export class SelectionService implements ToolInterface {
         this.selectionRectangle.rectangleInverted = new RectangleService();
         this.modifiedElement.clear();
     }
+  }
+
+  onMouseLeave(): void {
+    if (this.selectionBox.controlPosition !== ControlPosition.NONE && this.transformCommand.hasMoved()) {
+      this.command.execute(this.transformCommand);
+      this.transformCommand = new TransformSvgService(this.selectedElements, this.sanitizer, this.deleteBoundingBox.bind(this));
+    }
+    this.selectionBox.controlPosition = ControlPosition.NONE;
   }
 
   createBoundingBox(): void {
@@ -147,6 +163,7 @@ export class SelectionService implements ToolInterface {
 
       pointMin = {x: pointMin.x - HALF_DRAW_ELEMENT * epaisseurMin.x, y: pointMin.y - HALF_DRAW_ELEMENT * epaisseurMin.y};
       pointMax = {x: pointMax.x + HALF_DRAW_ELEMENT * epaisseurMax.x, y: pointMax.y + HALF_DRAW_ELEMENT * epaisseurMax.y};
+
       this.selectionBox.createSelectionBox(pointMin, pointMax);
     }
   }
@@ -250,6 +267,46 @@ export class SelectionService implements ToolInterface {
     } else {
       const index = this.selectedElements.indexOf(element, 0);
       this.selectedElements.splice(index, 1);
+    }
+  }
+
+  resizeElements(mouse: MouseEvent): void {
+    const scale: Point = {x: 1, y: 1};
+    switch (this.selectionBox.controlPosition) {
+      case ControlPosition.UP:
+        scale.y = 1 + (this.selectionBox.mouseClick.y - mouse.offsetY) / this.selectionBox.box.getHeight();
+        if (scale.y < 0) {
+          this.selectionBox.controlPosition = ControlPosition.DOWN;
+          this.selectionBox.mouseClick = {...this.selectionBox.scaleCenter};
+        }
+        break;
+      case ControlPosition.DOWN:
+        scale.y = 1 - (this.selectionBox.mouseClick.y - mouse.offsetY) / this.selectionBox.box.getHeight();
+        if (scale.y < 0) {
+          this.selectionBox.controlPosition = ControlPosition.UP;
+          this.selectionBox.mouseClick = {...this.selectionBox.scaleCenter};
+        }
+        break;
+      case ControlPosition.LEFT:
+        scale.x = 1 + (this.selectionBox.mouseClick.x - mouse.offsetX) / this.selectionBox.box.getWidth();
+        if (scale.x < 0) {
+          this.selectionBox.controlPosition = ControlPosition.RIGHT;
+          this.selectionBox.mouseClick = {...this.selectionBox.scaleCenter};
+        }
+        break;
+      case ControlPosition.RIGHT:
+        scale.x = 1 - (this.selectionBox.mouseClick.x - mouse.offsetX) / this.selectionBox.box.getWidth();
+        if (scale.x < 0) {
+          this.selectionBox.controlPosition = ControlPosition.LEFT;
+          this.selectionBox.mouseClick = {...this.selectionBox.scaleCenter};
+        }
+        break;
+    }
+    for (const element of this.selectedElements) {
+      element.updateScale(scale, {...this.selectionBox.scaleCenter});
+      this.findPointMinAndMax(element);
+      element.draw();
+      element.svgHtml = this.sanitizer.bypassSecurityTrustHtml(element.svg);
     }
   }
 
