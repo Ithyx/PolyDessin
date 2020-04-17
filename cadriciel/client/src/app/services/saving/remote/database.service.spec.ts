@@ -81,4 +81,13 @@ describe('DatabaseService', () => {
     req.flush(null);
   });
 
+  // TESTS sendEmail
+  it('#sendEmail devrait faire une requête GET au serveur avec la bonne URL', () => {
+    service.sendEmail('example', 'image', 'fileName', 'fileExtension').then((res) => expect(res).toEqual());
+    const req = mock.expectOne(SERVER_URL.SEND);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({to: 'example', payload: 'image', filename: 'fileName', extension: 'fileExtension'});
+    req.flush([]);
+  });
+
 });
