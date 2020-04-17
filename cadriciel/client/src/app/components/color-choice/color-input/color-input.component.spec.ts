@@ -83,28 +83,28 @@ describe('ColorInputComponent', () => {
 
   // TESTS checkInput
   it('#checkInput devrait renvoyer vrai, si on appuie sur une touche avec une lettre acceptee', () => {
-    const clavier = new KeyboardEvent('keypress', { key: 'a'});
-    expect(component.checkInput(clavier)).toBe(true);
+    const keyboard = new KeyboardEvent('keypress', { key: 'a'});
+    expect(component.checkInput(keyboard)).toBe(true);
   });
 
   it('#checkInput devrait renvoyer vrai, si on appuie sur backspace', () => {
-    const clavier = new KeyboardEvent('keypress', { key: 'Backspace'});
-    expect(component.checkInput(clavier)).toBe(true);
+    const keyboard = new KeyboardEvent('keypress', { key: 'Backspace'});
+    expect(component.checkInput(keyboard)).toBe(true);
   });
 
   it('#checkInput devrait renvoyer vrai, si on appuie sur une touche avec un nombre acceptee', () => {
-    const clavier = new KeyboardEvent('keypress', { key: '7'});
-    expect(component.checkInput(clavier)).toBe(true);
+    const keyboard = new KeyboardEvent('keypress', { key: '7'});
+    expect(component.checkInput(keyboard)).toBe(true);
   });
 
   it('#checkInput devrait renvoyer faux, si on appuie sur une touche avec une lettre non-acceptee', () => {
-    const clavier = new KeyboardEvent('keypress', { key: 'v'});
-    expect(component.checkInput(clavier)).toBe(false);
+    const keyboard = new KeyboardEvent('keypress', { key: 'v'});
+    expect(component.checkInput(keyboard)).toBe(false);
   });
 
   it('#checkInput devrait renvoyer faux, si on appuie sur une touche non reconnue', () => {
-    const clavier = new KeyboardEvent('keypress', { key: '#'});
-    expect(component.checkInput(clavier)).toBe(false);
+    const keyboard = new KeyboardEvent('keypress', { key: '#'});
+    expect(component.checkInput(keyboard)).toBe(false);
   });
 
   // TEST disableShortcuts

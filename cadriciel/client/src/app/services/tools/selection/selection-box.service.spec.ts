@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { RectangleService } from '../../stockage-svg/draw-element/basic-shape/rectangle.service';
-import { NUMBER_OF_CONTROL_POINT, SELECTION_BOX_THICKNESS, SelectionBoxService } from './selection-box.service';
+import { NUMBER_OF_CONTROL_POINT, SELECTION_BOX_THICKNESS, SelectionBoxService, ControlPosition } from './selection-box.service';
 
 // tslint:disable: no-magic-numbers
 // tslint:disable:no-string-literal
@@ -107,6 +107,30 @@ describe('SelectionBoxService', () => {
     const test = spyOn(service, 'createControlPointBox');
     service.createSelectionBox({x: 10, y: 10}, {x: 100, y: 100});
     expect(test).toHaveBeenCalled();
+  });
+
+  it('#createSelectionBox devrait modifier box.points[0] (cas du point de control DOWN)', () => {
+    service.controlPosition = ControlPosition.DOWN;
+    service.createSelectionBox({x: 10, y: 10}, {x: 100, y: 100});
+    expect(service.box.points[0]).toEqual({x: 10, y: service.scaleCenter.y});
+  });
+
+  it('#createSelectionBox devrait modifier box.points[0] (cas du point de control RIGHT)', () => {
+    service.controlPosition = ControlPosition.RIGHT;
+    service.createSelectionBox({x: 10, y: 10}, {x: 100, y: 100});
+    expect(service.box.points[0]).toEqual({x: service.scaleCenter.x, y: 10});
+  });
+
+  it('#createSelectionBox devrait modifier box.points[1] (cas du point de control UP)', () => {
+    service.controlPosition = ControlPosition.UP;
+    service.createSelectionBox({x: 10, y: 10}, {x: 100, y: 100});
+    expect(service.box.points[1]).toEqual({x: 100, y: service.scaleCenter.y});
+  });
+
+  it('#createSelectionBox devrait modifier box.points[1] (cas du point de control LEFT)', () => {
+    service.controlPosition = ControlPosition.LEFT;
+    service.createSelectionBox({x: 10, y: 10}, {x: 100, y: 100});
+    expect(service.box.points[1]).toEqual({x: service.scaleCenter.x, y: 100});
   });
 
   // TESTS createControlPointBox
@@ -244,5 +268,42 @@ describe('SelectionBoxService', () => {
     for (const controlPoint of service.controlPointBox) {
       expect(controlPoint.svgHtml).toEqual(test);
     }
+  });
+
+  // TESTS controlPointMouseDown
+
+  it('#controlPointMouseDown devrait assigner les coordonnées du clic à mouseClick', () => {
+    const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
+    service.createSelectionBox({x: 10, y: 10}, {x: 100, y: 100});
+    service.controlPointMouseDown(click, 0);
+    expect(service.mouseClick).toEqual({x: 100, y: 100});
+  });
+
+  it('#controlPointMouseDown devrait modifier les coordonnées de scaleCenter (cas du point de control UP)', () => {
+    const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
+    service.createSelectionBox({x: 10, y: 10}, {x: 100, y: 100});
+    service.controlPointMouseDown(click, 0);
+    expect(service.scaleCenter).toEqual({x: 100, y: service.box.strokePoints[2].y});
+  });
+
+  it('#controlPointMouseDown devrait modifier les coordonnées de scaleCenter (cas du point de control DOWN)', () => {
+    const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
+    service.createSelectionBox({x: 10, y: 10}, {x: 100, y: 100});
+    service.controlPointMouseDown(click, 1);
+    expect(service.scaleCenter).toEqual({x: 100, y: service.box.strokePoints[0].y});
+  });
+
+  it('#controlPointMouseDown devrait modifier les coordonnées de scaleCenter (cas du point de control LEFT)', () => {
+    const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
+    service.createSelectionBox({x: 10, y: 10}, {x: 100, y: 100});
+    service.controlPointMouseDown(click, 2);
+    expect(service.scaleCenter).toEqual({x: service.box.strokePoints[1].x, y: 100});
+  });
+
+  it('#controlPointMouseDown devrait modifier les coordonnées de scaleCenter (cas du point de control RIGHT)', () => {
+    const click = new MouseEvent('click', { clientX: 100, clientY: 100 });
+    service.createSelectionBox({x: 10, y: 10}, {x: 100, y: 100});
+    service.controlPointMouseDown(click, 3);
+    expect(service.scaleCenter).toEqual({x: service.box.strokePoints[0].x, y: 100});
   });
 });
