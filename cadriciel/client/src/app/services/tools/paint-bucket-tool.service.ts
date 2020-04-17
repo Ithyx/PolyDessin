@@ -61,6 +61,7 @@ export class PaintBucketToolService implements ToolInterface {
   }
 
   onImageLoad(): void {
+    console.log(this.image);
     this.context.drawImage(this.image, 0, 0);
     this.pixelData = this.context.getImageData(0, 0, this.drawing.clientWidth, this.drawing.clientHeight).data;
     const pixelIndex = this.getIndex(this.mousePosition);
@@ -86,37 +87,56 @@ export class PaintBucketToolService implements ToolInterface {
     while (queue.length > 0) {
       const point = queue.pop();
       if (point) {
-        let x1 = point.x;
-        while (x1 >= 0 && this.checkColor({x: x1, y: point.y})) {
-          x1--;
-        }
-        x1++;
-        this.fill.points.push({x: x1, y: point.y});
+        let xPosition = this.findLeftBorder(point);
         let spanAbove = false;
         let spanBelow = false;
-        while (x1 < this.drawing.clientWidth && this.checkColor({x: x1, y: point.y})) {
-          if (!this.checkColor({x: x1, y: point.y - 1})) {
-            spanAbove = false;
-          } else if (!spanAbove && point.y > 0 ) {
-            queue.push({x: x1, y: point.y - 1});
-            spanAbove = true;
-          }
-          if (!this.checkColor({x: x1, y: point.y + 1})) {
-            spanBelow = false;
-          } else if (!spanBelow && point.y < this.drawing.clientHeight - 1) {
-            queue.push({x: x1, y: point.y + 1});
-            spanBelow = true;
-          }
-          const array = this.checkedPixels.get(x1);
-          if (array) {
-            array.push(point.y);
-          } else {
-            this.checkedPixels.set(x1, [point.y]);
-          }
-          x1++;
+        while (xPosition < this.drawing.clientWidth && this.checkColor({x: xPosition, y: point.y})) {
+          spanAbove = this.checkAbovePixel({x: xPosition, y: point.y}, spanAbove, queue);
+          spanBelow = this.checkBelowPixel({x: xPosition, y: point.y}, spanBelow, queue);
+          this.addPixelPosition({x: xPosition, y: point.y});
+          xPosition++;
         }
-        this.fill.points.push({x: x1, y: point.y});
+        this.fill.points.push({x: xPosition, y: point.y});
       }
+    }
+  }
+
+  findLeftBorder(point: Point): number {
+    let xPosition = point.x;
+    while (xPosition >= 0 && this.checkColor({x: xPosition, y: point.y})) {
+      xPosition--;
+    }
+    xPosition++;
+    this.fill.points.push({x: xPosition, y: point.y});
+    return xPosition;
+  }
+
+  checkAbovePixel(position: Point, spanAbove: boolean, queue: Point[]): boolean {
+    if (!this.checkColor({x: position.x, y: position.y - 1})) {
+      return false;
+    } else if (!spanAbove && position.y > 0 ) {
+      queue.push({x: position.x, y: position.y - 1});
+      return true;
+    }
+    return spanAbove;
+  }
+
+  checkBelowPixel(position: Point, spanBelow: boolean, queue: Point[]): boolean {
+    if (!this.checkColor({x: position.x, y: position.y + 1})) {
+      return false;
+    } else if (!spanBelow && position.y < this.drawing.clientHeight - 1) {
+      queue.push({x: position.x, y: position.y + 1});
+      return true;
+    }
+    return spanBelow;
+  }
+
+  addPixelPosition(position: Point): void {
+    const array = this.checkedPixels.get(position.x);
+    if (array) {
+      array.push(position.y);
+    } else {
+      this.checkedPixels.set(position.x, [position.y]);
     }
   }
 

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
+import { CanvasConversionService } from '../canvas-conversion.service';
 import { ColorFillService } from '../stockage-svg/draw-element/color-fill.service';
-import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { PaintBucketToolService } from './paint-bucket-tool.service';
 
 // tslint:disable:no-magic-numbers
@@ -9,29 +9,31 @@ import { PaintBucketToolService } from './paint-bucket-tool.service';
 
 describe('PaintBucketToolService', () => {
   let service: PaintBucketToolService;
-  let stockageService: SVGStockageService;
   let element: ColorFillService;
   let canvas: HTMLCanvasElement;
   let context: CanvasRenderingContext2D;
-  //let svg: SVGElement;
-  beforeEach(() => TestBed.configureTestingModule({}));
-  beforeEach(() => service = TestBed.get(PaintBucketToolService));
-  beforeEach(() => stockageService = TestBed.get(SVGStockageService));
+  let svg: SVGElement;
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [{provide: CanvasConversionService, useValue: { updateDrawing: () => { return; }}}]
+  }));
 
   beforeEach(() => {
-    //svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     canvas = document.createElement('canvas');
-    service.canvas = canvas;
-
-    //service.drawing = svg;
-    //service.drawing.setAttribute('width', '10');
-    //service.drawing.setAttribute('height', '10');
+    service = TestBed.get(PaintBucketToolService);
+    service['colorParameter'].primaryColor.RGBAString = 'primary';
+    service['colorParameter'].secondaryColor.RGBAString = 'secondary';
     const contextCanvas = canvas.getContext('2d');
     if (contextCanvas) {
       context = contextCanvas;
       service['context'] = context;
     }
-    /*const imageData = new ImageData(2, 2);
+    service['mousePosition'] = {x: 5, y: 5};
+    service['image'] = new Image();
+    service.drawing = svg;
+    service.canvas = canvas;
+    element = new ColorFillService();
+    const imageData = new ImageData(2, 2);
     const data = imageData.data;
     data.set([
       1, 0, 0, 1,
@@ -39,23 +41,7 @@ describe('PaintBucketToolService', () => {
       9, 0, 0, 1,
       3, 0, 2, 1
     ]);
-    spyOn(context, 'getImageData').and.callFake(() => imageData);*/
-
-    service['commands'].drawingInProgress = true;
-    service['tools'].activeTool = service['tools'].toolList[11];
-    service['tools'].activeTool.parameters[0].value = 5;
-
-    service['mousePosition'] = {x: 0, y: 0};
-    service['checkedPixels'] = new Map<number, number[]>();
-
-    element = new ColorFillService();
-    service['color'] = [0, 0, 0];
-    element.primaryColor = {
-      RGBAString: 'rgba(0, 0, 0, 1)',
-      RGBA: [0, 0, 0, 1]
-    };
-
-    stockageService.setOngoingSVG(element);
+    spyOn(context, 'getImageData').and.callFake(() => imageData);
   });
 
   it('should be created', () => {
@@ -98,7 +84,7 @@ describe('PaintBucketToolService', () => {
     service.onMouseClick(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }));
     expect(spy).toHaveBeenCalled();
   });
-/*
+
   // TESTS createCanvas
 
   it('#createCanvas devrait appeler la fonction getContext', () => {
@@ -115,7 +101,7 @@ describe('PaintBucketToolService', () => {
   // TESTS onImageLoad
 
   it('#onImageLoad devrait appeler la fonction drawImage', () => {
-    const spy = spyOn(service['context'], 'drawImage');
+    const spy = spyOn(service['context'], 'drawImage').and.callThrough();
     service['image'].onload = service.onImageLoad.bind(service);
     service.onImageLoad();
     expect(spy).toHaveBeenCalledWith(service['image'], 0, 0);
@@ -123,7 +109,7 @@ describe('PaintBucketToolService', () => {
 
   // TESTS fillWithColor
 
-  it('#fillWithColor devrait appeler la fonction getContext', () => {
+  /*it('#fillWithColor devrait appeler la fonction getContext', () => {
     const spy = spyOn(Array.prototype, 'push');
     service.fillWithColor();
     expect(spy).toHaveBeenCalledWith(service['mousePosition']);
