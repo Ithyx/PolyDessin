@@ -65,7 +65,9 @@ describe('Tests de database.service', () => {
         updateTranslationMouse: () => { return; },
         updateParameters: () => { return; },
         updateRotation : () => { return; },
-        updateTransform : () => { return; }
+        updateTransform : () => { return; },
+        updateScale : () => { return; },
+        calculateRotation : () => { return; }
     };
 
     beforeEach(() => black = {
