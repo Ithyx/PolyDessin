@@ -26,7 +26,8 @@ describe('DrawingSurfaceComponent', () => {
   const selectionBoxStub: Partial<SelectionBoxService> = {
     box: new RectangleService(),
     mouseClick: {x: 0, y: 0},
-    controlPointBox: []
+    controlPointBox: [],
+    controlPointMouseDown: () => { return; }
   };
 
   const selectionRectangleStub: Partial<SelectionRectangleService> = {
@@ -42,6 +43,7 @@ describe('DrawingSurfaceComponent', () => {
     deleteBoundingBox: () => { return; },
     handleClick: () => { return; },
     handleRightClick: () => { return; },
+    findPointMinAndMax: () => { return; },
     clickInSelectionBox: false,
     clickOnSelectionBox: false
   };
@@ -87,8 +89,8 @@ describe('DrawingSurfaceComponent', () => {
     component['conversion'] = new ElementRef<HTMLCanvasElement>(conversion);
     component['selection'] = TestBed.get(SelectionService);
     component['selection'].selectionBox.box = new RectangleService();
-    component['selection'].selectionBox.box.points[0] = {x: 10, y: 10};
-    component['selection'].selectionBox.box.points[1] = {x: 20, y: 20};
+    component['selection'].selectionBox.box.pointMin = {x: 10, y: 10};
+    component['selection'].selectionBox.box.pointMax = {x: 20, y: 20};
     component['selection'].selectionRectangle.rectangle = new RectangleService();
     component['mousePosition'] = {x: 0, y: 0};
   });
@@ -115,8 +117,12 @@ describe('DrawingSurfaceComponent', () => {
     expect(component['pipette'].canvas).toEqual(canvas);
   });
 
-  /*
   // TESTS clickBelongToSelectionBox
+  it('#clickBelongToSelectionBox devrait appeler findPointMinAndMax de selectionBox', () => {
+    const spy = spyOn(component['selection'], 'findPointMinAndMax');
+    component.clickBelongToSelectionBox(new MouseEvent('click', {clientX: 15, clientY: 15}));
+    expect(spy).toHaveBeenCalledWith(component['selection'].selectionBox.box);
+  });
   it('#clickBelongToSelectionBox devrait retourner false si le x de la souris est inférieur '
     + 'au x minimal de la boîte de sélection', () => {
     expect(component.clickBelongToSelectionBox(new MouseEvent('click', {clientX: 5, clientY: 15}))).toBe(false);
@@ -133,10 +139,10 @@ describe('DrawingSurfaceComponent', () => {
     + 'au y maximal de la boîte de sélection', () => {
     expect(component.clickBelongToSelectionBox(new MouseEvent('click', {clientX: 15, clientY: 25}))).toBe(false);
   });
-  it('#clickBelongToSelectionBox devrait retourner false si le clic de la souris est contenu '
+  it('#clickBelongToSelectionBox devrait retourner true si le clic de la souris est contenu '
     + 'dans la boîte de sélection', () => {
     expect(component.clickBelongToSelectionBox(new MouseEvent('click', {clientX: 15, clientY: 15}))).toBe(true);
-  }); */
+  });
 
   // TESTS handleElementMouseDown
   it('#handleElementMouseDown devrait assigner l\'élément en paramètre à activeElement de colorChanger', () => {
@@ -244,12 +250,6 @@ describe('DrawingSurfaceComponent', () => {
     component.handleElementMouseUp(element, new MouseEvent('up', {button: 0, screenX: 25, screenY: 25}));
     expect(spy).toHaveBeenCalledWith(element);
   });
-  /* it('#handleElementMouseUp devrait mettre isSelected de l\'élément en paramètre à true '
-    + 'lors d\'un left click où mousePosition est égal à screenX, screenY du MouseEvent', () => {
-    component['mousePosition'] = {x: 25, y: 25};
-    component.handleElementMouseUp(element, new MouseEvent('up', {button: 0, screenX: 25, screenY: 25}));
-    expect(element.isSelected).toBe(true);
-  }); */
   it('#handleElementMouseUp devrait appeler createBoundingBox de selection '
     + 'lors d\'un left click où mousePosition est égal à screenX, screenY du MouseEvent', () => {
     component['mousePosition'] = {x: 25, y: 25};
@@ -355,14 +355,14 @@ describe('DrawingSurfaceComponent', () => {
   });
 
   // TESTS handleMouseDownBackground
-  /* it('#handleMouseDownBackground devrait changer mousePosition pour screenX et screenY du MouseEvent', () => {
+  it('#handleMouseDownBackground devrait changer mousePosition pour screenX et screenY du MouseEvent', () => {
     component.handleMouseDownBackground(new MouseEvent('down', {screenX: 16, screenY: 16}));
     expect(component['mousePosition']).toEqual({x: 16, y: 16});
   });
   it('handleMouseDownBackground devrait assigner undefined à activeElement de colorChanger', () => {
     component.handleMouseDownBackground(new MouseEvent('down'));
     expect(component['colorChanger'].activeElement).not.toBeDefined();
-  }); */
+  });
   it('#handleMouseDownBackground ne devrait rien faire avec la sélection si l\'outil actif n\'est pas la sélection', () => {
     component['tools'].activeTool.ID = TOOL_INDEX.COLOR_CHANGER;
     const spy = spyOn(component, 'handleBackgroundLeftClick');
@@ -421,7 +421,7 @@ describe('DrawingSurfaceComponent', () => {
     component.handleMouseDownBackground(new MouseEvent('down', {button: 2}));
     expect(component['selection'].selectionRectangle.rectangle).not.toBeDefined();
   });
-  /*
+
   // TESTS handleMouseUpBackground
   it('#handleMouseUpBackground devrait appeler handleBackgroundLeftClick si '
     + 'mousePosition est égal à screenX et screenY de la souris', () => {
@@ -443,7 +443,14 @@ describe('DrawingSurfaceComponent', () => {
     const spy = spyOn(component, 'handleBackgroundLeftClick');
     component.handleMouseUpBackground(new MouseEvent('up', {screenX: 17, screenY: 17}));
     expect(spy).not.toHaveBeenCalled();
-  }); */
+  });
+  it('#handleMouseUpBackground ne devrait pas appeler handleBackgroundLeftClick si '
+    + 'le MouseEvent n\'est pas un clic gauche de la souris', () => {
+    component['mousePosition'] = {x: 17, y: 15};
+    const spy = spyOn(component, 'handleBackgroundLeftClick');
+    component.handleMouseUpBackground(new MouseEvent('up', {button: 2}));
+    expect(spy).not.toHaveBeenCalled();
+  });
 
   // TESTS handleBackgroundLeftClick
   it('#handleBackgroundLeftClick devrait appeler deleteBoundingBox de selection', () => {
