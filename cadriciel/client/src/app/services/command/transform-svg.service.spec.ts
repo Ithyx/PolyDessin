@@ -53,7 +53,8 @@ describe('TransformSvgService', () => {
     const spy = spyOn(Map.prototype, 'set');
     service = new TransformSvgService(elements, TestBed.get(DomSanitizer), deleteBoundingBoxStub);
     expect(spy).toHaveBeenCalledWith(testElement, {transform: testElement.transform, strokePoints: []});
-    expect(spy).toHaveBeenCalledWith(testElementStroke, {transform: testElementStroke.transform, strokePoints: [{x: 12, y: 12}]});
+    expect(spy).toHaveBeenCalledWith(testElementStroke,
+      {transform: testElementStroke.transform, strokePoints: testElementStroke.strokePoints});
   });
 
   // TESTS undo
