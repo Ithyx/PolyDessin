@@ -31,14 +31,14 @@ describe('CanvasConversionService', () => {
     RGBAString: 'rgba(1, 0, 0, 1)',
     RGBA: [1, 0, 0, 1]
   };
- /* const secondColor: Color = {
-    RGBAString: 'rgba(2, 0, 0, 1)',
-    RGBA: [2, 0, 0, 1]
+  const secondColor: Color = {
+      RGBAString: 'rgba(2, 0, 0, 1)',
+      RGBA: [2, 0, 0, 1]
   };
   const thirdColor: Color = {
     RGBAString: 'rgba(3, 0, 0, 1)',
     RGBA: [3, 0, 0, 1]
-  };*/
+  };
 
   beforeEach(() => TestBed.configureTestingModule({}));
   beforeEach(() => {
@@ -162,7 +162,7 @@ describe('CanvasConversionService', () => {
     service.loadImage();
     expect(context.drawImage).toHaveBeenCalledWith(service['image'], 0, 0);
   });
-/*
+
   // TESTS updateDrawing
 
   it('#updateDrawing devrait mettre isValid à false', () => {
@@ -195,7 +195,7 @@ describe('CanvasConversionService', () => {
     service.updateDrawing();
 
     firstElement.primaryColor = firstColor;
-    const coloredFirstElement = {...firstElement};
+    const coloredFirstElement = service['savingUtility'].createCopyDrawElement(firstElement);
     firstElement.draw();
     coloredFirstElement.svgHtml = sanitizer.bypassSecurityTrustHtml(firstElement.svg);
 
@@ -207,25 +207,11 @@ describe('CanvasConversionService', () => {
 
     secondElement.primaryColor = secondColor;
     secondElement.secondaryColor = secondColor;
-    const coloredSecondElement = {...secondElement};
+    const coloredSecondElement = service['savingUtility'].createCopyDrawElement(secondElement);
     secondElement.draw();
     coloredSecondElement.svgHtml = sanitizer.bypassSecurityTrustHtml(secondElement.svg);
 
     expect(service['drawing'].elements).toContain(coloredSecondElement);
-  });
-
-  it('#updateDrawing devrait convertir l\'élément en TracePencil s\'il s\'agit d\'un TraceBrush', () => {
-    service.updateDrawing();
-
-    thirdElement.primaryColor = thirdColor;
-    const coloredThirdElement = {...thirdElement};
-    const pencil = new TracePencilService();
-    pencil.points = thirdElement.points;
-    pencil.primaryColor = thirdColor;
-    pencil.draw();
-    coloredThirdElement.svgHtml = sanitizer.bypassSecurityTrustHtml(pencil.svg);
-
-    expect(service['drawing'].elements).toContain(coloredThirdElement);
   });
 
   it('#updateDrawing devrait remettre chaque élément du stockage à son état initial', () => {
@@ -258,7 +244,7 @@ describe('CanvasConversionService', () => {
     jasmine.clock().tick(5);
     expect(service.convertToCanvas).toHaveBeenCalled();
   });
-*/
+
   // TESTS calculateColor
 
   it('#calculateColor devrait assigner des teintes de rouge aux premiers SVG du stockage', () => {
@@ -290,7 +276,12 @@ describe('CanvasConversionService', () => {
 
   // TESTS createClone
 
-  /*
+  it('#createClone devrait appeler createCopyDrawElement de savingUtility avec l\'élément', () => {
+    const spy = spyOn(service['savingUtility'], 'createCopyDrawElement').and.callThrough();
+    service.createClone(firstElement);
+    expect(spy).toHaveBeenCalledWith(firstElement);
+  });
+
   it('#createClone devrait appeler draw sur l\'élément en paramètre s\'il n\'est pas un TraceBrush', () => {
     const spy = spyOn(firstElement, 'draw');
     service.createClone(firstElement);
@@ -317,7 +308,6 @@ describe('CanvasConversionService', () => {
       tracePencil.points = thirdElement.points;
       tracePencil.primaryColor = thirdElement.primaryColor;
       tracePencil.thickness = thirdElement.thickness;
-      // tracePencil.translate = thirdElement.translate;
       tracePencil.transform = {...thirdElement.transform};
       tracePencil.isAPoint = thirdElement.isAPoint;
       tracePencil.draw();
@@ -326,11 +316,11 @@ describe('CanvasConversionService', () => {
   });
 
   it('#createClone devrait retourner un clone de l\'élément en paramètre', () => {
-    const element = {...firstElement};
+    const element = service['savingUtility'].createCopyDrawElement(firstElement);
     firstElement.draw();
     element.svgHtml = sanitizer.bypassSecurityTrustHtml(firstElement.svg);
     expect(service.createClone(firstElement)).toEqual(element);
-  }); */
+  });
 
   // TESTS getElementsInArea
 
