@@ -1,12 +1,11 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ElementRef } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { MatDialogModule, MatDialogRef, MatSidenavModule } from '@angular/material';
 import { By, DomSanitizer } from '@angular/platform-browser';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { ExportWindowComponent, PREVIEW_SIZE } from './export-window.component';
-
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 
 // tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers
