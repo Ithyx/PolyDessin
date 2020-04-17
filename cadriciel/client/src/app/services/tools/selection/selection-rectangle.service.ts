@@ -76,10 +76,20 @@ export class SelectionRectangleService {
       if (mouse.buttons === RIGHT_CLICK) {
         this.rectangleInverted.points[0] = {x: this.basisPoint.x, y: this.basisPoint.y};
         this.rectangleInverted.points[1] = {x: this.basisPoint.x + this.widthCalculated, y: this.basisPoint.y + this.heightCalculated};
+        this.rectangleInverted.addRectanglePoints();
+        this.rectangleInverted.strokePoints = [
+          {...this.rectangleInverted.points[0]}, {...this.rectangleInverted.points[2]},
+          {...this.rectangleInverted.points[1]}, {...this.rectangleInverted.points[this.rectangleInverted.points.length - 1]}
+        ];
         this.refreshSVGInvertedSelection();
       } else if (mouse.button === LEFT_CLICK) {
         this.rectangle.points[0] = {x: this.basisPoint.x, y: this.basisPoint.y};
         this.rectangle.points[1] = {x: this.basisPoint.x + this.widthCalculated, y: this.basisPoint.y + this.heightCalculated};
+        this.rectangle.addRectanglePoints();
+        this.rectangle.strokePoints = [
+          {...this.rectangle.points[0]}, {...this.rectangle.points[2]},
+          {...this.rectangle.points[1]}, {...this.rectangle.points[this.rectangle.points.length - 1]}
+        ];
         this.refreshSVGNormalSelection();
       }
     }

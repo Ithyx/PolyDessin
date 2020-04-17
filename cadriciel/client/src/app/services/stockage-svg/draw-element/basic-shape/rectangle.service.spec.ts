@@ -34,7 +34,7 @@ describe('RectangleService', () => {
 
   // TESTS drawLine
 
-  /* 
+  /*
   it('#drawLine devrait attribuer le bon stroke si erasingEvidence est vrai', () => {
     element.erasingEvidence = true;
     const test = '<line stroke-linecap="square'

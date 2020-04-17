@@ -36,6 +36,7 @@ export abstract class DrawElement {
   trueType: TOOL_INDEX;
 
   points: Point[];
+  strokePoints?: Point[];
   erasingEvidence: boolean;
 
   primaryColor?: Color;
@@ -72,6 +73,9 @@ export abstract class DrawElement {
   abstract updateParameters(tool: DrawingTool): void;
 
   updateTranslation(x: number, y: number): void {
+    if (this.strokePoints) {
+      this.strokePoints.forEach((point) => { point.x += x; point.y += y; });
+    }
     const translationMatrix = {a: 1, b: 0, c: 0, d: 1, e: x, f: y};
     this.updateTransform(translationMatrix);
    }
@@ -79,11 +83,17 @@ export abstract class DrawElement {
    updateTranslationMouse(mouse: MouseEvent): void {
     const x = mouse.movementX;
     const y = mouse.movementY;
-    const translationMatrix = {a: 1, b: 0, c: 0, d: 1, e: x, f: y};
+    if (this.strokePoints) {
+      this.strokePoints.forEach((point) => { point.x += x; point.y += y; });
+    }
+    const translationMatrix: TransformMatrix = {a: 1, b: 0, c: 0, d: 1, e: x, f: y};
     this.updateTransform(translationMatrix);
   }
 
   updateRotation(x: number, y: number, angle: number): void {
+    if (this.strokePoints) {
+      this.strokePoints.forEach((point) => this.calculateRotation(point, x, y, angle));
+    }
     const radianAngle = angle * (Math.PI / HALF_CIRCLE);
     const aRotation = Math.cos(radianAngle);
     const bRotation = Math.sin(radianAngle);
@@ -91,12 +101,25 @@ export abstract class DrawElement {
     const dRotation = Math.cos(radianAngle);
     const eRotation = (1 - Math.cos(radianAngle)) * x + Math.sin(radianAngle) * y;
     const fRotation = (1 - Math.cos(radianAngle)) * y - Math.sin(radianAngle) * x;
-    const rotationMatrix = {a: aRotation, b: bRotation, c: cRotation, d: dRotation, e: eRotation, f: fRotation };
+    const rotationMatrix: TransformMatrix = {a: aRotation, b: bRotation, c: cRotation, d: dRotation, e: eRotation, f: fRotation };
     this.updateTransform(rotationMatrix);
   }
 
+  updateScale(scale: Point, center: Point): void {
+    if (this.strokePoints) {
+      for (const point of this.strokePoints) {
+        point.x = scale.x * point.x + (1 - scale.x) * center.x;
+        point.y = scale.y * point.y + (1 - scale.y) * center.y;
+      }
+    }
+    const eScale = (1 - scale.x) * center.x;
+    const fScale = (1 - scale.y) * center.y;
+    const scaleMatrix: TransformMatrix = {a: scale.x, b: 0, c: 0, d: scale.y, e: eScale, f: fScale};
+    this.updateTransform(scaleMatrix);
+  }
+
   updateTransform(matrix: TransformMatrix): void {
-    const oldTransform = {...this.transform};
+    const oldTransform: TransformMatrix = {...this.transform};
     this.transform.a = oldTransform.a * matrix.a + oldTransform.b * matrix.c;
     this.transform.b = oldTransform.a * matrix.b + oldTransform.b * matrix.d;
     this.transform.c = oldTransform.c * matrix.a + oldTransform.d * matrix.c;
@@ -104,5 +127,12 @@ export abstract class DrawElement {
     this.transform.e = oldTransform.e * matrix.a + oldTransform.f * matrix.c + matrix.e;
     this.transform.f = oldTransform.e * matrix.b + oldTransform.f * matrix.d + matrix.f;
     this.draw();
+  }
+
+  calculateRotation(point: Point, x: number, y: number, angle: number): void {
+    const copyPoint: Point = {...point};
+    const radianAngle = angle * (Math.PI / HALF_CIRCLE);
+    point.x = x + (copyPoint.x - x) * Math.cos(radianAngle) - (copyPoint.y - y) * Math.sin(radianAngle);
+    point.y = y + (copyPoint.x - x) * Math.sin(radianAngle) + (copyPoint.y - y) * Math.cos(radianAngle);
   }
 }

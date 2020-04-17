@@ -57,8 +57,11 @@ export class SavingUtilityService {
     newElement.svg = element.svg;
     newElement.trueType = element.trueType;
     newElement.points = [];
-    for (const point of element.points) {
-      newElement.points.push({x: point.x, y: point.y});
+    element.points.forEach((point) => { newElement.points.push({...point}); });
+    if (newElement.strokePoints && element.strokePoints) {
+      for (const point of element.strokePoints) {
+        newElement.strokePoints.push({...point});
+      }
     }
     newElement.erasingEvidence = element.erasingEvidence;
     if (element.primaryColor !== undefined) { newElement.primaryColor = element.primaryColor; }

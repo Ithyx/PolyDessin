@@ -9,7 +9,7 @@ describe('EllipseService', () => {
 
   beforeEach(() => {
     element = new EllipseService();
-
+    element.points = [];
     for (let i = 0; i < 64; ++i) {
       element.points.push({x: i, y: i});
     }
@@ -89,21 +89,12 @@ describe('EllipseService', () => {
 
   // TESTS drawShape
 
-  it('#drawShape devrait bien attribuer les pointMin et pointMax', () => {
-    element.drawShape();
-    expect(element.pointMin).toEqual({x: 10, y: 10});
-    expect(element.pointMax).toEqual({x: 10, y: 10});
-  });
-
   it('#drawShape devrait attribuer le bon fill si l\'option choisie n\'est pas \'Contour\'', () => {
     element.chosenOption = 'Vide';
     const test = '<ellipse transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
     + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f +
     ')" fill="' + element.primaryColor.RGBAString
-    + '" stroke="'
-    + ((element.erasingEvidence) ? element.erasingColor.RGBAString :
-      ((element.chosenOption !== 'Plein') ? element.secondaryColor.RGBAString : 'none'))
-    + '" stroke-width="' + element.thickness
+    + '" stroke="none'
     + '" cx="' + (element.pointMin.x + element.pointMax.x) / 2 + '" cy="' + (element.pointMin.y + element.pointMax.y) / 2
     + '" rx="' + element.getWidth() / 2 + '" ry="' + element.getHeight() / 2 + '"></ellipse>';
 
@@ -116,58 +107,7 @@ describe('EllipseService', () => {
     const test = '<ellipse transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
     + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f +
     ')" fill="' + 'none'
-    + '" stroke="'
-    + ((element.erasingEvidence) ? element.erasingColor.RGBAString :
-      ((element.chosenOption !== 'Plein') ? element.secondaryColor.RGBAString : 'none'))
-    + '" stroke-width="' + element.thickness
-    + '" cx="' + (element.pointMin.x + element.pointMax.x) / 2 + '" cy="' + (element.pointMin.y + element.pointMax.y) / 2
-    + '" rx="' + element.getWidth() / 2 + '" ry="' + element.getHeight() / 2 + '"></ellipse>';
-
-    element.drawShape();
-    expect(element.svg).toEqual(test);
-  });
-
-  it('#drawShape devrait attribuer le bon svg quand erasingEvidence est vrai', () => {
-    element.erasingEvidence = true;
-    element.chosenOption = 'Vide';
-    const test = '<ellipse transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
-    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f +
-    ')" fill="' + element.primaryColor.RGBAString
-    + '" stroke="'
-    + ((element.erasingEvidence) ? element.erasingColor.RGBAString : element.secondaryColor.RGBAString)
-    + '" stroke-width="' + element.thickness
-    + '" cx="' + (element.pointMin.x + element.pointMax.x) / 2 + '" cy="' + (element.pointMin.y + element.pointMax.y) / 2
-    + '" rx="' + element.getWidth() / 2 + '" ry="' + element.getHeight() / 2 + '"></ellipse>';
-
-    element.drawShape();
-    expect(element.svg).toEqual(test);
-  });
-
-  it('#drawShape devrait attribuer le bon svg si l\'option choisie n\'est pas \'Plein\' quand erasingEvidence est faux', () => {
-    element.erasingEvidence = false;
-    element.chosenOption = 'Vide';
-    const test = '<ellipse transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
-    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f +
-    ')" fill="' + ((element.chosenOption !== 'Contour') ? element.primaryColor.RGBAString : 'none')
-    + '" stroke="'
-    + ((element.erasingEvidence) ? element.erasingColor.RGBAString : element.secondaryColor.RGBAString)
-    + '" stroke-width="' + element.thickness
-    + '" cx="' + (element.pointMin.x + element.pointMax.x) / 2 + '" cy="' + (element.pointMin.y + element.pointMax.y) / 2
-    + '" rx="' + element.getWidth() / 2 + '" ry="' + element.getHeight() / 2 + '"></ellipse>';
-
-    element.drawShape();
-    expect(element.svg).toEqual(test);
-  });
-
-  it('#drawShape devrait attribuer le bon svg si l\'option choisie est \'Plein\' quand erasingEvidence est faux', () => {
-    element.erasingEvidence = false;
-    element.chosenOption = 'Plein';
-    const test = '<ellipse transform=" matrix(' + element.transform.a + ' ' + element.transform.b + ' ' + element.transform.c + ' '
-    + element.transform.d + ' ' + element.transform.e + ' ' + element.transform.f +
-    ')" fill="' + ((element.chosenOption !== 'Contour') ? element.primaryColor.RGBAString : 'none')
-    + '" stroke="'
-    + ((element.erasingEvidence) ? element.erasingColor.RGBAString : 'none')
-    + '" stroke-width="' + element.thickness
+    + '" stroke="none'
     + '" cx="' + (element.pointMin.x + element.pointMax.x) / 2 + '" cy="' + (element.pointMin.y + element.pointMax.y) / 2
     + '" rx="' + element.getWidth() / 2 + '" ry="' + element.getHeight() / 2 + '"></ellipse>';
 
@@ -188,9 +128,6 @@ describe('EllipseService', () => {
 
   it('#drawPerimeter devrait attribuer le bon perimeter dans la branche chosenOption n\'est pas \'Plein\''
   + 'si Height et Width sont nuls', () => {
-    element.points = [];
-    element.points.push({x: 10, y: 10});
-    element.points.push({x: 10, y: 10});
     element.chosenOption = 'Vide';
     const thicknessTest = element.thickness;
     const test = '<rect stroke="gray" fill="none" stroke-width="2"'

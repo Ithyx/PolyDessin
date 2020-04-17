@@ -67,7 +67,7 @@ describe('TransformSvgService', () => {
   });
   it('#changeTransform devrait changer le transform des éléments par ceux dans la map', () => {
     const transform: TransformMatrix = {a: 0, b: 0, c: 1, d: 0, e: 0, f: 1};
-    service['elements'].set((testElement as DrawElement), transform);
+    service['elements'].set((testElement as DrawElement), {transform, strokePoints: []});
     service.changeTransform();
     expect(testElement.transform).toEqual(transform);
   });
@@ -75,7 +75,7 @@ describe('TransformSvgService', () => {
     const transform: TransformMatrix = {a: 1, b: 0, c: 1, d: 0, e: 1, f: 1};
     testElement.transform = {...transform};
     service.changeTransform();
-    expect(service['elements'].get(testElement as DrawElement)).toEqual(transform);
+    expect(service['elements'].get(testElement as DrawElement)).toEqual({transform, strokePoints: []});
   });
   it('#changeTransform devrait appeler draw sur les éléments', () => {
     const spy = spyOn(testElement, 'draw');
@@ -102,12 +102,12 @@ describe('TransformSvgService', () => {
   });
   it('#hasMoved devrait retourner faux si le transform associé au premier élément est identique au transform réel', () => {
     testElement.transform = {a: 1, b: 1, c: 1, d: 1, e: 1, f: 1};
-    service['elements'].set(testElement, testElement.transform);
+    service['elements'].set(testElement, {transform: testElement.transform, strokePoints: []});
     expect(service.hasMoved()).toBe(false);
   });
   it('#hasMoved devrait retourner faux si le transform associé au premier élément diffère du transform réel', () => {
     testElement.transform = {a: 1, b: 1, c: 1, d: 1, e: 1, f: 1};
-    service['elements'].set(testElement, {a: 0, b: 0, c: 0, d: 0, e: 0, f: 0});
+    service['elements'].set(testElement, {transform: {a: 0, b: 0, c: 0, d: 0, e: 0, f: 0}, strokePoints: []});
     expect(service.hasMoved()).toBe(true);
   });
 });

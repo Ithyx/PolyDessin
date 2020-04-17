@@ -1,4 +1,4 @@
-/* import { TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { LineToolService } from '../../tools/line-tool.service';
 import { LineService } from './line.service';
 
@@ -210,4 +210,4 @@ describe('LineService', () => {
     expect(element.thicknessPoint).toEqual(1);
   });
 
-}); */
+});
