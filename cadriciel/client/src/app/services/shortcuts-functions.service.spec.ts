@@ -15,6 +15,7 @@ import { SavePopupComponent } from '../components/save-popup/save-popup.componen
 import { ShortcutsFunctionsService } from './shortcuts-functions.service';
 import { DrawElement } from './stockage-svg/draw-element/draw-element';
 import { TOOL_INDEX } from './tools/tool-manager.service';
+import { RectangleService } from './stockage-svg/draw-element/basic-shape/rectangle.service';
 
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
@@ -186,20 +187,62 @@ describe('ShortcutsFunctionsService', () => {
     expect(service['selection'].createBoundingBox).toHaveBeenCalled();
   });
 
+  // TESTS shortcutKeyB
+
+  it('#shortcutKeyB devrait changer l\'outil actif pour le sceau de peinture', () => {
+    service.shortcutKeyB();
+    expect(service['tools'].activeTool.ID).toEqual(TOOL_INDEX.PAINT_BUCKET);
+  });
+
+  it('#shortcutKeyB devrait supprimer le SVG en cours', () => {
+    spyOn(service, 'clearOngoingSVG');
+    service.shortcutKeyB();
+    expect(service.clearOngoingSVG).toHaveBeenCalled();
+  });
+
   // TESTS shortcutKeyC
 
-  it('#shortcutKeyC devrait changer l\'outil actif pour le crayon', () => {
-    const keyboard = new KeyboardEvent('keypress', { key: 'c' });
+  it('#shortcutKeyC devrait appeler copySelectedElements du clipboard si CTRL est actif et qu\'il y a une selection en cours', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'c' , ctrlKey: true});
+    service['selection'].selectionBox.box = new RectangleService();
+    spyOn(service['clipboard'], 'copySelectedElement');
     service.shortcutKeyC(keyboard);
+    expect(service['clipboard'].copySelectedElement).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyC ne devrait pas appeler copySelectedElements si CTRL n\'est pas actif ', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'c' , ctrlKey: false});
+    spyOn(service['clipboard'], 'copySelectedElement');
+    service.shortcutKeyC(keyboard);
+    expect(service['clipboard'].copySelectedElement).not.toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyC ne devrait pas appeler copySelectedElements s\'il n\'y a pas de selection en cours ', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'c' , ctrlKey: true});
+    delete service['selection'].selectionBox.box;
+    spyOn(service['clipboard'], 'copySelectedElement');
+    service.shortcutKeyC(keyboard);
+    expect(service['clipboard'].copySelectedElement).not.toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyC devrait changer l\'outil actif pour le crayon et supprimer le SVG en cours si CTRL n\'est pas appuye', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'c', ctrlKey: false });
+    spyOn(service, 'clearOngoingSVG');
+    service.shortcutKeyC(keyboard);
+    expect(service.clearOngoingSVG).toHaveBeenCalled();
     expect(service['tools'].activeTool.ID).toEqual(TOOL_INDEX.PENCIL);
   });
 
-  it('#shortcutKeyC devrait supprimer le SVG en cours', () => {
+  it('#shortcutKeyC devrait changer l\'outil actif pour le crayon et '
+    + 'supprimer le SVG en cours s\'il n\'y a pas de selection en cours', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'c', ctrlKey: true });
+    delete service['selection'].selectionBox.box;
     spyOn(service, 'clearOngoingSVG');
-    const keyboard = new KeyboardEvent('keypress', { key: 'c' });
     service.shortcutKeyC(keyboard);
     expect(service.clearOngoingSVG).toHaveBeenCalled();
+    expect(service['tools'].activeTool.ID).toEqual(TOOL_INDEX.PENCIL);
   });
+
 
   // TESTS shortcutKeyE
 
@@ -325,6 +368,72 @@ describe('ShortcutsFunctionsService', () => {
     expect(service.clearOngoingSVG).toHaveBeenCalled();
   });
 
+   // TESTS shortcutKeyV
+
+  it('#shortcutKeyV devrait appeler pasteSelectedElements du clipboard si CTRL est actif', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'v' , ctrlKey: true});
+    spyOn(service['clipboard'], 'pasteSelectedElement');
+    service.shortcutKeyV(keyboard);
+    expect(service['clipboard'].pasteSelectedElement).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyV ne devrait rien faire  si CTRL n\'est pas actif ', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'v' , ctrlKey: false});
+    spyOn(service['clipboard'], 'pasteSelectedElement');
+    service.shortcutKeyV(keyboard);
+    expect(service['clipboard'].pasteSelectedElement).not.toHaveBeenCalled();
+  });
+
+   // TESTS shortcutKeyD
+
+  it('#shortcutKeyD devrait appeler duplicateSelectedElements du clipboard si CTRL est actif et qu\'il y a une selection en cours', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'd' , ctrlKey: true});
+    service['selection'].selectionBox.box = new RectangleService();
+    spyOn(service['clipboard'], 'duplicateSelectedElement');
+    service.shortcutKeyD(keyboard);
+    expect(service['clipboard'].duplicateSelectedElement).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyD ne devrait rien faire  si CTRL n\'est pas actif ', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'd' , ctrlKey: false});
+    spyOn(service['clipboard'], 'duplicateSelectedElement');
+    service.shortcutKeyD(keyboard);
+    expect(service['clipboard'].duplicateSelectedElement).not.toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyD ne devrait rien faire  s\'il n\'y a pas de selection en cours ', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'd' , ctrlKey: true});
+    delete service['selection'].selectionBox.box;
+    spyOn(service['clipboard'], 'duplicateSelectedElement');
+    service.shortcutKeyD(keyboard);
+    expect(service['clipboard'].duplicateSelectedElement).not.toHaveBeenCalled();
+  });
+
+  // TESTS shortcutKeyX
+
+  it('#shortcutKeyX devrait appeler cutSelectedElements du clipboard si CTRL est actif et qu\'il y a une selection en cours', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'x' , ctrlKey: true});
+    service['selection'].selectionBox.box = new RectangleService();
+    spyOn(service['clipboard'], 'cutSelectedElement');
+    service.shortcutKeyX(keyboard);
+    expect(service['clipboard'].cutSelectedElement).toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyX ne devrait rien faire  si CTRL n\'est pas actif ', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'x' , ctrlKey: false});
+    spyOn(service['clipboard'], 'cutSelectedElement');
+    service.shortcutKeyX(keyboard);
+    expect(service['clipboard'].cutSelectedElement).not.toHaveBeenCalled();
+  });
+
+  it('#shortcutKeyX ne devrait rien faire  s\'il n\'y a pas de selection en cours ', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'x' , ctrlKey: true});
+    delete service['selection'].selectionBox.box;
+    spyOn(service['clipboard'], 'cutSelectedElement');
+    service.shortcutKeyX(keyboard);
+    expect(service['clipboard'].cutSelectedElement).not.toHaveBeenCalled();
+  });
+
   // TESTS shortcutKeyZ
 
   it('#shortcutKeyZ devrait annuler la dernier commande si CTRL est actif et qu\'il n\'y a pas de dessin en cours', () => {
@@ -376,6 +485,31 @@ describe('ShortcutsFunctionsService', () => {
     service.shortcutKeyUpperZ(keyboard);
     expect(service['commands'].redoCommand).not.toHaveBeenCalled();
   });
+
+    // TESTS shortcutKeyDelete
+
+  it('#shortcutKeyDelete devrait appeler deleteSelectedElements du clipboard si' +
+    ' l\'outil actif est la selection et qu\'il y a une selection en cours', () => {
+      service['tools'].activeTool.ID = TOOL_INDEX.SELECTION;
+      service['selection'].selectionBox.box = new RectangleService();
+      spyOn(service['clipboard'], 'deleteSelectedElement');
+      service.shortcutKeyDelete();
+      expect(service['clipboard'].deleteSelectedElement).toHaveBeenCalled();
+    });
+
+  it('#shortcutKeyDelete ne devrait rien faire  si l\'outil actif n\'est pas la selection ', () => {
+    service['tools'].activeTool.ID = TOOL_INDEX.RECTANGLE;
+    spyOn(service['clipboard'], 'deleteSelectedElement');
+    service.shortcutKeyDelete();
+    expect(service['clipboard'].deleteSelectedElement).not.toHaveBeenCalled();
+    });
+
+  it('#shortcutKeyDelete ne devrait rien faire  s\'il n\'y a pas de selection en cours ', () => {
+      delete service['selection'].selectionBox.box;
+      spyOn(service['clipboard'], 'deleteSelectedElement');
+      service.shortcutKeyDelete();
+      expect(service['clipboard'].deleteSelectedElement).not.toHaveBeenCalled();
+    });
 
   // TESTS shortcutKeyShift
 
