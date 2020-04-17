@@ -470,31 +470,31 @@ describe('DrawingSurfaceComponent', () => {
 
   // TESTS handleControlPointMouseDown
   it('#handleControlPointMouseDown devrait assigner screenX et screenY de la souris à mousePosition', () => {
-    component.handleControlPointMouseDown(new MouseEvent('down', {screenX: 34, screenY: 34}));
+    component.handleControlPointMouseDown(new MouseEvent('down', {screenX: 34, screenY: 34}), 0);
     expect(component['mousePosition']).toEqual({x: 34, y: 34});
   });
   it('#handleControlPointMouseDown ne devrait rien faire avec la sélection si l\'outil actif n\'est pas la sélection', () => {
     component['tools'].activeTool.ID = TOOL_INDEX.COLOR_CHANGER;
     const spy = spyOn(component['selection'].selectionRectangle, 'mouseDown');
-    component.handleControlPointMouseDown(new MouseEvent('down'));
+    component.handleControlPointMouseDown(new MouseEvent('down'), 0);
     expect(spy).not.toHaveBeenCalled();
   });
   it('#handleControlPointMouseDown ne devrait rien faire avec la sélection si l\'outil actif est la sélection '
     + 'et que le bouton de la souris n\'est pas un right click', () => {
     const spy = spyOn(component['selection'].selectionRectangle, 'mouseDown');
-    component.handleControlPointMouseDown(new MouseEvent('down', {button: 1}));
+    component.handleControlPointMouseDown(new MouseEvent('down', {button: 1}), 0);
     expect(spy).not.toHaveBeenCalled();
   });
   it('#handleControlPointMouseDown devrait appeler mouseDown de selectionRectangle avec le MouseEvent '
     + 'si l\'outil actif est la sélection et que le bouton de la souris est un right click', () => {
     const spy = spyOn(component['selection'].selectionRectangle, 'mouseDown');
     const event = new MouseEvent('down', {button: 2});
-    component.handleControlPointMouseDown(event);
+    component.handleControlPointMouseDown(event, 0);
     expect(spy).toHaveBeenCalledWith(event);
   });
   it('#handleControlPointMouseDown devrait supprimer le rectangle de selectionRectangle '
     + 'si l\'outil actif est la sélection et que le bouton de la souris est un right click', () => {
-    component.handleControlPointMouseDown(new MouseEvent('down', {button: 2}));
+    component.handleControlPointMouseDown(new MouseEvent('down', {button: 2}), 0);
     expect(component['selection'].selectionRectangle.rectangle).not.toBeDefined();
   });
 });

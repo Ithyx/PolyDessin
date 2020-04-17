@@ -3,6 +3,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { async, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule, MatProgressSpinnerModule } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -12,12 +13,11 @@ import { GalleryLoadWarningComponent } from '../components/gallery-load-warning/
 import { GalleryElementComponent } from '../components/gallery/gallery-element/gallery-element.component';
 import { GalleryComponent } from '../components/gallery/gallery.component';
 import { SavePopupComponent } from '../components/save-popup/save-popup.component';
+import { CanvasConversionService } from './canvas-conversion.service';
+import { TransformSvgService } from './command/transform-svg.service';
 import { ShortcutsManagerService } from './shortcuts-manager.service';
 import { DrawElement } from './stockage-svg/draw-element/draw-element';
 import { TOOL_INDEX } from './tools/tool-manager.service';
-import { TransformSvgService } from './command/transform-svg.service';
-import { DomSanitizer } from '@angular/platform-browser';
-import { CanvasConversionService } from './canvas-conversion.service';
 
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
@@ -38,6 +38,8 @@ describe('ShortcutsManagerService', () => {
     transform: {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0},
     draw: () => { return; },
     updateRotation: () => { return; },
+    updateScale: () => { return; },
+    calculateRotation: () => { return; },
     updateTransform: () => { return; },
     updateTranslation: () => { return; },
     updateTranslationMouse: () => { return; },
