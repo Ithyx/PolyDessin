@@ -66,6 +66,7 @@ export class DrawingPageComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.canvas.coloredDrawing = this.coloredDrawing.nativeElement;
+    this.canvas.updateDrawing();
   }
 
   @HostListener('document:keydown', ['$event'])
