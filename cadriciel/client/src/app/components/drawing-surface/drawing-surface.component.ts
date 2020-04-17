@@ -13,8 +13,8 @@ import { PipetteToolService } from 'src/app/services/tools/pipette-tool.service'
 import { LEFT_CLICK, RIGHT_CLICK, SelectionService } from 'src/app/services/tools/selection/selection.service';
 import { TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 
-const BIG_ROTATION_ANGLE = 15;
-const SMALL_ROTATION_ANGLE = 1;
+export const BIG_ROTATION_ANGLE = 15;
+export const SMALL_ROTATION_ANGLE = 1;
 
 @Component({
   selector: 'app-drawing-surface',
@@ -175,7 +175,7 @@ export class DrawingSurfaceComponent implements AfterViewInit {
 
    }
 
-   @HostListener('mousewheel', ['$event']) onMousewheel(event: WheelEvent): void {
+   @HostListener('mousewheel', ['$event']) onMouseWheel(event: WheelEvent): void {
     if (this.tools.activeTool.ID === TOOL_INDEX.SELECTION && this.selection.selectedElements.length > 0) {
       event.preventDefault();
       const transformCommand = new TransformSvgService(
