@@ -228,6 +228,26 @@ describe('ExportWindowComponent', () => {
     expect(component['selectedFileName']).toEqual('test2');
   });
 
+  // TEST updateEmail
+
+  it('#updateEmail devrait actualiser l\'addresse email sélectionnée', () => {
+    component['emailAdress'] = 'test1@example.com';
+    const input = fixture.debugElement.query(By.css('input[name="email"]')).nativeElement;
+    input.value = 'test2@example.com';
+    input.dispatchEvent(new Event('change')); // updateEmail appelée implicitement
+    expect(component['emailAdress']).toEqual('test2@example.com');
+  });
+
+  // TEST updateAuthor
+
+  it('#updateAuthor devrait actualiser le nom de l\'auteur', () => {
+    component['selectedAuthor'] = 'Test 1';
+    const input = fixture.debugElement.query(By.css('input[id="author"]')).nativeElement;
+    input.value = 'Test 2';
+    input.dispatchEvent(new Event('change')); // updateAuthor appelée implicitement
+    expect(component['selectedAuthor']).toEqual('Test 2');
+  });
+
   // TEST sanitize
 
   it('#sanitize devrait retourner la valeur en SafeHtml du string passé en paramètre', () => {
