@@ -12,6 +12,7 @@ import { GalleryLoadWarningComponent } from '../components/gallery-load-warning/
 import { GalleryElementComponent } from '../components/gallery/gallery-element/gallery-element.component';
 import { GalleryComponent } from '../components/gallery/gallery.component';
 import { SavePopupComponent } from '../components/save-popup/save-popup.component';
+import { CanvasConversionService } from './canvas-conversion.service';
 import { ShortcutsFunctionsService } from './shortcuts-functions.service';
 import { RectangleService } from './stockage-svg/draw-element/basic-shape/rectangle.service';
 import { DrawElement } from './stockage-svg/draw-element/draw-element';
@@ -56,7 +57,7 @@ describe('ShortcutsFunctionsService', () => {
         declarations: [ ExportWindowComponent, SavePopupComponent, GalleryComponent, GalleryElementComponent, GalleryLoadWarningComponent],
         imports: [ MatProgressSpinnerModule, MatDialogModule, BrowserAnimationsModule,  ReactiveFormsModule,
                    FormsModule, RouterModule.forRoot([{path: 'dessin', component: GalleryComponent}]), RouterTestingModule],
-        providers: [HttpClient, HttpHandler]
+        providers: [HttpClient, HttpHandler, {provide: CanvasConversionService, useValue: {updateDrawing: () => { return; }}}]
     })
     .overrideModule(BrowserDynamicTestingModule, {set: { entryComponents: [ ExportWindowComponent,
                                                                                 SavePopupComponent, GalleryComponent ] }})
@@ -282,6 +283,13 @@ describe('ShortcutsFunctionsService', () => {
     const keyboard = new KeyboardEvent('keypress', { key: 'e' , ctrlKey: false});
     service.shortcutKeyE(keyboard);
     expect(service['tools'].activeTool.ID).toEqual(TOOL_INDEX.ERASER);
+  });
+
+  it('#shortcutKeyE devrait appeler updateDrawing de CanvasConversion si CTRL n\'est pas appuyé', () => {
+    const keyboard = new KeyboardEvent('keypress', { key: 'e' , ctrlKey: false});
+    const spy = spyOn(service['canvas'], 'updateDrawing');
+    service.shortcutKeyE(keyboard);
+    expect(spy).toHaveBeenCalled();
   });
 
   it('#shortcutKeyE devrait supprimer le SVG en cours si CTRL n\'est pas appuyé', () => {
