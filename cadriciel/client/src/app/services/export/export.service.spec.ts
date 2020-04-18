@@ -71,7 +71,7 @@ describe('ExportService', () => {
   });
   it('#generateSVG ne devrait pas avoir de balise text si le dessin est signé par un auteur vide', () => {
     drawing.elements = [element, element];
-    expect(service['generateSVG'](drawing, 'auteur').includes('</text>')).toBe(false);
+    expect(service['generateSVG'](drawing, '').includes('</text>')).toBe(false);
   });
 
   // TESTS drawAuthorCanvas
