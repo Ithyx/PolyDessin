@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { Drawing } from '../../../../../common/communication/drawing-interface';
 import { DrawElement } from '../stockage-svg/draw-element/draw-element';
-import { ExportService } from './export.service';
+import { ExportParams, ExportService } from './export.service';
 
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
@@ -13,13 +13,15 @@ describe('ExportService', () => {
   let service: ExportService;
   let context: CanvasRenderingContext2D;
   let element: DrawElement;
+  let params: ExportParams;
+  let canvas: HTMLCanvasElement;
 
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientModule]
   }));
   beforeEach(() => service = TestBed.get(ExportService));
   beforeEach(() => {
-    const canvas = document.createElement('canvas');
+    canvas = document.createElement('canvas');
     const contextCanvas = canvas.getContext('2d');
     if (contextCanvas) {
       context = contextCanvas;
@@ -50,6 +52,15 @@ describe('ExportService', () => {
     updateTranslation: () => { return; },
     updateTranslationMouse: () => { return; },
     updateParameters: () => { return; }
+  });
+  beforeEach(() => params = {
+    element: document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
+    selectedExportFormat: '',
+    container: document.createElement('a'),
+    selectedAuthor: '',
+    selectedFileName: '',
+    emailAdress: '',
+    isEmail: false
   });
 
   it('should be created', () => {
@@ -95,5 +106,21 @@ describe('ExportService', () => {
     const authorName = '';
     service['drawAuthorCanvas'](context, authorName, 500);
     expect(spy).toHaveBeenCalledWith(`auteur: ${authorName}`, 0, 495);
+  });
+
+  // TESTS export
+  it('#export ne devrait pas construire de nouvelle image si le canvas est invalide', () => {
+    service['canvas'] = canvas;
+    spyOn(service['canvas'], 'getContext').and.returnValue(null);
+    const spy = spyOn(URL, 'createObjectURL');
+    service.export(params);
+    expect(spy).not.toHaveBeenCalled();
+  });
+  // TESTS export
+  it('#export devrait construire une nouvelle image si le canvas est valide', () => {
+    service['canvas'] = canvas;
+    const spy = spyOn(URL, 'createObjectURL');
+    service.export(params);
+    expect(spy).toHaveBeenCalled();
   });
 });
