@@ -56,13 +56,7 @@ export class SavingUtilityService {
     newElement.svgHtml = element.svgHtml;
     newElement.svg = element.svg;
     newElement.trueType = element.trueType;
-    newElement.points = [];
-    element.points.forEach((point) => { newElement.points.push({...point}); });
-    if (newElement.strokePoints && element.strokePoints) {
-      for (const point of element.strokePoints) {
-        newElement.strokePoints.push({...point});
-      }
-    }
+    this.setupCopyPoints(newElement, element);
     newElement.erasingEvidence = element.erasingEvidence;
     if (element.primaryColor !== undefined) { newElement.primaryColor = element.primaryColor; }
     if (element.secondaryColor !== undefined) { newElement.secondaryColor = element.secondaryColor; }
@@ -80,6 +74,16 @@ export class SavingUtilityService {
     newElement.pointMax = {x: element.pointMax.x, y: element.pointMax.y};
     newElement.transform = {...element.transform};
     return newElement;
+  }
+
+  setupCopyPoints(newElement: DrawElement, element: DrawElement): void {
+    newElement.points = [];
+    element.points.forEach((point) => { newElement.points.push({...point}); });
+    if (newElement.strokePoints && element.strokePoints) {
+      for (const point of element.strokePoints) {
+        newElement.strokePoints.push({...point});
+      }
+    }
   }
 
 }

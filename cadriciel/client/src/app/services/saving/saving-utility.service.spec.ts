@@ -11,6 +11,7 @@ import { TraceBrushService } from '../stockage-svg/draw-element/trace/trace-brus
 import { TracePencilService } from '../stockage-svg/draw-element/trace/trace-pencil.service';
 import { TOOL_INDEX } from '../tools/tool-manager.service';
 import { SavingUtilityService } from './saving-utility.service';
+import { BasicShapeService } from '../stockage-svg/draw-element/basic-shape/basic-shape.service';
 
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
@@ -160,5 +161,88 @@ describe('SavingUtilityService', () => {
     element.isAPolygon = undefined;
     const newElement = elementBackup;
     expect(service.setupCopy(newElement, element)).toEqual(element);
+  });
+
+  // TEST setupCopyPoints
+
+  it('#setupCopyPoints devrait copier les strokePoints si les deux DrawElements en possèdent', () => {
+    const copyElement: BasicShapeService = {
+      svg: '',
+      svgHtml: '',
+      chosenOption: '',
+      trueType: 0,
+      thickness: 0,
+      perimeter: '',
+      primaryColor: {
+        RGBAString: '',
+        RGBA: [0, 0, 0, 1]
+      },
+      secondaryColor: {
+        RGBAString: '',
+        RGBA: [0, 0, 0, 1]
+      },
+      points: [{x: 90, y: 90}],
+      strokePoints: [{x: 90, y: 90}],
+      erasingEvidence: false,
+      erasingColor: {RGBA: [0, 0, 0, 0], RGBAString: ''},
+      pointMin: {x: 0, y: 0},
+      pointMax: {x: 0, y: 0},
+      transform: {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0},
+      draw: () => { return; },
+      updateParameters: () => { return; },
+      updateRotation: () => { return; },
+      updateScale: () => { return; },
+      calculateRotation: () => { return; },
+      updateTransform: () => { return; },
+      updateTranslation: () => { return; },
+      updateTranslationMouse: () => { return; },
+      drawPerimeter: () => { return; },
+      drawLine: () => { return; },
+      drawShape: () => { return; },
+      drawStroke: () => { return; },
+      getHeight: () => 0,
+      getWidth: () => 0
+    };
+
+    const newElement: BasicShapeService = {
+      svg: '',
+      svgHtml: '',
+      chosenOption: '',
+      trueType: 0,
+      thickness: 0,
+      perimeter: '',
+      primaryColor: {
+        RGBAString: '',
+        RGBA: [0, 0, 0, 1]
+      },
+      secondaryColor: {
+        RGBAString: '',
+        RGBA: [0, 0, 0, 1]
+      },
+      points: [],
+      strokePoints: [],
+      erasingEvidence: false,
+      erasingColor: {RGBA: [0, 0, 0, 0], RGBAString: ''},
+      pointMin: {x: 0, y: 0},
+      pointMax: {x: 0, y: 0},
+      transform: {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0},
+      draw: () => { return; },
+      updateParameters: () => { return; },
+      updateRotation: () => { return; },
+      updateScale: () => { return; },
+      calculateRotation: () => { return; },
+      updateTransform: () => { return; },
+      updateTranslation: () => { return; },
+      updateTranslationMouse: () => { return; },
+      drawPerimeter: () => { return; },
+      drawLine: () => { return; },
+      drawShape: () => { return; },
+      drawStroke: () => { return; },
+      getHeight: () => 0,
+      getWidth: () => 0
+    };
+
+    service.setupCopyPoints(newElement, copyElement);
+    expect(newElement.strokePoints[0]).toEqual({x: 90, y: 90});
   });
 });
