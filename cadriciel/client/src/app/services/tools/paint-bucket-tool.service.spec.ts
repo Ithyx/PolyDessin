@@ -123,4 +123,70 @@ describe('PaintBucketToolService', () => {
     service.fillWithColor();
     expect(spy).toHaveBeenCalledWith(service['mousePosition']);
   });*/
+
+  // TESTS findLeftBorder
+    // TODO
+
+  // TESTS checkAbovePixel
+  // TODO : NOM DU TEST
+  it('#checkAbovePixel 1', () => {
+    spyOn(service, 'checkColor').and.returnValue(false);
+    expect(service.checkAbovePixel({x: 5, y: 5}, true, [])).toBe(false);
+  });
+
+  // TODO : NOM DU TEST
+  it('#checkAbovePixel 2', () => {
+    spyOn(service, 'checkColor').and.returnValue(true);
+    expect(service.checkAbovePixel({x: 5, y: 4}, false, [])).toBe(true);
+  });
+
+  // TODO : NOM DU TEST
+  it('#checkAbovePixel 3', () => {
+    spyOn(service, 'checkColor').and.returnValue(true);
+    const spanAbove = false;
+    expect(service.checkAbovePixel({x: 5, y: 2000}, spanAbove, [])).toBe(spanAbove);
+  });
+
+  // TESTS checkBelowPixel
+
+  it('#checkBelowPixel devrait renvoyer false si le pixel en dessous est d\'une couleur différente', () => {
+    spyOn(service, 'checkColor').and.returnValue(false);
+    expect(service.checkBelowPixel({x: 5, y: 5}, true, [])).toBe(false);
+  });
+
+  it('#checkBelowPixel devrait renvoyer true si spanBelow est à false et que la position en y est toujours dans le dessin', () => {
+    spyOn(service, 'checkColor').and.returnValue(true);
+    expect(service.checkBelowPixel({x: 5, y: -4}, false, [])).toBe(true);
+  });
+
+  // TODO : NOM DU TEST
+  it('#checkBelowPixel 3', () => {
+    spyOn(service, 'checkColor').and.returnValue(true);
+    const spanBelow = false;
+    expect(service.checkBelowPixel({x: 5, y: 2000}, spanBelow, [])).toBe(spanBelow);
+  });
+
+  // TESTS addPixelPosition
+
+  it('#addPixelPosition devrait ajouter la position en y si la position en x est déjà une clé de checkedPixels', () => {
+    service['checkedPixels'].set(1, [1, 2, 3]);
+    service.addPixelPosition({x: 1, y: 4});
+    expect(service['checkedPixels'].get(1)).toEqual([1, 2, 3, 4]);
+  });
+
+  it('#addPixelPosition devrait créer un nouvelle index dans checkedPixels si la position en x n\'est pas un clé', () => {
+    service['checkedPixels'] = new Map<number, number[]>();     // map vide
+    service.addPixelPosition({x: 2, y: 4});
+    expect(service['checkedPixels'].get(2)).toEqual([4]);
+  });
+
+  // TESTS checkColor
+    // TODO
+
+  // TESTS getIndex
+
+  it('#getIndex devrait créer un index unique pour une position du dessin', () => {
+    const testIndex = (5 + 5 * service.drawing.clientWidth) * 4;
+    expect(service.getIndex({x: 5, y: 5})).toEqual(testIndex);
+  });
 });
