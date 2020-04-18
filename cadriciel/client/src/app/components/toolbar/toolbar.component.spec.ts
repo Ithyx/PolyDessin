@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 
 import { Injector } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DrawingTool, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
+import { DrawingTool, TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { AttributesPanelComponent } from '../attributes-panel/attributes-panel.component';
 import { DrawingToolComponent } from '../drawing-tool/drawing-tool.component';
 import { ExportWindowComponent } from '../export-window/export-window.component';
@@ -119,8 +119,6 @@ describe('ToolbarComponent', () => {
 
     const keyPressed = new KeyboardEvent('keypress', { key: 'o', ctrlKey: true});
     component['shortcuts'].treatInput(keyPressed);
-
-    // on teste que warningNewDrawing n'est plus lié aux raccourcis
     expect(component.warningNewDrawing).not.toHaveBeenCalled();
   });
 
@@ -142,11 +140,12 @@ describe('ToolbarComponent', () => {
     expect(service.toolList[1].isActive).toBe(true); // on vérifie que le nouvel outil est bien "actif"
   });
 
-  /* it('#onClick devrait appeler la fonction viderSVGEnCours', () => {
-    spyOn(component['shortcuts'], 'clearOngoingSVG');
-    component.onClick(service.toolList[2]); // on sélectionne l'outil 2 (rectangle)
-    expect(component['shortcuts'].clearOngoingSVG).toHaveBeenCalled();
-  }); */
+  it('#onClick devrait mettre à jours le canvas si l\'outil en paramètre est l\'efface', () => {
+    const spy = spyOn(component['canvas'], 'updateDrawing');
+    service.toolList[1].ID = TOOL_INDEX.ERASER;
+    component.onClick(service.toolList[1]);
+    expect(spy).toHaveBeenCalled();
+  });
 
   // TESTS disableShortcuts
 
