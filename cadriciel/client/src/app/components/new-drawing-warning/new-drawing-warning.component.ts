@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
-import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
+import { ShortcutsManagerService } from 'src/app/services/shortcuts/shortcuts-manager.service';
 import { NewDrawingWindowComponent } from '../new-drawing-window/new-drawing-window.component';
 
 @Component({

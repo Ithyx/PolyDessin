@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { GridService, MAX_CELL_SIZE, MIN_CELL_SIZE } from 'src/app/services/grid/grid.service';
-import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
+import { ShortcutsManagerService } from 'src/app/services/shortcuts/shortcuts-manager.service';
 import { NewDrawingWindowComponent } from '../new-drawing-window/new-drawing-window.component';
 
 export const KEY_FORM_SHOW_GRID = 'showGridForm';
