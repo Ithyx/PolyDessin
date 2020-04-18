@@ -26,6 +26,9 @@ describe('ExportService', () => {
     if (contextCanvas) {
       context = contextCanvas;
     }
+    service['canvas'] = canvas;
+    service['context'] = context;
+    service['container'] = document.createElement('a');
   });
   beforeEach(() => drawing = {
     _id: 0,
@@ -116,11 +119,21 @@ describe('ExportService', () => {
     service.export(params);
     expect(spy).not.toHaveBeenCalled();
   });
-  // TESTS export
+
   it('#export devrait construire une nouvelle image si le canvas est valide', () => {
     service['canvas'] = canvas;
     const spy = spyOn(URL, 'createObjectURL');
     service.export(params);
     expect(spy).toHaveBeenCalled();
   });
+
+  // TESTS downloadImage
+
+  it('#downloadImage devrait appeler drawImage du context', () => {
+    const spy = spyOn(service['context'], 'drawImage');
+    service['downloadImage']();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  // TESTS sendImage
 });
