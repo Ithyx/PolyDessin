@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
+import { BasicShapeService } from '../stockage-svg/draw-element/basic-shape/basic-shape.service';
 import { EllipseService } from '../stockage-svg/draw-element/basic-shape/ellipse.service';
 import { PolygonService } from '../stockage-svg/draw-element/basic-shape/polygon.service';
 import { RectangleService } from '../stockage-svg/draw-element/basic-shape/rectangle.service';
@@ -11,7 +12,6 @@ import { TraceBrushService } from '../stockage-svg/draw-element/trace/trace-brus
 import { TracePencilService } from '../stockage-svg/draw-element/trace/trace-pencil.service';
 import { TOOL_INDEX } from '../tools/tool-manager.service';
 import { SavingUtilityService } from './saving-utility.service';
-import { BasicShapeService } from '../stockage-svg/draw-element/basic-shape/basic-shape.service';
 
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal

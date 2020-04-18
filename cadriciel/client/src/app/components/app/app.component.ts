@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavigationStart, Router, RoutesRecognized } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+// import { BehaviorSubject } from 'rxjs';
 import { filter, pairwise } from 'rxjs/operators';
 import { RoutingManagerService } from 'src/app/services/routing-manager.service';
 
@@ -10,7 +10,7 @@ import { RoutingManagerService } from 'src/app/services/routing-manager.service'
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-    message: BehaviorSubject<string>;
+    // protected message: BehaviorSubject<string>;
 
     constructor(private routing: Router,
                 private routingManager: RoutingManagerService
@@ -18,7 +18,7 @@ export class AppComponent {
                 this.routing.events
                     .pipe(filter(this.filterFunction), pairwise())
                     .subscribe({next: this.updateURL.bind(this)});
-                this.message = new BehaviorSubject<string>('');
+                // this.message = new BehaviorSubject<string>('');
             }
 
     filterFunction(event: NavigationStart): boolean {
