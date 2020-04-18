@@ -80,6 +80,7 @@ describe('DrawingPageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DrawingPageComponent);
     component = fixture.componentInstance;
+    spyOn(component['canvas'], 'updateDrawing').and.callFake(() => { return; });
     service = fixture.debugElement.injector.get(ToolManagerService);
     fixture.detectChanges();
     service.toolList[0].isActive = true;
@@ -87,7 +88,6 @@ describe('DrawingPageComponent', () => {
     service.activeTool = service.toolList[0];
     component['toolMap'].set('complete', activeToolStub)
                         .set('empty', {});
-    spyOn(component['canvas'], 'updateDrawing').and.returnValue();
   });
 
   it('should create', () => {
