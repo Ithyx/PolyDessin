@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
 import { LocalSaveManagerService } from 'src/app/services/saving/local/local-save-manager.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
@@ -45,7 +45,8 @@ export class DrawingPageComponent implements AfterViewInit {
               protected eraser: EraserToolService,
               private canvas: CanvasConversionService,
               protected bucket: PaintBucketToolService,
-              protected localSaving: LocalSaveManagerService
+              protected localSaving: LocalSaveManagerService,
+              private changeDetector: ChangeDetectorRef
               ) {
     this.toolMap.set('Crayon', pencil)
                 .set('Rectangle', rectangle)
@@ -67,6 +68,7 @@ export class DrawingPageComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.canvas.coloredDrawing = this.coloredDrawing.nativeElement;
     this.canvas.updateDrawing();
+    this.changeDetector.detectChanges();
   }
 
   @HostListener('document:keydown', ['$event'])
