@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatSidenavModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
+import { ElementRef } from '@angular/core';
 import { LocalSaveManagerService } from 'src/app/services/saving/local/local-save-manager.service';
 import { ToolInterface } from 'src/app/services/tools/tool-interface';
 import { DrawingTool, TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
@@ -70,8 +71,8 @@ describe('DrawingPageComponent', () => {
         {path: 'guide', component : GuidePageComponent}
       ])],
       providers: [ {provide: ToolManagerService, useValue: toolManagerStub} ],
-      declarations: [ DrawingPageComponent, GuidePageComponent, ToolbarComponent,
-        DrawingToolComponent, DrawingSurfaceComponent, GuideSubjectComponent, AttributesPanelComponent ]
+      declarations: [ DrawingPageComponent, GuidePageComponent, ToolbarComponent, DrawingToolComponent,
+        DrawingSurfaceComponent, GuideSubjectComponent, AttributesPanelComponent ]
     })
     .compileComponents();
   }));
@@ -86,6 +87,7 @@ describe('DrawingPageComponent', () => {
     service.activeTool = service.toolList[0];
     component['toolMap'].set('complete', activeToolStub)
                         .set('empty', {});
+    spyOn(component['canvas'], 'updateDrawing').and.returnValue();
   });
 
   it('should create', () => {
@@ -106,6 +108,19 @@ describe('DrawingPageComponent', () => {
     const spy = spyOn(LocalSaveManagerService.prototype, 'loadState');
     TestBed.createComponent(DrawingPageComponent);
     expect(spy).not.toHaveBeenCalled();
+  });
+
+  // TESTS ngAfterViewInit
+
+  it('#ngAfterViewInit devrait assigner le nativeElement de coloredDrawing au coloredDrawing de CanvasConversion', () => {
+    const drawing = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    component['coloredDrawing'] = new ElementRef<SVGElement>(drawing);
+    component.ngAfterViewInit();
+    expect(component['canvas'].coloredDrawing).toEqual(drawing);
+  });
+  it('#ngAfterViewInit devrait appeler updateDrawing de CanvasConversion', () => {
+    component.ngAfterViewInit();
+    expect(component['canvas'].updateDrawing).toHaveBeenCalled();
   });
 
   // TEST onKeyDown
