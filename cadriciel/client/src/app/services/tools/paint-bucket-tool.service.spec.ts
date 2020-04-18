@@ -124,8 +124,19 @@ describe('PaintBucketToolService', () => {
     expect(spy).toHaveBeenCalledWith(service['mousePosition']);
   });*/
 
+  /* it('#fillWithColor 1', () => {
+    service['mousePosition'] = {x: 90, y: 90};
+    spyOn(service, 'checkColor').and.returnValue(true);
+    const spy = spyOn(service, 'addPixelPosition');
+    service.fillWithColor();
+    expect(spy).toHaveBeenCalled();
+  }); */
+
   // TESTS findLeftBorder
-    // TODO
+  it('#findLeftBorder devrait appeler checkColor jusqu\'à que la position en x soit nulles', () => {
+    spyOn(service, 'checkColor').and.returnValue(true);
+    expect(service.findLeftBorder({x: 90, y: 90})).toEqual(0);
+  });
 
   // TESTS checkAbovePixel
   // TODO : NOM DU TEST
@@ -144,7 +155,7 @@ describe('PaintBucketToolService', () => {
   it('#checkAbovePixel 3', () => {
     spyOn(service, 'checkColor').and.returnValue(true);
     const spanAbove = false;
-    expect(service.checkAbovePixel({x: 5, y: 2000}, spanAbove, [])).toBe(spanAbove);
+    expect(service.checkAbovePixel({x: 5, y: -4}, spanAbove, [])).toBe(spanAbove);
   });
 
   // TESTS checkBelowPixel
