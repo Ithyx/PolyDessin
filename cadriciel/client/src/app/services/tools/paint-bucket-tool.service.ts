@@ -61,7 +61,6 @@ export class PaintBucketToolService implements ToolInterface {
   }
 
   onImageLoad(): void {
-    console.log(this.image);
     this.context.drawImage(this.image, 0, 0);
     this.pixelData = this.context.getImageData(0, 0, this.drawing.clientWidth, this.drawing.clientHeight).data;
     const pixelIndex = this.getIndex(this.mousePosition);
