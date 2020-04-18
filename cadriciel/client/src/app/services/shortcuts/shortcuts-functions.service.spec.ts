@@ -7,16 +7,16 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ExportWindowComponent } from '../components/export-window/export-window.component';
-import { GalleryLoadWarningComponent } from '../components/gallery-load-warning/gallery-load-warning.component';
-import { GalleryElementComponent } from '../components/gallery/gallery-element/gallery-element.component';
-import { GalleryComponent } from '../components/gallery/gallery.component';
-import { SavePopupComponent } from '../components/save-popup/save-popup.component';
-import { CanvasConversionService } from './canvas-conversion.service';
+import { ExportWindowComponent } from '../../components/export-window/export-window.component';
+import { GalleryLoadWarningComponent } from '../../components/gallery-load-warning/gallery-load-warning.component';
+import { GalleryElementComponent } from '../../components/gallery/gallery-element/gallery-element.component';
+import { GalleryComponent } from '../../components/gallery/gallery.component';
+import { SavePopupComponent } from '../../components/save-popup/save-popup.component';
+import { CanvasConversionService } from '../canvas-conversion.service';
+import { RectangleService } from '../stockage-svg/draw-element/basic-shape/rectangle.service';
+import { DrawElement } from '../stockage-svg/draw-element/draw-element';
+import { TOOL_INDEX } from '../tools/tool-manager.service';
 import { ShortcutsFunctionsService } from './shortcuts-functions.service';
-import { RectangleService } from './stockage-svg/draw-element/basic-shape/rectangle.service';
-import { DrawElement } from './stockage-svg/draw-element/draw-element';
-import { TOOL_INDEX } from './tools/tool-manager.service';
 
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
@@ -673,28 +673,28 @@ describe('ShortcutsFunctionsService', () => {
 
   it('#shortcutKeyArrowLeft devrait mettre leftArrow à vrai', () => {
     service.shortcutKeyArrowLeft();
-    expect(service['arrowKeys'][0] ).toBe(true);
+    expect(service['arrowKeyIsPress'][0] ).toBe(true);
   });
 
   // TESTS shortcutArrowRight
 
   it('#shortcutKeyArrowRight devrait mettre RightArrow à vrai', () => {
     service.shortcutKeyArrowRight();
-    expect(service['arrowKeys'][1]).toBe(true);
+    expect(service['arrowKeyIsPress'][1]).toBe(true);
   });
 
   // TESTS shortcutArrowDown
 
   it('#shortcutKeyArrowDown devrait mettre DownArrow à vrai', () => {
     service.shortcutKeyArrowDown();
-    expect(service['arrowKeys'][3] ).toBe(true);
+    expect(service['arrowKeyIsPress'][3] ).toBe(true);
   });
 
   // TESTS shortcutArrowUp
 
   it('#shortcutKeyArrowUp devrait mettre UpArrow à vrai', () => {
     service.shortcutKeyArrowUp();
-    expect(service['arrowKeys'][2] ).toBe(true);
+    expect(service['arrowKeyIsPress'][2] ).toBe(true);
   });
 
 });

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { RGB_MAX } from 'src/app/services/color/color';
 import { ColorManagerService } from 'src/app/services/color/color-manager.service';
-import { ShortcutsManagerService } from 'src/app/services/shortcuts-manager.service';
+import { ShortcutsManagerService } from 'src/app/services/shortcuts/shortcuts-manager.service';
 
 const ACCEPTED_LETTERS = new Set(['a', 'b', 'c', 'd', 'e', 'f']);
 

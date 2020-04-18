@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { BehaviorSubject } from 'rxjs';
-import { ExportWindowComponent } from '../components/export-window/export-window.component';
-import { GalleryComponent } from '../components/gallery/gallery.component';
-import { SavePopupComponent } from '../components/save-popup/save-popup.component';
-import { CanvasConversionService } from './canvas-conversion.service';
-import { ClipboardService } from './clipboard.service';
-import { CommandManagerService } from './command/command-manager.service';
-import { GridService } from './grid/grid.service';
+import { ExportWindowComponent } from '../../components/export-window/export-window.component';
+import { GalleryComponent } from '../../components/gallery/gallery.component';
+import { SavePopupComponent } from '../../components/save-popup/save-popup.component';
+import { CanvasConversionService } from '../canvas-conversion.service';
+import { ClipboardService } from '../clipboard.service';
+import { CommandManagerService } from '../command/command-manager.service';
+import { GridService } from '../grid/grid.service';
+import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
+import { EllipseToolService } from '../tools/basic-shape-tool/ellipse-tool.service';
+import { RectangleToolService } from '../tools/basic-shape-tool/rectangle-tool.service';
+import { EraserToolService } from '../tools/eraser-tool.service';
+import { LineToolService } from '../tools/line-tool.service';
+import { SelectionService } from '../tools/selection/selection.service';
+import { TOOL_INDEX, ToolManagerService } from '../tools/tool-manager.service';
 import { DIRECTION } from './shortcuts-manager.service';
-import { SVGStockageService } from './stockage-svg/svg-stockage.service';
-import { EllipseToolService } from './tools/basic-shape-tool/ellipse-tool.service';
-import { RectangleToolService } from './tools/basic-shape-tool/rectangle-tool.service';
-import { EraserToolService } from './tools/eraser-tool.service';
-import { LineToolService } from './tools/line-tool.service';
-import { SelectionService } from './tools/selection/selection.service';
-import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
 export class ShortcutsFunctionsService {
   focusOnInput: boolean;
   private dialogConfig: MatDialogConfig;
-  arrowKeys: [boolean, boolean, boolean, boolean];
+  arrowKeyIsPress: [boolean, boolean, boolean, boolean];
   newDrawingEmmiter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   constructor(private tools: ToolManagerService,
@@ -43,7 +43,7 @@ export class ShortcutsFunctionsService {
       this.dialogConfig.disableClose = true;
       this.dialogConfig.autoFocus = true;
       this.dialogConfig.width = '80%';
-      this.arrowKeys = [false, false, false, false];
+      this.arrowKeyIsPress = [false, false, false, false];
     }
 
   clearOngoingSVG(): void {
@@ -225,19 +225,19 @@ export class ShortcutsFunctionsService {
   }
 
   shortcutKeyArrowLeft(): void {
-    this.arrowKeys[DIRECTION.LEFT] = true;
+    this.arrowKeyIsPress[DIRECTION.LEFT] = true;
   }
 
   shortcutKeyArrowRight(): void {
-    this.arrowKeys[DIRECTION.RIGHT] = true;
+    this.arrowKeyIsPress[DIRECTION.RIGHT] = true;
   }
 
   shortcutKeyArrowUp(): void {
-    this.arrowKeys[DIRECTION.UP] = true;
+    this.arrowKeyIsPress[DIRECTION.UP] = true;
   }
 
   shortcutKeyArrowDown(): void {
-    this.arrowKeys[DIRECTION.DOWN] = true;
+    this.arrowKeyIsPress[DIRECTION.DOWN] = true;
   }
 
   enableShortcuts(): void {

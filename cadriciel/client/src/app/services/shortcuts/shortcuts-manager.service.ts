@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { MatDialogConfig } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
-import { CommandManagerService } from './command/command-manager.service';
-import { TransformSvgService } from './command/transform-svg.service';
+import { CommandManagerService } from '../command/command-manager.service';
+import { TransformSvgService } from '../command/transform-svg.service';
+import { Point } from '../stockage-svg/draw-element/draw-element';
+import { EllipseToolService } from '../tools/basic-shape-tool/ellipse-tool.service';
+import { RectangleToolService } from '../tools/basic-shape-tool/rectangle-tool.service';
+import { LineToolService } from '../tools/line-tool.service';
+import { SelectionService } from '../tools/selection/selection.service';
+import { TOOL_INDEX, ToolManagerService } from '../tools/tool-manager.service';
 import { ShortcutsFunctionsService } from './shortcuts-functions.service';
-import { Point } from './stockage-svg/draw-element/draw-element';
-import { EllipseToolService } from './tools/basic-shape-tool/ellipse-tool.service';
-import { RectangleToolService } from './tools/basic-shape-tool/rectangle-tool.service';
-import { LineToolService } from './tools/line-tool.service';
-import { SelectionService } from './tools/selection/selection.service';
-import { TOOL_INDEX, ToolManagerService } from './tools/tool-manager.service';
 
 type FunctionShortcut = (keyboard?: KeyboardEvent ) => void;
 
@@ -110,8 +110,8 @@ export class ShortcutsManagerService {
           this.selection.selectedElements, this.sanitizer, this.selection.deleteBoundingBox.bind(this.selection)
         );
       }
-      if (!this.shortcutsFunctions.arrowKeys[DIRECTION.LEFT] && !this.shortcutsFunctions.arrowKeys[DIRECTION.RIGHT]
-          && !this.shortcutsFunctions.arrowKeys[DIRECTION.UP] && !this.shortcutsFunctions.arrowKeys[DIRECTION.DOWN]) {
+      if (!this.shortcutsFunctions.arrowKeyIsPress[DIRECTION.LEFT] && !this.shortcutsFunctions.arrowKeyIsPress[DIRECTION.RIGHT]
+          && !this.shortcutsFunctions.arrowKeyIsPress[DIRECTION.UP] && !this.shortcutsFunctions.arrowKeyIsPress[DIRECTION.DOWN]) {
         window.clearInterval(this.clearTimeout);
         this.counter100ms = 0;
         this.clearTimeout = 0;
@@ -129,16 +129,16 @@ export class ShortcutsManagerService {
   translateSelection(): void {
     const translate: Point = {x: 0 , y: 0};
 
-    if (this.shortcutsFunctions.arrowKeys[DIRECTION.LEFT]) {
+    if (this.shortcutsFunctions.arrowKeyIsPress[DIRECTION.LEFT]) {
       translate.x = -SELECTION_MOVEMENT_PIXEL;
     }
-    if (this.shortcutsFunctions.arrowKeys[DIRECTION.RIGHT]) {
+    if (this.shortcutsFunctions.arrowKeyIsPress[DIRECTION.RIGHT]) {
       translate.x = SELECTION_MOVEMENT_PIXEL;
     }
-    if (this.shortcutsFunctions.arrowKeys[DIRECTION.UP]) {
+    if (this.shortcutsFunctions.arrowKeyIsPress[DIRECTION.UP]) {
       translate.y = -SELECTION_MOVEMENT_PIXEL;
     }
-    if (this.shortcutsFunctions.arrowKeys[DIRECTION.DOWN]) {
+    if (this.shortcutsFunctions.arrowKeyIsPress[DIRECTION.DOWN]) {
       translate.y = SELECTION_MOVEMENT_PIXEL;
     }
     this.counter100ms++;
@@ -162,19 +162,19 @@ export class ShortcutsManagerService {
   }
 
   releaseKeyArrowLeft(): void {
-    this.shortcutsFunctions.arrowKeys[DIRECTION.LEFT] = false;
+    this.shortcutsFunctions.arrowKeyIsPress[DIRECTION.LEFT] = false;
   }
 
   releaseKeyArrowRight(): void {
-    this.shortcutsFunctions.arrowKeys[DIRECTION.RIGHT] = false;
+    this.shortcutsFunctions.arrowKeyIsPress[DIRECTION.RIGHT] = false;
   }
 
   releaseKeyArrowUp(): void {
-    this.shortcutsFunctions.arrowKeys[DIRECTION.UP] = false;
+    this.shortcutsFunctions.arrowKeyIsPress[DIRECTION.UP] = false;
   }
 
   releaseKeyArrowDown(): void {
-    this.shortcutsFunctions.arrowKeys[DIRECTION.DOWN] = false;
+    this.shortcutsFunctions.arrowKeyIsPress[DIRECTION.DOWN] = false;
   }
 
   treatReleaseKey(keyboard: KeyboardEvent): void {

@@ -39,7 +39,7 @@ import { GridService } from './services/grid/grid.service';
 import { NavigationGuideService } from './services/navigation-guide.service';
 import { RoutingManagerService } from './services/routing-manager.service';
 import { LocalSaveManagerService } from './services/saving/local/local-save-manager.service';
-import { ShortcutsManagerService } from './services/shortcuts-manager.service';
+import { ShortcutsManagerService } from './services/shortcuts/shortcuts-manager.service';
 import { SVGStockageService } from './services/stockage-svg/svg-stockage.service';
 import { RectangleToolService } from './services/tools/basic-shape-tool/rectangle-tool.service';
 import { LineToolService } from './services/tools/line-tool.service';

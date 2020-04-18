@@ -8,16 +8,16 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ExportWindowComponent } from '../components/export-window/export-window.component';
-import { GalleryLoadWarningComponent } from '../components/gallery-load-warning/gallery-load-warning.component';
-import { GalleryElementComponent } from '../components/gallery/gallery-element/gallery-element.component';
-import { GalleryComponent } from '../components/gallery/gallery.component';
-import { SavePopupComponent } from '../components/save-popup/save-popup.component';
-import { CanvasConversionService } from './canvas-conversion.service';
-import { TransformSvgService } from './command/transform-svg.service';
+import { ExportWindowComponent } from '../../components/export-window/export-window.component';
+import { GalleryLoadWarningComponent } from '../../components/gallery-load-warning/gallery-load-warning.component';
+import { GalleryElementComponent } from '../../components/gallery/gallery-element/gallery-element.component';
+import { GalleryComponent } from '../../components/gallery/gallery.component';
+import { SavePopupComponent } from '../../components/save-popup/save-popup.component';
+import { CanvasConversionService } from '../canvas-conversion.service';
+import { TransformSvgService } from '../command/transform-svg.service';
+import { DrawElement } from '../stockage-svg/draw-element/draw-element';
+import { TOOL_INDEX } from '../tools/tool-manager.service';
 import { ShortcutsManagerService } from './shortcuts-manager.service';
-import { DrawElement } from './stockage-svg/draw-element/draw-element';
-import { TOOL_INDEX } from './tools/tool-manager.service';
 
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
@@ -133,7 +133,7 @@ describe('ShortcutsManagerService', () => {
     service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
     service['selection'].handleClick(element);    // création de la boite de sélection
     const spy = spyOn(service, 'translateSelection');
-    service.shortcutsFunctions['arrowKeys'][0] = true;
+    service.shortcutsFunctions['arrowKeyIsPress'][0] = true;
     service['clearTimeout'] = 0;
     service.updatePositionTimer();
     expect(spy).toHaveBeenCalled();
@@ -144,7 +144,7 @@ describe('ShortcutsManagerService', () => {
     service['selection'].selectionBox['tools'].activeTool = service['tools'].toolList[TOOL_INDEX.SELECTION];
     service['selection'].handleClick(element);    // création de la boite de sélection
     const spy = spyOn(service, 'translateSelection');
-    service.shortcutsFunctions['arrowKeys'][0]  = true;
+    service.shortcutsFunctions['arrowKeyIsPress'][0]  = true;
     service['clearTimeout'] = 25;
     service.updatePositionTimer();
     expect(spy).not.toHaveBeenCalled();
@@ -173,28 +173,28 @@ describe('ShortcutsManagerService', () => {
   });
 
   it('#translateSelection devrait déplacer de 3 pixel sur l\'axe des x si rightArrow est true', () => {
-    service.shortcutsFunctions['arrowKeys'][1] = true;
+    service.shortcutsFunctions['arrowKeyIsPress'][1] = true;
     const spy = spyOn(service['selection'], 'updateTranslation');
     service.translateSelection();
     expect(spy).toHaveBeenCalledWith(3, 0);
   });
 
   it('#translateSelection devrait déplacer de -3 pixel sur l\'axe des x si leftArrow est true', () => {
-    service.shortcutsFunctions['arrowKeys'][0]  = true;
+    service.shortcutsFunctions['arrowKeyIsPress'][0]  = true;
     const spy = spyOn(service['selection'], 'updateTranslation');
     service.translateSelection();
     expect(spy).toHaveBeenCalledWith(-3, 0);
   });
 
   it('#translateSelection devrait déplacer de 3 pixel sur l\'axe des y si downArrow est true', () => {
-    service.shortcutsFunctions['arrowKeys'][3]  = true;
+    service.shortcutsFunctions['arrowKeyIsPress'][3]  = true;
     const spy = spyOn(service['selection'], 'updateTranslation');
     service.translateSelection();
     expect(spy).toHaveBeenCalledWith(0, 3);
   });
 
   it('#translateSelection devrait déplacer de -3 pixel sur l\'axe des y si upArrow est true', () => {
-    service.shortcutsFunctions['arrowKeys'][2]  = true;
+    service.shortcutsFunctions['arrowKeyIsPress'][2]  = true;
     const spy = spyOn(service['selection'], 'updateTranslation');
     service.translateSelection();
     expect(spy).toHaveBeenCalledWith(0, -3);
@@ -286,28 +286,28 @@ describe('ShortcutsManagerService', () => {
 
   it('#releaseKeyArrowLeft devrait mettre leftArrow a false', () => {
     service.releaseKeyArrowLeft();
-    expect(service.shortcutsFunctions['arrowKeys'][0] ).toBe(false);
+    expect(service.shortcutsFunctions['arrowKeyIsPress'][0] ).toBe(false);
   });
 
   // TESTS releaseKeyArrowRight
 
   it('#releaseKeyArrowRight devrait mettre rightArrow a false', () => {
     service.releaseKeyArrowRight();
-    expect(service.shortcutsFunctions['arrowKeys'][1]).toBe(false);
+    expect(service.shortcutsFunctions['arrowKeyIsPress'][1]).toBe(false);
   });
 
   // TESTS releaseKeyArrowUp
 
   it('#releaseKeyArrowUp devrait mettre upArrow a false', () => {
     service.releaseKeyArrowUp();
-    expect(service.shortcutsFunctions['arrowKeys'][2]).toBe(false);
+    expect(service.shortcutsFunctions['arrowKeyIsPress'][2]).toBe(false);
   });
 
    // TESTS releaseKeyArrowRight
 
   it('#releaseKeyArrowDown devrait mettre downArrow a false', () => {
     service.releaseKeyArrowDown();
-    expect(service.shortcutsFunctions['arrowKeys'][3]).toBe(false);
+    expect(service.shortcutsFunctions['arrowKeyIsPress'][3]).toBe(false);
   });
 
     // TESTS treatReleaseKey
