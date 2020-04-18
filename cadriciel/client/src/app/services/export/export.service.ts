@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Drawing } from '../../../../../common/communication/drawing-interface';
 import { CanvasConversionService } from '../canvas-conversion.service';
-import { Color } from '../color/color';
 import { DrawingManagerService } from '../drawing-manager/drawing-manager.service';
 import { FILTERS } from '../filters/filters';
 import { DatabaseService } from '../saving/remote/database.service';
@@ -63,23 +62,23 @@ export class ExportService {
     this.mostRecentError = undefined;
   }
 
-  generateSVG(drawing: Drawing, width: number, height: number, backgroundColor: Color, authorName: string): string {
+  private generateSVG(drawing: Drawing, authorName: string): string {
     let imageData =
-    `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">\n`;
+    `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="${drawing.width}" height="${drawing.height}">\n`;
     imageData += '<defs>\n';
     for (const filter of FILTERS) {
       imageData += `${filter}\n`;
     }
     imageData += '</defs>\n';
-    imageData += `<rect x="0" y="0" width="${width}" height="${height}"
-    fill="${backgroundColor.RGBAString}"></rect>\n`;
+    imageData += `<rect x="0" y="0" width="${drawing.width}" height="${drawing.height}"
+    fill="${drawing.backgroundColor.RGBAString}"></rect>\n`;
     if (drawing.elements) {
       for (const element of drawing.elements) {
         imageData += `<g>${element.svg}</g>\n`;
       }
     }
     if (authorName !== '') {
-      imageData += `<text x="0" y="${height - AUTHOR_OFFSET}" ` +
+      imageData += `<text x="0" y="${drawing.height - AUTHOR_OFFSET}" ` +
       `style="font-family:Arial;font-size:30;stroke:#ffffff;fill:#000000;">
       auteur: ${authorName}
       </text>\n`;
@@ -88,7 +87,7 @@ export class ExportService {
     return imageData;
   }
 
-  drawAuthorCanvas(context: CanvasRenderingContext2D, authorName: string, height: number): void {
+  private drawAuthorCanvas(context: CanvasRenderingContext2D, authorName: string, height: number): void {
     context.font = '30px Arial';
     context.strokeStyle = 'white';
     context.lineWidth = AUTHOR_OUTLINE_WIDTH;
@@ -120,7 +119,7 @@ export class ExportService {
     }
   }
 
-  downloadImage(): void {
+  private downloadImage(): void {
     this.context.drawImage(this.image, 0, 0);
     let imageSrc = '';
     if (this.selectedExportFormat === 'svg') {
@@ -135,7 +134,7 @@ export class ExportService {
     URL.revokeObjectURL(imageSrc);
   }
 
-  sendImage(): void {
+  private sendImage(): void {
     this.mailStatus = MailStatus.LOADING;
     this.context.drawImage(this.image, 0, 0);
     if (this.selectedAuthor !== '' && this.context) {
@@ -143,8 +142,7 @@ export class ExportService {
     }
     let imageData = this.canvas.toDataURL('image/' + this.selectedExportFormat);
     if (this.selectedExportFormat === 'svg') {
-      imageData = this.generateSVG(this.drawing, this.drawingParams.width, this.drawingParams.height,
-        this.drawingParams.backgroundColor, this.selectedAuthor);
+      imageData = this.generateSVG(this.drawing, this.selectedAuthor);
     }
     this.db.sendEmail(this.emailAdress, imageData, this.selectedFileName, this.selectedExportFormat)
     .then(() => {
