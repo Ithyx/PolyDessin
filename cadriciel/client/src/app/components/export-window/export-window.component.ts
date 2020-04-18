@@ -2,7 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
-import { ExportService } from 'src/app/services/export/export.service';
+import { ExportParams, ExportService } from 'src/app/services/export/export.service';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 
 @Component({
@@ -43,15 +43,33 @@ export class ExportWindowComponent {
   }
 
   downloadExport(): void {
-    const element = this.drawingPreview.nativeElement;
-    if (!element) { return; }
-    this.service.export(element, this.selectedExportFormat, this.link.nativeElement, this.selectedFileName);
+    const drawingElement = this.drawingPreview.nativeElement;
+    if (!drawingElement) { return; }
+    const params: ExportParams = {
+      element: drawingElement,
+      selectedExportFormat: this.selectedExportFormat,
+      container: this.link.nativeElement,
+      selectedAuthor: this.selectedAuthor,
+      selectedFileName: this.selectedFileName,
+      emailAdress: this.emailAdress,
+      isEmail: false
+    };
+    this.service.export(params);
   }
 
   emailExport(): void {
-    const element = this.drawingPreview.nativeElement;
-    if (!element) { return; }
-    this.service.exportToSend(element, this.selectedExportFormat, this.selectedAuthor, this.emailAdress, this.selectedFileName);
+    const drawingElement = this.drawingPreview.nativeElement;
+    if (!drawingElement) { return; }
+    const params: ExportParams = {
+      element: drawingElement,
+      selectedExportFormat: this.selectedExportFormat,
+      container: this.link.nativeElement,
+      selectedAuthor: this.selectedAuthor,
+      selectedFileName: this.selectedFileName,
+      emailAdress: this.emailAdress,
+      isEmail: true
+    };
+    this.service.export(params);
   }
 
   updateSelectedFormat(event: Event): void {

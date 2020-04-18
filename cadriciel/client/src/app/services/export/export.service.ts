@@ -18,6 +18,16 @@ export enum MailStatus {
   FAILURE = 3
 }
 
+export interface ExportParams {
+  element: SVGElement;
+  selectedExportFormat: string;
+  container: HTMLAnchorElement;
+  selectedAuthor: string;
+  selectedFileName: string;
+  emailAdress: string;
+  isEmail: boolean;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -87,24 +97,26 @@ export class ExportService {
     context.fillText(`auteur: ${authorName}`, 0, height - AUTHOR_OFFSET);
   }
 
-  export(element: SVGElement, selectedExportFormat: string, container: HTMLAnchorElement, selectedFileName: string): void {
-    this.selectedExportFormat = selectedExportFormat;
-    this.container = container;
-    this.selectedFileName = selectedFileName;
+  export(params: ExportParams): void {
+    this.selectedExportFormat = params.selectedExportFormat;
+    this.container = params.container;
+    this.emailAdress = params.emailAdress;
+    this.selectedFileName = params.selectedFileName;
+    this.selectedAuthor = params.selectedAuthor;
     const context = this.canvas.getContext('2d');
     if (context) {
-      element.setAttribute('width', this.drawingParams.width.toString());
-      element.setAttribute('height', this.drawingParams.height.toString());
+      params.element.setAttribute('width', this.drawingParams.width.toString());
+      params.element.setAttribute('height', this.drawingParams.height.toString());
 
       this.context = context;
-      const svgString = new XMLSerializer().serializeToString(element);
+      const svgString = new XMLSerializer().serializeToString(params.element);
       const svg = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
       this.image = new Image();
-      this.image.onload = this.downloadImage.bind(this);
+      this.image.onload = (params.isEmail) ? this.sendImage.bind(this) : this.downloadImage.bind(this);
       this.image.src = URL.createObjectURL(svg);
 
-      element.setAttribute('width', PREVIEW_SIZE);
-      element.setAttribute('height', PREVIEW_SIZE);
+      params.element.setAttribute('width', PREVIEW_SIZE);
+      params.element.setAttribute('height', PREVIEW_SIZE);
     }
   }
 
@@ -120,28 +132,6 @@ export class ExportService {
     this.container.download = this.selectedFileName;
     this.container.click();
     URL.revokeObjectURL(imageSrc);
-  }
-
-  exportToSend(element: SVGElement, selectedExportFormat: string, selectedAuthor: string, emailAdress: string, fileName: string): void {
-    this.selectedAuthor = selectedAuthor;
-    this.selectedExportFormat = selectedExportFormat;
-    this.emailAdress = emailAdress;
-    this.selectedFileName = fileName;
-    const context = this.canvas.getContext('2d');
-    if (context) {
-      element.setAttribute('width', this.drawingParams.width.toString());
-      element.setAttribute('height', this.drawingParams.height.toString());
-
-      this.context = context;
-      const svgString = new XMLSerializer().serializeToString(element);
-      const svg = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
-      this.image = new Image();
-      this.image.onload = this.sendImage.bind(this);
-      this.image.src = URL.createObjectURL(svg);
-
-      element.setAttribute('width', PREVIEW_SIZE);
-      element.setAttribute('height', PREVIEW_SIZE);
-    }
   }
 
   sendImage(): void {
