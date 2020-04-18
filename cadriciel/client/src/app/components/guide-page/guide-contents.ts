@@ -4,7 +4,6 @@ import { SubjectGuide } from '../guide-subject/subject-guide';
 // tslint:disable: max-file-line-count
 
 export const GUIDE_CONTENTS: SubjectGuide[] = [
-    // Sujet 1
     {
       name: 'Bienvenue',
       id: 1,
@@ -17,21 +16,18 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                     <img src="assets/poly.png">`,
       previous: false, next: true
     },
-    // Catégorie 1 : Outils
     {
         name: 'Outils',
         description: '',
         previous: false, next: false,
         openCategory: false,
         subSubjects: [
-            // Catégorie 2 : Outils de Traçages
             {
                 name: 'Traçages',
                 description: '',
                 previous: false, next: false,
                 openCategory: false,
                 subSubjects: [
-                    // Sujet 2
                     {
                         name: 'Crayon',
                         description: `<h1> Crayon </h1>
@@ -72,7 +68,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                     },
                 ]
             },
-            // Catégorie 3 : Outils de Formes
             {
                 name: 'Formes',
                 description: '',
@@ -95,7 +90,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         previous: true, next: true,
                         id: 5
                     },
-                    // Sujet 6
                     {
                         name: 'Ellipse',
                         description: `<h1> Ellipse </h1>
@@ -151,7 +145,6 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                     },
                 ]
             },
-            // Catégorie 4 : Outils de Couleurs
             {
                 name: 'Couleurs',
                 description: '',
@@ -229,7 +222,12 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                               rotation sont possible:
                               <li> Par 15° à chaque cran de roulette autour d'une centre de la sélection. </li>
                               <li> Par 1° si la touche ALT est enfoncée </li>
-                              <li> Autour du centre chacun des élément sélectionnés si la touche SHIFT est enfoncée </li> </p>`,
+                              <li> Autour du centre chacun des élément sélectionnés si la touche SHIFT est enfoncée </li> </p>
+                              <img src="assets/rotation 1.gif" width="300" height="300">
+                              <img src="assets/rotation 2.gif" width="300" height="300">
+                              <p> Les points de contrôles situés sur chaque côtés de la sélection permettent, si on clique dessus,
+                              de redimmensionner la sélection:</p>
+                              <img src="assets/scale.gif" width="300" height="300">`,
                 previous: true, next: true,
                 id: 12
             },
