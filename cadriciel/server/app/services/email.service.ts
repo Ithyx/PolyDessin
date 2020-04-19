@@ -4,8 +4,6 @@ import { injectable } from 'inversify';
 import 'reflect-metadata';
 
 export const MAIL_API_URL = 'https://log2990.step.polymtl.ca/email?quick_return=1';
-// export const MAIL_API_HOST = 'log2990.step.polymtl.ca';
-// export const MAIL_API_PATH = '/email';
 
 @injectable()
 export class EmailService {

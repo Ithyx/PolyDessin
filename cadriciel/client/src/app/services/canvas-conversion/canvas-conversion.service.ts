@@ -47,6 +47,7 @@ export class CanvasConversionService {
     };
     this.coloredElements = new Map<string, DrawElement>();
     this.elementRGB = [0, 0, 0];
+    this.isValid = false;
   }
 
   /* Conversion de svg vers canvas basée sur
