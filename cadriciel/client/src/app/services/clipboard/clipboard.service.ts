@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 
-import { AddSVGService } from './command/add-svg.service';
-import { CommandManagerService } from './command/command-manager.service';
-import { RemoveSVGService } from './command/remove-svg.service';
-import { DrawingManagerService } from './drawing-manager/drawing-manager.service';
-import { SavingUtilityService } from './saving/saving-utility.service';
-import { DrawElement } from './stockage-svg/draw-element/draw-element';
-import { SVGStockageService } from './stockage-svg/svg-stockage.service';
-import { SelectionService } from './tools/selection/selection.service';
+import { AddSVGService } from '../command/add-svg.service';
+import { CommandManagerService } from '../command/command-manager.service';
+import { RemoveSVGService } from '../command/remove-svg.service';
+import { DrawingManagerService } from '../drawing-manager/drawing-manager.service';
+import { SavingUtilityService } from '../saving/saving-utility.service';
+import { DrawElement } from '../stockage-svg/draw-element/draw-element';
+import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
+import { SelectionService } from '../tools/selection/selection.service';
 
 const PASTE_OFFSET = 20;
 

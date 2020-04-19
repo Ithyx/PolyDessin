@@ -2,7 +2,7 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
-import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
+import { CanvasConversionService } from 'src/app/services/canvas-conversion/canvas-conversion.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { LocalSaveManagerService } from 'src/app/services/saving/local/local-save-manager.service';
 import { DatabaseService } from 'src/app/services/saving/remote/database.service';

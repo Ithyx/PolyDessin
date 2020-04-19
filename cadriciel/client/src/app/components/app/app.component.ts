@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavigationStart, Router, RoutesRecognized } from '@angular/router';
 // import { BehaviorSubject } from 'rxjs';
 import { filter, pairwise } from 'rxjs/operators';
-import { RoutingManagerService } from 'src/app/services/routing-manager.service';
+import { RoutingManagerService } from 'src/app/services/routing-manager/routing-manager.service';
 
 @Component({
     selector: 'app-root',

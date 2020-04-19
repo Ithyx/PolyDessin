@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
-import { EMPTY_SUBJECT } from 'src/app/services/navigation-guide.service';
+import { EMPTY_SUBJECT } from 'src/app/services/navigation-guide/navigation-guide.service';
 import { GuideSubjectComponent } from '../guide-subject/guide-subject.component';
 import { SubjectGuide } from '../guide-subject/subject-guide';
 import { GUIDE_CONTENTS } from './guide-contents';

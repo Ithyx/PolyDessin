@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig} from '@angular/material';
 import { Subscription } from 'rxjs';
-import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
+import { CanvasConversionService } from 'src/app/services/canvas-conversion/canvas-conversion.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts/shortcuts-manager.service';
 import { DrawingTool, TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { ExportWindowComponent } from '../export-window/export-window.component';

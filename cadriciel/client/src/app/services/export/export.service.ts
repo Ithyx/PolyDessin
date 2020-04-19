@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Drawing } from '../../../../../common/communication/drawing-interface';
-import { CanvasConversionService } from '../canvas-conversion.service';
+import { CanvasConversionService } from '../canvas-conversion/canvas-conversion.service';
 import { DrawingManagerService } from '../drawing-manager/drawing-manager.service';
 import { FILTERS } from '../filters/filters';
 import { DatabaseService } from '../saving/remote/database.service';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { CanvasConversionService, MAX_COLOR_VALUE } from '../canvas-conversion.service';
+import { CanvasConversionService, MAX_COLOR_VALUE } from '../canvas-conversion/canvas-conversion.service';
 import { B, G, R } from '../color/color';
 import { CommandManagerService } from '../command/command-manager.service';
 import { RemoveSVGService } from '../command/remove-svg.service';

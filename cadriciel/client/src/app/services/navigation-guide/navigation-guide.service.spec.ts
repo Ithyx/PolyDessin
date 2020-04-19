@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { GUIDE_CONTENTS } from '../components/guide-page/guide-contents';
-import { SubjectGuide } from '../components/guide-subject/subject-guide';
+import { GUIDE_CONTENTS } from '../../components/guide-page/guide-contents';
+import { SubjectGuide } from '../../components/guide-subject/subject-guide';
 import { EMPTY_SUBJECT, NavigationGuideService } from './navigation-guide.service';
 
 // tslint:disable: no-magic-numbers

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanvasConversionService } from '../canvas-conversion.service';
+import { CanvasConversionService } from '../canvas-conversion/canvas-conversion.service';
 import { LocalSaveManagerService } from '../saving/local/local-save-manager.service';
 import { SelectionBoxService } from '../tools/selection/selection-box.service';
 import { Command } from './command';

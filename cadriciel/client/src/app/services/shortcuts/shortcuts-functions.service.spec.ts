@@ -12,7 +12,7 @@ import { GalleryLoadWarningComponent } from '../../components/gallery-load-warni
 import { GalleryElementComponent } from '../../components/gallery/gallery-element/gallery-element.component';
 import { GalleryComponent } from '../../components/gallery/gallery.component';
 import { SavePopupComponent } from '../../components/save-popup/save-popup.component';
-import { CanvasConversionService } from '../canvas-conversion.service';
+import { CanvasConversionService } from '../canvas-conversion/canvas-conversion.service';
 import { RectangleService } from '../stockage-svg/draw-element/basic-shape/rectangle.service';
 import { DrawElement } from '../stockage-svg/draw-element/draw-element';
 import { TOOL_INDEX } from '../tools/tool-manager.service';

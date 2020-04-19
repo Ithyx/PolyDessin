@@ -2,14 +2,14 @@ import { TestBed } from '@angular/core/testing';
 
 import { DomSanitizer } from '@angular/platform-browser';
 import { CanvasConversionService, COLOR_INCREASE_LINE, COLOR_INCREASE_SPRAY } from './canvas-conversion.service';
-import { Color } from './color/color';
-import { RectangleService } from './stockage-svg/draw-element/basic-shape/rectangle.service';
-import { DrawElement } from './stockage-svg/draw-element/draw-element';
-import { LineService } from './stockage-svg/draw-element/line.service';
-import { SprayService } from './stockage-svg/draw-element/spray.service';
-import { TraceBrushService } from './stockage-svg/draw-element/trace/trace-brush.service';
-import { TracePencilService } from './stockage-svg/draw-element/trace/trace-pencil.service';
-import { SVGStockageService } from './stockage-svg/svg-stockage.service';
+import { Color } from '../color/color';
+import { RectangleService } from '../stockage-svg/draw-element/basic-shape/rectangle.service';
+import { DrawElement } from '../stockage-svg/draw-element/draw-element';
+import { LineService } from '../stockage-svg/draw-element/line.service';
+import { SprayService } from '../stockage-svg/draw-element/spray.service';
+import { TraceBrushService } from '../stockage-svg/draw-element/trace/trace-brush.service';
+import { TracePencilService } from '../stockage-svg/draw-element/trace/trace-pencil.service';
+import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 
 // tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers

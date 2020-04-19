@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output} from '@angular/core';
-import { EMPTY_SUBJECT} from '../../services/navigation-guide.service';
+import { EMPTY_SUBJECT} from '../../services/navigation-guide/navigation-guide.service';
 import { SubjectGuide } from './subject-guide';
 
 @Component({

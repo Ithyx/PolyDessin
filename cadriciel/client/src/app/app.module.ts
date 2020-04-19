@@ -31,13 +31,13 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 
 // Service
 import { AttributesPanelComponent } from './components/attributes-panel/attributes-panel.component';
-import { CanvasConversionService } from './services/canvas-conversion.service';
+import { CanvasConversionService } from './services/canvas-conversion/canvas-conversion.service';
 import { ColorParameterService } from './services/color/color-parameter.service';
 import { CommandManagerService } from './services/command/command-manager.service';
 import { DrawingManagerService } from './services/drawing-manager/drawing-manager.service';
 import { GridService } from './services/grid/grid.service';
-import { NavigationGuideService } from './services/navigation-guide.service';
-import { RoutingManagerService } from './services/routing-manager.service';
+import { NavigationGuideService } from './services/navigation-guide/navigation-guide.service';
+import { RoutingManagerService } from './services/routing-manager/routing-manager.service';
 import { LocalSaveManagerService } from './services/saving/local/local-save-manager.service';
 import { ShortcutsManagerService } from './services/shortcuts/shortcuts-manager.service';
 import { SVGStockageService } from './services/stockage-svg/svg-stockage.service';

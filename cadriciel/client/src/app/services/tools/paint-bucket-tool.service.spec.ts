@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CanvasConversionService } from '../canvas-conversion.service';
+import { CanvasConversionService } from '../canvas-conversion/canvas-conversion.service';
 import { B, G, R } from '../color/color';
 import { AddSVGService } from '../command/add-svg.service';
 import { ColorFillService } from '../stockage-svg/draw-element/color-fill.service';

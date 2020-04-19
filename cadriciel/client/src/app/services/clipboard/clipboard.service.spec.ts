@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CanvasConversionService } from './canvas-conversion.service';
+import { CanvasConversionService } from '../canvas-conversion/canvas-conversion.service';
 import { ClipboardService } from './clipboard.service';
-import { AddSVGService } from './command/add-svg.service';
-import { RemoveSVGService } from './command/remove-svg.service';
-import { DrawElement } from './stockage-svg/draw-element/draw-element';
-import { TOOL_INDEX } from './tools/tool-manager.service';
+import { AddSVGService } from '../command/add-svg.service';
+import { RemoveSVGService } from '../command/remove-svg.service';
+import { DrawElement } from '../stockage-svg/draw-element/draw-element';
+import { TOOL_INDEX } from '../tools/tool-manager.service';
 
 // tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers

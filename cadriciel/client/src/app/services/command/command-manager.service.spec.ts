@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CanvasConversionService } from '../canvas-conversion.service';
+import { CanvasConversionService } from '../canvas-conversion/canvas-conversion.service';
 import { EllipseService } from '../stockage-svg/draw-element/basic-shape/ellipse.service';
 import { PolygonService } from '../stockage-svg/draw-element/basic-shape/polygon.service';
 import { RectangleService } from '../stockage-svg/draw-element/basic-shape/rectangle.service';

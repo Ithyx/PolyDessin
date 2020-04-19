@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
-import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
+import { CanvasConversionService } from 'src/app/services/canvas-conversion/canvas-conversion.service';
 import { LocalSaveManagerService } from 'src/app/services/saving/local/local-save-manager.service';
 import { ShortcutsManagerService } from 'src/app/services/shortcuts/shortcuts-manager.service';
 import { EllipseToolService } from 'src/app/services/tools/basic-shape-tool/ellipse-tool.service';

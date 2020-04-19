@@ -6,7 +6,7 @@ import { DrawElement } from '../../stockage-svg/draw-element/draw-element';
 import { TOOL_INDEX } from '../tool-manager.service';
 import { LEFT_CLICK, RIGHT_CLICK, SelectionService } from './selection.service';
 import { ControlPosition } from './selection-box.service';
-import { CanvasConversionService } from '../../canvas-conversion.service';
+import { CanvasConversionService } from '../../canvas-conversion/canvas-conversion.service';
 
 // tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers

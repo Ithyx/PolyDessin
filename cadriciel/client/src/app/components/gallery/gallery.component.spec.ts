@@ -6,7 +6,7 @@ import { MatDialogModule, MatDialogRef, MatProgressSpinnerModule } from '@angula
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
+import { CanvasConversionService } from 'src/app/services/canvas-conversion/canvas-conversion.service';
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element/draw-element';
 import { Drawing } from '../../../../../common/communication/drawing-interface';
 import { GalleryLoadWarningComponent } from '../gallery-load-warning/gallery-load-warning.component';

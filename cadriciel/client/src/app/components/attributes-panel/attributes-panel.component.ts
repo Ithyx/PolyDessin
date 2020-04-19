@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
-import { ClipboardService } from 'src/app/services/clipboard.service';
+import { ClipboardService } from 'src/app/services/clipboard/clipboard.service';
 import { A, Color } from 'src/app/services/color/color';
 import { PERCENTAGE, Scope } from 'src/app/services/color/color-manager.service';
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';

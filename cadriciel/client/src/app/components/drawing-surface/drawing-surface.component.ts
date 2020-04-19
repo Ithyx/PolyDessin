@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
-import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
+import { CanvasConversionService } from 'src/app/services/canvas-conversion/canvas-conversion.service';
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
 import { TransformSvgService } from 'src/app/services/command/transform-svg.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';

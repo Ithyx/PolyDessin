@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { ElementRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { CanvasConversionService } from 'src/app/services/canvas-conversion.service';
+import { CanvasConversionService } from 'src/app/services/canvas-conversion/canvas-conversion.service';
 import { RectangleService } from 'src/app/services/stockage-svg/draw-element/basic-shape/rectangle.service';
 import { DrawElement } from 'src/app/services/stockage-svg/draw-element/draw-element';
 import { LineService } from 'src/app/services/stockage-svg/draw-element/line.service';
