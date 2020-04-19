@@ -1,8 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CanvasConversionService } from '../canvas-conversion.service';
+import { B, G, R } from '../color/color';
 import { AddSVGService } from '../command/add-svg.service';
 import { ColorFillService } from '../stockage-svg/draw-element/color-fill.service';
+import { Point } from '../stockage-svg/draw-element/draw-element';
 import { SVGStockageService } from '../stockage-svg/svg-stockage.service';
 import { PaintBucketToolService } from './paint-bucket-tool.service';
 
@@ -54,6 +56,9 @@ describe('PaintBucketToolService', () => {
     ]);
     spyOn(context, 'getImageData').and.returnValue(imageData);
     spyOn(XMLSerializer.prototype, 'serializeToString').and.callFake((root: SVGElement) => fakeSVGString);
+    service['checkedPixels'] = new Map<number, number[]>();
+    service['pixelData'] = data;
+    service['tools'].activeTool.parameters[0].value = 20; // Tolérance de 20%
   });
 
   it('should be created', () => {
@@ -289,26 +294,46 @@ describe('PaintBucketToolService', () => {
   });
 
   // TESTS findLeftBorder
-  it('#findLeftBorder devrait appeler checkColor jusqu\'à que la position en x soit nulles', () => {
+  it('#findLeftBorder devrait appeler checkColor jusqu\'à que la position en x soit la bordure gauche', () => {
+    const spy = spyOn(service, 'checkColor').and.returnValue(true);
+    service.findLeftBorder({x: 4, y: 90});
+    expect(spy).toHaveBeenCalledTimes(5);
+  });
+
+  it('#findLeftBorder devrait ajouter le point correspondant à la bordure gauche dans fill', () => {
     spyOn(service, 'checkColor').and.returnValue(true);
-    expect(service.findLeftBorder({x: 90, y: 90})).toEqual(0);
+    const spy = spyOn(service['fill'].points, 'push');
+    service.findLeftBorder({x: 5, y: 90});
+    expect(spy).toHaveBeenCalledWith({x: 0, y: 90});
+  });
+
+  it('#findLeftBorder devrait retourner la valeur en x associée à la bordure gauche', () => {
+    spyOn(service, 'checkColor').and.returnValue(true);
+    expect(service.findLeftBorder({x: 5, y: 90})).toBe(0);
   });
 
   // TESTS checkAbovePixel
-  // TODO : NOM DU TEST
-  it('#checkAbovePixel 1', () => {
+  it('#checkAbovePixel devrait renvoyer false si le pixel au-dessus est d\'une couleur différente', () => {
     spyOn(service, 'checkColor').and.returnValue(false);
     expect(service.checkAbovePixel({x: 5, y: 5}, true, [])).toBe(false);
   });
 
-  // TODO : NOM DU TEST
-  it('#checkAbovePixel 2', () => {
+  it('#checkAbovePixel devrait renvoyer true si spanAbove est à false et que la position en y est toujours dans le dessin', () => {
     spyOn(service, 'checkColor').and.returnValue(true);
     expect(service.checkAbovePixel({x: 5, y: 4}, false, [])).toBe(true);
   });
 
-  // TODO : NOM DU TEST
-  it('#checkAbovePixel 3', () => {
+  it('#checkAbovePixel devrait ajouter la position au-dessus dans queue si checkColor retourne vrai, '
+    + 'que spanAbove est faux et que la position en y est toujours dans le dessin', () => {
+    spyOn(service, 'checkColor').and.returnValue(true);
+    const queue: Point[] = [];
+    const spy = spyOn(queue, 'push');
+    service.checkAbovePixel({x: 5, y: 4}, false, queue);
+    expect(spy).toHaveBeenCalledWith({x: 5, y: 3});
+  });
+
+  it('#checkAbovePixel devrait retourner spanAbove si checkColor est vrai '
+    + 'et que la position en y n\'est pas dans le dessin', () => {
     spyOn(service, 'checkColor').and.returnValue(true);
     const spanAbove = false;
     expect(service.checkAbovePixel({x: 5, y: -4}, spanAbove, [])).toBe(spanAbove);
@@ -326,8 +351,17 @@ describe('PaintBucketToolService', () => {
     expect(service.checkBelowPixel({x: 5, y: -4}, false, [])).toBe(true);
   });
 
-  // TODO : NOM DU TEST
-  it('#checkBelowPixel 3', () => {
+  it('#checkBelowPixel devrait ajouter la position en-dessous dans queue si checkColor retourne vrai, '
+    + 'que spanBelow est faux et que la position en y est toujours dans le dessin', () => {
+    spyOn(service, 'checkColor').and.returnValue(true);
+    const queue: Point[] = [];
+    const spy = spyOn(queue, 'push');
+    service.checkBelowPixel({x: 5, y: 4}, false, queue);
+    expect(spy).toHaveBeenCalledWith({x: 5, y: 5});
+  });
+
+  it('#checkBelowPixel devrait retourner spanBelow si checkColor est vrai '
+    + 'et que la position en y n\'est pas dans le dessin', () => {
     spyOn(service, 'checkColor').and.returnValue(true);
     const spanBelow = false;
     expect(service.checkBelowPixel({x: 5, y: 2000}, spanBelow, [])).toBe(spanBelow);
@@ -348,7 +382,63 @@ describe('PaintBucketToolService', () => {
   });
 
   // TESTS checkColor
-    // TODO
+  it('#checkColor devrait appeler get pour obtenir les valeur du point en x dans la map', () => {
+    const spy = spyOn(service['checkedPixels'], 'get').and.returnValue([50]);
+    service.checkColor({x: 25, y: 50});
+    expect(spy).toHaveBeenCalledWith(25);
+  });
+
+  it('#checkColor devrait retourner false si la map contient y dans le tableau à la clé en x', () => {
+    spyOn(service['checkedPixels'], 'get').and.returnValue([50]);
+    expect(service.checkColor({x: 25, y: 50})).toBe(false);
+  });
+
+  it('#checkColor devrait appeler getIndex avec le point', () => {
+    const spy = spyOn(service, 'getIndex');
+    service.checkColor({x: 0, y: 0});
+    expect(spy).toHaveBeenCalledWith({x: 0, y: 0});
+  });
+
+  it('#checkColor devrait retourner false si l\'écart entre le R du pixel et le R de color est supérieur à la tolérance', () => {
+    service['color'] = [100, 100, 100];
+    service['pixelData'][R] = 200;
+    service['pixelData'][G] = 110;
+    service['pixelData'][B] = 110;
+    expect(service.checkColor({x: 0, y: 0})).toBe(false);
+  });
+
+  it('#checkColor devrait retourner false si l\'écart entre le G du pixel et le G de color est supérieur à la tolérance', () => {
+    service['color'] = [100, 100, 100];
+    service['pixelData'][R] = 110;
+    service['pixelData'][G] = 200;
+    service['pixelData'][B] = 110;
+    expect(service.checkColor({x: 0, y: 0})).toBe(false);
+  });
+
+  it('#checkColor devrait retourner false si l\'écart entre le B du pixel et le B de color est supérieur à la tolérance', () => {
+    service['color'] = [100, 100, 100];
+    service['pixelData'][R] = 110;
+    service['pixelData'][G] = 110;
+    service['pixelData'][B] = 200;
+    expect(service.checkColor({x: 0, y: 0})).toBe(false);
+  });
+
+  it('#checkColor devrait retourner true si l\'écart est inférieur à la tolérance en R, G et B', () => {
+    service['color'] = [100, 100, 100];
+    service['pixelData'][R] = 110;
+    service['pixelData'][G] = 110;
+    service['pixelData'][B] = 110;
+    expect(service.checkColor({x: 0, y: 0})).toBe(true);
+  });
+
+  it('#checkColor devrait utiliser une tolérance de 0 si le paramètre n\'est pas défini dans l\'outil actif', () => {
+    service['tools'].activeTool.parameters[0].value = undefined;
+    service['color'] = [100, 100, 100];
+    service['pixelData'][R] = 110;
+    service['pixelData'][G] = 110;
+    service['pixelData'][B] = 110;
+    expect(service.checkColor({x: 0, y: 0})).toBe(false);
+  });
 
   // TESTS getIndex
 

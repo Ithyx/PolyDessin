@@ -78,7 +78,7 @@ export class PaintBucketToolService implements ToolInterface {
     }
   }
 
-  // Algorithme basé sur http://www.programmersought.com/article/3670113928/
+  // Algorithme basé sur http://www.programmersought.com/article/3670113928/ (3: Scanline Fill Non-recursive)
   fillWithColor(): void {
     const queue: Point[] = [];
     queue.push(this.mousePosition);
