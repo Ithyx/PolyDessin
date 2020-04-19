@@ -8,6 +8,7 @@ import { PaintBucketToolService } from './paint-bucket-tool.service';
 
 // tslint:disable:no-magic-numbers
 // tslint:disable: no-string-literal
+// tslint:disable: max-file-line-count
 
 describe('PaintBucketToolService', () => {
   let service: PaintBucketToolService;
@@ -138,22 +139,26 @@ describe('PaintBucketToolService', () => {
   // TESTS onImageLoad
 
   it('#onImageLoad devrait appeler la fonction drawImage', () => {
+    spyOn(service, 'fillWithColor').and.returnValue();
     const spy = spyOn(service['context'], 'drawImage').and.callThrough();
     service.onImageLoad();
     expect(spy).toHaveBeenCalledWith(service['image'], 0, 0);
   });
 
   it('#onImageLoad devrait appeler la fonction getImageData de context pour obtenir les couleurs du dessin au complet', () => {
+    spyOn(service, 'fillWithColor').and.returnValue();
     service.onImageLoad();
     expect(service['context'].getImageData).toHaveBeenCalledWith(0, 0, svgElementStub.clientWidth, svgElementStub.clientHeight);
   });
 
   it('#onImageLoad devrait mettre le résultat de getImageData dans l\'attribut pixelData', () => {
+    spyOn(service, 'fillWithColor').and.returnValue();
     service.onImageLoad();
     expect(service['pixelData']).toEqual(data);
   });
 
   it('#onImageLoad devrait appeler getIndex avec le mousePosition', () => {
+    spyOn(service, 'fillWithColor').and.returnValue();
     service['mousePosition'] = {x: 35, y: 25};
     const spy = spyOn(service, 'getIndex');
     service.onImageLoad();
@@ -161,6 +166,7 @@ describe('PaintBucketToolService', () => {
   });
 
   it('#onImageLoad devrait assigner les valeurs correspondantes dans pixelData à l\'attribut color', () => {
+    spyOn(service, 'fillWithColor').and.returnValue();
     spyOn(service, 'getIndex').and.returnValue(8);
     service.onImageLoad();
     expect(service['color']).toEqual([9, 0, 0]);
@@ -225,19 +231,62 @@ describe('PaintBucketToolService', () => {
 
   // TESTS fillWithColor
 
-  /*it('#fillWithColor devrait appeler la fonction getContext', () => {
-    const spy = spyOn(Array.prototype, 'push');
+  it('#fillWithColor devrait appeler findLeftBorder pour tous les points dans queue', () => {
+    const spy = spyOn(service, 'findLeftBorder');
     service.fillWithColor();
     expect(spy).toHaveBeenCalledWith(service['mousePosition']);
-  });*/
+  });
 
-  /* it('#fillWithColor 1', () => {
-    service['mousePosition'] = {x: 90, y: 90};
+  it('#fillWithColor devrait appeler checkColor pour toutes les positions en x jusqu\'à la bordure droite', () => {
+    spyOn(service, 'findLeftBorder').and.returnValue(995);
+    spyOn(service, 'checkAbovePixel').and.returnValue(false);
+    spyOn(service, 'checkBelowPixel').and.returnValue(false);
+    const spy = spyOn(service, 'checkColor').and.returnValue(true);
+    service.fillWithColor();
+    expect(spy).toHaveBeenCalledTimes(5);
+  });
+
+  it('#fillWithColor devrait appeler checkAbovePixel pour toutes les positions en x jusqu\'à la bordure droite', () => {
+    spyOn(service, 'findLeftBorder').and.returnValue(995);
+    spyOn(service, 'checkBelowPixel').and.returnValue(false);
+    spyOn(service, 'checkColor').and.returnValue(true);
+    const spy = spyOn(service, 'checkAbovePixel').and.returnValue(false);
+    service.fillWithColor();
+    expect(spy).toHaveBeenCalledTimes(5);
+  });
+
+  it('#fillWithColor devrait appeler checkBelowPixel pour toutes les positions en x jusqu\'à la bordure droite', () => {
+    spyOn(service, 'findLeftBorder').and.returnValue(995);
+    spyOn(service, 'checkAbovePixel').and.returnValue(false);
+    spyOn(service, 'checkColor').and.returnValue(true);
+    const spy = spyOn(service, 'checkBelowPixel').and.returnValue(false);
+    service.fillWithColor();
+    expect(spy).toHaveBeenCalledTimes(5);
+  });
+
+  it('#fillWithColor devrait appeler addPixelPosition pour toutes les positions en x jusqu\'à la bordure droite', () => {
+    spyOn(service, 'findLeftBorder').and.returnValue(995);
+    spyOn(service, 'checkAbovePixel').and.returnValue(false);
+    spyOn(service, 'checkBelowPixel').and.returnValue(false);
     spyOn(service, 'checkColor').and.returnValue(true);
     const spy = spyOn(service, 'addPixelPosition');
     service.fillWithColor();
-    expect(spy).toHaveBeenCalled();
-  }); */
+    expect(spy).toHaveBeenCalledTimes(5);
+  });
+
+  it('#fillWithColor devrait appeler push sur les points du fill pour la position en x correspondant à la bordure droite', () => {
+    spyOn(service, 'findLeftBorder').and.returnValue(1000);
+    const spy = spyOn(service['fill'].points, 'push');
+    service.fillWithColor();
+    expect(spy).toHaveBeenCalledWith({x: svgElementStub.clientWidth, y: service['mousePosition'].y});
+  });
+
+  it('#fillWithColor ne devrait rien faire si le point dans queue n\'est pas valide', () => {
+    delete service['mousePosition'];
+    const spy = spyOn(service, 'findLeftBorder');
+    service.fillWithColor();
+    expect(spy).not.toHaveBeenCalled();
+  });
 
   // TESTS findLeftBorder
   it('#findLeftBorder devrait appeler checkColor jusqu\'à que la position en x soit nulles', () => {
