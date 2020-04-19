@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
+import { CanvasConversionService } from '../../canvas-conversion/canvas-conversion.service';
 import { TransformSvgService } from '../../command/transform-svg.service';
 import { RectangleService } from '../../stockage-svg/draw-element/basic-shape/rectangle.service';
 import { DrawElement } from '../../stockage-svg/draw-element/draw-element';
 import { TOOL_INDEX } from '../tool-manager.service';
-import { LEFT_CLICK, RIGHT_CLICK, SelectionService } from './selection.service';
 import { ControlPosition } from './selection-box.service';
-import { CanvasConversionService } from '../../canvas-conversion/canvas-conversion.service';
+import { LEFT_CLICK, RIGHT_CLICK, SelectionService } from './selection.service';
 
 // tslint:disable: no-string-literal
 // tslint:disable: no-magic-numbers

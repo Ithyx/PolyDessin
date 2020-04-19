@@ -352,7 +352,7 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                                     <li> Tache </li>
                                     <li> Tremblant </li></p>
                               </p>
-                              <p> Il est également possible d'exporter son dessin par couriel en entrant son adresse e-mail dans le 
+                              <p> Il est également possible d'exporter son dessin par couriel en entrant son adresse e-mail dans le
                               champ dédié du menu d'exporation </p>`,
                 previous: true, next: true,
                 id: 19
