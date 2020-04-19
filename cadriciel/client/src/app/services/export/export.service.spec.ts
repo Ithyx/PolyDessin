@@ -29,6 +29,7 @@ describe('ExportService', () => {
     service['canvas'] = canvas;
     service['context'] = context;
     service['container'] = document.createElement('a');
+    service['image'] = document.createElement('img');
   });
   beforeEach(() => drawing = {
     _id: 0,
@@ -131,6 +132,38 @@ describe('ExportService', () => {
 
   it('#downloadImage devrait appeler drawImage du context', () => {
     const spy = spyOn(service['context'], 'drawImage');
+    service['downloadImage']();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#downloadImage devrait appeler toDataURL du canvas dans le cas d\'un format non-svg', () => {
+    const spy = spyOn(service['canvas'], 'toDataURL');
+    service['selectedExportFormat'] = 'png';
+    service['downloadImage']();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#downloadImage devrait prendre la source de image dans le cas d\'un format non-svg', () => {
+    service['selectedExportFormat'] = 'svg';
+    service['downloadImage']();
+    expect(service['container'].href).toEqual('http://localhost:9876/');
+  });
+
+  it('#downloadImage devrait assigner le nom du fichier à container.download', () => {
+    service['selectedExportFormat'] = 'svg';
+    service['selectedFileName'] = 'test';
+    service['downloadImage']();
+    expect(service['container'].download).toEqual('test');
+  });
+
+  it('#downloadImage devrait appeler click du container', () => {
+    const spy = spyOn(service['container'], 'click');
+    service['downloadImage']();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#downloadImage devrait appeler revokeObject de URL', () => {
+    const spy = spyOn(URL, 'revokeObjectURL');
     service['downloadImage']();
     expect(spy).toHaveBeenCalled();
   });
