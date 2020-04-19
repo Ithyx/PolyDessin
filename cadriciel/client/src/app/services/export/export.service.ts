@@ -134,7 +134,7 @@ export class ExportService {
     URL.revokeObjectURL(imageSrc);
   }
 
-  private sendImage(): void {
+  private async sendImage(): Promise<void> {
     this.mailStatus = MailStatus.LOADING;
     this.context.drawImage(this.image, 0, 0);
     if (this.selectedAuthor !== '' && this.context) {
@@ -144,7 +144,7 @@ export class ExportService {
     if (this.selectedExportFormat === 'svg') {
       imageData = this.generateSVG(this.drawing, this.selectedAuthor);
     }
-    this.db.sendEmail(this.emailAdress, imageData, this.selectedFileName, this.selectedExportFormat)
+    await this.db.sendEmail(this.emailAdress, imageData, this.selectedFileName, this.selectedExportFormat)
     .then(() => {
       this.mailStatus = MailStatus.SUCCESS;
     }, (err) => {

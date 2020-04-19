@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { Drawing } from '../../../../../common/communication/drawing-interface';
 import { DrawElement } from '../stockage-svg/draw-element/draw-element';
-import { ExportParams, ExportService } from './export.service';
+import { ExportParams, ExportService, MailStatus } from './export.service';
 
 // tslint:disable: no-magic-numbers
 // tslint:disable: no-string-literal
@@ -120,12 +120,25 @@ describe('ExportService', () => {
     service.export(params);
     expect(spy).not.toHaveBeenCalled();
   });
-
   it('#export devrait construire une nouvelle image si le canvas est valide', () => {
     service['canvas'] = canvas;
     const spy = spyOn(URL, 'createObjectURL');
     service.export(params);
     expect(spy).toHaveBeenCalled();
+  });
+  it('#export devrait bind la fonction sendImage si on désire envoyer un email', () => {
+    service['canvas'] = canvas;
+    params.isEmail = true;
+    service.export(params);
+    if (service['image'].onload === null) { throw new Error('onload was null'); }
+    expect(service['image'].onload.toString()).toEqual(service['sendImage'].bind(service).toString());
+  });
+  it('#export devrait bind la fonction downloadImage si on désire télécharger l\'image', () => {
+    service['canvas'] = canvas;
+    params.isEmail = false;
+    service.export(params);
+    if (service['image'].onload === null) { throw new Error('onload was null'); }
+    expect(service['image'].onload.toString()).toEqual(service['downloadImage'].bind(service).toString());
   });
 
   // TESTS downloadImage
@@ -169,4 +182,46 @@ describe('ExportService', () => {
   });
 
   // TESTS sendImage
+  it('#sendImage devrait appeller drawAuthorCanvas si le nom d\'auteur n\'est pas vide', () => {
+    // spy sur des methodes privées
+    // tslint:disable-next-line: no-any
+    const spy = spyOn<any>(service, 'drawAuthorCanvas');
+    service['selectedAuthor'] = 'auteur';
+    service['sendImage']();
+    expect(spy).toHaveBeenCalled();
+  });
+  it('#sendImage ne devrait pas appeller drawAuthorCanvas si le nom d\'auteur est vide', () => {
+    // spy sur des methodes privées
+    // tslint:disable-next-line: no-any
+    const spy = spyOn<any>(service, 'drawAuthorCanvas');
+    service['selectedAuthor'] = '';
+    service['sendImage']();
+    expect(spy).not.toHaveBeenCalled();
+  });
+  it('#sendImage ne devrait pas appeller generateSVG si le si le format d\'export n\'est pas svg', () => {
+    // spy sur des methodes privées
+    // tslint:disable-next-line: no-any
+    const spy = spyOn<any>(service, 'generateSVG');
+    service['selectedExportFormat'] = 'png';
+    service['sendImage']();
+    expect(spy).not.toHaveBeenCalled();
+  });
+  it('#sendImage devrait appeller generateSVG si le si le format d\'export est svg', () => {
+    // spy sur des methodes privées
+    // tslint:disable-next-line: no-any
+    const spy = spyOn<any>(service, 'generateSVG');
+    service['selectedExportFormat'] = 'svg';
+    service['sendImage']();
+    expect(spy).toHaveBeenCalled();
+  });
+  it('#sendImage devrait mettre le status a FAILURE si une erreur se produit', async () => {
+    spyOn(service['db'], 'sendEmail').and.callFake(async () => Promise.reject({status: 0}));
+    await service['sendImage']();
+    expect(service.mailStatus).toEqual(MailStatus.FAILURE);
+  });
+  it('#sendImage devrait mettre le status a SUCCESS si aucune erreur ne se produit', async () => {
+    spyOn(service['db'], 'sendEmail').and.callFake(async () => Promise.resolve());
+    await service['sendImage']();
+    expect(service.mailStatus).toEqual(MailStatus.SUCCESS);
+  });
 });
