@@ -54,7 +54,7 @@ export class GalleryComponent implements OnInit {
     await this.update();
   }
 
-  async update(): Promise<void> {
+  private async update(): Promise<void> {
     this.status = Status.Loading;
     try {
       this.drawings = await this.db.getData();

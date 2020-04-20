@@ -91,7 +91,8 @@ describe('GalleryComponent', () => {
 
   // TESTS ngOnInit
   it('#ngOnInit devrait appeler la fonction #update', () => {
-    const spy = spyOn(component, 'update');
+    // tslint:disable-next-line: no-any
+    const spy = spyOn<any>(component, 'update');
     component.ngOnInit();
     expect(spy).toHaveBeenCalled();
   });
@@ -99,19 +100,19 @@ describe('GalleryComponent', () => {
   // TESTS update
   it('#update devrait appeler la fonction db.getData', () => {
     const spy = spyOn(component['db'], 'getData').and.stub();
-    expect(component.update().then(() => {
+    expect(component['update']().then(() => {
       expect(spy).toHaveBeenCalled();
     })).toBeTruthy();
   });
   it('#update mettre l\'état à "loaded" si aucune erreur n\'est lancée', () => {
     spyOn(component['db'], 'getData').and.stub();
-    expect(component.update().then(() => {
+    expect(component['update']().then(() => {
       expect(component['status']).toEqual(Status.Loaded);
     })).toBeTruthy();
   });
   it('#update mettre l\'état à "failed" si une erreur est lancée', () => {
     spyOn(component['db'], 'getData').and.throwError('test error');
-    expect(component.update().then(() => {
+    expect(component['update']().then(() => {
       expect(component['status']).toEqual(Status.Failed);
     })).toBeTruthy();
   });

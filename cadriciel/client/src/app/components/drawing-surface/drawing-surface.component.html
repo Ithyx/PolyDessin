@@ -1,6 +1,20 @@
 <svg #drawing class="drawing" [attr.width.px]="drawingManager.width" [attr.height.px]="drawingManager.height" version="1.1" xlmns="http://www.w3.org/2000/svg">
     <defs>
         <!-- Texture libre de droit-->
+        <!-- https://developer.mozilla.org/fr/docs/Web/SVG/Element/feColorMatrix -->
+        <filter id="Noir-et-blanc" filterUnits="userSpaceOnUse">
+            <feColorMatrix in="SourceGraphic" type="saturate" values="0" />
+        </filter>
+
+        <!-- https://developer.mozilla.org/fr/docs/Web/SVG/Element/feComponentTransfer -->
+        <filter id="Sepia" filterUnits="userSpaceOnUse">
+            <feColorMatrix in="SourceGraphic" type="saturate" values="0.1" />
+            <feComponentTransfer>
+                <feFuncR type="linear" slope="0.5" intercept="0.5"></feFuncR>
+                <feFuncG type="linear" slope="0.5" intercept="0.2"></feFuncG>
+                <feFuncB type="linear" slope="0.5" intercept="0"></feFuncB>
+            </feComponentTransfer>
+        </filter>
 
         <!-- https://developer.mozilla.org/fr/docs/Web/SVG/Element/feGaussianBlur -->
         <filter id="Flou" filterUnits="userSpaceOnUse">
