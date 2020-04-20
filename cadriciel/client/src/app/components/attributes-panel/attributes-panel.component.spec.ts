@@ -130,25 +130,45 @@ describe('AttributesPanelComponent', () => {
   // TESTS selectPreviousPrimaryColor
 
   it('#selectPreviousPrimaryColor devrait assigner sa couleur en paramètre à couleurPrincipale', () => {
-    component['colorParameter'].primaryColor.RGBAString = 'rgba(0, 0, 0, ';
+    component['colorParameter'].primaryColor.RGBA = [0, 0, 0, 1];
     const test: Color = {
       RGBAString : 'rgba(1, 1, 1, 1',
-      RGBA: [1, 1, 1, 1]
+      RGBA: [1, 1, 1, 0.75]
     };
     component.selectPreviousPrimaryColor(test);
-    expect(component['colorParameter'].primaryColor).toEqual(test);
+    expect(component['colorParameter'].primaryColor.RGBA).toEqual([1, 1, 1, 1]);
+  });
+
+  it('#selectPreviousPrimaryColor devrait appeler updateColors de colorParameter', () => {
+    const spy = spyOn(component['colorParameter'], 'updateColors');
+    const test: Color = {
+      RGBAString : 'rgba(1, 1, 1, 1',
+      RGBA: [1, 1, 1, 0.75]
+    };
+    component.selectPreviousPrimaryColor(test);
+    expect(spy).toHaveBeenCalled();
   });
 
   // TESTS selectPreviousSecondaryColor
 
   it('#selectPreviousSecondaryColor devrait assigner sa couleur en paramètre à couleurSecondaire', () => {
-    component['colorParameter'].secondaryColor.RGBAString = 'rgba(0, 0, 0, ';
+    component['colorParameter'].secondaryColor.RGBA = [0, 0, 0, 1];
     const test: Color = {
       RGBAString : 'rgba(1, 1, 1, 1',
-      RGBA: [1, 1, 1, 1]
+      RGBA: [1, 1, 1, 0.75]
     };
     component.selectPreviousSecondaryColor(test, new MouseEvent ('click'));
-    expect(component['colorParameter'].secondaryColor).toEqual(test);
+    expect(component['colorParameter'].secondaryColor.RGBA).toEqual([1, 1, 1, 1]);
+  });
+
+  it('#selectPreviousSecondaryColor devrait appeler updateColors de colorParameter', () => {
+    const spy = spyOn(component['colorParameter'], 'updateColors');
+    const test: Color = {
+      RGBAString : 'rgba(1, 1, 1, 1',
+      RGBA: [1, 1, 1, 0.75]
+    };
+    component.selectPreviousSecondaryColor(test, new MouseEvent('click'));
+    expect(spy).toHaveBeenCalled();
   });
 
   it("#selectPreviousSecondaryColor devrait s'assurer que preventDefault est appelé", () => {
