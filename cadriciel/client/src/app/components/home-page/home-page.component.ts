@@ -36,10 +36,10 @@ export class HomePageComponent {
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent): void {
-    if (event.key === 'o' && event.ctrlKey === true) {
+    if (event.key === 'o' && event.ctrlKey) {
       event.preventDefault();
       this.createDrawing();
-    } else if (event.key === 'g' && event.ctrlKey === true) {
+    } else if (event.key === 'g' && event.ctrlKey) {
       event.preventDefault();
       this.openGallery();
     }
