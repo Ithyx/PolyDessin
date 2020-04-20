@@ -414,7 +414,13 @@ export const GUIDE_CONTENTS: SubjectGuide[] = [
                         <br>
                         <img src="assets/disco-efface.gif" width="500" height="300">
                         <br>
-                        <img src="assets/translation-difficile.gif" width="500" height="300">`,
+                        <img src="assets/translation-difficile.gif" width="500" height="300">
+                        <br>
+                        <img src="assets/foutu probleme.gif" width="500" height="300">
+                        <br>
+                        <img src="assets/grille selection.gif" width="500" height="300">
+                        <br>
+                        <img src="assets/alive rectangle.gif" width="500" height="300">`,
           previous: true, next: false,
           id: 22
       }
