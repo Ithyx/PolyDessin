@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { ClipboardService } from 'src/app/services/clipboard/clipboard.service';
-import { A, Color } from 'src/app/services/color/color';
+import { A, B, Color, G, R } from 'src/app/services/color/color';
 import { PERCENTAGE, Scope } from 'src/app/services/color/color-manager.service';
 import { ColorParameterService } from 'src/app/services/color/color-parameter.service';
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
@@ -66,11 +66,15 @@ export class AttributesPanelComponent {
   }
 
   selectPreviousPrimaryColor(chosenColor: Color): void {
-    this.colorParameter.primaryColor = {...chosenColor};
+    this.colorParameter.primaryColor.RGBA = [chosenColor.RGBA[R], chosenColor.RGBA[G], chosenColor.RGBA[B],
+      this.colorParameter.primaryColor.RGBA[A]];
+    this.colorParameter.updateColors();
   }
 
   selectPreviousSecondaryColor(chosenColor: Color, event: MouseEvent): void {
-    this.colorParameter.secondaryColor = {...chosenColor};
+    this.colorParameter.secondaryColor.RGBA = [chosenColor.RGBA[R], chosenColor.RGBA[G], chosenColor.RGBA[B],
+      this.colorParameter.secondaryColor.RGBA[A]];
+    this.colorParameter.updateColors();
     event.preventDefault();
   }
 
