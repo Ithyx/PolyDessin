@@ -7,6 +7,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NewDrawingWindowComponent } from 'src/app/components/new-drawing-window/new-drawing-window.component';
 import { ExportWindowComponent } from '../../components/export-window/export-window.component';
 import { GalleryLoadWarningComponent } from '../../components/gallery-load-warning/gallery-load-warning.component';
 import { GalleryElementComponent } from '../../components/gallery/gallery-element/gallery-element.component';
@@ -54,13 +55,14 @@ describe('ShortcutsFunctionsService', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        declarations: [ ExportWindowComponent, SavePopupComponent, GalleryComponent, GalleryElementComponent, GalleryLoadWarningComponent],
+        declarations: [ ExportWindowComponent, SavePopupComponent, GalleryComponent, GalleryElementComponent,
+                        GalleryLoadWarningComponent, NewDrawingWindowComponent],
         imports: [ MatProgressSpinnerModule, MatDialogModule, BrowserAnimationsModule,  ReactiveFormsModule,
                    FormsModule, RouterModule.forRoot([{path: 'dessin', component: GalleryComponent}]), RouterTestingModule],
         providers: [HttpClient, HttpHandler, {provide: CanvasConversionService, useValue: {updateDrawing: () => { return; }}}]
     })
     .overrideModule(BrowserDynamicTestingModule, {set: { entryComponents: [ ExportWindowComponent,
-                                                                                SavePopupComponent, GalleryComponent ] }})
+                                                                      SavePopupComponent, GalleryComponent, NewDrawingWindowComponent ] }})
     .compileComponents();
   }));
 

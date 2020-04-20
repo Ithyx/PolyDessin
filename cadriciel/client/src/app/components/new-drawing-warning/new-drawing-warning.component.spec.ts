@@ -6,6 +6,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 
+import { Observable } from 'rxjs';
 import { NewDrawingWindowComponent } from '../new-drawing-window/new-drawing-window.component';
 import { NewDrawingWarningComponent } from './new-drawing-warning.component';
 
@@ -15,13 +16,16 @@ describe('NewDrawingWarningComponent', () => {
   let component: NewDrawingWarningComponent;
   let fixture: ComponentFixture<NewDrawingWarningComponent>;
 
-  const injector = Injector.create(
-    {providers: [{provide: MatDialogRef, useValue: {componentInstance: NewDrawingWarningComponent}}]
-  });
-
   const matDialogRefStub: Partial<MatDialogRef<NewDrawingWarningComponent>> = {
-    close(): void { /* NE RIEN FAIRE */ }
+    close: () => { /* NE RIEN FAIRE */ },
+    // pour pouvoir construire un observable pour mock la matDialogRef
+    // tslint:disable-next-line: no-any
+    afterClosed: () => new Observable()
   };
+
+  const injector = Injector.create(
+    {providers: [{provide: MatDialogRef, useValue: matDialogRefStub}]
+  });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

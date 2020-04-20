@@ -26,6 +26,6 @@ export class NewDrawingWarningComponent {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
-    this.dialog.open(NewDrawingWindowComponent, dialogConfig);
+    this.dialog.open(NewDrawingWindowComponent, dialogConfig).afterClosed().subscribe(() => this.shortcuts.focusOnInput = false);
   }
 }

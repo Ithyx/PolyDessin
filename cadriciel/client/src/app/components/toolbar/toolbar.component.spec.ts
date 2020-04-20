@@ -3,6 +3,7 @@ import { MatDialogConfig, MatDialogModule, MatDialogRef, MatSidenavModule } from
 import { RouterModule } from '@angular/router';
 
 import { Injector } from '@angular/core';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DrawingTool, TOOL_INDEX, ToolManagerService } from 'src/app/services/tools/tool-manager.service';
 import { AttributesPanelComponent } from '../attributes-panel/attributes-panel.component';
@@ -71,11 +72,16 @@ describe('ToolbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GuidePageComponent, ToolbarComponent, DrawingToolComponent, GuideSubjectComponent, AttributesPanelComponent ],
+      declarations: [ GuidePageComponent, ToolbarComponent, DrawingToolComponent,
+        NewDrawingWarningComponent, GuideSubjectComponent, AttributesPanelComponent ],
       providers: [ {provide: ToolManagerService, useValue: toolManagerStub} ],
       imports: [MatSidenavModule, RouterModule.forRoot([
         {path: 'guide', component : GuidePageComponent}
     ]), MatDialogModule, BrowserAnimationsModule]
+    }).overrideModule(BrowserDynamicTestingModule, {
+      set: {
+        entryComponents: [ NewDrawingWarningComponent ],
+      }
     })
     .compileComponents();
   }));

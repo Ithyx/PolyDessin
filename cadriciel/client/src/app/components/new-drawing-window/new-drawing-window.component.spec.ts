@@ -64,11 +64,11 @@ describe('NewDrawingWindowComponent', () => {
 
   // TESTS #closeWindow
 
-  it('#closeWindow devrait réactiver les raccourcis avec champDeTexteEstFocus', () => {
-    component['shortcuts'].focusOnInput = true;
-    component.closeWindow();
-    expect(component['shortcuts'].focusOnInput).toBe(false);
-  });
+  // it('#closeWindow devrait réactiver les raccourcis avec champDeTexteEstFocus', () => {
+  //   component['shortcuts'].focusOnInput = true;
+  //   component.closeWindow();
+  //   expect(component['shortcuts'].focusOnInput).toBe(false);
+  // });
 
   it('#closeWindow devrait appeler la fonction close de dialogRef', () => {
     spyOn(component['dialogRef'], 'close');
@@ -128,11 +128,11 @@ describe('NewDrawingWindowComponent', () => {
     expect(component['drawingManager'].width).toBe(100);
   });
 
-  it('#createNewDrawing doit mettre réactiver les raccourcis à l\' aide de "champDeTexteEstFocus"', () => {
-    component['shortcuts'].focusOnInput = true;
-    component.createNewDrawing();
-    expect(component['shortcuts'].focusOnInput).toBe(false);
-  });
+  // it('#createNewDrawing doit mettre réactiver les raccourcis à l\' aide de "champDeTexteEstFocus"', () => {
+  //   component['shortcuts'].focusOnInput = true;
+  //   component.createNewDrawing();
+  //   expect(component['shortcuts'].focusOnInput).toBe(false);
+  // });
 
   it('#createNewDrawing devrait fermer la fenêtre de dialogue', () => {
     spyOn(component['dialogRef'], 'close');
