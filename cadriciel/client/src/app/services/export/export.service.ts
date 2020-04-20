@@ -131,6 +131,7 @@ export class ExportService {
     this.container.download = this.selectedFileName;
     this.container.click();
     URL.revokeObjectURL(imageSrc);
+    this.canvasConversion.updateDrawing();
   }
 
   private async sendImage(): Promise<void> {
@@ -143,6 +144,7 @@ export class ExportService {
     if (this.selectedExportFormat === 'svg') {
       imageData = this.generateSVG(this.drawing, this.selectedAuthor);
     }
+    this.canvasConversion.updateDrawing();
     await this.db.sendEmail(this.emailAdress, imageData, this.selectedFileName, this.selectedExportFormat)
     .then(() => {
       this.mailStatus = MailStatus.SUCCESS;

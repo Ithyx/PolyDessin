@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { HttpClientModule } from '@angular/common/http';
 import { Drawing } from '../../../../../common/communication/drawing-interface';
+import { CanvasConversionService } from '../canvas-conversion/canvas-conversion.service';
 import { DrawElement } from '../stockage-svg/draw-element/draw-element';
 import { ExportParams, ExportService, MailStatus } from './export.service';
 
@@ -17,7 +18,8 @@ describe('ExportService', () => {
   let canvas: HTMLCanvasElement;
 
   beforeEach(() => TestBed.configureTestingModule({
-    imports: [HttpClientModule]
+    imports: [HttpClientModule],
+    providers: [{provide: CanvasConversionService, useValue: {updateDrawing: () => { return; }}}]
   }));
   beforeEach(() => service = TestBed.get(ExportService));
   beforeEach(() => {
@@ -181,6 +183,12 @@ describe('ExportService', () => {
     expect(spy).toHaveBeenCalled();
   });
 
+  it('#downloadImage devrait appeler updateDrawing de canvasConversion', () => {
+    const spy = spyOn(service['canvasConversion'], 'updateDrawing');
+    service['downloadImage']();
+    expect(spy).toHaveBeenCalled();
+  });
+
   // TESTS sendImage
   it('#sendImage devrait appeller drawAuthorCanvas si le nom d\'auteur n\'est pas vide', () => {
     // spy sur des methodes privées
@@ -223,5 +231,10 @@ describe('ExportService', () => {
     spyOn(service['db'], 'sendEmail').and.callFake(async () => Promise.resolve());
     await service['sendImage']();
     expect(service.mailStatus).toEqual(MailStatus.SUCCESS);
+  });
+  it('#sendImage devrait appeler updateDrawing de canvasConversion', () => {
+    const spy = spyOn(service['canvasConversion'], 'updateDrawing');
+    service['sendImage']();
+    expect(spy).toHaveBeenCalled();
   });
 });
