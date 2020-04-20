@@ -91,10 +91,10 @@
             <label for="email">Entrez l'adresse email du destinataire: </label>
             <input type="email" (change)="updateEmail($event)" ngModel name="email" required email [ngClass]="f.valid ? '' : 'invalid'">
             <br>
-            <button mat-stroked-button [disabled]="!f.valid" (click)="emailExport()">Envoyer</button>
+            <button mat-raised-button [disabled]="!f.valid" (click)="emailExport()">Envoyer</button>
         </form>
         <button mat-raised-button (click)="downloadExport()">Exporter</button>
-        <button mat-button (click)="close()">Fermer</button>
+        <button mat-raised-button (click)="close()">Fermer</button>
     </div>
 </mat-dialog-content>
 </div>
