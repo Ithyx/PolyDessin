@@ -128,7 +128,6 @@ export class ExportService {
       imageSrc = this.canvas.toDataURL('image/' + this.selectedExportFormat);
     }
     this.container.href = imageSrc;
-    console.log(this.selectedFileName);
     this.container.download = this.selectedFileName;
     this.container.click();
     URL.revokeObjectURL(imageSrc);

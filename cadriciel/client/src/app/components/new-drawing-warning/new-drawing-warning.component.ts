@@ -16,8 +16,12 @@ export class NewDrawingWarningComponent {
    }
 
   cancel(): void {
-    this.shortcuts.focusOnInput = false;
+    this.enableShortcuts();
     this.dialogRef.close();
+  }
+
+  private enableShortcuts(): void {
+    this.shortcuts.focusOnInput = false;
   }
 
   openParameter(): void {
@@ -26,6 +30,6 @@ export class NewDrawingWarningComponent {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
-    this.dialog.open(NewDrawingWindowComponent, dialogConfig).afterClosed().subscribe(() => this.shortcuts.focusOnInput = false);
+    this.dialog.open(NewDrawingWindowComponent, dialogConfig).afterClosed().subscribe(this.enableShortcuts.bind(this));
   }
 }

@@ -50,16 +50,24 @@ describe('NewDrawingWarningComponent', () => {
 
   // TESTS cancel
 
-  it('#cancel devrait désactiver le focus sur un champ de texte', () => {
-    component['shortcuts'].focusOnInput = true;
+  it('#cancel devrait appeller #enableShortcuts', () => {
+    // tslint:disable-next-line: no-any
+    const spy = spyOn<any>(component, 'enableShortcuts');
     component.cancel();
-    expect(component['shortcuts'].focusOnInput).toBe(false);
+    expect(spy).toHaveBeenCalled();
   });
 
   it('#cancel devrait fermer dialogRef', () => {
     spyOn(component['dialogRef'], 'close');
     component.cancel();
     expect(component['dialogRef'].close).toHaveBeenCalled();
+  });
+
+  // TESTS enableShortcuts
+  it('#enableShortcuts devrait désactiver le focus sur un champ de texte', () => {
+    component['shortcuts'].focusOnInput = true;
+    component['enableShortcuts']();
+    expect(component['shortcuts'].focusOnInput).toBe(false);
   });
 
   // TESTS openParameter

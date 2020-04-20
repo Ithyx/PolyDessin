@@ -119,15 +119,6 @@ describe('ToolbarComponent', () => {
 
   // TESTS ngOnDestroy
 
-  it('#ngOnDestroy devrait appeler la fonction unsubscribe', () => {
-    spyOn(component, 'warningNewDrawing');
-    component.ngOnDestroy();  // unsubscribe est appelée ici
-
-    const keyPressed = new KeyboardEvent('keypress', { key: 'o', ctrlKey: true});
-    component['shortcuts'].treatInput(keyPressed);
-    expect(component.warningNewDrawing).not.toHaveBeenCalled();
-  });
-
   it('#ngOnDestroy devrait appeler la fonction next avec un booleen true comme paramètre', () => {
     spyOn(component['shortcuts'].newDrawingEmmiter, 'next');
     component.ngOnDestroy();
