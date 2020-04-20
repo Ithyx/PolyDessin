@@ -8,7 +8,6 @@ import { ColorParameterService } from 'src/app/services/color/color-parameter.se
 import { CommandManagerService } from 'src/app/services/command/command-manager.service';
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { LocalSaveManagerService } from 'src/app/services/saving/local/local-save-manager.service';
-import { ShortcutsManagerService } from 'src/app/services/shortcuts/shortcuts-manager.service';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
 
 export const KEY_FORM_HEIGHT = 'formHeight';
@@ -34,7 +33,6 @@ export class NewDrawingWindowComponent {
   private widthValid: boolean;
 
   constructor(private dialogRef: MatDialogRef<NewDrawingWindowComponent>,
-              private shortcuts: ShortcutsManagerService,
               private drawingManager: DrawingManagerService,
               private router: Router,
               private svgStockage: SVGStockageService,
@@ -66,7 +64,6 @@ export class NewDrawingWindowComponent {
 
   closeWindow(): void {
     this.colorParameter.temporaryBackgroundColor = this.drawingManager.backgroundColor;
-    this.shortcuts.focusOnInput = false;
     this.dialogRef.close();
   }
 
@@ -93,7 +90,6 @@ export class NewDrawingWindowComponent {
     this.drawingManager.id = 0;
     this.drawingManager.backgroundColor = this.colorParameter.temporaryBackgroundColor;
     this.drawingManager.tags = [];
-    this.shortcuts.focusOnInput = false;
     this.ngZone.run(() => this.router.navigate(['dessin']));
     this.localSaving.saveState();
     this.dialogRef.close();

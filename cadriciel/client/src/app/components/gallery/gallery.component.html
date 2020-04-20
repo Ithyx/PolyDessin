@@ -27,7 +27,7 @@
     <br>
     <div class="clear"></div>
 </mat-dialog-content>
-<button mat-stroked-button (click)="close()" class="close-button"> Fermer </button>
+<button mat-raised-button (click)="close()" class="close-button"> Fermer </button>
 <button mat-raised-button (click)="loadDrawing(drawings[selected])" color="primary" [disabled]="selected === null" class="option-button">Charger</button>
 <button mat-raised-button (click)="deleteDrawing(drawings[selected])" color="warn" [disabled]="selected === null" class="option-button">Supprimer</button>
 </div>

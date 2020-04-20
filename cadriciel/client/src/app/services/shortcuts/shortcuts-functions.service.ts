@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { BehaviorSubject } from 'rxjs';
+import { NewDrawingWindowComponent } from 'src/app/components/new-drawing-window/new-drawing-window.component';
 import { ExportWindowComponent } from '../../components/export-window/export-window.component';
 import { GalleryComponent } from '../../components/gallery/gallery.component';
 import { SavePopupComponent } from '../../components/save-popup/save-popup.component';
@@ -187,6 +188,7 @@ export class ShortcutsFunctionsService {
     if (keyboard.ctrlKey) {
       this.newDrawingEmmiter.next(false);
       this.selection.deleteBoundingBox();
+      this.dialog.open(NewDrawingWindowComponent, this.dialogConfig).afterClosed().subscribe(this.enableShortcuts.bind(this));
     }
   }
 
