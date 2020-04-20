@@ -90,6 +90,28 @@ describe('BasicShapeService', () => {
     expect(element.drawShape).toHaveBeenCalled();
   });
 
+  it('#draw devrait appeler drawStroke si l\'option choisie n\'est pas "Plein"', () => {
+    element.chosenOption = 'Contour';
+    const spy = spyOn(element, 'drawStroke');
+    element.draw();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#draw devrait appeler drawStroke si erasingEvidence est true', () => {
+    element.erasingEvidence = true;
+    const spy = spyOn(element, 'drawStroke');
+    element.draw();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('#draw ne devrait pas appeler drawStroke si l\'option choisie est "Plein" et erasingEvidence est false', () => {
+    element.chosenOption = 'Plein';
+    element.erasingEvidence = false;
+    const spy = spyOn(element, 'drawStroke');
+    element.draw();
+    expect(spy).not.toHaveBeenCalled();
+  });
+
   it('#draw devrait appeler drawPerimeter', () => {
     spyOn(element, 'drawPerimeter');
     element.draw();

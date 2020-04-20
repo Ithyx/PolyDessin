@@ -44,7 +44,7 @@ export abstract class BasicShapeService extends DrawElement  {
       this.drawLine();
     } else {
       this.drawShape();
-      if (this.chosenOption !== 'Plein') {
+      if (this.chosenOption !== 'Plein' || this.erasingEvidence) {
         this.drawStroke();
       }
     }
