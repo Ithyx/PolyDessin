@@ -9,6 +9,7 @@ import { CommandManagerService } from 'src/app/services/command/command-manager.
 import { DrawingManagerService } from 'src/app/services/drawing-manager/drawing-manager.service';
 import { LocalSaveManagerService } from 'src/app/services/saving/local/local-save-manager.service';
 import { SVGStockageService } from 'src/app/services/stockage-svg/svg-stockage.service';
+import { SelectionService } from 'src/app/services/tools/selection/selection.service';
 
 export const KEY_FORM_HEIGHT = 'formHeight';
 export const KEY_FORM_WIDTH = 'formWidth';
@@ -40,7 +41,8 @@ export class NewDrawingWindowComponent {
               private colorParameter: ColorParameterService,
               private commands: CommandManagerService,
               private ngZone: NgZone,
-              private localSaving: LocalSaveManagerService ) {
+              private localSaving: LocalSaveManagerService,
+              private selection: SelectionService) {
     this.windowHeight = window.innerHeight - BUFFER_HEIGHT;
     this.windowWidth = window.innerWidth - BUFFER_WIDTH;
     this.dimensionManuallyChange = false;
@@ -93,6 +95,7 @@ export class NewDrawingWindowComponent {
     this.ngZone.run(() => this.router.navigate(['dessin']));
     this.localSaving.saveState();
     this.dialogRef.close();
+    this.selection.deleteBoundingBox();
   }
 
   selectColor(): void {
