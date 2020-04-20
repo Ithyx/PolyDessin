@@ -95,8 +95,8 @@ export class GalleryComponent implements OnInit {
   }
 
   async loadDrawing(drawing: Drawing): Promise<void> {
-    if (this.stockageSVG.size !== 0) {
-      if (await this.openWarning()) { return; }
+    if (this.stockageSVG.size !== 0 && await this.openWarning()) {
+      return;
     }
     this.stockageSVG.cleanDrawing();
     this.drawingManager.id = drawing._id;
